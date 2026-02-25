@@ -1,0 +1,14 @@
+{
+  "track_id": "eval-run-H5_20260225",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-25T00:00:00Z",
+  "updated_at": "2026-02-25T00:00:00Z",
+  "description": "H5 condition: Qwen CLI, SKILL.md injected as system prompt, Prompt S",
+  "harness": "qwen-cli",
+  "model": "qwen",
+  "skill_condition": "B",
+  "prompt_variant": "S",
+  "agent": "external-requires-qwen-cli",
+  "depends_on": ["eval-pilot-calibration_20260225"]
+}

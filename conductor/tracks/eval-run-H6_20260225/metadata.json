@@ -1,0 +1,14 @@
+{
+  "track_id": "eval-run-H6_20260225",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-25T00:00:00Z",
+  "updated_at": "2026-02-25T00:00:00Z",
+  "description": "H6 condition: Kilo Code, SKILL.md injected via custom instructions, Prompt S",
+  "harness": "kilo-code",
+  "model": "various",
+  "skill_condition": "B",
+  "prompt_variant": "S",
+  "agent": "external-requires-kilo-code",
+  "depends_on": ["eval-pilot-calibration_20260225"]
+}

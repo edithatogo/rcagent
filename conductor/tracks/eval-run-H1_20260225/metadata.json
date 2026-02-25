@@ -1,0 +1,14 @@
+{
+  "track_id": "eval-run-H1_20260225",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-25T00:00:00Z",
+  "updated_at": "2026-02-25T00:00:00Z",
+  "description": "H1 condition: Claude Code + Sonnet, native SKILL.md, Prompt S — baseline with skill",
+  "harness": "claude-code",
+  "model": "claude-sonnet-4-6",
+  "skill_condition": "A",
+  "prompt_variant": "S",
+  "agent": "claude-subagent",
+  "depends_on": ["eval-pilot-calibration_20260225"]
+}
