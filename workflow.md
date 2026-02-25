@@ -52,6 +52,30 @@ All templates must de-identify patient data:
 - Use `[Ward X]`, `[Unit Y]` — de-identified locations
 - Use `[Date/Time]` placeholders — never real patient dates unless anonymized
 
+## Evaluation Study Workflow
+
+### Adding a New Case
+1. Verify case meets all inclusion criteria in `evaluation/protocol/case-selection-criteria.md`
+2. Format case using the standardized template
+3. Assign SAC-equivalent and difficulty rating with documented rationale
+4. Save to `evaluation/datasets/{source}/xx-case-XX.md`
+5. Update `evaluation/datasets/README.md` case index
+6. Verify coverage requirements still met
+
+### Running an Experimental Condition
+1. Follow exact setup in `evaluation/protocol/agent-test-protocol.md` (Section 4 for injection)
+2. Record all metadata per run (model version, timestamp, tokens)
+3. Save raw transcript to `evaluation/results/{condition}/case-XX/run-N/raw-transcript.md`
+4. Normalize output into 8 sections → `normalized-output.md`
+5. Repeat for 3 independent runs per case per condition
+
+### Scoring
+1. Complete ALL runs before scoring begins
+2. Generate blinding map (Section 8 of agent-test-protocol)
+3. Score normalized outputs blind using rubric in `evaluation/protocol/evaluation-rubric.md`
+4. Record scores to `evaluation/results/{condition}/case-XX/run-N/scores.md` (H8: omit run-N/, single run)
+5. After all scoring: unblind, populate `evaluation/analysis/rubric-scores.csv`
+
 ## Regulatory Currency
 
 Review and update annually (or when ACSQHC/NSQHS standards change):

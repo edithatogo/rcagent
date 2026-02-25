@@ -1,0 +1,15 @@
+condition,case,run,scorer,date,d1_contributing_factors,d2_root_cause_accuracy,d3_action_strength,d4_just_culture,d5_deidentification,d6_method_selection,d7_chronology,d8_safety_ii,composite,structural_completeness,time_seconds,input_tokens,output_tokens,cost_usd,output_words
+# Schema:
+# condition: H0|H1|H2|H3|H4|H5|H6|H7|H8
+# case: case-01|case-02|...|case-10
+# run: 1|2|3 (H8 has run=1 only)
+# scorer: primary|ai-rater
+# date: ISO 8601
+# d1-d8: integer 1-5 (or N/A for D4 if not applicable)
+# composite: sum of d1-d8 (8-40)
+# structural_completeness: count of 8 sections present (0-8)
+# time_seconds: wall-clock time from prompt to final output
+# input_tokens: input token count from API metadata
+# output_tokens: output token count from API metadata
+# cost_usd: total cost calculated from token counts
+# output_words: word count of raw output

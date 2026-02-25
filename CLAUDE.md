@@ -12,6 +12,16 @@ Healthcare root-cause analysis and serious adverse event investigation tools for
 - Skill reference files live in skills/rca-investigation/references/
 - Templates live in skills/rca-investigation/assets/templates/
 
+## Evaluation
+
+- Evaluation protocol and framework live in evaluation/
+- Protocol documents: evaluation/protocol/ (scientific protocol, rubric, test protocol)
+- Datasets: evaluation/datasets/ (AU/NZ public adverse event cases)
+- Results: evaluation/results/H{0-8}-{condition}/ (raw transcripts, normalized outputs, scores)
+- Analysis: evaluation/analysis/ (scores CSV, reports)
+- 8-dimension rubric (D1-D8): see evaluation/protocol/evaluation-rubric.md
+- 9 experimental conditions (H0-H8): see evaluation/protocol/scientific-protocol.md
+
 ## Integration
 
 This skill integrates with:

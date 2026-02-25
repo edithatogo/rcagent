@@ -1,0 +1,4 @@
+eval_id,condition,case,run,original_path
+# Populated after all runs complete and before scoring begins.
+# Format: eval-XXXX-case-NN where XXXX is random alphanumeric.
+# This file is SEALED until all scoring is complete.

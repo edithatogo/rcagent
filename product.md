@@ -34,6 +34,17 @@ Transforms Claude Code into a specialized healthcare investigator that:
 - **Just Culture framework**: Fair, blame-free individual accountability assessment
 - **Safety-II/resilience engineering lens**: Goes beyond "what went wrong" to "what usually goes right"
 
+## Evaluation Study
+
+A scientific evaluation framework for validating the skill suite's investigation quality:
+
+- **Targeted factorial design**: Model × Harness × Skill Condition × Data
+- **9 experimental conditions** (H0–H8): Claude Sonnet/Opus, Gemini, GPT-4o, Qwen, Kilo Code, Copilot, Human Expert
+- **8-dimension evaluation rubric**: Contributing factors, root cause accuracy, action strength, Just Culture, de-identification, method selection, chronology, Safety-II
+- **AU/NZ public adverse event cases**: HDC NZ decisions, ACSQHC reports, coroner findings
+- **Reproducibility**: 3 runs per condition, blinded scoring, inter-rater reliability (human + AI)
+- See `evaluation/protocol/scientific-protocol.md` for full design
+
 ## Regulatory Context
 
 Primary: AU/NZ (NSQHS Standards, ACSQHC RCA guidelines, SAC 1-4, Open Disclosure Framework)

@@ -67,11 +67,46 @@ rca/
 │   ├── rca-investigate.md
 │   ├── rca-report.md
 │   └── rca-track.md
+├── evaluation/
+│   ├── protocol/
+│   │   ├── scientific-protocol.md      # Master evaluation protocol
+│   │   ├── literature-review.md        # Citations: 14 methods + evaluation methodology
+│   │   ├── evaluation-rubric.md        # 8-dimension rubric with anchors
+│   │   ├── case-selection-criteria.md  # Inclusion/exclusion + difficulty ratings
+│   │   └── agent-test-protocol.md      # Prompt variants, injection, blinding
+│   ├── datasets/
+│   │   ├── README.md                   # Source provenance, licensing, ethics
+│   │   ├── acsqhc/                     # AU cases
+│   │   ├── hdc-nz/                     # NZ cases (primary)
+│   │   ├── coroner-au/                 # AU coroner cases
+│   │   └── coroner-nz/                 # NZ coroner cases
+│   ├── results/
+│   │   ├── blinding-map.csv            # Condition → eval ID mapping
+│   │   ├── H0-control-no-skill/        # Per condition, per case, per run
+│   │   ├── H1-claude-code-sonnet/
+│   │   ├── H2-claude-code-opus/
+│   │   ├── H3-gemini-cli/
+│   │   ├── H4-codex-cli/
+│   │   ├── H5-qwen/
+│   │   ├── H6-kilo-code/
+│   │   ├── H7-copilot/
+│   │   └── H8-human-evaluator/
+│   └── analysis/
+│       ├── rubric-scores.csv           # All scores database
+│       ├── inter-rater-reliability.md
+│       ├── comparative-analysis.md
+│       ├── case-level-analysis.md
+│       ├── failure-mode-analysis.md
+│       └── technical-report.md
 └── docs/
     └── plans/
         ├── 2026-02-25-rca-skill-design.md
         └── 2026-02-25-rca-skill-implementation.md
 ```
+
+## Evaluation Data Format: CSV
+
+The evaluation uses CSV for structured scoring data (`rubric-scores.csv`), with columns for condition, case, run, 8 dimension scores, composite, and metrics (time, tokens, cost, words).
 
 ## No Build Step
 
