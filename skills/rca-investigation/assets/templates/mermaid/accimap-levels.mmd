@@ -1,0 +1,43 @@
+flowchart TD
+  subgraph L6["Level 6: Government and Policy"]
+    G1["Government or regulatory factor 1"]
+    G2["Funding or policy factor 2"]
+  end
+
+  subgraph L5["Level 5: Regulatory Bodies"]
+    R1["Standards or accreditation factor"]
+    R2["Professional body factor"]
+  end
+
+  subgraph L4["Level 4: Hospital Management"]
+    M1["Executive decision or resource factor"]
+    M2["Organisational culture factor"]
+  end
+
+  subgraph L3["Level 3: Physical and Technical Environment"]
+    T1["Equipment or system factor"]
+    T2["Physical environment factor"]
+  end
+
+  subgraph L2["Level 2: Staff and Operators"]
+    S1["Staff action or decision 1"]
+    S2["Staff action or decision 2"]
+  end
+
+  subgraph L1["Level 1: Patient and Activity"]
+    AE["ADVERSE EVENT
+      Replace with description"]:::event
+  end
+
+  G1 --> R1
+  G2 --> M1
+  R1 --> M1
+  R2 --> M2
+  M1 --> T1
+  M2 --> S1
+  T1 --> S1
+  T2 --> S2
+  S1 --> AE
+  S2 --> AE
+
+  classDef event fill:#f44336,color:#fff,stroke:#b71c1c

@@ -1,0 +1,38 @@
+flowchart TB
+  subgraph WS["WORK SYSTEM at Time of Event"]
+    direction LR
+    P["PERSON(S)
+      Staff: knowledge, fatigue, workload
+      Patient: complexity, communication"]
+    T["TASKS
+      Complexity, clarity,
+      sequencing, demands"]
+    TT["TOOLS & TECHNOLOGY
+      Devices, EMR, medications,
+      equipment"]
+    E["ENVIRONMENT
+      Physical, social, temporal"]
+    O["ORGANISATION
+      Staffing, culture,
+      governance, policies"]
+    P <--> T
+    T <--> TT
+    T <--> E
+    T <--> O
+  end
+
+  PROC["PROCESSES
+    Care Delivery at Time of Event
+    Replace with description of what was happening"]
+
+  subgraph OUT["OUTCOMES"]
+    direction LR
+    PS["Patient Safety Outcome
+      Replace with actual outcome"]
+    QO["Quality of Care
+      Replace with assessment"]
+    SW["Staff Wellbeing
+      Replace with assessment"]
+  end
+
+  WS --> PROC --> OUT

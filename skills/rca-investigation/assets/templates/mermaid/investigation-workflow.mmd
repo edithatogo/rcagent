@@ -1,0 +1,47 @@
+flowchart TD
+  INC(["Incident Occurs
+    or is Reported"]):::start
+
+  SAC{"SAC
+    Classification"}
+
+  SAC -->|"SAC 1 or 2"| TRIAGE["RCA Triage Agent
+    Classify, scope, method selection
+    Team composition, Terms of Reference"]
+  SAC -->|"SAC 3 or 4"| RAPID["Rapid Review
+    5 Whys plus Contributing Factors
+    48 hours to 2 weeks"]
+
+  TRIAGE --> PRESERVE["Preserve Evidence
+    Records, equipment, CCTV"]
+  PRESERVE --> TIMELINE["Build Timeline
+    Multi-source chronology"]
+  TIMELINE --> CF["Contributing Factor Analysis
+    Yorkshire, London Protocol, or HFACS"]
+  CF --> SYSTEMS["Systems Analysis
+    SEIPS, Swiss Cheese, or AcciMap"]
+  SYSTEMS --> BOWTIE["Barrier Analysis
+    Bow-Tie or Barrier Analysis"]
+  BOWTIE --> JUST["Just Culture Assessment
+    Human error, At-risk, or Reckless"]
+
+  JUST --> REPORT["RCA Report Agent
+    Draft investigation report
+    Mermaid diagrams, DOCX, PPTX"]
+
+  REPORT --> REVIEW{"Governance
+    Review"}
+  REVIEW -->|"Revise"| REPORT
+  REVIEW -->|"Accepted"| TRACK["RCA Track Agent
+    CAPA Action Plan
+    QI linkage, monitoring"]
+
+  TRACK --> EFFECT["Effectiveness Review
+    3, 6, and 12 months"]
+  EFFECT -->|"Actions effective"| CLOSE(["Investigation Closure"]):::done
+  EFFECT -->|"Further action needed"| TRACK
+
+  RAPID --> CLOSE
+
+  classDef start fill:#ff9800,color:#fff,stroke:#e65100
+  classDef done fill:#4caf50,color:#fff,stroke:#1b5e20

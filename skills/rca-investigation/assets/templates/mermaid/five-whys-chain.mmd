@@ -1,0 +1,27 @@
+flowchart TD
+  E["PROBLEM
+    State the adverse event or problem clearly"]:::problem
+
+  W1["WHY 1
+    Answer: immediate cause"]
+  W2["WHY 2
+    Answer: cause of that cause"]
+  W3["WHY 3
+    Answer: deeper systemic cause"]
+  W4["WHY 4
+    Answer: organisational or process factor"]
+  W5["WHY 5
+    Answer: root cause"]
+
+  RC(["ROOT CAUSE
+    System gap or failure identified"]):::root
+
+  E -->|"Why did this happen?"| W1
+  W1 -->|Why?| W2
+  W2 -->|Why?| W3
+  W3 -->|Why?| W4
+  W4 -->|Why?| W5
+  W5 --> RC
+
+  classDef problem fill:#f44336,color:#fff,stroke:#b71c1c
+  classDef root fill:#4caf50,color:#fff,stroke:#1b5e20

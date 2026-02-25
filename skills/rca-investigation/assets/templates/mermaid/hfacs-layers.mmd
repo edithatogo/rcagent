@@ -1,0 +1,42 @@
+flowchart TD
+  subgraph L4["Level 4: Organisational Influences"]
+    direction LR
+    RM["Resource Management
+      Staffing, equipment, financial"]
+    OC["Organisational Climate
+      Culture, command structure"]
+    OP["Organisational Process
+      Operations, oversight, incentives"]
+  end
+
+  subgraph L3["Level 3: Unsafe Supervision"]
+    direction LR
+    IS["Inadequate Supervision
+      Replace with finding"]
+    PIO["Planned Inappropriate Ops
+      Replace with finding"]
+    FCP["Failed to Correct Known Problem
+      Replace with finding"]
+    SV["Supervisory Violation
+      Replace with finding"]
+  end
+
+  subgraph L2["Level 2: Preconditions"]
+    direction LR
+    EF["Environmental Factors
+      Physical or tech environment finding"]
+    CO["Condition of Operators
+      Mental or physical state finding"]
+    PF["Personnel Factors
+      CRM or readiness finding"]
+  end
+
+  subgraph L1["Level 1: Unsafe Acts"]
+    direction LR
+    ER["Errors
+      Skill-based, Decision, Perceptual"]
+    VIO["Violations
+      Routine or Exceptional"]
+  end
+
+  L4 --> L3 --> L2 --> L1

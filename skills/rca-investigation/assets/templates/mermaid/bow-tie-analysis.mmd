@@ -1,0 +1,44 @@
+flowchart LR
+  T1["Threat 1
+    e.g. Lookalike ampoules"]
+  T2["Threat 2
+    e.g. Distraction during preparation"]
+  T3["Threat 3
+    e.g. Policy gap"]
+
+  B1{{"Barrier 1
+    Double-check
+    STATUS: FAILED"}}:::failed
+  B2{{"Barrier 2
+    Pharmacist verify
+    STATUS: ABSENT"}}:::absent
+  B3{{"Barrier 3
+    CDS alert
+    STATUS: OK"}}:::ok
+
+  EVENT(["TOP EVENT
+    e.g. Wrong medication administered"]):::event
+
+  B4{{"Recovery Barrier 1
+    Rapid response
+    STATUS: OK"}}:::ok
+  B5{{"Recovery Barrier 2
+    Antidote available
+    STATUS: FAILED"}}:::failed
+
+  C1["Consequence 1
+    Adverse drug reaction"]
+  C2["Consequence 2
+    Therapeutic failure"]
+
+  T1 --> B1 --> EVENT
+  T2 --> B2 --> EVENT
+  T3 --> B3
+  T3 --> EVENT
+  EVENT --> B4 --> C1
+  EVENT --> B5 --> C2
+
+  classDef event fill:#f44336,color:#fff,stroke:#b71c1c
+  classDef failed fill:#ff9800,color:#fff,stroke:#e65100
+  classDef absent fill:#f44336,color:#fff,stroke:#b71c1c,stroke-dasharray:5 5
+  classDef ok fill:#4caf50,color:#fff,stroke:#1b5e20

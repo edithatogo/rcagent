@@ -1,0 +1,31 @@
+flowchart TD
+  GOV["Government and Regulators
+    Safety constraints: list applicable legislation"]
+  EXEC["Hospital Executive
+    Control actions: policies, resources
+    Feedback: audit results, incident reports"]
+  MGR["Department Management
+    Control actions: staffing, protocols
+    Feedback: ward reports, incidents"]
+  SUPER["Clinical Supervisor
+    Control actions: direction, oversight
+    Feedback: observation, rounds"]
+  STAFF["Clinical Staff
+    Control actions: care delivery decisions
+    Feedback: patient signs, monitoring"]
+  PATIENT["Patient Care Process
+    The controlled process
+    Replace with description"]:::controlled
+
+  GOV -->|"Legislation and funding"| EXEC
+  EXEC -->|"Policy and resources"| MGR
+  MGR -->|"Protocols and staffing"| SUPER
+  SUPER -->|"Supervision and guidance"| STAFF
+  STAFF -->|"Clinical interventions"| PATIENT
+
+  PATIENT -->|"Patient outcomes feedback"| STAFF
+  STAFF -->|"Escalation and handover"| SUPER
+  SUPER -->|"Reports and incidents"| MGR
+  MGR -->|"Performance data"| EXEC
+
+  classDef controlled fill:#f44336,color:#fff,stroke:#b71c1c

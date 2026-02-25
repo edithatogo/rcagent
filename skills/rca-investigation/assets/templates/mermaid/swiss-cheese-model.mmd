@@ -1,0 +1,36 @@
+flowchart LR
+  H([HAZARD]):::hazard
+
+  subgraph L1["Layer 1: Design"]
+    D1[ ]:::hole
+    D2[intact]:::intact
+  end
+
+  subgraph L2["Layer 2: Policy & Procedure"]
+    P1[ ]:::hole
+    P2[intact]:::intact
+  end
+
+  subgraph L3["Layer 3: Training & Competency"]
+    T1[intact]:::intact
+    T2[ ]:::hole
+  end
+
+  subgraph L4["Layer 4: Supervision"]
+    S1[ ]:::hole
+    S2[intact]:::intact
+  end
+
+  subgraph L5["Layer 5: Independent Check"]
+    C1[ ]:::hole
+    C2[intact]:::intact
+  end
+
+  HARM([HARM\nReplace with patient outcome]):::harm
+
+  H --> L1 --> L2 --> L3 --> L4 --> L5 --> HARM
+
+  classDef hazard fill:#ff9800,color:#fff,stroke:#e65100
+  classDef harm fill:#f44336,color:#fff,stroke:#b71c1c
+  classDef hole fill:#fff,stroke:#f44336,stroke-dasharray:5 5,color:#f44336
+  classDef intact fill:#e8f5e9,stroke:#388e3c,color:#1b5e20
