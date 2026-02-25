@@ -1,0 +1,8 @@
+{
+  "track_id": "eval-pilot-calibration_20260225",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-25T00:00:00Z",
+  "updated_at": "2026-02-25T23:59:00Z",
+  "description": "Run pilot calibration phase: 2 cases x 2 conditions (H0, H1) to validate rubric anchors before full evaluation"
+}

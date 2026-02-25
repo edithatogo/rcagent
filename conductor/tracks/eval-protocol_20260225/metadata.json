@@ -1,0 +1,8 @@
+{
+  "track_id": "eval-protocol_20260225",
+  "type": "feature",
+  "status": "completed",
+  "created_at": "2026-02-25T00:00:00Z",
+  "updated_at": "2026-02-25T23:59:00Z",
+  "description": "Create scientific evaluation protocol, rubric, literature review, case selection criteria, and agent test protocol for the rcagent evaluation study"
+}

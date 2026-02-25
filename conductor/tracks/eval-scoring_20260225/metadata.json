@@ -1,0 +1,8 @@
+{
+  "track_id": "eval-scoring_20260225",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-25T00:00:00Z",
+  "updated_at": "2026-02-25T23:59:00Z",
+  "description": "Blinded rubric scoring of all normalized outputs, inter-rater reliability assessment, and anchor revision"
+}
