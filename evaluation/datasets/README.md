@@ -1,8 +1,8 @@
 # Evaluation Dataset — AU/NZ Adverse Event Cases
 
-**Version**: 1.0
+**Version**: 1.1
 **Date**: 2026-02-25
-**Status**: Case collection pending
+**Status**: 5 NZ cases collected (HDC NZ)
 
 ---
 
@@ -29,7 +29,7 @@ This dataset contains publicly available Australian and New Zealand adverse even
 
 | Source | Organisation | URL | Case Types | Status |
 |---|---|---|---|---|
-| **HDC Decision Reports** | Health & Disability Commissioner | hdc.org.nz/decisions | Full range — **primary NZ source** | Pending |
+| **HDC Decision Reports** | Health & Disability Commissioner | hdc.org.nz/decisions | Full range — **primary NZ source** | **5 cases collected** |
 | Coroners Court NZ | NZ Coronial Services | coronialservices.justice.govt.nz | Deaths | Pending |
 | HQSC Reports | Health Quality & Safety Commission | hqsc.govt.nz | Systemic quality issues | Pending |
 | ACC Treatment Injury | ACC NZ | acc.co.nz | Clinical adverse events | Pending |
@@ -40,26 +40,41 @@ This dataset contains publicly available Australian and New Zealand adverse even
 
 | Metric | Target | Actual |
 |---|---|---|
-| Total cases | 5–10 | TBD |
-| AU cases | ≥2 | TBD |
-| NZ cases | ≥3 | TBD |
-| SAC 1 equivalent | ≥2 | TBD |
-| SAC 2 equivalent | ≥3 | TBD |
-| SAC 3/4 equivalent | Remainder | TBD |
-| Difficulty 1 (simple) | 2–3 | TBD |
-| Difficulty 2 (moderate) | 4–5 | TBD |
-| Difficulty 3 (complex) | 2–3 | TBD |
+| Total cases | 5–10 | 5 |
+| AU cases | ≥2 | 0 (pending) |
+| NZ cases | ≥3 | 5 |
+| SAC 1 equivalent | ≥2 | 2 (nz-case-01, nz-case-04) |
+| SAC 2 equivalent | ≥3 | 3 (nz-case-02, nz-case-03, nz-case-05) |
+| SAC 3/4 equivalent | Remainder | 0 |
+| Difficulty 1 (simple) | 2–3 | 1 (nz-case-05) |
+| Difficulty 2 (moderate) | 4–5 | 2 (nz-case-02, nz-case-04) |
+| Difficulty 3 (complex) | 2–3 | 2 (nz-case-01, nz-case-03) |
 
 ### Event Type Coverage
 
 | Event Type | Required | Case IDs |
 |---|---|---|
-| Medication error | ≥1 | TBD |
-| Clinical deterioration | ≥1 | TBD |
-| Falls | ≥1 | TBD |
-| Surgical/procedural | ≥1 | TBD |
-| Mental health | ≥1 | TBD |
-| Other | Optional | TBD |
+| Medication error | ≥1 | nz-case-03 |
+| Clinical deterioration | ≥1 | nz-case-02 |
+| Falls / patient safety | ≥1 | nz-case-05 |
+| Surgical/procedural / perinatal | ≥1 | nz-case-04 |
+| Mental health | ≥1 | nz-case-01 |
+| Other | Optional | — |
+
+### SAC Level Coverage
+
+| SAC Level | Case IDs |
+|---|---|
+| SAC 1 | nz-case-01, nz-case-04 |
+| SAC 2 | nz-case-02, nz-case-03, nz-case-05 |
+| SAC 3/4 | — (pending AU cases) |
+
+### Jurisdiction Coverage
+
+| Jurisdiction | Case IDs |
+|---|---|
+| NZ (HDC) | nz-case-01, nz-case-02, nz-case-03, nz-case-04, nz-case-05 |
+| AU | — (pending) |
 
 ---
 
@@ -67,9 +82,11 @@ This dataset contains publicly available Australian and New Zealand adverse even
 
 | Case ID | Title | Source | Jurisdiction | Event Type | SAC | Difficulty | File |
 |---|---|---|---|---|---|---|---|
-| | | | | | | | |
-
-(To be populated during case collection phase.)
+| nz-case-01 | Failures in Acute Mental Health Care Following Multiple Declined Referrals | HDC NZ Decision 21HDC00502 | NZ | Mental health | SAC 1 | 3 — Complex | hdc-nz/nz-case-01.md |
+| nz-case-02 | Delayed Escalation of Care in Prison Health Leading to Emergency Surgery | HDC NZ Decision 22HDC02054 | NZ | Clinical deterioration | SAC 2 | 2 — Moderate | hdc-nz/nz-case-02.md |
+| nz-case-03 | Multiple System Failures During Six-Week Inpatient Respiratory Admission | HDC NZ Decision 21HDC00718 | NZ | Medication error | SAC 2 | 3 — Complex | hdc-nz/nz-case-03.md |
+| nz-case-04 | Neonatal Death Following Inadequate Monitoring During Nurse Break | HDC NZ Decision 20HDC01313 | NZ | Perinatal/neonatal | SAC 1 | 2 — Moderate | hdc-nz/nz-case-04.md |
+| nz-case-05 | Failure to Protect Patient from Repeated Inappropriate Behaviour by Co-Patient | HDC NZ Decision 22HDC00290 | NZ | Patient safety (ward) | SAC 2 | 1 — Simple | hdc-nz/nz-case-05.md |
 
 ---
 
