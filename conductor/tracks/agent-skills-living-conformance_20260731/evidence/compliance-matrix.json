@@ -20,8 +20,8 @@
       "applicability": "applicable",
       "implementation": "skills/rca-investigation/SKILL.md",
       "validation": "official validator and negative fixtures",
-      "result": "pending",
-      "evidence": null
+      "result": "pass",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "AS-SPEC-003",
@@ -30,8 +30,8 @@
       "applicability": "applicable",
       "implementation": "skills/rca-investigation/SKILL.md",
       "validation": "official validator, length check, and trigger evaluation",
-      "result": "pending",
-      "evidence": null
+      "result": "partial",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "AS-SPEC-004",
@@ -51,8 +51,8 @@
       "applicability": "applicable",
       "implementation": "skills/rca-investigation/SKILL.md",
       "validation": "frontmatter and isolated portability tests",
-      "result": "pending",
-      "evidence": null
+      "result": "pass",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "AS-SPEC-006",
@@ -61,8 +61,8 @@
       "applicability": "applicable_project_profile",
       "implementation": "skills/rca-investigation/SKILL.md",
       "validation": "schema validation",
-      "result": "pending",
-      "evidence": null
+      "result": "pass",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "AS-SPEC-007",
@@ -82,8 +82,8 @@
       "applicability": "applicable",
       "implementation": "skills/rca-investigation/",
       "validation": "reference and isolated-copy tests",
-      "result": "fail",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
+      "result": "pass",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "AS-GUIDE-001",
@@ -122,8 +122,8 @@
       "applicability": "applicable_project_policy",
       "implementation": "skills/rca-investigation/",
       "validation": "isolated-copy and archive-extraction tests",
-      "result": "fail",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
+      "result": "pass",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "RCA-SAFE-001",
@@ -132,8 +132,8 @@
       "applicability": "applicable_project_policy",
       "implementation": "skills/rca-investigation/SKILL.md and references/workflows/",
       "validation": "privacy sentinels and output assertions",
-      "result": "fail",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
+      "result": "partial",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "RCA-DRIFT-001",

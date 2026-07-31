@@ -1,97 +1,111 @@
 ---
 name: rca-investigation
-description: >
-  Healthcare Root Cause Analysis (RCA) and Serious Adverse Event (SAE) investigation skill for
-  AU/NZ clinical governance. Use when: conducting an RCA or SAE review; classifying incident
-  severity (SAC 1-4) and selecting investigation methods; executing structured analysis using
-  Fishbone, 5 Whys, Yorkshire Framework, SEIPS, Swiss Cheese, Bow-Tie, Barrier Analysis, FMEA,
-  Timeline, HFACS, London Protocol, AcciMap, STAMP/STPA, or RCA²; generating investigation
-  reports, DOCX governance documents, PPTX presentations, or Mermaid diagrams; creating CAPA
-  action plans; assessing Just Culture; or linking RCA findings to quality improvement.
-  Integrates with health-incident-reporting, health-clinical-risk-assessment,
-  health-quality-improvement, and health-enterprise-risk-assessment skills.
+description: Investigate healthcare incidents and serious adverse events using evidence-grounded, systems-focused RCA methods; triage an investigation, build a chronology, analyse contributing conditions and barriers, draft a review report, or govern corrective actions and effectiveness checks. Use for explicit or implicit clinical incident investigation and learning requests in AU/NZ settings. Do not use for individual clinical diagnosis or treatment, legal advice, disciplinary findings, or unsupported severity and notification decisions.
+compatibility: Requires an Agent Skills client that can read bundled Markdown files.
+metadata:
+  rca-workbench-profile: portable-core
+  rca-workbench-version: "0.1"
 ---
 
-# RCA & SAE Investigation
+# Healthcare Incident Investigation
 
-## Operating Modes
+Assist an accountable human investigation team. Do not act as the investigator,
+clinician, legal adviser, regulator, decision-maker, or system of record.
 
-| Mode | When | Agent |
-|---|---|---|
-| **Triage** | New incident — classify, prioritize, select methods | `agents/rca-triage.md` |
-| **Investigate** | Active investigation — execute analysis method(s) | `agents/rca-investigate.md` |
-| **Report** | Analysis complete — generate reports, diagrams, documents | `agents/rca-report.md` |
-| **Track** | Report accepted — CAPA, QI linkage, effectiveness review | `agents/rca-track.md` |
+## Select the operating mode
 
-## Quick Method Selection
+Choose the first mode matching the user's current outcome:
 
-Read `references/method-selection-matrix.md` for the full decision framework.
+1. **Triage** — scope a new review, assess immediate safeguards, or select
+   methods. Read `references/workflows/triage.md`.
+2. **Investigate** — organise evidence, build a chronology, or analyse system
+   conditions. Read `references/workflows/investigate.md`.
+3. **Report** — convert reviewed analysis into a report, briefing, or diagram.
+   Read `references/workflows/report.md`.
+4. **Track** — translate accepted recommendations into actions and verify
+   effectiveness. Read `references/workflows/track.md`.
 
-**By SAC level:**
-- SAC 1 (catastrophic): Timeline + Yorkshire + Bow-Tie + SEIPS
-- SAC 2 (major): Timeline + Yorkshire + Fishbone or London Protocol
-- SAC 3 (moderate): 5 Whys + Contributing Factors
-- SAC 4 (minor/near miss): 5 Whys
-- Proactive: FMEA + Bow-Tie
+If the request spans modes, complete them in that order. Never infer that a
+later mode's human approvals have occurred.
 
-## Methods Reference Index
+## Apply gates before analysis
 
-| Method | File | Best For |
-|---|---|---|
-| RCA² | `references/methods/rca-squared.md` | Enhanced RCA with action focus |
-| 5 Whys | `references/methods/five-whys.md` | Simple, rapid cause drilling |
-| Fishbone/Ishikawa | `references/methods/fishbone.md` | Structured cause-effect categorization |
-| Yorkshire Framework | `references/methods/yorkshire-framework.md` | Comprehensive contributing factors (SOTA) |
-| SEIPS 3.0 | `references/methods/seips.md` | Work system model |
-| Swiss Cheese | `references/methods/swiss-cheese.md` | Defence-in-depth failure analysis |
-| Bow-Tie | `references/methods/bow-tie.md` | Threat-barrier-consequence mapping |
-| Barrier Analysis | `references/methods/barrier-analysis.md` | Failed/missing barrier identification |
-| FMEA | `references/methods/fmea.md` | Proactive failure mode analysis |
-| Timeline Analysis | `references/methods/timeline-analysis.md` | Event sequencing, gap identification |
-| HFACS | `references/methods/hfacs.md` | Human factors classification |
-| London Protocol | `references/methods/london-protocol.md` | Systematic clinical investigation |
-| AcciMap | `references/methods/accimap.md` | Multi-level systemic accident mapping |
-| STAMP/STPA | `references/methods/stamp-stpa.md` | Systems-theoretic accident model |
+1. Establish the jurisdiction, organisation, investigation authority, intended
+   audience, and governing policy version. If unknown, label jurisdictional
+   requirements unverified.
+2. Ask for or derive the permitted data boundary. Default to placeholders such
+   as `[Patient A]`, `[Staff member B]`, `[Ward X]`, and `[Case ID]`.
+3. Separate source evidence, participant accounts, analysis, findings,
+   decisions, and unresolved questions.
+4. Record missing, conflicting, late, transformed, or unverified evidence.
+   Never invent a fact to complete a chronology or template.
+5. Identify immediate safety actions without treating them as proof of cause.
+6. Reserve clinical, legal, regulatory, employment, disclosure, notification,
+   severity, and final approval decisions for authorised humans.
 
-## Template Index
+Do not state that material is legally privileged merely because it concerns
+quality improvement. Ask an authorised person to determine confidentiality,
+records, disclosure, and privilege markings under applicable law and policy.
 
-### Mermaid Diagrams (`assets/templates/mermaid/`)
-- `fishbone-ishikawa.mmd` — Cause-effect mindmap
-- `swiss-cheese-model.mmd` — Defence layers
-- `bow-tie-analysis.mmd` — Threat-barrier-consequence
-- `timeline-chronology.mmd` — Event sequence
-- `five-whys-chain.mmd` — Causal chain
-- `seips-work-system.mmd` — Work system model
-- `yorkshire-factors.mmd` — Contributing factor map
-- `accimap-levels.mmd` — Multi-level systemic map
-- `hfacs-layers.mmd` — Human factors pyramid
-- `stamp-control-structure.mmd` — Control structure
-- `investigation-workflow.mmd` — Investigation process
-- `fmea-priority-quadrant.mmd` — Severity vs likelihood
+## Select methods
 
-### Working Document Templates (`assets/templates/markdown/`)
-01 Investigation Terms of Reference | 02 Chronology | 03 Contributing Factors |
-04 Fishbone Diagram | 05 FMEA Worksheet | 06 Barrier Analysis |
-07 Bow-Tie Analysis | 08 RCA Investigation Report | 09 SAE Review Report |
-10 Executive Summary | 11 CAPA Action Plan | 12 Open Disclosure Plan |
-13 Investigation Closure | 14 Just Culture Assessment
+Read `references/method-selection-matrix.md` when choosing methods and
+`references/method-combination-guide.md` when combining them. Treat any
+severity examples as prompts rather than jurisdiction-independent rules.
 
-### DOCX Templates (`assets/templates/docx/`)
-RCA Investigation Report | SAE Review Report | Executive Briefing |
-Terms of Reference | CAPA Action Plan | Open Disclosure Record | Investigation Closure
+Default sequence:
 
-### PPTX Templates (`assets/templates/pptx/`)
-Governance Committee Brief | Learning Presentation | Executive Summary Deck
+1. Build and source a timeline.
+2. Identify work-as-done, expected work, changes, adaptations, and context.
+3. Analyse contributing system conditions and barriers.
+4. Test candidate findings against supporting and conflicting evidence.
+5. Develop recommendations that address evidenced system conditions.
+6. Define implementation, effectiveness, balancing, and residual-risk checks.
 
-## Key References
+Load only the relevant method file under `references/methods/`. For complex
+events, prefer a complementary set rather than forcing every method.
 
-- `references/method-selection-matrix.md` — Which method(s) for which event
-- `references/method-combination-guide.md` — How to combine methods
-- `references/just-culture-guide.md` — Human error vs at-risk vs reckless
-- `references/safety-ii-principles.md` — Resilience engineering lens
-- `references/investigation-quality-checklist.md` — ACSQHC standards self-assessment
+## Produce bounded outputs
 
-## Privacy
+Use the smallest suitable template under `assets/templates/`. Preserve
+placeholders until an authorised local workflow replaces them. Clearly label:
 
-De-identify all patient data: use `[Patient A]`, `[Case ID]`, `[Ward X]`.
-Investigation reports may be legally privileged — mark `CONFIDENTIAL: QUALITY IMPROVEMENT`.
+- known facts and their sources;
+- accounts and their provenance;
+- analysis and alternative explanations;
+- findings and confidence or uncertainty;
+- decisions requiring human authority;
+- actions, owners, dates, measures, and review points; and
+- limitations, missing evidence, and residual risk.
+
+Read `references/just-culture-guide.md` only when authorised reviewers need a
+behavioural decision aid. Do not convert it into an automated blame or
+disciplinary determination. Read `references/safety-ii-principles.md` when
+ordinary work, adaptations, or resilience are material.
+
+## Validate before handoff
+
+Read `references/investigation-quality-checklist.md`, then check:
+
+- every material claim traces to evidence or is labelled as analysis;
+- missing and conflicting evidence remains visible;
+- language examines systems and does not imply individual blame;
+- direct identifiers and unnecessary sensitive detail are absent;
+- jurisdictional and policy claims are verified or qualified;
+- recommendations connect to findings and favour stronger system controls;
+- implementation is not confused with effectiveness;
+- required human review and approval gates are explicit; and
+- all referenced files and templates exist inside this skill directory.
+
+Correct failures before presenting the output. If evidence is insufficient,
+return a bounded gap list and safe next steps instead of a completed finding.
+
+## Gotchas
+
+- A report is not evidence that an investigation, action, or external
+  notification was completed.
+- A plausible causal story is not a finding without evidence and alternatives.
+- Training and policy reminders are usually weak controls when used alone.
+- Severity and notification rules vary by jurisdiction and policy revision.
+- De-identification reduces risk but does not automatically make data safe.
+- Never place client-specific tool permissions in this portable core.
