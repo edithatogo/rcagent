@@ -1,0 +1,103 @@
+{
+  "case_selection": [
+    "held-negative-legal",
+    "train-negative-clinical"
+  ],
+  "cases": [
+    {
+      "activation_rate": 0.0,
+      "completed_trials": 3,
+      "expected": "no_trigger",
+      "id": "train-negative-clinical",
+      "partition": "train",
+      "passed": true,
+      "required_rate": 0.0
+    },
+    {
+      "activation_rate": 0.0,
+      "completed_trials": 3,
+      "expected": "no_trigger",
+      "id": "held-negative-legal",
+      "partition": "regression_exposed",
+      "passed": true,
+      "required_rate": 0.0
+    }
+  ],
+  "client": "codex",
+  "client_version": "0.145.0",
+  "isolation": {
+    "apps": false,
+    "dynamic_skill_search": false,
+    "ephemeral": true,
+    "plugins": false,
+    "sandbox": "read-only"
+  },
+  "observations": [
+    {
+      "activated": false,
+      "case_id": "train-negative-clinical",
+      "expected": "no_trigger",
+      "input_tokens": 14735,
+      "output_tokens": 123,
+      "raw_path": "train-negative-clinical-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": false,
+      "case_id": "train-negative-clinical",
+      "expected": "no_trigger",
+      "input_tokens": 14735,
+      "output_tokens": 83,
+      "raw_path": "train-negative-clinical-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": false,
+      "case_id": "train-negative-clinical",
+      "expected": "no_trigger",
+      "input_tokens": 48553,
+      "output_tokens": 418,
+      "raw_path": "train-negative-clinical-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    },
+    {
+      "activated": false,
+      "case_id": "held-negative-legal",
+      "expected": "no_trigger",
+      "input_tokens": 44778,
+      "output_tokens": 460,
+      "raw_path": "held-negative-legal-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": false,
+      "case_id": "held-negative-legal",
+      "expected": "no_trigger",
+      "input_tokens": 29668,
+      "output_tokens": 334,
+      "raw_path": "held-negative-legal-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": false,
+      "case_id": "held-negative-legal",
+      "expected": "no_trigger",
+      "input_tokens": 30993,
+      "output_tokens": 362,
+      "raw_path": "held-negative-legal-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    }
+  ],
+  "partitions": [
+    "all"
+  ],
+  "passed": true,
+  "schema_version": "1.0",
+  "trials_per_case": 3
+}

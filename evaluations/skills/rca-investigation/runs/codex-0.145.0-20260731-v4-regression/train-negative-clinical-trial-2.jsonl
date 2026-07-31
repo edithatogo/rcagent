@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"019fb75c-8258-7c61-b6c5-c17d5a5bed5e"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"Which medicine and patient? Please share the medication name, indication, age, weight, relevant kidney/liver function, allergies, and the prescription/label or clinical context. Don’t administer a dose based on guesswork—confirm with the prescriber or pharmacist; if already taken incorrectly or symptoms are present, contact emergency services or Poisons Information Centre (Australia: 13 11 26)."}}
+{"type":"turn.completed","usage":{"input_tokens":14735,"cached_input_tokens":9984,"cache_write_input_tokens":0,"output_tokens":83,"reasoning_output_tokens":0}}
