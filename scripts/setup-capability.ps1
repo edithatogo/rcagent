@@ -18,16 +18,25 @@ if (-not $environmentFullPath.StartsWith(
     throw "Environment path must remain inside the repository."
 }
 
-$pythonCommand = Get-Command python -ErrorAction Stop
-& $pythonCommand.Source -m venv $environmentFullPath
+$uvCommand = Get-Command uv -ErrorAction SilentlyContinue
+if ($uvCommand) {
+    & $uvCommand.Source venv --python 3.13 $environmentFullPath
+} else {
+    $pythonCommand = Get-Command python -ErrorAction Stop
+    & $pythonCommand.Source -m venv $environmentFullPath
+}
 
 $venvPython = Join-Path $environmentFullPath 'Scripts\python.exe'
 if (-not (Test-Path -LiteralPath $venvPython)) {
     throw "Virtual environment creation failed: $venvPython"
 }
 
-& $venvPython -m pip install --disable-pip-version-check --upgrade pip
-& $venvPython -m pip install --disable-pip-version-check -e "$repositoryRoot[$Profile]"
+if ($uvCommand) {
+    & $uvCommand.Source pip install --python $venvPython -e "$repositoryRoot[$Profile]"
+} else {
+    & $venvPython -m pip install --disable-pip-version-check --upgrade pip
+    & $venvPython -m pip install --disable-pip-version-check -e "$repositoryRoot[$Profile]"
+}
 & $venvPython -m tools.validate_repository --root $repositoryRoot
 
 Write-Output "Installed and verified capability profile '$Profile'."
