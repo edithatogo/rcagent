@@ -50,11 +50,14 @@ def parse_events(raw: str) -> tuple[bool, int | None, int | None, bool]:
 
 
 def redact_workspace(raw: str, workspace: Path) -> str:
-    variants = {
-        str(workspace),
-        str(workspace).replace("\\", "\\\\"),
-        workspace.as_posix(),
-    }
+    workspace_text = str(workspace)
+    # A Windows path may be processed on a POSIX CI host, where pathlib treats
+    # the entire value as one path component. Cover the literal path and the
+    # common JSON-escaping depths explicitly rather than relying on host path
+    # parsing semantics.
+    variants = {workspace_text, workspace.as_posix()}
+    for multiplier in (2, 4, 8):
+        variants.add(workspace_text.replace("\\", "\\" * multiplier))
     for variant in sorted(variants, key=len, reverse=True):
         raw = raw.replace(variant, "<EVAL_WORKSPACE>")
     if len(workspace.parts) >= 4:
