@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-07-31T17:51:19+10:00",
+  "upstream_revision": "38a2ff82958afee88dadf4831509e6f7e9d8ef4e",
+  "validator_path": "skills-ref",
+  "sources": [
+    "https://agentskills.io/specification",
+    "https://agentskills.io/skill-creation/best-practices",
+    "https://agentskills.io/skill-creation/optimizing-descriptions",
+    "https://agentskills.io/skill-creation/evaluating-skills",
+    "https://github.com/agentskills/agentskills"
+  ]
+}

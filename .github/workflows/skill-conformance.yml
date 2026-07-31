@@ -1,0 +1,43 @@
+name: Agent Skill Conformance
+
+on:
+  pull_request:
+    paths:
+      - "skills/**"
+      - "adapters/**"
+      - "evaluations/skills/**"
+      - "tools/check_skill_drift.py"
+      - "tools/validate_skill.py"
+      - ".github/workflows/skill-conformance.yml"
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install validation dependencies
+        run: python -m pip install --disable-pip-version-check -e ".[validate,test]"
+
+      - name: Validate portable skill
+        run: python -m tools.validate_skill skills/rca-investigation
+
+      - name: Verify current upstream revision
+        run: python -m tools.check_skill_drift
+
+      - name: Run contract tests
+        run: python -m pytest
