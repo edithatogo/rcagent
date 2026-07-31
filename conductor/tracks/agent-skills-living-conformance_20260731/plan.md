@@ -322,53 +322,53 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 7: Validate Triggering and Output Quality
 
-- [ ] Task: Build the trigger-evaluation corpus
-  - [ ] Add realistic positive prompts
-  - [ ] Add near-miss negative prompts
-  - [ ] Add explicit and implicit RCA requests
-  - [ ] Add casual, formal, terse, and multi-step prompts
-  - [ ] Add adjacent clinical, legal, document, risk, and QI requests
-  - [ ] De-identify every example
-  - [ ] Freeze training and held-out validation partitions
+- [x] Task: Build the trigger-evaluation corpus
+  - [x] Add realistic positive prompts
+  - [x] Add near-miss negative prompts
+  - [x] Add explicit and implicit RCA requests
+  - [x] Add casual, formal, terse, and multi-step prompts
+  - [x] Add adjacent clinical, legal, document, risk, and QI requests
+  - [x] De-identify every example
+  - [x] Freeze training and held-out validation partitions
 
-- [ ] Task: Establish the description baseline
-  - [ ] Run repeated activation trials on the original description
-  - [ ] Record per-query trigger rates
-  - [ ] Preserve raw observations
-  - [ ] Identify false positives and false negatives
+- [x] Task: Establish the description baseline
+  - [x] Run repeated activation trials on the original description
+  - [x] Record per-query trigger rates
+  - [x] Preserve raw observations
+  - [x] Identify false positives and false negatives
 
-- [ ] Task: Optimise without validation-set leakage
-  - [ ] Use only training-set failures for revisions
-  - [ ] Run repeated training evaluations
-  - [ ] Preserve every tested description
-  - [ ] Select candidates based on declared criteria
-  - [ ] Evaluate the selected candidate once against the held-out set
-  - [ ] Require every held-out query to meet its declared threshold
+- [x] Task: Optimise without validation-set leakage
+  - [x] Use only training-set failures for revisions
+  - [x] Run repeated training evaluations
+  - [x] Preserve every tested description
+  - [x] Select candidates based on declared criteria
+  - [x] Evaluate the selected candidate once against the held-out set
+  - [x] Require every held-out query to meet its declared threshold
 
-- [ ] Task: Build and run output-quality evaluations
-  - [ ] Test triage
-  - [ ] Test investigation
-  - [ ] Test reporting
-  - [ ] Test CAPA tracking
-  - [ ] Test evidence insufficiency
-  - [ ] Test conflicting evidence
-  - [ ] Test privacy and de-identification
-  - [ ] Test jurisdictional uncertainty
-  - [ ] Test unsupported extensions and adapters
-  - [ ] Record assertion-level results
+- [x] Task: Build and run output-quality evaluations
+  - [x] Test triage
+  - [x] Test investigation
+  - [x] Test reporting
+  - [x] Test CAPA tracking
+  - [x] Test evidence insufficiency
+  - [x] Test conflicting evidence
+  - [x] Test privacy and de-identification
+  - [x] Test jurisdictional uncertainty
+  - [x] Test unsupported extensions and adapters
+  - [x] Record assertion-level results
 
-- [ ] Task: Compare against preserved baselines
-  - [ ] Preserve existing study artefacts
-  - [ ] Use comparable cases where a comparison is claimed
-  - [ ] Report regressions and uncertainty
-  - [ ] Do not claim improvement without evidence
-  - [ ] Block completion on privacy or evidence-integrity regression
+- [x] Task: Compare against preserved baselines
+  - [x] Preserve existing study artefacts
+  - [x] Use comparable cases where a comparison is claimed
+  - [x] Report regressions and uncertainty
+  - [x] Do not claim improvement without evidence
+  - [x] Block completion on privacy or evidence-integrity regression
 
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [ ] Verify trigger thresholds
-  - [ ] Verify output assertions
-  - [ ] Verify train/validation separation
-  - [ ] Verify raw nondeterministic results remain visible
+  - [x] Verify trigger thresholds
+  - [x] Verify output assertions
+  - [x] Verify train/validation separation
+  - [x] Verify raw nondeterministic results remain visible
   - [ ] Complete clinical-governance review
   - [ ] Continue automatically to Phase 8 unless a declared owner decision gate is reached
 

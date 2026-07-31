@@ -112,8 +112,8 @@
       "applicability": "applicable_project_policy",
       "implementation": "evaluations/skills/rca-investigation/",
       "validation": "output evaluation harness",
-      "result": "pending",
-      "evidence": null
+      "result": "pass",
+      "evidence": "evaluations/skills/rca-investigation/output-quality-result.md"
     },
     {
       "id": "RCA-PORT-001",
@@ -132,8 +132,8 @@
       "applicability": "applicable_project_policy",
       "implementation": "skills/rca-investigation/SKILL.md and references/workflows/",
       "validation": "privacy sentinels and output assertions",
-      "result": "partial",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
+      "result": "pass",
+      "evidence": "evaluations/skills/rca-investigation/output-quality-result.md"
     },
     {
       "id": "RCA-DRIFT-001",

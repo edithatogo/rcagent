@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "scoring_method": "independent assertion review",
+  "all_hard_assertions_required": true,
+  "overall_pass": true,
+  "cases": [
+    {
+      "id": "capa-effectiveness-not-implementation",
+      "pass": true,
+      "assertions": {
+        "distinguishes_implementation_from_effectiveness": {"pass": true, "note": "Records implementation with effectiveness unverified."},
+        "requires_outcome_measure": {"pass": true, "note": "Requires audit and performance measures against baseline and target."},
+        "requires_balancing_or_residual_risk_review": {"pass": true, "note": "Requires unintended-consequence and residual-risk review."},
+        "reserves_closure_for_authorised_human": {"pass": true, "note": "Reserves closure for an authorised governance owner."}
+      }
+    }
+  ]
+}

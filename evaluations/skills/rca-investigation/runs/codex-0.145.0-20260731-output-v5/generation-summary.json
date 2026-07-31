@@ -1,0 +1,29 @@
+{
+  "cases": [
+    {
+      "assertions": [
+        "distinguishes_implementation_from_effectiveness",
+        "requires_outcome_measure",
+        "requires_balancing_or_residual_risk_review",
+        "reserves_closure_for_authorised_human"
+      ],
+      "id": "capa-effectiveness-not-implementation",
+      "mode": "track",
+      "raw_path": "capa-effectiveness-not-implementation.jsonl",
+      "response": "I can\u2019t validly close the action as effective from that evidence alone.\n\nRecord it as:\n\n- **Status:** Implemented \u2014 effectiveness unverified\n- **Implementation evidence:** Escalation policy published; all relevant staff completed training.\n- **Evidence gap:** No audit, observation, incident trend, or escalation-performance data confirms the policy is used correctly and improves timely escalation.\n- **Next review:** Audit a defined sample of eligible cases against baseline and target measures, including timeliness, compliance, workarounds, and unintended consequences.\n\nAn authorised governance owner may approve closure only after reviewing that effectiveness and residual-risk evidence. Jurisdiction, governing policy version, action owner, targets, and approval authority remain unverified.",
+      "status": "completed",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 72448,
+        "input_tokens": 83214,
+        "output_tokens": 906,
+        "reasoning_output_tokens": 138
+      }
+    }
+  ],
+  "client": "codex",
+  "client_version": "0.145.0",
+  "generation_complete": true,
+  "schema_version": "1.0",
+  "scoring_status": "pending_independent_assertion_review"
+}
