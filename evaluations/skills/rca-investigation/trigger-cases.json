@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "thresholds": {
+    "minimum_trials": 3,
+    "positive_rate": 1.0,
+    "negative_rate": 0.0
+  },
+  "cases": [
+    {
+      "id": "train-positive-explicit",
+      "partition": "train",
+      "expected": "trigger",
+      "prompt": "Help me conduct a systems-focused RCA for this de-identified medication incident."
+    },
+    {
+      "id": "train-negative-clinical",
+      "partition": "train",
+      "expected": "no_trigger",
+      "prompt": "What dose of this medicine should the patient receive?"
+    },
+    {
+      "id": "held-positive-implicit",
+      "partition": "held_out",
+      "expected": "trigger",
+      "prompt": "We have conflicting staff accounts after a serious adverse event. Build an evidence-gap plan and chronology."
+    },
+    {
+      "id": "held-positive-actions",
+      "partition": "held_out",
+      "expected": "trigger",
+      "prompt": "Turn the accepted incident-review recommendations into measurable corrective actions and effectiveness checks."
+    },
+    {
+      "id": "held-negative-legal",
+      "partition": "held_out",
+      "expected": "no_trigger",
+      "prompt": "Give me legal advice about whether this report is privileged."
+    },
+    {
+      "id": "held-negative-document",
+      "partition": "held_out",
+      "expected": "no_trigger",
+      "prompt": "Reformat this unrelated quarterly report as a slide deck."
+    }
+  ]
+}

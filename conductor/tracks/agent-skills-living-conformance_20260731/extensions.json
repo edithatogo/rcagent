@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "states": ["supported", "experimental", "unsupported", "inapplicable", "decision_pending"],
+  "extensions": [
+    {
+      "field": "compatibility",
+      "scope": "portable-core",
+      "state": "supported",
+      "fallback": "omit only when the core has no genuine runtime requirement",
+      "evidence": "evidence/portable-core.md"
+    },
+    {
+      "field": "metadata",
+      "scope": "portable-core",
+      "state": "supported",
+      "namespace": "rca-workbench-",
+      "fallback": "clients may ignore metadata without changing safety behaviour",
+      "evidence": "evidence/portable-core.md"
+    },
+    {
+      "field": "allowed-tools",
+      "scope": "portable-core",
+      "state": "inapplicable",
+      "fallback": "ordinary client permission and approval controls remain authoritative",
+      "evidence": "evidence/fit-gap.md"
+    },
+    {
+      "field": "license",
+      "scope": "portable-core",
+      "state": "decision_pending",
+      "fallback": "no external distribution or licence claim",
+      "evidence": "evidence/fit-gap.md"
+    }
+  ]
+}
