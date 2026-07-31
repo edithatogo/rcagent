@@ -12,6 +12,9 @@
    conflicting evidence.
 6. De-identify for the intended audience and distribution channel. Do not
    assume an internal audience removes privacy, records, or disclosure duties.
+   State and consistently apply a stable placeholder scheme such as
+   `[Patient A]`, `[Staff member B]`, `[Ward X]`, and `[Case ID]`; removing
+   direct identifiers alone does not eliminate re-identification risk.
 7. Route confidentiality, privilege, open disclosure, notification, and
    publication markings to authorised reviewers.
 8. Validate with `references/investigation-quality-checklist.md`.

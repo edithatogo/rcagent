@@ -34,11 +34,14 @@ later mode's human approvals have occurred.
    audience, and governing policy version. If unknown, label jurisdictional
    requirements unverified.
 2. Ask for or derive the permitted data boundary. Default to placeholders such
-   as `[Patient A]`, `[Staff member B]`, `[Ward X]`, and `[Case ID]`.
+   as `[Patient A]`, `[Staff member B]`, `[Ward X]`, and `[Case ID]`. State the
+   placeholder scheme explicitly before drafting and use it consistently.
 3. Separate source evidence, participant accounts, analysis, findings,
    decisions, and unresolved questions.
 4. Record missing, conflicting, late, transformed, or unverified evidence.
    Never invent a fact to complete a chronology or template.
+   Preserve conflicting accounts separately, never average or blend them, and
+   do not promote an account into a finding without analysis and human review.
 5. Identify immediate safety actions without treating them as proof of cause.
 6. Reserve clinical, legal, regulatory, employment, disclosure, notification,
    severity, and final approval decisions for authorised humans.
@@ -101,7 +104,9 @@ Read `references/investigation-quality-checklist.md`, then check:
 - all referenced files and templates exist inside this skill directory.
 
 Correct failures before presenting the output. If evidence is insufficient,
-return a bounded gap list and safe next steps instead of a completed finding.
+return a bounded gap list and safe next steps instead of a completed finding,
+and explicitly require an authorised human to review the evidence and decide
+whether any finding can be accepted.
 
 ## Gotchas
 

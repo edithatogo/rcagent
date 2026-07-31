@@ -22,5 +22,7 @@
    measures, and residual-risk review.
 
 Stop and return an evidence-gap plan when material conclusions cannot be
-supported. Keep participant accounts in their own voice and do not resolve
-conflicts by averaging them.
+supported. Explicitly require authorised human review before accepting a
+finding. Keep participant accounts in their own voice, separate each account
+from analysis and findings, and do not resolve conflicts by averaging,
+blending, or silently selecting one account. State the unresolved uncertainty.
