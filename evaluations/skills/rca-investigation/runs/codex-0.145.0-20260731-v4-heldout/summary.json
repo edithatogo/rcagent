@@ -1,0 +1,258 @@
+{
+  "case_selection": [
+    "all"
+  ],
+  "cases": [
+    {
+      "activation_rate": 1.0,
+      "completed_trials": 3,
+      "expected": "trigger",
+      "id": "held-v2-positive-systems",
+      "partition": "held_out",
+      "passed": true,
+      "required_rate": 1.0
+    },
+    {
+      "activation_rate": 1.0,
+      "completed_trials": 3,
+      "expected": "trigger",
+      "id": "held-v2-positive-closure",
+      "partition": "held_out",
+      "passed": true,
+      "required_rate": 1.0
+    },
+    {
+      "activation_rate": 0.0,
+      "completed_trials": 3,
+      "expected": "no_trigger",
+      "id": "held-v2-negative-liability",
+      "partition": "held_out",
+      "passed": true,
+      "required_rate": 0.0
+    },
+    {
+      "activation_rate": 0.0,
+      "completed_trials": 3,
+      "expected": "no_trigger",
+      "id": "held-v2-negative-employment",
+      "partition": "held_out",
+      "passed": true,
+      "required_rate": 0.0
+    },
+    {
+      "activation_rate": 0.0,
+      "completed_trials": 3,
+      "expected": "no_trigger",
+      "id": "held-v2-negative-clinical",
+      "partition": "held_out",
+      "passed": true,
+      "required_rate": 0.0
+    },
+    {
+      "activation_rate": 0.0,
+      "completed_trials": 3,
+      "expected": "no_trigger",
+      "id": "held-v2-negative-policy-summary",
+      "partition": "held_out",
+      "passed": true,
+      "required_rate": 0.0
+    }
+  ],
+  "client": "codex",
+  "client_version": "0.145.0",
+  "isolation": {
+    "apps": false,
+    "dynamic_skill_search": false,
+    "ephemeral": true,
+    "plugins": false,
+    "sandbox": "read-only"
+  },
+  "observations": [
+    {
+      "activated": true,
+      "case_id": "held-v2-positive-systems",
+      "expected": "trigger",
+      "input_tokens": 69578,
+      "output_tokens": 1117,
+      "raw_path": "held-v2-positive-systems-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": true,
+      "case_id": "held-v2-positive-systems",
+      "expected": "trigger",
+      "input_tokens": 86935,
+      "output_tokens": 1363,
+      "raw_path": "held-v2-positive-systems-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": true,
+      "case_id": "held-v2-positive-systems",
+      "expected": "trigger",
+      "input_tokens": 163258,
+      "output_tokens": 1847,
+      "raw_path": "held-v2-positive-systems-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    },
+    {
+      "activated": true,
+      "case_id": "held-v2-positive-closure",
+      "expected": "trigger",
+      "input_tokens": 121344,
+      "output_tokens": 1111,
+      "raw_path": "held-v2-positive-closure-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": true,
+      "case_id": "held-v2-positive-closure",
+      "expected": "trigger",
+      "input_tokens": 67516,
+      "output_tokens": 826,
+      "raw_path": "held-v2-positive-closure-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": true,
+      "case_id": "held-v2-positive-closure",
+      "expected": "trigger",
+      "input_tokens": 84925,
+      "output_tokens": 966,
+      "raw_path": "held-v2-positive-closure-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-liability",
+      "expected": "no_trigger",
+      "input_tokens": 14737,
+      "output_tokens": 189,
+      "raw_path": "held-v2-negative-liability-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-liability",
+      "expected": "no_trigger",
+      "input_tokens": 14737,
+      "output_tokens": 188,
+      "raw_path": "held-v2-negative-liability-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-liability",
+      "expected": "no_trigger",
+      "input_tokens": 31017,
+      "output_tokens": 421,
+      "raw_path": "held-v2-negative-liability-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-employment",
+      "expected": "no_trigger",
+      "input_tokens": 33665,
+      "output_tokens": 592,
+      "raw_path": "held-v2-negative-employment-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-employment",
+      "expected": "no_trigger",
+      "input_tokens": 37029,
+      "output_tokens": 686,
+      "raw_path": "held-v2-negative-employment-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-employment",
+      "expected": "no_trigger",
+      "input_tokens": 37760,
+      "output_tokens": 744,
+      "raw_path": "held-v2-negative-employment-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-clinical",
+      "expected": "no_trigger",
+      "input_tokens": 14734,
+      "output_tokens": 107,
+      "raw_path": "held-v2-negative-clinical-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-clinical",
+      "expected": "no_trigger",
+      "input_tokens": 14734,
+      "output_tokens": 101,
+      "raw_path": "held-v2-negative-clinical-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-clinical",
+      "expected": "no_trigger",
+      "input_tokens": 29642,
+      "output_tokens": 261,
+      "raw_path": "held-v2-negative-clinical-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-policy-summary",
+      "expected": "no_trigger",
+      "input_tokens": 14738,
+      "output_tokens": 25,
+      "raw_path": "held-v2-negative-policy-summary-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-policy-summary",
+      "expected": "no_trigger",
+      "input_tokens": 14738,
+      "output_tokens": 65,
+      "raw_path": "held-v2-negative-policy-summary-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": false,
+      "case_id": "held-v2-negative-policy-summary",
+      "expected": "no_trigger",
+      "input_tokens": 14738,
+      "output_tokens": 60,
+      "raw_path": "held-v2-negative-policy-summary-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    }
+  ],
+  "partitions": [
+    "held_out"
+  ],
+  "passed": true,
+  "schema_version": "1.0",
+  "trials_per_case": 3
+}

@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"019fb766-fdd6-7312-bc42-335bf86b893f"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"Please upload the ECG image—none is attached here. Ideally include the full 12‑lead tracing with calibration, rate, and patient age/symptoms.\n\nIf the patient currently has chest pain, severe breathlessness, fainting, or marked sweating, seek emergency care now rather than waiting for an online interpretation."}}
+{"type":"turn.completed","usage":{"input_tokens":14734,"cached_input_tokens":14080,"cache_write_input_tokens":0,"output_tokens":101,"reasoning_output_tokens":32}}

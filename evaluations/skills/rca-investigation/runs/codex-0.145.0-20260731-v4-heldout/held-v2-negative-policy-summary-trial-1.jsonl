@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"019fb767-5cd8-73e3-9bda-a00b38362d1a"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"Please paste or attach the hospital policy, and I’ll turn it into a short, clear staff email."}}
+{"type":"turn.completed","usage":{"input_tokens":14738,"cached_input_tokens":9984,"cache_write_input_tokens":0,"output_tokens":25,"reasoning_output_tokens":0}}

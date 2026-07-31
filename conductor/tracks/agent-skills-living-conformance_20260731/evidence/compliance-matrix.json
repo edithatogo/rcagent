@@ -30,8 +30,8 @@
       "applicability": "applicable",
       "implementation": "skills/rca-investigation/SKILL.md",
       "validation": "official validator, length check, and trigger evaluation",
-      "result": "partial",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
+      "result": "pass",
+      "evidence": "evaluations/skills/rca-investigation/runs/codex-0.145.0-20260731-v4-heldout/result.md"
     },
     {
       "id": "AS-SPEC-004",
@@ -102,8 +102,8 @@
       "applicability": "applicable_project_policy",
       "implementation": "evaluations/skills/rca-investigation/",
       "validation": "trigger evaluation harness",
-      "result": "pending",
-      "evidence": null
+      "result": "pass",
+      "evidence": "evaluations/skills/rca-investigation/runs/codex-0.145.0-20260731-v4-heldout/result.md"
     },
     {
       "id": "AS-GUIDE-003",

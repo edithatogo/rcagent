@@ -35,8 +35,8 @@ def test_current_profile_is_structurally_valid() -> None:
 
 def test_completion_gate_reports_every_nonpass() -> None:
     errors = validate_profile(ROOT, require_complete=True)
-    assert any("AS-SPEC-003" in error for error in errors)
     assert any("AS-SPEC-004" in error for error in errors)
+    assert any("AS-GUIDE-003" in error for error in errors)
 
 
 def test_missing_evidence_is_reported(tmp_path: Path) -> None:

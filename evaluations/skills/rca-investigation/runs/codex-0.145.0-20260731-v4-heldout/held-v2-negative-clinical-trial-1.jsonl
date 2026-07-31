@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"019fb766-dafb-7f70-b798-6c2e2cc0382d"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"Please attach the ECG image (ideally the full 12-lead tracing with calibration, rate, and patient details). I can then describe the rhythm, intervals, axis, ST–T changes, and likely diagnosis.\n\nIf the patient has chest pain, severe breathlessness, fainting, or instability, seek emergency medical care immediately rather than waiting for an online interpretation."}}
+{"type":"turn.completed","usage":{"input_tokens":14734,"cached_input_tokens":9984,"cache_write_input_tokens":0,"output_tokens":107,"reasoning_output_tokens":27}}
