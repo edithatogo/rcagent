@@ -1,6 +1,6 @@
 ---
 name: rca-investigation
-description: Conduct evidence-grounded systems analysis for an established healthcare safety investigation. Use only when asked to investigate a past incident or serious adverse event, build its evidence chronology, analyse contributing conditions and barriers, draft findings from completed analysis, or govern accepted review actions and effectiveness checks in an AU/NZ RCA or SAE workflow.
+description: Conduct evidence-grounded systems analysis for a healthcare safety investigation. Use only when a request explicitly asks to perform AU/NZ RCA or SAE work on a past event by scoping the review, building its chronology, analysing system contributors or barriers, developing evidence-backed findings and actions, or verifying action effectiveness. Activation requires investigation-workflow intent, not merely a healthcare topic or review document.
 compatibility: Requires an Agent Skills client that can read bundled Markdown files.
 metadata:
   rca-workbench-profile: portable-core

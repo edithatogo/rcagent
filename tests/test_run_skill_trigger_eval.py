@@ -145,3 +145,15 @@ def test_partition_selection_is_explicit(tmp_path: Path, monkeypatch) -> None:
     assert code == 1
     assert summary["partitions"] == ["held_out"]
     assert [case["id"] for case in summary["cases"]] == ["positive", "negative"]
+
+
+def test_case_selection_rejects_unknown_id(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="unknown"):
+        run_evaluation(
+            ROOT,
+            _cases(tmp_path / "cases.json"),
+            tmp_path / "runs",
+            trials=1,
+            timeout=1,
+            case_ids={"missing"},
+        )

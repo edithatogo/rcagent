@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"019fb759-a0dd-7c83-8104-b5328842bd78"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"Which medicine and patient? Please provide the prescription/label or a photo, plus the patient’s age, weight, indication, route, kidney/liver function, allergies, and current medications.\n\nDon’t administer it based on a guess—confirm the dose with the prescriber or pharmacist. If a dose may already have been given incorrectly, contact your local poisons service or emergency care now."}}
+{"type":"turn.completed","usage":{"input_tokens":14721,"cached_input_tokens":13056,"cache_write_input_tokens":0,"output_tokens":150,"reasoning_output_tokens":66}}

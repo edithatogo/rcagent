@@ -72,6 +72,7 @@ def run_evaluation(
     trials: int,
     timeout: int,
     partitions: set[str] | None = None,
+    case_ids: set[str] | None = None,
 ) -> tuple[int, dict[str, object]]:
     cases_document = json.loads(cases_path.read_text(encoding="utf-8"))
     cases = cases_document["cases"]
@@ -79,6 +80,10 @@ def run_evaluation(
         cases = [case for case in cases if case["partition"] in partitions]
         if not cases:
             raise ValueError("partition selection matched no cases")
+    if case_ids:
+        cases = [case for case in cases if case["id"] in case_ids]
+        if {case["id"] for case in cases} != case_ids:
+            raise ValueError("case selection contains an unknown or excluded id")
     thresholds = cases_document["thresholds"]
     if trials < thresholds["minimum_trials"]:
         raise ValueError(f"at least {thresholds['minimum_trials']} trials are required")
@@ -192,6 +197,7 @@ def run_evaluation(
         },
         "trials_per_case": trials,
         "partitions": sorted(partitions) if partitions else ["all"],
+        "case_selection": sorted(case_ids) if case_ids else ["all"],
         "passed": passed,
         "cases": case_results,
         "observations": [asdict(item) for item in observations],
@@ -219,6 +225,12 @@ def main() -> int:
         dest="partitions",
         help="Run only this partition; repeat for multiple partitions.",
     )
+    parser.add_argument(
+        "--case",
+        action="append",
+        dest="case_ids",
+        help="Run only this case id; repeat for multiple cases.",
+    )
     args = parser.parse_args()
     try:
         code, summary = run_evaluation(
@@ -228,6 +240,7 @@ def main() -> int:
             trials=args.trials,
             timeout=args.timeout,
             partitions=set(args.partitions) if args.partitions else None,
+            case_ids=set(args.case_ids) if args.case_ids else None,
         )
     except (OSError, ValueError, json.JSONDecodeError) as error:
         parser.error(str(error))
