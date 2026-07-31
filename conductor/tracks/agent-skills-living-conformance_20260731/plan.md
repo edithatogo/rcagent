@@ -90,103 +90,103 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 2: Define Architecture, Contracts, and Failing Fixtures
 
-- [ ] Task: Define the portable-core architecture
-  - [ ] Specify the canonical skill-root boundary
-  - [ ] Define permitted `SKILL.md`, `references/`, `scripts/`, and `assets/` dependencies
-  - [ ] Define the canonical location for triage, investigation, reporting, and tracking workflows
-  - [ ] Prohibit repository-root dependencies from the portable core
-  - [ ] Define how authoritative domain content avoids duplication
-  - [ ] Define isolated-copy and archive-extraction portability tests
+- [x] Task: Define the portable-core architecture
+  - [x] Specify the canonical skill-root boundary
+  - [x] Define permitted `SKILL.md`, `references/`, `scripts/`, and `assets/` dependencies
+  - [x] Define the canonical location for triage, investigation, reporting, and tracking workflows
+  - [x] Prohibit repository-root dependencies from the portable core
+  - [x] Define how authoritative domain content avoids duplication
+  - [x] Define isolated-copy and archive-extraction portability tests
 
-- [ ] Task: Define the governed extension model
-  - [ ] Create the extension registry schema
-  - [ ] Define stable, experimental, supported, unsupported, and inapplicable states
-  - [ ] Define required evidence for each state
-  - [ ] Define safe fallback behaviour
-  - [ ] Define namespacing rules for custom metadata
-  - [ ] Define approval requirements for licensing
-  - [ ] Define compatibility-test requirements for `allowed-tools`
+- [x] Task: Define the governed extension model
+  - [x] Create the extension registry schema
+  - [x] Define stable, experimental, supported, unsupported, and inapplicable states
+  - [x] Define required evidence for each state
+  - [x] Define safe fallback behaviour
+  - [x] Define namespacing rules for custom metadata
+  - [x] Define approval requirements for licensing
+  - [x] Define compatibility-test requirements for `allowed-tools`
 
-- [ ] Task: Define client-adapter contracts
-  - [ ] Define the common adapter interface
-  - [ ] Define the Claude Code adapter contract
-  - [ ] Define the Codex adapter contract
-  - [ ] Define a template contract for additional clients
-  - [ ] Define capability discovery and unsupported-feature handling
-  - [ ] Define how adapters consume canonical workflows without copying them
-  - [ ] Define adapter conformance receipts
+- [x] Task: Define client-adapter contracts
+  - [x] Define the common adapter interface
+  - [x] Define the Claude Code adapter contract
+  - [x] Define the Codex adapter contract
+  - [x] Define a template contract for additional clients
+  - [x] Define capability discovery and unsupported-feature handling
+  - [x] Define how adapters consume canonical workflows without copying them
+  - [x] Define adapter conformance receipts
 
-- [ ] Task: Create validation fixtures before validator implementation
-  - [ ] Create a known-valid minimal skill fixture
-  - [ ] Create invalid-name and directory-mismatch fixtures
-  - [ ] Create invalid-description-length fixtures
-  - [ ] Create broken and escaping-reference fixtures
-  - [ ] Create missing-resource and orphan-resource fixtures
-  - [ ] Create malformed metadata fixtures
-  - [ ] Create unsupported experimental-field fixtures
-  - [ ] Create non-portable absolute-path fixtures
-  - [ ] Create offline/current-conformance misrepresentation fixtures
-  - [ ] Define the expected result and diagnostic for every fixture
+- [x] Task: Create validation fixtures before validator implementation
+  - [x] Create a known-valid minimal skill fixture
+  - [x] Create invalid-name and directory-mismatch fixtures
+  - [x] Create invalid-description-length fixtures
+  - [x] Create broken and escaping-reference fixtures
+  - [x] Create missing-resource and orphan-resource fixtures
+  - [x] Create malformed metadata fixtures
+  - [x] Create unsupported experimental-field fixtures
+  - [x] Create non-portable absolute-path fixtures
+  - [x] Create offline/current-conformance misrepresentation fixtures
+  - [x] Define the expected result and diagnostic for every fixture
 
-- [ ] Task: Define evaluation schemas and thresholds
-  - [ ] Define trigger-query schema
-  - [ ] Define training and held-out validation partitions
-  - [ ] Define positive and negative trigger thresholds
-  - [ ] Define output-quality assertion schema
-  - [ ] Define deterministic pass/fail aggregation
-  - [ ] Define how model nondeterminism remains visible
-  - [ ] Define regression and evidence-retention rules
+- [x] Task: Define evaluation schemas and thresholds
+  - [x] Define trigger-query schema
+  - [x] Define training and held-out validation partitions
+  - [x] Define positive and negative trigger thresholds
+  - [x] Define output-quality assertion schema
+  - [x] Define deterministic pass/fail aggregation
+  - [x] Define how model nondeterminism remains visible
+  - [x] Define regression and evidence-retention rules
 
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [ ] Review architecture against the approved specification
-  - [ ] Verify every extension has a governed lifecycle
-  - [ ] Verify fixtures cover every deterministic failure class
-  - [ ] Verify thresholds do not convert unverified results into passes
-  - [ ] Continue automatically to Phase 3 unless a declared owner decision gate is reached
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [x] Review architecture against the approved specification
+  - [x] Verify every extension has a governed lifecycle
+  - [x] Verify fixtures cover every deterministic failure class
+  - [x] Verify thresholds do not convert unverified results into passes
+  - [x] Continue automatically to Phase 3 unless a declared owner decision gate is reached
 
 ## Phase 3: Build the Self-Contained Portable Core
 
-- [ ] Task: Migrate operating-mode workflows into the skill
-  - [ ] Move or adapt triage instructions into the portable skill
-  - [ ] Move or adapt investigation instructions into the portable skill
-  - [ ] Move or adapt reporting instructions into the portable skill
-  - [ ] Move or adapt CAPA tracking instructions into the portable skill
-  - [ ] Preserve clinically material instructions and safeguards
-  - [ ] Replace repository-root path assumptions with skill-root-relative references
+- [x] Task: Migrate operating-mode workflows into the skill
+  - [x] Move or adapt triage instructions into the portable skill
+  - [x] Move or adapt investigation instructions into the portable skill
+  - [x] Move or adapt reporting instructions into the portable skill
+  - [x] Move or adapt CAPA tracking instructions into the portable skill
+  - [x] Preserve clinically material instructions and safeguards
+  - [x] Replace repository-root path assumptions with skill-root-relative references
 
-- [ ] Task: Normalise resource organisation
-  - [ ] Ensure references contain agent-readable documentation
-  - [ ] Ensure assets contain static templates and resources
-  - [ ] Ensure executable logic is confined to scripts
-  - [ ] Reduce unnecessarily deep reference chains
-  - [ ] Add explicit routing for conditionally loaded resources
-  - [ ] Remove or document orphaned files
-  - [ ] Preserve all historically material resources
+- [x] Task: Normalise resource organisation
+  - [x] Ensure references contain agent-readable documentation
+  - [x] Ensure assets contain static templates and resources
+  - [x] Ensure executable logic is confined to scripts
+  - [x] Reduce unnecessarily deep reference chains
+  - [x] Add explicit routing for conditionally loaded resources
+  - [x] Remove or document orphaned files
+  - [x] Preserve all historically material resources
 
-- [ ] Task: Implement evidence, safety, and privacy gates
-  - [ ] Add evidence-sufficiency checks
-  - [ ] Add missing and conflicting evidence handling
-  - [ ] Add explicit uncertainty requirements
-  - [ ] Add de-identification checks
-  - [ ] Add human-review and escalation boundaries
-  - [ ] Correct any implication that legal privilege applies automatically
-  - [ ] Preserve systems-focused and Just Culture language
+- [x] Task: Implement evidence, safety, and privacy gates
+  - [x] Add evidence-sufficiency checks
+  - [x] Add missing and conflicting evidence handling
+  - [x] Add explicit uncertainty requirements
+  - [x] Add de-identification checks
+  - [x] Add human-review and escalation boundaries
+  - [x] Correct any implication that legal privilege applies automatically
+  - [x] Preserve systems-focused and Just Culture language
 
-- [ ] Task: Prove isolated portability
-  - [ ] Copy the skill into a clean temporary directory
-  - [ ] Validate all references from the copied skill root
-  - [ ] Validate packaged archive extraction
-  - [ ] Confirm the core does not read repository-root `agents/`
-  - [ ] Confirm the core contains no absolute local paths
-  - [ ] Record a portability receipt
+- [x] Task: Prove isolated portability
+  - [x] Copy the skill into a clean temporary directory
+  - [x] Validate all references from the copied skill root
+  - [x] Validate packaged archive extraction
+  - [x] Confirm the core does not read repository-root `agents/`
+  - [x] Confirm the core contains no absolute local paths
+  - [x] Record a portability receipt
 
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [ ] Validate content accuracy and AU/NZ terminology
-  - [ ] Validate patient and staff placeholders
-  - [ ] Validate every cross-reference
-  - [ ] Compare migrated workflows against their sources
-  - [ ] Confirm no authoritative content was silently lost
-  - [ ] Continue automatically to Phase 4 unless a declared owner decision gate is reached
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [x] Validate content accuracy and AU/NZ terminology
+  - [x] Validate patient and staff placeholders
+  - [x] Validate every cross-reference
+  - [x] Compare migrated workflows against their sources
+  - [x] Confirm no authoritative content was silently lost
+  - [x] Continue automatically to Phase 4 unless a declared owner decision gate is reached
 
 ## Phase 4: Refactor `SKILL.md` and Frontmatter
 
@@ -241,39 +241,39 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 5: Implement Portable Client Adapters
 
-- [ ] Task: Implement the Claude Code adapter
-  - [ ] Map Claude Code activation and agent behaviour to the canonical core
-  - [ ] Replace divergent root-level agent content with adapter shims or generated references
-  - [ ] Declare supported stable and experimental capabilities
-  - [ ] Implement unsupported-feature fallbacks
-  - [ ] Add representative activation and execution tests
+- [x] Task: Implement the Claude Code adapter
+  - [x] Map Claude Code activation and agent behaviour to the canonical core
+  - [x] Replace divergent root-level agent content with adapter shims or generated references
+  - [x] Declare supported stable and experimental capabilities
+  - [x] Implement unsupported-feature fallbacks
+  - [x] Add representative activation and execution tests
 
-- [ ] Task: Implement the Codex adapter
-  - [ ] Map Codex skill discovery and execution to the canonical core
-  - [ ] Declare supported stable and experimental capabilities
-  - [ ] Implement unsupported-feature fallbacks
-  - [ ] Add representative activation and execution tests
-  - [ ] Verify no Codex-only rule leaks into the portable core
+- [x] Task: Implement the Codex adapter
+  - [x] Map Codex skill discovery and execution to the canonical core
+  - [x] Declare supported stable and experimental capabilities
+  - [x] Implement unsupported-feature fallbacks
+  - [x] Add representative activation and execution tests
+  - [x] Verify no Codex-only rule leaks into the portable core
 
-- [ ] Task: Provide an additional-client adapter template
-  - [ ] Document required adapter metadata
-  - [ ] Document workflow linkage
-  - [ ] Document capability negotiation
-  - [ ] Document compatibility-test expectations
-  - [ ] Provide a safe unsupported-client default
+- [x] Task: Provide an additional-client adapter template
+  - [x] Document required adapter metadata
+  - [x] Document workflow linkage
+  - [x] Document capability negotiation
+  - [x] Document compatibility-test expectations
+  - [x] Provide a safe unsupported-client default
 
-- [ ] Task: Verify single-source authority
-  - [ ] Detect duplicated canonical workflow text
-  - [ ] Confirm adapters reference or derive from canonical resources
-  - [ ] Confirm adapter removal does not damage the portable core
-  - [ ] Confirm adapter failure does not bypass safety gates
+- [x] Task: Verify single-source authority
+  - [x] Detect duplicated canonical workflow text
+  - [x] Confirm adapters reference or derive from canonical resources
+  - [x] Confirm adapter removal does not damage the portable core
+  - [x] Confirm adapter failure does not bypass safety gates
 
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [ ] Run both adapter compatibility suites
-  - [ ] Validate client-specific extension declarations
-  - [ ] Validate fallbacks
-  - [ ] Record adapter receipts
-  - [ ] Continue automatically to Phase 6 unless a declared owner decision gate is reached
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [x] Run both adapter compatibility suites
+  - [x] Validate client-specific extension declarations
+  - [x] Validate fallbacks
+  - [x] Record adapter receipts
+  - [x] Continue automatically to Phase 6 unless a declared owner decision gate is reached
 
 ## Phase 6: Implement Deterministic Conformance Validation
 
