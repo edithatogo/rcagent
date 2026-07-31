@@ -35,7 +35,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check -e ".[validate,test]"
 
       - name: Validate portable skill
-        run: python -m tools.validate_skill skills/rca-investigation
+        run: python -m tools.validate_skill_profile
 
       - name: Validate with pinned official skills-ref
         shell: bash

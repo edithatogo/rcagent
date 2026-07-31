@@ -71,8 +71,8 @@
       "applicability": "adapter_only",
       "implementation": "adapters/",
       "validation": "adapter compatibility tests",
-      "result": "pending",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/fit-gap.md",
+      "result": "pass",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/adapters.md",
       "omission_rationale": "Cross-client support is not established, so the portable core omits the field."
     },
     {
@@ -142,8 +142,8 @@
       "applicability": "applicable_project_policy",
       "implementation": "tools/",
       "validation": "online, offline, and changed-baseline fixtures",
-      "result": "pending",
-      "evidence": null
+      "result": "pass",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/upstream-baseline.json"
     }
   ]
 }
