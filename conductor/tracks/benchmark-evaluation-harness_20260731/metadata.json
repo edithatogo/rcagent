@@ -1,0 +1,28 @@
+{
+  "track_id": "benchmark-evaluation-harness_20260731",
+  "track_number": 5,
+  "title": "Benchmark and Evaluation Harness",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-07-31T14:34:01+10:00",
+  "updated_at": "2026-07-31T14:34:01+10:00",
+  "workstream": "data-models-evaluation",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/10",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/3"
+  },
+  "autonomy": "autonomous-with-decision-gates",
+  "hard_dependencies": [
+    "evidence-workflow-core_20260731",
+    "privacy-security-assurance_20260731"
+  ],
+  "phase_dependencies": [
+    "nsw-health-jurisdiction-pack_20260731"
+  ],
+  "decision_gates": [
+    "Use of real cases or externally restricted benchmark data",
+    "Gold-standard clinical judgements and operational acceptance thresholds",
+    "Publication of comparative model or product claims"
+  ],
+  "description": "Create a benchmark-first assurance system for incident-analysis quality, retrieval, provenance, safety, privacy, calibration, multimodal capability, and device performance before model selection or fine-tuning."
+}

@@ -1,0 +1,30 @@
+{
+  "track_id": "interfaces-templates-action-loop_20260731",
+  "track_number": 9,
+  "title": "Interfaces, Templates, and Closed-Loop Actions",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-07-31T14:34:01+10:00",
+  "updated_at": "2026-07-31T14:34:01+10:00",
+  "workstream": "product-interfaces-distribution",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/14",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/4"
+  },
+  "autonomy": "autonomous-with-decision-gates",
+  "hard_dependencies": [
+    "evidence-workflow-core_20260731",
+    "privacy-security-assurance_20260731",
+    "nsw-health-jurisdiction-pack_20260731"
+  ],
+  "phase_dependencies": [
+    "multimodal-capability-fabric_20260731",
+    "retrieval-knowledge-system_20260731"
+  ],
+  "decision_gates": [
+    "Clinical deployment or changes to mandated workflows or forms",
+    "External disclosure, identifiable export, or organisation-specific branding",
+    "Policy interpretations that affect operational roles, deadlines, or approval"
+  ],
+  "description": "Deliver usable, auditable workflows and templates for incident investigation, serious-adverse-event review, proactive systems analysis, open disclosure, recommendations, action ownership, and effectiveness monitoring."
+}

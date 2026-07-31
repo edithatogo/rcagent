@@ -1,0 +1,31 @@
+{
+  "track_id": "domain-adaptation-finetuning_20260731",
+  "track_number": 10,
+  "title": "Domain Adaptation and Fine-Tuning",
+  "type": "experiment",
+  "status": "new",
+  "created_at": "2026-07-31T14:34:01+10:00",
+  "updated_at": "2026-07-31T14:34:01+10:00",
+  "workstream": "data-models-evaluation",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/15",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/3"
+  },
+  "autonomy": "autonomous-with-decision-gates",
+  "hard_dependencies": [
+    "benchmark-evaluation-harness_20260731",
+    "multimodal-capability-fabric_20260731",
+    "retrieval-knowledge-system_20260731",
+    "local-runtime-model-lab_20260731"
+  ],
+  "phase_dependencies": [
+    "privacy-security-assurance_20260731",
+    "nsw-health-jurisdiction-pack_20260731"
+  ],
+  "decision_gates": [
+    "Training-data use, de-identification adequacy, or private-case adaptation",
+    "Compute spend, model licence, or distribution of adapted weights",
+    "Clinical claims or promotion beyond a bounded research profile"
+  ],
+  "description": "Assess medical and domain models and pursue retrieval adaptation, prompting, adapters, LoRA, or fine-tuning only when benchmark evidence shows a justified gap and data rights, privacy, and governance conditions are satisfied."
+}

@@ -1,0 +1,71 @@
+# Specification: NSW Health Jurisdiction Pack
+
+## Overview
+
+Build a versioned jurisdiction pack that maps authoritative NSW Health, CEC, ACI, and national sources into usable serious-adverse-event workflows without silently converting guidance, drafts, or templates into binding requirements.
+
+This track is coordinated by GitHub issue [#9](https://github.com/edithatogo/rcagent/issues/9) and the portfolio rules in [roadmap.md](../../roadmap.md). It may proceed autonomously once its hard dependencies and definition of ready have objective evidence.
+
+## In Scope
+
+- Create the authoritative source registry
+- Model authority, version, and drift
+- Map incident and investigation workflows
+- Map forms, templates, and evidence requirements
+- Embed people, culture, and systems safeguards
+- Validate the jurisdiction mapping
+- Operationalise policy drift
+
+## Architecture and Delivery Principles
+
+- Preserve a client-neutral, privacy-first portable core.
+- Reuse maintained frameworks behind thin, versioned contracts and contract tests.
+- Prefer the simplest component that passes declared quality, safety, privacy, device, and maintenance gates.
+- Preserve provenance, raw evidence, uncertainty, negative results, and exact revisions.
+- Treat remote, hybrid, local, and air-gapped modes as explicit capability profiles.
+- Do not infer compliance, privilege, clinical validity, or release readiness from labels or checklist state.
+
+## Hard Start Dependencies
+
+- [safety-systems-foundation_20260731](../safety-systems-foundation_20260731/index.md)
+
+The track cannot start until each hard dependency has a passing completion receipt, not merely a closed issue.
+
+## Later Phase Dependencies
+
+- [evidence-workflow-core_20260731](../evidence-workflow-core_20260731/index.md)
+- [privacy-security-assurance_20260731](../privacy-security-assurance_20260731/index.md)
+
+These dependencies gate the affected integration or validation phase without needlessly blocking independent foundation work.
+
+## Autonomous Execution
+
+Reversible work inside the approved scope proceeds without per-phase approval when evidence gates pass. Each phase records sources, versions, commands, results, limitations, risks, and changes to the dependency graph. The agent stops only at a declared owner gate or when safe in-scope progress is impossible.
+
+### Owner Decision Gates
+
+- Clinical or policy interpretation that is not explicit in an authoritative source
+- Copying a restricted template or localising a state-wide process
+- Privilege claims or use of superseded, under-review, or consultation material
+
+Every decision request must include the recommended option, viable alternatives, evidence, rationale, trade-offs, reversibility, cost, safe default, and impact on dependencies.
+
+## Acceptance Criteria
+
+1. Every rule links to an authoritative source, exact version, authority level, rights status, retrieval date, and checksum where possible.
+2. Current, under-review, draft, superseded, local, and advisory sources are visibly distinct.
+3. The generic core remains independent of NSW-specific terminology and workflow.
+4. Serious-adverse-event, review, investigation, disclosure, escalation, and action requirements map to explicit state transitions.
+5. Open disclosure, consumer/family involvement, staff support, and Aboriginal cultural safety are represented.
+6. Material upstream drift opens a reviewable change request instead of silently changing behaviour.
+
+## Out of Scope
+
+- Legal advice or a declaration of statutory privilege
+- Replacing ims+ or another incident management system
+- Copying NSW Health material without rights evidence
+- Organisation-specific approval of a local procedure
+
+## Evidence Standard
+
+Completion requires reproducible artefacts and durable receipts. GitHub hierarchy, dependency state, checklists, CI status, and prose claims are coordination signals; none is sufficient evidence on its own.

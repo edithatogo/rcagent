@@ -1,51 +1,90 @@
-# Product: RCA & SAE Investigation Skill Suite
+# Product: Safety Systems Workbench
 
 ## What This Is
 
-A state-of-the-art healthcare Root Cause Analysis (RCA) and Serious Adverse Event (SAE) investigation skill suite for Claude Code. Designed for Australian and New Zealand clinical governance, it enables healthcare organizations to conduct systematic, systems-thinking investigations into adverse events and near-misses.
+The Safety Systems Workbench is a privacy-first, evidence-grounded repository of portable agent skills, investigation and learning workflows, templates, schemas, evaluation harnesses, knowledge packs, and optional local AI capabilities.
+
+Its initial domain is healthcare incident investigation and serious adverse event review. Its wider purpose is to support the complete safety-learning loop:
+
+1. detect and triage hazards, incidents, near misses, and weak signals;
+2. collect, preserve, and assess evidence;
+3. analyse interacting system conditions without defaulting to individual blame;
+4. communicate with consumers, families, staff, and governance bodies;
+5. design and govern recommendations and actions; and
+6. verify implementation, effectiveness, unintended consequences, and residual risk.
+
+The canonical core is client-neutral. Codex, Claude Code, and other client integrations are optional adapters outside that core.
 
 ## Target Users
 
-- Clinical governance teams conducting formal RCA investigations
-- Quality and safety professionals
-- Clinical investigators (doctors, nurses, allied health)
-- Governance committee members reviewing investigation findings
-- Healthcare executives receiving investigation reports
+- Clinical governance, patient safety, quality, and risk teams
+- Clinicians and trained investigators
+- Consumers, families, advocates, and liaison staff participating in review
+- Managers and executives responsible for actions and assurance
+- Human factors, systems safety, data, privacy, security, and policy specialists
+- Researchers evaluating safety-analysis methods and assistive AI
+- Small teams or individual developers who need a reproducible, auditable toolkit
 
-## Core Value Proposition
+## Operating Modes
 
-Transforms Claude Code into a specialized healthcare investigator that:
-1. Triages incidents, classifies severity (SAC 1-4), and selects the right investigation method(s)
-2. Guides structured analysis using 14 SOTA investigation methods
-3. Generates governance-ready reports, Mermaid diagrams, DOCX documents, and PPTX presentations
-4. Creates CAPA action plans and links findings to quality improvement
-5. Integrates with the existing healthcare skill ecosystem (incident reporting, risk assessment, QI)
+The same workflow contracts support four explicit modes:
 
-## Key Features
+| Mode | Data boundary | Typical use |
+|---|---|---|
+| Public remote | Public or explicitly approved data may use remote services | Policy research, public-case evaluation, non-sensitive authoring |
+| Governed hybrid | Private content and private indexes stay local; approved bounded artefacts may use remote services | Local evidence processing with approved remote assistance |
+| Fully local | Models, indexes, storage, logs, and interfaces run on the device or local network | Sensitive investigation work |
+| Air-gapped | Dependencies, models, sources, time, updates, and receipts operate without network access | High-assurance or isolated environments |
 
-- **14 investigation methods**: RCA², 5 Whys, Fishbone, Yorkshire Contributory Factors Framework, SEIPS 3.0, Swiss Cheese, Bow-Tie, Barrier Analysis, FMEA, Timeline Analysis, HFACS, London Protocol, AcciMap, STAMP/STPA
-- **Method selection matrix**: Decision framework for choosing methods by SAC level and event characteristics
-- **Method combination guide**: How to combine methods for complex events
-- **12 Mermaid diagram templates**: Visual analysis tools for each method
-- **14 markdown working document templates**: Investigation working papers
-- **7 DOCX templates**: Governance-ready Word documents
-- **3 PPTX templates**: Presentations for committees, staff, and executives
-- **4 specialized agents**: Triage, Investigate, Report, Track — covering the full investigation lifecycle
-- **Just Culture framework**: Fair, blame-free individual accountability assessment
-- **Safety-II/resilience engineering lens**: Goes beyond "what went wrong" to "what usually goes right"
+Every run declares its actual mode, capabilities, model and framework revisions, data boundary, limitations, and required human review.
 
-## Evaluation Study
+## Core Capabilities
 
-A scientific evaluation framework for validating the skill suite's investigation quality:
+- Portable Agent Skills for triage, investigation, reporting, action tracking, and effectiveness review
+- Evidence and claim provenance, conflicting-evidence handling, audit events, and bounded exports
+- Retrospective and proactive systems methods, including RCA, SEIPS, AcciMap, FRAM, STPA, bow-tie, barrier analysis, FMEA, and Safety-II approaches where appropriate
+- Versioned jurisdiction packs, beginning with NSW Health and Clinical Excellence Commission sources
+- Workflows and original or rights-cleared templates for serious adverse events, open disclosure, consumer and family participation, staff support, cultural safety, and governance review
+- Citation-first retrieval that starts with full-text search and adds local embeddings, hybrid search, or reranking only when evaluation supports them
+- Replaceable multimodal adapters for document layout and OCR, encoders, speech transcription and diarisation, images and DICOM, and ECG or time-series inputs
+- Device-aware local model and runtime profiles for CPU/iGPU Windows systems, Apple silicon/MLX, and larger hosts
+- Benchmark, privacy, safety, calibration, robustness, resource, and upstream-drift harnesses
+- Client adapters and governed distribution packages for GitHub, Claude, OpenAI/Codex, and other ecosystems
 
-- **Targeted factorial design**: Model × Harness × Skill Condition × Data
-- **9 experimental conditions** (H0–H8): Claude Sonnet/Opus, Gemini, GPT-4o, Qwen, Kilo Code, Copilot, Human Expert
-- **8-dimension evaluation rubric**: Contributing factors, root cause accuracy, action strength, Just Culture, de-identification, method selection, chronology, Safety-II
-- **AU/NZ public adverse event cases**: HDC NZ decisions, ACSQHC reports, coroner findings
-- **Reproducibility**: 3 runs per condition, blinded scoring, inter-rater reliability (human + AI)
-- See `evaluation/protocol/scientific-protocol.md` for full design
+## Product Principles
 
-## Regulatory Context
+1. **Evidence before inference.** Preserve sources, provenance, conflicts, uncertainty, and reviewer decisions.
+2. **Systems before blame.** Examine work, context, design, resources, interactions, and governance before individual accountability.
+3. **Privacy by mode.** Data never crosses a compartment merely because a model or tool is convenient.
+4. **Human authority.** The workbench assists; accountable humans make clinical, legal, policy, employment, disclosure, and release decisions.
+5. **Benchmark before selection.** Models, runtimes, retrieval methods, and frameworks earn support through measured evidence.
+6. **Simple before complex.** Deterministic tools and lexical retrieval remain valid baselines; fine-tuning is a late option, not a default.
+7. **Portable core, thin adapters.** Reuse maintained frameworks and client capabilities without forking the whole stack.
+8. **Living conformance.** Standards, policy, model, framework, and marketplace claims carry exact versions and drift checks.
+9. **Closed-loop learning.** Completion of a report or action does not prove safety improvement.
+10. **Honest boundaries.** Research, experimental, operational, and unsupported capabilities are visibly distinct.
 
-Primary: AU/NZ (NSQHS Standards, ACSQHC RCA guidelines, SAC 1-4, Open Disclosure Framework)
-Integration: health-incident-reporting, health-clinical-risk-assessment, health-quality-improvement, health-enterprise-risk-assessment skills
+## Initial Jurisdiction Strategy
+
+The generic core contains no silent jurisdictional assumptions. A versioned NSW Health pack will map current authoritative sources from NSW Health, the Clinical Excellence Commission, the Agency for Clinical Innovation, relevant legislation, and national standards. Source authority, status, supersession, rights, retrieval date, and unresolved interpretation will remain visible.
+
+Additional jurisdictions can implement the same contracts without copying NSW-specific rules into the core.
+
+## What This Is Not
+
+- An autonomous investigator, clinician, legal adviser, regulator, or decision-maker
+- A replacement for incident management, records, imaging, or clinical systems
+- Proof that a document is legally privileged or protected
+- A licence to place identifiable information in a remote model or service
+- A claim that medical-image, ECG, or domain-model output is clinically validated
+- A guarantee that a named model or framework is suitable until its exact revision is measured
+
+## Success Measures
+
+- A fresh-context maintainer can reproduce every material claim from durable evidence.
+- Private data remains inside its declared compartment under adversarial testing.
+- Investigations distinguish evidence, accounts, analysis, findings, decisions, and uncertainty.
+- Recommendations become owned actions with measurable effectiveness and residual-risk review.
+- Supported device profiles meet declared quality, safety, privacy, latency, memory, and maintenance gates.
+- Portable skills and client adapters pass current conformance and compatibility tests.
+- Public releases and registry submissions occur only after an explicit owner decision.

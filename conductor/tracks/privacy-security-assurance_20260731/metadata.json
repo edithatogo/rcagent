@@ -1,0 +1,27 @@
+{
+  "track_id": "privacy-security-assurance_20260731",
+  "track_number": 3,
+  "title": "Privacy, Security, and Assurance",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-07-31T14:34:01+10:00",
+  "updated_at": "2026-07-31T14:34:01+10:00",
+  "workstream": "foundation-governance",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/8",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/2"
+  },
+  "autonomy": "autonomous-with-decision-gates",
+  "hard_dependencies": [
+    "safety-systems-foundation_20260731"
+  ],
+  "phase_dependencies": [
+    "evidence-workflow-core_20260731"
+  ],
+  "decision_gates": [
+    "Use of real sensitive information or a new data class",
+    "Network egress, credentials, security exceptions, or residual-risk acceptance",
+    "Legal privilege interpretation, clinical deployment, or regulatory claims"
+  ],
+  "description": "Design and validate public/remote, governed hybrid, fully local, and air-gapped modes so private data remains in its authorised compartment while clinical, legal, cultural, and AI risks stay visible."
+}

@@ -1,0 +1,28 @@
+{
+  "track_id": "local-runtime-model-lab_20260731",
+  "track_number": 8,
+  "title": "Local Runtime and Model Lab",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-07-31T14:34:01+10:00",
+  "updated_at": "2026-07-31T14:34:01+10:00",
+  "workstream": "data-models-evaluation",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/13",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/3"
+  },
+  "autonomy": "autonomous-with-decision-gates",
+  "hard_dependencies": [
+    "benchmark-evaluation-harness_20260731",
+    "multimodal-capability-fabric_20260731"
+  ],
+  "phase_dependencies": [
+    "retrieval-knowledge-system_20260731"
+  ],
+  "decision_gates": [
+    "Paid compute, large model downloads, or external inference",
+    "Licence exceptions or execution of untrusted remote model code",
+    "Promotion of an experimental runtime or model into a supported profile"
+  ],
+  "description": "Create measured model and runtime recommendations for heterogeneous devices, including a 32 GB Intel CPU/iGPU system, Apple silicon with MLX, and larger hosts, without hard-coding unverified model assumptions."
+}

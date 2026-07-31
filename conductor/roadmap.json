@@ -1,0 +1,206 @@
+{
+  "schema_version": "1.0",
+  "portfolio": {
+    "name": "Safety Systems Workbench",
+    "repository": "edithatogo/rcagent",
+    "default_branch": "master",
+    "root_issue": 1,
+    "autonomy": "autonomous-with-decision-gates",
+    "max_active_lanes": {
+      "integration": 1,
+      "independent": 2
+    }
+  },
+  "workstreams": [
+    {
+      "id": "foundation-governance",
+      "issue": 2,
+      "tracks": [
+        "agent-skills-living-conformance_20260731",
+        "safety-systems-foundation_20260731",
+        "evidence-workflow-core_20260731",
+        "privacy-security-assurance_20260731",
+        "nsw-health-jurisdiction-pack_20260731"
+      ]
+    },
+    {
+      "id": "data-models-evaluation",
+      "issue": 3,
+      "tracks": [
+        "benchmark-evaluation-harness_20260731",
+        "multimodal-capability-fabric_20260731",
+        "retrieval-knowledge-system_20260731",
+        "local-runtime-model-lab_20260731",
+        "domain-adaptation-finetuning_20260731"
+      ]
+    },
+    {
+      "id": "product-interfaces-distribution",
+      "issue": 4,
+      "tracks": [
+        "interfaces-templates-action-loop_20260731",
+        "distribution-registries-plugins_20260731"
+      ]
+    }
+  ],
+  "tracks": [
+    {
+      "number": 0,
+      "id": "agent-skills-living-conformance_20260731",
+      "issue": 5,
+      "hard_dependencies": [],
+      "phase_dependencies": []
+    },
+    {
+      "number": 1,
+      "id": "safety-systems-foundation_20260731",
+      "issue": 6,
+      "hard_dependencies": [
+        "agent-skills-living-conformance_20260731"
+      ],
+      "phase_dependencies": []
+    },
+    {
+      "number": 2,
+      "id": "evidence-workflow-core_20260731",
+      "issue": 7,
+      "hard_dependencies": [
+        "safety-systems-foundation_20260731"
+      ],
+      "phase_dependencies": []
+    },
+    {
+      "number": 3,
+      "id": "privacy-security-assurance_20260731",
+      "issue": 8,
+      "hard_dependencies": [
+        "safety-systems-foundation_20260731"
+      ],
+      "phase_dependencies": [
+        "evidence-workflow-core_20260731"
+      ]
+    },
+    {
+      "number": 4,
+      "id": "nsw-health-jurisdiction-pack_20260731",
+      "issue": 9,
+      "hard_dependencies": [
+        "safety-systems-foundation_20260731"
+      ],
+      "phase_dependencies": [
+        "evidence-workflow-core_20260731",
+        "privacy-security-assurance_20260731"
+      ]
+    },
+    {
+      "number": 5,
+      "id": "benchmark-evaluation-harness_20260731",
+      "issue": 10,
+      "hard_dependencies": [
+        "evidence-workflow-core_20260731",
+        "privacy-security-assurance_20260731"
+      ],
+      "phase_dependencies": [
+        "nsw-health-jurisdiction-pack_20260731"
+      ]
+    },
+    {
+      "number": 6,
+      "id": "multimodal-capability-fabric_20260731",
+      "issue": 11,
+      "hard_dependencies": [
+        "evidence-workflow-core_20260731",
+        "privacy-security-assurance_20260731"
+      ],
+      "phase_dependencies": [
+        "benchmark-evaluation-harness_20260731"
+      ]
+    },
+    {
+      "number": 7,
+      "id": "retrieval-knowledge-system_20260731",
+      "issue": 12,
+      "hard_dependencies": [
+        "evidence-workflow-core_20260731",
+        "privacy-security-assurance_20260731",
+        "nsw-health-jurisdiction-pack_20260731"
+      ],
+      "phase_dependencies": [
+        "benchmark-evaluation-harness_20260731",
+        "multimodal-capability-fabric_20260731"
+      ]
+    },
+    {
+      "number": 8,
+      "id": "local-runtime-model-lab_20260731",
+      "issue": 13,
+      "hard_dependencies": [
+        "benchmark-evaluation-harness_20260731",
+        "multimodal-capability-fabric_20260731"
+      ],
+      "phase_dependencies": [
+        "retrieval-knowledge-system_20260731"
+      ]
+    },
+    {
+      "number": 9,
+      "id": "interfaces-templates-action-loop_20260731",
+      "issue": 14,
+      "hard_dependencies": [
+        "evidence-workflow-core_20260731",
+        "privacy-security-assurance_20260731",
+        "nsw-health-jurisdiction-pack_20260731"
+      ],
+      "phase_dependencies": [
+        "multimodal-capability-fabric_20260731",
+        "retrieval-knowledge-system_20260731"
+      ]
+    },
+    {
+      "number": 10,
+      "id": "domain-adaptation-finetuning_20260731",
+      "issue": 15,
+      "hard_dependencies": [
+        "benchmark-evaluation-harness_20260731",
+        "multimodal-capability-fabric_20260731",
+        "retrieval-knowledge-system_20260731",
+        "local-runtime-model-lab_20260731"
+      ],
+      "phase_dependencies": [
+        "privacy-security-assurance_20260731",
+        "nsw-health-jurisdiction-pack_20260731"
+      ]
+    },
+    {
+      "number": 11,
+      "id": "distribution-registries-plugins_20260731",
+      "issue": 16,
+      "hard_dependencies": [
+        "agent-skills-living-conformance_20260731"
+      ],
+      "phase_dependencies": [
+        "safety-systems-foundation_20260731",
+        "privacy-security-assurance_20260731",
+        "benchmark-evaluation-harness_20260731",
+        "interfaces-templates-action-loop_20260731"
+      ]
+    }
+  ],
+  "owner_decision_gates": [
+    "clinical, legal, policy, privilege, regulatory, employment, or records interpretation",
+    "real private data, network egress, credentials, paid compute, or external services",
+    "licences, restricted templates, model or data distribution, or support commitments",
+    "residual privacy, security, cultural-safety, or clinical-safety risk",
+    "public releases, registry or marketplace submissions, or publisher verification",
+    "destructive migration or irreversible product or architecture choices"
+  ],
+  "registry_stages": [
+    "canonical-github-portable-skills",
+    "agent-skills-discovery-assessment",
+    "claude-self-hosted-marketplace",
+    "claude-official-marketplace-preparation",
+    "openai-private-plugin-validation",
+    "openai-universal-plugin-directory-preparation",
+    "other-client-adapter-assessment"
+  ]
+}

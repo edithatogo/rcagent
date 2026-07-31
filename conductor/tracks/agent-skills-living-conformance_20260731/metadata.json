@@ -1,0 +1,24 @@
+{
+  "track_id": "agent-skills-living-conformance_20260731",
+  "track_number": 0,
+  "title": "Agent Skills Living Conformance and Portable Architecture",
+  "type": "refactor",
+  "status": "new",
+  "created_at": "2026-07-31T13:26:21+10:00",
+  "updated_at": "2026-07-31T14:34:01+10:00",
+  "workstream": "foundation-governance",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/5",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/2"
+  },
+  "autonomy": "autonomous-with-decision-gates",
+  "hard_dependencies": [],
+  "phase_dependencies": [],
+  "decision_gates": [
+    "Selection or change of the project licence",
+    "Public release, registry submission, marketplace submission, or publisher verification",
+    "Promotion of an experimental field without documented compatibility evidence",
+    "A compatibility or clinical-safety claim that requires owner authority"
+  ],
+  "description": "Refactor the RCA investigation skill for living Agent Skills conformance, portable core architecture, governed extensions, client adapters, and evidence-backed validation"
+}

@@ -1,122 +1,248 @@
 # Development Workflow
 
-## Philosophy
+## Purpose
 
-This is a **content-first repository** — all files are Markdown or Mermaid with no code to compile or test. Quality is assessed by:
-1. **Completeness** — all required files exist and are cross-referenced correctly
-2. **Accuracy** — method content is clinically correct and evidence-based
-3. **Usability** — templates are actionable, not vague
-4. **Integration** — cross-references between files are accurate
+This workflow is designed for one developer using agent assistance across a content, data, evaluation, and local-software repository. It maximises safe autonomous progress while reserving owner attention for decisions that genuinely require authority or preference.
 
-Traditional TDD and code coverage metrics do not apply. Quality gates are content-specific (see below).
+GitHub and Conductor coordinate the work. Evidence, tests, sources, history, receipts, and actual external state prove it.
 
----
+## Sources of Truth
 
-## Task Workflow
+| Concern | Authoritative record |
+|---|---|
+| Product and safeguards | `conductor/product.md` and `conductor/product-guidelines.md` |
+| Architecture candidates and constraints | `conductor/tech-stack.md` plus accepted ADRs |
+| Portfolio dependencies and sequencing | `conductor/roadmap.md` and track `metadata.json` |
+| Track scope and acceptance | Track `spec.md` |
+| Track task state | Track `plan.md` |
+| Operational hierarchy and blockers | GitHub nested subissues and native dependencies |
+| Decisions | `conductor/decisions/` plus linked GitHub `decision-needed` state |
+| Proof | Tests, sources, Git history, receipts, CI logs, release records, and external verification |
 
-All tasks follow this lifecycle, tracked in `plan.md`:
+When records disagree, stop claiming completion, preserve the conflict, and reconcile against the most direct evidence.
 
-### 1. Select Task
-Choose the next `[ ]` task from `plan.md` in sequential order within the current phase.
+## Status Vocabulary
 
-### 2. Mark In Progress
-Edit `plan.md` and change `[ ]` to `[~]` before beginning work.
+- `[ ]` not started
+- `[~]` actively in progress
+- `[x]` completed with linked evidence
+- `[!]` blocked by a declared dependency or owner decision
 
-### 3. Do the Work
-Create or edit content files as specified by the task. Follow:
-- `conductor/product-guidelines.md` for writing style and de-identification rules
-- `conductor/tech-stack.md` for file format and directory conventions
-- `CLAUDE.md` for project-wide conventions
+A checkbox never proves that work passed. Completion requires its acceptance evidence.
 
-### 4. Quality Check
-Before marking complete, verify against the content quality gates:
-- [ ] Content is factually accurate (method descriptions cite sources)
-- [ ] All placeholder identifiers used (no real patient/staff data)
-- [ ] Cross-references to other files are accurate (paths exist)
-- [ ] AU/NZ regulatory terminology correct
-- [ ] Formatting follows product-guidelines.md
+## Autonomous Work Envelope
 
-### 5. Commit
-```
-feat: add [description]       — new content added
-fix: correct [description]    — correcting errors in existing content
-update: revise [description]  — updating existing content
-docs: [description]           — documentation changes
-```
+An agent may proceed without per-task or per-phase approval when all of the following are true:
 
-### 6. Update Plan
-Change `[~]` to `[x]` in `plan.md` and commit:
-```
-conductor(plan): Mark task '[task name]' as complete
-```
+- the work is reversible and inside an approved track;
+- hard dependencies and the definition of ready have objective evidence;
+- it uses synthetic, public, or already authorised data;
+- it does not create a public release, submission, message, account, credential, or paid commitment;
+- it does not make a new clinical, legal, policy, employment, regulatory, privacy-risk, or licence decision;
+- it does not weaken a safety, privacy, security, human-review, or evidence gate; and
+- the relevant tests and rollback path are available.
 
----
+Normal in-scope implementation, local branches, isolated worktrees, fixtures, validation, documentation, and reversible refactoring are autonomous.
+
+## Owner Decision Gates
+
+Stop only when progress requires one of these:
+
+- clinical, legal, policy, privilege, records, employment, or regulatory interpretation;
+- access to or use of real private, clinical, employee, consumer, or credential data;
+- a new network-egress path, credential, paid service, compute spend, account, or contract;
+- licence selection, rights exception, model/data distribution, or copying restricted material;
+- a public release, registry or marketplace submission, publisher verification, external message, or support commitment;
+- acceptance of residual privacy, security, cultural-safety, or clinical-safety risk;
+- an irreversible architecture decision, destructive migration, deletion, or history rewrite; or
+- a material product-scope choice with more than one reasonable outcome.
+
+### Decision Request Contract
+
+Apply the GitHub `decision-needed` label and create a record from `conductor/decisions/template.md` containing:
+
+1. the decision and why it is needed now;
+2. the recommended option;
+3. at least two viable alternatives where they exist;
+4. evidence and assumptions;
+5. rationale and trade-offs;
+6. reversibility, cost, privacy, safety, maintenance, and dependency impact;
+7. the safe default if no decision is made; and
+8. the deadline or consequence of deferral.
+
+While waiting, continue any other safe ready work. Do not keep a decision-blocked task in an active implementation lane.
+
+## Dependency Semantics
+
+`hard_dependencies` in track metadata and GitHub's native **blocked by** relation determine whether a track may start.
+
+`phase_dependencies` gate only the phase that consumes another track's contract or evidence. They allow independent foundation work to proceed without inventing false parallelism.
+
+A dependency is satisfied only when:
+
+- its acceptance criteria have direct evidence;
+- the completion receipt is current;
+- required artefacts and contracts are accessible;
+- no unresolved defect invalidates the consuming work; and
+- Conductor, GitHub, Git, tests, and receipts have been reconciled.
+
+A closed issue or green workflow alone is insufficient.
+
+## Single-Developer Parallelism
+
+Use no more than:
+
+- **one integration lane** for the current convergence point; and
+- **two independent implementation lanes** for tracks with non-overlapping files and stable contracts.
+
+The integration lane owns dependency reconciliation, shared schemas, validation, and merge order. A lane blocked on an owner decision or external state releases its WIP slot.
+
+Prefer isolated branches and worktrees outside synchronised folders such as OneDrive. Each lane has:
+
+- one track and GitHub issue;
+- a bounded context pack;
+- explicit owned files;
+- a base revision and dependency receipts;
+- local validation commands;
+- a handoff note; and
+- a rollback path.
+
+Do not parallelise work that changes the same schema, authority source, workflow contract, or generated artefact unless one lane is explicitly the integrator.
+
+## Context Engineering
+
+Load the smallest authoritative context that can safely execute the task:
+
+1. repository navigation and non-negotiable safeguards;
+2. product and architecture context relevant to the task;
+3. the track specification, plan, metadata, dependencies, and issue;
+4. a bounded task context pack from `conductor/context-packs/template.md`;
+5. exact source, schema, fixture, risk, decision, and evidence records; and
+6. client-specific instructions only when that client is in scope.
+
+Every context pack records purpose, base revision, authoritative inputs, exclusions, assumptions, decisions, token or size budget, freshness, owned files, commands, acceptance checks, and handoff state.
+
+Do not dump the whole repository into model context. Prefer indices, stable identifiers, summaries with source pointers, deterministic retrieval, and on-demand loading.
+
+## Definition of Ready
+
+A task is ready when:
+
+- its scope, deliverables, owner, and issue are clear;
+- hard dependencies pass and relevant phase dependencies are available;
+- inputs, sources, rights, schemas, and fixtures are accessible;
+- privacy mode and permitted data are declared;
+- decisions and risks are known or explicitly deferred;
+- validation and rollback paths exist;
+- owned files do not conflict with another active lane; and
+- the bounded context pack is current.
+
+If readiness cannot be established, mark the task blocked with the missing evidence.
+
+## Task Lifecycle
+
+### 1. Select
+
+Choose the highest-priority ready task from the dependency graph, not merely the next checkbox. Prefer work that unblocks the most downstream value or reduces the largest safety uncertainty.
+
+### 2. Preflight
+
+Run the applicable doctor and context checks. Record the base revision, working tree, dependencies, tool/model versions, privacy mode, network status, sources, and expected validation.
+
+### 3. Mark Active
+
+Change the task to `[~]`, link the branch or worktree and issue, and reserve its owned files.
+
+### 4. Implement
+
+Work fixture-first where possible. Keep frameworks behind project contracts. Preserve unrelated and historical material. Record material assumptions and deviations immediately.
+
+### 5. Validate
+
+Run the smallest fast checks during implementation, then the full applicable phase gate:
+
+- schemas, formatting, links, references, and frontmatter;
+- unit, property, fixture, contract, integration, migration, and round-trip tests;
+- privacy, egress, security, prompt-injection, cultural-safety, and clinical-safety tests;
+- benchmark, calibration, citation, robustness, device, and resource tests;
+- source, policy, standard, model, framework, and marketplace drift checks; and
+- clean-context reproduction.
+
+Warnings, unavailable upstream evidence, unsupported combinations, and offline checks must not be reported as current passes.
+
+### 6. Record Evidence
+
+Create or update a receipt with:
+
+- task, issue, revision, timestamp, environment, privacy mode, and device class;
+- exact commands, tools, dependencies, models, datasets, sources, and versions;
+- results, raw-evidence locations, failures, warnings, uncertainty, and negative findings;
+- decision and risk links;
+- changed artefacts and compatibility impact; and
+- rollback and follow-up work.
+
+Never place credentials, private content, or direct identifiers in receipts.
+
+### 7. Reconcile and Integrate
+
+Compare the plan, issue, native dependencies, files, tests, Git history, CI, receipts, and relevant external state. Review the diff, preserve user changes, merge in dependency order, and rerun integration checks.
+
+### 8. Complete
+
+Change `[~]` to `[x]` only after acceptance evidence passes. Update the issue and dependency graph. A task with incomplete evidence remains `[~]` or `[!]` even if implementation appears finished.
 
 ## Phase Completion
 
-When all tasks in a phase are `[x]`:
-1. Announce the phase is complete
-2. Summarise what was produced
-3. Check all deliverables match the phase's acceptance criteria in `spec.md`
-4. Ask the user: "Phase [N] complete. All deliverables checked. Shall I proceed to Phase [N+1]?"
-5. Await explicit confirmation before starting the next phase
+When a phase passes:
 
----
+1. record the phase receipt;
+2. reconcile all acceptance checks and unresolved risks;
+3. update Conductor and GitHub;
+4. create a bounded handoff context; and
+5. continue automatically to the next ready phase.
 
-## Track Dependency Order
+Ask the owner only if the next step reaches a declared decision gate. Phase boundaries are evidence checkpoints, not mandatory approval pauses.
 
-The evaluation tracks must be executed in this order (each depends on the previous):
+## Track Completion
 
+Before closing a track:
+
+- all specification acceptance criteria have direct evidence;
+- full applicable validation passes;
+- privacy, safety, legal, policy, licence, and release limitations remain visible;
+- hard and phase dependencies are reconciled;
+- documentation, migration, compatibility, and rollback paths are current;
+- a clean reviewer can reproduce the result; and
+- the GitHub issue, Conductor plan, Git state, receipts, and external state agree.
+
+Close parent workstreams and the roadmap only after their native subissues and portfolio-level acceptance evidence pass.
+
+## Framework and Experimental Technology Policy
+
+- Prefer maintained upstream frameworks and declarative standards.
+- Integrate through thin adapters, capability discovery, contract tests, and safe fallback.
+- Pin supported compatibility windows and monitor upstream drift.
+- Keep experimental components, including Mojo or MAX, behind disabled-by-default adapters.
+- Do not fork an upstream stack unless a documented ADR proves no maintained alternative and the owner accepts the maintenance burden.
+- Remove an experiment cleanly when it does not pass quality, safety, privacy, device, or maintenance gates.
+
+## Commit and Review Convention
+
+Use focused commits:
+
+```text
+feat: add [capability]
+fix: correct [defect]
+refactor: revise [architecture]
+docs: document [topic]
+test: add [validation]
+chore(conductor): register [track or roadmap change]
+conductor(plan): update [task state]
+conductor(checkpoint): record [phase evidence]
 ```
-eval-case-collection_20260225
-    ↓
-eval-pilot-calibration_20260225
-    ↓
-eval-data-collection_20260225
-    ↓
-eval-scoring_20260225
-    ↓
-eval-analysis_20260225
-```
 
-Do not start a track until its dependency is complete.
+Review staged files and the exact diff before committing. Do not stage unrelated user work. Public push, pull request, release, or submission status must be reported separately from local completion.
 
----
+## Legacy Evaluation Work
 
-## Evaluation-Specific Workflows
-
-### Adding a New Case
-1. Verify case meets all inclusion criteria in `evaluation/protocol/case-selection-criteria.md`
-2. Format using standardized template (Section 7 of case-selection-criteria.md)
-3. Assign SAC-equivalent and difficulty rating (1–3) with documented rationale
-4. Save to `evaluation/datasets/{source}/xx-case-XX.md`
-5. Update `evaluation/datasets/README.md` case index
-6. Verify coverage requirements (event types, jurisdictions, difficulty distribution)
-
-### Running an Experimental Condition
-1. Follow exact setup in `evaluation/protocol/agent-test-protocol.md` (Section 4 for skill injection per harness)
-2. Use Prompt S for conditions H1–H7 (skill-aware), Prompt N for H0 (naive control)
-3. Record all metadata per run (model version, harness version, timestamp, tokens, cost)
-4. Save raw transcript to `evaluation/results/{condition}/case-XX/run-N/raw-transcript.md`
-5. Normalize output into 8 sections → `normalized-output.md` in same directory
-6. Repeat for 3 independent runs per case per condition (H8: 1 run only, no run-N/ nesting)
-
-### Scoring (Blinded)
-1. Complete ALL runs across ALL conditions before scoring begins
-2. Generate blinding map: assign random eval IDs, strip metadata, shuffle order
-3. Score normalized outputs blind using `evaluation/protocol/evaluation-rubric.md`
-4. Record per-dimension scores (D1–D8) and composite to `scores.md`
-5. After all scoring complete: unblind, populate `evaluation/analysis/rubric-scores.csv`
-
----
-
-## Commit Convention
-
-```
-feat: add [description]       — new content
-fix: correct [description]    — fixing errors
-update: revise [description]  — updating existing content
-docs: [description]           — documentation changes
-conductor(plan): [description] — plan.md updates
-conductor(checkpoint): [description] — phase checkpoint commits
-```
+The existing H0-H8 evaluation tracks remain historical records. Track 05 will map their cases, conditions, outputs, and scoring into the canonical benchmark contracts while preserving the original artefacts and explicitly labelling incomparable or incomplete results.

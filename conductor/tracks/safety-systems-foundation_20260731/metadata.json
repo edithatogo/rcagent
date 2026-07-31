@@ -1,0 +1,25 @@
+{
+  "track_id": "safety-systems-foundation_20260731",
+  "track_number": 1,
+  "title": "Safety Systems Foundation and Solo-Developer Harness",
+  "type": "refactor",
+  "status": "new",
+  "created_at": "2026-07-31T14:34:01+10:00",
+  "updated_at": "2026-07-31T14:34:01+10:00",
+  "workstream": "foundation-governance",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/6",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/2"
+  },
+  "autonomy": "autonomous-with-decision-gates",
+  "hard_dependencies": [
+    "agent-skills-living-conformance_20260731"
+  ],
+  "phase_dependencies": [],
+  "decision_gates": [
+    "Material changes to the approved product boundary or public claims",
+    "Irreversible architecture or repository-governance choices",
+    "New credentials, paid services, public releases, or destructive migrations"
+  ],
+  "description": "Reframe the repository as a client-neutral Safety Systems Workbench and establish the architecture, dependency graph, context layers, autonomous work queue, evidence receipts, and maximal harness needed by a single developer."
+}

@@ -1,0 +1,25 @@
+{
+  "track_id": "evidence-workflow-core_20260731",
+  "track_number": 2,
+  "title": "Evidence Workflow Core",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-07-31T14:34:01+10:00",
+  "updated_at": "2026-07-31T14:34:01+10:00",
+  "workstream": "foundation-governance",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/7",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/2"
+  },
+  "autonomy": "autonomous-with-decision-gates",
+  "hard_dependencies": [
+    "safety-systems-foundation_20260731"
+  ],
+  "phase_dependencies": [],
+  "decision_gates": [
+    "Changes to the clinical meaning of a canonical record",
+    "Mandated retention or legal-status assertions",
+    "Destructive or non-reversible schema migrations"
+  ],
+  "description": "Create interoperable schemas and workflow contracts for cases, sources, evidence, claims, contributory factors, findings, recommendations, actions, reviews, and effectiveness outcomes with end-to-end provenance."
+}

@@ -1,0 +1,30 @@
+{
+  "track_id": "retrieval-knowledge-system_20260731",
+  "track_number": 7,
+  "title": "Retrieval and Knowledge System",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-07-31T14:34:01+10:00",
+  "updated_at": "2026-07-31T14:34:01+10:00",
+  "workstream": "data-models-evaluation",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/12",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/3"
+  },
+  "autonomy": "autonomous-with-decision-gates",
+  "hard_dependencies": [
+    "evidence-workflow-core_20260731",
+    "privacy-security-assurance_20260731",
+    "nsw-health-jurisdiction-pack_20260731"
+  ],
+  "phase_dependencies": [
+    "benchmark-evaluation-harness_20260731",
+    "multimodal-capability-fabric_20260731"
+  ],
+  "decision_gates": [
+    "Use of an external or rights-restricted corpus",
+    "Cross-compartment queries or remote embedding services",
+    "Material retrieval thresholds that change operational behaviour"
+  ],
+  "description": "Build citation-first, provenance-preserving knowledge retrieval that begins with a simple lexical baseline and earns embeddings, hybrid search, and reranking only through benchmark evidence."
+}
