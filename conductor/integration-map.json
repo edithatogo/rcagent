@@ -16,13 +16,20 @@
   "tracks": [
     {
       "track_id": "agent-skills-living-conformance_20260731",
+      "status": "adapt",
       "candidate_systems": [
         "Agent Skills specification and official validator",
         "Codex and OpenAI plugin contracts",
         "Claude Code skill and plugin contracts",
         "GitHub release, attestation, and dependency tooling"
       ],
-      "project_owned_gap": "portable healthcare safety content, governed extensions, compatibility evidence, and client adapter shims"
+      "selected_system": "Agent Skills specification with skills-ref as the reference validator",
+      "dependency_class": "standard plus evaluation/development validator",
+      "compatibility_window": "current upstream main revision recorded in each receipt",
+      "safe_fallback": "offline project validation may run but cannot claim current upstream conformance",
+      "replacement_path": "remove project checks when an official production-grade validator covers equivalent portability, extension, privacy, and drift guarantees",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/fit-gap.md",
+      "project_owned_gap": "portable healthcare safety content, stricter portability and privacy checks, governed extensions, compatibility evidence, and thin client adapter shims"
     },
     {
       "track_id": "safety-systems-foundation_20260731",

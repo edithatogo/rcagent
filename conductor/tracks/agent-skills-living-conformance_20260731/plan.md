@@ -20,73 +20,73 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
-- [~] Task: Establish the system and dependency context
-  - [ ] Read `integration-strategy.md` and this track's entry in `integration-map.json`
-  - [ ] Identify the current organisational system, standard, validator, framework, runtime, or client contract that already owns each capability
-  - [ ] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
-  - [ ] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
+- [x] Task: Establish the system and dependency context
+  - [x] Read `integration-strategy.md` and this track's entry in `integration-map.json`
+  - [x] Identify the current organisational system, standard, validator, framework, runtime, or client contract that already owns each capability
+  - [x] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
+  - [x] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
 
-- [ ] Task: Select the smallest adequate intervention
-  - [ ] Prefer existing-system configuration or a standards profile
-  - [ ] Prefer a thin replaceable adapter when translation is the remaining gap
-  - [ ] Identify generic gaps suitable for an authorised upstream issue or contribution
-  - [ ] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
-  - [ ] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
+- [x] Task: Select the smallest adequate intervention
+  - [x] Prefer existing-system configuration or a standards profile
+  - [x] Prefer a thin replaceable adapter when translation is the remaining gap
+  - [x] Identify generic gaps suitable for an authorised upstream issue or contribution
+  - [x] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
+  - [x] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
 
-- [ ] Task: Define the dependency lifecycle
-  - [ ] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile
-  - [ ] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
-  - [ ] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
-  - [ ] Update `integration-map.json` with the selected status and evidence links
+- [x] Task: Define the dependency lifecycle
+  - [x] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile
+  - [x] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
+  - [x] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
+  - [x] Update `integration-map.json` with the selected status and evidence links
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify that no planned work duplicates an adequate existing capability
-  - [ ] Verify the system-of-record and data-authority boundary
-  - [ ] Verify the smallest remaining gap and ownership rationale
-  - [ ] Record the fit-gap receipt and bounded handoff context
-  - [ ] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
-  - [ ] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify that no planned work duplicates an adequate existing capability
+  - [x] Verify the system-of-record and data-authority boundary
+  - [x] Verify the smallest remaining gap and ownership rationale
+  - [x] Record the fit-gap receipt and bounded handoff context
+  - [x] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
+  - [x] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
 
 ## Phase 1: Establish the Authoritative Baseline
 
-- [ ] Task: Capture the current Agent Skills standards baseline
-  - [ ] Record the current specification URL and retrieval timestamp
-  - [ ] Record the official creator-guidance URLs and retrieval timestamps
-  - [ ] Resolve and record the current `agentskills/agentskills` revision
-  - [ ] Resolve and record the official `skills-ref` validator commit SHA
-  - [ ] Store source provenance without copying excessive upstream content
+- [x] Task: Capture the current Agent Skills standards baseline
+  - [x] Record the current specification URL and retrieval timestamp
+  - [x] Record the official creator-guidance URLs and retrieval timestamps
+  - [x] Resolve and record the current `agentskills/agentskills` revision
+  - [x] Resolve and record the official `skills-ref` validator commit SHA
+  - [x] Store source provenance without copying excessive upstream content
 
-- [ ] Task: Inventory the existing skill package
-  - [ ] Enumerate all files under `skills/rca-investigation/`
-  - [ ] Enumerate repository-root files currently required by the skill
-  - [ ] Map every `SKILL.md` reference to its resolved target
-  - [ ] Identify missing, broken, external, duplicated, and orphaned resources
-  - [ ] Record current frontmatter fields, limits, and validator result
-  - [ ] Record current skill size and progressive-disclosure structure
+- [x] Task: Inventory the existing skill package
+  - [x] Enumerate all files under `skills/rca-investigation/`
+  - [x] Enumerate repository-root files currently required by the skill
+  - [x] Map every `SKILL.md` reference to its resolved target
+  - [x] Identify missing, broken, external, duplicated, and orphaned resources
+  - [x] Record current frontmatter fields, limits, and validator result
+  - [x] Record current skill size and progressive-disclosure structure
 
-- [ ] Task: Establish the initial compliance matrix
-  - [ ] Add every normative specification requirement
-  - [ ] Add applicable official best-practice recommendations
-  - [ ] Add stable optional fields
-  - [ ] Add experimental fields and extensions
-  - [ ] Add portability and client-adapter requirements
-  - [ ] Add trigger and output-evaluation requirements
-  - [ ] Give every item a stable requirement identifier
-  - [ ] Mark applicability without claiming premature compliance
+- [x] Task: Establish the initial compliance matrix
+  - [x] Add every normative specification requirement
+  - [x] Add applicable official best-practice recommendations
+  - [x] Add stable optional fields
+  - [x] Add experimental fields and extensions
+  - [x] Add portability and client-adapter requirements
+  - [x] Add trigger and output-evaluation requirements
+  - [x] Give every item a stable requirement identifier
+  - [x] Mark applicability without claiming premature compliance
 
-- [ ] Task: Reconcile project documentation with the new technical scope
-  - [ ] Identify statements claiming there are no tests, scripts, or CI gates
-  - [ ] Draft necessary updates to `conductor/tech-stack.md`
-  - [ ] Draft necessary updates to `conductor/workflow.md`
-  - [ ] Preserve the content-first quality model
-  - [ ] Add deterministic validation expectations for executable tooling
+- [x] Task: Reconcile project documentation with the new technical scope
+  - [x] Identify statements claiming there are no tests, scripts, or CI gates
+  - [x] Draft necessary updates to `conductor/tech-stack.md`
+  - [x] Draft necessary updates to `conductor/workflow.md`
+  - [x] Preserve the content-first quality model
+  - [x] Add deterministic validation expectations for executable tooling
 
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [ ] Verify every baseline source is authoritative and current
-  - [ ] Verify no compliance item lacks provenance
-  - [ ] Verify no user content or historical evaluation artefact changed
-  - [ ] Record the baseline receipt
-  - [ ] Continue automatically to Phase 2 unless a declared owner decision gate is reached
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [x] Verify every baseline source is authoritative and current
+  - [x] Verify no compliance item lacks provenance
+  - [x] Verify no user content or historical evaluation artefact changed
+  - [x] Record the baseline receipt
+  - [x] Continue automatically to Phase 2 unless a declared owner decision gate is reached
 
 ## Phase 2: Define Architecture, Contracts, and Failing Fixtures
 

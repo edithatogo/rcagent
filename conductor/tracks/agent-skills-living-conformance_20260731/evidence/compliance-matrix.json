@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.0",
+  "baseline_revision": "38a2ff82958afee88dadf4831509e6f7e9d8ef4e",
+  "captured_at": "2026-07-31T17:51:19+10:00",
+  "items": [
+    {
+      "id": "AS-SPEC-001",
+      "source": "https://agentskills.io/specification#directory-structure",
+      "requirement": "The skill directory contains SKILL.md.",
+      "applicability": "applicable",
+      "implementation": "skills/rca-investigation/SKILL.md",
+      "validation": "official validator and local file check",
+      "result": "pass",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
+    },
+    {
+      "id": "AS-SPEC-002",
+      "source": "https://agentskills.io/specification#name-field",
+      "requirement": "The name satisfies syntax, length, and directory-equivalence constraints.",
+      "applicability": "applicable",
+      "implementation": "skills/rca-investigation/SKILL.md",
+      "validation": "official validator and negative fixtures",
+      "result": "pending",
+      "evidence": null
+    },
+    {
+      "id": "AS-SPEC-003",
+      "source": "https://agentskills.io/specification#description-field",
+      "requirement": "The description is non-empty, at most 1024 characters, and describes capability and activation.",
+      "applicability": "applicable",
+      "implementation": "skills/rca-investigation/SKILL.md",
+      "validation": "official validator, length check, and trigger evaluation",
+      "result": "pending",
+      "evidence": null
+    },
+    {
+      "id": "AS-SPEC-004",
+      "source": "https://agentskills.io/specification#license-field",
+      "requirement": "A declared licence is a short name or bundled-file reference.",
+      "applicability": "decision_pending",
+      "implementation": null,
+      "validation": "frontmatter and bundled-file check",
+      "result": "blocked",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/fit-gap.md",
+      "omission_rationale": "The specification makes this optional and the project owner must select the licence."
+    },
+    {
+      "id": "AS-SPEC-005",
+      "source": "https://agentskills.io/specification#compatibility-field",
+      "requirement": "Compatibility is omitted when unnecessary or accurately states requirements within 500 characters.",
+      "applicability": "applicable",
+      "implementation": "skills/rca-investigation/SKILL.md",
+      "validation": "frontmatter and isolated portability tests",
+      "result": "pending",
+      "evidence": null
+    },
+    {
+      "id": "AS-SPEC-006",
+      "source": "https://agentskills.io/specification#metadata-field",
+      "requirement": "Metadata keys and values are strings and project keys are namespaced.",
+      "applicability": "applicable_project_profile",
+      "implementation": "skills/rca-investigation/SKILL.md",
+      "validation": "schema validation",
+      "result": "pending",
+      "evidence": null
+    },
+    {
+      "id": "AS-SPEC-007",
+      "source": "https://agentskills.io/specification#allowed-tools-field",
+      "requirement": "Experimental allowed-tools is used only with client compatibility evidence.",
+      "applicability": "adapter_only",
+      "implementation": "adapters/",
+      "validation": "adapter compatibility tests",
+      "result": "pending",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/fit-gap.md",
+      "omission_rationale": "Cross-client support is not established, so the portable core omits the field."
+    },
+    {
+      "id": "AS-SPEC-008",
+      "source": "https://agentskills.io/specification#file-references",
+      "requirement": "File references are skill-root-relative and do not escape the package.",
+      "applicability": "applicable",
+      "implementation": "skills/rca-investigation/",
+      "validation": "reference and isolated-copy tests",
+      "result": "fail",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
+    },
+    {
+      "id": "AS-GUIDE-001",
+      "source": "https://agentskills.io/specification#progressive-disclosure",
+      "requirement": "SKILL.md remains below 500 lines and approximately 5000 tokens.",
+      "applicability": "applicable_project_policy",
+      "implementation": "skills/rca-investigation/SKILL.md",
+      "validation": "line and token-budget checks",
+      "result": "pass",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
+    },
+    {
+      "id": "AS-GUIDE-002",
+      "source": "https://agentskills.io/skill-creation/optimizing-descriptions",
+      "requirement": "Trigger quality is tested with realistic positive and near-miss negative prompts using held-out evaluation.",
+      "applicability": "applicable_project_policy",
+      "implementation": "evaluations/skills/rca-investigation/",
+      "validation": "trigger evaluation harness",
+      "result": "pending",
+      "evidence": null
+    },
+    {
+      "id": "AS-GUIDE-003",
+      "source": "https://agentskills.io/skill-creation/evaluating-skills",
+      "requirement": "Output quality is tested with explicit assertions and preserved observations.",
+      "applicability": "applicable_project_policy",
+      "implementation": "evaluations/skills/rca-investigation/",
+      "validation": "output evaluation harness",
+      "result": "pending",
+      "evidence": null
+    },
+    {
+      "id": "RCA-PORT-001",
+      "source": "conductor/tracks/agent-skills-living-conformance_20260731/spec.md",
+      "requirement": "The canonical skill operates from an isolated copy without repository-root dependencies.",
+      "applicability": "applicable_project_policy",
+      "implementation": "skills/rca-investigation/",
+      "validation": "isolated-copy and archive-extraction tests",
+      "result": "fail",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
+    },
+    {
+      "id": "RCA-SAFE-001",
+      "source": "conductor/tracks/agent-skills-living-conformance_20260731/spec.md",
+      "requirement": "The skill enforces de-identification, evidence uncertainty, human review, and no automatic legal-privilege claim.",
+      "applicability": "applicable_project_policy",
+      "implementation": "skills/rca-investigation/SKILL.md and references/workflows/",
+      "validation": "privacy sentinels and output assertions",
+      "result": "fail",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
+    },
+    {
+      "id": "RCA-DRIFT-001",
+      "source": "conductor/tracks/agent-skills-living-conformance_20260731/spec.md",
+      "requirement": "Current conformance requires successful live upstream resolution; offline results cannot claim currency.",
+      "applicability": "applicable_project_policy",
+      "implementation": "tools/",
+      "validation": "online, offline, and changed-baseline fixtures",
+      "result": "pending",
+      "evidence": null
+    }
+  ]
+}
