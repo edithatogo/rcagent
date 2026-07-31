@@ -57,6 +57,10 @@ def redact_workspace(raw: str, workspace: Path) -> str:
     }
     for variant in sorted(variants, key=len, reverse=True):
         raw = raw.replace(variant, "<EVAL_WORKSPACE>")
+    if len(workspace.parts) >= 4:
+        escaped_parts = [re.escape(part) for part in workspace.parts if part not in ("\\", "/")]
+        separator = r"(?:\\+|/+)"
+        raw = re.sub(separator.join(escaped_parts), "<EVAL_WORKSPACE>", raw)
     return raw
 
 

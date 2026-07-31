@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"019fb753-f19c-79d2-b4cc-9dc44db198b3"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"Which medicine? Please provide:\n\n- Medicine name and formulation/concentration\n- Prescribed indication\n- Patient’s age and weight\n- Kidney/liver function, allergies, pregnancy status\n- Current prescription or medication-chart wording\n\nDo not administer it until the dose is confirmed with the prescriber or pharmacist. If a dose may already have been given incorrectly, contact urgent medical support or Australia’s Poisons Information Centre on **13 11 26**."}}
+{"type":"turn.completed","usage":{"input_tokens":14716,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":159,"reasoning_output_tokens":62}}

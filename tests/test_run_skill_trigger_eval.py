@@ -42,6 +42,10 @@ def test_workspace_redaction_handles_json_escaped_windows_path() -> None:
     assert "Users" not in redacted
     assert "<EVAL_WORKSPACE>" in redacted
 
+    quadruple = raw.replace("\\\\", "\\\\\\\\")
+    redacted_quadruple = redact_workspace(quadruple, workspace)
+    assert "Users" not in redacted_quadruple
+
 
 def _cases(path: Path) -> Path:
     path.write_text(
