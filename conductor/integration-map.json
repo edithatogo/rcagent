@@ -28,6 +28,7 @@
       "track_id": "safety-systems-foundation_20260731",
       "candidate_systems": [
         "Conductor",
+        "Conductor experimental Ralph loop, ASDD, and isolation-worktree branches as research inputs",
         "GitHub Issues, subissues, dependencies, Actions, and releases",
         "uv and Python packaging",
         "JSON Schema",

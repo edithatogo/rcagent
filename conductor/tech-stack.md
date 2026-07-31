@@ -56,6 +56,20 @@ Python is the initial portable harness language because the relevant document, m
 
 Exact command names and packaging are Track 01 decisions. Scripts must work locally and in CI, return non-zero on applicable failures, and distinguish offline, unavailable-upstream, unsupported, advisory, and failed states.
 
+The harness implements [autonomy.md](./autonomy.md) and
+[autonomy.json](./autonomy.json): deterministic next-ready dispatch,
+cross-phase and cross-track continuation, idempotent run IDs, leases and stale
+lock recovery, bounded retry and autonomous plan repair, circuit breakers,
+decision and external-wait queues, resumable context packs, automatic review
+and rework, and evidence-based terminal detection.
+
+Upstream Conductor `main` remains the protocol reference. Experimental Ralph,
+ASDD, and isolation-worktree branches are assessed as design inputs for
+iteration-bounded replanning, persistent state, DAG analysis, locks, resumable
+worktrees, and review rework. They remain disabled research adapters until
+their exact revisions pass compatibility, Windows, dirty-worktree,
+concurrency, state-integrity, security, rollback, and replacement tests.
+
 ## Storage and Retrieval
 
 Use an approved content, records, or knowledge system first when it already

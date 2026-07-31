@@ -2,7 +2,21 @@
 
 **GitHub:** [#6](https://github.com/edithatogo/rcagent/issues/6)
 
-Execution follows [workflow.md](../../workflow.md). Phases continue automatically when objective verification passes and no owner decision gate is reached.
+Execution follows [workflow.md](../../workflow.md) and the
+[continuous autonomy contract](../../autonomy.md).
+
+## Continuous Execution Contract
+
+- Continue automatically through tasks, phase checkpoints, fresh-context
+  review, bounded rework, documentation synchronization, and the next ready
+  track.
+- Do not ask for routine approval at task, phase, review, or track boundaries.
+- If a decision gate is reached, pause only the affected scope, release its
+  lane, continue safe independent work, and present options with a
+  recommendation, rationale, evidence, trade-offs, reversibility, safe
+  default, and dependency impact.
+- Use bounded retry, autonomous plan repair, durable resume state, stale-lock
+  recovery, and safety circuit breakers from `autonomy.md`.
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
@@ -30,7 +44,8 @@ Execution follows [workflow.md](../../workflow.md). Phases continue automaticall
   - [ ] Verify the system-of-record and data-authority boundary
   - [ ] Verify the smallest remaining gap and ownership rationale
   - [ ] Record the fit-gap receipt and bounded handoff context
-  - [ ] Continue automatically unless an enterprise connection, upstream communication, public dependency commitment, permanent fork, or new subsystem requires owner approval
+  - [ ] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
+  - [ ] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
 
 ## Phase 1: Define the product and safety boundary
 
@@ -84,6 +99,10 @@ Execution follows [workflow.md](../../workflow.md). Phases continue automaticall
   - [ ] Define hard-start dependencies, phase dependencies, WIP limits, and integration ownership
   - [ ] Define machine-readable definitions of ready, done, blocked, and decision-needed
   - [ ] Create an autonomous work-queue selection policy that never treats checkboxes as proof
+  - [ ] Implement deterministic next-ready dispatch across task, phase, review, rework, and track boundaries
+  - [ ] Implement idempotent run IDs, leases, heartbeats, stale-lock detection, safe takeover, and preserved-work recovery
+  - [ ] Implement decision and external-wait queues that release blocked lanes and schedule unaffected work
+  - [ ] Implement critical-path priority, owned-path conflict detection, and integration-lane convergence
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -126,6 +145,10 @@ Execution follows [workflow.md](../../workflow.md). Phases continue automaticall
   - [ ] Define deterministic preflight, fixture, link, schema, privacy, and policy-drift checks
   - [ ] Define durable command, environment, revision, source, result, and limitation receipts
   - [ ] Define local and CI execution with honest offline and unavailable-upstream states
+  - [ ] Specify bounded retry classes, fallback, autonomous plan-repair outcomes, and repeated-attempt prevention
+  - [ ] Specify safety circuit breakers for privacy, credentials, destructive changes, evidence integrity, and material harm
+  - [ ] Specify resumable context cursors and session-boundary handoffs that do not create approval pauses
+  - [ ] Specify automatic fresh-context track review and review-report-driven rework
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -144,9 +167,10 @@ Execution follows [workflow.md](../../workflow.md). Phases continue automaticall
 
 - [ ] Task: Implement the phase scope
   - [ ] Create ADR, decision, risk, source, assumption, and evidence record templates
-  - [ ] Define the recommended-option decision request contract and safe default behaviour
+  - [ ] Define decision packets with a stable ID, recommended option, rationale, evidence, alternatives, trade-offs, reversibility, safe default, paused scope, continuing work, and response format
   - [ ] Define owner gates for clinical, legal, privacy, licence, credential, spend, and release choices
   - [ ] Define automated freshness checks and escalation rules for stale authoritative context
+  - [ ] Define decision deduplication, wake conditions, non-blocking status updates, and one-decision-at-a-time engagement
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -165,7 +189,11 @@ Execution follows [workflow.md](../../workflow.md). Phases continue automaticall
 
 - [ ] Task: Implement the phase scope
   - [ ] Run a representative ready-task selection and bounded context-pack dry run
-  - [ ] Simulate a reversible autonomous phase and a blocked owner-decision phase
+  - [ ] Simulate uninterrupted continuation across multiple phases and into the next ready track
+  - [ ] Simulate a blocked owner-decision lane while independent work continues
+  - [ ] Simulate transient recovery, deterministic repair, plan rework, external wait, stale lock, interruption and resume, and circuit-breaker cases
+  - [ ] Verify every decision request presents options, a recommendation, rationale, evidence, safe default, paused scope, and continuing work
+  - [ ] Verify review findings become bounded automatic rework without a routine approval pause
   - [ ] Verify worktree, evidence receipt, integration, rollback, and handoff procedures
   - [ ] Record defects and close the foundation only when a fresh-context reproduction passes
 

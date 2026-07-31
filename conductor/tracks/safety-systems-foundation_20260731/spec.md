@@ -6,6 +6,18 @@ Reframe the repository as a client-neutral Safety Systems Workbench and establis
 
 This track is coordinated by GitHub issue [#6](https://github.com/edithatogo/rcagent/issues/6) and the portfolio rules in [roadmap.md](../../roadmap.md). It may proceed autonomously once its hard dependencies and definition of ready have objective evidence.
 
+## Autonomous Execution Requirement
+
+Execution follows [autonomy.md](../../autonomy.md) and
+[autonomy.json](../../autonomy.json). Once implementation is authorised, work
+continues across tasks, phases, automatic review and rework, documentation
+synchronization, and the next ready track without routine confirmation.
+
+Only the affected scope pauses at an owner decision gate. Its request must
+present a recommended option first, rationale and evidence, viable
+alternatives, trade-offs, reversibility, safe default, paused scope,
+continuing work, and dependency impact. Safe independent work continues.
+
 ## Integration-First Requirement
 
 This track follows [integration-strategy.md](../../integration-strategy.md) and
@@ -53,7 +65,14 @@ These dependencies gate the affected integration or validation phase without nee
 
 ## Autonomous Execution
 
-Reversible work inside the approved scope proceeds without per-phase approval when evidence gates pass. Each phase records sources, versions, commands, results, limitations, risks, and changes to the dependency graph. The agent stops only at a declared owner gate or when safe in-scope progress is impossible.
+Reversible work inside the approved scope proceeds continuously across tasks,
+phases, automatic review and rework, documentation synchronization, and ready
+tracks when evidence gates pass. Each phase records sources, versions,
+commands, results, limitations, risks, and changes to the dependency graph.
+
+Only the affected lane pauses at a declared owner gate or safety circuit
+breaker. External waits, transient failures, invalid plans, and stale state
+use bounded recovery, release blocked WIP, and do not stop independent work.
 
 ### Owner Decision Gates
 
@@ -61,7 +80,10 @@ Reversible work inside the approved scope proceeds without per-phase approval wh
 - Irreversible architecture or repository-governance choices
 - New credentials, paid services, public releases, or destructive migrations
 
-Every decision request must include the recommended option, viable alternatives, evidence, rationale, trade-offs, reversibility, cost, safe default, and impact on dependencies.
+Every decision request must include a stable ID, the recommended option first,
+viable alternatives, evidence, rationale, trade-offs, reversibility, cost,
+safe default, paused scope, continuing work, required response, and impact on
+dependencies.
 
 ## Acceptance Criteria
 
@@ -71,6 +93,11 @@ Every decision request must include the recommended option, viable alternatives,
 4. Doctor, context, queue, validation, evaluation, and receipt command contracts are documented and testable.
 5. Autonomous work and owner-only decisions are distinguished by an enforceable policy.
 6. Architecture, source, risk, decision, and evidence records have owners and freshness rules.
+7. A passing phase automatically dispatches the next ready phase and a passing track automatically dispatches review, bounded rework, synchronization, and the next ready track.
+8. A decision-blocked or externally waiting lane releases its slot while independent ready work continues.
+9. Retry budgets, plan repair, resumable state, leases, stale-lock recovery, idempotency, and safety circuit breakers pass positive and negative fixtures.
+10. Decision packets always present options, a recommendation and rationale, evidence, trade-offs, reversibility, safe default, paused scope, continuing work, and dependency impact.
+11. Upstream Conductor experimental features remain replaceable research adapters until compatibility and robustness gates pass.
 
 ## Out of Scope
 

@@ -14,6 +14,13 @@ licence, maintenance, and offline constraints.
 This policy applies to every Conductor track and every supported execution
 mode.
 
+Delivery also follows [autonomy.md](./autonomy.md). When a dependency or
+organisational system has a gap, the agent continues through assessment,
+configuration, adapter spikes, validation, and other safe ready work without
+routine approval. It asks only when the next action reaches an owner decision
+gate, and then presents options, a recommendation, rationale, evidence,
+trade-offs, reversibility, and a safe default.
+
 ## Capability Acquisition Ladder
 
 Use the first adequate step:

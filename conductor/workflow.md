@@ -13,6 +13,7 @@ GitHub and Conductor coordinate the work. Evidence, tests, sources, history, rec
 | Product and safeguards | `conductor/product.md` and `conductor/product-guidelines.md` |
 | Architecture candidates and constraints | `conductor/tech-stack.md` plus accepted ADRs |
 | Existing systems, dependencies, and fit-gap decisions | `conductor/integration-strategy.md` and `conductor/integration-map.json` |
+| Continuous execution, decision engagement, recovery, and terminal state | `conductor/autonomy.md` and `conductor/autonomy.json` |
 | Portfolio dependencies and sequencing | `conductor/roadmap.md` and track `metadata.json` |
 | Track scope and acceptance | Track `spec.md` |
 | Track task state | Track `plan.md` |
@@ -31,9 +32,14 @@ When records disagree, stop claiming completion, preserve the conflict, and reco
 
 A checkbox never proves that work passed. Completion requires its acceptance evidence.
 
-## Autonomous Work Envelope
+## Continuous Autonomous Work Envelope
 
-An agent may proceed without per-task or per-phase approval when all of the following are true:
+An instruction to implement, proceed, continue, resume, finish, or not stop is
+standing authorisation to continue across ready tasks, phases, automatic
+review and rework, documentation synchronization, and tracks. Do not ask for
+routine confirmation at any of these boundaries.
+
+An agent may proceed without per-task, per-phase, or per-track approval when all of the following are true:
 
 - the work is reversible and inside an approved track;
 - hard dependencies and the definition of ready have objective evidence;
@@ -45,9 +51,13 @@ An agent may proceed without per-task or per-phase approval when all of the foll
 
 Normal in-scope implementation, local branches, isolated worktrees, fixtures, validation, documentation, and reversible refactoring are autonomous.
 
+The complete dispatch, resume, retry, circuit-breaker, and terminal-state
+rules are in [autonomy.md](./autonomy.md). A client or session boundary
+requires a durable resume cursor; it does not create a new approval gate.
+
 ## Owner Decision Gates
 
-Stop only when progress requires one of these:
+Pause only the affected scope when progress requires one of these:
 
 - clinical, legal, policy, privilege, records, employment, or regulatory interpretation;
 - access to or use of real private, clinical, employee, consumer, or credential data;
@@ -60,18 +70,41 @@ Stop only when progress requires one of these:
 
 ### Decision Request Contract
 
-Apply the GitHub `decision-needed` label and create a record from `conductor/decisions/template.md` containing:
+Apply the GitHub `decision-needed` label when available and create a record
+from `conductor/decisions/template.md` containing:
 
-1. the decision and why it is needed now;
-2. the recommended option;
-3. at least two viable alternatives where they exist;
-4. evidence and assumptions;
-5. rationale and trade-offs;
+1. a stable decision ID, the decision, and why it is needed now;
+2. the recommended option first;
+3. the recommendation rationale and supporting evidence;
+4. at least one viable alternative where one exists;
+5. assumptions, uncertainty, and trade-offs for every option;
 6. reversibility, cost, privacy, safety, maintenance, and dependency impact;
-7. the safe default if no decision is made; and
-8. the deadline or consequence of deferral.
+7. the safe default if no decision is made;
+8. the exact scope paused and the work that will continue;
+9. the deadline or consequence of deferral; and
+10. the response format required.
 
-While waiting, continue any other safe ready work. Do not keep a decision-blocked task in an active implementation lane.
+Ask one decision at a time unless decisions are inseparable. While waiting,
+continue any other safe ready work. Release the WIP slot; do not keep a
+decision-blocked task in an active implementation lane or repeat an unchanged
+request.
+
+## Autonomous Recovery and Plan Repair
+
+Classify failures before acting. Retry transient failures with a bounded
+budget and approved fallback. Diagnose deterministic failures and attempt up
+to two evidence-led fixes. Repair incomplete plans autonomously when the
+approved specification and acceptance criteria remain unchanged.
+
+Every repair records its reason, attempt, result, and next action. Repeated
+identical attempts without new evidence are prohibited. A material scope
+change, new external effect, or reserved authority choice becomes a decision
+request.
+
+Stop writes only in the affected lane when context, lock, branch, worktree,
+receipt, or external state conflicts. Preserve work, reconcile against direct
+evidence, and resume. Trip the safety circuit breaker for credible privacy,
+credential, destructive, evidence-integrity, or material-harm risk.
 
 ## Dependency Semantics
 
@@ -250,6 +283,13 @@ Before closing a track:
 - the system-of-record boundary, adopted dependencies, upstream gaps, local shims, and replacement paths are reconciled;
 - a clean reviewer can reproduce the result; and
 - the GitHub issue, Conductor plan, Git state, receipts, and external state agree.
+
+After the track passes, automatically run a fresh-context review, append and
+fix bounded in-scope rework, synchronize evidence-backed project documents,
+reconcile the issue and dependencies, release the lane, select the next ready
+track, and continue. Do not ask whether to review, archive, clean up, or start
+the next track. Leave completed track artefacts in place unless an approved
+retention rule says otherwise.
 
 Close parent workstreams and the roadmap only after their native subissues and portfolio-level acceptance evidence pass.
 

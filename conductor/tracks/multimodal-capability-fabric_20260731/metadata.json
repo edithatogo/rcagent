@@ -11,7 +11,8 @@
     "issue": "https://github.com/edithatogo/rcagent/issues/11",
     "parent_issue": "https://github.com/edithatogo/rcagent/issues/3"
   },
-  "autonomy": "autonomous-with-decision-gates",
+  "autonomy": "continuous-autonomy-with-owner-decision-gates",
+  "autonomy_contract": "../../autonomy.json",
   "hard_dependencies": [
     "evidence-workflow-core_20260731",
     "privacy-security-assurance_20260731"

@@ -16,6 +16,18 @@ consume the portable core without duplicating its authoritative domain content.
 matrix has objective passing evidence. Requirements judged inapplicable must
 have an explicit, reviewed rationale.
 
+## Autonomous Execution Requirement
+
+Execution follows [autonomy.md](../../autonomy.md) and
+[autonomy.json](../../autonomy.json). Once implementation is authorised, work
+continues across tasks, phases, automatic review and rework, documentation
+synchronization, and the next ready track without routine confirmation.
+
+Only the affected scope pauses at an owner decision gate. Its request must
+present a recommended option first, rationale and evidence, viable
+alternatives, trade-offs, reversibility, safe default, paused scope,
+continuing work, and dependency impact. Safe independent work continues.
+
 ## Integration-First Requirement
 
 This track follows the portfolio

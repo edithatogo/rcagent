@@ -5,7 +5,10 @@
     "repository": "edithatogo/rcagent",
     "default_branch": "master",
     "root_issue": 1,
-    "autonomy": "autonomous-with-decision-gates",
+    "autonomy": "continuous-autonomy-with-owner-decision-gates",
+    "autonomy_policy": "conductor/autonomy.md",
+    "autonomy_contract": "conductor/autonomy.json",
+    "continuation": "automatic-across-tasks-phases-reviews-rework-and-tracks",
     "integration_policy": "integrate-configure-profile-extend-contribute-before-build",
     "integration_map": "conductor/integration-map.json",
     "max_active_lanes": {

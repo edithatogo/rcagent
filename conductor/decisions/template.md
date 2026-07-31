@@ -1,5 +1,6 @@
 # Decision: [Short Title]
 
+- **Decision ID:** [YYYYMMDD-NNN-short-decision]
 - **Status:** Proposed
 - **Date raised:** [YYYY-MM-DD]
 - **Owner:** [Owner]
@@ -15,7 +16,7 @@
 
 **Recommend:** [Option]
 
-[Give the concise rationale.]
+[Give the concise rationale, evidence, and why this option is preferred now.]
 
 ## Options
 
@@ -36,7 +37,19 @@
 
 ## Safe Default if Deferred
 
-[State the fail-closed or no-change default and what work can continue.]
+[State the fail-closed or no-change default.]
+
+## Execution Impact
+
+- **Paused scope:** [Exact lane, track, phase, or task]
+- **Work continuing autonomously:** [Ready unaffected work]
+- **Schedule and dependency effect:** [Effect]
+- **Wake condition:** [Decision or external event that resumes the scope]
+
+## Response Requested
+
+[State the exact option name, yes/no response, or short information required.
+Ask only this decision.]
 
 ## Owner Decision
 

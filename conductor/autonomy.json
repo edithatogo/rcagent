@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "policy": "continuous-autonomy-with-owner-decision-gates",
+  "strategy": "conductor/autonomy.md",
+  "start_authorization": [
+    "implement",
+    "proceed",
+    "continue",
+    "resume",
+    "finish",
+    "do not stop"
+  ],
+  "continuation": {
+    "between_tasks": "automatic",
+    "between_phases": "automatic",
+    "review_and_rework": "automatic",
+    "between_tracks": "automatic",
+    "documentation_sync": "automatic-when-evidence-backed",
+    "blocked_lane": "release-slot-and-continue-independent-work"
+  },
+  "lane_limits": {
+    "integration": 1,
+    "independent": 2
+  },
+  "statuses": [
+    "ready",
+    "active",
+    "verifying",
+    "reviewing",
+    "rework",
+    "waiting_external",
+    "decision_needed",
+    "blocked_safe",
+    "complete"
+  ],
+  "plan_repair_outcomes": [
+    "success",
+    "retry",
+    "decision_needed",
+    "blocked_external",
+    "failed_safe"
+  ],
+  "terminal_conditions": [
+    "all-authorized-work-complete",
+    "all-remaining-paths-require-owner-decision",
+    "all-remaining-paths-wait-on-external-action-and-no-independent-work-remains",
+    "safety-circuit-breaker",
+    "owner-stop-or-objective-change"
+  ],
+  "decision_packet_required_fields": [
+    "decision_id",
+    "question",
+    "track_and_task",
+    "why_now",
+    "recommended_option",
+    "recommendation_rationale",
+    "alternatives",
+    "evidence",
+    "tradeoffs_risks_uncertainty_cost",
+    "reversibility",
+    "safe_default",
+    "paused_scope",
+    "continuing_work",
+    "dependency_and_schedule_impact",
+    "response_format"
+  ],
+  "recovery": {
+    "repeated_identical_attempts": "prohibited-without-new-evidence",
+    "transient_failures": "bounded-retry-backoff-jitter-and-approved-fallback",
+    "deterministic_failures": "diagnose-two-evidence-led-fixes-then-escalate-or-isolate",
+    "invalid_plan": "bounded-autonomous-repair-inside-approved-specification",
+    "stale_state": "stop-affected-writes-reconcile-and-resume",
+    "external_wait": "record-wake-condition-release-lane-continue",
+    "material_risk": "trip-circuit-breaker-preserve-state-request-decision"
+  },
+  "upstream_conductor": {
+    "live_review_date": "2026-07-31",
+    "main_commit": "99ba10e1a11130fc159f681b7ba8803489239cbf",
+    "experiments": [
+      {
+        "branch": "feat/ralph-loop",
+        "commit": "b843867963e161a046b55a813a44b375c79131e3",
+        "use": "architect-loop-and-autonomous-replanning-patterns",
+        "status": "research-only"
+      },
+      {
+        "branch": "feature/asdd",
+        "commit": "5ea8c01a10aaf3e341cf310fb8f50ac283991e83",
+        "use": "persistent-state-lock-dag-and-dual-mode-patterns",
+        "status": "research-only"
+      },
+      {
+        "branch": "feature/isolation-worktree",
+        "commit": "c1ae65f0284ddf4239390e71571aa7e87d6db450",
+        "use": "resumable-worktree-review-and-rework-patterns",
+        "status": "research-only"
+      }
+    ]
+  }
+}

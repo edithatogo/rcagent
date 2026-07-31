@@ -11,7 +11,8 @@
     "issue": "https://github.com/edithatogo/rcagent/issues/7",
     "parent_issue": "https://github.com/edithatogo/rcagent/issues/2"
   },
-  "autonomy": "autonomous-with-decision-gates",
+  "autonomy": "continuous-autonomy-with-owner-decision-gates",
+  "autonomy_contract": "../../autonomy.json",
   "hard_dependencies": [
     "safety-systems-foundation_20260731"
   ],

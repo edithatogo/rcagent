@@ -2,7 +2,21 @@
 
 **GitHub:** [#10](https://github.com/edithatogo/rcagent/issues/10)
 
-Execution follows [workflow.md](../../workflow.md). Phases continue automatically when objective verification passes and no owner decision gate is reached.
+Execution follows [workflow.md](../../workflow.md) and the
+[continuous autonomy contract](../../autonomy.md).
+
+## Continuous Execution Contract
+
+- Continue automatically through tasks, phase checkpoints, fresh-context
+  review, bounded rework, documentation synchronization, and the next ready
+  track.
+- Do not ask for routine approval at task, phase, review, or track boundaries.
+- If a decision gate is reached, pause only the affected scope, release its
+  lane, continue safe independent work, and present options with a
+  recommendation, rationale, evidence, trade-offs, reversibility, safe
+  default, and dependency impact.
+- Use bounded retry, autonomous plan repair, durable resume state, stale-lock
+  recovery, and safety circuit breakers from `autonomy.md`.
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
@@ -30,7 +44,8 @@ Execution follows [workflow.md](../../workflow.md). Phases continue automaticall
   - [ ] Verify the system-of-record and data-authority boundary
   - [ ] Verify the smallest remaining gap and ownership rationale
   - [ ] Record the fit-gap receipt and bounded handoff context
-  - [ ] Continue automatically unless an enterprise connection, upstream communication, public dependency commitment, permanent fork, or new subsystem requires owner approval
+  - [ ] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
+  - [ ] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
 
 ## Phase 1: Define benchmark governance
 

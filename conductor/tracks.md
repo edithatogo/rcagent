@@ -4,7 +4,8 @@
 
 - **Roadmap:** [conductor/roadmap.md](./roadmap.md)
 - **GitHub roadmap:** [#1](https://github.com/edithatogo/rcagent/issues/1)
-- **Execution policy:** autonomous within declared owner decision gates
+- **Execution policy:** [continuous autonomy](./autonomy.md) within declared
+  owner decision gates; no routine stop between phases or tracks
 
 ### Workstream A: Foundation and Governance
 

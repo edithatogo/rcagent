@@ -65,6 +65,10 @@ Every run declares its actual mode, capabilities, model and framework revisions,
 10. **Living conformance.** Standards, policy, model, framework, and marketplace claims carry exact versions and drift checks.
 11. **Closed-loop learning.** Completion of a report or action does not prove safety improvement.
 12. **Honest boundaries.** Research, experimental, operational, and unsupported capabilities are visibly distinct.
+13. **Continuous delivery, selective attention.** Once implementation is
+    authorised, agents continue across tasks, phases, review, rework, and
+    tracks; they engage the owner only for declared decisions or terminal
+    safety blockers.
 
 ## Initial Jurisdiction Strategy
 

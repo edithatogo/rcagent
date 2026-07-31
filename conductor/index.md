@@ -7,10 +7,12 @@
 3. [Technical Strategy](./tech-stack.md)
 4. [Integration-First Strategy](./integration-strategy.md)
 5. [Machine-Readable Integration Map](./integration-map.json)
-6. [Development Workflow](./workflow.md)
-7. [Portfolio Roadmap](./roadmap.md)
-8. [Machine-Readable Roadmap](./roadmap.json)
-9. [Track Registry](./tracks.md)
+6. [Continuous Autonomous Delivery](./autonomy.md)
+7. [Machine-Readable Autonomy Contract](./autonomy.json)
+8. [Development Workflow](./workflow.md)
+9. [Portfolio Roadmap](./roadmap.md)
+10. [Machine-Readable Roadmap](./roadmap.json)
+11. [Track Registry](./tracks.md)
 
 ## Execution Records
 

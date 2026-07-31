@@ -6,6 +6,18 @@ Create a benchmark-first assurance system for incident-analysis quality, retriev
 
 This track is coordinated by GitHub issue [#10](https://github.com/edithatogo/rcagent/issues/10) and the portfolio rules in [roadmap.md](../../roadmap.md). It may proceed autonomously once its hard dependencies and definition of ready have objective evidence.
 
+## Autonomous Execution Requirement
+
+Execution follows [autonomy.md](../../autonomy.md) and
+[autonomy.json](../../autonomy.json). Once implementation is authorised, work
+continues across tasks, phases, automatic review and rework, documentation
+synchronization, and the next ready track without routine confirmation.
+
+Only the affected scope pauses at an owner decision gate. Its request must
+present a recommended option first, rationale and evidence, viable
+alternatives, trade-offs, reversibility, safe default, paused scope,
+continuing work, and dependency impact. Safe independent work continues.
+
 ## Integration-First Requirement
 
 This track follows [integration-strategy.md](../../integration-strategy.md) and

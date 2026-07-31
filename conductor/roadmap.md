@@ -7,11 +7,26 @@
 - **Workstream B:** [#3 Data, Models and Evaluation](https://github.com/edithatogo/rcagent/issues/3)
 - **Workstream C:** [#4 Product, Interfaces and Distribution](https://github.com/edithatogo/rcagent/issues/4)
 - **Execution model:** one integration lane plus at most two independent implementation lanes
-- **Autonomy:** reversible in-scope work proceeds automatically; owner decisions use the contract in [workflow.md](./workflow.md)
+- **Autonomy:** [continuous across tasks, phases, review, rework, and tracks](./autonomy.md); owner decisions use the contract in [workflow.md](./workflow.md)
+- **Machine contract:** [autonomy.json](./autonomy.json)
 - **Integration policy:** [integrate, configure, profile, extend, or contribute before building](./integration-strategy.md)
 - **System/dependency map:** [integration-map.json](./integration-map.json)
 
 GitHub uses native nested subissues for portfolio ownership and native issue dependencies for hard-start blockers. Conductor distinguishes those hard blockers from later phase dependencies so useful foundation work can begin without over-serialising the programme.
+
+## Continuous Portfolio Execution
+
+An instruction to implement, proceed, continue, resume, or finish is standing
+authorisation for all reversible work inside the approved roadmap. The runner
+does not stop at phase or track boundaries. It verifies, reviews, applies
+bounded rework, synchronizes evidence-backed documentation, reconciles state,
+selects the next ready track, and continues.
+
+Only the affected lane pauses for an owner decision or external wait. Its WIP
+slot is released and independent work continues. The portfolio stops only
+when all authorised work is complete, every remaining path needs owner input
+or unavailable external action, a safety circuit breaker trips, or the owner
+changes the objective.
 
 ## Integration-First Portfolio Rule
 
@@ -186,4 +201,8 @@ Owner decisions are required for:
 - public releases, registry or marketplace submissions, and publisher verification; and
 - destructive migration or irreversible product and architecture choices.
 
-All other reversible work inside an approved track proceeds autonomously when its evidence gates pass.
+All other reversible work inside an approved track proceeds autonomously when
+its evidence gates pass. A decision request presents a recommended option
+first, its rationale and evidence, viable alternatives, trade-offs,
+reversibility, safe default, paused scope, continuing work, and dependency or
+schedule impact.
