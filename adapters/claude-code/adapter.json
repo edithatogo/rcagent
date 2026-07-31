@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "client": "claude-code",
+  "canonical_skill": "../../skills/rca-investigation",
+  "discovery_targets": [
+    ".claude/skills/rca-investigation"
+  ],
+  "frontmatter": {
+    "stable": ["name", "description", "compatibility", "metadata"],
+    "experimental": [],
+    "unsupported": ["allowed-tools"]
+  },
+  "fallback": "Install the unmodified portable core and use Claude Code permission controls.",
+  "validation": "python -m tools.validate_skill skills/rca-investigation"
+}

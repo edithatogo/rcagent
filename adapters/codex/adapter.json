@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "client": "codex",
+  "canonical_skill": "../../skills/rca-investigation",
+  "discovery_targets": [
+    ".codex/skills/rca-investigation"
+  ],
+  "frontmatter": {
+    "stable": ["name", "description", "compatibility", "metadata"],
+    "experimental": [],
+    "unsupported": ["allowed-tools"]
+  },
+  "fallback": "Install the unmodified portable core and use Codex permission controls.",
+  "validation": "python -m tools.validate_skill skills/rca-investigation"
+}
