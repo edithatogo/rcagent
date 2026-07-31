@@ -125,8 +125,8 @@ def validate_skill(skill_root: Path, *, portable_core: bool = True) -> list[Diag
         )
 
     text = skill_md.read_text(encoding="utf-8")
-    for match in REFERENCE_PATTERN.finditer(text):
-        reference = match.group(1)
+    references = {match.group(1) for match in REFERENCE_PATTERN.finditer(text)}
+    for reference in sorted(references):
         pure = PurePosixPath(reference)
         if ".." in pure.parts or pure.is_absolute():
             diagnostics.append(
@@ -137,6 +137,26 @@ def validate_skill(skill_root: Path, *, portable_core: bool = True) -> list[Diag
             diagnostics.append(
                 Diagnostic("AS-SPEC-008", reference, "referenced resource does not exist")
             )
+
+    for directory in ("references", "scripts", "assets"):
+        resource_root = root / directory
+        if not resource_root.is_dir():
+            continue
+        for resource in sorted(path for path in resource_root.rglob("*") if path.is_file()):
+            relative = resource.relative_to(root).as_posix()
+            routed = any(
+                relative == reference
+                or (reference.endswith("/") and relative.startswith(reference))
+                for reference in references
+            )
+            if not routed:
+                diagnostics.append(
+                    Diagnostic(
+                        "RCA-RESOURCE-001",
+                        relative,
+                        "bundled resource is not routed from SKILL.md",
+                    )
+                )
 
     for path in root.rglob("*"):
         if not path.is_file():

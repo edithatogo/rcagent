@@ -83,3 +83,22 @@ def test_absolute_path_fails(tmp_path: Path) -> None:
         "# Guide\n\nC:\\private\\record.txt\n", encoding="utf-8"
     )
     assert "RCA-PORT-001" in _requirements(skill)
+
+
+def test_orphan_resource_fails(tmp_path: Path) -> None:
+    skill = _skill(tmp_path)
+    (skill / "references/orphan.md").write_text("# Orphan\n", encoding="utf-8")
+    assert "RCA-RESOURCE-001" in _requirements(skill)
+
+
+def test_explicit_directory_route_covers_nested_resources(tmp_path: Path) -> None:
+    skill = _skill(tmp_path)
+    path = skill / "SKILL.md"
+    path.write_text(
+        path.read_text(encoding="utf-8") + "\nLoad only from `assets/templates/`.\n",
+        encoding="utf-8",
+    )
+    nested = skill / "assets/templates"
+    nested.mkdir(parents=True)
+    (nested / "report.md").write_text("# Report\n", encoding="utf-8")
+    assert validate_skill(skill) == []

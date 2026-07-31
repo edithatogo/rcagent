@@ -78,6 +78,9 @@ placeholders until an authorised local workflow replaces them. Clearly label:
 - actions, owners, dates, measures, and review points; and
 - limitations, missing evidence, and residual risk.
 
+When producing a DOCX or presentation, also apply the relevant guidance under
+`assets/styles/`.
+
 Read `references/just-culture-guide.md` only when authorised reviewers need a
 behavioural decision aid. Do not convert it into an automated blame or
 disciplinary determination. Read `references/safety-ii-principles.md` when
