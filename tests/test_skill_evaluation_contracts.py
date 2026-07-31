@@ -20,7 +20,8 @@ def test_trigger_partitions_and_thresholds_are_fail_closed() -> None:
         "positive_rate": 1.0,
         "negative_rate": 0.0,
     }
-    assert {case["partition"] for case in cases} == {"train", "held_out"}
+    partitions = {case["partition"] for case in cases}
+    assert {"train", "held_out", "regression_exposed"}.issubset(partitions)
     assert {case["expected"] for case in cases} == {"trigger", "no_trigger"}
     assert len({case["id"] for case in cases}) == len(cases)
 

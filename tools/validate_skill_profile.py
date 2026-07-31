@@ -90,7 +90,7 @@ def validate_profile(root: Path, *, require_complete: bool = False) -> list[str]
             for case in trigger_data.get("cases", [])
             if isinstance(case, dict)
         }
-        if partitions != {"train", "held_out"}:
+        if not {"train", "held_out"}.issubset(partitions):
             errors.append("RCA-EVAL-001: trigger cases require train and held_out partitions")
 
     if "outputs" in documents:

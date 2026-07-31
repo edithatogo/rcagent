@@ -49,6 +49,17 @@ def parse_events(raw: str) -> tuple[bool, int | None, int | None, bool]:
     return activated, input_tokens, output_tokens, completed
 
 
+def redact_workspace(raw: str, workspace: Path) -> str:
+    variants = {
+        str(workspace),
+        str(workspace).replace("\\", "\\\\"),
+        workspace.as_posix(),
+    }
+    for variant in sorted(variants, key=len, reverse=True):
+        raw = raw.replace(variant, "<EVAL_WORKSPACE>")
+    return raw
+
+
 def run_evaluation(
     repository: Path,
     cases_path: Path,
@@ -56,9 +67,14 @@ def run_evaluation(
     *,
     trials: int,
     timeout: int,
+    partitions: set[str] | None = None,
 ) -> tuple[int, dict[str, object]]:
     cases_document = json.loads(cases_path.read_text(encoding="utf-8"))
     cases = cases_document["cases"]
+    if partitions:
+        cases = [case for case in cases if case["partition"] in partitions]
+        if not cases:
+            raise ValueError("partition selection matched no cases")
     thresholds = cases_document["thresholds"]
     if trials < thresholds["minimum_trials"]:
         raise ValueError(f"at least {thresholds['minimum_trials']} trials are required")
@@ -103,10 +119,9 @@ def run_evaluation(
                         timeout=timeout,
                         check=False,
                     )
-                    raw_path.write_text(result.stdout, encoding="utf-8")
-                    activated, input_tokens, output_tokens, completed = parse_events(
-                        result.stdout
-                    )
+                    raw = redact_workspace(result.stdout, workspace)
+                    raw_path.write_text(raw, encoding="utf-8")
+                    activated, input_tokens, output_tokens, completed = parse_events(raw)
                     status = (
                         "completed"
                         if result.returncode == 0 and completed
@@ -114,6 +129,7 @@ def run_evaluation(
                     )
                 except subprocess.TimeoutExpired as exc:
                     raw = exc.stdout.decode("utf-8", "replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+                    raw = redact_workspace(raw, workspace)
                     raw_path.write_text(raw, encoding="utf-8")
                     activated, input_tokens, output_tokens, _ = parse_events(raw)
                     status = "timeout"
@@ -171,6 +187,7 @@ def run_evaluation(
             "dynamic_skill_search": False,
         },
         "trials_per_case": trials,
+        "partitions": sorted(partitions) if partitions else ["all"],
         "passed": passed,
         "cases": case_results,
         "observations": [asdict(item) for item in observations],
@@ -192,6 +209,12 @@ def main() -> int:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--trials", type=int, default=3)
     parser.add_argument("--timeout", type=int, default=120)
+    parser.add_argument(
+        "--partition",
+        action="append",
+        dest="partitions",
+        help="Run only this partition; repeat for multiple partitions.",
+    )
     args = parser.parse_args()
     try:
         code, summary = run_evaluation(
@@ -200,6 +223,7 @@ def main() -> int:
             args.output_dir.resolve(),
             trials=args.trials,
             timeout=args.timeout,
+            partitions=set(args.partitions) if args.partitions else None,
         )
     except (OSError, ValueError, json.JSONDecodeError) as error:
         parser.error(str(error))

@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"019fb745-8270-7b01-9f68-1b4c73e447c8"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"Which medicine and patient? Please provide:\n\n- Medicine name, formulation, and strength\n- Indication\n- Age and weight\n- Kidney/liver function\n- Allergies, pregnancy status, and relevant medicines\n- The prescription/order or clinical scenario\n\nDon’t administer a dose based on incomplete information—confirm with the prescriber or pharmacist. If a dose may already have been given incorrectly, contact your local poisons service or emergency team now."}}
+{"type":"turn.completed","usage":{"input_tokens":14745,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":125,"reasoning_output_tokens":29}}

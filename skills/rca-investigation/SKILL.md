@@ -1,6 +1,6 @@
 ---
 name: rca-investigation
-description: Investigate healthcare incidents and serious adverse events using evidence-grounded, systems-focused RCA methods; triage an investigation, build a chronology, analyse contributing conditions and barriers, draft a review report, or govern corrective actions and effectiveness checks. Use for explicit or implicit clinical incident investigation and learning requests in AU/NZ settings. Do not use for individual clinical diagnosis or treatment, legal advice, disciplinary findings, or unsupported severity and notification decisions.
+description: Investigate healthcare incidents and serious adverse events using evidence-grounded, systems-focused RCA methods. Use for explicit or implicit AU/NZ clinical incident investigation and learning requests, including review triage, evidence chronology, contributing-condition and barrier analysis, investigation reports, corrective actions, and effectiveness checks.
 compatibility: Requires an Agent Skills client that can read bundled Markdown files.
 metadata:
   rca-workbench-profile: portable-core

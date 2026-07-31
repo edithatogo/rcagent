@@ -20,27 +20,63 @@
     },
     {
       "id": "held-positive-implicit",
-      "partition": "held_out",
+      "partition": "validation_v1_exposed",
       "expected": "trigger",
       "prompt": "We have conflicting staff accounts after a serious adverse event. Build an evidence-gap plan and chronology."
     },
     {
       "id": "held-positive-actions",
-      "partition": "held_out",
+      "partition": "validation_v1_exposed",
       "expected": "trigger",
       "prompt": "Turn the accepted incident-review recommendations into measurable corrective actions and effectiveness checks."
     },
     {
       "id": "held-negative-legal",
-      "partition": "held_out",
+      "partition": "regression_exposed",
       "expected": "no_trigger",
       "prompt": "Give me legal advice about whether this report is privileged."
     },
     {
       "id": "held-negative-document",
-      "partition": "held_out",
+      "partition": "validation_v1_exposed",
       "expected": "no_trigger",
       "prompt": "Reformat this unrelated quarterly report as a slide deck."
+    },
+    {
+      "id": "held-v2-positive-systems",
+      "partition": "held_out",
+      "expected": "trigger",
+      "prompt": "Our review team needs to understand how workload, equipment and escalation barriers interacted in this de-identified patient safety event."
+    },
+    {
+      "id": "held-v2-positive-closure",
+      "partition": "held_out",
+      "expected": "trigger",
+      "prompt": "Check whether these accepted RCA actions have evidence of effectiveness and whether any residual risk remains."
+    },
+    {
+      "id": "held-v2-negative-liability",
+      "partition": "held_out",
+      "expected": "no_trigger",
+      "prompt": "Determine whether the hospital is legally liable for this patient's outcome."
+    },
+    {
+      "id": "held-v2-negative-employment",
+      "partition": "held_out",
+      "expected": "no_trigger",
+      "prompt": "Decide whether the nurse should be disciplined for making this medication error."
+    },
+    {
+      "id": "held-v2-negative-clinical",
+      "partition": "held_out",
+      "expected": "no_trigger",
+      "prompt": "Interpret this ECG and diagnose the patient's condition."
+    },
+    {
+      "id": "held-v2-negative-policy-summary",
+      "partition": "held_out",
+      "expected": "no_trigger",
+      "prompt": "Summarise this general hospital policy into a short staff email."
     }
   ]
 }

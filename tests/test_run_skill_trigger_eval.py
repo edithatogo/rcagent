@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from tools.run_skill_trigger_eval import parse_events, run_evaluation
+from tools.run_skill_trigger_eval import parse_events, redact_workspace, run_evaluation
 
 
 ROOT = Path(__file__).parents[1]
@@ -31,6 +31,16 @@ def test_parse_events_does_not_trust_self_report_or_malformed_lines() -> None:
         ]
     )
     assert parse_events(raw) == (False, 3, 1, True)
+
+
+def test_workspace_redaction_handles_json_escaped_windows_path() -> None:
+    workspace = Path(r"C:\Users\Example\AppData\Temp\run")
+    raw = (
+        r'{"command":"Get-Content C:\\Users\\Example\\AppData\\Temp\\run\\SKILL.md"}'
+    )
+    redacted = redact_workspace(raw, workspace)
+    assert "Users" not in redacted
+    assert "<EVAL_WORKSPACE>" in redacted
 
 
 def _cases(path: Path) -> Path:
@@ -112,3 +122,22 @@ def test_minimum_trial_contract_is_enforced(tmp_path: Path) -> None:
         run_evaluation(
             ROOT, _cases(tmp_path / "cases.json"), tmp_path / "runs", trials=0, timeout=1
         )
+
+
+def test_partition_selection_is_explicit(tmp_path: Path, monkeypatch) -> None:
+    def fake_run(command, **kwargs):
+        raw = '{"type":"turn.completed","usage":{"input_tokens":1,"output_tokens":1}}\n'
+        return SimpleNamespace(returncode=0, stdout=raw)
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    code, summary = run_evaluation(
+        ROOT,
+        _cases(tmp_path / "cases.json"),
+        tmp_path / "runs",
+        trials=1,
+        timeout=1,
+        partitions={"held_out"},
+    )
+    assert code == 1
+    assert summary["partitions"] == ["held_out"]
+    assert [case["id"] for case in summary["cases"]] == ["positive", "negative"]
