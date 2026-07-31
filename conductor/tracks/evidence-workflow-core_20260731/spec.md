@@ -41,6 +41,13 @@ requires a fit-gap record and an approved Architecture Decision Record.
 - Create fixtures and negative cases
 - Define adapter APIs
 - Verify provenance completeness
+- Model initial submission, huddle, provisional risk and harm assessment,
+  review-path selection, team formation, evidence acquisition, interviews,
+  consultation, findings, recommendations, related-policy referrals,
+  effectiveness, learning, and closure
+- Represent patient and incident problem lists, chronology events, strengths,
+  weaknesses, diagrams, data analyses, and dissent without collapsing them
+  into findings
 
 ## Architecture and Delivery Principles
 
@@ -83,6 +90,10 @@ Every decision request must include the recommended option, viable alternatives,
 4. Storage, retrieval, model, workflow, and client implementations remain replaceable behind versioned contracts.
 5. Round-trip, migration, and failure fixtures pass without using sensitive data.
 6. Exports preserve provenance and clearly distinguish observed facts, reported accounts, analysis, and decisions.
+7. Lifecycle transitions distinguish provisional assessments, authorised
+   decisions, referrals to specialist pathways, and verified completion.
+8. Literature candidates, screened evidence, citations, findings,
+   recommendations, and rationale remain separately provenance-linked.
 
 ## Out of Scope
 

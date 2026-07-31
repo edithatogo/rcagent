@@ -15,6 +15,11 @@ Its initial domain is healthcare incident investigation and serious adverse even
 
 The canonical core is client-neutral. Codex, Claude Code, and other client integrations are optional adapters outside that core.
 
+The longer-term architecture is a clinical-governance
+[system of systems](./clinical-governance-architecture.md): an incident
+lifecycle spine, shared evidence and knowledge services, specialist governance
+domains, and governed organisational memory.
+
 ## Target Users
 
 - Clinical governance, patient safety, quality, and risk teams
@@ -46,6 +51,11 @@ Every run declares its actual mode, capabilities, model and framework revisions,
 - Versioned jurisdiction packs, beginning with NSW Health and Clinical Excellence Commission sources
 - Workflows and original or rights-cleared templates for serious adverse events, open disclosure, consumer and family participation, staff support, cultural safety, and governance review
 - Citation-first retrieval that starts with full-text search and adds local embeddings, hybrid search, or reranking only when evaluation supports them
+- Literature discovery with screening and a thin, pinned SourceRight adapter
+  for citation integrity and claim-to-source provenance
+- Governed access to incident history, prior reviews, findings,
+  recommendations, actions, effectiveness, comparative benchmarking,
+  operational data, and quality-and-safety measures
 - Replaceable multimodal adapters for document layout and OCR, encoders, speech transcription and diarisation, images and DICOM, and ECG or time-series inputs
 - Device-aware local model and runtime profiles for CPU/iGPU Windows systems, Apple silicon/MLX, and larger hosts
 - Benchmark, privacy, safety, calibration, robustness, resource, and upstream-drift harnesses

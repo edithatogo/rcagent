@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0",
+  "name": "clinical-governance-system-of-systems",
+  "principles": [
+    "authoritative-enterprise-systems-remain-authoritative",
+    "one-canonical-evidence-and-provenance-contract",
+    "federate-before-copying",
+    "human-authority-for-clinical-legal-employment-cultural-and-regulatory-decisions",
+    "integrate-before-extracting"
+  ],
+  "layers": [
+    {
+      "id": "incident-lifecycle",
+      "owner_tracks": [2, 4, 9],
+      "stages": [
+        "incident-submission",
+        "incident-huddle",
+        "provisional-risk-and-harm-assessment",
+        "review-path-and-team-formation",
+        "evidence-acquisition",
+        "chronology-and-problem-lists",
+        "interviews-analysis-methods-and-consultation",
+        "related-policy-pathways",
+        "findings",
+        "literature-informed-recommendations",
+        "actions-effectiveness-learning-and-closure"
+      ]
+    },
+    {
+      "id": "shared-services",
+      "owner_tracks": [1, 2, 3, 4, 5, 6, 7],
+      "capabilities": [
+        "evidence-and-claim-provenance",
+        "policy-authority-and-drift",
+        "privacy-security-records-cultural-and-clinical-safety",
+        "retrieval-and-literature-discovery",
+        "citation-integrity",
+        "data-analysis",
+        "documents-diagrams-and-multimodal",
+        "evaluation-and-assurance"
+      ]
+    },
+    {
+      "id": "specialist-domains",
+      "owner_tracks": [1, 2, 3, 4, 5, 9],
+      "domains": [
+        "enterprise-risk",
+        "clinical-risk",
+        "lookback",
+        "cluster-and-thematic-review",
+        "quality-safety-operational-and-comparative-analysis",
+        "individual-clinician-or-worker-review",
+        "just-culture",
+        "cultural-assessment",
+        "quality-improvement-and-redesign",
+        "medicolegal-and-regulatory",
+        "proactive-safety-and-resilience"
+      ]
+    },
+    {
+      "id": "organisational-learning",
+      "owner_tracks": [2, 3, 5, 7, 9],
+      "sources": [
+        "incident-history",
+        "serious-adverse-event-reviews",
+        "findings-recommendations-actions-and-effectiveness",
+        "health-roundtable-or-comparable-benchmarking",
+        "operational-data",
+        "quality-and-safety-measures"
+      ],
+      "default_pattern": "federated-source-linked-retrieval",
+      "cross_case_default": "deidentified-or-aggregate"
+    }
+  ],
+  "integrations": [
+    {
+      "id": "sourceright",
+      "repository": "https://github.com/edithatogo/sourceright",
+      "role": "citation-integrity-and-claim-source-provenance",
+      "owner_track": 7,
+      "validation_track": 5,
+      "boundary": "thin-pinned-adapter",
+      "does_not_establish": [
+        "study-quality",
+        "clinical-truth",
+        "recommendation-appropriateness"
+      ]
+    }
+  ],
+  "extraction_criteria": [
+    "distinct-authority-safety-case-privacy-compartment-or-system-of-record",
+    "independent-lifecycle-or-release-cadence",
+    "specialist-evaluation-credentials-dependencies-or-deployment",
+    "material-trigger-or-context-interference",
+    "measured-maintenance-or-risk-benefit"
+  ],
+  "required_shared_contracts": [
+    "canonical-schema",
+    "provenance-chain",
+    "terminology-mapping",
+    "decision-ledger",
+    "orchestration-contract"
+  ]
+}

@@ -34,7 +34,24 @@ def _write_valid_repository(root: Path) -> None:
         encoding="utf-8",
     )
     (root / "conductor/roadmap.json").write_text(
-        json.dumps({"tracks": [{"id": "example_20260731", "issue": 5}]}),
+        json.dumps(
+            {"tracks": [{"number": 0, "id": "example_20260731", "issue": 5}]}
+        ),
+        encoding="utf-8",
+    )
+    (root / "conductor/clinical-governance-architecture.json").write_text(
+        json.dumps(
+            {
+                "layers": [{"id": "lifecycle", "owner_tracks": [0]}],
+                "integrations": [
+                    {
+                        "id": "citations",
+                        "owner_track": 0,
+                        "validation_track": 0
+                    }
+                ]
+            }
+        ),
         encoding="utf-8",
     )
 
@@ -69,7 +86,9 @@ def test_duplicate_issue_and_missing_contract_are_reported(tmp_path: Path) -> No
     )
     roadmap_path = tmp_path / "conductor/roadmap.json"
     roadmap = json.loads(roadmap_path.read_text(encoding="utf-8"))
-    roadmap["tracks"].append({"id": "second_20260731", "issue": 5})
+    roadmap["tracks"].append(
+        {"number": 1, "id": "second_20260731", "issue": 5}
+    )
     roadmap_path.write_text(json.dumps(roadmap), encoding="utf-8")
 
     errors = validate(tmp_path)
@@ -90,11 +109,11 @@ def test_invalid_track_fields_and_missing_files_are_reported(tmp_path: Path) -> 
         json.dumps(
             {
                 "tracks": [
-                    {"id": "example_20260731", "issue": 5},
-                    {"id": "example_20260731", "issue": 7},
-                    {"id": "missing_20260731", "issue": 6},
-                    {"id": "invalid_issue_20260731", "issue": 0},
-                    {"id": "", "issue": 8},
+                    {"number": 0, "id": "example_20260731", "issue": 5},
+                    {"number": 1, "id": "example_20260731", "issue": 7},
+                    {"number": 2, "id": "missing_20260731", "issue": 6},
+                    {"number": 3, "id": "invalid_issue_20260731", "issue": 0},
+                    {"number": 4, "id": "", "issue": 8},
                 ]
             }
         ),
@@ -105,6 +124,33 @@ def test_invalid_track_fields_and_missing_files_are_reported(tmp_path: Path) -> 
     assert "roadmap track has no valid id" in errors
     assert any("missing index.md" in error for error in errors)
     assert any("invalid GitHub issue" in error for error in errors)
+
+
+def test_unknown_clinical_governance_owners_are_reported(tmp_path: Path) -> None:
+    _write_valid_repository(tmp_path)
+    architecture = tmp_path / "conductor/clinical-governance-architecture.json"
+    architecture.write_text(
+        json.dumps(
+            {
+                "layers": [
+                    {"id": "lifecycle", "owner_tracks": [999]},
+                    {"id": "lifecycle", "owner_tracks": []}
+                ],
+                "integrations": [
+                    {
+                        "id": "sourceright",
+                        "owner_track": 999,
+                        "validation_track": 0
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    errors = validate(tmp_path)
+    assert "lifecycle: unknown owner track number: 999" in errors
+    assert "duplicate clinical governance layer id: lifecycle" in errors
+    assert "sourceright: unknown owner_track number: 999" in errors
 
 
 def test_invalid_metadata_and_wrong_issue_mapping_are_reported(tmp_path: Path) -> None:

@@ -50,6 +50,7 @@ These issues refine existing tracks and must not become duplicate subsystems:
 
 | Status | GitHub issue | Owning Conductor scope |
 |---|---|---|
+| [ ] | [#19 Clinical governance system-of-systems roadmap](https://github.com/edithatogo/rcagent/issues/19) | Track 01 architecture with first vertical slice across Tracks 02, 04, 07, and 09 |
 | [ ] | [#17 Maximise security and solo-maintainer context](https://github.com/edithatogo/rcagent/issues/17) | Track 01 foundation harness, with Track 03 security assurance |
 | [ ] | [#18 Complete evidence-based repository hardening](https://github.com/edithatogo/rcagent/issues/18) | Portfolio-level closeout; #17 is its tracked subissue |
 

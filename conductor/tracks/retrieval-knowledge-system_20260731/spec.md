@@ -6,6 +6,9 @@ Build citation-first, provenance-preserving knowledge retrieval that begins with
 
 This track is coordinated by GitHub issue [#12](https://github.com/edithatogo/rcagent/issues/12) and the portfolio rules in [roadmap.md](../../roadmap.md). It may proceed autonomously once its hard dependencies and definition of ready have objective evidence.
 
+The initial citation-integrity boundary is documented in the
+[SourceRight adapter fit-gap](./sourceright-adapter-plan.md).
+
 ## Autonomous Execution Requirement
 
 Execution follows [autonomy.md](../../autonomy.md) and
@@ -41,6 +44,12 @@ requires a fit-gap record and an approved Architecture Decision Record.
 - Ground answers and defend retrieval
 - Implement lifecycle operations
 - Produce retrieval assurance receipts
+- Search external literature through replaceable provider adapters and pass
+  candidate references, citations, and claim links through a pinned
+  SourceRight contract
+- Federate governed access to prior incidents, reviews, findings,
+  recommendations, effectiveness evidence, comparative benchmarking,
+  operational data, and quality-and-safety measures
 
 ## Architecture and Delivery Principles
 
@@ -86,6 +95,13 @@ Every decision request must include the recommended option, viable alternatives,
 4. Generated answers cite retrievable evidence, expose conflicts, and abstain when support is insufficient.
 5. Public and private indexes cannot be accidentally joined.
 6. Update, supersession, deletion, rebuild, injection, and source-drift tests pass.
+7. Literature-search receipts preserve query, provider, date, filters,
+   screening decisions, exact reference metadata, SourceRight validation
+   results, and unresolved citation conflicts.
+8. Cross-case retrieval enforces purpose, access, compartment, minimisation,
+   lineage, retention, freshness, and de-identification or aggregation rules.
+9. Retrieval from prior reviews or organisational data is never represented
+   as a causal finding without case-specific evidence and authorised review.
 
 ## Out of Scope
 
@@ -93,6 +109,8 @@ Every decision request must include the recommended option, viable alternatives,
 - Assuming vectors are more accurate than lexical retrieval
 - Copying restricted policy content without rights
 - Replacing authoritative source review with model output
+- Reimplementing SourceRight citation, CSL, DOI conflict, or claim-provenance
+  capability inside this repository
 
 ## Evidence Standard
 

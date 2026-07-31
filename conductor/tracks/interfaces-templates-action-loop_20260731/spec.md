@@ -41,6 +41,11 @@ requires a fit-gap record and an approved Architecture Decision Record.
 - Close the recommendation-to-effectiveness loop
 - Produce auditable outputs
 - Evaluate usability and oversight
+- Cover initial submission, huddle, provisional risk and harm assessment,
+  review-team formation, evidence requests, chronology, patient and incident
+  problem lists, interviews, consultations, methods and diagrams, findings,
+  literature-informed recommendations, related-policy referrals, action
+  effectiveness, learning, and closure
 
 ## Architecture and Delivery Principles
 
@@ -86,6 +91,9 @@ Every decision request must include the recommended option, viable alternatives,
 4. Recommendations become owned, time-bounded actions with dependencies, assurance, and effectiveness review.
 5. Open disclosure, consumers and families, staff support, accessibility, and Aboriginal cultural safety are designed in.
 6. Usability, accessibility, failure recovery, separation of duties, and human oversight are evaluated.
+7. Specialist pathways can be invoked and tracked without silently merging
+   incident review with lookback, cluster, workforce, cultural, enterprise
+   risk, clinical risk, quality-improvement, or medicolegal decisions.
 
 ## Out of Scope
 

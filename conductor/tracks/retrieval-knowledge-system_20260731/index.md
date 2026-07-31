@@ -22,4 +22,5 @@
 - [Specification](./spec.md)
 - [Implementation Plan](./plan.md)
 - [Metadata](./metadata.json)
+- [SourceRight Adapter Fit-Gap](./sourceright-adapter-plan.md)
 - [Portfolio Roadmap](../../roadmap.md)
