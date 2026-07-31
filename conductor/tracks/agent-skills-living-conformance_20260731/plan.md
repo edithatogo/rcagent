@@ -20,7 +20,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
-- [ ] Task: Establish the system and dependency context
+- [~] Task: Establish the system and dependency context
   - [ ] Read `integration-strategy.md` and this track's entry in `integration-map.json`
   - [ ] Identify the current organisational system, standard, validator, framework, runtime, or client contract that already owns each capability
   - [ ] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
