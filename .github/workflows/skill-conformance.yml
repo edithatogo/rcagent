@@ -37,6 +37,14 @@ jobs:
       - name: Validate portable skill
         run: python -m tools.validate_skill skills/rca-investigation
 
+      - name: Validate with pinned official skills-ref
+        shell: bash
+        run: |
+          git clone --quiet https://github.com/agentskills/agentskills.git /tmp/agentskills
+          git -C /tmp/agentskills checkout --quiet 38a2ff82958afee88dadf4831509e6f7e9d8ef4e
+          uv run --directory /tmp/agentskills/skills-ref \
+            skills-ref validate "$GITHUB_WORKSPACE/skills/rca-investigation"
+
       - name: Verify current upstream revision
         run: python -m tools.check_skill_drift
 
