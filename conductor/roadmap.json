@@ -6,6 +6,8 @@
     "default_branch": "master",
     "root_issue": 1,
     "autonomy": "autonomous-with-decision-gates",
+    "integration_policy": "integrate-configure-profile-extend-contribute-before-build",
+    "integration_map": "conductor/integration-map.json",
     "max_active_lanes": {
       "integration": 1,
       "independent": 2

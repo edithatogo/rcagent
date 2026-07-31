@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "policy": "integrate-configure-profile-extend-contribute-before-build",
+  "strategy": "conductor/integration-strategy.md",
+  "statuses": [
+    "inventory",
+    "assess",
+    "spike",
+    "adopt",
+    "adapt",
+    "contribute-upstream",
+    "project-extension",
+    "reject",
+    "unsupported"
+  ],
+  "tracks": [
+    {
+      "track_id": "agent-skills-living-conformance_20260731",
+      "candidate_systems": [
+        "Agent Skills specification and official validator",
+        "Codex and OpenAI plugin contracts",
+        "Claude Code skill and plugin contracts",
+        "GitHub release, attestation, and dependency tooling"
+      ],
+      "project_owned_gap": "portable healthcare safety content, governed extensions, compatibility evidence, and client adapter shims"
+    },
+    {
+      "track_id": "safety-systems-foundation_20260731",
+      "candidate_systems": [
+        "Conductor",
+        "GitHub Issues, subissues, dependencies, Actions, and releases",
+        "uv and Python packaging",
+        "JSON Schema",
+        "existing organisational identity, content, workflow, and records systems"
+      ],
+      "project_owned_gap": "portfolio contracts, bounded context packs, dependency and evidence reconciliation, and safety-specific autonomy gates"
+    },
+    {
+      "track_id": "evidence-workflow-core_20260731",
+      "candidate_systems": [
+        "ims+ or another approved incident system of record",
+        "HL7 FHIR R5 AdverseEvent, Provenance, AuditEvent, Task, DocumentReference, Questionnaire, and QuestionnaireResponse",
+        "W3C PROV",
+        "CMMN, BPMN, and DMN",
+        "RO-Crate and BagIt"
+      ],
+      "project_owned_gap": "investigation evidence and claim semantics, systems-analysis records, jurisdiction-neutral workflow constraints, and safety-action effectiveness"
+    },
+    {
+      "track_id": "privacy-security-assurance_20260731",
+      "candidate_systems": [
+        "organisational identity, access, device, key, audit, and records controls",
+        "NIST AI Risk Management Framework and Generative AI Profile",
+        "NIST Privacy Framework",
+        "OWASP GenAI Security guidance",
+        "MITRE ATLAS",
+        "OpenSSF, SLSA, SPDX, and CycloneDX supply-chain controls"
+      ],
+      "project_owned_gap": "mode-specific clinical-safety, cultural-safety, evidence, egress, and human-review assurance cases"
+    },
+    {
+      "track_id": "nsw-health-jurisdiction-pack_20260731",
+      "candidate_systems": [
+        "ims+ and approved local incident systems",
+        "NSW Health Policy Distribution System",
+        "Clinical Excellence Commission resources and templates",
+        "Agency for Clinical Innovation resources",
+        "My Health Learning and approved SharePoint sources",
+        "NSQHS standards and national guidance"
+      ],
+      "project_owned_gap": "versioned authority mapping, rights-safe workflow rules, policy drift, and portable jurisdiction adapters"
+    },
+    {
+      "track_id": "benchmark-evaluation-harness_20260731",
+      "candidate_systems": [
+        "Inspect AI and Inspect Evals",
+        "EleutherAI Language Model Evaluation Harness",
+        "MLflow local tracking and evaluation",
+        "Ragas and established information-retrieval measures",
+        "pytest and property-based testing",
+        "existing security and red-team evaluation tools"
+      ],
+      "project_owned_gap": "healthcare incident cases, evidence and citation rubrics, privacy and clinical-safety hard gates, and device profiles"
+    },
+    {
+      "track_id": "multimodal-capability-fabric_20260731",
+      "candidate_systems": [
+        "Docling and maintained OCR engines",
+        "Transformers, ONNX Runtime, Optimum, and OpenVINO",
+        "whisper.cpp, faster-whisper, pyannote, and NeMo",
+        "pydicom, Orthanc, and MONAI",
+        "WFDB"
+      ],
+      "project_owned_gap": "capability profiles, execution disclosures, privacy routing, source-coordinate provenance, and clinical research gates"
+    },
+    {
+      "track_id": "retrieval-knowledge-system_20260731",
+      "candidate_systems": [
+        "SQLite FTS",
+        "Haystack and LlamaIndex",
+        "Qdrant, LanceDB, and FAISS",
+        "Docling ingestion",
+        "Ragas and established information-retrieval measures"
+      ],
+      "project_owned_gap": "authority, rights, jurisdiction, compartment, policy-drift, citation verification, conflict, and abstention semantics"
+    },
+    {
+      "track_id": "local-runtime-model-lab_20260731",
+      "candidate_systems": [
+        "llama.cpp and evaluated local facades such as Ollama",
+        "ONNX Runtime, Optimum, and OpenVINO",
+        "MLX and MLX-LM",
+        "Transformers and vLLM",
+        "Hugging Face Hub model metadata",
+        "Modular MAX and Mojo as experimental adapters"
+      ],
+      "project_owned_gap": "device probes, reproducible profiles, safety and privacy routing, recommendation evidence, and offline bundles"
+    },
+    {
+      "track_id": "interfaces-templates-action-loop_20260731",
+      "candidate_systems": [
+        "ims+ or another approved incident system of record",
+        "approved Microsoft 365, SharePoint, Teams, Power Automate, and Dataverse capabilities",
+        "CMMN, BPMN, DMN, and evaluated engines such as Flowable",
+        "FHIR Task, Questionnaire, QuestionnaireResponse, and DocumentReference",
+        "maintained Markdown, Mermaid, Pandoc, Quarto, office, and PDF tooling"
+      ],
+      "project_owned_gap": "privacy-preserving analysis workspace, evidence views, investigation methods, disclosure prompts, and closed-loop action effectiveness"
+    },
+    {
+      "track_id": "domain-adaptation-finetuning_20260731",
+      "candidate_systems": [
+        "Transformers, Datasets, PEFT, TRL, and Accelerate",
+        "LlamaFactory and Axolotl",
+        "MLX-LM for supported Apple silicon experiments",
+        "MLflow local experiment tracking",
+        "existing model and dataset registries"
+      ],
+      "project_owned_gap": "domain data governance, healthcare benchmark tasks, adaptation readiness, safety gates, and promotion decisions"
+    },
+    {
+      "track_id": "distribution-registries-plugins_20260731",
+      "candidate_systems": [
+        "GitHub releases, attestations, dependency graph, and security tooling",
+        "Agent Skills specification and discovery ecosystem",
+        "Claude Code plugin marketplaces",
+        "OpenAI and Codex plugin directory",
+        "SPDX, CycloneDX, OpenSSF, and current signing or provenance standards"
+      ],
+      "project_owned_gap": "portable safety-skill packages, compatibility profiles, client adapters, submission evidence, and governed release decisions"
+    }
+  ]
+}

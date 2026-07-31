@@ -16,6 +16,21 @@ consume the portable core without duplicating its authoritative domain content.
 matrix has objective passing evidence. Requirements judged inapplicable must
 have an explicit, reviewed rationale.
 
+## Integration-First Requirement
+
+This track follows the portfolio
+[integration-first strategy](../../integration-strategy.md) and its entry in
+[integration-map.json](../../integration-map.json). Before it adds project
+code or metadata, it must assess the current standard, official validator,
+client contracts, packaging systems, maintained dependencies, and upstream
+extension points.
+
+The preferred response to a generic gap is configuration, a standards profile,
+a thin adapter, or an authorised upstream contribution. A local compatibility
+shim must be isolated, contract-tested, time-limited, and linked to its
+removal condition. A new subsystem or permanent fork requires a fit-gap record
+and an approved Architecture Decision Record.
+
 ## Objectives
 
 1. Achieve complete deterministic compliance with the current Agent Skills specification.

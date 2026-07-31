@@ -4,6 +4,34 @@
 
 Execution follows [workflow.md](../../workflow.md). Phases continue automatically when objective verification passes and no owner decision gate is reached.
 
+## Phase 0: Existing-System Fit and Gap Closure
+
+- [ ] Task: Establish the system and dependency context
+  - [ ] Read `integration-strategy.md` and this track's entry in `integration-map.json`
+  - [ ] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
+  - [ ] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
+  - [ ] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
+
+- [ ] Task: Select the smallest adequate intervention
+  - [ ] Prefer existing-system configuration or a standards profile
+  - [ ] Prefer a thin replaceable adapter when translation is the remaining gap
+  - [ ] Identify generic gaps suitable for an authorised upstream issue or contribution
+  - [ ] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
+  - [ ] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
+
+- [ ] Task: Define the dependency lifecycle
+  - [ ] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile
+  - [ ] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
+  - [ ] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
+  - [ ] Update `integration-map.json` with the selected status and evidence links
+
+- [ ] Task: Phase Verification & Checkpoint
+  - [ ] Verify that no planned work duplicates an adequate existing capability
+  - [ ] Verify the system-of-record and data-authority boundary
+  - [ ] Verify the smallest remaining gap and ownership rationale
+  - [ ] Record the fit-gap receipt and bounded handoff context
+  - [ ] Continue automatically unless an enterprise connection, upstream communication, public dependency commitment, permanent fork, or new subsystem requires owner approval
+
 ## Phase 1: Create the authoritative source registry
 
 - [ ] Task: Implement the phase scope
@@ -11,6 +39,9 @@ Execution follows [workflow.md](../../workflow.md). Phases continue automaticall
   - [ ] Register relevant CEC, ACI, ACSQHC, NSQHS, legislation, regulation, and local-policy source classes
   - [ ] Record issuer, authority, jurisdiction, status, version, dates, URLs, checksums, rights, and review cadence
   - [ ] Link to source material rather than copying it until licence and operational need are clear
+  - [ ] Inventory ims+ and approved alternative incident-system fields, exports, imports, identifiers, workflow states, reports, and verified integration options
+  - [ ] Inventory approved Policy Distribution System, CEC, ACI, My Health Learning, SharePoint, and local procedure sources without duplicating their authoritative content
+  - [ ] Define which gaps require configuration or an authorised enterprise-system change rather than a workbench feature
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks

@@ -4,6 +4,34 @@
 
 Execution follows [workflow.md](../../workflow.md). Phases continue automatically when objective verification passes and no owner decision gate is reached.
 
+## Phase 0: Existing-System Fit and Gap Closure
+
+- [ ] Task: Establish the system and dependency context
+  - [ ] Read `integration-strategy.md` and this track's entry in `integration-map.json`
+  - [ ] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
+  - [ ] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
+  - [ ] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
+
+- [ ] Task: Select the smallest adequate intervention
+  - [ ] Prefer existing-system configuration or a standards profile
+  - [ ] Prefer a thin replaceable adapter when translation is the remaining gap
+  - [ ] Identify generic gaps suitable for an authorised upstream issue or contribution
+  - [ ] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
+  - [ ] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
+
+- [ ] Task: Define the dependency lifecycle
+  - [ ] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile
+  - [ ] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
+  - [ ] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
+  - [ ] Update `integration-map.json` with the selected status and evidence links
+
+- [ ] Task: Phase Verification & Checkpoint
+  - [ ] Verify that no planned work duplicates an adequate existing capability
+  - [ ] Verify the system-of-record and data-authority boundary
+  - [ ] Verify the smallest remaining gap and ownership rationale
+  - [ ] Record the fit-gap receipt and bounded handoff context
+  - [ ] Continue automatically unless an enterprise connection, upstream communication, public dependency commitment, permanent fork, or new subsystem requires owner approval
+
 ## Phase 1: Define source and corpus contracts
 
 - [ ] Task: Implement the phase scope
@@ -32,6 +60,8 @@ Execution follows [workflow.md](../../workflow.md). Phases continue automaticall
   - [ ] Support field, authority, jurisdiction, date, source, and status filters
   - [ ] Return stable citations, locations, scores, and query receipts
   - [ ] Benchmark exact, phrase, acronym, typo, and policy-version queries
+  - [ ] Assess existing enterprise search and content APIs before creating a parallel local corpus
+  - [ ] Reuse the selected retrieval framework's indexing, query, filtering, and persistence capabilities rather than creating a general-purpose engine
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -53,6 +83,8 @@ Execution follows [workflow.md](../../workflow.md). Phases continue automaticall
   - [ ] Version embeddings, chunking, normalisation, quantisation, index, and device metadata
   - [ ] Keep vector storage replaceable and local by default
   - [ ] Measure semantic gains, false neighbours, drift, memory, and rebuild cost
+  - [ ] Evaluate Haystack or LlamaIndex orchestration and Qdrant, LanceDB, or FAISS adapters before implementing project-owned retrieval code
+  - [ ] Build no vector database, embedding runtime, or generic retriever inside the project
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks

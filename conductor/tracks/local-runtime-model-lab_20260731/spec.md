@@ -6,6 +6,20 @@ Create measured model and runtime recommendations for heterogeneous devices, inc
 
 This track is coordinated by GitHub issue [#13](https://github.com/edithatogo/rcagent/issues/13) and the portfolio rules in [roadmap.md](../../roadmap.md). It may proceed autonomously once its hard dependencies and definition of ready have objective evidence.
 
+## Integration-First Requirement
+
+This track follows [integration-strategy.md](../../integration-strategy.md) and
+its candidates in [integration-map.json](../../integration-map.json). It must
+identify the authoritative organisational system and applicable standards,
+test maintained dependencies and extension points, and own only the smallest
+safety-, privacy-, jurisdiction-, or domain-specific gap.
+
+Configuration, profiling, standards mapping, a thin adapter, or an authorised
+upstream contribution takes precedence over a project implementation. Any
+local shim requires contract tests, an upstream reference, an expiry or
+removal condition, and a replacement path. A new subsystem or permanent fork
+requires a fit-gap record and an approved Architecture Decision Record.
+
 ## In Scope
 
 - Define devices and measurement protocol

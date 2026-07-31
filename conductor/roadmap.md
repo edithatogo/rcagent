@@ -8,8 +8,32 @@
 - **Workstream C:** [#4 Product, Interfaces and Distribution](https://github.com/edithatogo/rcagent/issues/4)
 - **Execution model:** one integration lane plus at most two independent implementation lanes
 - **Autonomy:** reversible in-scope work proceeds automatically; owner decisions use the contract in [workflow.md](./workflow.md)
+- **Integration policy:** [integrate, configure, profile, extend, or contribute before building](./integration-strategy.md)
+- **System/dependency map:** [integration-map.json](./integration-map.json)
 
 GitHub uses native nested subissues for portfolio ownership and native issue dependencies for hard-start blockers. Conductor distinguishes those hard blockers from later phase dependencies so useful foundation work can begin without over-serialising the programme.
+
+## Integration-First Portfolio Rule
+
+The workbench fills demonstrated gaps around existing systems; it does not
+replace them by default.
+
+| Capability | Existing system remains authoritative | Project-owned gap |
+|---|---|---|
+| Incident notification and required incident record | ims+ or another approved incident system | Bounded ingest/export, evidence analysis, provenance, and reconciliation |
+| Enterprise records, content, identity, and collaboration | Approved organisational platforms | Local privacy-preserving processing and thin connectors |
+| Adaptive and predictable workflow | Existing workflow platform; CMMN/BPMN/DMN standards | Safety-specific profiles, validation, and interoperability |
+| Clinical exchange | Source clinical system and supported HL7 FHIR profile | Investigation mapping and evidence boundaries |
+| Provenance and packaging | W3C PROV and evaluated packaging standards | Healthcare investigation semantics and safety constraints |
+| Evaluation | Inspect AI as primary candidate plus specialist adapters | Clinical cases, rubrics, privacy and safety hard gates |
+| Retrieval | Existing lexical, vector, and orchestration frameworks | Authority, rights, compartments, citations, drift, and abstention |
+| Model inference and training | Maintained runtimes and training frameworks | Device profiles, routing, benchmarks, governance, and domain adapters |
+| User surface and reporting | Existing enterprise surfaces and maintained document tools | Only demonstrated privacy, analysis, and evidence-review gaps |
+
+Every track starts with a fit-gap phase. New project capability requires
+evidence that configuration, standards mapping, a dependency, an adapter, and
+an upstream contribution are inadequate. Generic gaps should be addressed
+upstream; local shims must be temporary and replaceable.
 
 ## Dependency Graph
 
@@ -78,7 +102,7 @@ These waves describe the recommended order, not a promise to keep every listed t
 ### Wave 1: Product and Harness Foundation
 
 - Integration lane: Track 01
-- Exit: product boundary, architecture, dependency graph, bounded context system, definitions of ready/done, command contracts, and decision governance
+- Exit: product boundary, architecture, dependency graph, existing-system inventory, fit-gap register, bounded context system, definitions of ready/done, command contracts, and decision governance
 
 ### Wave 2: Three Foundation Lanes
 

@@ -6,12 +6,23 @@ This document defines architecture constraints and candidate frameworks, not fin
 
 The project will reuse maintained upstream frameworks through thin adapters and versioned contracts. It will not maintain a bespoke copy of an entire model, retrieval, document, imaging, or workflow stack.
 
+All choices follow [integration-strategy.md](./integration-strategy.md) and the
+machine-readable [integration-map.json](./integration-map.json). The order is:
+existing organisational system, configuration or profile, open standard,
+maintained dependency, thin adapter, upstream contribution, small
+project-specific extension, then a new subsystem only by approved exception.
+
+Dependencies are introduced through locked profiles: standard-only, core,
+optional adapter, enterprise connector, evaluation/development, or
+experimental. The portable skill core must not inherit enterprise, model,
+workflow-engine, vector, imaging, training, or client-specific dependencies.
+
 ## Architecture Layers
 
 | Layer | Responsibility | Core rule |
 |---|---|---|
 | Portable skills | Client-neutral instructions, references, assets, and scripts | Self-contained Agent Skills conformance |
-| Safety domain core | Evidence, claims, workflow, actions, effectiveness, audit | Framework-neutral schemas and ports |
+| Safety domain core | Evidence, claims, workflow, actions, effectiveness, audit | Interoperability contract; not a competing source-of-record platform |
 | Jurisdiction packs | Policy sources, authority, rules, templates, drift | No jurisdiction assumptions in the generic core |
 | Capability fabric | OCR, encoders, speech, images, signals, models | `CapabilityProfile` and `ExecutionDisclosure` |
 | Knowledge system | Ingest, full-text search, vectors, hybrid retrieval, citations | Lexical baseline; public/private separation |
@@ -33,13 +44,13 @@ The Agent Skills official validator and the project conformance profile govern p
 
 ## Harness and Automation
 
-Python is the initial portable harness language because the relevant document, model, evaluation, and scientific ecosystems are mature. Use a pinned environment and lock file, with small commands for:
+Python is the initial portable harness language because the relevant document, model, evaluation, and scientific ecosystems are mature. The project commands compose maintained tools rather than reimplement them. Use a pinned environment and lock file, with small commands for:
 
 - `doctor`: environment, device, dependency, policy, model, and source preflight
 - `context`: bounded context-pack assembly with provenance and freshness
 - `queue`: next-ready-task selection from dependency and decision state
 - `validate`: schemas, links, skills, fixtures, policies, privacy, and adapters
-- `eval`: deterministic and model-assisted benchmark orchestration
+- `eval`: compose Inspect AI as the primary evaluation runner plus specialised adapters where justified
 - `receipts`: durable environment, command, revision, result, limitation, and decision evidence
 - `reconcile`: Conductor, Git, GitHub, CI, source, benchmark, and release-state comparison
 
@@ -47,7 +58,9 @@ Exact command names and packaging are Track 01 decisions. Scripts must work loca
 
 ## Storage and Retrieval
 
-Start with the smallest portable components:
+Use an approved content, records, or knowledge system first when it already
+meets the requirement. For a local workbench gap, start with the smallest
+portable components:
 
 1. canonical files plus SQLite for metadata and audit views;
 2. SQLite FTS or an equivalent deterministic lexical baseline;
@@ -108,16 +121,26 @@ Every model entry records exact repository and revision, licence, architecture, 
 ## Workflow and Interface Candidates
 
 - Canonical workflow state machines in project schemas
-- BPMN 2.0 for human-readable process interoperability where useful
+- CMMN 1.1 for adaptive, evidence-led investigation and review cases
+- BPMN 2.0 for predictable policy and integration processes
+- DMN for transparent, versioned decision tables
+- An approved organisational workflow platform before a new runtime
+- Flowable or another maintained standards-based engine only when a local executable CMMN/BPMN/DMN runtime is justified
 - Common Workflow Language for reproducible data/model pipeline experiments where it adds value
 - A small CLI and API before a richer interface
-- A maintained local application framework, such as Gradio or another evaluated option, for early UI work
+- Approved ims+, Microsoft 365, SharePoint, Teams, Power Automate, Dataverse, or comparable surfaces where they can safely host the workflow
+- A maintained local application framework, such as Gradio or another evaluated option, only for a demonstrated privacy or analysis gap
 - Office and PDF generation through maintained document tooling, with Markdown and canonical data as sources
 
 Framework adoption requires an adapter, contract tests, a compatibility window, upstream-drift checks, telemetry review, and a removal path.
 
 ## Evaluation, Testing, and Assurance
 
+- Inspect AI is the primary candidate for model, agent, tool, multimodal, sandbox, scorer, and evaluation-log orchestration
+- EleutherAI's Language Model Evaluation Harness is an adapter for applicable standard language-model benchmarks
+- MLflow local tracking is a candidate for experiment and artefact lineage when it meets privacy and maintenance gates
+- Ragas or established information-retrieval measures may provide retrieval diagnostics, but cannot replace project evidence and safety gates
+- pytest and focused testing libraries remain the deterministic contract and fixture layer
 - Official Agent Skills validator plus project stable and experimental conformance rules
 - Schema and link validation
 - Positive and negative fixtures before implementation
@@ -132,11 +155,13 @@ The legacy H0-H8 evaluation estate remains historical evidence and will be recon
 ## Supply Chain and Model Governance
 
 - Pin exact source, dependency, model, dataset, and validator revisions
+- Record the existing system, standard, configuration, adapter, and upstream contribution options considered before admission
 - Verify checksums, signatures, attestations, licences, and remote-code requirements
 - Prefer reproducible builds and local cached artefacts for governed modes
 - Evaluate SPDX 3 AI Profile, OpenSSF model-signing approaches, and MLCommons Croissant where applicable
 - Generate software/model/data bills of materials and provenance receipts appropriate to the artefact
 - Define update, vulnerability, revocation, rollback, deletion, and air-gapped refresh procedures
+- Define a data-exit and dependency-replacement path; no accepted dependency may become an undocumented permanent fork
 
 ## Distribution
 

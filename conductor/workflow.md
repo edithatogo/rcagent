@@ -12,6 +12,7 @@ GitHub and Conductor coordinate the work. Evidence, tests, sources, history, rec
 |---|---|
 | Product and safeguards | `conductor/product.md` and `conductor/product-guidelines.md` |
 | Architecture candidates and constraints | `conductor/tech-stack.md` plus accepted ADRs |
+| Existing systems, dependencies, and fit-gap decisions | `conductor/integration-strategy.md` and `conductor/integration-map.json` |
 | Portfolio dependencies and sequencing | `conductor/roadmap.md` and track `metadata.json` |
 | Track scope and acceptance | Track `spec.md` |
 | Track task state | Track `plan.md` |
@@ -88,6 +89,35 @@ A dependency is satisfied only when:
 
 A closed issue or green workflow alone is insufficient.
 
+## Existing-System Fit and Gap Gate
+
+Every track begins with the acquisition ladder in
+[integration-strategy.md](./integration-strategy.md):
+
+1. use the current organisational system;
+2. configure or profile it;
+3. map an open standard;
+4. adopt a maintained dependency;
+5. add a thin adapter;
+6. contribute a generic gap upstream;
+7. implement only the small project-specific gap; and
+8. build a new subsystem only by approved exception.
+
+The track must identify its system-of-record boundary and candidates in
+[integration-map.json](./integration-map.json), then test them against its
+acceptance fixtures. A project-owned implementation cannot start until the
+remaining gap, ownership rationale, dependency profile, compatibility window,
+upstream path, and exit strategy are recorded.
+
+If a dependency has a generic gap, reproduce it with a non-sensitive fixture,
+check current versions and upstream issues, and prefer an authorised upstream
+issue or contribution. Any local shim must be isolated, contract-tested,
+time-limited, and linked to its removal condition.
+
+Adding a new enterprise connector, upstream message, public dependency
+commitment, permanent fork, or project-owned subsystem is an owner decision
+gate.
+
 ## Single-Developer Parallelism
 
 Use no more than:
@@ -131,6 +161,7 @@ A task is ready when:
 - its scope, deliverables, owner, and issue are clear;
 - hard dependencies pass and relevant phase dependencies are available;
 - inputs, sources, rights, schemas, and fixtures are accessible;
+- the current system of record, applicable standards, maintained dependencies, and smallest remaining gap are recorded;
 - privacy mode and permitted data are declared;
 - decisions and risks are known or explicitly deferred;
 - validation and rollback paths exist;
@@ -155,7 +186,10 @@ Change the task to `[~]`, link the branch or worktree and issue, and reserve its
 
 ### 4. Implement
 
-Work fixture-first where possible. Keep frameworks behind project contracts. Preserve unrelated and historical material. Record material assumptions and deviations immediately.
+Work fixture-first where possible. Configure, profile, map, adapt, or
+contribute before writing a replacement. Keep frameworks behind project
+contracts. Preserve unrelated and historical material. Record material
+assumptions and deviations immediately.
 
 ### 5. Validate
 
@@ -198,8 +232,9 @@ When a phase passes:
 1. record the phase receipt;
 2. reconcile all acceptance checks and unresolved risks;
 3. update Conductor and GitHub;
-4. create a bounded handoff context; and
-5. continue automatically to the next ready phase.
+4. update the fit-gap record and integration map;
+5. create a bounded handoff context; and
+6. continue automatically to the next ready phase.
 
 Ask the owner only if the next step reaches a declared decision gate. Phase boundaries are evidence checkpoints, not mandatory approval pauses.
 
@@ -212,6 +247,7 @@ Before closing a track:
 - privacy, safety, legal, policy, licence, and release limitations remain visible;
 - hard and phase dependencies are reconciled;
 - documentation, migration, compatibility, and rollback paths are current;
+- the system-of-record boundary, adopted dependencies, upstream gaps, local shims, and replacement paths are reconciled;
 - a clean reviewer can reproduce the result; and
 - the GitHub issue, Conductor plan, Git state, receipts, and external state agree.
 
@@ -221,9 +257,11 @@ Close parent workstreams and the roadmap only after their native subissues and p
 
 - Prefer maintained upstream frameworks and declarative standards.
 - Integrate through thin adapters, capability discovery, contract tests, and safe fallback.
+- Prefer an upstream issue or contribution for a generic gap; project code owns only safety, privacy, jurisdiction, and domain-specific extensions.
 - Pin supported compatibility windows and monitor upstream drift.
 - Keep experimental components, including Mojo or MAX, behind disabled-by-default adapters.
 - Do not fork an upstream stack unless a documented ADR proves no maintained alternative and the owner accepts the maintenance burden.
+- Give every local compatibility shim an owner, upstream reference, expiry condition, and removal test.
 - Remove an experiment cleanly when it does not pass quality, safety, privacy, device, or maintenance gates.
 
 ## Commit and Review Convention

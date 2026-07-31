@@ -5,10 +5,12 @@
 1. [Product](./product.md)
 2. [Product Guidelines](./product-guidelines.md)
 3. [Technical Strategy](./tech-stack.md)
-4. [Development Workflow](./workflow.md)
-5. [Portfolio Roadmap](./roadmap.md)
-6. [Machine-Readable Roadmap](./roadmap.json)
-7. [Track Registry](./tracks.md)
+4. [Integration-First Strategy](./integration-strategy.md)
+5. [Machine-Readable Integration Map](./integration-map.json)
+6. [Development Workflow](./workflow.md)
+7. [Portfolio Roadmap](./roadmap.md)
+8. [Machine-Readable Roadmap](./roadmap.json)
+9. [Track Registry](./tracks.md)
 
 ## Execution Records
 

@@ -60,9 +60,11 @@ Every run declares its actual mode, capabilities, model and framework revisions,
 5. **Benchmark before selection.** Models, runtimes, retrieval methods, and frameworks earn support through measured evidence.
 6. **Simple before complex.** Deterministic tools and lexical retrieval remain valid baselines; fine-tuning is a late option, not a default.
 7. **Portable core, thin adapters.** Reuse maintained frameworks and client capabilities without forking the whole stack.
-8. **Living conformance.** Standards, policy, model, framework, and marketplace claims carry exact versions and drift checks.
-9. **Closed-loop learning.** Completion of a report or action does not prove safety improvement.
-10. **Honest boundaries.** Research, experimental, operational, and unsupported capabilities are visibly distinct.
+8. **No shadow systems.** Keep approved incident, records, identity, content, workflow, and clinical systems authoritative; fill evidenced gaps through mappings and adapters.
+9. **Contribute before forking.** Address generic dependency gaps upstream and keep local shims small, tested, replaceable, and time-limited.
+10. **Living conformance.** Standards, policy, model, framework, and marketplace claims carry exact versions and drift checks.
+11. **Closed-loop learning.** Completion of a report or action does not prove safety improvement.
+12. **Honest boundaries.** Research, experimental, operational, and unsupported capabilities are visibly distinct.
 
 ## Initial Jurisdiction Strategy
 
