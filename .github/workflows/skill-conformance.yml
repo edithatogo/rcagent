@@ -7,7 +7,9 @@ on:
       - "adapters/**"
       - "evaluations/skills/**"
       - "tools/check_skill_drift.py"
+      - "tools/run_skill_conformance.py"
       - "tools/validate_skill.py"
+      - "tools/validate_skill_profile.py"
       - ".github/workflows/skill-conformance.yml"
   push:
     branches:
@@ -34,19 +36,19 @@ jobs:
       - name: Install validation dependencies
         run: python -m pip install --disable-pip-version-check -e ".[validate,test]"
 
-      - name: Validate portable skill
-        run: python -m tools.validate_skill_profile
-
-      - name: Validate with pinned official skills-ref
+      - name: Install pinned official skills-ref
         shell: bash
         run: |
           git clone --quiet https://github.com/agentskills/agentskills.git /tmp/agentskills
           git -C /tmp/agentskills checkout --quiet 38a2ff82958afee88dadf4831509e6f7e9d8ef4e
           python -m pip install --disable-pip-version-check /tmp/agentskills/skills-ref
-          skills-ref validate "$GITHUB_WORKSPACE/skills/rca-investigation"
+      - name: Validate and emit current-conformance receipt
+        run: python -m tools.run_skill_conformance --output skill-conformance-receipt.json
 
-      - name: Verify current upstream revision
-        run: python -m tools.check_skill_drift
+      - uses: actions/upload-artifact@v7
+        with:
+          name: skill-conformance-receipt
+          path: skill-conformance-receipt.json
 
       - name: Run contract tests
         run: python -m pytest

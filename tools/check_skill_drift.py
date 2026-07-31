@@ -11,6 +11,32 @@ from pathlib import Path
 
 
 UPSTREAM_API = "https://api.github.com/repos/agentskills/agentskills/commits/main"
+COMPARE_API = "https://api.github.com/repos/agentskills/agentskills/compare/{base}...{head}"
+NORMATIVE_PATHS = (
+    "docs/specification.mdx",
+    "skills-ref/src/",
+    "skills-ref/pyproject.toml",
+    "skills-ref/uv.lock",
+)
+GUIDANCE_PATHS = (
+    "docs/skill-creation/best-practices.mdx",
+    "docs/skill-creation/optimizing-descriptions.mdx",
+    "docs/skill-creation/evaluating-skills.mdx",
+    "docs/skill-creation/using-scripts.mdx",
+)
+
+
+def _read_json(url: str, opener) -> object:
+    request = urllib.request.Request(
+        url,
+        headers={"Accept": "application/vnd.github+json", "User-Agent": "rca-workbench"},
+    )
+    with opener(request, timeout=30) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def _matches(path: str, monitored: tuple[str, ...]) -> bool:
+    return any(path == candidate or path.startswith(candidate) for candidate in monitored)
 
 
 def check_drift(
@@ -32,27 +58,53 @@ def check_drift(
         receipt["message"] = "Offline validation cannot establish current upstream conformance."
         return 0, receipt
 
-    request = urllib.request.Request(
-        UPSTREAM_API,
-        headers={"Accept": "application/vnd.github+json", "User-Agent": "rca-workbench"},
-    )
     try:
-        with opener(request, timeout=30) as response:
-            current = json.loads(response.read().decode("utf-8"))["sha"]
-    except (OSError, KeyError, UnicodeError, json.JSONDecodeError, urllib.error.URLError) as exc:
+        current = _read_json(UPSTREAM_API, opener)["sha"]
+    except (OSError, KeyError, TypeError, UnicodeError, json.JSONDecodeError, urllib.error.URLError) as exc:
         receipt["status"] = "upstream_unavailable"
         receipt["message"] = str(exc)
         return 2, receipt
 
     receipt["resolved_revision"] = current
-    if current != baseline["upstream_revision"]:
-        receipt["status"] = "normative_review_required"
-        receipt["message"] = "Upstream revision changed; refresh the normative matrix and validator evidence."
-        return 1, receipt
+    if current == baseline["upstream_revision"]:
+        receipt["status"] = "current"
+        receipt["current_conformance"] = True
+        receipt["message"] = "Upstream revision matches the reviewed baseline."
+        return 0, receipt
 
-    receipt["status"] = "current"
+    try:
+        comparison = _read_json(
+            COMPARE_API.format(base=baseline["upstream_revision"], head=current),
+            opener,
+        )
+        changed_paths = [
+            item["filename"]
+            for item in comparison["files"]
+            if isinstance(item, dict) and isinstance(item.get("filename"), str)
+        ]
+    except (OSError, KeyError, TypeError, UnicodeError, json.JSONDecodeError, urllib.error.URLError) as exc:
+        receipt["status"] = "upstream_unavailable"
+        receipt["message"] = f"Unable to classify upstream changes: {exc}"
+        return 2, receipt
+
+    normative = [path for path in changed_paths if _matches(path, NORMATIVE_PATHS)]
+    guidance = [path for path in changed_paths if _matches(path, GUIDANCE_PATHS)]
+    receipt["changed_paths"] = changed_paths
+    receipt["normative_paths"] = normative
+    receipt["guidance_paths"] = guidance
+    if normative:
+        receipt["status"] = "normative_review_required"
+        receipt["message"] = "Normative specification or validator paths changed."
+        return 1, receipt
+    if guidance:
+        receipt["status"] = "guidance_review_advised"
+        receipt["current_conformance"] = True
+        receipt["message"] = "Creator guidance changed without a normative specification or validator change."
+        return 0, receipt
+
+    receipt["status"] = "upstream_change_irrelevant"
     receipt["current_conformance"] = True
-    receipt["message"] = "Upstream revision matches the reviewed baseline."
+    receipt["message"] = "Upstream changed only outside monitored specification, validator, and guidance paths."
     return 0, receipt
 
 
