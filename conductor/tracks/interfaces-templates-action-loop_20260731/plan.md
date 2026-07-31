@@ -92,6 +92,8 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Phase 3: Build replaceable interfaces
 
 - [ ] Task: Implement the phase scope
+  - [ ] Add capability discovery and an agent-guided setup workflow that recommends the smallest adequate optional profile
+  - [ ] Require the interface to show profile status, limits, privacy mode, installation source, health, and rollback
   - [ ] Define CLI and API workflows for intake, validation, investigation, review, export, and automation
   - [ ] Define bounded read, export, import, and reconciliation adapters for ims+ or another approved incident system without creating a shadow registry
   - [ ] Assess approved Microsoft 365, SharePoint, Teams, Power Automate, Dataverse, or comparable enterprise surfaces before building collaboration or approval features

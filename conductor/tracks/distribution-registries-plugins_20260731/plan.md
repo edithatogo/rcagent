@@ -71,6 +71,8 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Phase 2: Release the canonical portable skills
 
 - [ ] Task: Implement the phase scope
+  - [ ] Publish core and optional capability bundles independently so advanced dependencies never become mandatory
+  - [ ] Generate signed or reviewable installer manifests for scripted, agent-assisted, offline, update, rollback, and uninstall paths
   - [ ] Package self-contained skills from the portable core with licences, checksums, provenance, compatibility, changelog, and SBOM-style metadata
   - [ ] Test clean GitHub installation, archive extraction, offline use, updates, rollback, and uninstallation
   - [ ] Reuse GitHub releases, attestations, dependency and security tooling plus current SPDX, CycloneDX, and signing standards where supported

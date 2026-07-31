@@ -11,6 +11,8 @@
     "continuation": "automatic-across-tasks-phases-reviews-rework-and-tracks",
     "integration_policy": "integrate-configure-profile-extend-contribute-before-build",
     "integration_map": "conductor/integration-map.json",
+    "capability_policy": "portable-core-with-governed-optional-profiles",
+    "capability_registry": "conductor/capability-profiles.json",
     "max_active_lanes": {
       "integration": 1,
       "independent": 2
@@ -198,6 +200,20 @@
     "residual privacy, security, cultural-safety, or clinical-safety risk",
     "public releases, registry or marketplace submissions, or publisher verification",
     "destructive migration or irreversible product or architecture choices"
+  ],
+  "cross_cutting_issues": [
+    {
+      "issue": 17,
+      "title": "Maximise security and solo-maintainer context",
+      "owner_tracks": [1, 3],
+      "parent_issue": 18
+    },
+    {
+      "issue": 18,
+      "title": "Complete evidence-based repository hardening",
+      "owner": "portfolio-closeout",
+      "subissues": [17]
+    }
   ],
   "registry_stages": [
     "canonical-github-portable-skills",

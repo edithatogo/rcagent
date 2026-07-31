@@ -95,6 +95,8 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Phase 3: Design technical privacy and security controls
 
 - [ ] Task: Implement the phase scope
+  - [ ] Apply privacy, telemetry-off, egress, secrets, cache, retention, and deletion defaults to every optional capability installer
+  - [ ] Require agent-assisted setup to disclose downloads, external processing, storage, licences, and rollback before activation
   - [ ] Specify encryption, key handling, secrets, access, session, and least-privilege controls
   - [ ] Specify minimisation, de-identification, redaction, retention, deletion, backup, and recovery
   - [ ] Disable or localise telemetry and prevent sensitive diagnostic output
@@ -105,6 +107,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
   - [ ] Record commands, environment, results, limitations, risks, and negative findings
   - [ ] Reconcile Conductor state with GitHub issue #8 and dependency evidence
+  - [ ] Reconcile the security elements of repository-hardening issues #17 and #18 without duplicating Track 01
 
 - [ ] Task: Phase Verification & Checkpoint
   - [ ] Verify every deliverable against the specification and product safeguards

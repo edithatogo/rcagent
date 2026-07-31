@@ -50,6 +50,9 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Phase 1: Define capability and disclosure contracts
 
 - [ ] Task: Implement the phase scope
+  - [ ] Register OCR, encoder, speech, imaging, and ECG capabilities as independent optional profiles
+  - [ ] Define script and agent-assisted installation, discovery, health-check, rollback, and uninstall contracts for each profile
+  - [ ] Ensure missing optional profiles degrade to explicit unsupported states rather than weakening the core workflow
   - [ ] Define revision, licence, task, modality, intended use, exclusion, knowledge, context, and input-envelope fields
   - [ ] Define upstream and local evaluation, device, runtime, quantisation, RAM, latency, and failure fields
   - [ ] Define privacy, telemetry, cache, remote-code, governance, and regulatory fields

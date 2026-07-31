@@ -6,6 +6,8 @@
 - **GitHub roadmap:** [#1](https://github.com/edithatogo/rcagent/issues/1)
 - **Execution policy:** [continuous autonomy](./autonomy.md) within declared
   owner decision gates; no routine stop between phases or tracks
+- **Capability policy:** [portable core plus optional profiles](./capability-profiles.md)
+  installed through verified scripts or an agent calling those same scripts
 
 ### Workstream A: Foundation and Governance
 
@@ -41,6 +43,19 @@ Parent: [GitHub #4](https://github.com/edithatogo/rcagent/issues/4)
 | [ ] | [11 Distribution, Registries, and Client Plugins](./tracks/distribution-registries-plugins_20260731/index.md) | [#16](https://github.com/edithatogo/rcagent/issues/16) | 00 |
 
 `metadata.json` records later phase dependencies that deliberately do not block independent foundation work.
+
+### Cross-Cutting Quality Frontier
+
+These issues refine existing tracks and must not become duplicate subsystems:
+
+| Status | GitHub issue | Owning Conductor scope |
+|---|---|---|
+| [ ] | [#17 Maximise security and solo-maintainer context](https://github.com/edithatogo/rcagent/issues/17) | Track 01 foundation harness, with Track 03 security assurance |
+| [ ] | [#18 Complete evidence-based repository hardening](https://github.com/edithatogo/rcagent/issues/18) | Portfolio-level closeout; #17 is its tracked subissue |
+
+Issue state is reconciled at every owning phase checkpoint. An issue is not
+closed until its Conductor acceptance evidence and hosted repository state
+both pass.
 
 ## Legacy Evaluation Study
 

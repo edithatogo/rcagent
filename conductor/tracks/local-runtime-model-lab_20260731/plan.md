@@ -71,6 +71,9 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Phase 2: Implement thin runtime adapters
 
 - [ ] Task: Implement the phase scope
+  - [ ] Package llama.cpp, OpenVINO, MLX, and MAX/Mojo as independent optional or experimental profiles
+  - [ ] Implement device-aware agent-assisted selection that explains resource, privacy, licence, download, and quality trade-offs before invoking scripts
+  - [ ] Provide idempotent scripted preflight, installation, verification, rollback, uninstall, and offline-bundle paths
   - [ ] Prototype llama.cpp, ONNX Runtime, OpenVINO, and MLX adapters behind common generation and embedding contracts
   - [ ] Assess Ollama or another maintained local facade, MLX-LM, Transformers, and vLLM for profiles where they remove project-owned model-management work
   - [ ] Evaluate Windows DirectML or other backends only through measured compatibility spikes
@@ -157,6 +160,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Phase 6: Implement routing and offline packaging
 
 - [ ] Task: Implement the phase scope
+  - [ ] Keep absence or failure of a local runtime non-fatal to the portable core and expose an explicit capability-limited mode
   - [ ] Route by task, modality, governance status, privacy mode, device capability, context, and resource budget
   - [ ] Provide deterministic and smaller-model fallbacks plus explicit no-capability outcomes
   - [ ] Define verified download, checksum, provenance, cache, update, rollback, and air-gapped bundles

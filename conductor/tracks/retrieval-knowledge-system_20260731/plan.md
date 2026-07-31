@@ -71,6 +71,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Phase 2: Implement the lexical baseline
 
 - [ ] Task: Implement the phase scope
+  - [ ] Package lexical retrieval as an optional local profile with a deterministic scripted installer and health check
   - [ ] Implement SQLite FTS or an equivalently portable full-text baseline behind a retrieval port
   - [ ] Support field, authority, jurisdiction, date, source, and status filters
   - [ ] Return stable citations, locations, scores, and query receipts
@@ -94,6 +95,8 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Phase 3: Add optional local vector retrieval
 
 - [ ] Task: Implement the phase scope
+  - [ ] Package embeddings, vector storage, and reranking as separately selectable profiles rather than core dependencies
+  - [ ] Let an agent recommend and install a measured profile at runtime through the same audited scripts available to operators
   - [ ] Select encoder candidates through the CapabilityProfile and benchmark contracts
   - [ ] Version embeddings, chunking, normalisation, quantisation, index, and device metadata
   - [ ] Keep vector storage replaceable and local by default

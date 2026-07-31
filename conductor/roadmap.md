@@ -10,6 +10,10 @@
 - **Autonomy:** [continuous across tasks, phases, review, rework, and tracks](./autonomy.md); owner decisions use the contract in [workflow.md](./workflow.md)
 - **Machine contract:** [autonomy.json](./autonomy.json)
 - **Integration policy:** [integrate, configure, profile, extend, or contribute before building](./integration-strategy.md)
+- **Capability policy:** keep the portable core minimal and make advanced
+  capabilities independently installable through
+  [governed profiles](./capability-profiles.md), idempotent scripts, and an
+  agent-assisted runtime setup path that invokes the same scripts
 - **System/dependency map:** [integration-map.json](./integration-map.json)
 
 GitHub uses native nested subissues for portfolio ownership and native issue dependencies for hard-start blockers. Conductor distinguishes those hard blockers from later phase dependencies so useful foundation work can begin without over-serialising the programme.
@@ -104,6 +108,12 @@ Later phase gates not drawn as hard-start arrows:
 | [09 Interfaces, templates and action loop](./tracks/interfaces-templates-action-loop_20260731/index.md) | [#14](https://github.com/edithatogo/rcagent/issues/14) | C | 02, 03, 04 | Usable investigation, disclosure, action, and effectiveness workflows |
 | [10 Domain adaptation and fine-tuning](./tracks/domain-adaptation-finetuning_20260731/index.md) | [#15](https://github.com/edithatogo/rcagent/issues/15) | B | 05, 06, 07, 08 | Evidence-gated medical model comparison and optional adaptation |
 | [11 Distribution, registries and plugins](./tracks/distribution-registries-plugins_20260731/index.md) | [#16](https://github.com/edithatogo/rcagent/issues/16) | C | 00 | Portable releases, registry assessment, Claude and OpenAI packages |
+
+Cross-cutting repository hardening is coordinated by
+[#18](https://github.com/edithatogo/rcagent/issues/18), with
+[#17](https://github.com/edithatogo/rcagent/issues/17) incorporated into
+Tracks 01 and 03. These issues refine existing acceptance criteria rather than
+creating parallel tracks.
 
 ## Delivery Waves
 

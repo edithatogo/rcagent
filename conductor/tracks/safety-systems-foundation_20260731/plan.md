@@ -77,6 +77,8 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Create architecture decision record conventions and a replace-before-fork framework policy
   - [ ] Define stable contracts between evidence, retrieval, model, workflow, and client layers
   - [ ] Define standards profiles and thin-adapter boundaries for FHIR, W3C PROV, CMMN, BPMN, DMN, evaluation frameworks, and client plugins
+  - [ ] Implement the capability-profile schema, keeping heavyweight and experimental components outside the portable core
+  - [ ] Define idempotent preflight, install, verify, update, rollback, and uninstall contracts for script and agent-assisted setup
   - [ ] Document failure isolation, safe fallback, and offline-first principles
 
 - [ ] Task: Validate the phase deliverables
@@ -149,6 +151,8 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Specify safety circuit breakers for privacy, credentials, destructive changes, evidence integrity, and material harm
   - [ ] Specify resumable context cursors and session-boundary handoffs that do not create approval pauses
   - [ ] Specify automatic fresh-context track review and review-report-driven rework
+  - [ ] Maintain the one-command repository validator and coverage-producing test harness
+  - [ ] Configure Renovate, dependency review, Codecov, and stable required-check discovery without adding a team approval gate
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -195,6 +199,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Verify every decision request presents options, a recommendation, rationale, evidence, safe default, paused scope, and continuing work
   - [ ] Verify review findings become bounded automatic rework without a routine approval pause
   - [ ] Verify worktree, evidence receipt, integration, rollback, and handoff procedures
+  - [ ] Reconcile repository hardening issues #17 and #18 against hosted rules, stable checks, recovery access, and evidence receipts
   - [ ] Record defects and close the foundation only when a fresh-context reproduction passes
 
 - [ ] Task: Validate the phase deliverables
