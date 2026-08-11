@@ -53,13 +53,17 @@ requires a fit-gap record and an approved Architecture Decision Record.
 
 ## Hard Start Dependencies
 
-- [agent-skills-living-conformance_20260731](../agent-skills-living-conformance_20260731/index.md)
+- None.
 
 The track cannot start until each hard dependency has a passing completion receipt, not merely a closed issue.
 
 ## Later Phase Dependencies
 
-- None
+- [agent-skills-living-conformance_20260731](../agent-skills-living-conformance_20260731/index.md)
+  gates only licence declarations, redistribution, public release, registry or
+  marketplace actions, and clinical-validity claims. Reversible local
+  foundation work is admitted by the Track 00 technical-baseline receipt at
+  merged commit `c943269c2407c338b3c2993fe92074fa4ddfbf7b`.
 
 These dependencies gate the affected integration or validation phase without needlessly blocking independent foundation work.
 

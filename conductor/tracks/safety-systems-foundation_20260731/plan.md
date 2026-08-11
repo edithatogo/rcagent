@@ -20,30 +20,30 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
-- [ ] Task: Establish the system and dependency context
-  - [ ] Read `integration-strategy.md` and this track's entry in `integration-map.json`
-  - [ ] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
+- [~] Task: Establish the system and dependency context
+  - [x] Read `integration-strategy.md` and this track's entry in `integration-map.json`
+  - [x] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
   - [ ] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
   - [ ] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
 
-- [ ] Task: Select the smallest adequate intervention
-  - [ ] Prefer existing-system configuration or a standards profile
-  - [ ] Prefer a thin replaceable adapter when translation is the remaining gap
-  - [ ] Identify generic gaps suitable for an authorised upstream issue or contribution
-  - [ ] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
-  - [ ] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
+- [x] Task: Select the smallest adequate intervention
+  - [x] Prefer existing-system configuration or a standards profile
+  - [x] Prefer a thin replaceable adapter when translation is the remaining gap
+  - [x] Identify generic gaps suitable for an authorised upstream issue or contribution
+  - [x] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
+  - [x] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
 
-- [ ] Task: Define the dependency lifecycle
-  - [ ] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile
-  - [ ] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
-  - [ ] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
-  - [ ] Update `integration-map.json` with the selected status and evidence links
+- [x] Task: Define the dependency lifecycle
+  - [x] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile
+  - [x] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
+  - [x] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
+  - [x] Update `integration-map.json` with the selected status and evidence links
 
-- [ ] Task: Phase Verification & Checkpoint
+- [~] Task: Phase Verification & Checkpoint
   - [ ] Verify that no planned work duplicates an adequate existing capability
-  - [ ] Verify the system-of-record and data-authority boundary
-  - [ ] Verify the smallest remaining gap and ownership rationale
-  - [ ] Record the fit-gap receipt and bounded handoff context
+  - [x] Verify the system-of-record and data-authority boundary
+  - [x] Verify the smallest remaining gap and ownership rationale
+  - [x] Record the fit-gap receipt and bounded handoff context
   - [ ] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
   - [ ] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
 
