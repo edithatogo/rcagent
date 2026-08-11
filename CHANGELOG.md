@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-11
+
+- Reviewed upstream Agent Skills normative drift through revision
+  `69ef37e9424c0a7ea9dd2293b559e43ec8176379`.
+- Confirmed that skill metadata keys and values are strings and that the
+  clarified optional-directory convention requires no package migration.
+- Advanced the live-conformance baseline and CI validator pin after review.
+
 ## 2026-08-01
 
 - Added a unified, receipt-producing Agent Skill conformance command.

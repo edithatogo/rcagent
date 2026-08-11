@@ -2,7 +2,8 @@
 
 ## Provenance
 
-Captured `2026-07-31T17:51:19+10:00`.
+Originally captured `2026-07-31T17:51:19+10:00`; normative drift reviewed and
+baseline advanced `2026-08-11T19:45:00+10:00`.
 
 | Source | Status | Revision evidence |
 |---|---|---|
@@ -10,7 +11,7 @@ Captured `2026-07-31T17:51:19+10:00`.
 | `https://agentskills.io/skill-creation/best-practices` | official guidance | retrieved live |
 | `https://agentskills.io/skill-creation/optimizing-descriptions` | official guidance | retrieved live |
 | `https://agentskills.io/skill-creation/evaluating-skills` | official guidance | retrieved live |
-| `https://github.com/agentskills/agentskills` | upstream source | `38a2ff82958afee88dadf4831509e6f7e9d8ef4e` |
+| `https://github.com/agentskills/agentskills` | upstream source | `69ef37e9424c0a7ea9dd2293b559e43ec8176379` |
 | `skills-ref/` in the upstream source | official reference validator | same commit |
 
 ## Normative Baseline
@@ -28,7 +29,9 @@ Captured `2026-07-31T17:51:19+10:00`.
   recommended.
 - Optional `allowed-tools` is a space-separated string and remains
   experimental with client-dependent support.
-- `scripts/`, `references/`, and `assets/` are standard optional directories.
+- A skill may contain files and directories beyond `SKILL.md`; `scripts/`,
+  `references/`, and `assets/` are recommended organisational conventions, not
+  an exclusive allow-list.
 - References use skill-root-relative paths and should avoid deep chains.
 
 ## Current Guidance Baseline
