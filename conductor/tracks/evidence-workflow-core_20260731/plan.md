@@ -51,6 +51,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 - [ ] Task: Implement the phase scope
   - [ ] Model cases, events, people-as-roles, sources, artefacts, evidence items, claims, factors, findings, recommendations, actions, reviews, and outcomes
+  - [ ] Model incident huddles, provisional risk and harm assessments, review teams, interviews, consultations, patient problem lists, incident problem lists, related-policy referrals, literature searches, and organisational-learning links
   - [ ] Define stable identifiers, versions, timestamps, authority, confidentiality, and jurisdiction fields
   - [ ] Separate observed fact, reported account, inference, hypothesis, finding, and decision types
   - [ ] Publish JSON Schema and human-readable semantic definitions
@@ -97,6 +98,8 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 - [ ] Task: Implement the phase scope
   - [ ] Model intake, triage, review, investigation, consultation, approval, action, effectiveness, and closure states
+  - [ ] Model submission, immediate response, huddle, provisional assessment, review-path selection, team formation, evidence acquisition, interviews, systems analysis, findings, literature-informed recommendations, related-policy pathways, learning, and reopen states
+  - [ ] Keep lookback, cluster review, individual-worker review, cultural review, clinical risk, enterprise risk, quality improvement, and medicolegal pathways as explicit governed referrals rather than hidden subprocesses
   - [ ] Define transitions, preconditions, responsible roles, time constraints, and exception paths
   - [ ] Keep generic workflow semantics separate from jurisdiction-pack rules
   - [ ] Define reopen, correction, withdrawal, and appeal behaviours

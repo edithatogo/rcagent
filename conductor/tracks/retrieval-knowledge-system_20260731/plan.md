@@ -54,6 +54,9 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Define chunk, page, section, table, transcript, image-region, and signal-window provenance
   - [ ] Define public, governed private, ephemeral, and excluded corpus states
   - [ ] Create deletion, supersession, correction, and re-index requirements
+  - [ ] Define federated source contracts for incident history, prior reviews, findings, recommendations, effectiveness, comparative benchmarking, operational data, and quality-and-safety measures
+  - [ ] Define literature query, screening, study-quality, citation, claim-link, and recommendation-rationale records
+  - [ ] Specify a thin pinned SourceRight adapter for CSL validation, citation reconciliation, metadata conflicts, and claim/source provenance without reimplementing those functions
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -77,6 +80,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Return stable citations, locations, scores, and query receipts
   - [ ] Benchmark exact, phrase, acronym, typo, and policy-version queries
   - [ ] Assess existing enterprise search and content APIs before creating a parallel local corpus
+  - [ ] Add replaceable literature-search provider ports and preserve exact queries, filters, dates, result sets, exclusions, and screening decisions
   - [ ] Reuse the selected retrieval framework's indexing, query, filtering, and persistence capabilities rather than creating a general-purpose engine
 
 - [ ] Task: Validate the phase deliverables
@@ -142,6 +146,8 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 - [ ] Task: Implement the phase scope
   - [ ] Require claim-evidence links, citation verification, conflict representation, and abstention
+  - [ ] Pass candidate literature references and claim links through SourceRight and keep its review-required diagnostics visible
+  - [ ] Separate bibliographic integrity, study quality, applicability, clinical interpretation, and authorised recommendation decisions
   - [ ] Detect instruction-like or poisoned content without erasing legitimate evidence
   - [ ] Separate source content from system and workflow instructions
   - [ ] Test malicious documents, misleading metadata, stale policies, and unsupported synthesis
@@ -164,6 +170,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 - [ ] Task: Implement the phase scope
   - [ ] Implement incremental ingest, correction, supersession, delete, rebuild, backup, and restore
   - [ ] Verify public and private index separation through negative tests
+  - [ ] Verify purpose, access, minimisation, aggregation, lineage, retention, freshness, and cross-case inference controls for organisational memory
   - [ ] Propagate source and policy drift to affected answers and receipts
   - [ ] Provide deterministic export and audit views
 

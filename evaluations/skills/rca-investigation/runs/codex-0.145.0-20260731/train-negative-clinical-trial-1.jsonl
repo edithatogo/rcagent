@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"019fb745-6355-78d2-996a-d173c5ab251d"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"I can’t determine a safe dose without more information. Please provide:\n\n- Medicine name, formulation, and strength\n- Patient’s age and weight\n- Condition being treated\n- Kidney/liver function, allergies, pregnancy status\n- Current prescription/order or a clear photo of the label\n\nIf a dose may already have been given incorrectly, contact a pharmacist or Australia’s Poisons Information Centre now on **13 11 26**; call **000** for severe symptoms."}}
+{"type":"turn.completed","usage":{"input_tokens":14745,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":153,"reasoning_output_tokens":51}}

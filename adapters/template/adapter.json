@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "client": "replace-with-client-id",
+  "canonical_skill": "../../skills/rca-investigation",
+  "discovery_targets": [],
+  "frontmatter": {
+    "stable": ["name", "description"],
+    "experimental": [],
+    "unsupported": ["license", "compatibility", "metadata", "allowed-tools"]
+  },
+  "fallback": "Use the unmodified portable core with no pre-approved tools.",
+  "validation": "Record an exact client revision and representative discovery and execution tests."
+}

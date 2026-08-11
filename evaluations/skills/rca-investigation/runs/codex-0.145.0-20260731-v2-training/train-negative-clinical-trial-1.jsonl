@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"019fb753-8059-7053-b30c-25eee6258ef7"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"I can’t determine the dose without the medicine/order details. Please upload the prescription or label, or provide:\n\n- Medicine name and strength/concentration\n- Prescribed dose or indication\n- Patient’s age and weight\n- Route and relevant kidney/liver function\n\nIf a dose may already have been given incorrectly, contact the prescriber/pharmacist immediately; in Australia, call the Poisons Information Centre on **13 11 26**."}}
+{"type":"turn.completed","usage":{"input_tokens":14716,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":173,"reasoning_output_tokens":77}}

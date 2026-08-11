@@ -15,7 +15,7 @@ Parent: [GitHub #2](https://github.com/edithatogo/rcagent/issues/2)
 
 | Status | Track | GitHub | Hard start blockers |
 |---|---|---:|---|
-| [ ] | [00 Agent Skills Living Conformance and Portable Architecture](./tracks/agent-skills-living-conformance_20260731/index.md) | [#5](https://github.com/edithatogo/rcagent/issues/5) | None |
+| [~] | [00 Agent Skills Living Conformance and Portable Architecture](./tracks/agent-skills-living-conformance_20260731/index.md) | [#5](https://github.com/edithatogo/rcagent/issues/5) | None |
 | [ ] | [01 Safety Systems Foundation and Solo-Developer Harness](./tracks/safety-systems-foundation_20260731/index.md) | [#6](https://github.com/edithatogo/rcagent/issues/6) | 00 |
 | [ ] | [02 Evidence Workflow Core](./tracks/evidence-workflow-core_20260731/index.md) | [#7](https://github.com/edithatogo/rcagent/issues/7) | 01 |
 | [ ] | [03 Privacy, Security, and Assurance](./tracks/privacy-security-assurance_20260731/index.md) | [#8](https://github.com/edithatogo/rcagent/issues/8) | 01 |
@@ -50,6 +50,7 @@ These issues refine existing tracks and must not become duplicate subsystems:
 
 | Status | GitHub issue | Owning Conductor scope |
 |---|---|---|
+| [ ] | [#19 Clinical governance system-of-systems roadmap](https://github.com/edithatogo/rcagent/issues/19) | Track 01 architecture with first vertical slice across Tracks 02, 04, 07, and 09 |
 | [ ] | [#17 Maximise security and solo-maintainer context](https://github.com/edithatogo/rcagent/issues/17) | Track 01 foundation harness, with Track 03 security assurance |
 | [ ] | [#18 Complete evidence-based repository hardening](https://github.com/edithatogo/rcagent/issues/18) | Portfolio-level closeout; #17 is its tracked subissue |
 

@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"019fb75c-6752-7241-8b20-9e5dd2e83846"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"I need the medicine name/strength and the prescribing directions—plus the patient’s age, weight, condition, allergies, and relevant kidney/liver issues—to determine a dose.\n\nPlease share a clear photo of the medication label/chart or those details. Don’t administer it based on a guess; if a dose may already have been given incorrectly, contact a pharmacist, local poison centre, or emergency services now."}}
+{"type":"turn.completed","usage":{"input_tokens":14735,"cached_input_tokens":9984,"cache_write_input_tokens":0,"output_tokens":123,"reasoning_output_tokens":36}}

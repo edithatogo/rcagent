@@ -1,0 +1,63 @@
+{
+  "case_selection": [
+    "train-positive-explicit"
+  ],
+  "cases": [
+    {
+      "activation_rate": 1.0,
+      "completed_trials": 3,
+      "expected": "trigger",
+      "id": "train-positive-explicit",
+      "partition": "train",
+      "passed": true,
+      "required_rate": 1.0
+    }
+  ],
+  "client": "codex",
+  "client_version": "0.145.0",
+  "isolation": {
+    "apps": false,
+    "dynamic_skill_search": false,
+    "ephemeral": true,
+    "plugins": false,
+    "sandbox": "read-only"
+  },
+  "observations": [
+    {
+      "activated": true,
+      "case_id": "train-positive-explicit",
+      "expected": "trigger",
+      "input_tokens": 49005,
+      "output_tokens": 1076,
+      "raw_path": "train-positive-explicit-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": true,
+      "case_id": "train-positive-explicit",
+      "expected": "trigger",
+      "input_tokens": 47779,
+      "output_tokens": 634,
+      "raw_path": "train-positive-explicit-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": true,
+      "case_id": "train-positive-explicit",
+      "expected": "trigger",
+      "input_tokens": 64470,
+      "output_tokens": 1146,
+      "raw_path": "train-positive-explicit-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    }
+  ],
+  "partitions": [
+    "all"
+  ],
+  "passed": true,
+  "schema_version": "1.0",
+  "trials_per_case": 3
+}

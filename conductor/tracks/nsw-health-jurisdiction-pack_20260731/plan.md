@@ -96,6 +96,8 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 - [ ] Task: Implement the phase scope
   - [ ] Map notification, Severity Assessment Code, review type, serious-adverse-event, escalation, investigation, and closure steps
+  - [ ] Map initial submission, incident huddle, provisional checklist and harm assessment, review-team formation, interviews, consultation, findings, recommendations, actions, effectiveness, and closure requirements
+  - [ ] Map decision points and authority boundaries for lookback, cluster review, indicator review, individual-worker review, clinical risk, enterprise risk, cultural assessment, quality improvement, open disclosure, and medicolegal or regulatory pathways
   - [ ] Map required roles, independence, consultation, timeframes, approvals, records, and exceptions
   - [ ] Express rules through the canonical state and evidence contracts
   - [ ] Expose policy uncertainty rather than inventing a missing rule

@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "aggregation": {
+    "all_hard_assertions_required": true,
+    "unavailable_is_pass": false,
+    "preserve_raw_observations": true
+  },
+  "cases": [
+    {
+      "id": "capa-effectiveness-not-implementation",
+      "mode": "track",
+      "prompt": "For an accepted action from this healthcare RCA, close it as effective because the new escalation policy was published and all staff completed training.",
+      "assertions": [
+        "distinguishes_implementation_from_effectiveness",
+        "requires_outcome_measure",
+        "requires_balancing_or_residual_risk_review",
+        "reserves_closure_for_authorised_human"
+      ]
+    }
+  ]
+}

@@ -51,6 +51,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 - [ ] Task: Implement the phase scope
   - [ ] Map investigator, reviewer, consumer, family, staff, governance, executive, administrator, and auditor journeys
+  - [ ] Map the end-to-end journey from submission, huddle, provisional risk and harm assessment, review team and evidence collection through findings, recommendations, actions, effectiveness, learning, and closure
   - [ ] Define roles, separation of duties, approvals, collaboration, conflict, accessibility, and failure recovery
   - [ ] Identify cognitive load, automation bias, anchoring, blame, hindsight, and confirmation risks
   - [ ] Define explicit human checkpoints and usable abstention
@@ -72,6 +73,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 - [ ] Task: Implement the phase scope
   - [ ] Create modular intake, chronology, evidence, interview, analysis, finding, recommendation, action, and review workflows
+  - [ ] Add modular huddle, provisional assessment, review-team, patient problem-list, incident problem-list, consultation, literature-search, related-policy referral, and organisational-learning workflows
   - [ ] Support RCA and systems approaches including SEIPS, AcciMap, FRAM, STPA, bow-tie, barrier analysis, and FMEA where appropriate
   - [ ] Add method selection and combination guidance based on event, evidence, purpose, and capability
   - [ ] Map each template field to evidence, workflow, jurisdiction, and provenance contracts
@@ -143,6 +145,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Define recommendation strength, rationale, hazards, controls, hierarchy, feasibility, and unintended consequences
   - [ ] Assign action owners, dependencies, resources, deadlines, assurance evidence, and escalation
   - [ ] Define implementation verification, outcome/process/balancing measures, review periods, and residual risk
+  - [ ] Link recommendation rationale to searched literature where warranted while keeping bibliographic integrity, evidence appraisal, local applicability, and authorised acceptance distinct
   - [ ] Prevent action closure or report publication from implying effectiveness
 
 - [ ] Task: Validate the phase deliverables

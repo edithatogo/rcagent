@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "fixtures": [
+    {"id": "valid-minimal", "expected": "pass"},
+    {"id": "invalid-name-directory", "expected": "AS-SPEC-002"},
+    {"id": "description-over-1024", "expected": "AS-SPEC-003"},
+    {"id": "broken-reference", "expected": "AS-SPEC-008"},
+    {"id": "escaping-reference", "expected": "AS-SPEC-008"},
+    {"id": "missing-resource", "expected": "AS-SPEC-008"},
+    {"id": "orphan-resource", "expected": "RCA-RESOURCE-001", "implementation_phase": 6},
+    {"id": "malformed-metadata", "expected": "AS-SPEC-006"},
+    {"id": "core-allowed-tools", "expected": "AS-SPEC-007"},
+    {"id": "absolute-local-path", "expected": "RCA-PORT-001"},
+    {"id": "offline-claims-current", "expected": "RCA-DRIFT-001", "implementation_phase": 8},
+    {"id": "normative-upstream-change", "expected": "RCA-DRIFT-002", "implementation_phase": 8}
+  ]
+}

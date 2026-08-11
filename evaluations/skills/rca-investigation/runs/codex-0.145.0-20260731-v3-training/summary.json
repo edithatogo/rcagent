@@ -1,0 +1,139 @@
+{
+  "cases": [
+    {
+      "activation_rate": 1.0,
+      "completed_trials": 3,
+      "expected": "trigger",
+      "id": "train-positive-explicit",
+      "partition": "train",
+      "passed": true,
+      "required_rate": 1.0
+    },
+    {
+      "activation_rate": 0.3333333333333333,
+      "completed_trials": 3,
+      "expected": "no_trigger",
+      "id": "train-negative-clinical",
+      "partition": "train",
+      "passed": false,
+      "required_rate": 0.0
+    },
+    {
+      "activation_rate": 1.0,
+      "completed_trials": 3,
+      "expected": "no_trigger",
+      "id": "held-negative-legal",
+      "partition": "regression_exposed",
+      "passed": false,
+      "required_rate": 0.0
+    }
+  ],
+  "client": "codex",
+  "client_version": "0.145.0",
+  "isolation": {
+    "apps": false,
+    "dynamic_skill_search": false,
+    "ephemeral": true,
+    "plugins": false,
+    "sandbox": "read-only"
+  },
+  "observations": [
+    {
+      "activated": true,
+      "case_id": "train-positive-explicit",
+      "expected": "trigger",
+      "input_tokens": 49669,
+      "output_tokens": 940,
+      "raw_path": "train-positive-explicit-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": true,
+      "case_id": "train-positive-explicit",
+      "expected": "trigger",
+      "input_tokens": 183931,
+      "output_tokens": 2323,
+      "raw_path": "train-positive-explicit-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": true,
+      "case_id": "train-positive-explicit",
+      "expected": "trigger",
+      "input_tokens": 48479,
+      "output_tokens": 883,
+      "raw_path": "train-positive-explicit-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    },
+    {
+      "activated": true,
+      "case_id": "train-negative-clinical",
+      "expected": "no_trigger",
+      "input_tokens": 63254,
+      "output_tokens": 607,
+      "raw_path": "train-negative-clinical-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": false,
+      "case_id": "train-negative-clinical",
+      "expected": "no_trigger",
+      "input_tokens": 14721,
+      "output_tokens": 150,
+      "raw_path": "train-negative-clinical-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": false,
+      "case_id": "train-negative-clinical",
+      "expected": "no_trigger",
+      "input_tokens": 14721,
+      "output_tokens": 142,
+      "raw_path": "train-negative-clinical-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    },
+    {
+      "activated": true,
+      "case_id": "held-negative-legal",
+      "expected": "no_trigger",
+      "input_tokens": 49841,
+      "output_tokens": 642,
+      "raw_path": "held-negative-legal-trial-1.jsonl",
+      "status": "completed",
+      "trial": 1
+    },
+    {
+      "activated": true,
+      "case_id": "held-negative-legal",
+      "expected": "no_trigger",
+      "input_tokens": 64939,
+      "output_tokens": 796,
+      "raw_path": "held-negative-legal-trial-2.jsonl",
+      "status": "completed",
+      "trial": 2
+    },
+    {
+      "activated": true,
+      "case_id": "held-negative-legal",
+      "expected": "no_trigger",
+      "input_tokens": 49936,
+      "output_tokens": 527,
+      "raw_path": "held-negative-legal-trial-3.jsonl",
+      "status": "completed",
+      "trial": 3
+    }
+  ],
+  "partitions": [
+    "regression_exposed",
+    "train"
+  ],
+  "passed": false,
+  "schema_version": "1.0",
+  "trials_per_case": 3
+}

@@ -119,6 +119,32 @@ creating parallel tracks.
 
 These waves describe the recommended order, not a promise to keep every listed track active simultaneously.
 
+## Clinical Governance Capability Architecture
+
+The portfolio is nested around the
+[clinical-governance system-of-systems map](./clinical-governance-architecture.md):
+
+1. **Incident lifecycle:** submission, huddle, provisional risk and harm
+   assessment, review path and team, evidence acquisition, chronology and
+   problem lists, interviews and analysis, related-policy pathways, findings,
+   literature-informed recommendations, actions, effectiveness and closure.
+2. **Shared services:** evidence and provenance, policy authority, privacy and
+   safety, literature and retrieval, SourceRight citation integrity, data
+   analysis, multimodal processing, documents, diagrams, and evaluation.
+3. **Specialist domains:** enterprise and clinical risk, lookback, cluster
+   review, quality measures, individual clinician or worker review, Just
+   Culture, cultural assessment, quality improvement and redesign,
+   medicolegal/regulatory review, and proactive safety.
+4. **Organisational learning:** governed federated access to incident history,
+   prior serious-adverse-event reviews, findings, recommendations, action
+   effectiveness, comparative benchmarking, operational data, and
+   quality-and-safety measures.
+
+Tracks 02, 04, 07, and 09 deliver the first end-to-end vertical slice. A
+specialist capability becomes a separate track, skill, agent, workflow,
+domain pack, or plugin only when the map's extraction criteria are evidenced;
+otherwise it remains an integrated module using the shared contracts.
+
 ### Wave 0: Standards Gate
 
 - Integration lane: Track 00

@@ -13,6 +13,7 @@
     "integration_map": "conductor/integration-map.json",
     "capability_policy": "portable-core-with-governed-optional-profiles",
     "capability_registry": "conductor/capability-profiles.json",
+    "clinical_governance_architecture": "conductor/clinical-governance-architecture.json",
     "max_active_lanes": {
       "integration": 1,
       "independent": 2
@@ -202,6 +203,13 @@
     "destructive migration or irreversible product or architecture choices"
   ],
   "cross_cutting_issues": [
+    {
+      "issue": 19,
+      "title": "Clinical governance system-of-systems roadmap",
+      "owner_tracks": [1, 2, 3, 4, 5, 7, 9],
+      "parent_issue": 1,
+      "architecture": "conductor/clinical-governance-architecture.json"
+    },
     {
       "issue": 17,
       "title": "Maximise security and solo-maintainer context",
