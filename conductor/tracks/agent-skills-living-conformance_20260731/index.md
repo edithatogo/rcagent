@@ -7,6 +7,15 @@
 - **Parent workstream:** [#2](https://github.com/edithatogo/rcagent/issues/2)
 - **Execution policy:** Autonomous within declared decision gates
 
+## Current Closure State
+
+Implementation and deterministic conformance infrastructure are materially
+complete and current with the reviewed upstream baseline. Closure remains
+blocked by the owner licence decision and by editorial/clinical-governance
+review. Adapter claims are limited to tested contracts; Codex additionally has
+the recorded CLI smoke trial. No release or arbitrary-client compatibility is
+claimed.
+
 ## Dependencies
 
 - **Hard start:** None

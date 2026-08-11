@@ -7,6 +7,12 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Continuous Execution Contract
 
+> Reconciled 2026-08-11 against merged implementation, deterministic tests,
+> current upstream baseline `69ef37e9424c0a7ea9dd2293b559e43ec8176379`,
+> and hosted PR #21. `[!]` denotes a real owner or clinical-governance gate;
+> unchecked leaf items remain unverified and are not implied complete by nearby
+> implementation.
+
 - Continue automatically through tasks, phase checkpoints, fresh-context
   review, bounded rework, documentation synchronization, and the next ready
   track.
@@ -190,7 +196,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 4: Refactor `SKILL.md` and Frontmatter
 
-- [ ] Task: Optimise the skill description
+- [~] Task: Optimise the skill description
   - [ ] Rewrite using imperative, user-intent-focused phrasing
   - [ ] State when the skill should activate
   - [ ] State important near-miss boundaries
@@ -198,14 +204,14 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Keep the description within the current maximum length
   - [ ] Avoid overfitting to individual evaluation prompts
 
-- [ ] Task: Implement applicable stable frontmatter options
+- [~] Task: Implement applicable stable frontmatter options
   - [ ] Retain a valid name matching the parent directory
-  - [ ] Add the approved licence declaration or block completion pending approval
+  - [!] Add the approved licence declaration or block completion pending approval
   - [ ] Add an accurate compatibility declaration
   - [ ] Add namespaced metadata with schema-valid string values
   - [ ] Record implementation evidence in the extension registry
 
-- [ ] Task: Implement applicable experimental options
+- [~] Task: Implement applicable experimental options
   - [ ] Assess `allowed-tools` against each supported client
   - [ ] Add it only where compatibility evidence passes
   - [ ] Document unsupported-client behaviour
@@ -213,7 +219,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Record omissions as reviewed inapplicability decisions
   - [ ] Prevent experimental options from weakening privacy or review gates
 
-- [ ] Task: Rewrite the body as an executable procedure
+- [~] Task: Rewrite the body as an executable procedure
   - [ ] Add scope and activation boundaries
   - [ ] Add deterministic operating-mode selection
   - [ ] Add intake and evidence-sufficiency workflow
@@ -224,19 +230,19 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Add common gotchas and failure handling
   - [ ] Add final privacy, evidence, and quality checklist
 
-- [ ] Task: Enforce progressive-disclosure limits
+- [~] Task: Enforce progressive-disclosure limits
   - [ ] Measure lines and tokens
   - [ ] Keep only always-needed instructions in `SKILL.md`
   - [ ] Move conditional detail into focused references
   - [ ] Verify every moved resource has a clear load trigger
   - [ ] Verify reference chains remain shallow and navigable
 
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
   - [ ] Run official frontmatter validation
   - [ ] Verify description and naming constraints
   - [ ] Verify all options against the extension registry
   - [ ] Verify the main file remains within current guidance
-  - [ ] Complete editorial and clinical-safety review
+  - [!] Complete editorial and clinical-safety review
   - [ ] Continue automatically to Phase 5 unless a declared owner decision gate is reached
 
 ## Phase 5: Implement Portable Client Adapters
@@ -277,7 +283,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 6: Implement Deterministic Conformance Validation
 
-- [ ] Task: Implement the validation command
+- [~] Task: Implement the validation command
   - [ ] Run the official `skills-ref` validator
   - [ ] Validate YAML and frontmatter constraints
   - [ ] Validate directory/name agreement
@@ -291,21 +297,21 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Validate compliance-matrix completeness
   - [ ] Return non-zero on every applicable failure
 
-- [ ] Task: Implement actionable diagnostics
+- [~] Task: Implement actionable diagnostics
   - [ ] Identify the failed requirement ID
   - [ ] Identify the affected file and field
   - [ ] Explain the expected constraint
   - [ ] Distinguish errors, unsupported features, advisories, and unavailable upstream evidence
   - [ ] Avoid leaking sensitive content in diagnostic output
 
-- [ ] Task: Run the complete fixture suite
+- [~] Task: Run the complete fixture suite
   - [ ] Confirm every valid fixture passes
   - [ ] Confirm every invalid fixture fails
   - [ ] Confirm every failure produces its expected diagnostic
   - [ ] Add regression fixtures for defects found during implementation
   - [ ] Record fixture-suite results
 
-- [ ] Task: Generate durable validation receipts
+- [~] Task: Generate durable validation receipts
   - [ ] Record tool and dependency versions
   - [ ] Record source and validator revisions
   - [ ] Record deterministic results
@@ -313,7 +319,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Record adapter results
   - [ ] Make receipts reviewable without exposing credentials or sensitive data
 
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
   - [ ] Reproduce validation from documented commands
   - [ ] Confirm all negative fixtures remain negative
   - [ ] Confirm no warnings are represented as passes
@@ -364,17 +370,17 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Do not claim improvement without evidence
   - [x] Block completion on privacy or evidence-integrity regression
 
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
   - [x] Verify trigger thresholds
   - [x] Verify output assertions
   - [x] Verify train/validation separation
   - [x] Verify raw nondeterministic results remain visible
-  - [ ] Complete clinical-governance review
+  - [!] Complete clinical-governance review
   - [ ] Continue automatically to Phase 8 unless a declared owner decision gate is reached
 
 ## Phase 8: Implement Living-Conformance Monitoring
 
-- [ ] Task: Implement the upstream-drift checker
+- [~] Task: Implement the upstream-drift checker
   - [ ] Resolve current official documentation
   - [ ] Resolve the current official validator revision
   - [ ] Compare fields, constraints, and validator behaviour
@@ -382,28 +388,28 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Detect non-normative guidance changes
   - [ ] Record checked revisions and timestamps
 
-- [ ] Task: Implement honest online and offline modes
+- [~] Task: Implement honest online and offline modes
   - [ ] Make current-conformance checks require successful upstream resolution
   - [ ] Provide a clearly labelled offline validation mode
   - [ ] Prevent cached evidence from producing a current-conformance claim
   - [ ] Distinguish network failure from specification failure
   - [ ] Preserve the last verified receipt without presenting it as current
 
-- [ ] Task: Integrate validation into project workflows
+- [~] Task: Integrate validation into project workflows
   - [ ] Add a local validation entry point
   - [ ] Add a portable CI validation entry point
   - [ ] Add a scheduled upstream-drift check
   - [ ] Define failure ownership and remediation workflow
   - [ ] Ensure external service or credential requirements remain gated
 
-- [ ] Task: Validate drift behaviour
+- [~] Task: Validate drift behaviour
   - [ ] Simulate a normative field change
   - [ ] Simulate a guidance-only change
   - [ ] Simulate upstream unavailability
   - [ ] Simulate validator-behaviour change
   - [ ] Verify each condition produces the correct status
 
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
   - [ ] Run a live upstream check
   - [ ] Review the current-conformance receipt
   - [ ] Verify scheduled and local modes agree
@@ -412,7 +418,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 9: Documentation, Migration, and Final Evidence
 
-- [ ] Task: Complete user and maintainer documentation
+- [~] Task: Complete user and maintainer documentation
   - [ ] Document portable-core architecture
   - [ ] Document resource routing and progressive disclosure
   - [ ] Document extension governance
@@ -421,21 +427,21 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Document upstream-drift response
   - [ ] Document known limitations
 
-- [ ] Task: Complete migration documentation
+- [~] Task: Complete migration documentation
   - [ ] Map every former repository-root dependency to its new location
   - [ ] Document adapter migration
   - [ ] Document compatibility changes
   - [ ] Document rollback procedure
   - [ ] Confirm historical artefacts remain recoverable
 
-- [ ] Task: Finalise licensing and compatibility
-  - [ ] Obtain explicit owner approval for the licence
-  - [ ] Add or update the bundled licence file
-  - [ ] Verify the frontmatter licence reference
+- [~] Task: Finalise licensing and compatibility
+  - [!] Obtain explicit owner approval for the licence
+  - [!] Add or update the bundled licence file
+  - [!] Verify the frontmatter licence reference
   - [ ] Verify compatibility statements against test evidence
   - [ ] Block release claims if licence approval remains unresolved
 
-- [ ] Task: Execute the final conformance audit
+- [~] Task: Execute the final conformance audit
   - [ ] Run the official validator against the current upstream revision
   - [ ] Run deterministic validation
   - [ ] Run isolated portability validation
@@ -446,7 +452,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Run the upstream-drift check
   - [ ] Require every applicable compliance item to pass
 
-- [ ] Task: Produce the final evidence pack
+- [~] Task: Produce the final evidence pack
   - [ ] Generate the final compliance matrix
   - [ ] Generate validation receipts
   - [ ] Generate extension and adapter support matrices
@@ -454,10 +460,10 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Link every conformance claim to evidence
   - [ ] Update the changelog
 
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
   - [ ] Verify all approved specification acceptance criteria
   - [ ] Confirm no checklist-only claim lacks evidence
   - [ ] Confirm no external publication occurred
   - [ ] Confirm the working tree contains only intended changes
-  - [ ] Obtain owner approval for any unresolved licence or external-release decision
+  - [!] Obtain owner approval for any unresolved licence or external-release decision
   - [ ] Otherwise declare the track complete from the reconciled evidence without an additional approval pause
