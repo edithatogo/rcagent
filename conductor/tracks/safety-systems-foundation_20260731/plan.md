@@ -70,21 +70,21 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 2: Adopt the modular reference architecture
 
-- [ ] Task: Implement the phase scope
+- [~] Task: Implement the phase scope
   - [ ] Define portable core, domain packs, capability adapters, interfaces, evaluation, and distribution layers
   - [ ] Map authoritative roles for ims+ or another incident system, enterprise content and identity, clinical systems, workflow platforms, and the local workbench
   - [ ] Create the integration register and require every later track to record fit, gap, dependency profile, upstream path, and exit strategy
   - [ ] Create architecture decision record conventions and a replace-before-fork framework policy
   - [ ] Define stable contracts between evidence, retrieval, model, workflow, and client layers
   - [ ] Define standards profiles and thin-adapter boundaries for FHIR, W3C PROV, CMMN, BPMN, DMN, evaluation frameworks, and client plugins
-  - [ ] Implement the capability-profile schema, keeping heavyweight and experimental components outside the portable core
-  - [ ] Define idempotent preflight, install, verify, update, rollback, and uninstall contracts for script and agent-assisted setup
+  - [x] Implement the capability-profile schema, keeping heavyweight and experimental components outside the portable core
+  - [~] Define idempotent preflight, install, verify, update, rollback, and uninstall contracts for script and agent-assisted setup
   - [ ] Document failure isolation, safe fallback, and offline-first principles
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+- [~] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
   - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
   - [ ] Reconcile Conductor state with GitHub issue #6 and dependency evidence
 
 - [ ] Task: Phase Verification & Checkpoint

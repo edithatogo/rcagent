@@ -4,6 +4,8 @@ import json
 import sys
 from pathlib import Path
 
+from jsonschema import Draft202012Validator
+
 from tools.validate_repository import REQUIRED_CONTEXT, main, validate
 
 
@@ -12,6 +14,34 @@ def _write_valid_repository(root: Path) -> None:
         path = root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("{}" if path.suffix == ".json" else "# Context\n", encoding="utf-8")
+
+    (root / "conductor/capability-profiles.json").write_text(
+        json.dumps(
+            {
+                "$schema": "schemas/capability-profiles.schema.json",
+                "schema_version": "1.0",
+                "default_profile": "core",
+                "policy": "optional-capabilities-must-not-weaken-core-safeguards",
+                "installation_contract": {
+                    "agent_assisted": True,
+                    "scripted": True,
+                    "idempotent": True,
+                    "preflight_required": True,
+                    "verification_required": True,
+                    "receipt_required": True,
+                    "rollback_required": True,
+                    "uninstall_required": True,
+                    "network_egress_requires_disclosure": True,
+                    "telemetry_default": "off",
+                    "planned_is_not_installable": True,
+                },
+                "profiles": [
+                    {"id": "core", "class": "core", "status": "implemented", "default": True, "owner_track": 0}
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
 
     track = root / "conductor/tracks/example_20260731"
     track.mkdir(parents=True)
@@ -73,6 +103,18 @@ def _write_valid_repository(root: Path) -> None:
 def test_repository_fixture_passes(tmp_path: Path) -> None:
     _write_valid_repository(tmp_path)
     assert validate(tmp_path) == []
+
+
+def test_capability_registry_matches_published_schema() -> None:
+    root = Path(__file__).parents[1]
+    schema = json.loads(
+        (root / "conductor/schemas/capability-profiles.schema.json").read_text(encoding="utf-8")
+    )
+    registry = json.loads(
+        (root / "conductor/capability-profiles.json").read_text(encoding="utf-8")
+    )
+    Draft202012Validator.check_schema(schema)
+    Draft202012Validator(schema).validate(registry)
 
 
 def test_missing_context_is_reported(tmp_path: Path) -> None:
@@ -226,6 +268,45 @@ def test_unknown_and_duplicate_integration_tracks_are_reported(tmp_path: Path) -
     assert "integration-map has unknown track id: unknown" in errors
     assert "duplicate integration-map track id: unknown" in errors
     assert "unknown: candidate_systems must be non-empty" in errors
+
+
+def test_capability_profile_semantics_are_enforced(tmp_path: Path) -> None:
+    _write_valid_repository(tmp_path)
+    path = tmp_path / "conductor/capability-profiles.json"
+    registry = json.loads(path.read_text(encoding="utf-8"))
+    registry["profiles"].append(
+        {"id": "core", "class": "optional", "status": "planned", "default": True, "owner_track": 99}
+    )
+    path.write_text(json.dumps(registry), encoding="utf-8")
+    errors = validate(tmp_path)
+    assert "duplicate capability profile id: core" in errors
+    assert "core: non-implemented profile cannot be default" in errors
+    assert "core: unknown owner track number" in errors
+    assert "capability registry requires exactly one default profile" in errors
+    assert "core capability profile must be implemented and class core" in errors
+
+
+def test_implemented_optional_profile_requires_contract(tmp_path: Path) -> None:
+    _write_valid_repository(tmp_path)
+    path = tmp_path / "conductor/capability-profiles.json"
+    registry = json.loads(path.read_text(encoding="utf-8"))
+    registry["profiles"].append(
+        {"id": "validate", "class": "optional", "status": "implemented", "default": False, "owner_track": 0}
+    )
+    path.write_text(json.dumps(registry), encoding="utf-8")
+    assert "validate: implemented profile requires implementation contract" in validate(tmp_path)
+
+
+def test_capability_installation_safeguards_fail_closed(tmp_path: Path) -> None:
+    _write_valid_repository(tmp_path)
+    path = tmp_path / "conductor/capability-profiles.json"
+    registry = json.loads(path.read_text(encoding="utf-8"))
+    registry["installation_contract"]["telemetry_default"] = "on"
+    registry["installation_contract"]["planned_is_not_installable"] = False
+    path.write_text(json.dumps(registry), encoding="utf-8")
+    errors = validate(tmp_path)
+    assert "capability installation_contract requires telemetry_default=off" in errors
+    assert "capability installation_contract requires planned_is_not_installable=true" in errors
 
 
 def test_missing_roadmap_returns_context_diagnostics(tmp_path: Path) -> None:
