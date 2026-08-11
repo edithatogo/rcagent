@@ -78,7 +78,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Define stable contracts between evidence, retrieval, model, workflow, and client layers
   - [ ] Define standards profiles and thin-adapter boundaries for FHIR, W3C PROV, CMMN, BPMN, DMN, evaluation frameworks, and client plugins
   - [x] Implement the capability-profile schema, keeping heavyweight and experimental components outside the portable core
-  - [ ] Define idempotent preflight, install, verify, update, rollback, and uninstall contracts for script and agent-assisted setup
+  - [~] Define idempotent preflight, install, verify, update, rollback, and uninstall contracts for script and agent-assisted setup
   - [ ] Document failure isolation, safe fallback, and offline-first principles
 
 - [~] Task: Validate the phase deliverables
