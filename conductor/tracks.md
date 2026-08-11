@@ -58,6 +58,10 @@ Issue state is reconciled at every owning phase checkpoint. An issue is not
 closed until its Conductor acceptance evidence and hosted repository state
 both pass.
 
+### Delivery Programme
+
+- [ ] [No-LLM Implementation Programme](./tracks/no-llm-implementation-programme_20260811/index.md) — sequential small PRs, one active branch, and no model-weight downloads
+
 ## Legacy Evaluation Study
 
 These tracks remain preserved historical work. Track 05 will reconcile their schemas, cases, conditions, results, and limitations into the canonical benchmark harness without rewriting original artefacts.
