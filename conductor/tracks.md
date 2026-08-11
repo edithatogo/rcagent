@@ -89,6 +89,10 @@ These tracks remain preserved historical work. Track 05 will reconcile their sch
 - [ ] [Evaluation Scoring](./tracks/eval-scoring_20260225/)
 - [ ] [Evaluation Analysis and Reporting](./tracks/eval-analysis_20260225/)
 
+### Evidence Remediation
+
+- [~] [Evaluation Blocker Remediation and Admission](./tracks/eval-blocker-remediation_20260803/index.md) — local controls complete; external Phase 4 execution evidence remains blocked
+
 ### Superseded
 
 - [x] `eval-data-collection_20260225` — replaced by the per-condition historical run tracks; preserve its original artefacts and status.
