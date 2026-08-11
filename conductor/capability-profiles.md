@@ -9,10 +9,15 @@ cannot weaken privacy, evidence, clinical-safety, or human-review controls.
 
 The machine-readable registry is
 [`capability-profiles.json`](./capability-profiles.json).
+Its structural contract is
+[`schemas/capability-profiles.schema.json`](./schemas/capability-profiles.schema.json),
+with cross-record invariants enforced by `tools/validate_repository.py`.
 
 ## Installation and Operation Contract
 
-Each profile declares:
+An implemented profile declares the applicable details below. Planned profiles
+are intentionally limited declarations until their owning track supplies and
+tests those details:
 
 - whether it is `core`, `optional`, `experimental`, `enterprise`, or
   `research-only`;

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "capability-profiles.schema.json",
+  "type": "object",
+  "required": ["$schema", "schema_version", "default_profile", "policy", "installation_contract", "profiles"],
+  "properties": {
+    "$schema": {"const": "schemas/capability-profiles.schema.json"},
+    "schema_version": {"const": "1.0"},
+    "default_profile": {"type": "string", "minLength": 1},
+    "policy": {"const": "optional-capabilities-must-not-weaken-core-safeguards"},
+    "installation_contract": {
+      "type": "object",
+      "required": ["agent_assisted", "scripted", "idempotent", "preflight_required", "verification_required", "receipt_required", "rollback_required", "uninstall_required", "network_egress_requires_disclosure", "telemetry_default", "planned_is_not_installable"],
+      "properties": {
+        "agent_assisted": {"const": true},
+        "scripted": {"const": true},
+        "idempotent": {"const": true},
+        "preflight_required": {"const": true},
+        "verification_required": {"const": true},
+        "receipt_required": {"const": true},
+        "rollback_required": {"const": true},
+        "uninstall_required": {"const": true},
+        "network_egress_requires_disclosure": {"const": true},
+        "telemetry_default": {"const": "off"},
+        "planned_is_not_installable": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "class", "status", "default", "owner_track"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "class": {"enum": ["core", "optional", "experimental", "enterprise", "research-only"]},
+          "status": {"enum": ["implemented", "planned", "blocked", "unavailable"]},
+          "default": {"type": "boolean"},
+          "owner_track": {"type": "integer", "minimum": 0}
+          ,"implementation": {
+            "type": "object",
+            "required": ["entrypoint", "support_scope"],
+            "properties": {
+              "entrypoint": {"type": "string", "minLength": 1},
+              "support_scope": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          }
+        },
+        "allOf": [{
+          "if": {"properties": {"status": {"const": "planned"}}, "required": ["status"]},
+          "then": {"properties": {"default": {"const": false}}}
+        }],
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}
