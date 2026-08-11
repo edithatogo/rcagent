@@ -63,10 +63,10 @@
       "number": 1,
       "id": "safety-systems-foundation_20260731",
       "issue": 6,
-      "hard_dependencies": [
+      "hard_dependencies": [],
+      "phase_dependencies": [
         "agent-skills-living-conformance_20260731"
-      ],
-      "phase_dependencies": []
+      ]
     },
     {
       "number": 2,

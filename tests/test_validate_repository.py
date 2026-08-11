@@ -39,6 +39,20 @@ def _write_valid_repository(root: Path) -> None:
         ),
         encoding="utf-8",
     )
+    (root / "conductor/integration-map.json").write_text(
+        json.dumps(
+            {
+                "tracks": [
+                    {
+                        "track_id": "example_20260731",
+                        "candidate_systems": ["existing-system"],
+                        "project_owned_gap": "bounded test gap",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
     (root / "conductor/clinical-governance-architecture.json").write_text(
         json.dumps(
             {
@@ -170,6 +184,48 @@ def test_invalid_metadata_and_wrong_issue_mapping_are_reported(tmp_path: Path) -
         encoding="utf-8",
     )
     assert any("issue mapping does not match #5" in error for error in validate(tmp_path))
+
+
+def test_adopted_integration_requires_lifecycle_fields(tmp_path: Path) -> None:
+    _write_valid_repository(tmp_path)
+    integration_map = tmp_path / "conductor/integration-map.json"
+    integration_map.write_text(
+        json.dumps(
+            {
+                "tracks": [
+                    {
+                        "track_id": "example_20260731",
+                        "status": "adapt",
+                        "candidate_systems": ["existing-system"],
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    errors = validate(tmp_path)
+    assert "example_20260731: adopted integration missing selected_system" in errors
+    assert "example_20260731: adopted integration missing evidence" in errors
+
+
+def test_unknown_and_duplicate_integration_tracks_are_reported(tmp_path: Path) -> None:
+    _write_valid_repository(tmp_path)
+    integration_map = tmp_path / "conductor/integration-map.json"
+    integration_map.write_text(
+        json.dumps(
+            {
+                "tracks": [
+                    {"track_id": "unknown", "candidate_systems": ["one"]},
+                    {"track_id": "unknown", "candidate_systems": []},
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    errors = validate(tmp_path)
+    assert "integration-map has unknown track id: unknown" in errors
+    assert "duplicate integration-map track id: unknown" in errors
+    assert "unknown: candidate_systems must be non-empty" in errors
 
 
 def test_missing_roadmap_returns_context_diagnostics(tmp_path: Path) -> None:

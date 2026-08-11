@@ -3,9 +3,9 @@
   "track_number": 1,
   "title": "Safety Systems Foundation and Solo-Developer Harness",
   "type": "refactor",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-07-31T14:34:01+10:00",
-  "updated_at": "2026-07-31T14:34:01+10:00",
+  "updated_at": "2026-08-11T00:00:00+10:00",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/6",
@@ -13,10 +13,10 @@
   },
   "autonomy": "continuous-autonomy-with-owner-decision-gates",
   "autonomy_contract": "../../autonomy.json",
-  "hard_dependencies": [
+  "hard_dependencies": [],
+  "phase_dependencies": [
     "agent-skills-living-conformance_20260731"
   ],
-  "phase_dependencies": [],
   "decision_gates": [
     "Material changes to the approved product boundary or public claims",
     "Irreversible architecture or repository-governance choices",

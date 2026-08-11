@@ -19,6 +19,7 @@ REQUIRED_CONTEXT = (
     "conductor/capability-profiles.json",
     "conductor/clinical-governance-architecture.md",
     "conductor/clinical-governance-architecture.json",
+    "conductor/integration-map.json",
     "conductor/roadmap.md",
     "conductor/roadmap.json",
     "conductor/tracks.md",
@@ -29,6 +30,16 @@ CONTINUOUS_CONTRACT_MARKERS = (
     "do not ask for routine approval",
     "recommendation",
     "safe default",
+)
+
+ADOPTED_INTEGRATION_FIELDS = (
+    "selected_system",
+    "dependency_class",
+    "compatibility_window",
+    "safe_fallback",
+    "replacement_path",
+    "evidence",
+    "project_owned_gap",
 )
 
 
@@ -141,6 +152,37 @@ def validate(root: Path) -> list[str]:
                         errors.append(
                             f"{integration_id}: unknown {field} number: {value}"
                         )
+
+    integration_map_path = root / "conductor/integration-map.json"
+    if integration_map_path.is_file():
+        try:
+            integration_map = json.loads(
+                integration_map_path.read_text(encoding="utf-8")
+            )
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"invalid conductor/integration-map.json: {exc}")
+        else:
+            integration_track_ids: set[str] = set()
+            for integration in integration_map.get("tracks", []):
+                track_id = integration.get("track_id")
+                if not isinstance(track_id, str) or not track_id:
+                    errors.append("integration-map track has no valid track_id")
+                    continue
+                if track_id in integration_track_ids:
+                    errors.append(f"duplicate integration-map track id: {track_id}")
+                integration_track_ids.add(track_id)
+                if track_id not in track_ids:
+                    errors.append(f"integration-map has unknown track id: {track_id}")
+                candidates = integration.get("candidate_systems")
+                if not isinstance(candidates, list) or not candidates:
+                    errors.append(f"{track_id}: candidate_systems must be non-empty")
+                if integration.get("status") in {"adopt", "adapt", "project-extension"}:
+                    for field in ADOPTED_INTEGRATION_FIELDS:
+                        value = integration.get(field)
+                        if not isinstance(value, str) or not value.strip():
+                            errors.append(
+                                f"{track_id}: adopted integration missing {field}"
+                            )
 
     return errors
 
