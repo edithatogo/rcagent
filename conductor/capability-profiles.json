@@ -18,7 +18,7 @@
   },
   "profiles": [
     {"id": "core", "class": "core", "status": "implemented", "default": true, "owner_track": 0},
-    {"id": "validate", "class": "optional", "status": "implemented", "default": false, "owner_track": 1, "implementation": {"entrypoint": "scripts/setup-capability.ps1", "support_scope": "installation and repository validation only; lifecycle operations remain pending"}},
+    {"id": "validate", "class": "optional", "status": "implemented", "default": false, "owner_track": 1, "implementation": {"entrypoint": "scripts/setup-capability.ps1", "support_scope": "preflight, installation ownership, independent verification, receipts, rollback refusal, and uninstall preview; update, executable rollback, and removal remain pending"}},
     {"id": "retrieval-lexical", "class": "optional", "status": "planned", "default": false, "owner_track": 7},
     {"id": "retrieval-vector", "class": "optional", "status": "planned", "default": false, "owner_track": 7},
     {"id": "documents-ocr", "class": "optional", "status": "planned", "default": false, "owner_track": 6},
