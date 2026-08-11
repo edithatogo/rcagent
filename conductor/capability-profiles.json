@@ -1,4 +1,5 @@
 {
+  "$schema": "schemas/capability-profiles.schema.json",
   "schema_version": "1.0",
   "default_profile": "core",
   "policy": "optional-capabilities-must-not-weaken-core-safeguards",
@@ -17,7 +18,7 @@
   },
   "profiles": [
     {"id": "core", "class": "core", "status": "implemented", "default": true, "owner_track": 0},
-    {"id": "validate", "class": "optional", "status": "implemented", "default": false, "owner_track": 1},
+    {"id": "validate", "class": "optional", "status": "implemented", "default": false, "owner_track": 1, "implementation": {"entrypoint": "scripts/setup-capability.ps1", "support_scope": "installation and repository validation only; lifecycle operations remain pending"}},
     {"id": "retrieval-lexical", "class": "optional", "status": "planned", "default": false, "owner_track": 7},
     {"id": "retrieval-vector", "class": "optional", "status": "planned", "default": false, "owner_track": 7},
     {"id": "documents-ocr", "class": "optional", "status": "planned", "default": false, "owner_track": 6},

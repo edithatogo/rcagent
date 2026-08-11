@@ -17,6 +17,7 @@ REQUIRED_CONTEXT = (
     "conductor/autonomy.json",
     "conductor/capability-profiles.md",
     "conductor/capability-profiles.json",
+    "conductor/schemas/capability-profiles.schema.json",
     "conductor/clinical-governance-architecture.md",
     "conductor/clinical-governance-architecture.json",
     "conductor/integration-map.json",
@@ -41,6 +42,83 @@ ADOPTED_INTEGRATION_FIELDS = (
     "evidence",
     "project_owned_gap",
 )
+
+PROFILE_CLASSES = {"core", "optional", "experimental", "enterprise", "research-only"}
+PROFILE_STATUSES = {"implemented", "planned", "blocked", "unavailable"}
+
+
+def _validate_capability_profiles(registry: object, track_numbers: set[int]) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(registry, dict):
+        return ["capability profile registry must be an object"]
+    if registry.get("schema_version") != "1.0":
+        errors.append("capability registry requires schema_version=1.0")
+    if registry.get("$schema") != "schemas/capability-profiles.schema.json":
+        errors.append("capability registry requires its local schema reference")
+    if registry.get("policy") != "optional-capabilities-must-not-weaken-core-safeguards":
+        errors.append("capability registry policy weakens core safeguards")
+    contract = registry.get("installation_contract")
+    required_true = (
+        "agent_assisted", "scripted", "idempotent", "preflight_required",
+        "verification_required", "receipt_required", "rollback_required",
+        "uninstall_required", "network_egress_requires_disclosure",
+        "planned_is_not_installable",
+    )
+    if not isinstance(contract, dict):
+        errors.append("capability installation_contract must be an object")
+    else:
+        for field in required_true:
+            if contract.get(field) is not True:
+                errors.append(f"capability installation_contract requires {field}=true")
+        if contract.get("telemetry_default") != "off":
+            errors.append("capability installation_contract requires telemetry_default=off")
+    profiles = registry.get("profiles")
+    if not isinstance(profiles, list) or not profiles:
+        return errors + ["capability profiles must be a non-empty array"]
+    ids: set[str] = set()
+    defaults: list[str] = []
+    by_id: dict[str, dict] = {}
+    for profile in profiles:
+        if not isinstance(profile, dict):
+            errors.append("capability profile must be an object")
+            continue
+        profile_id = profile.get("id")
+        if not isinstance(profile_id, str) or not profile_id:
+            errors.append("capability profile has no valid id")
+            continue
+        if profile_id in ids:
+            errors.append(f"duplicate capability profile id: {profile_id}")
+        ids.add(profile_id)
+        by_id[profile_id] = profile
+        if profile.get("class") not in PROFILE_CLASSES:
+            errors.append(f"{profile_id}: invalid capability class")
+        status = profile.get("status")
+        if status not in PROFILE_STATUSES:
+            errors.append(f"{profile_id}: invalid capability status")
+        if not isinstance(profile.get("default"), bool):
+            errors.append(f"{profile_id}: default must be boolean")
+        elif profile["default"]:
+            defaults.append(profile_id)
+        if status in {"planned", "blocked", "unavailable"} and profile.get("default") is True:
+            errors.append(f"{profile_id}: non-implemented profile cannot be default")
+        if status == "implemented" and profile_id != "core":
+            implementation = profile.get("implementation")
+            if not isinstance(implementation, dict) or not all(
+                isinstance(implementation.get(field), str) and implementation[field].strip()
+                for field in ("entrypoint", "support_scope")
+            ):
+                errors.append(f"{profile_id}: implemented profile requires implementation contract")
+        if profile.get("owner_track") not in track_numbers:
+            errors.append(f"{profile_id}: unknown owner track number")
+    if len(defaults) != 1:
+        errors.append("capability registry requires exactly one default profile")
+    declared_default = registry.get("default_profile")
+    if defaults and declared_default != defaults[0]:
+        errors.append("default_profile does not match the flagged default profile")
+    core = by_id.get("core")
+    if not core or core.get("class") != "core" or core.get("status") != "implemented":
+        errors.append("core capability profile must be implemented and class core")
+    return errors
 
 
 def validate(root: Path) -> list[str]:
@@ -183,6 +261,15 @@ def validate(root: Path) -> list[str]:
                             errors.append(
                                 f"{track_id}: adopted integration missing {field}"
                             )
+
+    capability_path = root / "conductor/capability-profiles.json"
+    if capability_path.is_file():
+        try:
+            capability_registry = json.loads(capability_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"invalid conductor/capability-profiles.json: {exc}")
+        else:
+            errors.extend(_validate_capability_profiles(capability_registry, track_numbers))
 
     return errors
 
