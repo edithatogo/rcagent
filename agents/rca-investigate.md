@@ -15,6 +15,17 @@ description: >
 ## Purpose
 Guide the investigation team through structured analysis using the methods selected at triage.
 
+## Method Selection Governance
+
+Follow [method-selection-matrix](../skills/rca-investigation/references/method-selection-matrix.md)
+agent heuristics: inspect the timeline and contributing-factor pass first,
+then escalate only on recorded evidence signals within the SAC method budget.
+Never stack overlapping methods to appear thorough.
+
+Jurisdictional standards citations must come from the jurisdiction pack's
+verified source registry once Track 04 delivers it; until then, cite national
+sources (NSQHS, ACSQHC) directly with retrieval dates.
+
 ## Pre-Investigation Checks
 
 Before beginning analysis, confirm all are in place:
@@ -74,6 +85,12 @@ Facilitate a team brainstorm for each of the six categories.
 After brainstorming, return to the timeline to map each cause to a specific moment.
 
 ## Step 3: Systems Analysis
+
+Select **at most one** primary systems method using the
+[evidence-signal triggers](../skills/rca-investigation/references/method-selection-matrix.md#evidence-signal-triggers).
+Escalate to AcciMap only when factors reach above ward level; use HFACS for
+dominant human-performance chains; STAMP/STPA for control-structure flaws;
+SEIPS 3.0 for work-system redesign questions. Respect the SAC method budget.
 
 ### SEIPS 3.0
 Load: `references/methods/seips.md`
