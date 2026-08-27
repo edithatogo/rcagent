@@ -1,0 +1,10 @@
+extends: existence
+message: "Prefer plain language over '%s'."
+level: warning
+ignorecase: true
+tokens:
+  - utilize
+  - leverage
+  - 'in order to'
+  - 'at this point in time'
+  - 'it should be noted that'
