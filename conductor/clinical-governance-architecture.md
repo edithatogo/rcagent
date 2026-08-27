@@ -121,7 +121,7 @@ copied into specialist modules.
 | Architecture area | Initial owning tracks |
 |---|---|
 | Lifecycle states and evidence semantics | 02 Evidence Workflow Core |
-| NSW risk, harm, huddle, review, lookback, cluster, workforce and consultation policy mappings | 04 NSW Health Jurisdiction Pack |
+| National baseline plus NSW and Queensland risk, harm, huddle, review, lookback, cluster, workforce and consultation policy mappings | 04 Jurisdiction Packs (national baseline, NSW, QLD) |
 | Literature discovery, organisational memory and retrieval | 07 Retrieval and Knowledge System |
 | SourceRight citation and provenance adapter | 07 Retrieval, validated by 05 Benchmark |
 | Forms, huddles, interviews, methods, consultation and action surfaces | 09 Interfaces, Templates and Closed-Loop Actions |

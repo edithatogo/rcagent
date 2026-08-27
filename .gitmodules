@@ -3,3 +3,9 @@
 	url = https://github.com/gemini-cli-extensions/conductor.git
 	branch = main
 
+[submodule ".agents/plugins/sourceright"]
+	path = .agents/plugins/sourceright
+	url = https://github.com/edithatogo/sourceright.git
+[submodule ".agents/plugins/authentext"]
+	path = .agents/plugins/authentext
+	url = https://github.com/edithatogo/authentext.git

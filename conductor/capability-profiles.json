@@ -16,6 +16,12 @@
     "telemetry_default": "off",
     "planned_is_not_installable": true
   },
+  "jurisdiction_framework": {
+    "id_pattern": "^jurisdiction-(national|[a-z]{2,3}(-[a-z0-9]+)*)$",
+    "baseline_profile": "jurisdiction-national",
+    "owner_track": 4,
+    "authoring_guide": "conductor/capability-profiles.md"
+  },
   "profiles": [
     {"id": "core", "class": "core", "status": "implemented", "default": true, "owner_track": 0},
     {"id": "validate", "class": "optional", "status": "implemented", "default": false, "owner_track": 1, "implementation": {"entrypoint": "scripts/setup-capability.ps1", "support_scope": "preflight, installation ownership, independent verification, receipts, rollback refusal, and uninstall preview; update, executable rollback, and removal remain pending"}},
@@ -30,6 +36,10 @@
     {"id": "runtime-llamacpp", "class": "optional", "status": "planned", "default": false, "owner_track": 8},
     {"id": "runtime-mojo-experimental", "class": "experimental", "status": "planned", "default": false, "owner_track": 8},
     {"id": "enterprise-connectors", "class": "enterprise", "status": "planned", "default": false, "owner_track": 9},
+    {"id": "jurisdiction-national", "class": "optional", "status": "planned", "default": false, "owner_track": 4},
+    {"id": "jurisdiction-nsw", "class": "optional", "status": "planned", "default": false, "owner_track": 4},
+    {"id": "jurisdiction-qld", "class": "optional", "status": "planned", "default": false, "owner_track": 4},
+    {"id": "health-analytics-process-mining", "class": "research-only", "status": "planned", "default": false, "owner_track": 7},
     {"id": "client-adapters", "class": "optional", "status": "planned", "default": false, "owner_track": 11},
     {"id": "domain-adaptation", "class": "optional", "status": "planned", "default": false, "owner_track": 10}
   ]

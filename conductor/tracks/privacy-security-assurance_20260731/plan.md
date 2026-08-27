@@ -53,6 +53,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Create data-flow diagrams, trust zones, assets, actors, threat scenarios, and misuse cases
   - [ ] Cover re-identification, inference, prompt injection, supply chain, unsafe output, and insider risks
   - [ ] Create privacy, clinical-safety, cultural-safety, and information-governance impact methods
+  - [ ] Build de-identification sentinel fixtures covering both NSW Health and Queensland Health case formats, including QLD coronial data shapes
   - [ ] Map controls to risks without claiming certification
   - [ ] Profile applicable organisational security and privacy controls before adding project controls
   - [ ] Map NIST AI RMF and Generative AI Profile, NIST Privacy Framework, OWASP GenAI guidance, MITRE ATLAS, and supply-chain standards to project risks
