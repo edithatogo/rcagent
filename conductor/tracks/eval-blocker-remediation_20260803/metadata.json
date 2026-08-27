@@ -1,9 +1,9 @@
 {
   "track_id": "eval-blocker-remediation_20260803",
   "name": "Evaluation Blocker Remediation and Admission",
-  "status": "in_progress",
+  "status": "blocked",
   "created": "2026-08-03",
-  "updated_at": "2026-08-27T00:00:00Z",
+  "updated_at": "2026-08-27T09:10:00Z",
   "gates": [
     {
       "id": "phase-4-external-evidence-execution",
