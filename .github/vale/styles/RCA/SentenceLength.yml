@@ -1,7 +1,0 @@
-extends: occurrence
-message: "Long sentences reduce scanability — consider splitting at %s words."
-level: suggestion
-scope: sentence
-count:
-  words:
-    maximum: 45
