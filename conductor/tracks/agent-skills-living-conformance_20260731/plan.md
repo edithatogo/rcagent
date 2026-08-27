@@ -196,54 +196,54 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 4: Refactor `SKILL.md` and Frontmatter
 
-- [~] Task: Optimise the skill description
-  - [ ] Rewrite using imperative, user-intent-focused phrasing
-  - [ ] State when the skill should activate
-  - [ ] State important near-miss boundaries
-  - [ ] Retain relevant AU/NZ RCA and SAE terminology
-  - [ ] Keep the description within the current maximum length
-  - [ ] Avoid overfitting to individual evaluation prompts
+- [x] Task: Optimise the skill description
+  - [x] Rewrite using imperative, user-intent-focused phrasing
+  - [x] State when the skill should activate
+  - [x] State important near-miss boundaries
+  - [x] Retain relevant AU/NZ RCA and SAE terminology
+  - [x] Keep the description within the current maximum length
+  - [x] Avoid overfitting to individual evaluation prompts
 
 - [~] Task: Implement applicable stable frontmatter options
-  - [ ] Retain a valid name matching the parent directory
+  - [x] Retain a valid name matching the parent directory
   - [!] Add the approved licence declaration or block completion pending approval
-  - [ ] Add an accurate compatibility declaration
-  - [ ] Add namespaced metadata with schema-valid string values
-  - [ ] Record implementation evidence in the extension registry
+  - [x] Add an accurate compatibility declaration
+  - [x] Add namespaced metadata with schema-valid string values
+  - [x] Record implementation evidence in the extension registry
 
-- [~] Task: Implement applicable experimental options
-  - [ ] Assess `allowed-tools` against each supported client
-  - [ ] Add it only where compatibility evidence passes
-  - [ ] Document unsupported-client behaviour
-  - [ ] Add safe fallback behaviour
-  - [ ] Record omissions as reviewed inapplicability decisions
-  - [ ] Prevent experimental options from weakening privacy or review gates
+- [x] Task: Implement applicable experimental options
+  - [x] Assess `allowed-tools` against each supported client
+  - [x] Add it only where compatibility evidence passes
+  - [x] Document unsupported-client behaviour
+  - [x] Add safe fallback behaviour
+  - [x] Record omissions as reviewed inapplicability decisions
+  - [x] Prevent experimental options from weakening privacy or review gates
 
-- [~] Task: Rewrite the body as an executable procedure
-  - [ ] Add scope and activation boundaries
-  - [ ] Add deterministic operating-mode selection
-  - [ ] Add intake and evidence-sufficiency workflow
-  - [ ] Add method-selection routing
-  - [ ] Add explicit resource-loading triggers
-  - [ ] Add output-selection routing
-  - [ ] Add validation and correction loop
-  - [ ] Add common gotchas and failure handling
-  - [ ] Add final privacy, evidence, and quality checklist
+- [x] Task: Rewrite the body as an executable procedure
+  - [x] Add scope and activation boundaries
+  - [x] Add deterministic operating-mode selection
+  - [x] Add intake and evidence-sufficiency workflow
+  - [x] Add method-selection routing
+  - [x] Add explicit resource-loading triggers
+  - [x] Add output-selection routing
+  - [x] Add validation and correction loop
+  - [x] Add common gotchas and failure handling
+  - [x] Add final privacy, evidence, and quality checklist
 
-- [~] Task: Enforce progressive-disclosure limits
-  - [ ] Measure lines and tokens
-  - [ ] Keep only always-needed instructions in `SKILL.md`
-  - [ ] Move conditional detail into focused references
-  - [ ] Verify every moved resource has a clear load trigger
-  - [ ] Verify reference chains remain shallow and navigable
+- [x] Task: Enforce progressive-disclosure limits
+  - [x] Measure lines and tokens
+  - [x] Keep only always-needed instructions in `SKILL.md`
+  - [x] Move conditional detail into focused references
+  - [x] Verify every moved resource has a clear load trigger
+  - [x] Verify reference chains remain shallow and navigable
 
 - [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [ ] Run official frontmatter validation
-  - [ ] Verify description and naming constraints
-  - [ ] Verify all options against the extension registry
-  - [ ] Verify the main file remains within current guidance
+  - [x] Run official frontmatter validation
+  - [x] Verify description and naming constraints
+  - [x] Verify all options against the extension registry
+  - [x] Verify the main file remains within current guidance
   - [!] Complete editorial and clinical-safety review
-  - [ ] Continue automatically to Phase 5 unless a declared owner decision gate is reached
+  - [x] Continue automatically to Phase 5 unless a declared owner decision gate is reached
 
 ## Phase 5: Implement Portable Client Adapters
 
@@ -283,48 +283,48 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 6: Implement Deterministic Conformance Validation
 
-- [~] Task: Implement the validation command
-  - [ ] Run the official `skills-ref` validator
-  - [ ] Validate YAML and frontmatter constraints
-  - [ ] Validate directory/name agreement
-  - [ ] Validate description, line, and token limits
-  - [ ] Validate internal links and file references
-  - [ ] Validate resource roles and orphan status
-  - [ ] Validate portable-core isolation
-  - [ ] Validate extension applicability and evidence
-  - [ ] Validate adapter integrity
-  - [ ] Validate evaluation-data schemas
-  - [ ] Validate compliance-matrix completeness
-  - [ ] Return non-zero on every applicable failure
+- [x] Task: Implement the validation command
+  - [x] Run the official `skills-ref` validator
+  - [x] Validate YAML and frontmatter constraints
+  - [x] Validate directory/name agreement
+  - [x] Validate description, line, and token limits
+  - [x] Validate internal links and file references
+  - [x] Validate resource roles and orphan status
+  - [x] Validate portable-core isolation
+  - [x] Validate extension applicability and evidence
+  - [x] Validate adapter integrity
+  - [x] Validate evaluation-data schemas
+  - [x] Validate compliance-matrix completeness
+  - [x] Return non-zero on every applicable failure
 
-- [~] Task: Implement actionable diagnostics
-  - [ ] Identify the failed requirement ID
-  - [ ] Identify the affected file and field
-  - [ ] Explain the expected constraint
-  - [ ] Distinguish errors, unsupported features, advisories, and unavailable upstream evidence
-  - [ ] Avoid leaking sensitive content in diagnostic output
+- [x] Task: Implement actionable diagnostics
+  - [x] Identify the failed requirement ID
+  - [x] Identify the affected file and field
+  - [x] Explain the expected constraint
+  - [x] Distinguish errors, unsupported features, advisories, and unavailable upstream evidence
+  - [x] Avoid leaking sensitive content in diagnostic output
 
-- [~] Task: Run the complete fixture suite
-  - [ ] Confirm every valid fixture passes
-  - [ ] Confirm every invalid fixture fails
-  - [ ] Confirm every failure produces its expected diagnostic
-  - [ ] Add regression fixtures for defects found during implementation
-  - [ ] Record fixture-suite results
+- [x] Task: Run the complete fixture suite
+  - [x] Confirm every valid fixture passes
+  - [x] Confirm every invalid fixture fails
+  - [x] Confirm every failure produces its expected diagnostic
+  - [x] Add regression fixtures for defects found during implementation
+  - [x] Record fixture-suite results
 
-- [~] Task: Generate durable validation receipts
-  - [ ] Record tool and dependency versions
-  - [ ] Record source and validator revisions
-  - [ ] Record deterministic results
-  - [ ] Record network and offline status
-  - [ ] Record adapter results
-  - [ ] Make receipts reviewable without exposing credentials or sensitive data
+- [x] Task: Generate durable validation receipts
+  - [x] Record tool and dependency versions
+  - [x] Record source and validator revisions
+  - [x] Record deterministic results
+  - [x] Record network and offline status
+  - [x] Record adapter results
+  - [x] Make receipts reviewable without exposing credentials or sensitive data
 
-- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [ ] Reproduce validation from documented commands
-  - [ ] Confirm all negative fixtures remain negative
-  - [ ] Confirm no warnings are represented as passes
-  - [ ] Review validation receipts
-  - [ ] Continue automatically to Phase 7 unless a declared owner decision gate is reached
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [x] Reproduce validation from documented commands
+  - [x] Confirm all negative fixtures remain negative
+  - [x] Confirm no warnings are represented as passes
+  - [x] Review validation receipts
+  - [x] Continue automatically to Phase 7 unless a declared owner decision gate is reached
 
 ## Phase 7: Validate Triggering and Output Quality
 
@@ -376,94 +376,94 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Verify train/validation separation
   - [x] Verify raw nondeterministic results remain visible
   - [!] Complete clinical-governance review
-  - [ ] Continue automatically to Phase 8 unless a declared owner decision gate is reached
+  - [x] Continue automatically to Phase 8 unless a declared owner decision gate is reached
 
 ## Phase 8: Implement Living-Conformance Monitoring
 
-- [~] Task: Implement the upstream-drift checker
-  - [ ] Resolve current official documentation
-  - [ ] Resolve the current official validator revision
-  - [ ] Compare fields, constraints, and validator behaviour
-  - [ ] Detect normative requirement changes
-  - [ ] Detect non-normative guidance changes
-  - [ ] Record checked revisions and timestamps
+- [x] Task: Implement the upstream-drift checker
+  - [x] Resolve current official documentation
+  - [x] Resolve the current official validator revision
+  - [x] Compare fields, constraints, and validator behaviour
+  - [x] Detect normative requirement changes
+  - [x] Detect non-normative guidance changes
+  - [x] Record checked revisions and timestamps
 
-- [~] Task: Implement honest online and offline modes
-  - [ ] Make current-conformance checks require successful upstream resolution
-  - [ ] Provide a clearly labelled offline validation mode
-  - [ ] Prevent cached evidence from producing a current-conformance claim
-  - [ ] Distinguish network failure from specification failure
-  - [ ] Preserve the last verified receipt without presenting it as current
+- [x] Task: Implement honest online and offline modes
+  - [x] Make current-conformance checks require successful upstream resolution
+  - [x] Provide a clearly labelled offline validation mode
+  - [x] Prevent cached evidence from producing a current-conformance claim
+  - [x] Distinguish network failure from specification failure
+  - [x] Preserve the last verified receipt without presenting it as current
 
-- [~] Task: Integrate validation into project workflows
-  - [ ] Add a local validation entry point
-  - [ ] Add a portable CI validation entry point
-  - [ ] Add a scheduled upstream-drift check
-  - [ ] Define failure ownership and remediation workflow
-  - [ ] Ensure external service or credential requirements remain gated
+- [x] Task: Integrate validation into project workflows
+  - [x] Add a local validation entry point
+  - [x] Add a portable CI validation entry point
+  - [x] Add a scheduled upstream-drift check
+  - [x] Define failure ownership and remediation workflow
+  - [x] Ensure external service or credential requirements remain gated
 
-- [~] Task: Validate drift behaviour
-  - [ ] Simulate a normative field change
-  - [ ] Simulate a guidance-only change
-  - [ ] Simulate upstream unavailability
-  - [ ] Simulate validator-behaviour change
-  - [ ] Verify each condition produces the correct status
+- [x] Task: Validate drift behaviour
+  - [x] Simulate a normative field change
+  - [x] Simulate a guidance-only change
+  - [x] Simulate upstream unavailability
+  - [x] Simulate validator-behaviour change
+  - [x] Verify each condition produces the correct status
 
-- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [ ] Run a live upstream check
-  - [ ] Review the current-conformance receipt
-  - [ ] Verify scheduled and local modes agree
-  - [ ] Verify offline mode remains honestly labelled
-  - [ ] Continue automatically to Phase 9 unless a declared owner decision gate is reached
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [x] Run a live upstream check
+  - [x] Review the current-conformance receipt
+  - [x] Verify scheduled and local modes agree
+  - [x] Verify offline mode remains honestly labelled
+  - [x] Continue automatically to Phase 9 unless a declared owner decision gate is reached
 
 ## Phase 9: Documentation, Migration, and Final Evidence
 
-- [~] Task: Complete user and maintainer documentation
-  - [ ] Document portable-core architecture
-  - [ ] Document resource routing and progressive disclosure
-  - [ ] Document extension governance
-  - [ ] Document client-adapter development
-  - [ ] Document validation and evaluation commands
-  - [ ] Document upstream-drift response
-  - [ ] Document known limitations
+- [x] Task: Complete user and maintainer documentation
+  - [x] Document portable-core architecture
+  - [x] Document resource routing and progressive disclosure
+  - [x] Document extension governance
+  - [x] Document client-adapter development
+  - [x] Document validation and evaluation commands
+  - [x] Document upstream-drift response
+  - [x] Document known limitations
 
-- [~] Task: Complete migration documentation
-  - [ ] Map every former repository-root dependency to its new location
-  - [ ] Document adapter migration
-  - [ ] Document compatibility changes
-  - [ ] Document rollback procedure
-  - [ ] Confirm historical artefacts remain recoverable
+- [x] Task: Complete migration documentation
+  - [x] Map every former repository-root dependency to its new location
+  - [x] Document adapter migration
+  - [x] Document compatibility changes
+  - [x] Document rollback procedure
+  - [x] Confirm historical artefacts remain recoverable
 
 - [~] Task: Finalise licensing and compatibility
   - [!] Obtain explicit owner approval for the licence
   - [!] Add or update the bundled licence file
   - [!] Verify the frontmatter licence reference
-  - [ ] Verify compatibility statements against test evidence
-  - [ ] Block release claims if licence approval remains unresolved
+  - [x] Verify compatibility statements against test evidence
+  - [x] Block release claims if licence approval remains unresolved
 
 - [~] Task: Execute the final conformance audit
-  - [ ] Run the official validator against the current upstream revision
-  - [ ] Run deterministic validation
-  - [ ] Run isolated portability validation
-  - [ ] Run client-adapter suites
-  - [ ] Run trigger validation
-  - [ ] Run output-quality validation
-  - [ ] Run privacy and evidence-integrity checks
-  - [ ] Run the upstream-drift check
-  - [ ] Require every applicable compliance item to pass
+  - [x] Run the official validator against the current upstream revision
+  - [x] Run deterministic validation
+  - [x] Run isolated portability validation
+  - [x] Run client-adapter suites
+  - [x] Run trigger validation
+  - [x] Run output-quality validation
+  - [x] Run privacy and evidence-integrity checks
+  - [x] Run the upstream-drift check
+  - [!] Require every applicable compliance item to pass
 
-- [~] Task: Produce the final evidence pack
-  - [ ] Generate the final compliance matrix
-  - [ ] Generate validation receipts
-  - [ ] Generate extension and adapter support matrices
-  - [ ] Record unresolved limitations without downgrading them
-  - [ ] Link every conformance claim to evidence
-  - [ ] Update the changelog
+- [x] Task: Produce the final evidence pack
+  - [x] Generate the final compliance matrix
+  - [x] Generate validation receipts
+  - [x] Generate extension and adapter support matrices
+  - [x] Record unresolved limitations without downgrading them
+  - [x] Link every conformance claim to evidence
+  - [x] Update the changelog
 
 - [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [ ] Verify all approved specification acceptance criteria
-  - [ ] Confirm no checklist-only claim lacks evidence
-  - [ ] Confirm no external publication occurred
-  - [ ] Confirm the working tree contains only intended changes
+  - [!] Verify all approved specification acceptance criteria
+  - [x] Confirm no checklist-only claim lacks evidence
+  - [x] Confirm no external publication occurred
+  - [x] Confirm the working tree contains only intended changes
   - [!] Obtain owner approval for any unresolved licence or external-release decision
   - [ ] Otherwise declare the track complete from the reconciled evidence without an additional approval pause

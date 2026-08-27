@@ -22,10 +22,10 @@
 
 ## Phase 2: Track 00 reconciliation
 
-- [ ] Task: Audit pending Track 00 checklist items against merged evidence
-- [ ] Task: Mark only evidenced tasks complete and retain genuine decision gates
-- [ ] Task: Verify current Agent Skills conformance, adapters, fixtures, and privacy sentinels
-- [ ] Task: Record the licence gate and release contingency without selecting a licence
+- [x] Task: Audit pending Track 00 checklist items against merged evidence — see `../agent-skills-living-conformance_20260731/evidence/checklist-reconciliation-20260827.md`
+- [x] Task: Mark only evidenced tasks complete and retain genuine decision gates
+- [x] Task: Verify current Agent Skills conformance, adapters, fixtures, and privacy sentinels
+- [x] Task: Record the licence gate and release contingency without selecting a licence
 - [ ] Task: Review, merge, and clean the Track 00 reconciliation PR
 - [ ] Task: Phase verification and checkpoint
 
