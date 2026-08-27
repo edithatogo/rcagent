@@ -38,6 +38,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
   - [ ] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
   - [ ] Update `integration-map.json` with the selected status and evidence links
+  - [ ] Test vendored sourceright as the candidate maintained system for citation and source verification; prefer a thin SourceRight adapter over any project-owned verifier
 
 - [ ] Task: Phase Verification & Checkpoint
   - [ ] Verify that no planned work duplicates an adequate existing capability

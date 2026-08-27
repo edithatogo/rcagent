@@ -9,7 +9,6 @@ from pathlib import Path, PurePosixPath
 
 import yaml
 
-
 NAME_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 REFERENCE_PATTERN = re.compile(r"`((?:references|assets|scripts)/[^`\s]+)`")
 WINDOWS_ABSOLUTE = re.compile(r"^[A-Za-z]:[\\/]")

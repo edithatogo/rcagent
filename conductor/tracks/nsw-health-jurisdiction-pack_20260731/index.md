@@ -1,6 +1,7 @@
-# Track 04: NSW Health Jurisdiction Pack
+# Track 04: Australian Jurisdiction Packs — National Baseline, NSW Health, and Queensland Health
 
 - **Status:** New
+- **Original identity:** Began as "NSW Health Jurisdiction Pack" (`nsw-health-jurisdiction-pack_20260731`); track ID retained for continuity. GitHub issue [#9](https://github.com/edithatogo/rcagent/issues/9) may still carry its original title — reconcile the issue title or close-out notes at the first phase checkpoint.
 - **Workstream:** foundation-governance
 - **GitHub issue:** [#9](https://github.com/edithatogo/rcagent/issues/9)
 - **Parent workstream:** [#2](https://github.com/edithatogo/rcagent/issues/2)

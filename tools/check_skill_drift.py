@@ -6,9 +6,9 @@ import argparse
 import json
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-
+from typing import Any
 
 UPSTREAM_API = "https://api.github.com/repos/agentskills/agentskills/commits/main"
 COMPARE_API = "https://api.github.com/repos/agentskills/agentskills/compare/{base}...{head}"
@@ -26,7 +26,7 @@ GUIDANCE_PATHS = (
 )
 
 
-def _read_json(url: str, opener) -> object:
+def _read_json(url: str, opener) -> Any:
     request = urllib.request.Request(
         url,
         headers={"Accept": "application/vnd.github+json", "User-Agent": "rca-workbench"},
@@ -47,7 +47,7 @@ def check_drift(
 ) -> tuple[int, dict[str, object]]:
     baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
     receipt: dict[str, object] = {
-        "checked_at": datetime.now(timezone.utc).isoformat(),
+        "checked_at": datetime.now(UTC).isoformat(),
         "baseline_revision": baseline["upstream_revision"],
         "current_conformance": False,
         "mode": "offline" if offline else "live",

@@ -6,8 +6,9 @@ import argparse
 import json
 import platform
 import subprocess
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from tools.check_skill_drift import check_drift
 from tools.validate_skill_profile import TRACK, validate_profile
@@ -19,7 +20,7 @@ def run_conformance(
     validator: str = "skills-ref",
     offline: bool = False,
     require_complete: bool = False,
-) -> tuple[int, dict[str, object]]:
+) -> tuple[int, dict[str, Any]]:
     root = root.resolve()
     skill = root / "skills/rca-investigation"
     try:
@@ -41,7 +42,7 @@ def run_conformance(
     current_pass = local_pass and drift_code == 0 and bool(drift["current_conformance"])
     receipt: dict[str, object] = {
         "schema_version": "1.0",
-        "checked_at": datetime.now(timezone.utc).isoformat(),
+        "checked_at": datetime.now(UTC).isoformat(),
         "runtime": {"python": platform.python_version(), "platform": platform.system()},
         "official_validator": {
             "command": [validator, "validate", "skills/rca-investigation"],

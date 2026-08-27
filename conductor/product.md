@@ -48,7 +48,7 @@ Every run declares its actual mode, capabilities, model and framework revisions,
 - Portable Agent Skills for triage, investigation, reporting, action tracking, and effectiveness review
 - Evidence and claim provenance, conflicting-evidence handling, audit events, and bounded exports
 - Retrospective and proactive systems methods, including RCA, SEIPS, AcciMap, FRAM, STPA, bow-tie, barrier analysis, FMEA, and Safety-II approaches where appropriate
-- Versioned jurisdiction packs, beginning with NSW Health and Clinical Excellence Commission sources
+- Versioned jurisdiction packs over a shared national baseline (NSQHS, ACSQHC), beginning with NSW Health/Clinical Excellence Commission and Queensland Health/Clinical Excellence Queensland sources
 - Workflows and original or rights-cleared templates for serious adverse events, open disclosure, consumer and family participation, staff support, cultural safety, and governance review
 - Citation-first retrieval that starts with full-text search and adds local embeddings, hybrid search, or reranking only when evaluation supports them
 - Literature discovery with screening and a thin, pinned SourceRight adapter
@@ -82,9 +82,9 @@ Every run declares its actual mode, capabilities, model and framework revisions,
 
 ## Initial Jurisdiction Strategy
 
-The generic core contains no silent jurisdictional assumptions. A versioned NSW Health pack will map current authoritative sources from NSW Health, the Clinical Excellence Commission, the Agency for Clinical Innovation, relevant legislation, and national standards. Source authority, status, supersession, rights, retrieval date, and unresolved interpretation will remain visible.
+The generic core contains no silent jurisdictional assumptions. A national baseline tier maps current authoritative Commonwealth and cross-industry sources — NSQHS Standards, ACSQHC frameworks, relevant national legislation, and the accreditation scheme — once, for every jurisdiction pack to inherit. State packs then map only genuinely state-specific requirements on top: a versioned NSW Health pack covering NSW Health, the Clinical Excellence Commission, and the Agency for Clinical Innovation sources, followed by an equivalent Queensland Health pack covering Queensland Health, Clinical Excellence Queensland, and Queensland coronial sources. Source authority, status, supersession, rights, retrieval date, and unresolved interpretation will remain visible at both tiers.
 
-Additional jurisdictions can implement the same contracts without copying NSW-specific rules into the core.
+Additional jurisdictions can implement the same contracts without copying any state-specific rules into the core.
 
 ## What This Is Not
 

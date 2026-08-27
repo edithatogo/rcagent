@@ -7,13 +7,14 @@ from pathlib import Path
 
 import pytest
 
-
 ROOT = Path(__file__).parents[1]
 SCRIPT = ROOT / "scripts/setup-capability.ps1"
 PWSH = shutil.which("pwsh")
 
 
 def _run(*arguments: str, check: bool = True) -> subprocess.CompletedProcess[str]:
+    if PWSH is None:
+        raise RuntimeError("pwsh (PowerShell) is required for capability-script tests")
     return subprocess.run(
         [PWSH, "-NoProfile", "-File", str(SCRIPT), *arguments],
         cwd=ROOT,

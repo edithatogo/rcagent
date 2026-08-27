@@ -3,5 +3,15 @@
   "name": "Evaluation Blocker Remediation and Admission",
   "status": "in_progress",
   "created": "2026-08-03",
+  "updated_at": "2026-08-27T00:00:00Z",
+  "gates": [
+    {
+      "id": "phase-4-external-evidence-execution",
+      "kind": "external",
+      "status": "pending",
+      "description": "Phase 2B execute-and-admit requires external Phase 4 execution evidence outside repository control",
+      "evidence": "./plan.md Phase 2B"
+    }
+  ],
   "depends_on": ["eval-run-H0_20260225", "eval-run-H1_20260225", "eval-run-H2_20260225", "eval-run-H3_20260225", "eval-run-H4_20260225", "eval-run-H5_20260225", "eval-run-H6_20260225", "eval-run-H7_20260225", "eval-run-H8_20260225"]
 }

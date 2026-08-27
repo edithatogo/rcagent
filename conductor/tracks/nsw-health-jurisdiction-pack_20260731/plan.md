@@ -52,6 +52,10 @@ Execution follows [workflow.md](../../workflow.md) and the
 - [ ] Task: Implement the phase scope
   - [ ] Register applicable NSW Health policy directives including PD2020_047, PD2023_034, PD2025_032, PD2022_023, PD2025_031, and PD2026_001 for verification
   - [ ] Register relevant CEC, ACI, ACSQHC, NSQHS, legislation, regulation, and local-policy source classes
+  - [ ] Promote national standards (NSQHS, ACSQHC frameworks, relevant Commonwealth legislation, national accreditation scheme) to a shared baseline tier that state packs inherit rather than duplicate
+  - [ ] Register Queensland Health and Clinical Excellence Queensland patient-safety, serious-adverse-event, open-disclosure, and clinical-governance source classes for verification before recording any directive identifiers
+  - [ ] Register Coroners Court of Queensland alongside NSW coronial sources
+  - [ ] Publish the generic jurisdiction-pack authoring guide and `jurisdiction-*` capability-profile registration workflow so additional states follow the same contracts without core changes
   - [ ] Record issuer, authority, jurisdiction, status, version, dates, URLs, checksums, rights, and review cadence
   - [ ] Link to source material rather than copying it until licence and operational need are clear
   - [ ] Inventory ims+ and approved alternative incident-system fields, exports, imports, identifiers, workflow states, reports, and verified integration options

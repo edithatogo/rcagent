@@ -214,6 +214,25 @@ Context is layered: repository navigation, product constraints, track scope, bou
 
 Candidate names are hypotheses. Track 08 must verify availability, licence, revision, format, context, device fit, and actual performance at the time of evaluation.
 
+## Horizon: Aggregate Quality and Safety Analytics
+
+Post-Wave-5 analytical capabilities for portfolio consideration. None are
+delivery dependencies today; each requires an owner decision gate before any
+private, identifiable, or hosted data flows, and each stays deterministic and
+no-model-download until Tracks 05–08 produce passing receipts.
+
+| Candidate | Purpose | Primary tooling | Gate notes |
+|---|---|---|---|
+| FHIR-based quality exchange | Share AdverseEvent/Provenance records between systems | HL7 FHIR R5 (already an interchange option in `integration-strategy.md`) | Interchange only; never the internal investigation ontology |
+| OMOP CDM mapping | Aggregate de-identified outcomes across sites for research queries | OHDSI OMOP CDM v5.x + common data model vocabulary | De-identification assurance from Track 03 first; mapping is one-way export |
+| Process mining | Discover conformance/deviation between documented and actual care/investigation pathways | Python: pm4py; R alternatives: bupaR family (`pm4rs` naming unverified — treat as candidate name only) | Event logs derived only from evidence-ledger-backed datasets |
+| Statistical process control | Detect drift in incident rates, recommendation closure times | Deterministic SPC chart libraries | Cheap, privacy-safe, likely first horizon item worth a spike |
+| Incident-text NLP | Theme extraction across large incident corpora | Local encoders via Track 06/07 contracts | Human-reviewable output only; no autonomous classification of severity |
+
+Sequence these behind the Delivery Waves above; propose concrete tracks only
+after Wave 4 evidence exists, so they enter as measured extensions rather than
+speculative subsystems.
+
 ## Registry and Marketplace Funnel
 
 Track 11 uses a governed funnel:

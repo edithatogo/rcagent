@@ -4,8 +4,9 @@
   "title": "Evidence Workflow Core",
   "type": "feature",
   "status": "new",
-  "created_at": "2026-07-31T14:34:01+10:00",
-  "updated_at": "2026-07-31T14:34:01+10:00",
+  "evidence_schema": "1.0",
+  "created_at": "2026-07-31T04:34:01Z",
+  "updated_at": "2026-08-27T00:00:00Z",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/7",

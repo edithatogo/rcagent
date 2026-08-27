@@ -9,6 +9,7 @@ import subprocess
 import tempfile
 from dataclasses import asdict, dataclass
 from pathlib import Path
+from typing import Any
 
 from tools.install_skill_adapter import install_adapter
 
@@ -76,7 +77,7 @@ def run_evaluation(
     timeout: int,
     partitions: set[str] | None = None,
     case_ids: set[str] | None = None,
-) -> tuple[int, dict[str, object]]:
+) -> tuple[int, dict[str, Any]]:
     cases_document = json.loads(cases_path.read_text(encoding="utf-8"))
     cases = cases_document["cases"]
     if partitions:

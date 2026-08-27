@@ -165,5 +165,34 @@
       ],
       "project_owned_gap": "portable safety-skill packages, compatibility profiles, client adapters, submission evidence, and governed release decisions"
     }
+  ],
+  "vendored_plugins": [
+    {
+      "name": "conductor",
+      "path": ".agents/plugins/conductor",
+      "url": "https://github.com/gemini-cli-extensions/conductor.git",
+      "branch": "main",
+      "licence": "Apache-2.0",
+      "role": "Spec-driven development plugin protocol consumed by this repository's Conductor workflow and compatibility entrypoints",
+      "update_policy": "pinned commit on main; bumps reviewed against conductor/tracks.md compatibility receipts before advancing"
+    },
+    {
+      "name": "sourceright",
+      "path": ".agents/plugins/sourceright",
+      "url": "https://github.com/edithatogo/sourceright.git",
+      "branch": "main",
+      "licence": "MIT OR Apache-2.0",
+      "role": "Reference verification infrastructure candidate for citation integrity in evidence workflows (Track 02 alignment)",
+      "update_policy": "pinned commit on main; upstream tracks its own hardening programme via its conductor records"
+    },
+    {
+      "name": "authentext",
+      "path": ".agents/plugins/authentext",
+      "url": "https://github.com/edithatogo/authentext.git",
+      "branch": "main",
+      "licence": "MIT",
+      "role": "Agent skill surface (SKILL.md plus references) for register-consistent professional writing in generated reports (Track 09 templates)",
+      "update_policy": "pinned commit on main; compiled skill surface validated by npm run sync upstream before any bump"
+    }
   ]
 }

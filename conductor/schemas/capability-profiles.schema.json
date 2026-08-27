@@ -6,6 +6,17 @@
   "properties": {
     "$schema": {"const": "schemas/capability-profiles.schema.json"},
     "schema_version": {"const": "1.0"},
+    "jurisdiction_framework": {
+      "type": "object",
+      "required": ["id_pattern", "baseline_profile", "owner_track"],
+      "properties": {
+        "id_pattern": {"type": "string", "minLength": 1},
+        "baseline_profile": {"type": "string", "minLength": 1},
+        "owner_track": {"type": "integer", "minimum": 0},
+        "authoring_guide": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
     "default_profile": {"type": "string", "minLength": 1},
     "policy": {"const": "optional-capabilities-must-not-weaken-core-safeguards"},
     "installation_contract": {

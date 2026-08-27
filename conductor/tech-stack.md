@@ -148,6 +148,15 @@ Every model entry records exact repository and revision, licence, architecture, 
 
 Framework adoption requires an adapter, contract tests, a compatibility window, upstream-drift checks, telemetry review, and a removal path.
 
+## Health Data and Process Analytics Candidates
+
+Late-horizon, aggregate analytics: OMOP CDM one-way de-identified exports,
+process mining with pm4py (Python) or bupaR-family tools in R, statistical
+process control charts, and incident-text NLP through Track 06/07 encoder
+contracts. See the Horizon table in `roadmap.md`. All require Track 03
+de-identification assurance plus an owner decision gate before touching any
+real dataset; none are current delivery dependencies.
+
 ## Evaluation, Testing, and Assurance
 
 - Inspect AI is the primary candidate for model, agent, tool, multimodal, sandbox, scorer, and evaluation-log orchestration

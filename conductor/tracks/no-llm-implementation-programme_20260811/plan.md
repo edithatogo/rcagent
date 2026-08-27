@@ -6,6 +6,18 @@
 - [ ] Task: Record the one-branch and one-checkout operating baseline
 - [ ] Task: Define the receipt template for commits, checks, merge, cleanup, and blockers
 - [ ] Task: Confirm no-model-download test doubles and fixture boundaries
+- [ ] Task: Reconcile legacy evaluation records
+  - [ ] Verify eval-pilot-calibration_20260225 metadata against its recorded H0/H1 evidence and registry status (metadata reconciled 2026-08-27; confirm plan-level scoring tasks reflect reality)
+  - [ ] Archive completed legacy evaluation tracks (`eval-protocol`, `eval-case-collection`, `eval-data-collection`) under `conductor/archive/` and update every registry link without deleting artefacts
+  - [ ] Normalize remaining metadata timestamps to UTC ISO-8601
+- [ ] Task: Record execution-policy precedence
+  - [ ] State explicitly that this programme's one-branch baseline preempts autonomy.json lane limits while the programme is active
+  - [ ] Record single-active-phase-checkpoint WIP discipline for all track plans
+- [ ] Task: Establish vendored-plugin governance
+  - [ ] Record the dependency-graph gap: Dependabot and GitHub code scanning cannot see submodule contents, so CVE review and bump cadence are manual owner-checked duties per the `vendored_plugins` update policy in `integration-map.json`
+  - [ ] Verify each vendored plugin pin against its upstream main and record the receipt (conductor `f06add3`, sourceright `c5fa583`, authentext `ca39b86`)
+  - [ ] Document the consumer fetch step (`git submodule update --init`) on the contributor-facing surface
+  - [ ] Evaluate upstream findings (sourceright committed backup artefacts; conductor release-tag pinning) and raise authorised upstream issues or contributions
 - [ ] Task: Phase verification and checkpoint
 
 ## Phase 2: Track 00 reconciliation

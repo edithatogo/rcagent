@@ -26,7 +26,19 @@ jobs:
           cache: pip
 
       - name: Install validation dependencies
-        run: python -m pip install --disable-pip-version-check -e ".[validate,test]"
+        run: python -m pip install --disable-pip-version-check -e ".[validate,test,lint]"
+
+      - name: Ruff lint
+        run: python -m ruff check tools tests
+
+      - name: Type check (ty)
+        run: python -m ty check tools tests
+
+      - name: Type check (basedpyright)
+        run: python -m basedpyright
+
+      - name: Gremlins scan (invisible/bidi characters)
+        run: python -m tools.check_gremlins .
 
       - name: Validate repository governance
         run: python -m tools.validate_repository
@@ -41,3 +53,19 @@ jobs:
           fail_ci_if_error: false
           use_oidc: true
           verbose: true
+
+  prose:
+    name: Prose lint (Vale)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    continue-on-error: true # advisory until the documentation corpus is fully cleaned up
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run Vale prose lint
+        uses: errata-ai/vale-action@v2
+        with:
+          files: all
+          fail_on_error: false

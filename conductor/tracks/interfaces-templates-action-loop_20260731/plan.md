@@ -77,6 +77,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Support RCA and systems approaches including SEIPS, AcciMap, FRAM, STPA, bow-tie, barrier analysis, and FMEA where appropriate
   - [ ] Add method selection and combination guidance based on event, evidence, purpose, and capability
   - [ ] Map each template field to evidence, workflow, jurisdiction, and provenance contracts
+  - [ ] Evaluate the vendored authentext skill module for professional-register report generation and adopt it behind a thin contract where it passes privacy, provenance, and conformance gates
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks

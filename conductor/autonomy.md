@@ -201,6 +201,17 @@ overlap. Each lane declares owned paths and shared contracts before writing.
 
 Parallelism is an optimisation, not a reason to invent false independence.
 
+When a delivery programme declares a stricter operating baseline (for example,
+one active branch and one disposable checkout), that baseline preempts these
+lane limits until the programme ends. Record the precedence explicitly in the
+programme spec before it starts; an unrecorded conflict never resolves itself
+in favour of one policy silently.
+
+Within a track, at most one phase checkpoint may be open at a time. Close a
+phase checklist and record its receipt before opening the next phase's tasks.
+Do not hold multiple phases in progress concurrently without an explicit
+programme instruction.
+
 ## Automatic Review and Rework
 
 Every phase receives objective verification. Every completed track receives a

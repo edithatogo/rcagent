@@ -59,6 +59,10 @@ telemetry, remote processing, paid services, or research-only clinical use.
 | `enterprise-connectors` | No | Approved systems of record, identity, content, workflow, and reporting adapters |
 | `client-adapters` | No | Claude, Codex, and other thin client packages |
 | `domain-adaptation` | No | Governed prompting, adapters, LoRA, or fine-tuning after readiness gates |
+| `jurisdiction-national` | No | Shared national-baseline standards mapping (NSQHS, ACSQHC) consumed by every state pack |
+| `jurisdiction-nsw` | No | NSW Health / CEC / ACI source mappings over the national baseline |
+| `jurisdiction-qld` | No | Queensland Health / CEQ / QLD coronial source mappings over the national baseline |
+| `health-analytics-process-mining` | No | Process mining and aggregate quality/safety analytics on de-identified event data (research-only gate) |
 
 Planned profiles are declarations, not claims that their dependencies or
 installers already exist. A profile becomes installable only after its owning
@@ -73,6 +77,32 @@ or otherwise reviewable receipt.
 - Track 03 owns privacy, egress, telemetry, secrets, retention, and assurance
   gates.
 - Tracks 06–08 own multimodal, retrieval, runtime, and model profiles.
+- Track 04 owns jurisdiction capability declarations; state packs inherit
+  `jurisdiction-national` and may not widen core safeguards.
+- Track 07 owns aggregate health-analytics declarations; nothing there touches
+  identifiable data outside the research-only gate.
+
+## Contributing a Jurisdiction Pack
+
+Any new state or territory follows the same generic contract — no core code
+changes required:
+
+1. Pick the identifier from `jurisdiction_framework.id_pattern`
+   (`jurisdiction-<state>`, e.g. `jurisdiction-vic`, `jurisdiction-wa`).
+2. Add one entry to `profiles` in `capability-profiles.json` with
+   `"class": "optional"`, `"status": "planned"`, `"default": false`, and
+   `"owner_track": 4` (Track 04 owns the framework; per-jurisdiction source
+   mapping work lands there until it earns its own track).
+3. Register authoritative sources in the jurisdiction source registry with
+   issuer, version, status, retrieval date, rights, and review cadence —
+   national-baseline requirements are inherited from
+   `jurisdiction-national` and must not be re-declared.
+4. Model only genuinely state-specific workflows on top of the baseline;
+   record any conflicting interpretation as an owner decision per Track 04's
+   specification.
+5. Pass the same preflight/install/receipt/rollback contract as every other
+   profile; `planned` profiles are declarations, never installables.
+
 - Track 09 owns interface-level discovery and runtime setup assistance.
 - Track 10 owns domain-adaptation profiles.
 - Track 11 owns packaging, update, rollback, registry, and plugin distribution.

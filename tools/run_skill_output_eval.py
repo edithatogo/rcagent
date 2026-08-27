@@ -7,6 +7,7 @@ import json
 import subprocess
 import tempfile
 from pathlib import Path
+from typing import Any
 
 from tools.install_skill_adapter import install_adapter
 from tools.run_skill_trigger_eval import redact_workspace
@@ -36,7 +37,7 @@ def run_outputs(
     output_dir: Path,
     *,
     timeout: int,
-) -> tuple[int, dict[str, object]]:
+) -> tuple[int, dict[str, Any]]:
     document = json.loads(cases_path.read_text(encoding="utf-8"))
     output_dir.mkdir(parents=True, exist_ok=True)
     results: list[dict[str, object]] = []

@@ -2,7 +2,9 @@
 
 ## Overview
 
-Build a versioned jurisdiction pack that maps authoritative NSW Health, CEC, ACI, and national sources into usable serious-adverse-event workflows without silently converting guidance, drafts, or templates into binding requirements.
+Build versioned jurisdiction packs that map authoritative national, NSW Health, CEC, ACI, and Queensland Health sources into usable serious-adverse-event workflows without silently converting guidance, drafts, or templates into binding requirements.
+
+Jurisdiction strategy: national standards form the shared baseline tier that every state pack inherits rather than duplicates; NSW and Queensland packs then model only genuinely state-specific requirements on top of that baseline.
 
 This track is coordinated by GitHub issue [#9](https://github.com/edithatogo/rcagent/issues/9) and the portfolio rules in [roadmap.md](../../roadmap.md). It may proceed autonomously once its hard dependencies and definition of ready have objective evidence.
 
@@ -34,12 +36,14 @@ requires a fit-gap record and an approved Architecture Decision Record.
 
 ## In Scope
 
-- Create the authoritative source registry
+- Establish the national baseline tier from NSQHS, ACSQHC frameworks, relevant Commonwealth legislation, and the national accreditation scheme
+- Create the authoritative source registry covering the national baseline plus NSW and Queensland source classes
+- Register Queensland Health patient-safety, serious-adverse-event, open-disclosure, and clinical-governance sources alongside their NSW counterparts, including Clinical Excellence Queensland and the Coroners Court of Queensland
 - Model authority, version, and drift
 - Map incident and investigation workflows
 - Map forms, templates, and evidence requirements
-- Embed people, culture, and systems safeguards
-- Validate the jurisdiction mapping
+- Embed people, culture, and systems safeguards, including Aboriginal and Torres Strait Islander cultural safety as a national baseline requirement
+- Validate the jurisdiction mapping across multi-jurisdiction scenarios
 - Operationalise policy drift
 
 ## Architecture and Delivery Principles
@@ -80,7 +84,7 @@ Every decision request must include the recommended option, viable alternatives,
 
 1. Every rule links to an authoritative source, exact version, authority level, rights status, retrieval date, and checksum where possible.
 2. Current, under-review, draft, superseded, local, and advisory sources are visibly distinct.
-3. The generic core remains independent of NSW-specific terminology and workflow.
+3. The generic core remains independent of any single jurisdiction's terminology, workflow, or state-specific identifiers.
 4. Serious-adverse-event, review, investigation, disclosure, escalation, and action requirements map to explicit state transitions.
 5. Open disclosure, consumer/family involvement, staff support, and Aboriginal cultural safety are represented.
 6. Material upstream drift opens a reviewable change request instead of silently changing behaviour.
@@ -89,7 +93,7 @@ Every decision request must include the recommended option, viable alternatives,
 
 - Legal advice or a declaration of statutory privilege
 - Replacing ims+ or another incident management system
-- Copying NSW Health material without rights evidence
+- Copying restricted state or Commonwealth material without rights evidence
 - Organisation-specific approval of a local procedure
 
 ## Evidence Standard
