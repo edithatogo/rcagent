@@ -5,9 +5,9 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from typing import Any
 
 from tools.validate_skill import validate_skill
-
 
 TRACK = Path("conductor/tracks/agent-skills-living-conformance_20260731")
 REQUIRED_MATRIX_FIELDS = {
@@ -36,7 +36,7 @@ def validate_profile(root: Path, *, require_complete: bool = False) -> list[str]
         "triggers": root / "evaluations/skills/rca-investigation/trigger-cases.json",
         "outputs": root / "evaluations/skills/rca-investigation/output-cases.json",
     }
-    documents: dict[str, object] = {}
+    documents: dict[str, Any] = {}
     for label, path in paths.items():
         try:
             documents[label] = json.loads(path.read_text(encoding="utf-8"))

@@ -8,7 +8,6 @@ import pytest
 from tools.install_skill_adapter import install_adapter
 from tools.validate_skill import validate_skill
 
-
 ROOT = Path(__file__).parents[1]
 
 

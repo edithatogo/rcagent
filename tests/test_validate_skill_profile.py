@@ -6,7 +6,6 @@ from pathlib import Path
 
 from tools.validate_skill_profile import TRACK, main, validate_profile
 
-
 ROOT = Path(__file__).parents[1]
 
 

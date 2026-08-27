@@ -6,7 +6,6 @@ import argparse
 import json
 from pathlib import Path
 
-
 REQUIRED_CONTEXT = (
     "conductor/index.md",
     "conductor/product.md",

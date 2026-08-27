@@ -7,7 +7,6 @@ import pytest
 
 from tools.run_skill_trigger_eval import parse_events, redact_workspace, run_evaluation
 
-
 ROOT = Path(__file__).parents[1]
 
 

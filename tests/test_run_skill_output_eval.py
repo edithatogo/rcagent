@@ -7,7 +7,6 @@ from types import SimpleNamespace
 
 from tools.run_skill_output_eval import parse_response, run_outputs
 
-
 ROOT = Path(__file__).parents[1]
 
 
