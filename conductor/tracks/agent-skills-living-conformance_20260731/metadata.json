@@ -4,8 +4,8 @@
   "title": "Agent Skills Living Conformance and Portable Architecture",
   "type": "refactor",
   "status": "in_progress",
-  "created_at": "2026-07-31T13:26:21+10:00",
-  "updated_at": "2026-08-11T00:00:00+10:00",
+  "created_at": "2026-07-31T03:26:21Z",
+  "updated_at": "2026-08-10T14:00:00Z",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/5",

@@ -68,7 +68,7 @@ These tracks remain preserved historical work. Track 05 will reconcile their sch
 
 ### Completed and Pending Foundations
 
-- [x] [Evaluation Protocol Development](./tracks/eval-protocol_20260225/index.md)
+- [x] [Evaluation Protocol Development](./archive/eval-protocol_20260225/index.md)
 - [ ] [Evaluation Case Collection](./tracks/eval-case-collection_20260225/index.md) — 7 NZ cases recorded; AU coverage and final QA remain pending
 
 ### Blocked
