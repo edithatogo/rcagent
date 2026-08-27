@@ -60,7 +60,7 @@ both pass.
 
 ### Delivery Programme
 
-- [ ] [No-LLM Implementation Programme](./tracks/no-llm-implementation-programme_20260811/index.md) — sequential small PRs, one active branch, and no model-weight downloads
+- [~] [No-LLM Implementation Programme](./tracks/no-llm-implementation-programme_20260811/index.md) — sequential small PRs, one active branch, and no model-weight downloads
 
 ## Legacy Evaluation Study
 

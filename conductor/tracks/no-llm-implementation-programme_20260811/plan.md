@@ -13,11 +13,11 @@
 - [ ] Task: Record execution-policy precedence
   - [ ] State explicitly that this programme's one-branch baseline preempts autonomy.json lane limits while the programme is active
   - [ ] Record single-active-phase-checkpoint WIP discipline for all track plans
-- [ ] Task: Establish vendored-plugin governance
-  - [ ] Record the dependency-graph gap: Dependabot and GitHub code scanning cannot see submodule contents, so CVE review and bump cadence are manual owner-checked duties per the `vendored_plugins` update policy in `integration-map.json`
-  - [ ] Verify each vendored plugin pin against its upstream main and record the receipt (conductor `f06add3`, sourceright `c5fa583`, authentext `ca39b86`)
-  - [ ] Document the consumer fetch step (`git submodule update --init`) on the contributor-facing surface
-  - [ ] Evaluate upstream findings (sourceright committed backup artefacts; conductor release-tag pinning) and raise authorised upstream issues or contributions
+- [x] Task: Establish vendored-plugin governance
+  - [x] Record the dependency-graph gap: Dependabot and GitHub code scanning cannot see submodule contents, so CVE review and bump cadence are manual owner-checked duties per the `vendored_plugins` update policy in `integration-map.json`
+  - [x] Verify each vendored plugin pin against its upstream main and record the receipt (conductor `f06add3`, sourceright `c5fa583`, authentext `ca39b86`) — see `evidence/vendored-plugin-pins.md`
+  - [x] Document the consumer fetch step (`git submodule update --init`) on the contributor-facing surface — see `docs/vendored-plugins.md`
+  - [x] Evaluate upstream findings (sourceright committed backup artefacts; conductor release-tag pinning) and raise authorised upstream issues or contributions — filed sourceright#100 and gemini-cli-extensions/conductor#180
 - [ ] Task: Phase verification and checkpoint
 
 ## Phase 2: Track 00 reconciliation

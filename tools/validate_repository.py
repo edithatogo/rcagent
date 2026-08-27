@@ -44,6 +44,67 @@ ADOPTED_INTEGRATION_FIELDS = (
 
 PROFILE_CLASSES = {"core", "optional", "experimental", "enterprise", "research-only"}
 PROFILE_STATUSES = {"implemented", "planned", "blocked", "unavailable"}
+EVIDENCE_REQUIRED_FIELDS = {
+    "schema_version": str,
+    "event": str,
+    "timestamp": str,
+    "track_id": str,
+}
+
+
+def _validate_track_directories(root: Path) -> list[str]:
+    errors: list[str] = []
+    tracks_root = root / "conductor/tracks"
+    if not tracks_root.is_dir():
+        return errors
+    for track_root in sorted(path for path in tracks_root.iterdir() if path.is_dir()):
+        track_id = track_root.name
+        if not (track_root / "index.md").is_file():
+            errors.append(f"{track_id}: missing index.md")
+        metadata_path = track_root / "metadata.json"
+        if not metadata_path.is_file():
+            continue
+        try:
+            metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if metadata.get("evidence_schema") != "1.0":
+            continue
+        ledger_path = track_root / "evidence.jsonl"
+        if not ledger_path.is_file():
+            errors.append(f"{track_id}: missing evidence.jsonl")
+            continue
+        for line_number, line in enumerate(
+            ledger_path.read_text(encoding="utf-8").splitlines(), start=1
+        ):
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError as exc:
+                errors.append(
+                    f"{track_id}: invalid evidence.jsonl line {line_number}: {exc.msg}"
+                )
+                continue
+            if not isinstance(event, dict):
+                errors.append(
+                    f"{track_id}: invalid evidence.jsonl line {line_number}: event must be an object"
+                )
+                continue
+            for field, expected_type in EVIDENCE_REQUIRED_FIELDS.items():
+                if not isinstance(event.get(field), expected_type) or not event[field].strip():
+                    errors.append(
+                        f"{track_id}: invalid evidence.jsonl line {line_number}: "
+                        f"missing {field}"
+                    )
+            if event.get("schema_version") != "1.0":
+                errors.append(
+                    f"{track_id}: invalid evidence.jsonl line {line_number}: "
+                    "schema_version must be 1.0"
+                )
+            if event.get("track_id") != track_id:
+                errors.append(
+                    f"{track_id}: invalid evidence.jsonl line {line_number}: track_id mismatch"
+                )
+    return errors
 
 
 def _validate_capability_profiles(registry: object, track_numbers: set[int]) -> list[str]:
@@ -126,6 +187,8 @@ def validate(root: Path) -> list[str]:
     for relative in REQUIRED_CONTEXT:
         if not (root / relative).is_file():
             errors.append(f"missing required context: {relative}")
+
+    errors.extend(_validate_track_directories(root))
 
     roadmap_path = root / "conductor/roadmap.json"
     if not roadmap_path.is_file():

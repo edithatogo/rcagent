@@ -182,6 +182,49 @@ def test_invalid_track_fields_and_missing_files_are_reported(tmp_path: Path) -> 
     assert any("invalid GitHub issue" in error for error in errors)
 
 
+def test_every_track_directory_requires_an_index(tmp_path: Path) -> None:
+    _write_valid_repository(tmp_path)
+    legacy = tmp_path / "conductor/tracks/legacy_20260225"
+    legacy.mkdir()
+    for name in ("spec.md", "plan.md"):
+        (legacy / name).write_text("# Legacy\n", encoding="utf-8")
+    (legacy / "metadata.json").write_text(
+        json.dumps({"track_id": "legacy_20260225", "status": "new"}),
+        encoding="utf-8",
+    )
+
+    assert "legacy_20260225: missing index.md" in validate(tmp_path)
+
+
+def test_opted_in_evidence_ledger_is_required_and_valid(tmp_path: Path) -> None:
+    _write_valid_repository(tmp_path)
+    track = tmp_path / "conductor/tracks/example_20260731"
+    metadata = track / "metadata.json"
+    payload = json.loads(metadata.read_text(encoding="utf-8"))
+    payload["evidence_schema"] = "1.0"
+    metadata.write_text(json.dumps(payload), encoding="utf-8")
+
+    assert "example_20260731: missing evidence.jsonl" in validate(tmp_path)
+
+    ledger = track / "evidence.jsonl"
+    ledger.write_text("not-json\n", encoding="utf-8")
+    assert any("invalid evidence.jsonl line 1" in error for error in validate(tmp_path))
+
+    ledger.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "event": "ledger_initialized",
+                "timestamp": "2026-08-27T09:00:00Z",
+                "track_id": "example_20260731",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    assert validate(tmp_path) == []
+
+
 def test_unknown_clinical_governance_owners_are_reported(tmp_path: Path) -> None:
     _write_valid_repository(tmp_path)
     architecture = tmp_path / "conductor/clinical-governance-architecture.json"
