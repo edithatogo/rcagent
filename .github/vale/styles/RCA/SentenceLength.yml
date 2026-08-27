@@ -1,5 +1,0 @@
-extends: sentence-length
-level: suggestion
-message: "Sentence exceeds %d words; consider splitting it."
-max: 45
-scope: sentences

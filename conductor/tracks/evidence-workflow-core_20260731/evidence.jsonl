@@ -1,0 +1,1 @@
+{"schema_version":"1.0","event":"ledger_initialized","timestamp":"2026-08-27T09:10:00Z","track_id":"evidence-workflow-core_20260731","status":"new","summary":"Initialized the opted-in append-only evidence ledger before functional track work."}

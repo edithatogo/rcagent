@@ -60,44 +60,44 @@ both pass.
 
 ### Delivery Programme
 
-- [ ] [No-LLM Implementation Programme](./tracks/no-llm-implementation-programme_20260811/index.md) — sequential small PRs, one active branch, and no model-weight downloads
+- [~] [No-LLM Implementation Programme](./tracks/no-llm-implementation-programme_20260811/index.md) — sequential small PRs, one active branch, and no model-weight downloads
 
 ## Legacy Evaluation Study
 
 These tracks remain preserved historical work. Track 05 will reconcile their schemas, cases, conditions, results, and limitations into the canonical benchmark harness without rewriting original artefacts.
 
-### Completed Foundations
+### Completed and Pending Foundations
 
-- [x] [Evaluation Protocol Development](./tracks/eval-protocol_20260225/)
-- [x] [Evaluation Case Collection](./tracks/eval-case-collection_20260225/) — 9 cases recorded
+- [x] [Evaluation Protocol Development](./archive/eval-protocol_20260225/index.md)
+- [ ] [Evaluation Case Collection](./tracks/eval-case-collection_20260225/index.md) — 7 NZ cases recorded; AU coverage and final QA remain pending
 
-### In Progress
+### Blocked
 
-- [~] [Evaluation Pilot Calibration](./tracks/eval-pilot-calibration_20260225/) — H0 and H1 pilot runs recorded; scoring pending
+- [!] [Evaluation Pilot Calibration](./tracks/eval-pilot-calibration_20260225/index.md) — blocked by incomplete AU case coverage and unverified pilot evidence
 
 ### Historical Parallel Conditions
 
 | Track | Condition | Recorded harness |
 |---|---|---|
-| [eval-run-H0_20260225](./tracks/eval-run-H0_20260225/) | H0 control | Raw API |
-| [eval-run-H1_20260225](./tracks/eval-run-H1_20260225/) | H1 Claude Code Sonnet | Claude Code |
-| [eval-run-H2_20260225](./tracks/eval-run-H2_20260225/) | H2 Claude Code Opus | Claude Code |
-| [eval-run-H3_20260225](./tracks/eval-run-H3_20260225/) | H3 Gemini CLI | Gemini CLI |
-| [eval-run-H4_20260225](./tracks/eval-run-H4_20260225/) | H4 Codex CLI / GPT-4o | Codex CLI |
-| [eval-run-H5_20260225](./tracks/eval-run-H5_20260225/) | H5 Qwen CLI | Qwen CLI |
-| [eval-run-H6_20260225](./tracks/eval-run-H6_20260225/) | H6 Kilo Code | Kilo Code |
-| [eval-run-H7_20260225](./tracks/eval-run-H7_20260225/) | H7 Copilot | GitHub Copilot |
-| [eval-run-H8_20260225](./tracks/eval-run-H8_20260225/) | H8 Human Expert | Human |
+| [eval-run-H0_20260225](./tracks/eval-run-H0_20260225/index.md) | H0 control | Raw API |
+| [eval-run-H1_20260225](./tracks/eval-run-H1_20260225/index.md) | H1 Claude Code Sonnet | Claude Code |
+| [eval-run-H2_20260225](./tracks/eval-run-H2_20260225/index.md) | H2 Claude Code Opus | Claude Code |
+| [eval-run-H3_20260225](./tracks/eval-run-H3_20260225/index.md) | H3 Gemini CLI | Gemini CLI |
+| [eval-run-H4_20260225](./tracks/eval-run-H4_20260225/index.md) | H4 Codex CLI / GPT-4o | Codex CLI |
+| [eval-run-H5_20260225](./tracks/eval-run-H5_20260225/index.md) | H5 Qwen CLI | Qwen CLI |
+| [eval-run-H6_20260225](./tracks/eval-run-H6_20260225/index.md) | H6 Kilo Code | Kilo Code |
+| [eval-run-H7_20260225](./tracks/eval-run-H7_20260225/index.md) | H7 Copilot | GitHub Copilot |
+| [eval-run-H8_20260225](./tracks/eval-run-H8_20260225/index.md) | H8 Human Expert | Human |
 
 ### Later Historical Stages
 
-- [ ] [Evaluation Scoring](./tracks/eval-scoring_20260225/)
-- [ ] [Evaluation Analysis and Reporting](./tracks/eval-analysis_20260225/)
+- [ ] [Evaluation Scoring](./tracks/eval-scoring_20260225/index.md)
+- [ ] [Evaluation Analysis and Reporting](./tracks/eval-analysis_20260225/index.md)
 
 ### Evidence Remediation
 
-- [~] [Evaluation Blocker Remediation and Admission](./tracks/eval-blocker-remediation_20260803/index.md) — local controls complete; external Phase 4 execution evidence remains blocked
+- [!] [Evaluation Blocker Remediation and Admission](./tracks/eval-blocker-remediation_20260803/index.md) — local controls complete; external Phase 4 execution evidence remains blocked
 
 ### Superseded
 
-- [x] `eval-data-collection_20260225` — replaced by the per-condition historical run tracks; preserve its original artefacts and status.
+- **Superseded, not completed:** [Evaluation Data Collection](./tracks/eval-data-collection_20260225/index.md) — replaced by the per-condition historical run tracks; preserve its incomplete original artefacts.

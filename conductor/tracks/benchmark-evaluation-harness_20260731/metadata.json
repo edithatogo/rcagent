@@ -4,8 +4,8 @@
   "title": "Benchmark and Evaluation Harness",
   "type": "feature",
   "status": "new",
-  "created_at": "2026-07-31T14:34:01+10:00",
-  "updated_at": "2026-07-31T14:34:01+10:00",
+  "created_at": "2026-07-31T04:34:01Z",
+  "updated_at": "2026-07-31T04:34:01Z",
   "workstream": "data-models-evaluation",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/10",

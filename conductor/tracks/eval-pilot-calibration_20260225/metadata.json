@@ -1,9 +1,18 @@
 {
   "track_id": "eval-pilot-calibration_20260225",
   "type": "feature",
-  "status": "in_progress",
+  "status": "blocked",
   "created_at": "2026-02-25T00:00:00Z",
-  "updated_at": "2026-08-27T00:00:00Z",
+  "updated_at": "2026-08-27T09:10:00Z",
   "description": "Run pilot calibration phase: 2 cases x 2 conditions (H0, H1) to validate rubric anchors before full evaluation",
-  "evidence_note": "Registry claim of recorded H0/H1 pilot runs reconciled against existing result sets: evaluation/results/H0-control-no-skill and evaluation/results/H1-claude-code-sonnet. Scoring remains pending."
+  "evidence_note": "Historical receipts refer to H0/H1 result sets, but the current tree does not contain enough admitted evidence to verify pilot acceptance. AU case coverage and scoring remain pending.",
+  "gates": [
+    {
+      "id": "pilot-input-and-evidence",
+      "kind": "dependency",
+      "status": "pending",
+      "description": "Requires one eligible AU case plus admitted H0/H1 pilot evidence before scoring.",
+      "evidence": "./plan.md"
+    }
+  ]
 }
