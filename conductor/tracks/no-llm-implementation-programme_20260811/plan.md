@@ -26,8 +26,8 @@
 - [x] Task: Mark only evidenced tasks complete and retain genuine decision gates
 - [x] Task: Verify current Agent Skills conformance, adapters, fixtures, and privacy sentinels
 - [x] Task: Record the licence gate and release contingency without selecting a licence
-- [ ] Task: Review, merge, and clean the Track 00 reconciliation PR
-- [ ] Task: Phase verification and checkpoint
+- [x] Task: Review, merge, and clean the Track 00 reconciliation PR — PR #31 merged as `3ef006d6e4356f33b24161c5763c1efa8e0c3215`; required checks passed and the branch was deleted
+- [x] Task: Phase verification and checkpoint
 
 ## Phase 3: Foundation and assurance
 
