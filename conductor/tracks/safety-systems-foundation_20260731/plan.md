@@ -20,11 +20,11 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
-- [~] Task: Establish the system and dependency context
+- [x] Task: Establish the system and dependency context
   - [x] Read `integration-strategy.md` and this track's entry in `integration-map.json`
   - [x] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
-  - [ ] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
-  - [ ] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
+  - [x] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
+  - [x] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
 
 - [x] Task: Select the smallest adequate intervention
   - [x] Prefer existing-system configuration or a standards profile
@@ -39,34 +39,34 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
   - [x] Update `integration-map.json` with the selected status and evidence links
 
-- [~] Task: Phase Verification & Checkpoint
-  - [ ] Verify that no planned work duplicates an adequate existing capability
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify that no planned work duplicates an adequate existing capability
   - [x] Verify the system-of-record and data-authority boundary
   - [x] Verify the smallest remaining gap and ownership rationale
   - [x] Record the fit-gap receipt and bounded handoff context
-  - [ ] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
-  - [ ] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
+  - [x] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
+  - [x] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
 
 ## Phase 1: Define the product and safety boundary
 
-- [ ] Task: Implement the phase scope
-  - [ ] Reconcile the repository mission, target users, use cases, exclusions, and safety principles
-  - [ ] Separate the client-neutral workbench from optional agent-client adapters
-  - [ ] Define public, governed hybrid, fully local, and air-gapped operating modes
-  - [ ] Record non-goals including autonomous diagnosis, automatic privilege claims, and unreviewed clinical conclusions
+- [x] Task: Implement the phase scope
+  - [x] Reconcile the repository mission, target users, use cases, exclusions, and safety principles
+  - [x] Separate the client-neutral workbench from optional agent-client adapters
+  - [x] Define public, governed hybrid, fully local, and air-gapped operating modes
+  - [x] Record non-goals including autonomous diagnosis, automatic privilege claims, and unreviewed clinical conclusions
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #6 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #6 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 2: Adopt the modular reference architecture
 
