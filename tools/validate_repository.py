@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 REQUIRED_CONTEXT = (
+    "AGENTS.md",
     "conductor/index.md",
     "conductor/product.md",
     "conductor/product-guidelines.md",
@@ -20,6 +21,7 @@ REQUIRED_CONTEXT = (
     "conductor/clinical-governance-architecture.md",
     "conductor/clinical-governance-architecture.json",
     "conductor/integration-map.json",
+    "conductor/harness.md",
     "conductor/roadmap.md",
     "conductor/roadmap.json",
     "conductor/tracks.md",
