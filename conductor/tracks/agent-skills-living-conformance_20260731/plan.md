@@ -370,12 +370,12 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Do not claim improvement without evidence
   - [x] Block completion on privacy or evidence-integrity regression
 
-- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
   - [x] Verify trigger thresholds
   - [x] Verify output assertions
   - [x] Verify train/validation separation
   - [x] Verify raw nondeterministic results remain visible
-  - [!] Complete clinical-governance review
+  - [x] Complete clinical-governance review — see `evidence/phase7-clinical-governance-review-20260829.md`
   - [x] Continue automatically to Phase 8 unless a declared owner decision gate is reached
 
 ## Phase 8: Implement Living-Conformance Monitoring
