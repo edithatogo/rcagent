@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "client": "cline",
+  "canonical_skill": "../../skills/rca-investigation",
+  "discovery_targets": [
+    ".cline/skills/rca-investigation"
+  ],
+  "frontmatter": {
+    "stable": ["name", "description", "compatibility", "metadata"],
+    "experimental": [],
+    "unsupported": ["allowed-tools"]
+  },
+  "fallback": "Install the unmodified portable core and use Cline permission controls; .clinerules may reference the skill for discovery.",
+  "validation": "python -m tools.validate_skill skills/rca-investigation"
+}

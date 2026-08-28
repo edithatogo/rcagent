@@ -39,13 +39,29 @@ def install_adapter(
     return destination
 
 
+def available_clients(repository: Path) -> list[str]:
+    """Discover adapter clients from the adapters directory."""
+    adapters = repository / "adapters"
+    if not adapters.is_dir():
+        return []
+    return sorted(
+        path.parent.name
+        for path in adapters.glob("*/adapter.json")
+        if path.is_file()
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("client", choices=("codex", "claude-code"))
+    parser.add_argument("client")
     parser.add_argument("--repository", type=Path, default=Path.cwd())
     parser.add_argument("--destination-root", type=Path, required=True)
     parser.add_argument("--replace", action="store_true")
     args = parser.parse_args()
+    if args.client not in available_clients(args.repository):
+        parser.error(
+            f"unknown client: {args.client} (available: {', '.join(available_clients(args.repository))})"
+        )
     try:
         destination = install_adapter(
             args.repository, args.client, args.destination_root, replace=args.replace
