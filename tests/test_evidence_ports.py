@@ -1,0 +1,54 @@
+from __future__ import annotations
+
+import json
+import subprocess
+from pathlib import Path
+
+from tools.evidence_ports import Operation
+from tools.sourceright_adapter import SourceRightAdapter
+
+
+def operation(privacy_mode: str = "fully_local") -> Operation:
+    return Operation("operation-01", 2.0, "idempotency-01", privacy_mode)
+
+
+def test_adapter_is_fail_closed_when_unavailable(tmp_path: Path) -> None:
+    adapter = SourceRightAdapter(tmp_path / "missing")
+    assert not adapter.capabilities()[0].available
+    result = adapter.run_json(operation(), ["bench", "--json"])
+    assert result.status == "unavailable"
+    assert not result.retryable
+
+
+def test_adapter_accepts_only_local_profiles_and_json_contract(tmp_path: Path) -> None:
+    executable = tmp_path / "sourceright"
+    executable.touch()
+
+    def runner(*args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess([], 0, json.dumps({"status": "pass"}), "")
+
+    adapter = SourceRightAdapter(executable, runner=runner)
+    assert adapter.run_json(operation("public_remote"), ["bench", "--json"]).status == "rejected"
+    assert adapter.run_json(operation(), ["bench", "--json"]).payload == {"status": "pass"}
+
+
+def test_adapter_classifies_timeout_failure_and_invalid_json(tmp_path: Path) -> None:
+    executable = tmp_path / "sourceright"
+    executable.touch()
+
+    def timeout(*args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
+        raise subprocess.TimeoutExpired("sourceright", 2)
+
+    assert SourceRightAdapter(executable, timeout).run_json(operation(), []).status == "timeout"
+
+    def failure(*args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess([], 2, "", "fixture failure")
+
+    assert SourceRightAdapter(executable, failure).run_json(operation(), []).status == "failed"
+
+    def invalid(*args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess([], 0, "[]", "")
+
+    result = SourceRightAdapter(executable, invalid).run_json(operation(), [])
+    assert result.status == "failed"
+    assert result.diagnostic == "unexpected SourceRight payload"

@@ -1,4 +1,4 @@
-# Safety-work record semantics (version 1.0)
+# Safety-work record semantics (versions 1.0 and 1.1)
 
 The JSON Schema in `safety-work.schema.json` is the canonical machine-readable
 contract. It is a client-neutral validation and interchange profile, not an
@@ -57,8 +57,18 @@ version compatibility profiles require separate contract evidence.
 
 ## Versioning and serialization
 
-Version 1.0 accepts only declared fields and canonical JSON-compatible values.
-`canonical_round_trip` validates before producing a deterministic key-sorted
-representation. Schema migrations, encrypted persistence, redaction profiles,
-and external adapters are separate contracts and are not implied by this
-foundation slice.
+Version 1.1 adds sources, artefacts, evidence items, factors, reviews,
+outcomes, governed referrals, and an explicit system-of-record reconciliation
+pointer. The additive 1.0-to-1.1 migration retains unresolved legacy source
+references as `unverified`; it never invents source authority. Unsupported or
+destructive migrations fail closed.
+
+`canonical_round_trip` validates before producing deterministic JSON.
+`redact_evidence` removes content from a derived view while retaining the
+original fingerprint and a reason, actor role, and timestamp. Hash-linked
+audit receipts detect later mutation. Public export removes evidence content
+without changing statement kinds, so an inference cannot silently become a
+fact.
+
+See `evidence-workflow-contracts.md` for workflow, persistence, interchange,
+adapter, and recovery contracts.
