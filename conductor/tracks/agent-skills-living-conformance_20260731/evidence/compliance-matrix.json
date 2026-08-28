@@ -37,12 +37,11 @@
       "id": "AS-SPEC-004",
       "source": "https://agentskills.io/specification#license-field",
       "requirement": "A declared licence is a short name or bundled-file reference.",
-      "applicability": "decision_pending",
-      "implementation": null,
+      "applicability": "applicable",
+      "implementation": "skills/rca-investigation/SKILL.md and LICENSE",
       "validation": "frontmatter and bundled-file check",
-      "result": "blocked",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/fit-gap.md",
-      "omission_rationale": "The specification makes this optional and the project owner must select the licence."
+      "result": "pass",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/licence-decision-20260829.md"
     },
     {
       "id": "AS-SPEC-005",

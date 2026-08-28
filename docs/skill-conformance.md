@@ -8,8 +8,10 @@ copyable. Client manifests under `adapters/` install that same directory; they
 do not contain a second copy of healthcare investigation instructions.
 
 The portable core deliberately omits experimental `allowed-tools`. Codex,
-Claude Code, and other clients retain their ordinary permission controls.
-Licence metadata remains omitted until the owner selects a licence.
+Claude Code, and other clients retain their ordinary permission controls. The
+owner selected Apache-2.0 on 2026-08-29; the skill frontmatter and bundled
+root `LICENSE` record that choice. Licence selection does not imply release,
+clinical validation, or universal client support.
 
 ## Local validation
 

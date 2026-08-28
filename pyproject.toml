@@ -6,6 +6,7 @@ build-backend = "hatchling.build"
 name = "safety-systems-workbench"
 version = "0.0.0"
 description = "Validation and orchestration harness for the Safety Systems Workbench"
+license = "Apache-2.0"
 requires-python = ">=3.11"
 dependencies = []
 
