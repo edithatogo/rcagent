@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 from collections.abc import Callable, Sequence
 from pathlib import Path
@@ -10,6 +11,7 @@ from pathlib import Path
 from tools.evidence_ports import Capability, Operation, OperationResult
 
 Runner = Callable[..., subprocess.CompletedProcess[str]]
+READ_ONLY_COMMANDS = {"bench", "report", "validate-csl", "citations", "provenance"}
 
 
 class SourceRightAdapter:
@@ -18,12 +20,15 @@ class SourceRightAdapter:
         self._runner = runner
 
     def capabilities(self) -> tuple[Capability, ...]:
-        return (Capability("citation-verification", "sourceright-0.1", self.executable.is_file(), ("fully_local", "air_gapped")),)
+        available = self.executable.is_file() and os.access(self.executable, os.X_OK)
+        return (Capability("citation-verification", "sourceright-0.1", available, ("fully_local", "air_gapped")),)
 
     def run_json(self, operation: Operation, arguments: Sequence[str]) -> OperationResult:
         if operation.privacy_mode not in {"fully_local", "air_gapped"}:
             return OperationResult("rejected", {}, diagnostic="unsupported privacy mode")
-        if not self.executable.is_file():
+        if not arguments or arguments[0] not in READ_ONLY_COMMANDS or "--apply" in arguments:
+            return OperationResult("rejected", {}, diagnostic="command is not in the read-only adapter profile")
+        if not self.capabilities()[0].available:
             return OperationResult("unavailable", {}, retryable=False, diagnostic="SourceRight executable unavailable")
         try:
             completed = self._runner(

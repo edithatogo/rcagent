@@ -74,6 +74,7 @@ def test_fingerprint_redaction_and_public_export_preserve_audit_meaning() -> Non
     redacted = redact_evidence(item, reason="synthetic privacy rule", actor_role_id="role-reviewer", at="2026-08-29T02:00:00Z")
     assert "content" not in redacted
     assert redacted["original_fingerprint"] == item["fingerprint"]
+    assert redacted["custody_state"] == "redacted"
     assert fingerprint({"a": 1, "b": 2}) == fingerprint({"b": 2, "a": 1})
 
     exported = export_record(value, profile="public")
@@ -128,3 +129,9 @@ def test_invalid_fixture_catalog_has_diagnostics_and_safe_recovery() -> None:
             target[key] = case["value"]
         assert case["expected"] in validate_record(value), case["id"]
         assert case["recovery"], case["id"]
+
+
+def test_malformed_relationship_returns_diagnostics_not_exception() -> None:
+    value = record()
+    value["relationships"] = ["not-an-object"]
+    assert any("is not of type 'object'" in error for error in validate_record(value))

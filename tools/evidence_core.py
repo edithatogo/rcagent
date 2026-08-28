@@ -78,6 +78,8 @@ def validate_record(record: dict[str, Any]) -> list[str]:
         if record.get("schema_version") == CURRENT_SCHEMA_VERSION and source_id not in source_ids:
             errors.append(f"statements: unknown source_id {source_id!r}")
     for relationship in record.get("relationships", []):
+        if not isinstance(relationship, dict):
+            continue
         for key in ("from_id", "to_id"):
             if relationship.get(key) not in ids:
                 errors.append(f"relationships: unknown {key} {relationship.get(key)!r}")
@@ -157,6 +159,7 @@ def redact_evidence(item: dict[str, Any], *, reason: str, actor_role_id: str, at
     redacted["original_fingerprint"] = item.get("fingerprint") or fingerprint(item)
     redacted.pop("content", None)
     redacted["redacted"] = True
+    redacted["custody_state"] = "redacted"
     redacted["redaction"] = {"reason": reason, "actor_role_id": actor_role_id, "at": at}
     return redacted
 
