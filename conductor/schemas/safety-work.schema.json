@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/edithatogo/rcagent/conductor/schemas/safety-work.schema.json",
+  "title": "Safety Work Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "case_id", "version", "state", "jurisdiction", "privacy_mode", "authority", "statements", "events"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "case_id": {"$ref": "#/$defs/id"},
+    "version": {"type": "integer", "minimum": 1},
+    "state": {"$ref": "#/$defs/state"},
+    "jurisdiction": {"type": "string", "minLength": 1},
+    "privacy_mode": {"enum": ["public_remote", "governed_hybrid", "fully_local", "air_gapped"]},
+    "authority": {"type": "string", "minLength": 1},
+    "confidentiality": {"type": "string"},
+    "retention_rule": {"type": "string"},
+    "roles": {"type": "array", "items": {"$ref": "#/$defs/role"}},
+    "statements": {"type": "array", "items": {"$ref": "#/$defs/statement"}},
+    "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship"}},
+    "events": {"type": "array", "items": {"$ref": "#/$defs/event"}},
+    "actions": {"type": "array", "items": {"$ref": "#/$defs/action"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "state": {"enum": ["intake", "triage", "review", "investigation", "consultation", "approval", "action", "effectiveness_review", "closed", "reopened", "withdrawn"]},
+    "role": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role_id", "role_type"],
+      "properties": {
+        "role_id": {"$ref": "#/$defs/id"},
+        "role_type": {"type": "string", "minLength": 1},
+        "authority": {"type": "string"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "author_role_id", "recorded_at", "review_state"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/id"},
+        "author_role_id": {"$ref": "#/$defs/id"},
+        "recorded_at": {"$ref": "#/$defs/timestamp"},
+        "review_state": {"enum": ["unreviewed", "reviewed", "accepted", "rejected", "withdrawn"]},
+        "transformation": {"type": "string"},
+        "model_involvement": {"type": "string"},
+        "fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "statement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["statement_id", "kind", "text", "provenance"],
+      "properties": {
+        "statement_id": {"$ref": "#/$defs/id"},
+        "kind": {"enum": ["observed_fact", "reported_account", "inference", "hypothesis", "finding", "recommendation", "decision", "problem", "strength", "weakness"]},
+        "text": {"type": "string", "minLength": 1},
+        "provenance": {"$ref": "#/$defs/provenance"},
+        "uncertainty": {"type": "string"},
+        "supersedes": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "withdrawn": {"type": "boolean", "default": false}
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from_id", "relation", "to_id"],
+      "properties": {
+        "from_id": {"$ref": "#/$defs/id"},
+        "relation": {"enum": ["supports", "contradicts", "derived_from", "supersedes", "relevant_to", "implements", "evaluates"]},
+        "to_id": {"$ref": "#/$defs/id"},
+        "rationale": {"type": "string"}
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "event_type", "occurred_at", "actor_role_id", "from_state", "to_state", "authority"],
+      "properties": {
+        "event_id": {"$ref": "#/$defs/id"},
+        "event_type": {"type": "string", "minLength": 1},
+        "occurred_at": {"$ref": "#/$defs/timestamp"},
+        "actor_role_id": {"$ref": "#/$defs/id"},
+        "from_state": {"$ref": "#/$defs/state"},
+        "to_state": {"$ref": "#/$defs/state"},
+        "authority": {"type": "string", "minLength": 1},
+        "evidence_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}}
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_id", "recommendation_id", "owner_role_id", "status", "effectiveness_state"],
+      "properties": {
+        "action_id": {"$ref": "#/$defs/id"},
+        "recommendation_id": {"$ref": "#/$defs/id"},
+        "owner_role_id": {"$ref": "#/$defs/id"},
+        "status": {"enum": ["proposed", "approved", "in_progress", "implemented", "withdrawn"]},
+        "effectiveness_state": {"enum": ["not_due", "pending_evidence", "effective", "partly_effective", "ineffective", "harm_detected"]},
+        "implementation_evidence_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "residual_risk": {"type": "string"}
+      }
+    }
+  }
+}

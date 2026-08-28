@@ -20,15 +20,15 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
-- [ ] Task: Establish the system and dependency context
-  - [ ] Read `integration-strategy.md` and this track's entry in `integration-map.json`
-  - [ ] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
+- [~] Task: Establish the system and dependency context
+  - [x] Read `integration-strategy.md` and this track's entry in `integration-map.json`
+  - [x] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
   - [ ] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
   - [ ] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
 
 - [ ] Task: Select the smallest adequate intervention
-  - [ ] Prefer existing-system configuration or a standards profile
-  - [ ] Prefer a thin replaceable adapter when translation is the remaining gap
+  - [x] Prefer existing-system configuration or a standards profile
+  - [x] Prefer a thin replaceable adapter when translation is the remaining gap
   - [ ] Identify generic gaps suitable for an authorised upstream issue or contribution
   - [ ] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
   - [ ] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
@@ -51,11 +51,11 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Phase 1: Define the canonical safety-work data model
 
 - [ ] Task: Implement the phase scope
-  - [ ] Model cases, events, people-as-roles, sources, artefacts, evidence items, claims, factors, findings, recommendations, actions, reviews, and outcomes
+  - [~] Model cases, events, people-as-roles, sources, artefacts, evidence items, claims, factors, findings, recommendations, actions, reviews, and outcomes
   - [ ] Model incident huddles, provisional risk and harm assessments, review teams, interviews, consultations, patient problem lists, incident problem lists, related-policy referrals, literature searches, and organisational-learning links
-  - [ ] Define stable identifiers, versions, timestamps, authority, confidentiality, and jurisdiction fields
-  - [ ] Separate observed fact, reported account, inference, hypothesis, finding, and decision types
-  - [ ] Publish JSON Schema and human-readable semantic definitions
+  - [x] Define stable identifiers, versions, timestamps, authority, confidentiality, and jurisdiction fields
+  - [x] Separate observed fact, reported account, inference, hypothesis, finding, and decision types
+  - [x] Publish JSON Schema and human-readable semantic definitions
   - [ ] Map incident exchange boundaries to applicable FHIR R5 resources without treating FHIR as the investigation ontology
   - [ ] Reuse W3C PROV entity, activity, agent, derivation, and attribution concepts where they fit
   - [ ] Profile CMMN for adaptive investigation cases, BPMN for predictable processes, and DMN for transparent decision tables

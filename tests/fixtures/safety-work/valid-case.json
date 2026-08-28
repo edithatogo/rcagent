@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "case_id": "case-synthetic-01",
+  "version": 1,
+  "state": "investigation",
+  "jurisdiction": "synthetic-au",
+  "privacy_mode": "fully_local",
+  "authority": "synthetic training fixture",
+  "roles": [{"role_id": "role-reviewer", "role_type": "reviewer", "authority": "fixture"}],
+  "statements": [
+    {
+      "statement_id": "statement-observed-01",
+      "kind": "observed_fact",
+      "text": "[Patient A] record contains a synthetic observation.",
+      "provenance": {
+        "source_id": "source-synthetic-01",
+        "author_role_id": "role-reviewer",
+        "recorded_at": "2026-08-29T01:00:00Z",
+        "review_state": "reviewed",
+        "fingerprint": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "statement_id": "statement-account-01",
+      "kind": "reported_account",
+      "text": "[Clinician A] provided a conflicting synthetic account.",
+      "provenance": {
+        "source_id": "source-synthetic-02",
+        "author_role_id": "role-reviewer",
+        "recorded_at": "2026-08-29T01:01:00Z",
+        "review_state": "unreviewed"
+      },
+      "uncertainty": "Not independently corroborated."
+    }
+  ],
+  "relationships": [{"from_id": "statement-account-01", "relation": "contradicts", "to_id": "statement-observed-01", "rationale": "Synthetic conflict fixture."}],
+  "events": [{"event_id": "event-investigation-01", "event_type": "investigation_started", "occurred_at": "2026-08-29T01:02:00Z", "actor_role_id": "role-reviewer", "from_state": "review", "to_state": "investigation", "authority": "fixture"}],
+  "actions": []
+}
