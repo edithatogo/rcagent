@@ -32,7 +32,7 @@
 ## Phase 3: Foundation and assurance
 
 - [x] Task: Implement Track 01 safety-systems foundation slice
-- [ ] Task: Implement Track 02 evidence-workflow slice
+- [x] Task: Implement Track 02 evidence-workflow slice — `4a976e0`, review `1431674`, receipt `acca833`
 - [ ] Task: Implement Track 03 privacy/security assurance slice
 - [ ] Task: Implement Track 04 jurisdiction-pack readiness slice
 - [ ] Task: Apply issues #17 and #18 controls to each slice

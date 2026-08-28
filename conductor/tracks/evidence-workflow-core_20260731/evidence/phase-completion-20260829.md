@@ -38,8 +38,10 @@ prove production, publisher, legal, or network-provider suitability.
 Before review fixes, repository-wide Ruff, ty, basedpyright, gremlin scan, and
 governance validation passed; pytest reported 105 passed and 5 documented
 PowerShell-dependent skips with 83.47% coverage. After review fixes, 15 focused
-evidence tests and all focused lint/type checks passed. The full gate is rerun
-on the completion diff before integration.
+evidence tests and all focused lint/type checks passed. The final gate ran from
+a clean detached worktree at `acca833`: all quality and governance checks
+passed, with 106 tests passed, 5 documented PowerShell-dependent skips, and
+83.58% coverage against the 80% requirement.
 
 - schema: `ccf454138863d98af6337703a874f8e8a90f819e1fbdeb1f4f97c684d36f53d5`
 - contracts: `2a0927b822639a45859eeaa121ad30e890d53864c87047ce4e10648226b25bd4`
