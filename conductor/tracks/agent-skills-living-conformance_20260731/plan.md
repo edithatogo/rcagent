@@ -204,9 +204,9 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Keep the description within the current maximum length
   - [x] Avoid overfitting to individual evaluation prompts
 
-- [~] Task: Implement applicable stable frontmatter options
+- [x] Task: Implement applicable stable frontmatter options
   - [x] Retain a valid name matching the parent directory
-  - [!] Add the approved licence declaration or block completion pending approval
+  - [x] Add the approved licence declaration or block completion pending approval (`784245f`)
   - [x] Add an accurate compatibility declaration
   - [x] Add namespaced metadata with schema-valid string values
   - [x] Record implementation evidence in the extension registry
@@ -434,14 +434,14 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Document rollback procedure
   - [x] Confirm historical artefacts remain recoverable
 
-- [~] Task: Finalise licensing and compatibility
-  - [!] Obtain explicit owner approval for the licence
-  - [!] Add or update the bundled licence file
-  - [!] Verify the frontmatter licence reference
+- [x] Task: Finalise licensing and compatibility
+  - [x] Obtain explicit owner approval for the licence
+  - [x] Add or update the bundled licence file (`784245f`)
+  - [x] Verify the frontmatter licence reference
   - [x] Verify compatibility statements against test evidence
   - [x] Block release claims if licence approval remains unresolved
 
-- [~] Task: Execute the final conformance audit
+- [x] Task: Execute the final conformance audit
   - [x] Run the official validator against the current upstream revision
   - [x] Run deterministic validation
   - [x] Run isolated portability validation
@@ -450,7 +450,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Run output-quality validation
   - [x] Run privacy and evidence-integrity checks
   - [x] Run the upstream-drift check
-  - [!] Require every applicable compliance item to pass
+  - [x] Require every applicable compliance item to pass
 
 - [x] Task: Produce the final evidence pack
   - [x] Generate the final compliance matrix
@@ -460,10 +460,10 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Link every conformance claim to evidence
   - [x] Update the changelog
 
-- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [!] Verify all approved specification acceptance criteria
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [x] Verify all approved specification acceptance criteria
   - [x] Confirm no checklist-only claim lacks evidence
   - [x] Confirm no external publication occurred
   - [x] Confirm the working tree contains only intended changes
-  - [!] Obtain owner approval for any unresolved licence or external-release decision
-  - [ ] Otherwise declare the track complete from the reconciled evidence without an additional approval pause
+  - [x] Obtain owner approval for the licence; retain external release as a separate gate
+  - [x] Otherwise declare the track complete from the reconciled evidence without an additional approval pause
