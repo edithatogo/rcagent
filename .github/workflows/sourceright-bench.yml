@@ -1,0 +1,36 @@
+name: SourceRight Bench
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bench:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository with vendored plugins
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build SourceRight (locked)
+        working-directory: .agents/plugins/sourceright
+        run: cargo build --locked
+
+      - name: Run offline fixture bench
+        working-directory: .agents/plugins/sourceright
+        run: ./target/debug/sourceright bench --json | tee sourceright-bench.json
+
+      - name: Upload bench receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: sourceright-bench
+          path: .agents/plugins/sourceright/sourceright-bench.json

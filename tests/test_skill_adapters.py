@@ -11,7 +11,7 @@ from tools.validate_skill import validate_skill
 ROOT = Path(__file__).parents[1]
 
 
-@pytest.mark.parametrize("client", ["codex", "claude-code"])
+@pytest.mark.parametrize("client", ["codex", "claude-code", "opencode", "cline", "cursor"])
 def test_adapter_installs_unmodified_valid_core(tmp_path: Path, client: str) -> None:
     installed = install_adapter(ROOT, client, tmp_path)
     assert validate_skill(installed) == []
