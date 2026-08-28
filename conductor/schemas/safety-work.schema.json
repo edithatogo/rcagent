@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schema_version", "case_id", "version", "state", "jurisdiction", "privacy_mode", "authority", "statements", "events"],
   "properties": {
-    "schema_version": {"const": "1.0"},
+    "schema_version": {"enum": ["1.0", "1.1"]},
     "case_id": {"$ref": "#/$defs/id"},
     "version": {"type": "integer", "minimum": 1},
     "state": {"$ref": "#/$defs/state"},
@@ -15,16 +15,25 @@
     "authority": {"type": "string", "minLength": 1},
     "confidentiality": {"type": "string"},
     "retention_rule": {"type": "string"},
+    "system_of_record": {"$ref": "#/$defs/system_of_record"},
     "roles": {"type": "array", "items": {"$ref": "#/$defs/role"}},
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
+    "artefacts": {"type": "array", "items": {"$ref": "#/$defs/artefact"}},
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
     "statements": {"type": "array", "items": {"$ref": "#/$defs/statement"}},
+    "factors": {"type": "array", "items": {"$ref": "#/$defs/factor"}},
     "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship"}},
     "events": {"type": "array", "items": {"$ref": "#/$defs/event"}},
-    "actions": {"type": "array", "items": {"$ref": "#/$defs/action"}}
+    "actions": {"type": "array", "items": {"$ref": "#/$defs/action"}},
+    "reviews": {"type": "array", "items": {"$ref": "#/$defs/review"}},
+    "outcomes": {"type": "array", "items": {"$ref": "#/$defs/outcome"}},
+    "referrals": {"type": "array", "items": {"$ref": "#/$defs/referral"}}
   },
   "$defs": {
     "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"},
     "timestamp": {"type": "string", "format": "date-time"},
-    "state": {"enum": ["intake", "triage", "review", "investigation", "consultation", "approval", "action", "effectiveness_review", "closed", "reopened", "withdrawn"]},
+    "fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "state": {"enum": ["intake", "triage", "review", "investigation", "consultation", "approval", "action", "effectiveness_review", "closed", "reopened", "appeal", "withdrawn"]},
     "role": {
       "type": "object",
       "additionalProperties": false,
@@ -33,6 +42,62 @@
         "role_id": {"$ref": "#/$defs/id"},
         "role_type": {"type": "string", "minLength": 1},
         "authority": {"type": "string"}
+      }
+    },
+    "system_of_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "external_case_id", "reconciled_at"],
+      "properties": {
+        "kind": {"type": "string", "minLength": 1},
+        "external_case_id": {"type": "string", "minLength": 1},
+        "reconciled_at": {"anyOf": [{"$ref": "#/$defs/timestamp"}, {"type": "null"}]},
+        "external_version": {"type": "string"}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "source_type", "title", "fingerprint", "acquired_at", "authority"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/id"},
+        "source_type": {"enum": ["record", "account", "policy", "literature", "data", "diagram", "other"]},
+        "title": {"type": "string", "minLength": 1},
+        "fingerprint": {"$ref": "#/$defs/fingerprint"},
+        "acquired_at": {"$ref": "#/$defs/timestamp"},
+        "authority": {"type": "string", "minLength": 1},
+        "citation": {"type": "string"},
+        "screening_state": {"enum": ["candidate", "included", "excluded", "unverified"]},
+        "late": {"type": "boolean"}
+      }
+    },
+    "artefact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artefact_id", "kind", "fingerprint"],
+      "properties": {
+        "artefact_id": {"$ref": "#/$defs/id"},
+        "kind": {"enum": ["document", "image", "audio", "video", "dataset", "diagram", "transcript", "other"]},
+        "fingerprint": {"$ref": "#/$defs/fingerprint"},
+        "media_type": {"type": "string"},
+        "source_id": {"$ref": "#/$defs/id"}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "source_id", "fingerprint", "custody_state"],
+      "properties": {
+        "evidence_id": {"$ref": "#/$defs/id"},
+        "source_id": {"$ref": "#/$defs/id"},
+        "artefact_id": {"$ref": "#/$defs/id"},
+        "content": {"type": "string"},
+        "fingerprint": {"$ref": "#/$defs/fingerprint"},
+        "original_fingerprint": {"$ref": "#/$defs/fingerprint"},
+        "custody_state": {"enum": ["acquired", "verified", "transformed", "redacted", "withdrawn"]},
+        "redacted": {"type": "boolean"},
+        "redaction": {"type": "object"},
+        "transformation": {"type": "string"}
       }
     },
     "provenance": {
@@ -46,7 +111,9 @@
         "review_state": {"enum": ["unreviewed", "reviewed", "accepted", "rejected", "withdrawn"]},
         "transformation": {"type": "string"},
         "model_involvement": {"type": "string"},
-        "fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+        "fingerprint": {"$ref": "#/$defs/fingerprint"},
+        "reviewer_role_id": {"$ref": "#/$defs/id"},
+        "reviewed_at": {"$ref": "#/$defs/timestamp"}
       }
     },
     "statement": {
@@ -74,19 +141,33 @@
         "rationale": {"type": "string"}
       }
     },
+    "factor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["factor_id", "kind", "statement_id", "status"],
+      "properties": {
+        "factor_id": {"$ref": "#/$defs/id"},
+        "kind": {"enum": ["contributory", "protective", "barrier", "system_condition"]},
+        "statement_id": {"$ref": "#/$defs/id"},
+        "status": {"enum": ["candidate", "accepted", "rejected", "withdrawn"]}
+      }
+    },
     "event": {
       "type": "object",
       "additionalProperties": false,
       "required": ["event_id", "event_type", "occurred_at", "actor_role_id", "from_state", "to_state", "authority"],
       "properties": {
         "event_id": {"$ref": "#/$defs/id"},
-        "event_type": {"type": "string", "minLength": 1},
+        "event_type": {"enum": ["submission_received", "immediate_response_recorded", "huddle_completed", "provisional_assessment_recorded", "review_path_selected", "team_formed", "evidence_acquired", "interview_completed", "systems_analysis_completed", "findings_proposed", "consultation_requested", "consultation_completed", "recommendations_proposed", "decision_approved", "action_started", "effectiveness_reviewed", "learning_recorded", "case_closed", "case_reopened", "case_withdrawn", "correction_recorded", "evidence_withdrawn", "appeal_started", "appeal_note_recorded", "appeal_decided", "investigation_started"]},
         "occurred_at": {"$ref": "#/$defs/timestamp"},
         "actor_role_id": {"$ref": "#/$defs/id"},
         "from_state": {"$ref": "#/$defs/state"},
         "to_state": {"$ref": "#/$defs/state"},
         "authority": {"type": "string", "minLength": 1},
-        "evidence_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}}
+        "evidence_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "preconditions": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "deadline": {"$ref": "#/$defs/timestamp"},
+        "exception_path": {"type": "string"}
       }
     },
     "action": {
@@ -101,6 +182,42 @@
         "effectiveness_state": {"enum": ["not_due", "pending_evidence", "effective", "partly_effective", "ineffective", "harm_detected"]},
         "implementation_evidence_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
         "residual_risk": {"type": "string"}
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["review_id", "review_type", "reviewer_role_ids", "status"],
+      "properties": {
+        "review_id": {"$ref": "#/$defs/id"},
+        "review_type": {"enum": ["huddle", "provisional_risk", "harm_assessment", "interview", "consultation", "literature_search", "clinical_governance", "other"]},
+        "reviewer_role_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "status": {"enum": ["planned", "in_progress", "complete", "withdrawn"]},
+        "statement_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}}
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome_id", "kind", "status", "evidence_ids"],
+      "properties": {
+        "outcome_id": {"$ref": "#/$defs/id"},
+        "kind": {"enum": ["effectiveness", "learning", "balancing", "residual_risk"]},
+        "status": {"enum": ["pending", "verified", "not_verified", "harm_detected"]},
+        "evidence_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "statement_id": {"$ref": "#/$defs/id"}
+      }
+    },
+    "referral": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["referral_id", "pathway", "authority", "status"],
+      "properties": {
+        "referral_id": {"$ref": "#/$defs/id"},
+        "pathway": {"enum": ["lookback", "cluster_review", "individual_worker", "cultural_review", "clinical_risk", "enterprise_risk", "quality_improvement", "medicolegal", "related_policy"]},
+        "authority": {"type": "string", "minLength": 1},
+        "status": {"enum": ["proposed", "referred", "accepted", "declined", "closed"]},
+        "external_reference": {"type": "string"}
       }
     }
   }

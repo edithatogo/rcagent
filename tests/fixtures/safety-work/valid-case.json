@@ -1,12 +1,20 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "case_id": "case-synthetic-01",
   "version": 1,
   "state": "investigation",
   "jurisdiction": "synthetic-au",
   "privacy_mode": "fully_local",
   "authority": "synthetic training fixture",
+  "system_of_record": {"kind": "synthetic-ims", "external_case_id": "external-case-01", "reconciled_at": "2026-08-29T01:03:00Z", "external_version": "1"},
   "roles": [{"role_id": "role-reviewer", "role_type": "reviewer", "authority": "fixture"}],
+  "sources": [
+    {"source_id": "source-synthetic-01", "source_type": "record", "title": "Synthetic record", "fingerprint": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "acquired_at": "2026-08-29T00:50:00Z", "authority": "fixture", "late": false},
+    {"source_id": "source-synthetic-02", "source_type": "account", "title": "Synthetic account", "fingerprint": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "acquired_at": "2026-08-29T00:55:00Z", "authority": "fixture", "late": true},
+    {"source_id": "source-literature-01", "source_type": "literature", "title": "Synthetic literature candidate", "fingerprint": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "acquired_at": "2026-08-29T00:56:00Z", "authority": "fixture", "citation": "Synthetic et al. (2026)", "screening_state": "included", "late": false}
+  ],
+  "artefacts": [{"artefact_id": "artefact-record-01", "kind": "document", "fingerprint": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "media_type": "text/plain", "source_id": "source-synthetic-01"}],
+  "evidence": [{"evidence_id": "evidence-record-01", "source_id": "source-synthetic-01", "artefact_id": "artefact-record-01", "content": "Synthetic evidence only.", "fingerprint": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "custody_state": "verified", "redacted": false}],
   "statements": [
     {
       "statement_id": "statement-observed-01",
@@ -34,6 +42,10 @@
     }
   ],
   "relationships": [{"from_id": "statement-account-01", "relation": "contradicts", "to_id": "statement-observed-01", "rationale": "Synthetic conflict fixture."}],
-  "events": [{"event_id": "event-investigation-01", "event_type": "investigation_started", "occurred_at": "2026-08-29T01:02:00Z", "actor_role_id": "role-reviewer", "from_state": "review", "to_state": "investigation", "authority": "fixture"}],
-  "actions": []
+  "factors": [{"factor_id": "factor-system-01", "kind": "system_condition", "statement_id": "statement-observed-01", "status": "candidate"}],
+  "events": [{"event_id": "event-investigation-01", "event_type": "investigation_started", "occurred_at": "2026-08-29T01:02:00Z", "actor_role_id": "role-reviewer", "from_state": "review", "to_state": "investigation", "authority": "fixture", "evidence_ids": ["evidence-record-01"]}],
+  "actions": [],
+  "reviews": [{"review_id": "review-huddle-01", "review_type": "huddle", "reviewer_role_ids": ["role-reviewer"], "status": "complete", "statement_ids": ["statement-observed-01"]}],
+  "outcomes": [{"outcome_id": "outcome-learning-01", "kind": "learning", "status": "pending", "evidence_ids": ["evidence-record-01"], "statement_id": "statement-observed-01"}],
+  "referrals": [{"referral_id": "referral-policy-01", "pathway": "related_policy", "authority": "fixture", "status": "proposed"}]
 }

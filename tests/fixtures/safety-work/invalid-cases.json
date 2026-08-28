@@ -1,0 +1,8 @@
+{
+  "cases": [
+    {"id": "broken-provenance", "path": ["statements", 0, "provenance", "source_id"], "value": "missing-source", "expected": "statements: unknown source_id 'missing-source'", "recovery": "restore or explicitly register the source; never invent authority"},
+    {"id": "invalid-transition", "path": ["events", 0, "to_state"], "value": "closed", "expected": "events: invalid transition 'review' -> 'closed'", "recovery": "record the missing authorised intermediate transitions"},
+    {"id": "duplicate-id", "path": ["roles", 1], "copy_from": ["roles", 0], "expected": "identifiers: duplicate 'role-reviewer'", "recovery": "assign a stable unique role identifier"},
+    {"id": "broken-supersession", "path": ["statements", 0, "supersedes"], "value": ["missing-statement"], "expected": "statements: unknown supersedes 'missing-statement'", "recovery": "retain the prior statement and reference its actual stable identifier"}
+  ]
+}

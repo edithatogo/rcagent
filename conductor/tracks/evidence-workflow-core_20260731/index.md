@@ -1,6 +1,6 @@
 # Track 02: Evidence Workflow Core
 
-- **Status:** In progress
+- **Status:** Completed
 - **Evidence ledger:** Opts into `evidence_schema: "1.0"` — the append-only `evidence.jsonl` ledger is this track's structured evidence source of truth, dogfooding the schema before downstream tracks depend on it.
 - **Workstream:** foundation-governance
 - **GitHub issue:** [#7](https://github.com/edithatogo/rcagent/issues/7)
