@@ -27,9 +27,9 @@
     {
       "field": "license",
       "scope": "portable-core",
-      "state": "decision_pending",
-      "fallback": "no external distribution or licence claim",
-      "evidence": "evidence/fit-gap.md"
+      "state": "supported",
+      "fallback": "clients may read the bundled root LICENSE when frontmatter metadata is unavailable",
+      "evidence": "evidence/licence-decision-20260829.md"
     }
   ]
 }

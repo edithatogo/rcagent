@@ -1,7 +1,7 @@
 # Decision: Portable Skill Licence
 
 - **Decision ID:** 20260731-001-skill-licence
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date raised:** 2026-07-31
 - **Owner:** Repository owner
 - **Track:** agent-skills-living-conformance_20260731
@@ -71,12 +71,12 @@ Select exactly one licence option.
 
 ## Owner Decision
 
-- **Decision:** Pending
-- **Conditions:** Pending
-- **Date:** Pending
-- **Recorded by:** Pending
+- **Decision:** Apache-2.0
+- **Conditions:** Licence selection does not authorise a release, registry submission, distribution of third-party material, or any clinical-validity claim.
+- **Date:** 2026-08-29
+- **Recorded by:** Repository owner, recorded by Codex from explicit task instruction
 
 ## Follow-up
 
-- [ ] Update affected specifications, plans, metadata, risks, ADRs, tests, and receipts
-- [ ] Reconcile GitHub labels and dependencies
+- [x] Update affected specifications, plans, metadata, risks, ADRs, tests, and receipts
+- [x] Reconcile GitHub labels and dependencies

@@ -32,11 +32,8 @@ def test_current_profile_is_structurally_valid() -> None:
     assert validate_profile(ROOT) == []
 
 
-def test_completion_gate_reports_every_nonpass() -> None:
-    errors = validate_profile(ROOT, require_complete=True)
-    assert any("AS-SPEC-004" in error for error in errors)
-    assert not any("AS-GUIDE-003" in error for error in errors)
-    assert not any("RCA-SAFE-001" in error for error in errors)
+def test_completion_gate_passes_when_every_item_passes() -> None:
+    assert validate_profile(ROOT, require_complete=True) == []
 
 
 def test_missing_evidence_is_reported(tmp_path: Path) -> None:
@@ -57,7 +54,7 @@ def test_evaluation_contract_is_fail_closed(tmp_path: Path) -> None:
     assert any("RCA-EVAL-002" in error for error in validate_profile(root))
 
 
-def test_cli_success_and_completion_failure(monkeypatch, capsys) -> None:
+def test_cli_success_and_completion_success(monkeypatch, capsys) -> None:
     monkeypatch.setattr("sys.argv", ["validate_skill_profile", "--root", str(ROOT)])
     assert main() == 0
     assert "validation passed" in capsys.readouterr().out
@@ -66,5 +63,5 @@ def test_cli_success_and_completion_failure(monkeypatch, capsys) -> None:
         "sys.argv",
         ["validate_skill_profile", "--root", str(ROOT), "--require-complete"],
     )
-    assert main() == 1
-    assert "not pass" in capsys.readouterr().out
+    assert main() == 0
+    assert "validation passed" in capsys.readouterr().out
