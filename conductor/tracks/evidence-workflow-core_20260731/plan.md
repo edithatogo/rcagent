@@ -20,25 +20,25 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
-- [~] Task: Establish the system and dependency context
+- [x] Task: Establish the system and dependency context
   - [x] Read `integration-strategy.md` and this track's entry in `integration-map.json`
   - [x] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
-  - [ ] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
-  - [ ] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
+  - [x] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints — see `evidence/fit-gap-sourceright-20260829.md`
+  - [!] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures — live `bench` fixture trial deferred to Phase 6 (local shell cannot host the Rust toolchain build; see fit-gap receipt)
 
-- [ ] Task: Select the smallest adequate intervention
+- [~] Task: Select the smallest adequate intervention
   - [x] Prefer existing-system configuration or a standards profile
   - [x] Prefer a thin replaceable adapter when translation is the remaining gap
-  - [ ] Identify generic gaps suitable for an authorised upstream issue or contribution
-  - [ ] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
-  - [ ] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
+  - [x] Identify generic gaps suitable for an authorised upstream issue or contribution — sourceright#100 filed
+  - [x] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
+  - [x] Require a fit-gap record and approved ADR before any new subsystem or permanent fork — thin adapter selected; no ADR required
 
-- [ ] Task: Define the dependency lifecycle
-  - [ ] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile
-  - [ ] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
-  - [ ] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
-  - [ ] Update `integration-map.json` with the selected status and evidence links
-  - [ ] Test vendored sourceright as the candidate maintained system for citation and source verification; prefer a thin SourceRight adapter over any project-owned verifier
+- [~] Task: Define the dependency lifecycle
+  - [x] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile — SourceRight: optional adapter over the vendored plugin
+  - [ ] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback — contract fixtures arrive with the Phase 6 adapter implementation; compatibility window is the pinned upstream main recorded in `vendored_plugins`
+  - [x] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
+  - [x] Update `integration-map.json` with the selected status and evidence links
+  - [!] Test vendored sourceright as the candidate maintained system for citation and source verification; prefer a thin SourceRight adapter over any project-owned verifier — selection recorded from source-level evaluation; live `bench` fixture run is a Phase 6 entry condition (see fit-gap receipt)
 
 - [ ] Task: Phase Verification & Checkpoint
   - [ ] Verify that no planned work duplicates an adequate existing capability
