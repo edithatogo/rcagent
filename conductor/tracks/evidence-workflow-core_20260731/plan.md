@@ -210,6 +210,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Return schema diagnostics for malformed relationships without raising
   - [x] Record redaction custody state explicitly
   - [x] Run focused tests, lint, and type checks
+  - [x] Close the hosted patch-coverage gap with cross-reference, malformed-input, audit-tamper, export, redaction, and adapter failure tests
 
 ## Final Track Verification
 
