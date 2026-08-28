@@ -70,150 +70,154 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 2: Adopt the modular reference architecture
 
-- [~] Task: Implement the phase scope
-  - [ ] Define portable core, domain packs, capability adapters, interfaces, evaluation, and distribution layers
-  - [ ] Map authoritative roles for ims+ or another incident system, enterprise content and identity, clinical systems, workflow platforms, and the local workbench
-  - [ ] Create the integration register and require every later track to record fit, gap, dependency profile, upstream path, and exit strategy
-  - [ ] Create architecture decision record conventions and a replace-before-fork framework policy
-  - [ ] Define stable contracts between evidence, retrieval, model, workflow, and client layers
-  - [ ] Define standards profiles and thin-adapter boundaries for FHIR, W3C PROV, CMMN, BPMN, DMN, evaluation frameworks, and client plugins
+- [x] Task: Implement the phase scope
+  - [x] Define portable core, domain packs, capability adapters, interfaces, evaluation, and distribution layers
+  - [x] Map authoritative roles for ims+ or another incident system, enterprise content and identity, clinical systems, workflow platforms, and the local workbench
+  - [x] Create the integration register and require every later track to record fit, gap, dependency profile, upstream path, and exit strategy
+  - [x] Create architecture decision record conventions and a replace-before-fork framework policy
+  - [x] Define stable contracts between evidence, retrieval, model, workflow, and client layers
+  - [x] Define standards profiles and thin-adapter boundaries for FHIR, W3C PROV, CMMN, BPMN, DMN, evaluation frameworks, and client plugins
   - [x] Implement the capability-profile schema, keeping heavyweight and experimental components outside the portable core
-  - [~] Define idempotent preflight, install, verify, update, rollback, and uninstall contracts for script and agent-assisted setup
-  - [ ] Document failure isolation, safe fallback, and offline-first principles
+  - [x] Define idempotent preflight, install, verify, update, rollback, and uninstall contracts for script and agent-assisted setup
+  - [x] Document failure isolation, safe fallback, and offline-first principles
 
-- [~] Task: Validate the phase deliverables
+- [x] Task: Validate the phase deliverables
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
   - [x] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #6 and dependency evidence
+  - [x] Reconcile Conductor state with GitHub issue #6 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 3: Engineer the solo-developer delivery system
 
-- [ ] Task: Implement the phase scope
-  - [ ] Encode one integration lane plus no more than two independent implementation lanes
-  - [ ] Define hard-start dependencies, phase dependencies, WIP limits, and integration ownership
-  - [ ] Define machine-readable definitions of ready, done, blocked, and decision-needed
-  - [ ] Create an autonomous work-queue selection policy that never treats checkboxes as proof
-  - [ ] Implement deterministic next-ready dispatch across task, phase, review, rework, and track boundaries
-  - [ ] Implement idempotent run IDs, leases, heartbeats, stale-lock detection, safe takeover, and preserved-work recovery
-  - [ ] Implement decision and external-wait queues that release blocked lanes and schedule unaffected work
-  - [ ] Implement critical-path priority, owned-path conflict detection, and integration-lane convergence
+- [x] Task: Implement the phase scope
+  - [x] Encode one integration lane plus no more than two independent implementation lanes
+  - [x] Define hard-start dependencies, phase dependencies, WIP limits, and integration ownership
+  - [x] Define machine-readable definitions of ready, done, blocked, and decision-needed
+  - [x] Create an autonomous work-queue selection policy that never treats checkboxes as proof
+  - [x] Implement deterministic next-ready dispatch across task, phase, review, rework, and track boundaries
+  - [x] Implement idempotent run IDs, leases, heartbeats, stale-lock detection, safe takeover, and preserved-work recovery
+  - [x] Implement decision and external-wait queues that release blocked lanes and schedule unaffected work
+  - [x] Implement critical-path priority, owned-path conflict detection, and integration-lane convergence
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #6 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #6 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 4: Build layered context engineering
 
-- [ ] Task: Implement the phase scope
-  - [ ] Add a short client-neutral AGENTS navigation contract and retain thin client adapters
-  - [ ] Define authoritative project, track, task, source, risk, and evidence context layers
-  - [ ] Create bounded task context-pack rules with freshness, provenance, and token budgets
-  - [ ] Define handoff and recovery summaries that expose uncertainty and unresolved decisions
+- [x] Task: Implement the phase scope
+  - [x] Add a short client-neutral AGENTS navigation contract and retain thin client adapters
+  - [x] Define authoritative project, track, task, source, risk, and evidence context layers
+  - [x] Create bounded task context-pack rules with freshness, provenance, and token budgets
+  - [x] Define handoff and recovery summaries that expose uncertainty and unresolved decisions
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #6 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #6 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 5: Specify the maximal harness
 
-- [ ] Task: Implement the phase scope
-  - [ ] Specify doctor, context, work-queue, validate, evaluate, receipts, and reconciliation entry points
-  - [ ] Define deterministic preflight, fixture, link, schema, privacy, and policy-drift checks
-  - [ ] Define durable command, environment, revision, source, result, and limitation receipts
-  - [ ] Define local and CI execution with honest offline and unavailable-upstream states
-  - [ ] Specify bounded retry classes, fallback, autonomous plan-repair outcomes, and repeated-attempt prevention
-  - [ ] Specify safety circuit breakers for privacy, credentials, destructive changes, evidence integrity, and material harm
-  - [ ] Specify resumable context cursors and session-boundary handoffs that do not create approval pauses
-  - [ ] Specify automatic fresh-context track review and review-report-driven rework
-  - [ ] Maintain the one-command repository validator and coverage-producing test harness
-  - [ ] Configure Renovate, dependency review, Codecov, and stable required-check discovery without adding a team approval gate
+- [x] Task: Implement the phase scope
+  - [x] Specify doctor, context, work-queue, validate, evaluate, receipts, and reconciliation entry points
+  - [x] Define deterministic preflight, fixture, link, schema, privacy, and policy-drift checks
+  - [x] Define durable command, environment, revision, source, result, and limitation receipts
+  - [x] Define local and CI execution with honest offline and unavailable-upstream states
+  - [x] Specify bounded retry classes, fallback, autonomous plan-repair outcomes, and repeated-attempt prevention
+  - [x] Specify safety circuit breakers for privacy, credentials, destructive changes, evidence integrity, and material harm
+  - [x] Specify resumable context cursors and session-boundary handoffs that do not create approval pauses
+  - [x] Specify automatic fresh-context track review and review-report-driven rework
+  - [x] Maintain the one-command repository validator and coverage-producing test harness
+  - [x] Configure Renovate, dependency review, Codecov, and stable required-check discovery without adding a team approval gate
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #6 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #6 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 6: Create governance and decision ledgers
 
-- [ ] Task: Implement the phase scope
-  - [ ] Create ADR, decision, risk, source, assumption, and evidence record templates
-  - [ ] Define decision packets with a stable ID, recommended option, rationale, evidence, alternatives, trade-offs, reversibility, safe default, paused scope, continuing work, and response format
-  - [ ] Define owner gates for clinical, legal, privacy, licence, credential, spend, and release choices
-  - [ ] Define automated freshness checks and escalation rules for stale authoritative context
-  - [ ] Define decision deduplication, wake conditions, non-blocking status updates, and one-decision-at-a-time engagement
+- [x] Task: Implement the phase scope
+  - [x] Create ADR, decision, risk, source, assumption, and evidence record templates
+  - [x] Define decision packets with a stable ID, recommended option, rationale, evidence, alternatives, trade-offs, reversibility, safe default, paused scope, continuing work, and response format
+  - [x] Define owner gates for clinical, legal, privacy, licence, credential, spend, and release choices
+  - [x] Define automated freshness checks and escalation rules for stale authoritative context
+  - [x] Define decision deduplication, wake conditions, non-blocking status updates, and one-decision-at-a-time engagement
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #6 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #6 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 7: Validate autonomous execution
 
-- [ ] Task: Implement the phase scope
-  - [ ] Run a representative ready-task selection and bounded context-pack dry run
-  - [ ] Simulate uninterrupted continuation across multiple phases and into the next ready track
-  - [ ] Simulate a blocked owner-decision lane while independent work continues
-  - [ ] Simulate transient recovery, deterministic repair, plan rework, external wait, stale lock, interruption and resume, and circuit-breaker cases
-  - [ ] Verify every decision request presents options, a recommendation, rationale, evidence, safe default, paused scope, and continuing work
-  - [ ] Verify review findings become bounded automatic rework without a routine approval pause
-  - [ ] Verify worktree, evidence receipt, integration, rollback, and handoff procedures
-  - [ ] Reconcile repository hardening issues #17 and #18 against hosted rules, stable checks, recovery access, and evidence receipts
-  - [ ] Record defects and close the foundation only when a fresh-context reproduction passes
+- [x] Task: Implement the phase scope
+  - [x] Run a representative ready-task selection and bounded context-pack dry run
+  - [x] Simulate uninterrupted continuation across multiple phases and into the next ready track
+  - [x] Simulate a blocked owner-decision lane while independent work continues
+  - [x] Simulate transient recovery, deterministic repair, plan rework, external wait, stale lock, interruption and resume, and circuit-breaker cases
+  - [x] Verify every decision request presents options, a recommendation, rationale, evidence, safe default, paused scope, and continuing work
+  - [x] Verify review findings become bounded automatic rework without a routine approval pause
+  - [x] Verify worktree, evidence receipt, integration, rollback, and handoff procedures
+  - [x] Reconcile repository hardening issues #17 and #18 against hosted rules, stable checks, recovery access, and evidence receipts
+  - [x] Record defects and close the foundation only when a fresh-context reproduction passes
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #6 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #6 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+
+- [x] Task: Review Fixes
+  - [x] Restore governed default lane limits when queue input omits an override
+  - [x] Add a regression assertion for omitted lane limits
 
 ## Final Track Verification
 
