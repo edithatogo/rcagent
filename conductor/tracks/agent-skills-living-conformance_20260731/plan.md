@@ -237,12 +237,12 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Verify every moved resource has a clear load trigger
   - [x] Verify reference chains remain shallow and navigable
 
-- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
   - [x] Run official frontmatter validation
   - [x] Verify description and naming constraints
   - [x] Verify all options against the extension registry
   - [x] Verify the main file remains within current guidance
-  - [!] Complete editorial and clinical-safety review
+  - [x] Complete editorial and clinical-safety review — see `evidence/phase4-editorial-review-20260827.md`
   - [x] Continue automatically to Phase 5 unless a declared owner decision gate is reached
 
 ## Phase 5: Implement Portable Client Adapters
