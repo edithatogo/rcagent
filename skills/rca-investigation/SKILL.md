@@ -65,8 +65,10 @@ Default sequence:
 5. Develop recommendations that address evidenced system conditions.
 6. Define implementation, effectiveness, balancing, and residual-risk checks.
 
-Load only the relevant method file under `references/methods/`. For complex
-events, prefer a complementary set rather than forcing every method.
+Load only the relevant method file under `references/methods/`. Apply the
+selection heuristics in the matrix: escalate only on evidence signals, respect
+the SAC method budget and stop rules, and never stack overlapping methods to
+appear thorough.
 
 ## Produce bounded outputs
 
