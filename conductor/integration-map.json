@@ -57,9 +57,12 @@
         "HL7 FHIR R5 AdverseEvent, Provenance, AuditEvent, Task, DocumentReference, Questionnaire, and QuestionnaireResponse",
         "W3C PROV",
         "CMMN, BPMN, and DMN",
-        "RO-Crate and BagIt"
+        "RO-Crate and BagIt",
+        "SourceRight reference verification (vendored plugin; thin adapter candidate)"
       ],
-      "project_owned_gap": "investigation evidence and claim semantics, systems-analysis records, jurisdiction-neutral workflow constraints, and safety-action effectiveness"
+      "project_owned_gap": "investigation evidence and claim semantics, systems-analysis records, jurisdiction-neutral workflow constraints, and safety-action effectiveness",
+      "selected_system": "SourceRight thin adapter for citation and source verification; project owns only evidence-schema mapping and workflow integration",
+      "evidence": "conductor/tracks/evidence-workflow-core_20260731/evidence/fit-gap-sourceright-20260829.md"
     },
     {
       "track_id": "privacy-security-assurance_20260731",
