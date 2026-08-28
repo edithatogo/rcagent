@@ -135,3 +135,68 @@ def test_malformed_relationship_returns_diagnostics_not_exception() -> None:
     value = record()
     value["relationships"] = ["not-an-object"]
     assert any("is not of type 'object'" in error for error in validate_record(value))
+
+
+def test_all_cross_reference_failures_are_reported() -> None:
+    value = record()
+    value["statements"][0]["provenance"]["author_role_id"] = "missing-role"
+    value["events"][0]["evidence_ids"] = ["missing-evidence"]
+    value["actions"] = [
+        {
+            "action_id": "action-01",
+            "recommendation_id": "missing-recommendation",
+            "owner_role_id": "missing-role",
+            "status": "proposed",
+            "effectiveness_state": "not_due",
+        }
+    ]
+    value["artefacts"][0]["source_id"] = "missing-source"
+    value["evidence"][0]["artefact_id"] = "missing-artefact"
+    errors = validate_record(value)
+    assert "statements: unknown author_role_id 'missing-role'" in errors
+    assert "events: unknown evidence_id 'missing-evidence'" in errors
+    assert "actions: unknown recommendation_id 'missing-recommendation'" in errors
+    assert "actions: unknown owner_role_id 'missing-role'" in errors
+    assert "artefacts: unknown source_id 'missing-source'" in errors
+    assert "evidence: unknown artefact_id 'missing-artefact'" in errors
+
+
+def test_malformed_collections_remain_diagnostic_safe() -> None:
+    value = record()
+    value["events"] = ["bad-event"]
+    value["actions"] = ["bad-action"]
+    value["reviews"] = ["bad-review"]
+    value["statements"] = ["bad-statement"]
+    errors = validate_record(value)
+    assert sum("is not of type 'object'" in error for error in errors) >= 4
+
+
+def test_non_state_correction_and_optional_references_are_supported() -> None:
+    value = record()
+    value["events"][0].update(
+        event_type="correction_recorded",
+        from_state="investigation",
+        to_state="investigation",
+    )
+    value["outcomes"][0].pop("statement_id")
+    assert validate_record(value) == []
+
+
+def test_redaction_without_existing_fingerprint_and_governed_export() -> None:
+    item = {"evidence_id": "evidence-01", "content": "synthetic", "custody_state": "acquired"}
+    redacted = redact_evidence(item, reason="fixture", actor_role_id="role-reviewer", at="2026-08-29T03:00:00Z")
+    assert redacted["original_fingerprint"] == fingerprint(item)
+    governed = export_record(record(), profile="governed")
+    assert governed["privacy_mode"] == "fully_local"
+    assert governed["evidence"][0]["content"] == "Synthetic evidence only."
+
+
+def test_audit_chain_reports_sequence_and_previous_hash_tampering() -> None:
+    receipts: list[dict[str, Any]] = []
+    append_audit_receipt(receipts, {"event": "created"})
+    append_audit_receipt(receipts, {"event": "reviewed"})
+    receipts[0]["sequence"] = 4
+    receipts[1]["previous_hash"] = "sha256:" + "0" * 64
+    errors = verify_audit_receipts(receipts)
+    assert "receipts[0]: invalid sequence" in errors
+    assert "receipts[1]: invalid previous_hash" in errors

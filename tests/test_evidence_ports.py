@@ -55,3 +55,10 @@ def test_adapter_classifies_timeout_failure_and_invalid_json(tmp_path: Path) -> 
     result = SourceRightAdapter(executable, invalid).run_json(operation(), ["bench"])
     assert result.status == "failed"
     assert result.diagnostic == "unexpected SourceRight payload"
+
+    def malformed(*args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess([], 0, "not-json", "")
+
+    result = SourceRightAdapter(executable, malformed).run_json(operation(), ["bench"])
+    assert result.status == "failed"
+    assert result.diagnostic == "invalid SourceRight JSON"

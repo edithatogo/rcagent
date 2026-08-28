@@ -56,6 +56,13 @@ after schema diagnostics. The adapter now uses an executable/read-only
 allowlist and rejects `--apply`; semantic validation skips malformed values
 after recording schema errors. Redaction also records `custody_state=redacted`.
 
+After PR #41 merged, Codecov reported 85.20% patch coverage against its 90%
+target even though all required workflows and the repository-wide coverage
+gate passed. A focused follow-up added tests for every previously uncovered
+statement in the new evidence modules; the focused evidence-module suite now
+reports 20 passed and 99.06% coverage. Track closure waits for the follow-up
+hosted patch check rather than downgrading that negative result.
+
 ## Limitations and external gates
 
 - No production persistence adapter, encryption product, enterprise connector,
