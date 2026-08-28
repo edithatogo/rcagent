@@ -31,7 +31,7 @@
 
 ## Phase 3: Foundation and assurance
 
-- [ ] Task: Implement Track 01 safety-systems foundation slice
+- [x] Task: Implement Track 01 safety-systems foundation slice
 - [ ] Task: Implement Track 02 evidence-workflow slice
 - [ ] Task: Implement Track 03 privacy/security assurance slice
 - [ ] Task: Implement Track 04 jurisdiction-pack readiness slice
