@@ -95,6 +95,7 @@
         "requirement_level": {"enum": ["must", "should", "may", "do_not_infer"]},
         "activation_status": {"enum": ["active", "pending_owner_decision"]},
         "decision_id": {"$ref": "#/$defs/id"},
+        "decision_status": {"enum": ["pending", "approved"]},
         "statement": {"type": "string", "minLength": 1},
         "workflow": {
           "type": "object",

@@ -22,7 +22,7 @@ def test_registry_and_pack_inheritance_are_valid() -> None:
     assert validate_registry(value) == []
     packs = {pack["pack_id"]: pack for pack in value["packs"]}
     assert packs["nsw"]["inherits"] == "national"
-    assert packs["nsw"]["status"] == "blocked"
+    assert packs["nsw"]["status"] == "implemented"
     assert packs["qld"]["inherits"] == "national"
 
 
@@ -52,16 +52,17 @@ def test_under_review_rule_requires_uncertainty_disclosure() -> None:
     assert any("must disclose under-review" in error for error in validate_registry(value))
 
 
-def test_under_review_rules_remain_inactive_until_the_recorded_owner_decision() -> None:
+def test_under_review_rules_activate_only_with_the_recorded_owner_decision() -> None:
     value = registry()
     rules = [rule for rule in value["rules"] if "nsw-pd2020-047" in rule["source_ids"]]
     assert rules
-    assert {rule["activation_status"] for rule in rules} == {"pending_owner_decision"}
+    assert {rule["activation_status"] for rule in rules} == {"active"}
+    assert {rule["decision_status"] for rule in rules} == {"approved"}
     assert {rule["decision_id"] for rule in rules} == {
         "20260829-001-active-under-review-pd2020-047"
     }
 
-    rules[0]["activation_status"] = "active"
+    rules[0].pop("decision_status")
     assert any("must remain pending" in error for error in validate_registry(value))
 
 
@@ -72,6 +73,11 @@ def test_pending_rule_requires_decision_and_blocks_its_pack() -> None:
     assert any("must reference" in error for error in validate_registry(value))
 
     value = registry()
+    pending_rule = next(
+        rule for rule in value["rules"] if rule["rule_id"] == "nsw-notify-ims"
+    )
+    pending_rule["activation_status"] = "pending_owner_decision"
+    pending_rule["decision_status"] = "pending"
     next(pack for pack in value["packs"] if pack["pack_id"] == "nsw")["status"] = "implemented"
     assert any("must be blocked" in error for error in validate_registry(value))
 

@@ -86,12 +86,23 @@ def validate_registry(registry: dict[str, Any]) -> list[str]:
         under_review = any(source.get("status") == "under_review" for source in cited_sources)
         if under_review and not rule.get("uncertainty"):
             errors.append(f"rules: {rule.get('rule_id')!r} must disclose under-review source uncertainty")
-        if under_review and rule.get("activation_status") != "pending_owner_decision":
+        if (
+            under_review
+            and rule.get("activation_status") != "pending_owner_decision"
+            and rule.get("decision_status") != "approved"
+        ):
             errors.append(
                 f"rules: {rule.get('rule_id')!r} must remain pending while an under-review source lacks owner approval"
             )
         if under_review and not rule.get("decision_id"):
             errors.append(f"rules: {rule.get('rule_id')!r} must reference its owner decision")
+        if under_review and rule.get("decision_id") and rule.get("decision_status") not in {
+            "pending",
+            "approved",
+        }:
+            errors.append(
+                f"rules: {rule.get('rule_id')!r} must record pending or approved decision status"
+            )
         if rule.get("activation_status") == "pending_owner_decision" and not rule.get("decision_id"):
             errors.append(f"rules: {rule.get('rule_id')!r} pending activation must reference an owner decision")
         workflow = rule.get("workflow", {})
