@@ -232,3 +232,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Return structured errors for malformed literature receipts
   - [x] Hash raw backup bytes in restore provenance
   - [x] Reconcile unexecuted vector, reranker, provider and SourceRight work as explicit negative results
+- [x] Task: Complete malformed-identifier and restore-provenance review fixes — `2ec967a`
+  - [x] Reject non-string result and screening identifiers without raising
+  - [x] Assert restore audit provenance against the raw backup-byte SHA-256
+  - [x] Clarify specification-level negative admission semantics for optional capabilities
