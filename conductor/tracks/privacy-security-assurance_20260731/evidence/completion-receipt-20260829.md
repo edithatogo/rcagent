@@ -4,6 +4,8 @@
 - Lifecycle commit: `4806582200ab393d48eb0d085b4d13e5e2f80f35`
 - Functional commit: `3f7aad3d64869a4a4b2a081155c5d2413c501d92`
 - Review-fix commit: `a5ff002770c3132e957d622d37b5322263b2a59a`
+- Evidence commit: `c49dbd66e33afb87df6c7f5bed2857877a7f3acb`
+- Pull request: [#43](https://github.com/edithatogo/rcagent/pull/43), merged as `5f4b37c2c38f70b1b589fa9e3cfcacb86083d0c0`
 - Evidence date: `2026-08-29`
 - Data boundary: synthetic fixtures and public standards only
 - Execution mode: fully local repository validation; network used only for public standards and GitHub coordination
@@ -46,7 +48,7 @@ pytest --cov=tools --cov-report=term-missing              149 passed, 5 skipped,
 pytest tests/test_privacy_assurance.py -q                 29 passed
 ```
 
-The five skips are the repository's documented PowerShell-dependent tests on macOS. The 80% repository coverage gate passed. Hosted checks and exact merge state remain separate and must be appended to the evidence ledger before the GitHub issue is closed.
+The five skips are the repository's documented PowerShell-dependent tests on macOS. The 80% repository coverage gate passed. All required hosted checks passed on exact head `c49dbd6`: Linux, macOS, Windows, dependency review, Agent Skill Conformance, Vale, and Codecov patch. PR #43 merged as `5f4b37c`, and issue #8 closed.
 
 ## Artefact hashes
 
