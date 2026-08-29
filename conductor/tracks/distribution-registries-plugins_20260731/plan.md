@@ -20,10 +20,10 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
-- [~] Task: Establish the system and dependency context (`f310539`; current hosted versions and terms pending)
+- [x] Task: Establish the system and dependency context (`464e972`; 15 first-party source receipts)
   - [x] Read `integration-strategy.md` and this track's entry in `integration-map.json`
   - [x] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
-  - [ ] Record exact current hosted versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
+  - [x] Record exact current hosted versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
   - [x] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
 
 - [x] Task: Select the smallest adequate intervention (`f310539`)
@@ -39,7 +39,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
   - [x] Confirm `integration-map.json` already records the selected project-owned gap; preserve evidence in the fit-gap record
 
-- [~] Task: Phase Verification & Checkpoint (`f310539`; current hosted-source verification pending)
+- [x] Task: Phase Verification & Checkpoint (`464e972`)
   - [x] Verify that no planned work duplicates an adequate existing capability
   - [x] Verify the system-of-record and data-authority boundary
   - [x] Verify the smallest remaining gap and ownership rationale
@@ -49,35 +49,35 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 1: Govern the registry and marketplace funnel
 
-- [~] Task: Implement the phase scope (`f310539`; current first-party source review pending)
-  - [~] Create a provisional assessment matrix for specification projects, registries, directories, marketplaces, installers, and community catalogues
-  - [ ] Record current operator, ownership, verification, security review, licence, terms, telemetry, maintenance, discoverability, versioning, deprecation, and rollback from first-party sources
+- [x] Task: Implement the phase scope (`464e972`)
+  - [x] Create an assessment matrix for specification projects, registries, directories, marketplaces, installers, and community catalogues
+  - [x] Record current operator, ownership, verification, security review, licence, terms, telemetry, maintenance, discoverability, versioning, deprecation, and rollback from first-party sources
   - [x] Classify official, first-party, community, experimental, and unsuitable routes
   - [x] Require an owner decision before any public submission
 
-- [~] Task: Validate the phase deliverables (`f310539`; hosted claims remain unverified)
+- [x] Task: Validate the phase deliverables (`464e972`; point-in-time and fail-closed)
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact current sources, revisions, licences, assumptions, and unsupported states
+  - [x] Verify exact current sources, revisions, licences, assumptions, and unsupported states
   - [x] Record commands, environment, results, limitations, risks, and negative findings
   - [x] Reconcile Conductor state with GitHub issue #16 and dependency evidence
 
-- [~] Task: Phase Verification & Checkpoint (`f310539`; durable provisional receipt only)
-  - [ ] Verify every current hosted-route deliverable against the specification and product safeguards
+- [x] Task: Phase Verification & Checkpoint (`464e972`)
+  - [x] Verify every current hosted-route deliverable against the specification and product safeguards
   - [x] Store a durable phase receipt and bounded handoff context
   - [x] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
+  - [x] Continue automatically when the phase passes and no owner gate is reached
   - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 2: Release the canonical portable skills
 
-- [~] Task: Implement the phase scope (`66831ec`; public release pending owner decision)
-  - [ ] Publish core and optional capability bundles independently so advanced dependencies never become mandatory
+- [~] Task: Implement the phase scope (`464e972`; approved GitHub release not yet created)
+  - [ ] Publish the portable core and thin client bundles through the approved pinned GitHub release
   - [x] Generate reviewable local manifests for scripted, agent-assisted, offline, update, rollback, and uninstall paths
-  - [ ] Package self-contained skills from the portable core with complete provenance, compatibility, changelog, and SBOM-style metadata
-  - [x] Test deterministic archive extraction and offline package integrity; hosted GitHub installation remains pending a release decision
-  - [ ] Reuse GitHub releases, attestations, dependency and security tooling plus current SPDX, CycloneDX, and signing standards where supported
-  - [ ] Contribute generic packaging or validator gaps to the relevant client or standard ecosystem instead of maintaining a divergent installer
-  - [ ] Keep public release as an explicit owner-approved action
+  - [x] Package self-contained skills from the portable core with complete provenance, compatibility, changelog, and core-only SBOM metadata
+  - [x] Test deterministic archive extraction and offline package integrity; hosted GitHub installation remains pending release execution
+  - [~] Reuse GitHub releases, checksums, CycloneDX metadata, and hosted integrity tooling; hosted evidence pending release
+  - [x] Record no upstream contribution: no generic gap with established fit remained after using current validators and declarative packages
+  - [x] Keep public release as an explicit owner-approved action (`20260829-004`)
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -94,11 +94,11 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 3: Assess Agent Skills discovery routes
 
-- [ ] Task: Implement the phase scope
-  - [ ] Track the official Agent Skills specification and examples without assuming a universal official registry
-  - [ ] Assess GitHub-based installation and current skills.sh or equivalent discovery mechanisms
-  - [ ] Assess contribution opportunities to official examples only when contribution policy and fit are clear
-  - [ ] Assess community catalogues through supply-chain, ownership, licence, privacy, and maintenance gates
+- [x] Task: Implement the phase scope (`464e972`)
+  - [x] Track the official Agent Skills specification and examples without assuming a universal official registry
+  - [x] Assess GitHub-based installation; do not claim an official universal registry
+  - [x] Assess contribution opportunities and retain no upstream contribution where fit is not established
+  - [x] Assess community catalogues and fail them closed where ownership and trust are unverified
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -115,11 +115,11 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 4: Package for Claude Code
 
-- [ ] Task: Implement the phase scope
-  - [ ] Create a thin Claude Code plugin with a self-hosted GitHub marketplace manifest
-  - [ ] Test plugin discovery, installation, update, removal, activation, unsupported features, and portable-core integrity
-  - [ ] Prepare current official marketplace submission metadata and evidence
-  - [ ] Require owner approval before self-hosted publication or official submission
+- [x] Task: Implement the phase scope (`464e972`)
+  - [x] Create a thin Claude Code plugin and validated self-hosted marketplace candidate
+  - [x] Test manifest discovery, isolated installation, update, removal, unsupported-surface exclusion, and portable-core integrity
+  - [x] Prepare current official marketplace submission metadata and evidence as not submitted
+  - [x] Record owner approval before self-hosted publication or official submission
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -136,11 +136,11 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 5: Package for Codex and OpenAI
 
-- [ ] Task: Implement the phase scope
-  - [ ] Create the current OpenAI plugin manifest and agents/openai metadata around the portable skill
-  - [ ] Add optional app or MCP declarations only when product scope and security evidence require them
-  - [ ] Create required positive, negative, trigger, privacy, compatibility, and review tests
-  - [ ] Prepare public privacy, terms, support, publisher, website, and production-service evidence only when applicable
+- [~] Task: Implement the phase scope (`464e972`; hosted listing inputs remain external)
+  - [x] Create the current OpenAI skills-only plugin manifest around the portable skill
+  - [x] Exclude optional app, MCP, hook, credential, network, telemetry and storage declarations
+  - [x] Create positive, negative, trigger, privacy, compatibility, and review contracts under the approved No-LLM evaluation boundary
+  - [~] Prepare privacy, terms and support candidates; hosted URLs, logo, publisher and Apps Management access remain absent
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -157,11 +157,11 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 6: Prepare the OpenAI universal directory submission
 
-- [ ] Task: Implement the phase scope
-  - [ ] Validate the package against current OpenAI build and submission guidance
-  - [ ] Run personal or private testing without claiming directory acceptance
-  - [ ] Assemble reviewer instructions, safety boundaries, data flows, test evidence, and rollback
-  - [ ] Require owner approval for publisher verification and submission
+- [~] Task: Implement the phase scope (`464e972`; draft incomplete and not submitted)
+  - [x] Validate the package against current OpenAI build and submission guidance
+  - [x] Run local structural, lifecycle, trigger and output-contract testing without claiming directory acceptance
+  - [x] Assemble reviewer instructions, safety boundaries, data flows, test definitions, limitations, and rollback
+  - [x] Record owner approval for publisher verification and submission; credentials/access remain external
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -178,11 +178,11 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 7: Assess additional client ecosystems
 
-- [ ] Task: Implement the phase scope
-  - [ ] Use the adapter template and compatibility profile to assess other agent clients and plugin systems
-  - [ ] Prefer maintained frameworks and declarative manifests over bespoke installers
-  - [ ] Test capability negotiation, safe fallback, telemetry, privacy, updates, and removal
-  - [ ] Add support only when evidence and maintenance capacity exist
+- [x] Task: Implement the phase scope (`464e972`)
+  - [x] Use the existing adapter template and compatibility profile to assess other agent clients
+  - [x] Prefer maintained declarative manifests over bespoke client behavior
+  - [x] Test safe fallback, no telemetry, privacy boundaries, updates, and removal
+  - [x] Add no additional public client claim without evidence and maintenance capacity
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -199,11 +199,11 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 8: Operate compatibility and release governance
 
-- [ ] Task: Implement the phase scope
-  - [ ] Automate upstream specification, validator, client, marketplace, dependency, and policy drift checks
-  - [ ] Maintain version support windows, provenance, security response, deprecation, and rollback procedures
-  - [ ] Track installation, compatibility, and safety evidence without collecting private content
-  - [ ] Treat every future public release or submission as a new owner decision
+- [x] Task: Implement the phase scope (`464e972`)
+  - [x] Automate fail-closed upstream source and marker drift checks
+  - [x] Maintain version authority, provenance, security response, support, update, removal, and rollback procedures
+  - [x] Track installation, compatibility, and safety evidence without collecting private content
+  - [x] Treat future public releases or submissions as separate external mutations
 
 - [ ] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks

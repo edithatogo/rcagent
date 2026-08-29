@@ -12,8 +12,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from tools.release_source import (
+    require_release_version,
+    verify_release_payloads,
+    verify_release_source,
+)
+
 _ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 _SAFE_VERSION = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9._+-]{0,127})\Z")
+_REVISION = re.compile(r"[0-9a-f]{40}\Z")
 
 
 @dataclass(frozen=True)
@@ -44,25 +51,31 @@ def build_distribution(
     destination: Path,
     *,
     version: str,
+    source_revision: str | None = None,
 ) -> DistributionResult:
     """Create a deterministic local package without publishing or network access."""
     repository = repository.resolve()
     destination = destination.resolve()
     if not _SAFE_VERSION.fullmatch(version) or version in {".", ".."}:
         raise ValueError("version must be a safe release identifier")
+    if source_revision is not None and _REVISION.fullmatch(source_revision) is None:
+        raise ValueError("source revision must be a full Git commit hash")
     skill_root = repository / "skills" / "rca-investigation"
+    if skill_root.is_symlink() or not skill_root.resolve().is_relative_to(repository):
+        raise ValueError("portable skill root must be a contained non-symlink directory")
     if destination == skill_root or skill_root in destination.parents:
         raise ValueError("destination must be outside the portable source")
     if destination.exists() and any(destination.iterdir()):
         raise FileExistsError("destination must be empty")
     destination.mkdir(parents=True, exist_ok=True)
 
-    licence = repository / "LICENSE"
-    disclaimer = repository / "DISCLAIMER.md"
+    documents = [
+        repository / name
+        for name in ("LICENSE", "DISCLAIMER.md", "PRIVACY.md", "SUPPORT.md", "CHANGELOG.md", "VERSION")
+    ]
     if (
         not (skill_root / "SKILL.md").is_file()
-        or not licence.is_file()
-        or not disclaimer.is_file()
+        or not all(path.is_file() and not path.is_symlink() for path in documents)
     ):
         raise FileNotFoundError("portable skill, repository licence, or disclaimer is missing")
 
@@ -70,10 +83,22 @@ def build_distribution(
     for path in sorted(skill_root.rglob("*")):
         if path.is_symlink():
             raise ValueError(f"distribution refuses symlink: {path.relative_to(repository)}")
+        if not path.is_file() and not path.is_dir():
+            raise ValueError(f"distribution refuses special file: {path.relative_to(repository)}")
         if path.is_file():
             files.append((path.relative_to(skill_root).as_posix(), path.read_bytes()))
-    files.append(("LICENSE", licence.read_bytes()))
-    files.append(("DISCLAIMER.md", disclaimer.read_bytes()))
+    files.extend((path.name, path.read_bytes()) for path in documents)
+    if source_revision is not None:
+        require_release_version(repository, version)
+        verify_release_source(repository, source_revision, [skill_root, *documents])
+        captured = {
+            (skill_root / name).relative_to(repository).as_posix(): payload
+            for name, payload in files[: len(files) - len(documents)]
+        }
+        captured.update(
+            {path.relative_to(repository).as_posix(): payload for path, (_, payload) in zip(documents, files[-len(documents):], strict=True)}
+        )
+        verify_release_payloads(repository, source_revision, captured)
 
     file_records = [
         {"path": name, "sha256": _sha256(payload), "size": len(payload)}
@@ -84,7 +109,8 @@ def build_distribution(
         "name": "rca-investigation",
         "version": version,
         "licence": "Apache-2.0",
-        "source": "local-review-build",
+        "source": "local-review-build" if source_revision is None else "https://github.com/edithatogo/rcagent",
+        "source_revision": source_revision or "uncommitted-test-build",
         "public_release": False,
         "network_required": False,
         "telemetry": "none",
@@ -98,7 +124,14 @@ def build_distribution(
         "specVersion": "1.6",
         "version": 1,
         "metadata": {"component": {"type": "data", "name": "rca-investigation", "version": version}},
-        "components": [],
+        "components": [
+            {
+                "type": "file",
+                "name": record["path"],
+                "hashes": [{"alg": "SHA-256", "content": record["sha256"]}],
+            }
+            for record in file_records
+        ],
     }
 
     archive_path = destination / f"rca-investigation-{version}.zip"

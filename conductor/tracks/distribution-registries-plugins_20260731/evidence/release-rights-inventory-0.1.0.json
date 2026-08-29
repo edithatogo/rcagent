@@ -1,0 +1,620 @@
+{
+  "decision_basis": "repository-owned public release inputs only; no third-party-controlled bytes or private clinical or employee data admitted",
+  "files": [
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/SKILL.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "d911d25fe20413a47515c2855fc25e34d9c33100290c5cb83b77c31f83819839",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/styles/docx-style-guide.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "1981bdbce9b3af33c1a5f6ca833927bfc693430772b21444c759dc650daf1f38",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/styles/pptx-style-guide.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "8140c90872f82b643933391694af78489012986afbb6631e293d58e4700c69e2",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/docx/capa-action-plan.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "db64d4a518c6c424a107cf7180bfb746380e8dedd39c1e1784bc7ded8980cb39",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/docx/executive-briefing.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "ff6f269a80617f39d55a3b965d99dcb0728f7961a316392150e0d2ace3ddebb4",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/docx/investigation-closure.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "5fc3b8ee0c7a34cdcbe95256079db381eea1f0d0c398141a103ef3445f5dbf8f",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/docx/open-disclosure-record.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "7a12a1987e7205c261f6f98abf28c3a8f11e05175833e57f31f07d28df82b76d",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/docx/rca-investigation-report.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "f1c832676f77905f22c7790626d3998528a870df84684a5cd2a9e256295fe4b2",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/docx/sae-review-report.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "76654fdae63520e7ea6e9ba28b5b1acb49e04cf00779fef2ec556936ff6bab6a",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/docx/terms-of-reference.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "b49980820061e24cbee77f61530628cd042f36285dc6359f58d278e6d6acbfb7",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/01-investigation-tor.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "a918293b2d1d3bb7ee38552edbb9a38dee374338b7af19b0097bd2ba0720c413",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/02-chronology.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "6eebb060d93b12bf073945f939184e6da8b64ab05af6048c42d3eb85c3eab11d",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/03-contributing-factors.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "eedf4e2eb37830c3c565f753ba0e902cc51402d902d3c4b664a208b4cf4adf53",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/04-fishbone-diagram.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "d62e86a9d92475022b3bfcfc96e85abe9ce483e246649be8462960347d8171c3",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/05-fmea-worksheet.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "3d8553f6096abdf0d3d3f55018bdff3c37bae0b1c2828b92eb553b456aa6ee4c",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/06-barrier-analysis.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "70c4048eaddd0ad94a079f648eb60b1982efcbbe66285cc6e9101934f6bef22f",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/07-bow-tie-analysis.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "59d343af7a28c41ee7bc79d694433be404b301cf5cbce4b8fb5a2086a1f877e0",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/08-rca-investigation-report.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "324e8c27c4a6d2d1a7441cd5a08038d100212ae54fd34afd7dcd7f1aeccf8ab9",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/09-sae-review-report.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "0033791ace540a254017b7d2b458fffaab832355c494eca7accc26988f171b63",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/10-executive-summary.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "d5a80c754e2fb80f4e58bc663cd62bad4adc2680b989ded7a9c401ea3490ef0e",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/11-capa-action-plan.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "459702763e1066d4618ac1d18607425ccf0cf32e6193d1e151908a730bccf971",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/12-open-disclosure-plan.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "4a8c8df542bf6b486e4e33fbc3b78a9a10553520aac4acbdbddc882161446ba8",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/13-investigation-closure.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "7070bfb1fb6afcda51dc681653a799cba2b0cdc683027bf92226972155a5ce01",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/markdown/14-just-culture-assessment.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "99779d00aff02de543be87c11085f29b8259477236f872c53b482fa494193c4a",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/accimap-levels.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "d218c59610fa5e7678d990672c92923e49fe864ab653a26cea3f4403ec6d78ea",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/bow-tie-analysis.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "270b5795ae5d36721140ad9516b8d0afdfe06bf297f1587d956571e84fbe0d39",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/fishbone-ishikawa.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "e89c62231f361036c06562a2788ef3d34fc9cac61bb6d1be45e001039daf270a",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/five-whys-chain.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "0c2356826eb3bae2ec905a7bf1a05fa475629069e04a1f6ee1e7907069a9de47",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/fmea-priority-quadrant.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "fe6458d4dc529af2a96111bd40856606bd2590d92101876298b17e9c88ef56af",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/hfacs-layers.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "ff19c7941f58e82b05181df2155b4985d1bce9cbc612c196db2f34c9dda7a61a",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/investigation-workflow.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "6a4a9431e303fed243225eaa5541d01a55b42dca8f8321060d8813250be2c049",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/seips-work-system.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "8cc840b2f75c3d7e2e67c8a5a52b423d3b085c90580623092ec5171f40f69ebb",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/stamp-control-structure.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "19caf2bf52022d595953a7b3ac48a378487f27f49c8c685c38639bc31d6d7883",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/swiss-cheese-model.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "758796e9bfbab743ae91242cf251720bda86bd33914939e0d7d67db6611c0076",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/timeline-chronology.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "cecb799eddc03e131961c18784a66b2d87ab423df617bf8c1b85d613cb5d15a1",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/mermaid/yorkshire-factors.mmd",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "57f2cd46024b4946af472e4a92ce7a0c21103adff0ac935ecc6e4c589d645195",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/pptx/executive-summary-deck.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "8f1e49b24181928848d0996f6a122e7c54b671d67e871f3005582213dd83cd16",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/pptx/governance-committee-brief.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "bce8dad17068c4b35e6317d485497eb4cdb91384785d9daf026eebf49b0a6d1e",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/assets/templates/pptx/learning-presentation.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "66b7fbdff187408373d22283e013b4e9d370b62b8b2d12348847b19beb8bcd8f",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/investigation-quality-checklist.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "ce40cc9b61e38c345bdd23771dc278171b66fac2fd18edb02b443092c36c35c6",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/just-culture-guide.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "8af2d24f897313cff3cfc9db10787b01a31fd69b2c42113eda74f378b91bfb3c",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/method-combination-guide.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "021b3cdaf46508404d22b86e836b1acb9cafba9dcbac26aec89d5b54f4ef274c",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/method-selection-matrix.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "ff9185a9745be10e3cfdce2196b00146be64e7b404eb4b2f6d7f9ab5906271b0",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/accimap.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "73007b2c1d29716507b7bec89198c2df025d1a6a9e1795929465c8bbb0e858a1",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/barrier-analysis.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "a86f6f767b245c2ca25177180aa90a39bcd7162db02fccf224e65e8779583b4d",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/bow-tie.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "6b2883454bddc72ae668c27c3e9674f7ba3cf3d418fe07d3f5074f559bbd08b0",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/fishbone.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "f5d7154cec957cc757d13f7e041f01ba40efa3fedba37ce8aac57febc9d59ce0",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/five-whys.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "0906ff815e4c7d4949389ca173fc6211628506bb151ff232da3d3e65dc087b05",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/fmea.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "965c386f68f2ae5450b235ec68a54abfca4f574405cba21a18f7ffcbddb15aa6",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/hfacs.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "51804c147bc8ac42f8ada6d632fa996572eadd80cb48d39eaa162876fbcfda0b",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/london-protocol.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "7be274e86c314808b2ca8e64b13a1f6eafc829b53b917836c292d6edd583bb42",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/rca-squared.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "a9f185f3551bd55a725d0373150195c76c2c8707d063339e72cabfb51cea7d5d",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/seips.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "bbfa6351ae0a09450dc0426c0e6272d6e55b022dae1f453b4286223db44bb230",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/stamp-stpa.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "bd8cc924529479ef987328e391251162ea5f2c080f19f2b0d3327e4442e07924",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/swiss-cheese.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "285ab18e9e2dc1682accd6a341178d64909025a28125ab7e8ec2ebbc9c6aeaf8",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/timeline-analysis.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "48af69fd3682b8cd8afcfa6478f0561b6202ea733567e08796e5ba93f40e1b98",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/methods/yorkshire-framework.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "e1d374730202e947af85351a3d77af0846e6a747428d143eb171cd522b35261f",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/safety-ii-principles.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "f7ef4c0097bb0315a7995d004bc47212298c73efb4cdd7806bf1ca1900f9a7fc",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/workflows/investigate.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "ded90ae480e15514e5c881b985fa5e27644d18dbeee0fc6fcb39cc0c02bb3a18",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/workflows/report.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "c0784d6558e0b8de69a451971fbe0f5457a36ceb597269ecb56b667eac79f4e4",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/workflows/track.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "e542b8747084e93fa9a057adf3602f744d59fb1521274273c011eb2ccad56327",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "skills/rca-investigation/references/workflows/triage.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "a26bb6891b4e9fcebc596a4a538f5737968b54cafbb9c790a8e3a889ca86178e",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "LICENSE",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "DISCLAIMER.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "7647485417e57996b3b6a3a0cc9ce1b4b1b3ecf59f7728e5d40281e7cad7f4a7",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "PRIVACY.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "9535f32163c44a60e1d299ec7206a045d73ee883d593ef271972362b30cf82d3",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "SUPPORT.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "f0554abcad58311289f9681ac559d96975533567b217a924f76ff338a7ba27b3",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "CHANGELOG.md",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "abc2c46ef73d62ca7e0377311dbd98832239b56b3795a1879c58176ae03d48bf",
+      "source": "https://github.com/edithatogo/rcagent"
+    },
+    {
+      "author": "rcagent repository contributors",
+      "data_class": "public_no_personal_data",
+      "licence": "Apache-2.0",
+      "path": "VERSION",
+      "rights_basis": "repository_authored_or_apache_licensed",
+      "sha256": "e9dd8507f4bf0c6f42458e41aea833ad0bd3f6127272335eee9bf4d58541ed67",
+      "source": "https://github.com/edithatogo/rcagent"
+    }
+  ],
+  "licence": "Apache-2.0",
+  "schema_version": "1.0",
+  "version": "0.1.0"
+}

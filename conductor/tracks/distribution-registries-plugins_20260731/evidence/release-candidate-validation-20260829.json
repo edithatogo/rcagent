@@ -1,0 +1,31 @@
+{
+  "schema_version":"1.0",
+  "validated_at":"2026-08-29T11:25:00Z",
+  "source_revision":"c89016e3e3d8c39c27e1b4123ec8267cb077f8dc",
+  "version":"0.1.0",
+  "version_authority":"VERSION",
+  "repository_harness_version":{"path":"pyproject.toml","value":"0.0.0","scope":"internal repository test harness only; not the portable skill or plugin release version"},
+  "source_binding":"named revision is a real commit equal to clean HEAD; every captured package payload equals its committed bytes",
+  "rights_inventory":"evidence/release-rights-inventory-0.1.0.json",
+  "candidate_state":"local_candidate_not_published",
+  "compatibility_scope":"manifest discovery, official local validators, exact core parity, safe isolated install/update/remove, unsupported-surface exclusion, and No-LLM trigger/output contracts; no hosted directory screening or approval claimed",
+  "checks":[
+    {"name":"manifest-checksums","result":"passed"},
+    {"name":"codex-plugin-validator","result":"passed","validator":"plugin-creator validate_plugin.py"},
+    {"name":"claude-plugin-validator","result":"passed","validator":"Claude Code 2.1.126 plugin validate"},
+    {"name":"claude-marketplace-validator","result":"passed","validator":"Claude Code 2.1.126 plugin validate"},
+    {"name":"claude-strict-validator","result":"not_observed","limitation":"installed Claude Code 2.1.126 does not expose the newer --strict option"},
+    {"name":"no-llm-trigger-output-contracts","result":"passed","limitation":"agent-panel research scoring and conservative non-operational thresholds; no human, clinical, legal, policy, regulatory, employment, cultural-safety, organisational or deployment validation inferred"}
+  ],
+  "assets":[
+    {"path":"MANIFEST.sha256","sha256":"32f071ddadc865beba4ae861a2d87869375ae9dcc6f5c414424d3c4350d9c21a"},
+    {"path":"distribution-manifest.json","sha256":"dd6b8f33049f6cc207b84b7053c2cab449dc0b944944b2df8528b0df7e8c0f10"},
+    {"path":"rca-investigation-0.1.0.zip","sha256":"2f8384d388532faa8c08eb2fcbf2996bc3075cd73731e4d11097c13535711a90"},
+    {"path":"rca-investigation-claude-code-0.1.0.zip","sha256":"e9298cdf8c2be94f2af4276eabdbe23198d66b582359c2773a8b2aaf684c56cb"},
+    {"path":"rca-investigation-claude-marketplace-0.1.0.zip","sha256":"b4d228cbd5d32fd33ae718a3037d7327e9714bf4441f354029b9183e82965023"},
+    {"path":"rca-investigation-codex-0.1.0.zip","sha256":"e56de0f2fb8a34e997cbb5139a5f93117a4efeee9089d3f67238eafa6a112f6b"},
+    {"path":"release-candidate.json","sha256":"1ecb4c599e828c54d9c514e4b4e4cb68c61d34ce2e732f0805717580d4697c9b"},
+    {"path":"sbom.cdx.json","sha256":"60735f4f620155360b9ee161ca22207dd991aaa470afa6da093e731ebbe01666"}
+  ],
+  "external_states":{"tag":"not_created","github_release":"not_created","hosted_install":"not_observed","openai_submission":"not_submitted","claude_submission":"not_submitted","directory_approval":"not_observed","directory_publication":"not_observed"}
+}

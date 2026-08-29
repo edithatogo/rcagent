@@ -29,6 +29,7 @@ def test_distribution_is_deterministic_and_self_describing(tmp_path: Path) -> No
     assert first.manifest["network_required"] is False
     assert first.manifest["data_classification"] == "public-only-no-clinical-or-employee-data"
     assert first.manifest["third_party_content"] == "prohibited-unless-release-cleared"
+    assert first.manifest["source_revision"] == "uncommitted-test-build"
     assert first.manifest["approval_boundaries"] == [
         "clinical",
         "policy",
@@ -45,6 +46,9 @@ def test_distribution_contains_only_portable_core_and_release_metadata(tmp_path:
         assert "rca-investigation/SKILL.md" in names
         assert "rca-investigation/LICENSE" in names
         assert "rca-investigation/DISCLAIMER.md" in names
+        assert "rca-investigation/PRIVACY.md" in names
+        assert "rca-investigation/SUPPORT.md" in names
+        assert "rca-investigation/CHANGELOG.md" in names
         assert "rca-investigation/distribution-manifest.json" in names
         assert "rca-investigation/sbom.cdx.json" in names
         assert not any(name.startswith("rca-investigation/.git") for name in names)
@@ -80,6 +84,9 @@ def test_distribution_refuses_destination_inside_portable_source(tmp_path: Path)
     (skill / "SKILL.md").write_text("# Example\n", encoding="utf-8")
     (repository / "LICENSE").write_text("Apache License\n", encoding="utf-8")
     (repository / "DISCLAIMER.md").write_text("Disclaimer\n", encoding="utf-8")
+    (repository / "PRIVACY.md").write_text("Privacy\n", encoding="utf-8")
+    (repository / "SUPPORT.md").write_text("Support\n", encoding="utf-8")
+    (repository / "CHANGELOG.md").write_text("Changelog\n", encoding="utf-8")
 
     with pytest.raises(ValueError, match="outside the portable source"):
         build_distribution(repository, skill / "dist", version="1.0.0")
@@ -95,11 +102,25 @@ def test_distribution_rejects_missing_inputs_and_symlinks(tmp_path: Path) -> Non
     (skill / "SKILL.md").write_text("# Example\n", encoding="utf-8")
     (repository / "LICENSE").write_text("Apache License\n", encoding="utf-8")
     (repository / "DISCLAIMER.md").write_text("Disclaimer\n", encoding="utf-8")
+    for name in ("PRIVACY.md", "SUPPORT.md", "CHANGELOG.md", "VERSION"):
+        (repository / name).write_text(name + "\n", encoding="utf-8")
     target = tmp_path / "target.txt"
     target.write_text("outside", encoding="utf-8")
     (skill / "linked.txt").symlink_to(target)
     with pytest.raises(ValueError, match="refuses symlink"):
         build_distribution(repository, tmp_path / "symlink-dist", version="1.0.0")
+
+
+def test_distribution_binds_exact_release_revision(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(distribution_module, "verify_release_source", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(distribution_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
+    result = build_distribution(ROOT, tmp_path / "valid", version="0.1.0", source_revision="a" * 40)
+    assert result.manifest["source_revision"] == "a" * 40
+    assert result.manifest["source"] == "https://github.com/edithatogo/rcagent"
+    with pytest.raises(ValueError, match="full Git commit"):
+        build_distribution(ROOT, tmp_path / "invalid", version="0.1.0", source_revision="main")
 
 
 def test_distribution_cli_success_and_parser_error(
