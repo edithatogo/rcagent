@@ -43,10 +43,11 @@
 
 - [x] Task: Implement Track 05 deterministic benchmark and admission infrastructure — PR #49 merged as `6578da1`; archived with all comparators unsupported
 - [x] Task: Implement Track 06 multimodal contracts, fixtures, mocks, and safety gates — PR #51 merged as `42d64ea`; archive PR #52 merged as `569344b`
-- [ ] Task: Implement Track 07 deterministic retrieval and citation interfaces
+- [x] Task: Implement Track 07 deterministic retrieval and citation interfaces — PR #54 merged as `c8d0ea3`; coverage follow-up PR #55 merged as `a7f2787`
 - [ ] Task: Implement Track 08 runtime discovery, resource limits, and dry-run checks
 - [ ] Task: Preserve hosted API, human, and local-model execution as explicit gates
 - [ ] Task: Review, merge, and clean each PR before starting the next
+  - [x] Track 07 reviewed, merged, coverage-remediated, and ready for archive; Track 08 remains pending
 - [ ] Task: Phase verification and checkpoint
 
 ## Phase 5: Interfaces, distribution, and adaptation readiness

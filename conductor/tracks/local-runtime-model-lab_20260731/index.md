@@ -13,7 +13,7 @@
 
 ## Later Phase Dependencies
 
-- [retrieval-knowledge-system_20260731](../retrieval-knowledge-system_20260731/index.md)
+- [retrieval-knowledge-system_20260731](../../archive/retrieval-knowledge-system_20260731/index.md)
 
 ## Track Artefacts
 

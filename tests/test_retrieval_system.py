@@ -11,6 +11,7 @@ from tools.retrieval_system import (
     LexicalIndex,
     admitted_manifest,
     assurance,
+    byte_checksum,
     canonical_hash,
     content_checksum,
     drift_impact,
@@ -133,11 +134,32 @@ def test_lifecycle_delete_export_backup_and_restore(tmp_path: Path) -> None:
     assert index.search("uncertainty")["results"] == []
     restored = LexicalIndex.restore(backup, tmp_path / "restored.sqlite", compartment="public")
     assert len(restored.deterministic_export()) == 4
+    restore_event = restored.lifecycle_receipt()["events"][-1]
+    assert restore_event["action"] == "restore"
+    assert restore_event["detail_sha256"] == canonical_hash(
+        {"source_sha256": byte_checksum(backup.read_bytes())}
+    )
     restored.close()
     with pytest.raises(ValueError, match="persistent index compartment mismatch"):
         LexicalIndex(database, compartment="governed_private")
     index.rebuild(admitted_manifest())
     assert index.search("uncertainty")["results"][0]["unit_id"] == "policy-current"
+    before_invalid_rebuild = index.deterministic_export()
+    audit_before_invalid_rebuild = index.lifecycle_receipt()
+    invalid = deepcopy(admitted_manifest())
+    invalid["units"][0]["checksum"] = "sha256:" + "0" * 64
+    with pytest.raises(ValueError, match="checksum mismatch"):
+        index.rebuild(invalid)
+    assert index.deterministic_export() == before_invalid_rebuild
+    assert index.lifecycle_receipt() == audit_before_invalid_rebuild
+    wrong_compartment = deepcopy(admitted_manifest())
+    wrong_compartment["compartment"] = "ephemeral"
+    for unit in wrong_compartment["units"]:
+        unit["compartment"] = "ephemeral"
+    with pytest.raises(ValueError, match="index compartment mismatch"):
+        index.rebuild(wrong_compartment)
+    assert index.deterministic_export() == before_invalid_rebuild
+    assert index.lifecycle_receipt() == audit_before_invalid_rebuild
     index.supersede("policy-current")
     assert index.search("uncertainty")["results"] == []
     assert index.search("uncertainty", filters={"status": "superseded"})["results"]
@@ -410,6 +432,49 @@ def test_fail_closed_validator_and_lifecycle_diagnostics(tmp_path: Path) -> None
     assert "duplicate screening identifier" in errors
     assert "study-quality record is incomplete" in errors
     assert "unavailable SourceRight boundary is not bound to the clean pin" in errors
+
+    malformed = deepcopy(receipt)
+    malformed.update(
+        {
+            "results": ["not-an-object"],
+            "screening": "not-an-array",
+            "study_quality": ["not-an-object"],
+            "sourceright": [],
+            "claim_links": {},
+        }
+    )
+    malformed["receipt_sha256"] = canonical_hash(
+        {key: value for key, value in malformed.items() if key != "receipt_sha256"}
+    )
+    malformed_errors = validate_literature_receipt(malformed)
+    assert "SourceRight receipt must be an object" in malformed_errors
+    assert "incomplete exact reference metadata" in malformed_errors
+    assert "literature screening must be an array" in malformed_errors
+    assert "study-quality record is incomplete" in malformed_errors
+    assert "claim_links must be an array" in malformed_errors
+
+    non_array_collections = deepcopy(receipt)
+    non_array_collections.update(
+        {"results": {}, "screening": {}, "study_quality": {}, "conflicts": {}}
+    )
+    non_array_collections["receipt_sha256"] = canonical_hash(
+        {key: value for key, value in non_array_collections.items() if key != "receipt_sha256"}
+    )
+    collection_errors = validate_literature_receipt(non_array_collections)
+    assert "literature results must be an array" in collection_errors
+    assert "literature screening must be an array" in collection_errors
+    assert "study quality must be an array" in collection_errors
+    assert "conflicts must be an array" in collection_errors
+
+    unhashable_identifiers = deepcopy(receipt)
+    unhashable_identifiers["results"][0]["identifier"] = {}
+    unhashable_identifiers["screening"][0]["identifier"] = {}
+    unhashable_identifiers["receipt_sha256"] = canonical_hash(
+        {key: value for key, value in unhashable_identifiers.items() if key != "receipt_sha256"}
+    )
+    identifier_errors = validate_literature_receipt(unhashable_identifiers)
+    assert "incomplete exact reference metadata" in identifier_errors
+    assert "screening decision is incomplete" in identifier_errors
 
 
 def test_assurance_rejects_each_bound_contract() -> None:

@@ -80,7 +80,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Return stable citations, locations, scores, and query receipts
   - [x] Benchmark exact, phrase, acronym, typo, and policy-version queries
   - [x] Assess existing enterprise search and content APIs before creating a parallel local corpus
-  - [x] Add replaceable literature-search provider ports and preserve exact queries, filters, dates, result sets, exclusions, and screening decisions
+  - [x] Define a replaceable literature-search provider port and fail-closed receipt contract; no provider execution was admitted
   - [x] Reuse the selected retrieval framework's indexing, query, filtering, and persistence capabilities rather than creating a general-purpose engine
 
 - [x] Task: Validate the phase deliverables
@@ -96,16 +96,16 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Continue automatically when the phase passes and no owner gate is reached
   - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
-## Phase 3: Add optional local vector retrieval
+## Phase 3: Evaluate optional local vector admission
 
-- [x] Task: Implement the phase scope
-  - [x] Package embeddings, vector storage, and reranking as separately selectable profiles rather than core dependencies
-  - [x] Let an agent recommend and install a measured profile at runtime through the same audited scripts available to operators
-  - [x] Select encoder candidates through the CapabilityProfile and benchmark contracts
-  - [x] Version embeddings, chunking, normalisation, quantisation, index, and device metadata
-  - [x] Keep vector storage replaceable and local by default
-  - [x] Measure semantic gains, false neighbours, drift, memory, and rebuild cost
-  - [x] Evaluate Haystack or LlamaIndex orchestration and Qdrant, LanceDB, or FAISS adapters before implementing project-owned retrieval code
+- [x] Task: Close the phase at the per-artefact admission gate with explicit negative results
+  - [x] Define separately selectable disabled profiles for embeddings, vector storage, and reranking rather than core dependencies
+  - [x] Record that no measured profile qualified for recommendation or installation
+  - [x] Record that no encoder candidate passed the CapabilityProfile and benchmark admission prerequisites
+  - [x] Preserve required version, chunking, normalisation, quantisation, index, and device fields as unresolved until an artefact is admitted
+  - [x] Keep any future vector storage replaceable and local by default
+  - [x] Record semantic gain, false-neighbour, drift, memory, and rebuild-cost measurements as not performed because no candidate was admitted
+  - [x] Assess Haystack, LlamaIndex, Qdrant, LanceDB, and FAISS at the admission boundary; record exact versions, licences and extension tests as unavailable because none was installed
   - [x] Build no vector database, embedding runtime, or generic retriever inside the project
 
 - [x] Task: Validate the phase deliverables
@@ -121,13 +121,13 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Continue automatically when the phase passes and no owner gate is reached
   - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
-## Phase 4: Evaluate hybrid search and reranking
+## Phase 4: Evaluate hybrid search and reranking admission
 
 - [x] Task: Implement the phase scope
   - [x] Define deterministic fusion and candidate-set contracts
-  - [x] Evaluate local cross-encoder or model reranking only after baseline results exist
-  - [x] Measure quality, calibration, latency, memory, privacy, and failure regressions
-  - [x] Retain the simplest configuration meeting declared thresholds
+  - [x] Stop local cross-encoder and model-reranking evaluation at the missing-model admission gate
+  - [x] Record quality, calibration, latency, memory, privacy, and failure-regression measurements as not performed for unadmitted candidates
+  - [x] Retain the lexical baseline without declaring an operational threshold or unmeasured comparative gain
 
 - [x] Task: Validate the phase deliverables
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -146,7 +146,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 - [x] Task: Implement the phase scope
   - [x] Require claim-evidence links, citation verification, conflict representation, and abstention
-  - [x] Pass candidate literature references and claim links through SourceRight and keep its review-required diagnostics visible
+  - [x] Validate the SourceRight fail-closed adapter contract; record that no Track 07 invocation or successful validation result was admitted
   - [x] Separate bibliographic integrity, study quality, applicability, clinical interpretation, and authorised recommendation decisions
   - [x] Detect instruction-like or poisoned content without erasing legitimate evidence
   - [x] Separate source content from system and workflow instructions
@@ -216,3 +216,27 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
   - [x] Record unresolved limitations and owner decisions without downgrading them
   - [x] Close the GitHub issue only after the completion receipt passes
+
+## Review Fixes
+
+- [x] Task: Harden compartment, evidence and receipt boundaries — `7d2a3e3`, `f09b5fc`, `cdfa3db`
+  - [x] Bind persistent indexes to one compartment and scope lifecycle operations
+  - [x] Fail closed on fabricated rights, grounding, SourceRight success and Unicode instruction content
+  - [x] Bind deterministic assurance and volatile research observations with separate integrity hashes
+- [x] Task: Close the hosted patch-coverage gap — merged follow-up `a7f2787`
+  - [x] Add negative-path coverage for lifecycle, literature and assurance bindings
+  - [x] Verify the follow-up Codecov patch check and all six repository checks passed
+- [x] Task: Correct false-completion and atomic-rebuild findings — `12c3698`
+  - [x] Validate replacement manifests before mutation and rebuild in one transaction
+  - [x] Preserve index bytes and audit state after an invalid rebuild attempt
+  - [x] Return structured errors for malformed literature receipts
+  - [x] Hash raw backup bytes in restore provenance
+  - [x] Reconcile unexecuted vector, reranker, provider and SourceRight work as explicit negative results
+- [x] Task: Complete malformed-identifier and restore-provenance review fixes — `2ec967a`
+  - [x] Reject non-string result and screening identifiers without raising
+  - [x] Assert restore audit provenance against the raw backup-byte SHA-256
+  - [x] Clarify specification-level negative admission semantics for optional capabilities
+- [x] Task: Close archive patch-coverage branches — `adefe1d`
+  - [x] Cover wrong-compartment rebuild preservation
+  - [x] Cover non-array literature result, screening, quality and conflict collections
+  - [x] Raise focused retrieval coverage to 92.59% without changing production behaviour

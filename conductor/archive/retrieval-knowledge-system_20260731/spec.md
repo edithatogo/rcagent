@@ -39,17 +39,20 @@ requires a fit-gap record and an approved Architecture Decision Record.
 
 - Define source and corpus contracts
 - Implement the lexical baseline
-- Add optional local vector retrieval
-- Evaluate hybrid search and reranking
+- Evaluate optional local vector retrieval at the per-artefact admission gate;
+  implement and measure it only when an exact candidate passes licence,
+  privacy, device and benchmark prerequisites
+- Evaluate hybrid search and reranking only after an admitted vector or model
+  candidate exists; otherwise preserve explicit unsupported profiles
 - Ground answers and defend retrieval
 - Implement lifecycle operations
 - Produce retrieval assurance receipts
-- Search external literature through replaceable provider adapters and pass
-  candidate references, citations, and claim links through a pinned
-  SourceRight contract
-- Federate governed access to prior incidents, reviews, findings,
-  recommendations, effectiveness evidence, comparative benchmarking,
-  operational data, and quality-and-safety measures
+- Define replaceable external-literature and pinned SourceRight contracts;
+  execute them only when an exact provider or tool invocation is admitted
+- Define fail-closed federation contracts for prior incidents, reviews,
+  findings, recommendations, effectiveness evidence, comparative
+  benchmarking, operational data, and quality-and-safety measures; activation
+  on governed-private data remains a separate authority gate
 
 ## Architecture and Delivery Principles
 
@@ -62,16 +65,16 @@ requires a fit-gap record and an approved Architecture Decision Record.
 
 ## Hard Start Dependencies
 
-- [evidence-workflow-core_20260731](../../archive/evidence-workflow-core_20260731/index.md)
-- [privacy-security-assurance_20260731](../../archive/privacy-security-assurance_20260731/index.md)
-- [nsw-health-jurisdiction-pack_20260731](../../archive/nsw-health-jurisdiction-pack_20260731/index.md)
+- [evidence-workflow-core_20260731](../evidence-workflow-core_20260731/index.md)
+- [privacy-security-assurance_20260731](../privacy-security-assurance_20260731/index.md)
+- [nsw-health-jurisdiction-pack_20260731](../nsw-health-jurisdiction-pack_20260731/index.md)
 
 The track cannot start until each hard dependency has a passing completion receipt, not merely a closed issue.
 
 ## Later Phase Dependencies
 
-- [benchmark-evaluation-harness_20260731](../../archive/benchmark-evaluation-harness_20260731/index.md)
-- [multimodal-capability-fabric_20260731](../../archive/multimodal-capability-fabric_20260731/index.md)
+- [benchmark-evaluation-harness_20260731](../benchmark-evaluation-harness_20260731/index.md)
+- [multimodal-capability-fabric_20260731](../multimodal-capability-fabric_20260731/index.md)
 
 These dependencies gate the affected integration or validation phase without needlessly blocking independent foundation work.
 
@@ -102,6 +105,12 @@ Every decision request must include the recommended option, viable alternatives,
    lineage, retention, freshness, and de-identification or aggregation rules.
 9. Retrieval from prior reviews or organisational data is never represented
    as a causal finding without case-specific evidence and authorised review.
+
+Optional capability completion is satisfied by a tested supported profile or
+by an evidence-backed negative admission result. A negative result must name
+the missing artefact, licence, device, privacy or benchmark evidence and must
+leave the capability disabled; it cannot imply that execution or comparative
+measurement occurred.
 
 ## Out of Scope
 
