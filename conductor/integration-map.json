@@ -107,6 +107,7 @@
     },
     {
       "track_id": "benchmark-evaluation-harness_20260731",
+      "status": "adapt",
       "candidate_systems": [
         "Inspect AI and Inspect Evals",
         "EleutherAI Language Model Evaluation Harness",
@@ -115,6 +116,12 @@
         "pytest and property-based testing",
         "existing security and red-team evaluation tools"
       ],
+      "selected_system": "pytest and JSON Schema for the locked deterministic contract layer, with Inspect AI as the future primary model-evaluation adapter and LM Evaluation Harness, MLflow, and Ragas remaining optional until admitted",
+      "dependency_class": "locked core validation plus evaluation-development and optional adapters; no model, provider, telemetry, or enterprise dependency in the portable core",
+      "compatibility_window": "benchmark schema 1.0 and registry 0.1.x; exact observed candidate versions and limitations recorded in evaluation/benchmark/registry.json",
+      "safe_fallback": "run the network-disabled deterministic suite, retain canonical JSON receipts, exclude pending jurisdictions and unadmitted adapters, and block promotion on any privacy or safety failure",
+      "replacement_path": "replace optional framework adapters behind the registry contract; preserve fixture hashes, raw receipts, legacy mappings, and the dependency-free deterministic runner",
+      "evidence": "conductor/tracks/benchmark-evaluation-harness_20260731/evidence/fit-gap-20260829.md",
       "project_owned_gap": "healthcare incident cases, evidence and citation rubrics, privacy and clinical-safety hard gates, and device profiles"
     },
     {

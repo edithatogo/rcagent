@@ -2,6 +2,11 @@ name: Quality
 
 on:
   pull_request:
+  release:
+    types: [published]
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -46,6 +51,11 @@ jobs:
 
       - name: Validate repository governance
         run: python -m tools.validate_repository
+
+      - name: Validate and run deterministic benchmark contracts
+        run: |
+          python -m tools.benchmark_harness validate
+          python -m tools.benchmark_harness run --suite regression
 
       - name: Run tests with coverage
         run: python -m pytest --cov=tools --cov-report=xml --cov-report=term-missing
