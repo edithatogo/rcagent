@@ -13,7 +13,7 @@
 ## Later Phase Dependencies
 
 - [safety-systems-foundation_20260731](../safety-systems-foundation_20260731/index.md)
-- [privacy-security-assurance_20260731](../privacy-security-assurance_20260731/index.md)
+- [privacy-security-assurance_20260731](../../archive/privacy-security-assurance_20260731/index.md)
 - [benchmark-evaluation-harness_20260731](../benchmark-evaluation-harness_20260731/index.md)
 - [interfaces-templates-action-loop_20260731](../interfaces-templates-action-loop_20260731/index.md)
 

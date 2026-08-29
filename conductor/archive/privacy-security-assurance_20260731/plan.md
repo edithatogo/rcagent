@@ -220,7 +220,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Make model, index, network, power, and unknown recovery states fail closed
   - [x] Run 29 focused tests plus lint and type checks
 
-- [~] Task: Remediate fresh-context false-completion findings — `aa597fe`
+- [x] Task: Remediate fresh-context false-completion findings — `aa597fe`
   - [x] Restrict public remote mode to public content
   - [x] Require complete, internally consistent model-result disclosures
   - [x] Require reviewable deletion verification without retaining resource identifiers
@@ -230,4 +230,14 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Correct the ledger's local-wall-clock-as-UTC evidence without rewriting append-only history
   - [x] Re-run focused and repository-wide validation, then review the corrected diff
   - [x] Close the hosted patch-coverage gap with fail-closed negative-path tests — `349e5f4`
-  - [ ] Pass hosted validation on the exact remediation head and reconcile issue state
+  - [x] Pass hosted validation on exact head `17f28f4`, merge PR #45 as `ca07cfb`, and reconcile issue #8 closed
+
+## Archival
+
+- [x] Task: Archive the completed and revalidated track — `23a2463`; evidence `e78e022`
+  - [x] Move the complete track without deleting its history or evidence
+  - [x] Preserve the completed registry entry and redirect it to the archive
+  - [x] Redirect roadmap, dependency, fixture, and integration-map links
+  - [x] Re-run repository governance and the full applicable test suite after the move
+  - [x] Teach repository governance to validate roadmap tracks in active or archived locations — `23a2463`
+  - [x] Pass hosted checks, including Codecov patch, on exact archive content head `e78e022`

@@ -53,13 +53,13 @@ requires a fit-gap record and an approved Architecture Decision Record.
 
 ## Hard Start Dependencies
 
-- [safety-systems-foundation_20260731](../safety-systems-foundation_20260731/index.md)
+- [safety-systems-foundation_20260731](../../tracks/safety-systems-foundation_20260731/index.md)
 
 The track cannot start until each hard dependency has a passing completion receipt, not merely a closed issue.
 
 ## Later Phase Dependencies
 
-- [evidence-workflow-core_20260731](../evidence-workflow-core_20260731/index.md)
+- [evidence-workflow-core_20260731](../../tracks/evidence-workflow-core_20260731/index.md)
 
 These dependencies gate the affected integration or validation phase without needlessly blocking independent foundation work.
 

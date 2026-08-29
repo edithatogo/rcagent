@@ -56,10 +56,18 @@ EVIDENCE_REQUIRED_FIELDS = {
 
 def _validate_track_directories(root: Path) -> list[str]:
     errors: list[str] = []
-    tracks_root = root / "conductor/tracks"
-    if not tracks_root.is_dir():
-        return errors
-    for track_root in sorted(path for path in tracks_root.iterdir() if path.is_dir()):
+    track_roots: list[Path] = []
+    seen: set[str] = set()
+    for container in (root / "conductor/tracks", root / "conductor/archive"):
+        if not container.is_dir():
+            continue
+        for track_root in sorted(path for path in container.iterdir() if path.is_dir()):
+            if track_root.name in seen:
+                errors.append(f"{track_root.name}: present in both tracks and archive")
+                continue
+            seen.add(track_root.name)
+            track_roots.append(track_root)
+    for track_root in track_roots:
         track_id = track_root.name
         if not (track_root / "index.md").is_file():
             errors.append(f"{track_id}: missing index.md")
@@ -227,7 +235,11 @@ def validate(root: Path) -> list[str]:
             errors.append(f"duplicate GitHub issue mapping: #{issue}")
         issue_numbers.add(issue)
 
-        track_root = root / "conductor/tracks" / track_id
+        active_root = root / "conductor/tracks" / track_id
+        archive_root = root / "conductor/archive" / track_id
+        if active_root.is_dir() and archive_root.is_dir():
+            errors.append(f"{track_id}: present in both tracks and archive")
+        track_root = active_root if active_root.is_dir() else archive_root
         for filename in ("index.md", "metadata.json", "plan.md", "spec.md"):
             if not (track_root / filename).is_file():
                 errors.append(f"{track_id}: missing {filename}")

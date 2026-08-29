@@ -196,6 +196,25 @@ def test_every_track_directory_requires_an_index(tmp_path: Path) -> None:
     assert "legacy_20260225: missing index.md" in validate(tmp_path)
 
 
+def test_archived_roadmap_track_is_validated_at_its_archive_location(tmp_path: Path) -> None:
+    _write_valid_repository(tmp_path)
+    active = tmp_path / "conductor/tracks/example_20260731"
+    archived = tmp_path / "conductor/archive/example_20260731"
+    archived.parent.mkdir(parents=True)
+    active.rename(archived)
+
+    assert validate(tmp_path) == []
+
+
+def test_duplicate_active_and_archived_track_is_rejected(tmp_path: Path) -> None:
+    _write_valid_repository(tmp_path)
+    archived = tmp_path / "conductor/archive/example_20260731"
+    archived.mkdir(parents=True)
+    (archived / "index.md").write_text("# Duplicate\n", encoding="utf-8")
+
+    assert "example_20260731: present in both tracks and archive" in validate(tmp_path)
+
+
 def test_opted_in_evidence_ledger_is_required_and_valid(tmp_path: Path) -> None:
     _write_valid_repository(tmp_path)
     track = tmp_path / "conductor/tracks/example_20260731"
