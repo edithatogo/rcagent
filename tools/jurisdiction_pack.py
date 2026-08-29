@@ -75,6 +75,16 @@ def validate_registry(registry: dict[str, Any]) -> list[str]:
                 errors.append(
                     f"rules: {rule.get('rule_id')!r} cannot depend on {source.get('status')} source {source_id!r}"
                 )
+        cited_sources = [source_by_id[source_id] for source_id in rule.get("source_ids", []) if source_id in source_by_id]
+        strong_authorities = {"legislation", "regulation", "mandatory_policy", "accreditation_standard"}
+        if rule.get("requirement_level") == "must" and not any(
+            source.get("authority_level") in strong_authorities for source in cited_sources
+        ):
+            errors.append(
+                f"rules: {rule.get('rule_id')!r} uses 'must' without a binding, mandatory or accreditation source"
+            )
+        if any(source.get("status") == "under_review" for source in cited_sources) and not rule.get("uncertainty"):
+            errors.append(f"rules: {rule.get('rule_id')!r} must disclose under-review source uncertainty")
         workflow = rule.get("workflow", {})
         if isinstance(workflow, dict):
             to_state = workflow.get("to_state")
@@ -187,6 +197,19 @@ def compare_snapshots(baseline: dict[str, Any], candidate: dict[str, Any]) -> di
     }
 
 
+def due_sources(registry: dict[str, Any], *, as_of: str) -> list[str]:
+    """List sources due for retrieval using UTC timestamps and declared cadences."""
+    from datetime import datetime, timedelta
+
+    now = datetime.fromisoformat(as_of.replace("Z", "+00:00"))
+    due: list[str] = []
+    for source in registry.get("sources", []):
+        retrieved = datetime.fromisoformat(source["retrieved_at"].replace("Z", "+00:00"))
+        if now >= retrieved + timedelta(days=source["review_cadence_days"]):
+            due.append(source["source_id"])
+    return sorted(due)
+
+
 def unavailable_upstream(source_id: str, diagnostic: str) -> dict[str, Any]:
     return {
         "source_id": source_id,
@@ -219,6 +242,8 @@ def main() -> int:
     drift_parser = subparsers.add_parser("drift")
     drift_parser.add_argument("baseline", type=Path)
     drift_parser.add_argument("candidate", type=Path)
+    due_parser = subparsers.add_parser("due")
+    due_parser.add_argument("--as-of", required=True)
     args = parser.parse_args()
     if args.command == "validate":
         errors = validate_registry(load_registry(args.path))
@@ -228,7 +253,18 @@ def main() -> int:
             return 1
         print("Jurisdiction registry validation passed.")
         return 0
-    result = compare_snapshots(load_registry(args.baseline), load_registry(args.candidate))
+    if args.command == "due":
+        print(json.dumps({"due_source_ids": due_sources(load_registry(), as_of=args.as_of)}, indent=2))
+        return 0
+    baseline = load_registry(args.baseline)
+    candidate = load_registry(args.candidate)
+    errors = [f"baseline: {error}" for error in validate_registry(baseline)]
+    errors.extend(f"candidate: {error}" for error in validate_registry(candidate))
+    if errors:
+        for error in errors:
+            print(f"ERROR: {error}")
+        return 1
+    result = compare_snapshots(baseline, candidate)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 2 if result["status"] == "review_required" else 0
 

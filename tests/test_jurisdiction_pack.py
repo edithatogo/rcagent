@@ -6,6 +6,7 @@ from typing import Any
 from tools.jurisdiction_pack import (
     candidate_with_change,
     compare_snapshots,
+    due_sources,
     load_registry,
     unavailable_upstream,
     validate_registry,
@@ -35,6 +36,19 @@ def test_rules_cannot_use_non_current_or_unknown_sources() -> None:
     errors = validate_registry(value)
     assert any("cannot depend on superseded source" in error for error in errors)
     assert "rules: unknown source_id 'missing'" in errors
+
+
+def test_mandatory_language_requires_strong_authority() -> None:
+    value = registry()
+    value["rules"][0]["source_ids"] = ["nsw-cec-incident-resources"]
+    assert any("uses 'must' without" in error for error in validate_registry(value))
+
+
+def test_under_review_rule_requires_uncertainty_disclosure() -> None:
+    value = registry()
+    rule = next(rule for rule in value["rules"] if rule["rule_id"] == "nsw-notify-ims")
+    rule.pop("uncertainty")
+    assert any("must disclose under-review" in error for error in validate_registry(value))
 
 
 def test_national_rules_cannot_import_state_authority() -> None:
@@ -91,6 +105,13 @@ def test_unavailable_upstream_is_not_a_pass() -> None:
     result = unavailable_upstream("nsw-pd2020-047", "synthetic timeout")
     assert result["status"] == "unavailable_not_passed"
     assert result["behaviour_updated"] is False
+
+
+def test_review_cadence_produces_a_deterministic_due_queue() -> None:
+    assert due_sources(registry(), as_of="2026-08-30T00:54:13Z") == []
+    due = due_sources(registry(), as_of="2026-09-29T00:54:13Z")
+    assert "nsw-pd2020-047" in due
+    assert "qld-qh-hsd-032" in due
 
 
 def test_required_people_culture_and_system_safeguards_are_mapped() -> None:
