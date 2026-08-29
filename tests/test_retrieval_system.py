@@ -152,6 +152,14 @@ def test_lifecycle_delete_export_backup_and_restore(tmp_path: Path) -> None:
         index.rebuild(invalid)
     assert index.deterministic_export() == before_invalid_rebuild
     assert index.lifecycle_receipt() == audit_before_invalid_rebuild
+    wrong_compartment = deepcopy(admitted_manifest())
+    wrong_compartment["compartment"] = "ephemeral"
+    for unit in wrong_compartment["units"]:
+        unit["compartment"] = "ephemeral"
+    with pytest.raises(ValueError, match="index compartment mismatch"):
+        index.rebuild(wrong_compartment)
+    assert index.deterministic_export() == before_invalid_rebuild
+    assert index.lifecycle_receipt() == audit_before_invalid_rebuild
     index.supersede("policy-current")
     assert index.search("uncertainty")["results"] == []
     assert index.search("uncertainty", filters={"status": "superseded"})["results"]
@@ -444,6 +452,19 @@ def test_fail_closed_validator_and_lifecycle_diagnostics(tmp_path: Path) -> None
     assert "literature screening must be an array" in malformed_errors
     assert "study-quality record is incomplete" in malformed_errors
     assert "claim_links must be an array" in malformed_errors
+
+    non_array_collections = deepcopy(receipt)
+    non_array_collections.update(
+        {"results": {}, "screening": {}, "study_quality": {}, "conflicts": {}}
+    )
+    non_array_collections["receipt_sha256"] = canonical_hash(
+        {key: value for key, value in non_array_collections.items() if key != "receipt_sha256"}
+    )
+    collection_errors = validate_literature_receipt(non_array_collections)
+    assert "literature results must be an array" in collection_errors
+    assert "literature screening must be an array" in collection_errors
+    assert "study quality must be an array" in collection_errors
+    assert "conflicts must be an array" in collection_errors
 
     unhashable_identifiers = deepcopy(receipt)
     unhashable_identifiers["results"][0]["identifier"] = {}
