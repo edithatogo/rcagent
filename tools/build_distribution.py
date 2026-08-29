@@ -9,6 +9,7 @@ import stat
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 _ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 
@@ -18,7 +19,7 @@ class DistributionResult:
     archive: Path
     manifest_path: Path
     sbom_path: Path
-    manifest: dict[str, object]
+    manifest: dict[str, Any]
 
 
 def _json_bytes(value: object) -> bytes:
@@ -66,7 +67,7 @@ def build_distribution(
         {"path": name, "sha256": _sha256(payload), "size": len(payload)}
         for name, payload in files
     ]
-    internal_manifest = {
+    internal_manifest: dict[str, Any] = {
         "schema_version": "1.0",
         "name": "rca-investigation",
         "version": version,
@@ -97,7 +98,7 @@ def build_distribution(
         _write_zip_member(archive, "rca-investigation/sbom.cdx.json", _json_bytes(sbom))
 
     archive_payload = archive_path.read_bytes()
-    external_manifest = dict(internal_manifest)
+    external_manifest: dict[str, Any] = dict(internal_manifest)
     external_manifest["archive"] = {
         "path": archive_path.name,
         "sha256": _sha256(archive_payload),
