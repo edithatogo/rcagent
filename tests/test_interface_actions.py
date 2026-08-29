@@ -87,7 +87,7 @@ def test_unsafe_legacy_templates_are_quarantined_from_supported_registry() -> No
     assert not any("legacy" in identifier for identifier in supported_ids)
     lines = (ROOT / audit["manifest"]).read_text().splitlines()
     entries = {path: digest for digest, path in (line.split("  ", 1) for line in lines)}
-    actual = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest() for path in (ROOT / audit["scope"]).rglob("*") if path.is_file()}
+    actual = {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in (ROOT / audit["scope"]).rglob("*") if path.is_file()}
     assert entries == actual
     assert len(entries) == audit["manifest_entries"]
 
@@ -136,6 +136,32 @@ def test_registry_fails_closed_on_malformed_array_members() -> None:
     value["interfaces"][0]["operations"] = [{}]
     errors = validate_registry(value)
     assert errors
+
+
+def test_registry_rejects_each_structural_boundary() -> None:
+    mutations = [
+        lambda v: v.update(schema_version="2", extra=True),
+        lambda v: v.update(policy=[]),
+        lambda v: v["policy"].update(extra=True),
+        lambda v: v.update(journeys=["bad"]),
+        lambda v: v["journeys"][0].update(checkpoints=[]),
+        lambda v: v.update(workflows=[]),
+        lambda v: v.update(workflows=[{}]),
+        lambda v: v["workflows"][1].update(id=v["workflows"][0]["id"], methods=[], steps=[]),
+        lambda v: v.update(templates=[]),
+        lambda v: v.update(templates=[{}]),
+        lambda v: v["templates"][1].update(id=v["templates"][0]["id"], rights="unknown", fields=[], audiences=[]),
+        lambda v: v["templates"][0]["fields"][0].update(canonical_path="$.unknown"),
+        lambda v: v["templates"][0].update(fields=["bad"], disclaimers=[{}]),
+        lambda v: v.update(interfaces=[]),
+        lambda v: v.update(interfaces=[{}]),
+        lambda v: v["interfaces"][1].update(id=v["interfaces"][0]["id"], status="live"),
+        lambda v: v.update(participation=[]),
+    ]
+    for mutate in mutations:
+        value = registry()
+        mutate(value)
+        assert validate_registry(value)
 
 
 def test_method_guidance_never_forces_a_method() -> None:
@@ -192,6 +218,15 @@ def test_adapter_rejects_credentials_and_unknown_fields() -> None:
     assert result["message_sent"] is False
 
 
+def test_adapter_fails_closed_for_non_object_invalid_registry_and_active_request() -> None:
+    bad_registry = registry()
+    bad_registry["policy"]["external_actions"] = True
+    result = dry_run_adapter([], bad_registry)
+    assert "registry is invalid" in result["reasons"]
+    result = dry_run_adapter({"operation": "read", "data_class": "public", "dry_run": True, "approved_endpoint": None, "source_revision": HASH, "note": "https://example.test"}, registry())
+    assert "request contains unsafe content" in result["reasons"]
+
+
 def test_communication_is_preparation_only_and_synthetic() -> None:
     draft = {
         "purpose": "questions", "status": "preparation_only", "recipient": "[Consumer B]",
@@ -204,6 +239,8 @@ def test_communication_is_preparation_only_and_synthetic() -> None:
     assert "communication must remain preparation_only" in errors
     assert "delivery channel must be none" in errors
     assert "recipient must be synthetic or unresolved" in errors
+    assert validate_communication_draft([]) == ["communication must be an object"]
+    assert validate_communication_draft({})
 
 
 @pytest.mark.parametrize(
@@ -214,6 +251,12 @@ def test_export_quarantines_active_content_and_paths(unsafe: str) -> None:
     with pytest.raises(ValueError, match="unsafe active export content"):
         sanitize_export({"nested": [unsafe]})
     assert sanitize_export({"case": "[Case ID]", "count": 1}) == {"case": "[Case ID]", "count": 1}
+
+
+def test_export_rejects_unsafe_keys_nonfinite_and_objects() -> None:
+    for value in [{"api_key": "x"}, {"safe": float("nan")}, {"safe": object()}]:
+        with pytest.raises(ValueError):
+            sanitize_export(value)
 
 
 def test_approval_is_hash_bound_and_agents_cannot_approve() -> None:
@@ -237,6 +280,15 @@ def test_approval_rejects_impossible_or_expired_timestamps() -> None:
     assert "approval is not current at evaluation time" in validate_approval(value, artefact_sha256=value["artefact_sha256"], evaluated_at="2028-08-29T00:00:00Z")
 
 
+def test_approval_rejects_all_authority_shape_failures() -> None:
+    assert validate_approval([], artefact_sha256=HASH, evaluated_at="2026-08-29T00:00:00Z") == ["approval must be an object"]
+    value = action_approval(recommendation())
+    value.update(artefact_sha256="bad", scope="unknown", authority_class="human_policy", actor_role_id="same", author_role_id="same", conflict_declared=False)
+    value["extra"] = True
+    errors = validate_approval(value, artefact_sha256="bad", evaluated_at="bad")
+    assert len(errors) >= 6
+
+
 def test_audit_event_is_hash_chained_but_does_not_claim_persistence() -> None:
     first = build_audit_event(event={"kind": "draft_saved", "case": "[Case ID]"}, previous_sha256=None)
     second = build_audit_event(event={"kind": "review_returned"}, previous_sha256=first["event_sha256"])
@@ -246,6 +298,12 @@ def test_audit_event_is_hash_chained_but_does_not_claim_persistence() -> None:
     assert verify_audit_chain([first, second]) == []
     second["previous_sha256"] = "b" * 64
     assert any("continuity" in error or "hash" in error for error in verify_audit_chain([first, second]))
+    assert verify_audit_chain([]) == ["audit chain must be a non-empty array"]
+    assert verify_audit_chain([{}])
+    with pytest.raises(ValueError):
+        build_audit_event(event={}, previous_sha256=None)
+    with pytest.raises(ValueError):
+        build_audit_event(event={"kind": "x"}, previous_sha256="bad")
 
 
 def test_participation_preserves_withdrawal_and_cultural_authority_boundary() -> None:
@@ -273,6 +331,8 @@ def test_participation_rejects_sensitive_nested_content_and_hash_drift() -> None
     errors = validate_participation(record)
     assert "participation contains unsafe or sensitive content" in errors
     assert "account hash is not bound to account and corrections" in errors
+    assert validate_participation([]) == ["participation record must be an object"]
+    assert validate_participation({})
 
 
 def test_participation_hash_covers_disagreement_and_consent() -> None:
@@ -350,6 +410,10 @@ def test_closed_status_and_invalid_implementation_evidence_are_rejected() -> Non
     value["status"] = "in_progress"
     with pytest.raises(ValueError, match="identifiers are invalid"):
         transition_action(value, status="implemented", evidence=[""])
+    with pytest.raises(ValueError, match="action contract is invalid"):
+        transition_action({"status": "proposed"}, status="approved")
+    with pytest.raises(ValueError, match="action approval"):
+        transition_action(recommendation(), status="approved")
 
 
 def test_specialist_pathways_remain_separate_and_external() -> None:
@@ -362,6 +426,8 @@ def test_specialist_pathways_remain_separate_and_external() -> None:
     errors = validate_specialist_referral(referral)
     assert "specialist pathway must remain separate" in errors
     assert "repository cannot verify external authority" in errors
+    assert validate_specialist_referral([]) == ["referral must be an object"]
+    assert len(validate_specialist_referral({})) == 4
 
 
 def test_audience_views_expose_limits_and_never_send() -> None:
@@ -389,6 +455,19 @@ def test_view_rejects_malformed_record_and_audience() -> None:
         render_view([], audience="auditor", data_class="generated_synthetic", view_context=view_context())
     with pytest.raises(ValueError, match="audience is invalid"):
         render_view({}, audience="public", data_class="generated_synthetic", view_context=view_context())
+    value = canonical_record()
+    with pytest.raises(ValueError, match="only generated_synthetic"):
+        render_view(value, audience="auditor", data_class="private", view_context=view_context())
+    with pytest.raises(ValueError, match="view context"):
+        render_view(value, audience="auditor", data_class="generated_synthetic", view_context={})
+    malformed = canonical_record()
+    malformed["source_sha256"] = "bad"
+    with pytest.raises(ValueError, match="hash is invalid"):
+        render_view(malformed, audience="auditor", data_class="generated_synthetic", view_context=view_context())
+    drifted = canonical_record()
+    drifted["state"] = "closed"
+    with pytest.raises(ValueError, match="hash does not match"):
+        render_view(drifted, audience="auditor", data_class="generated_synthetic", view_context=view_context())
 
 
 def test_synthetic_journey_evaluation_is_non_operational() -> None:
@@ -400,3 +479,10 @@ def test_synthetic_journey_evaluation_is_non_operational() -> None:
     assert "not human usability research" in result["limitations"][0]
     checked = json.loads((ROOT / "conductor/tracks/interfaces-templates-action-loop_20260731/evidence/synthetic-evaluation-20260829.json").read_text())
     assert result == checked
+
+
+def test_synthetic_journey_evaluation_negative_controls() -> None:
+    assert evaluate_synthetic_journeys(registry(), None)["cases"] == []
+    scenarios = [{"id": "bad", "kind": "unknown", "payload": {}}, "malformed"]
+    result = evaluate_synthetic_journeys(registry(), scenarios)
+    assert result["cases"] == [{"id": "bad", "assertion": "invalid", "passed": False}]
