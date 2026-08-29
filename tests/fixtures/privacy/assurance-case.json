@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "case_id": "assurance-fully-local-01",
+  "mode": "fully_local",
+  "risks": [{"risk_id": "risk-egress-01", "threat": "unexpected network egress", "harm": "synthetic private content leaves its authorised compartment", "control_id": "control-route-01"}],
+  "controls": [{"control_id": "control-route-01", "status": "implemented", "authority": "project fail-closed routing contract"}],
+  "tests": ["tests/test_privacy_assurance.py"],
+  "evidence": ["conductor/tracks/privacy-security-assurance_20260731/evidence/completion-20260829.md"],
+  "owners": ["accountable deployment owner"],
+  "review_due": "2026-12-31T00:00:00Z",
+  "dependency_status": "current",
+  "residual_risks": [],
+  "residual_risk_acceptance": "owner_required",
+  "limitations": ["Synthetic deterministic assurance only; not production certification."]
+}
