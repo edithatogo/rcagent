@@ -20,10 +20,10 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
-- [x] Task: Establish the system and dependency context (`f310539`)
+- [~] Task: Establish the system and dependency context (`f310539`; current hosted versions and terms pending)
   - [x] Read `integration-strategy.md` and this track's entry in `integration-map.json`
   - [x] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
-  - [x] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
+  - [ ] Record exact current hosted versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
   - [x] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
 
 - [x] Task: Select the smallest adequate intervention (`f310539`)
@@ -39,33 +39,33 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
   - [x] Confirm `integration-map.json` already records the selected project-owned gap; preserve evidence in the fit-gap record
 
-- [x] Task: Phase Verification & Checkpoint (`f310539`)
+- [~] Task: Phase Verification & Checkpoint (`f310539`; current hosted-source verification pending)
   - [x] Verify that no planned work duplicates an adequate existing capability
   - [x] Verify the system-of-record and data-authority boundary
   - [x] Verify the smallest remaining gap and ownership rationale
   - [x] Record the fit-gap receipt and bounded handoff context
-  - [x] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
+  - [x] Continue automatically through the next ready phase, review, bounded rework, and documentation synchronization
   - [x] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
 
 ## Phase 1: Govern the registry and marketplace funnel
 
-- [x] Task: Implement the phase scope (`f310539`)
-  - [x] Create a current assessment matrix for specification projects, registries, directories, marketplaces, installers, and community catalogues
-  - [x] Record operator, ownership, verification, security review, licence, terms, telemetry, maintenance, discoverability, versioning, deprecation, and rollback
+- [~] Task: Implement the phase scope (`f310539`; current first-party source review pending)
+  - [~] Create a provisional assessment matrix for specification projects, registries, directories, marketplaces, installers, and community catalogues
+  - [ ] Record current operator, ownership, verification, security review, licence, terms, telemetry, maintenance, discoverability, versioning, deprecation, and rollback from first-party sources
   - [x] Classify official, first-party, community, experimental, and unsuitable routes
   - [x] Require an owner decision before any public submission
 
-- [x] Task: Validate the phase deliverables (`f310539`)
+- [~] Task: Validate the phase deliverables (`f310539`; hosted claims remain unverified)
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [ ] Verify exact current sources, revisions, licences, assumptions, and unsupported states
   - [x] Record commands, environment, results, limitations, risks, and negative findings
   - [x] Reconcile Conductor state with GitHub issue #16 and dependency evidence
 
-- [x] Task: Phase Verification & Checkpoint (`f310539`)
-  - [x] Verify every deliverable against the specification and product safeguards
+- [~] Task: Phase Verification & Checkpoint (`f310539`; durable provisional receipt only)
+  - [ ] Verify every current hosted-route deliverable against the specification and product safeguards
   - [x] Store a durable phase receipt and bounded handoff context
   - [x] Update dependencies, risks, decisions, and freshness dates
-  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [ ] Continue automatically when the phase passes and no owner gate is reached
   - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 2: Release the canonical portable skills
@@ -73,7 +73,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 - [~] Task: Implement the phase scope (`66831ec`; public release pending owner decision)
   - [ ] Publish core and optional capability bundles independently so advanced dependencies never become mandatory
   - [x] Generate reviewable local manifests for scripted, agent-assisted, offline, update, rollback, and uninstall paths
-  - [x] Package self-contained skills from the portable core with licences, checksums, provenance, compatibility, changelog, and SBOM-style metadata
+  - [ ] Package self-contained skills from the portable core with complete provenance, compatibility, changelog, and SBOM-style metadata
   - [x] Test deterministic archive extraction and offline package integrity; hosted GitHub installation remains pending a release decision
   - [ ] Reuse GitHub releases, attestations, dependency and security tooling plus current SPDX, CycloneDX, and signing standards where supported
   - [ ] Contribute generic packaging or validator gaps to the relevant client or standard ecosystem instead of maintaining a divergent installer
@@ -233,3 +233,9 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Make nested manifest metadata explicit to both configured type checkers
   - [x] Re-run Ruff, scoped ty, basedpyright, repository governance, skill validation, and the full test suite
   - [x] Preserve unrelated vendored SourceRight diagnostics outside the Track 11 change scope
+
+- [x] Task: Contain distribution output paths and reconcile overclaimed completion (`a4a2c77`)
+  - [x] Reject traversal-capable release identifiers
+  - [x] Refuse package output inside the portable source tree
+  - [x] Add positive and negative regression tests
+  - [x] Return unverified hosted-route, provenance, compatibility, and changelog claims to pending state

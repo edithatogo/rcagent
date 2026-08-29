@@ -22,6 +22,10 @@ archive bytes, per-file and archive SHA-256 checksums, the bundled licence,
 CycloneDX metadata, absence of network and telemetry requirements, refusal to
 overwrite a non-empty destination, and explicit `public_release: false` state.
 
+Fresh-context review added six negative release-identifier cases and one
+negative source-tree-output case in `a4a2c77`. The focused distribution suite
+now contains ten passing tests.
+
 Repository governance validation passed after the fit-gap and registry records
 were added. Existing adapter contract tests cover isolated copies of the
 unmodified portable core for Codex, Claude Code, OpenCode, Cline, and Cursor.
@@ -44,6 +48,8 @@ fixed in `7655578`.
 ## Limitations and negative findings
 
 - Current hosted marketplace and directory guidance was not established by the local package tests.
+- The registry assessment is provisional rather than a current-source matrix; exact hosted versions, terms, telemetry, maintenance, and deprecation evidence remain pending.
+- The archive does not yet satisfy the plan's complete changelog, source-revision provenance, and client-compatibility metadata claim.
 - No tag, GitHub release, attestation, signing event, upload, submission, or acceptance was performed.
 - Tracks 01, 03, 05, and 09 remain phase dependencies for later Track 11 validation.
 - Community catalogue ownership and removal guarantees remain unverified and unsuitable for submission.
