@@ -30,3 +30,5 @@ def test_source_verifier_fails_closed_on_network_or_marker_drift() -> None:
         verify_sources(fetch=lambda _url: (_ for _ in ()).throw(OSError("offline")))
     with pytest.raises(ValueError, match="drifted"):
         verify_sources(fetch=lambda url: (url, b"unexpected"))
+    with pytest.raises(ValueError, match="outside HTTPS"):
+        verify_sources(fetch=lambda url: ("http://example.invalid", _valid(url)[1]))

@@ -51,3 +51,19 @@ def test_captured_release_payload_must_equal_commit_even_after_worktree_reversio
     verify_release_source(repository, revision, [repository / "input"])
     with pytest.raises(ValueError, match="captured release payload differs"):
         verify_release_payloads(repository, revision, captured)
+
+
+def test_release_source_rejects_wrong_head_missing_and_outside_inputs(tmp_path: Path) -> None:
+    repository, revision = _repository(tmp_path)
+    (repository / "second.txt").write_bytes(b"second\n")
+    _git(repository, "add", ".")
+    _git(repository, "commit", "-qm", "second")
+    with pytest.raises(ValueError, match="checked-out HEAD"):
+        verify_release_source(repository, revision, [repository / "input"])
+    head = _git(repository, "rev-parse", "HEAD")
+    with pytest.raises(ValueError, match="outside"):
+        verify_release_source(repository, head, [tmp_path / "outside"])
+    with pytest.raises(ValueError, match="missing or special"):
+        verify_release_source(repository, head, [repository / "missing"])
+    with pytest.raises(ValueError, match="absent from source revision"):
+        verify_release_payloads(repository, head, {"missing.txt": b"missing"})

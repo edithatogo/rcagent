@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -45,6 +47,29 @@ def test_release_admission_rejects_hash_drift_and_sensitive_sentinel(tmp_path: P
     skill = repository / "skills/rca-investigation/SKILL.md"
     skill.write_text("changed")
     with pytest.raises(ValueError, match="hash mismatch"):
+        validate_release_inventory(repository, inventory)
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        (lambda value: value.update(schema_version="2.0"), "metadata"),
+        (lambda value: value.update(files="wrong"), "files"),
+        (lambda value: value["files"].append(dict(value["files"][0])), "duplicate"),
+        (lambda value: value["files"][0].update(rights_basis="unknown"), "rights"),
+        (lambda value: value["files"][0].update(author="unknown"), "authorship"),
+        (lambda value: value["files"][0].update(licence="unknown"), "data or licence"),
+        (lambda value: value["files"][0].update(sha256="bad"), "hash"),
+    ],
+)
+def test_release_admission_rejects_malformed_records(
+    tmp_path: Path, mutation: Callable[[dict[str, Any]], None], message: str
+) -> None:
+    repository, inventory = _fixture(tmp_path)
+    value = json.loads(inventory.read_text())
+    mutation(value)
+    inventory.write_text(json.dumps(value))
+    with pytest.raises(ValueError, match=message):
         validate_release_inventory(repository, inventory)
     repository, inventory = _fixture(tmp_path / "second")
     skill = repository / "skills/rca-investigation/SKILL.md"

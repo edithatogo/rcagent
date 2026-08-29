@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import stat
 import zipfile
 from pathlib import Path
 
@@ -73,3 +74,17 @@ def test_isolated_installer_rejects_duplicate_or_case_collision(
             output.writestr(name, b"no")
     with pytest.raises(ValueError, match="duplicate or case-colliding"):
         install_plugin_archive(archive, tmp_path / "installed")
+
+
+def test_isolated_installer_rejects_symlink_member_and_remove_is_idempotent(
+    tmp_path: Path,
+) -> None:
+    archive = tmp_path / "link.zip"
+    with zipfile.ZipFile(archive, "w") as output:
+        member = zipfile.ZipInfo("link")
+        member.create_system = 3
+        member.external_attr = (stat.S_IFLNK | 0o777) << 16
+        output.writestr(member, "target")
+    with pytest.raises(ValueError, match="link or special"):
+        install_plugin_archive(archive, tmp_path / "installed")
+    remove_plugin(tmp_path / "not-installed")
