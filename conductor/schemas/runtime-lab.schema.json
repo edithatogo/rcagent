@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/safety-systems-workbench/runtime-lab.schema.json",
+  "title": "Runtime lab registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policy", "runtimes", "models", "hypotheses"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["downloads", "external_inference", "remote_code", "promotion", "redistribution"],
+      "properties": {
+        "downloads": {"const": false},
+        "external_inference": {"const": false},
+        "remote_code": {"const": false},
+        "promotion": {"const": false},
+        "redistribution": {"const": false}
+      }
+    },
+    "runtimes": {"type": "array", "items": {"type": "object"}},
+    "models": {"type": "array", "items": {"type": "object"}},
+    "hypotheses": {"type": "array", "items": {"type": "object"}}
+  }
+}

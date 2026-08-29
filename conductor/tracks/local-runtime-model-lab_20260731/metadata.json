@@ -3,6 +3,7 @@
   "track_number": 8,
   "title": "Local Runtime and Model Lab",
   "type": "feature",
+  "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-07-31T04:34:01Z",
   "updated_at": "2026-08-29T08:33:37Z",
@@ -24,6 +25,26 @@
     "Paid compute, large model downloads, or external inference",
     "Licence exceptions or execution of untrusted remote model code",
     "Promotion of an experimental runtime or model into a supported profile"
+  ],
+  "gates": [
+    {
+      "id": "track08-new-model-or-runtime-acquisition",
+      "kind": "external_artifact",
+      "status": "pending",
+      "evidence": "No new model or runtime acquisition is required for repository completion. Decision 20260829-002 covers only its exact admitted local comparator artefacts."
+    },
+    {
+      "id": "track08-runtime-or-model-promotion",
+      "kind": "support_promotion",
+      "status": "pending",
+      "evidence": "All runtime and model profiles remain unsupported without exact measured promotion receipts."
+    },
+    {
+      "id": "track08-public-comparative-claims",
+      "kind": "publication",
+      "status": "pending",
+      "evidence": "Repository evidence is internal, synthetic-only and non-operational; no public comparative claim is made."
+    }
   ],
   "description": "Create measured model and runtime recommendations for heterogeneous devices, including a 32 GB Intel CPU/iGPU system, Apple silicon with MLX, and larger hosts, without hard-coding unverified model assumptions."
 }

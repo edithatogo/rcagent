@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "scope": "read_only_runtime_discovery_no_execution",
+  "observations": [
+    {"runtime_id": "llama-cpp", "observed_state": "installed_unmeasured", "executable_observed": true, "executable_path": null, "version": "unmeasured", "support_state": "unsupported_without_execution_receipt"},
+    {"runtime_id": "onnx-runtime", "observed_state": "unavailable", "executable_observed": false, "executable_path": null, "version": "unavailable", "support_state": "unsupported_without_execution_receipt"},
+    {"runtime_id": "openvino", "observed_state": "unavailable", "executable_observed": false, "executable_path": null, "version": "unavailable", "support_state": "unsupported_without_execution_receipt"},
+    {"runtime_id": "mlx-lm", "observed_state": "installed_unmeasured", "executable_observed": true, "executable_path": null, "version": "unmeasured", "support_state": "unsupported_without_execution_receipt"},
+    {"runtime_id": "max-mojo", "observed_state": "unavailable", "executable_observed": false, "executable_path": null, "version": "unavailable", "support_state": "unsupported_without_execution_receipt"}
+  ],
+  "network": "not_used",
+  "telemetry": "not_used",
+  "model_executed": false,
+  "receipt_sha256": "a9544e80c1e3fd0973d32d092f8642bac1ed7e5dbf64ba70164a63ecd8d08a99"
+}

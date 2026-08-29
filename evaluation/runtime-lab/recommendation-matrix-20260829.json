@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-08-29",
+  "scope": "internal_non_operational_recommendation",
+  "rows": [
+    {"runtime_id": "llama-cpp", "classification": "unsupported", "evidence_state": "installed_unmeasured", "measured_device": false, "public_comparative_claim": false, "rationale": "No exact runtime, model, device and benchmark promotion receipt."},
+    {"runtime_id": "onnx-runtime", "classification": "unsupported", "evidence_state": "unavailable", "measured_device": false, "public_comparative_claim": false, "rationale": "No exact runtime, model, device and benchmark promotion receipt."},
+    {"runtime_id": "openvino", "classification": "unsupported", "evidence_state": "unavailable", "measured_device": false, "public_comparative_claim": false, "rationale": "No exact runtime, model, device and benchmark promotion receipt."},
+    {"runtime_id": "mlx-lm", "classification": "unsupported", "evidence_state": "installed_unmeasured", "measured_device": false, "public_comparative_claim": false, "rationale": "No exact runtime, model, device and benchmark promotion receipt."},
+    {"runtime_id": "max-mojo", "classification": "unsupported", "evidence_state": "unavailable", "measured_device": false, "public_comparative_claim": false, "rationale": "No exact runtime, model, device and benchmark promotion receipt."}
+  ],
+  "agent_agreement": "pending_panel",
+  "human_agreement": false,
+  "limitations": [
+    "No model was downloaded or executed by Track 08.",
+    "No clinical, legal, policy, organisational, deployment or public-comparison approval."
+  ],
+  "receipt_sha256": "5732010f521ac3c4528edcef2c55eefb583b85da0139304cc2fa21fed434122c"
+}

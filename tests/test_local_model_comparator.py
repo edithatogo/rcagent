@@ -178,8 +178,47 @@ def test_admission_reports_escape_missing_licence_and_bad_model_files(tmp_path: 
 
     assert "model-small: cache path escapes model root" in errors
     assert "model-medium: licence file is missing or mismatched" in errors
-    assert "model-medium: missing model.gguf" in errors
+    assert "model-medium: missing or unsafe model.gguf" in errors
     assert "model-larger: size or hash mismatch for model.gguf" in errors
+
+
+def test_admission_rejects_absolute_traversal_and_symlinked_model_files(tmp_path: Path) -> None:
+    manifest, model_root = _admitted_manifest(tmp_path)
+    outside = tmp_path / "outside.gguf"
+    outside.write_bytes(b"small")
+    small = model_root / "small"
+
+    for declared in (str(outside), "../../outside.gguf"):
+        changed = json.loads(json.dumps(manifest))
+        changed["models"][0]["files"][0]["path"] = declared
+        assert any("missing or unsafe" in error for error in validate_admission(changed, model_root))
+
+    (small / "model.gguf").unlink()
+    (small / "model.gguf").symlink_to(outside)
+    assert any(
+        error == "model-small: missing or unsafe model.gguf"
+        for error in validate_admission(manifest, model_root)
+    )
+
+
+def test_admission_rejects_symlinked_licence_file(tmp_path: Path) -> None:
+    manifest, model_root = _admitted_manifest(tmp_path)
+    outside = tmp_path / "LICENSE"
+    outside.write_bytes(b"Apache-2.0")
+    licence = model_root / "small" / "LICENSE"
+    licence.unlink()
+    licence.symlink_to(outside)
+    assert "model-small: licence file is missing or mismatched" in validate_admission(
+        manifest, model_root
+    )
+
+
+def test_admission_rejects_symlinked_cache_directory(tmp_path: Path) -> None:
+    manifest, model_root = _admitted_manifest(tmp_path)
+    target = model_root / "small-target"
+    (model_root / "small").rename(target)
+    (model_root / "small").symlink_to(target, target_is_directory=True)
+    assert "model-small: cache path escapes model root" in validate_admission(manifest, model_root)
 
 
 def test_run_rejects_invalid_admission(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -269,6 +308,53 @@ def test_run_records_timeout_output(
     assert observation["raw_output_sha256"] == local_model_comparator.hashlib.sha256(
         expected_output.encode()
     ).hexdigest()
+
+
+@pytest.mark.parametrize("failure", ["nonzero", "timeout"])
+def test_failed_execution_cannot_pass_with_valid_json_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, failure: str
+) -> None:
+    manifest, model_root = _admitted_manifest(tmp_path)
+    manifest["models"] = manifest["models"][:1]
+    case = {
+        "id": "case-1",
+        "summary": "Evidence is missing.",
+        "expected": {
+            "evidence_ids": ["e1"],
+            "claim_types": ["unknown"],
+            "must_abstain": True,
+        },
+    }
+    output = json.dumps(
+        {
+            "evidence_ids": ["e1"],
+            "claim_types": ["unknown"],
+            "abstained": True,
+            "rationale": "Missing.",
+        }
+    )
+    monkeypatch.setattr(local_model_comparator, "validate_admission", lambda *_: [])
+    monkeypatch.setattr(local_model_comparator, "_read_object", lambda _: {"cases": [case]})
+    if failure == "nonzero":
+        monkeypatch.setattr(
+            local_model_comparator.subprocess,
+            "run",
+            lambda *args, **kwargs: SimpleNamespace(stdout=output, returncode=1),
+        )
+    else:
+        def timeout(*args: object, **kwargs: object) -> None:
+            raise subprocess.TimeoutExpired("llama-cli", 1, output=output)
+
+        monkeypatch.setattr(local_model_comparator.subprocess, "run", timeout)
+
+    receipt = run(manifest, model_root, repeats=1, timeout=1)
+    assert receipt["observations"][0]["score"] == {
+        "schema_valid": False,
+        "evidence_exact": False,
+        "claim_types_exact": False,
+        "abstention_correct": False,
+        "passed": False,
+    }
 
 
 def test_comparator_cli_validate_and_run_paths(

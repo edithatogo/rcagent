@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "os_family": "darwin",
+  "architecture": "arm64",
+  "logical_cpu_count": 10,
+  "memory_gib_floor": null,
+  "accelerator_class": "apple_silicon",
+  "identifiers_redacted": true,
+  "network_observation": "not_probed",
+  "telemetry_observation": "not_probed",
+  "receipt_sha256": "47896b30a4c877fa04daf8057837b5de7e24e93b5678072674f584885e593e41"
+}

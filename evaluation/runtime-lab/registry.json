@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "policy": {
+    "downloads": false,
+    "external_inference": false,
+    "remote_code": false,
+    "promotion": false,
+    "redistribution": false
+  },
+  "runtimes": [
+    {
+      "id": "llama-cpp",
+      "dependency_class": "optional_adapter",
+      "support_state": "installed_unmeasured",
+      "interface": "generation",
+      "executable_names": ["llama-cli"],
+      "licence": "MIT",
+      "network": "none",
+      "telemetry": "disabled",
+      "remote_code": false,
+      "applicability": ["cpu", "gpu"],
+      "failure_modes": ["missing executable", "model hash drift", "timeout"],
+      "replacement_path": "replace behind the generation contract",
+      "freshness_date": "2026-08-29"
+    },
+    {
+      "id": "onnx-runtime",
+      "dependency_class": "optional_adapter",
+      "support_state": "interface_contract",
+      "interface": "embedding-only-until-measured",
+      "executable_names": [],
+      "licence": "MIT",
+      "network": "none",
+      "telemetry": "disabled",
+      "remote_code": false,
+      "applicability": ["cpu", "accelerator"],
+      "failure_modes": ["provider unavailable", "model asset not admitted"],
+      "replacement_path": "replace behind the encoder contract",
+      "freshness_date": "2026-08-29"
+    },
+    {
+      "id": "openvino",
+      "dependency_class": "optional_adapter",
+      "support_state": "unavailable",
+      "interface": "generation-and-embedding",
+      "executable_names": ["benchmark_app"],
+      "licence": "Apache-2.0",
+      "network": "unknown",
+      "telemetry": "unknown",
+      "remote_code": false,
+      "applicability": ["intel-cpu", "intel-igpu"],
+      "failure_modes": ["runtime unavailable", "driver unmeasured", "model asset not admitted"],
+      "replacement_path": "remove optional profile",
+      "freshness_date": "2026-08-29"
+    },
+    {
+      "id": "mlx-lm",
+      "dependency_class": "optional_adapter",
+      "support_state": "unavailable",
+      "interface": "generation",
+      "executable_names": ["mlx_lm.generate"],
+      "licence": "MIT",
+      "network": "unknown",
+      "telemetry": "unknown",
+      "remote_code": false,
+      "applicability": ["apple-silicon"],
+      "failure_modes": ["runtime unavailable", "model asset not admitted", "memory pressure"],
+      "replacement_path": "remove optional profile",
+      "freshness_date": "2026-08-29"
+    },
+    {
+      "id": "max-mojo",
+      "dependency_class": "experimental",
+      "support_state": "experimental",
+      "interface": "isolated-experiment",
+      "executable_names": ["mojo"],
+      "licence": "unverified",
+      "network": "unknown",
+      "telemetry": "unknown",
+      "remote_code": false,
+      "applicability": ["experimental-only"],
+      "failure_modes": ["terms unverified", "runtime unmeasured", "no admitted model"],
+      "replacement_path": "delete experimental profile",
+      "freshness_date": "2026-08-29"
+    }
+  ],
+  "models": [],
+  "hypotheses": [
+    {"name": "Gemma 4 12B", "status": "unverified_hypothesis"},
+    {"name": "Apriel 15B Thinker", "status": "unverified_hypothesis"},
+    {"name": "Nemotron", "status": "unverified_hypothesis"},
+    {"name": "G9", "status": "unverified_hypothesis"},
+    {"name": "Phi-4 reasoning", "status": "unverified_hypothesis"},
+    {"name": "Qwen 27B-class", "status": "unverified_hypothesis"},
+    {"name": "DiffusionGemma", "status": "unverified_hypothesis"},
+    {"name": "medical candidates", "status": "unverified_hypothesis"}
+  ]
+}
