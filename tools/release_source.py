@@ -65,6 +65,19 @@ def verify_release_source(repository: Path, revision: str, paths: list[Path]) ->
             raise ValueError(f"release input differs from source revision: {relative}")
 
 
+def verify_release_payloads(
+    repository: Path, revision: str, payloads: dict[str, bytes]
+) -> None:
+    """Bind already captured package bytes to the exact named commit."""
+    for relative, payload in payloads.items():
+        try:
+            committed = _git(repository, "show", f"{revision}:{relative}", text=False)
+        except (OSError, subprocess.CalledProcessError) as error:
+            raise ValueError(f"release payload is absent from source revision: {relative}") from error
+        if committed != payload:
+            raise ValueError(f"captured release payload differs from source revision: {relative}")
+
+
 def require_release_version(repository: Path, version: str) -> None:
     """Use VERSION and changelog as the single release-version authority."""
     declared = (repository / "VERSION").read_text().strip()

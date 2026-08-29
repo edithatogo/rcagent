@@ -12,7 +12,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from tools.release_source import require_release_version, verify_release_source
+from tools.release_source import (
+    require_release_version,
+    verify_release_payloads,
+    verify_release_source,
+)
 
 _ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 _SAFE_VERSION = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9._+-]{0,127})\Z")
@@ -87,6 +91,14 @@ def build_distribution(
     if source_revision is not None:
         require_release_version(repository, version)
         verify_release_source(repository, source_revision, [skill_root, *documents])
+        captured = {
+            (skill_root / name).relative_to(repository).as_posix(): payload
+            for name, payload in files[: len(files) - len(documents)]
+        }
+        captured.update(
+            {path.relative_to(repository).as_posix(): payload for path, (_, payload) in zip(documents, files[-len(documents):], strict=True)}
+        )
+        verify_release_payloads(repository, source_revision, captured)
 
     file_records = [
         {"path": name, "sha256": _sha256(payload), "size": len(payload)}

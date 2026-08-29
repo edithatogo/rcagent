@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from tools.release_source import verify_release_source
+from tools.release_source import verify_release_payloads, verify_release_source
 
 
 def _git(repository: Path, *args: str) -> str:
@@ -41,3 +41,13 @@ def test_release_source_rejects_symlinked_input(tmp_path: Path) -> None:
     (repository / "input/link").symlink_to(repository / "input/nested/file.txt")
     with pytest.raises(ValueError, match="symlink"):
         verify_release_source(repository, revision, [repository / "input"])
+
+
+def test_captured_release_payload_must_equal_commit_even_after_worktree_reversion(
+    tmp_path: Path,
+) -> None:
+    repository, revision = _repository(tmp_path)
+    captured = {"input/nested/file.txt": b"raced\n"}
+    verify_release_source(repository, revision, [repository / "input"])
+    with pytest.raises(ValueError, match="captured release payload differs"):
+        verify_release_payloads(repository, revision, captured)

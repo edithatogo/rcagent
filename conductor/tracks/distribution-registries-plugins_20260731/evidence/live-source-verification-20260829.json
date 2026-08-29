@@ -1,11 +1,173 @@
 {
   "normative_scope": "point-in-time route and packaging guidance; reverify immediately before submission",
-  "retrieved_at": "2026-08-29T11:00:07.665185+00:00",
+  "retrieved_at": "2026-08-29T11:10:46.253516+00:00",
   "schema_version": "1.0",
   "sources": [
-    {"content_sha256":"e852c4e6c0abd306ff54662732bffd3a369b2355db9b0abd5253d59ba13d595c","final_url":"https://agentskills.io/specification","id":"agent-skills","markers":["SKILL.md","name","description"],"requested_url":"https://agentskills.io/specification","status":"verified"},
-    {"content_sha256":"63eb97213926addaf3dbc2a42e7bb88de974a4510439d4d248eed7f379215d87","final_url":"https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases","id":"github-releases","markers":["release","tag"],"requested_url":"https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases","status":"verified"},
-    {"content_sha256":"d1a0bbc23f03ea08a87f6fdf04e0681886413c66cb099b189c7753f83d0e2799","final_url":"https://code.claude.com/docs/en/plugins-reference","id":"claude-plugins","markers":["plugin.json",".claude-plugin"],"requested_url":"https://code.claude.com/docs/en/plugins-reference","status":"verified"},
-    {"content_sha256":"e09e06f65c6e1443c20f126f293770355df431ff825926527165d5364b634e90","final_url":"https://developers.openai.com/plugins/build/plugins","id":"openai-plugins","markers":["plugin.json",".codex-plugin"],"requested_url":"https://developers.openai.com/plugins/build/plugins","status":"verified"}
+    {
+      "content_sha256": "e852c4e6c0abd306ff54662732bffd3a369b2355db9b0abd5253d59ba13d595c",
+      "final_url": "https://agentskills.io/specification",
+      "id": "agent-skills",
+      "markers": [
+        "SKILL.md",
+        "name",
+        "description"
+      ],
+      "requested_url": "https://agentskills.io/specification",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "006b3c7589410a31610618ee74727a22aab1d8c942fe0e81d043948e82c29c90",
+      "final_url": "https://agentskills.io/client-implementation/adding-skills-support",
+      "id": "agent-skills-client",
+      "markers": [
+        "skills",
+        "client"
+      ],
+      "requested_url": "https://agentskills.io/client-implementation/adding-skills-support",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "2108ecd8a2edfa50f3d6af07a19b5906b510479cdf9e8f00511e7546f92a7d82",
+      "final_url": "https://github.com/agentskills/agentskills/blob/main/LICENSE",
+      "id": "agent-skills-licence",
+      "markers": [
+        "Apache",
+        "License"
+      ],
+      "requested_url": "https://github.com/agentskills/agentskills/blob/main/LICENSE",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "63eb97213926addaf3dbc2a42e7bb88de974a4510439d4d248eed7f379215d87",
+      "final_url": "https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases",
+      "id": "github-releases",
+      "markers": [
+        "release",
+        "tag"
+      ],
+      "requested_url": "https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "337cbcbdfbe540fea5a2d1a099081a4aa49441039238fefabe01a811a91a4a94",
+      "final_url": "https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases",
+      "id": "github-immutable-releases",
+      "markers": [
+        "immutable",
+        "release"
+      ],
+      "requested_url": "https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "015dfae433a07d01785883d39f05d5ae61cc126c86e30de8047ab1bf1349b844",
+      "final_url": "https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/verify-release-integrity",
+      "id": "github-release-integrity",
+      "markers": [
+        "verify",
+        "integrity"
+      ],
+      "requested_url": "https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/verify-release-integrity",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "2a391411c91f8ceb4d88817480417499bb73b6cce3c37e23294dd1af3145e658",
+      "final_url": "https://code.claude.com/docs/en/plugins",
+      "id": "claude-plugins",
+      "markers": [
+        "plugin",
+        "Claude Code"
+      ],
+      "requested_url": "https://code.claude.com/docs/en/plugins",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "d1a0bbc23f03ea08a87f6fdf04e0681886413c66cb099b189c7753f83d0e2799",
+      "final_url": "https://code.claude.com/docs/en/plugins-reference",
+      "id": "claude-plugin-reference",
+      "markers": [
+        "plugin.json",
+        ".claude-plugin"
+      ],
+      "requested_url": "https://code.claude.com/docs/en/plugins-reference",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "d24d477f938a63704dad54fc2b0cabcc309655a5ea2bb279e9768c2a55141f3a",
+      "final_url": "https://code.claude.com/docs/en/plugin-marketplaces",
+      "id": "claude-marketplaces",
+      "markers": [
+        "marketplace.json",
+        ".claude-plugin"
+      ],
+      "requested_url": "https://code.claude.com/docs/en/plugin-marketplaces",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "d61b1310ce5102990eebb4254d2f851ca38dbd7abac652256c54e83816a79f81",
+      "final_url": "https://code.claude.com/docs/en/discover-plugins",
+      "id": "claude-discovery",
+      "markers": [
+        "plugin",
+        "marketplace"
+      ],
+      "requested_url": "https://code.claude.com/docs/en/discover-plugins",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "f0c6e64ad125058ce3773b28344577e175c598c9678734bc626e456b525741f6",
+      "final_url": "https://platform.claude.com/plugins/submit",
+      "id": "claude-submit",
+      "markers": [
+        "plugin",
+        "submit"
+      ],
+      "requested_url": "https://platform.claude.com/plugins/submit",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "e09e06f65c6e1443c20f126f293770355df431ff825926527165d5364b634e90",
+      "final_url": "https://developers.openai.com/plugins/build/plugins",
+      "id": "openai-plugins",
+      "markers": [
+        "plugin.json",
+        ".codex-plugin"
+      ],
+      "requested_url": "https://developers.openai.com/plugins/build/plugins",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "7993aeac70848582e7ce92879dd7290d9524fe80b9ddc2c75e007595a294a23e",
+      "final_url": "https://developers.openai.com/plugins/deploy/submission",
+      "id": "openai-submission",
+      "markers": [
+        "submit",
+        "review"
+      ],
+      "requested_url": "https://developers.openai.com/plugins/deploy/submission",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "f8384eb20a7b7058dc7ce53131f4b2d8af1efdfdfaf80ea10b5cc751d153ea6e",
+      "final_url": "https://developers.openai.com/plugins/guides/security-privacy",
+      "id": "openai-security-privacy",
+      "markers": [
+        "security",
+        "privacy"
+      ],
+      "requested_url": "https://developers.openai.com/plugins/guides/security-privacy",
+      "status": "verified"
+    },
+    {
+      "content_sha256": "e55ead69a4d0d7feb10eadde888c0d8779c09c9824cf011815877e2853171365",
+      "final_url": "https://learn.chatgpt.com/docs/build-skills",
+      "id": "openai-skills",
+      "markers": [
+        "skill",
+        "SKILL.md"
+      ],
+      "requested_url": "https://developers.openai.com/codex/build-skills",
+      "status": "verified"
+    }
   ]
 }

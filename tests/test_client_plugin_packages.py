@@ -16,6 +16,7 @@ REVISION = "1" * 40
 @pytest.fixture(autouse=True)
 def _unit_release_source(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(plugin_module, "verify_release_source", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(plugin_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
 
 
 @pytest.mark.parametrize(
@@ -44,6 +45,7 @@ def test_client_plugin_is_deterministic_thin_and_offline(
             import hashlib
 
             assert hashlib.sha256(archive.read(record["path"])).hexdigest() == record["sha256"]
+        assert {record["path"] for record in inventory["files"]} == names - {"INVENTORY.json"}
         assert "skills/rca-investigation/SKILL.md" in names
         assert {"LICENSE", "DISCLAIMER.md", "PRIVACY.md", "SUPPORT.md"} <= names
         assert not any(name.endswith((".mcp.json", ".app.json", "hooks.json")) for name in names)

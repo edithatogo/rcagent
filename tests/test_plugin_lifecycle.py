@@ -16,6 +16,7 @@ ROOT = Path(__file__).parents[1]
 @pytest.fixture(autouse=True)
 def _unit_release_source(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(plugin_module, "verify_release_source", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(plugin_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
 
 
 @pytest.mark.parametrize(
@@ -47,6 +48,27 @@ def test_isolated_installer_rejects_archive_traversal(tmp_path: Path) -> None:
     archive = tmp_path / "unsafe.zip"
     with zipfile.ZipFile(archive, "w") as output:
         output.writestr("../escape", b"no")
-    with pytest.raises(ValueError, match="unsafe"):
+    with pytest.raises(ValueError, match="unsafe|special"):
         install_plugin_archive(archive, tmp_path / "installed")
     assert not (tmp_path / "escape").exists()
+
+
+@pytest.mark.parametrize("name", ["..\\escape", "C:\\escape", "\\\\server\\share\\escape"])
+def test_isolated_installer_rejects_windows_unsafe_paths(tmp_path: Path, name: str) -> None:
+    archive = tmp_path / "unsafe.zip"
+    with zipfile.ZipFile(archive, "w") as output:
+        output.writestr(name, b"no")
+    with pytest.raises(ValueError, match="unsafe"):
+        install_plugin_archive(archive, tmp_path / "installed")
+
+
+@pytest.mark.parametrize("names", [("same", "same"), ("Name", "name")])
+def test_isolated_installer_rejects_duplicate_or_case_collision(
+    tmp_path: Path, names: tuple[str, str]
+) -> None:
+    archive = tmp_path / "duplicate.zip"
+    with zipfile.ZipFile(archive, "w") as output:
+        for name in names:
+            output.writestr(name, b"no")
+    with pytest.raises(ValueError, match="duplicate or case-colliding"):
+        install_plugin_archive(archive, tmp_path / "installed")

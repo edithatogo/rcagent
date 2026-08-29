@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ntpath
 import shutil
 import stat
 import tempfile
@@ -16,14 +17,32 @@ def install_plugin_archive(archive_path: Path, install_root: Path) -> Path:
         staged = Path(temporary) / "plugin"
         staged.mkdir()
         with zipfile.ZipFile(archive_path) as archive:
+            seen: set[str] = set()
             for member in archive.infolist():
+                raw = member.filename
                 name = PurePosixPath(member.filename)
-                if name.is_absolute() or ".." in name.parts or not name.parts:
+                drive, _tail = ntpath.splitdrive(raw)
+                canonical = "/".join(name.parts).casefold()
+                if (
+                    "\x00" in raw
+                    or "\\" in raw
+                    or drive
+                    or raw.startswith(("//", "\\\\"))
+                    or name.is_absolute()
+                    or ".." in name.parts
+                    or not name.parts
+                ):
                     raise ValueError("plugin archive contains an unsafe path")
+                if canonical in seen:
+                    raise ValueError("plugin archive contains duplicate or case-colliding paths")
+                seen.add(canonical)
                 mode = member.external_attr >> 16
-                if stat.S_ISLNK(mode) or (mode and not (stat.S_ISREG(mode) or stat.S_ISDIR(mode))):
+                file_type = stat.S_IFMT(mode)
+                if stat.S_ISLNK(mode) or file_type not in {0, stat.S_IFREG, stat.S_IFDIR}:
                     raise ValueError("plugin archive contains a link or special file")
                 target = staged.joinpath(*name.parts)
+                if not target.resolve().is_relative_to(staged.resolve()):
+                    raise ValueError("plugin archive path escapes the staging root")
                 target.parent.mkdir(parents=True, exist_ok=True)
                 if not member.is_dir():
                     target.write_bytes(archive.read(member))

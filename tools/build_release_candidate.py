@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import stat
 import tempfile
+import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -22,6 +24,28 @@ class ReleaseCandidate:
 
 def _hash(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _build_claude_marketplace(plugin_archive: Path, output: Path, version: str) -> None:
+    catalog = {
+        "name": "rcagent",
+        "owner": {"name": "edithatogo"},
+        "plugins": [
+            {"name": "rca-investigation", "source": "./plugins/rca-investigation", "version": version}
+        ],
+    }
+    with zipfile.ZipFile(output, "w") as target, zipfile.ZipFile(plugin_archive) as plugin:
+        members = [(".claude-plugin/marketplace.json", (json.dumps(catalog, indent=2, sort_keys=True) + "\n").encode())]
+        members.extend(
+            (f"plugins/rca-investigation/{member.filename}", plugin.read(member))
+            for member in plugin.infolist()
+            if not member.is_dir()
+        )
+        for name, payload in members:
+            info = zipfile.ZipInfo(name, (1980, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = (stat.S_IFREG | 0o644) << 16
+            target.writestr(info, payload)
 
 
 def build_release_candidate(
@@ -47,24 +71,9 @@ def build_release_candidate(
         claude = build_client_plugin(
             repository, work / "claude", client="claude-code", version=version, source_revision=source_revision
         )
-        marketplace_assets = {
-            "codex-marketplace.json": {
-                "name": "rcagent",
-                "owner": {"name": "edithatogo"},
-                "plugins": [{"name": "rca-investigation", "source": f"./rca-investigation-codex-{version}.zip", "version": version}],
-            },
-            "claude-marketplace.json": {
-                "name": "rcagent",
-                "owner": {"name": "edithatogo"},
-                "plugins": [{"name": "rca-investigation", "source": f"./rca-investigation-claude-code-{version}.zip", "version": version}],
-            },
-        }
-        generated: list[Path] = []
-        for name, value in marketplace_assets.items():
-            path = work / name
-            path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n")
-            generated.append(path)
-        sources = [core.archive, core.manifest_path, core.sbom_path, codex.archive, claude.archive, *generated]
+        claude_marketplace = work / f"rca-investigation-claude-marketplace-{version}.zip"
+        _build_claude_marketplace(claude.archive, claude_marketplace, version)
+        sources = [core.archive, core.manifest_path, core.sbom_path, codex.archive, claude.archive, claude_marketplace]
         outputs: list[Path] = []
         for source in sources:
             target = destination / source.name

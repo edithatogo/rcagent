@@ -44,8 +44,8 @@
     {
       "id": "track11-rights-and-public-data-review",
       "kind": "rights_privacy_review",
-      "status": "pending",
-      "evidence": "evidence/foundation-and-packaging-20260829.md"
+      "status": "satisfied",
+      "evidence": "evidence/release-rights-inventory-0.1.0.json"
     }
   ],
   "description": "Package the portable skill suite for trustworthy discovery and installation, then build optional Claude, Codex/OpenAI, and other client plugins without contaminating the standards-compliant core."

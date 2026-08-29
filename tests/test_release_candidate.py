@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -18,7 +19,9 @@ REVISION = "2" * 40
 @pytest.fixture(autouse=True)
 def _unit_release_source(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(plugin_module, "verify_release_source", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(plugin_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
     monkeypatch.setattr(distribution_module, "verify_release_source", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(distribution_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
     monkeypatch.setattr(candidate_module, "validate_release_inventory", lambda *_args, **_kwargs: {})
 
 
@@ -37,6 +40,11 @@ def test_release_candidate_is_deterministic_hash_bound_and_public_only(tmp_path:
         assert hashlib.sha256((first.destination / name).read_bytes()).hexdigest() == digest
     checked = json.loads((first.destination / "release-candidate.json").read_text())
     assert checked == first.manifest
+    marketplace = first.destination / "rca-investigation-claude-marketplace-0.1.0.zip"
+    with zipfile.ZipFile(marketplace) as archive:
+        catalog = json.loads(archive.read(".claude-plugin/marketplace.json"))
+        assert catalog["plugins"][0]["source"] == "./plugins/rca-investigation"
+        assert "plugins/rca-investigation/.claude-plugin/plugin.json" in archive.namelist()
 
 
 def test_release_candidate_refuses_nonempty_destination(tmp_path: Path) -> None:

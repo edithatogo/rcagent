@@ -11,7 +11,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from tools.release_source import require_release_version, verify_release_source
+from tools.release_source import (
+    require_release_version,
+    verify_release_payloads,
+    verify_release_source,
+)
 
 _TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 _SEMVER = re.compile(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\Z")
@@ -118,19 +122,31 @@ def build_client_plugin(
         if path.is_file()
     ]
     packaged.extend((path.name, path.read_bytes()) for path in documents)
+    verify_release_payloads(
+        repository,
+        source_revision,
+        {
+            (skill / name.removeprefix("skills/rca-investigation/")).relative_to(repository).as_posix()
+            if name.startswith("skills/rca-investigation/")
+            else (repository / name).relative_to(repository).as_posix(): payload
+            for name, payload in packaged
+        },
+    )
+    manifest_payload = _json(manifest)
+    provenance_payload = _json(provenance)
     inventory = {
         "schema_version": "1.0",
         "scope": "package-members-excluding-INVENTORY.json",
         "client": client,
         "files": [
             {"path": name, "sha256": _hash(payload), "size": len(payload)}
-            for name, payload in packaged
+            for name, payload in [(manifest_path, manifest_payload), ("PROVENANCE.json", provenance_payload), *packaged]
         ],
     }
     archive_path = destination / f"rca-investigation-{client}-{version}.zip"
     with zipfile.ZipFile(archive_path, "w") as archive:
-        _member(archive, manifest_path, _json(manifest))
-        _member(archive, "PROVENANCE.json", _json(provenance))
+        _member(archive, manifest_path, manifest_payload)
+        _member(archive, "PROVENANCE.json", provenance_payload)
         _member(archive, "INVENTORY.json", _json(inventory))
         for name, payload in packaged:
             _member(archive, name, payload)
