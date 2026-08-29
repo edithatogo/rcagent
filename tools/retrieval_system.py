@@ -12,6 +12,7 @@ import tempfile
 import time
 import tracemalloc
 import unicodedata
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -44,7 +45,9 @@ def content_checksum(content: str) -> str:
 
 
 def instruction_markers(value: Any) -> list[str]:
-    raw = unicodedata.normalize("NFKC", json.dumps(value, sort_keys=True).lower())
+    raw = unicodedata.normalize(
+        "NFKC", json.dumps(value, sort_keys=True, ensure_ascii=False).lower()
+    )
     raw = "".join(character for character in raw if unicodedata.category(character) != "Cf")
     text = re.sub(r"[^a-z0-9]+", " ", raw)
     return [marker for marker in INSTRUCTION_MARKERS if marker in text]
@@ -415,7 +418,9 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
         errors.append("literature query must be non-empty")
     if not isinstance(receipt.get("provider"), str) or not receipt["provider"].strip():
         errors.append("literature provider must be non-empty")
-    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(receipt.get("date", ""))):
+    try:
+        date.fromisoformat(str(receipt.get("date", "")))
+    except ValueError:
         errors.append("literature date must be ISO YYYY-MM-DD")
     identifiers = [item.get("identifier") for item in receipt.get("results", [])]
     if len(identifiers) != len(set(identifiers)):
@@ -423,6 +428,8 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
     screened = {item.get("identifier") for item in receipt.get("screening", [])}
     if screened != set(identifiers):
         errors.append("screening/result identifier mismatch")
+    if len(receipt.get("screening", [])) != len(screened):
+        errors.append("duplicate screening identifier")
     if any(
         not {"identifier", "decision", "reason"} <= item.keys()
         or item.get("decision") not in {"include", "exclude"}
@@ -433,8 +440,15 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
     quality = receipt.get("study_quality", [])
     if {item.get("identifier") for item in quality if isinstance(item, dict)} != set(identifiers):
         errors.append("study-quality/result identifier mismatch")
+    if any(
+        not {"identifier", "status", "reason"} <= item.keys()
+        or item.get("status") not in {"not_assessed", "assessed"}
+        or not str(item.get("reason", "")).strip()
+        for item in quality
+    ):
+        errors.append("study-quality record is incomplete")
     if sourceright.get("status") == "unavailable" and (
-        "c5fa583" not in str(sourceright.get("revision", ""))
+        sourceright.get("revision") != "adapter 0.1 / clean vendored pin c5fa583"
         or "no Track07" not in str(sourceright.get("diagnostic", ""))
     ):
         errors.append("unavailable SourceRight boundary is not bound to the clean pin")
@@ -683,8 +697,13 @@ def assurance() -> dict[str, Any]:
         "private_data": False,
         "unsupported": MANDATORY_UNSUPPORTED,
     }
+    receipt["observation_sha256"] = canonical_hash(receipt["research_observations"])
     receipt["receipt_sha256"] = canonical_hash(
-        {key: value for key, value in receipt.items() if key != "research_observations"}
+        {
+            key: value
+            for key, value in receipt.items()
+            if key not in {"research_observations", "observation_sha256"}
+        }
     )
     return receipt
 
@@ -694,7 +713,7 @@ def verify_assurance(receipt: dict[str, Any]) -> list[str]:
     unsigned = {
         key: value
         for key, value in receipt.items()
-        if key not in {"receipt_sha256", "research_observations"}
+        if key not in {"receipt_sha256", "research_observations", "observation_sha256"}
     }
     if receipt.get("receipt_sha256") != canonical_hash(unsigned):
         errors.append("receipt hash mismatch")
@@ -730,6 +749,8 @@ def verify_assurance(receipt: dict[str, Any]) -> list[str]:
         observations.get("allocation_peak_bytes"), int
     ):
         errors.append("research performance observations missing")
+    if receipt.get("observation_sha256") != canonical_hash(observations):
+        errors.append("research observation hash mismatch")
     profiles = load_json(PROFILES).get("profiles", [])
     expected_profiles = [
         {"id": item["id"], "status": item["status"], "revision": item["revision"]}

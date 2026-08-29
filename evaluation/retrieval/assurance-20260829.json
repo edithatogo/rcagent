@@ -1,6 +1,7 @@
 {
   "manifest_sha256": "e4a9abef6b64e4c2d58244d928e28f47e4a4bcd0cd1c237cb4c4a32a6bcf2384",
   "network": "disabled",
+  "observation_sha256": "2024fd84ded40ace9c596b956884fe4eb625047a93fff07175f799b8d2c2542f",
   "private_data": false,
   "profile_comparison": [
     {
@@ -38,7 +39,7 @@
   "receipt_sha256": "449a46d66c32981c7c2609c410a8e0dff07e82a9c24cad4fd9f76cdf2840ba83",
   "research_observations": {
     "allocation_peak_bytes": 15073,
-    "elapsed_ms": 37.703,
+    "elapsed_ms": 0.954,
     "integrity_scope": "volatile descriptive observations excluded from receipt_sha256"
   },
   "results": {
