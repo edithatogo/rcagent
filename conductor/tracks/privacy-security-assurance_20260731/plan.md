@@ -219,3 +219,13 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Redact sensitive diagnostics and produce content-free deletion receipts
   - [x] Make model, index, network, power, and unknown recovery states fail closed
   - [x] Run 29 focused tests plus lint and type checks
+
+- [~] Task: Remediate fresh-context false-completion findings
+  - [ ] Restrict public remote mode to public content
+  - [ ] Require complete, internally consistent model-result disclosures
+  - [ ] Require reviewable deletion verification without retaining resource identifiers
+  - [ ] Reject empty, duplicate, unavailable, stale, or evidence-free assurance cases
+  - [ ] Add executable malicious-artifact, poisoned-retrieval, and unsafe-plugin checks
+  - [ ] Add machine-readable security, privacy, cultural-safety, and clinical-safety assurance domains
+  - [ ] Correct the ledger's local-wall-clock-as-UTC evidence without rewriting append-only history
+  - [ ] Re-run focused and repository-wide validation, then review the corrected diff
