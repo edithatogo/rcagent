@@ -22,6 +22,8 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path]:
             "path": path.relative_to(repository).as_posix(),
             "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             "rights_basis": "repository_authored_or_apache_licensed",
+            "author": "rcagent repository contributors",
+            "source": "https://github.com/edithatogo/rcagent",
             "licence": "Apache-2.0",
             "data_class": "public_no_personal_data",
         })
