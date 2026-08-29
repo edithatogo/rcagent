@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "query": "synthetic safety evidence",
+  "provider": "unconfigured-provider-port",
+  "date": "2026-08-29",
+  "filters": {"language": "en", "data_class": "generated_synthetic_only"},
+  "results": [{"title":"Synthetic study","authors":["[Author A]"],"year":2026,"identifier":"synthetic:1","source":"generated fixture"}],
+  "screening": [{"identifier":"synthetic:1","decision":"include","reason":"contract fixture only"}],
+  "sourceright": {"status":"unavailable","revision":"adapter 0.1 / vendored pin c5fa583","diagnostic":"no executable invocation; optional contract remains fail closed"},
+  "conflicts": [],
+  "network": "disabled",
+  "private_data": false,
+  "limitations": ["not a literature search result", "no provider or SourceRight execution", "no study-quality, applicability, clinical or recommendation decision"]
+}

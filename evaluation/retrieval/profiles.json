@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "profiles": [
+    {"id":"lexical-sqlite-fts5","revision":"contract 1.0 / Python sqlite3 runtime","licence":"SQLite public domain; repository adapter Apache-2.0","status":"supported_ci_contract","compartments":"one exact compartment per index","network":"disabled","telemetry":"none","compatibility":"SQLite runtime with FTS5 enabled","install":"standard-library no-op; run python -m tools.retrieval_system validate","discover":"sqlite_compileoption_used ENABLE_FTS5","health_check":"python -m tools.retrieval_system assure","uninstall":"delete only derived SQLite index files","rollback":"discard derived database and rebuild from validated manifest"},
+    {"id":"vector-local","revision":"contract 1.0; no encoder or vector store admitted","licence":"unresolved because no backend/model admitted","status":"unsupported","compartments":"not enabled","network":"disabled","telemetry":"none","compatibility":"none","rollback":"profile remains disabled"},
+    {"id":"hybrid-fusion","revision":"contract 1.0","licence":"repository adapter Apache-2.0","status":"unsupported_without_vector_baseline_gain","compartments":"not enabled","network":"disabled","telemetry":"none","compatibility":"none","rollback":"use lexical baseline"},
+    {"id":"reranker-local","revision":"contract 1.0; no cross-encoder admitted","licence":"unresolved because no model admitted","status":"unsupported","compartments":"not enabled","network":"disabled","telemetry":"none","compatibility":"none","rollback":"use lexical ordering"},
+    {"id":"literature-provider","revision":"provider port contract 1.0; no external provider configured","licence":"provider-specific and unresolved","status":"contract_only","compartments":"public query receipts only","network":"disabled","telemetry":"none","compatibility":"structured candidate metadata","rollback":"retain query and screening receipt with provider unavailable"},
+    {"id":"sourceright","revision":"sourceright adapter contract 0.1; executable unavailable by default","licence":"optional external tool; no redistribution claim","status":"contract_only","compartments":"fully_local or air_gapped","network":"disabled","telemetry":"none","compatibility":"read-only structured JSON commands","rollback":"preserve CSL and mark verification unavailable"}
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "allocation_peak_bytes": 135952,
+  "elapsed_ms": 3.365,
+  "manifest_sha256": "c23e0a1a8c0801ec3587eb9d8b7bc887eef061dd2a28d1e147159950d5492c39",
+  "network": "disabled",
+  "private_data": false,
+  "profile_revision": "lexical-sqlite-fts5 contract 1.0",
+  "receipt_sha256": "4409159d53820a34be68b73dec66b41b387c32d3fb0f302d44b0afcbcb87495f",
+  "results": {
+    "acronym": {
+      "hits": 1,
+      "passed": true
+    },
+    "exact": {
+      "hits": 1,
+      "passed": true
+    },
+    "phrase": {
+      "hits": 1,
+      "passed": true
+    },
+    "typo": {
+      "hits": 0,
+      "passed": true
+    },
+    "version_filter": {
+      "hits": 1,
+      "passed": true
+    }
+  },
+  "schema_version": "1.0",
+  "scope": "deterministic_synthetic_ci_contract",
+  "unsupported": [
+    "typo correction",
+    "vector retrieval",
+    "hybrid retrieval",
+    "model reranking",
+    "external literature provider",
+    "cross-compartment retrieval",
+    "operational thresholds"
+  ]
+}
