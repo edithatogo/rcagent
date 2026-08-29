@@ -53,11 +53,11 @@
 ## Phase 5: Interfaces, distribution, and adaptation readiness
 
 - [x] Task: Implement Track 09 interfaces, templates, and action-loop controls
-- [ ] Task: Implement Track 11 packaging, adapters, installation, and release preflights
-- [ ] Task: Implement Track 10 dataset governance and dry-run adaptation pipeline only
-- [ ] Task: Preserve training and model-artefact production as blocked external work
-- [ ] Task: Review, merge, and clean each PR before starting the next
-- [ ] Task: Phase verification and checkpoint
+- [x] Task: Implement Track 11 packaging, adapters, installation, and release preflights — supported `v0.1.1`; directory packets not submitted
+- [x] Task: Implement Track 10 dataset governance and dry-run adaptation pipeline only — archived negative disposition; no dataset, training, model, or artefact produced
+- [x] Task: Preserve training and model-artefact production as blocked external work
+- [x] Task: Review, merge, and clean each track PR before starting the next
+- [x] Task: Phase verification and checkpoint
 
 ## Phase 6: Portfolio reconciliation and closure readiness
 
@@ -82,7 +82,6 @@
 9. Track 07 deterministic retrieval interfaces.
 10. Track 08 runtime discovery and dry-run controls.
 11. Track 09 interfaces and action loop.
-12. Track 10 adaptation readiness and negative-result closure.
-12. Track 11 distribution and release preflights.
-13. Track 10 adaptation governance and dry-run pipeline.
+12. Track 10 adaptation readiness, governance, and negative-result closure.
+13. Track 11 distribution, supported GitHub release, and unsubmitted directory preflights.
 14. Cross-cutting quality and portfolio reconciliation.

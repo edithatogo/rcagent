@@ -70,3 +70,12 @@ The owner authorised public releases and registry or marketplace submissions on
 approved with conditions. Continue to fail closed until all affected dependency
 receipts and exact-candidate release or submission checks pass; the instruction
 does not turn an incomplete or unreviewed artefact into a releasable one.
+
+## Superseding completion evidence
+
+This receipt is retained as historical pre-release evidence. Its GitHub-release
+limitations were subsequently resolved by PRs #66, #67, and #68 and supported
+release `v0.1.1`; see `hosted-release-v0.1.1-20260829.md` and
+`completion-receipt-20260829.md`. Directory submission, screening, approval,
+and publication remain unperformed external states and are not superseded into
+achievements.

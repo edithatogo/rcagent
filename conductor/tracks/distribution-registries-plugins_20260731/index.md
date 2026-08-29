@@ -1,6 +1,6 @@
 # Track 11: Distribution, Registries, and Client Plugins
 
-- **Status:** In progress
+- **Status:** Completed — supported GitHub release `v0.1.1`; directory submissions not performed
 - **Workstream:** product-interfaces-distribution
 - **GitHub issue:** [#16](https://github.com/edithatogo/rcagent/issues/16)
 - **Parent workstream:** [#4](https://github.com/edithatogo/rcagent/issues/4)
@@ -23,3 +23,7 @@
 - [Implementation Plan](./plan.md)
 - [Metadata](./metadata.json)
 - [Portfolio Roadmap](../../roadmap.md)
+- [Completion Receipt](./evidence/completion-receipt-20260829.md)
+- [Hosted Release Receipt](./evidence/hosted-release-v0.1.1-20260829.md)
+- [Acceptance Map](./evidence/acceptance-map-20260829.md)
+- [Final Agent Panel](./evidence/final-agent-panel-20260829.md)
