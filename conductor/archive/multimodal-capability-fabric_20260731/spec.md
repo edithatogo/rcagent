@@ -53,14 +53,14 @@ requires a fit-gap record and an approved Architecture Decision Record.
 
 ## Hard Start Dependencies
 
-- [evidence-workflow-core_20260731](../../archive/evidence-workflow-core_20260731/index.md)
-- [privacy-security-assurance_20260731](../../archive/privacy-security-assurance_20260731/index.md)
+- [evidence-workflow-core_20260731](../evidence-workflow-core_20260731/index.md)
+- [privacy-security-assurance_20260731](../privacy-security-assurance_20260731/index.md)
 
 The track cannot start until each hard dependency has a passing completion receipt, not merely a closed issue.
 
 ## Later Phase Dependencies
 
-- [benchmark-evaluation-harness_20260731](../../archive/benchmark-evaluation-harness_20260731/index.md)
+- [benchmark-evaluation-harness_20260731](../benchmark-evaluation-harness_20260731/index.md)
 
 These dependencies gate the affected integration or validation phase without needlessly blocking independent foundation work.
 

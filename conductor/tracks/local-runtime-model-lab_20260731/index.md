@@ -9,7 +9,7 @@
 ## Hard Start Dependencies
 
 - [benchmark-evaluation-harness_20260731](../../archive/benchmark-evaluation-harness_20260731/index.md)
-- [multimodal-capability-fabric_20260731](../multimodal-capability-fabric_20260731/index.md)
+- [multimodal-capability-fabric_20260731](../../archive/multimodal-capability-fabric_20260731/index.md)
 
 ## Later Phase Dependencies
 
