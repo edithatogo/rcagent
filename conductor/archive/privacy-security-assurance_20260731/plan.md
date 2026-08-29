@@ -234,10 +234,10 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Archival
 
-- [~] Task: Archive the completed and revalidated track
+- [x] Task: Archive the completed and revalidated track — `23a2463`; evidence `e78e022`
   - [x] Move the complete track without deleting its history or evidence
   - [x] Preserve the completed registry entry and redirect it to the archive
   - [x] Redirect roadmap, dependency, fixture, and integration-map links
   - [x] Re-run repository governance and the full applicable test suite after the move
   - [x] Teach repository governance to validate roadmap tracks in active or archived locations — `23a2463`
-  - [ ] Pass hosted checks on the exact archive head and merge the archive transition
+  - [x] Pass hosted checks, including Codecov patch, on exact archive content head `e78e022`
