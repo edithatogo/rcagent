@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -47,7 +48,7 @@ def proposal(level: str = "prompt") -> dict:
         "base_revision":"not_acquired","framework_revision":"not_acquired","seed":0,
         "compute_budget":"none","network":"none","telemetry":"none","remote_code":False,
         "execute":False,"readiness_sha256":readiness()["receipt_sha256"],
-        "rollback":["discard proposal"],"stop_conditions":["readiness remains false"],
+        "rollback":["discard_proposal"],"stop_conditions":["readiness_remains_false"],
     }
 
 
@@ -234,6 +235,33 @@ def test_dependency_manifest_rejects_intermediate_symlink(tmp_path: Path) -> Non
     assert "dependencies[0] receipt path is invalid" in validate_dependency_manifest(value, tmp_path)
 
 
+def test_dependency_manifest_rejects_valid_non_object_json(tmp_path: Path) -> None:
+    track_dir = tmp_path / "conductor/archive/benchmark-evaluation-harness_20260731"
+    track_dir.mkdir(parents=True)
+    receipt = track_dir / "receipt.md"
+    metadata = track_dir / "metadata.json"
+    claim_file = tmp_path / "claim.json"
+    receipt.write_text("receipt")
+    metadata.write_text("[]")
+    claim_file.write_text("null")
+    def digest(path: Path) -> str:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    value = dependencies()
+    value["dependencies"][0].update(
+        receipt_path="conductor/archive/benchmark-evaluation-harness_20260731/receipt.md",
+        sha256=digest(receipt),
+        metadata_path="conductor/archive/benchmark-evaluation-harness_20260731/metadata.json",
+        metadata_sha256=digest(metadata),
+    )
+    value["claims"][0].update(path="claim.json", sha256=digest(claim_file))
+    errors = validate_dependency_manifest(value, tmp_path)
+    assert "dependencies[0] metadata must be an object" in errors
+    assert "claims[0] content must be an object" in errors
+    metadata.write_text('{"track_id":"wrong","status":"active"}')
+    value["dependencies"][0]["metadata_sha256"] = digest(metadata)
+    assert "dependencies[0] metadata state or identity mismatched" in validate_dependency_manifest(value, tmp_path)
+
+
 def test_readiness_receipt_rejects_tampering_and_wrong_input_binding() -> None:
     value = readiness()
     value["ready"] = True
@@ -301,4 +329,4 @@ def test_proposal_rejects_unsafe_content_bad_identifier_and_seed() -> None:
     errors = validate_experiment_proposal(value, readiness(), registry=registry(), dataset=dataset(), dependencies=dependencies(), root=ROOT)
     assert "experiment_id must be an opaque synthetic identifier" in errors
     assert "experiment seed is invalid" in errors
-    assert "experiment rollback contains unsafe content" in errors
+    assert "experiment rollback must use the fixed discard_proposal condition" in errors

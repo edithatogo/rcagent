@@ -17,7 +17,6 @@ SCHEMA_VERSION = "1.0"
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 LEVELS = {"deterministic", "retrieval", "prompt", "structured_output", "tool", "adapter", "weight_update"}
 STATUS = {"unavailable", "contract_only", "rejected"}
-SENSITIVE_RE = re.compile(r"(?i)(?:token|password|secret|api[_-]?key)\s*[=:]|https?://|file:|(?:^|/)\.\.(?:/|$)|/Users/|[A-Z]:\\")
 
 
 def canonical_hash(value: object) -> str:
@@ -30,6 +29,13 @@ def _is_sha(value: object) -> bool:
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _hash_matches(path: Path, expected: object) -> bool:
+    try:
+        return _is_sha(expected) and _sha256(path) == expected
+    except OSError:
+        return False
 
 
 def _secure_file(root: Path, relative: str, *, prefix: PurePosixPath | None = None) -> Path | None:
@@ -86,11 +92,11 @@ def validate_dependency_manifest(manifest: object, root: Path) -> list[str]:
         path = _secure_file(root, path_value, prefix=expected_prefix)
         if not posix.is_relative_to(expected_prefix) or path is None:
             errors.append(f"dependencies[{index}] receipt path is invalid")
-        elif not _is_sha(item.get("sha256")) or _sha256(path) != item["sha256"]:
+        elif not _hash_matches(path, item.get("sha256")):
             errors.append(f"dependencies[{index}] receipt hash mismatched")
         metadata_value = item.get("metadata_path")
         metadata = _secure_file(root, metadata_value, prefix=expected_prefix) if isinstance(metadata_value, str) else None
-        if metadata is None or not _is_sha(item.get("metadata_sha256")) or _sha256(metadata) != item["metadata_sha256"]:
+        if metadata is None or not _hash_matches(metadata, item.get("metadata_sha256")):
             errors.append(f"dependencies[{index}] metadata path or hash mismatched")
         else:
             try:
@@ -98,7 +104,9 @@ def validate_dependency_manifest(manifest: object, root: Path) -> list[str]:
             except (OSError, UnicodeError, json.JSONDecodeError):
                 errors.append(f"dependencies[{index}] metadata is unreadable")
             else:
-                if metadata_content.get("track_id") != track_id or metadata_content.get("status") != "completed":
+                if not isinstance(metadata_content, dict):
+                    errors.append(f"dependencies[{index}] metadata must be an object")
+                elif metadata_content.get("track_id") != track_id or metadata_content.get("status") != "completed":
                     errors.append(f"dependencies[{index}] metadata state or identity mismatched")
     if seen != required_ids:
         errors.append("dependency track coverage is incomplete")
@@ -115,13 +123,16 @@ def validate_dependency_manifest(manifest: object, root: Path) -> list[str]:
                 errors.append(f"claims[{index}] path is invalid")
                 continue
             path = _secure_file(root, path_value)
-            if path is None or not _is_sha(claim.get("sha256")) or _sha256(path) != claim["sha256"]:
+            if path is None or not _hash_matches(path, claim.get("sha256")):
                 errors.append(f"claims[{index}] hash or path mismatched")
                 continue
             try:
                 value = json.loads(path.read_text())
             except (OSError, UnicodeError, json.JSONDecodeError):
                 errors.append(f"claims[{index}] content is unreadable")
+                continue
+            if not isinstance(value, dict):
+                errors.append(f"claims[{index}] content must be an object")
                 continue
             if claim.get("id") == "runtime_models_empty" and (claim.get("expected") is not True or value.get("models") != []):
                 errors.append("runtime empty-model claim failed")
@@ -342,11 +353,10 @@ def validate_experiment_proposal(proposal: object, readiness: object, *, registr
         errors.append("proposal is not bound to the negative readiness receipt")
     if proposal.get("level") in {"adapter", "weight_update"}:
         errors.append("weight-affecting experiment is blocked")
-    for field in ("rollback", "stop_conditions"):
-        if not isinstance(proposal.get(field), list) or not proposal[field] or not all(isinstance(item, str) and item for item in proposal[field]):
-            errors.append(f"experiment {field} must be a non-empty string array")
-        elif any(SENSITIVE_RE.search(item) for item in proposal[field]):
-            errors.append(f"experiment {field} contains unsafe content")
+    if proposal.get("rollback") != ["discard_proposal"]:
+        errors.append("experiment rollback must use the fixed discard_proposal condition")
+    if proposal.get("stop_conditions") != ["readiness_remains_false"]:
+        errors.append("experiment stop_conditions must use the fixed readiness_remains_false condition")
     if not isinstance(proposal.get("experiment_id"), str) or not re.fullmatch(r"syn-[a-z0-9-]{3,64}", proposal["experiment_id"]):
         errors.append("experiment_id must be an opaque synthetic identifier")
     seed = proposal.get("seed")
