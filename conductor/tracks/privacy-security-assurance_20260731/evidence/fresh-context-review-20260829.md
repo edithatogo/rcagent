@@ -25,16 +25,16 @@ This receipt records the independent completion audit requested before archival.
 ## Validation
 
 ```text
-python -m pytest tests/test_privacy_assurance.py -q       37 passed
+python -m pytest tests/test_privacy_assurance.py --cov=tools.privacy_assurance   38 passed, 100%
 python -m ruff check tools tests                          passed
 python -m ty check tools tests                            passed
 python -m basedpyright                                    0 errors, 0 warnings
 python -m tools.check_gremlins .                          no gremlins found
 python -m tools.validate_repository                       passed
-pytest --cov=tools --cov-report=term-missing              157 passed, 5 skipped, 86.18%
+pytest --cov=tools --cov-report=term-missing              158 passed, 5 skipped, 87.52%
 ```
 
-The five skips are the existing PowerShell-dependent cases on macOS. Hosted checks on the exact remediation head remain required before completion is restored and the track is archived.
+The five skips are the existing PowerShell-dependent cases on macOS. PR #45 initially reported 81.98% patch coverage despite the repository gate passing. Commit `349e5f4` exercises the missing fail-closed branches and brings the focused module to 100%. Hosted checks on the updated exact head remain required before completion is restored and the track is archived.
 
 ## Re-review conclusion
 

@@ -5,6 +5,7 @@
 - Functional commit: `3f7aad3d64869a4a4b2a081155c5d2413c501d92`
 - Review-fix commit: `a5ff002770c3132e957d622d37b5322263b2a59a`
 - False-completion remediation commit: `aa597fe52b0e4f6b11ad87fd87d88036bda0cf99`
+- Patch-coverage remediation commit: `349e5f4`
 - Evidence commit: `c49dbd66e33afb87df6c7f5bed2857877a7f3acb`
 - Pull request: [#43](https://github.com/edithatogo/rcagent/pull/43), merged as `5f4b37c2c38f70b1b589fa9e3cfcacb86083d0c0`
 - Evidence date: `2026-08-29`
@@ -45,11 +46,11 @@ python -m ty check tools tests                            passed
 python -m basedpyright                                    0 errors, 0 warnings
 python -m tools.check_gremlins .                          no gremlins found
 python -m tools.validate_repository                       passed
-pytest --cov=tools --cov-report=term-missing              157 passed, 5 skipped, 86.18%
-pytest tests/test_privacy_assurance.py -q                 37 passed
+pytest --cov=tools --cov-report=term-missing              158 passed, 5 skipped, 87.52%
+pytest tests/test_privacy_assurance.py --cov=tools.privacy_assurance   38 passed, 100%
 ```
 
-The five skips are the repository's documented PowerShell-dependent tests on macOS. The 80% repository coverage gate passed. The original hosted checks passed on exact head `c49dbd6`, but fresh-context review subsequently invalidated completion and reopened issue #8. Hosted validation of remediation commit `aa597fe` is required before renewed completion and archival.
+The five skips are the repository's documented PowerShell-dependent tests on macOS. The 80% repository coverage gate passed. The original hosted checks passed on exact head `c49dbd6`, but fresh-context review subsequently invalidated completion and reopened issue #8. PR #45 then exposed 81.98% patch coverage on the remediation diff. Commit `349e5f4` added negative-path tests and raises focused privacy-assurance coverage to 100%; hosted revalidation is required before renewed completion and archival.
 
 ## Artefact hashes
 

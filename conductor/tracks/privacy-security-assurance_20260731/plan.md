@@ -229,4 +229,5 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Add machine-readable security, privacy, cultural-safety, and clinical-safety assurance domains
   - [x] Correct the ledger's local-wall-clock-as-UTC evidence without rewriting append-only history
   - [x] Re-run focused and repository-wide validation, then review the corrected diff
+  - [x] Close the hosted patch-coverage gap with fail-closed negative-path tests — `349e5f4`
   - [ ] Pass hosted validation on the exact remediation head and reconcile issue state
