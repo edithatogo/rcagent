@@ -8,6 +8,11 @@ from pathlib import Path
 
 REQUIRED_CONTEXT = (
     "AGENTS.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    ".github/pull_request_template.md",
+    ".github/ISSUE_TEMPLATE/bug_report.yml",
+    ".github/ISSUE_TEMPLATE/config.yml",
     "conductor/index.md",
     "conductor/product.md",
     "conductor/product-guidelines.md",

@@ -271,6 +271,26 @@ def test_unknown_clinical_governance_owners_are_reported(tmp_path: Path) -> None
     assert "sourceright: unknown owner_track number: 999" in errors
 
 
+def test_clinical_governance_first_vertical_slice_and_split_contract_are_mapped() -> None:
+    root = Path(__file__).parents[1]
+    architecture = json.loads(
+        (root / "conductor/clinical-governance-architecture.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    layers = {layer["id"]: layer for layer in architecture["layers"]}
+    assert {2, 4, 9} <= set(layers["incident-lifecycle"]["owner_tracks"])
+    assert 7 in layers["shared-services"]["owner_tracks"]
+    assert len(architecture["extraction_criteria"]) >= 5
+    assert set(architecture["required_shared_contracts"]) == {
+        "canonical-schema",
+        "provenance-chain",
+        "terminology-mapping",
+        "decision-ledger",
+        "orchestration-contract",
+    }
+
+
 def test_invalid_metadata_and_wrong_issue_mapping_are_reported(tmp_path: Path) -> None:
     _write_valid_repository(tmp_path)
     metadata = tmp_path / "conductor/tracks/example_20260731/metadata.json"
