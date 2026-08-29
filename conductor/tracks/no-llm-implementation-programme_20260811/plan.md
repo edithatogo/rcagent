@@ -61,12 +61,12 @@
 
 ## Phase 6: Portfolio reconciliation and closure readiness
 
-- [ ] Task: Re-run repository, security, privacy, provenance, and dependency checks
-- [~] Task: Reconcile child tracks with issues #1-#4 and architecture issue #19 — issue #19 acceptance map prepared in PR #72; hosted issue reconciliation remains pending
-- [ ] Task: Close only issues whose acceptance evidence passes
-- [~] Task: Produce a residual-blocker and restart manifest — initial manifest prepared in PR #72; final branch and hosted-state observations remain pending
-- [ ] Task: Verify only `master` and intentionally retained branches remain
-- [ ] Task: Verify disposable checkouts and stale lock backups are removed
+- [x] Task: Re-run repository, security, privacy, provenance, and dependency checks — full gate passed 473 tests with 92.35% coverage; PR #72 exact-head checks passed
+- [x] Task: Reconcile child tracks with issues #1-#4 and architecture issue #19 — issues #2, #3, #4 and #19 closed after PR #72; root #1 retained for programme closeout
+- [x] Task: Close only issues whose acceptance evidence passes — #2, #3, #4 and #19 closed; #1, #17 and #18 remain open
+- [x] Task: Produce a residual-blocker and restart manifest — final current blockers and restart instructions recorded
+- [x] Task: Verify only `master` and intentionally retained branches remain — only local and remote `master` remain after exact merged-head verification
+- [x] Task: Verify disposable checkouts and stale lock backups are removed — one canonical worktree; no operational lock/backup observed
 - [ ] Task: Phase verification and checkpoint
 
 ## Planned PR sequence
