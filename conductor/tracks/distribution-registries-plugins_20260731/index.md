@@ -1,6 +1,6 @@
 # Track 11: Distribution, Registries, and Client Plugins
 
-- **Status:** New
+- **Status:** In progress
 - **Workstream:** product-interfaces-distribution
 - **GitHub issue:** [#16](https://github.com/edithatogo/rcagent/issues/16)
 - **Parent workstream:** [#4](https://github.com/edithatogo/rcagent/issues/4)

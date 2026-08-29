@@ -3,9 +3,10 @@
   "track_number": 11,
   "title": "Distribution, Registries, and Client Plugins",
   "type": "feature",
-  "status": "blocked",
+  "evidence_schema": "1.0",
+  "status": "in_progress",
   "created_at": "2026-07-31T04:34:01Z",
-  "updated_at": "2026-08-29T02:07:38Z",
+  "updated_at": "2026-08-29T10:42:05Z",
   "workstream": "product-interfaces-distribution",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/16",
@@ -37,8 +38,8 @@
     {
       "id": "track11-phase-dependencies",
       "kind": "dependency",
-      "status": "pending",
-      "evidence": "../../tracks.md"
+      "status": "satisfied",
+      "evidence": "evidence/dependency-manifest-20260829.json"
     },
     {
       "id": "track11-rights-and-public-data-review",

@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "track_id": "distribution-registries-plugins_20260731",
+  "dependencies": [
+    {"track_id":"agent-skills-living-conformance_20260731","status":"completed","receipt":"conductor/tracks/agent-skills-living-conformance_20260731/evidence/completion-20260829.md","sha256":"bd26289b2824212e8197e9bb08fb56ccbcf98cafcb6ba41dc3b6e8267c12286b"},
+    {"track_id":"safety-systems-foundation_20260731","status":"completed","receipt":"conductor/tracks/safety-systems-foundation_20260731/evidence/completion-20260829.md","sha256":"e4cf5c75d66602ce6e003af025b6a8bc0ca57695f86940536f255a37b1f60808"},
+    {"track_id":"privacy-security-assurance_20260731","status":"completed","receipt":"conductor/archive/privacy-security-assurance_20260731/evidence/completion-receipt-20260829.md","sha256":"4188fd0b9a641d047f4b56c20957acd92ed91e5f00e771f9c021deeb78acbc1f"},
+    {"track_id":"benchmark-evaluation-harness_20260731","status":"completed","receipt":"conductor/archive/benchmark-evaluation-harness_20260731/evidence/completion-receipt-20260829.md","sha256":"b99f6b30239a0299b94d389b3399fe00d3d9e1908cf81c88e83c15b9a3afb602"},
+    {"track_id":"interfaces-templates-action-loop_20260731","status":"archived","receipt":"conductor/archive/interfaces-templates-action-loop_20260731/evidence/completion-receipt-20260829.md","sha256":"3262a0e9e57e19a3b072a83fc42f66f3de7c87f7fadd4280bc178a39bb2e973a"}
+  ]
+}
