@@ -15,13 +15,22 @@
     "unit": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "source", "authority", "jurisdiction", "rights", "version", "timestamp", "location", "transformation", "compartment", "status", "content", "checksum", "retention"],
+      "required": ["id", "source", "authority", "jurisdiction", "rights", "rights_basis", "version", "timestamp", "location", "transformation", "compartment", "status", "content", "checksum", "retention"],
       "properties": {
         "id": {"type": "string", "pattern": "^[a-z0-9._-]+$"},
         "source": {"type": "string", "minLength": 1},
         "authority": {"type": "string", "minLength": 1},
         "jurisdiction": {"type": "string", "minLength": 1},
         "rights": {"enum": ["generated", "approved_public", "restricted", "unknown"]},
+        "rights_basis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "evidence"],
+          "properties": {
+            "kind": {"enum": ["generated_origin", "public_admission_receipt", "restricted_notice"]},
+            "evidence": {"type": "string", "minLength": 1}
+          }
+        },
         "version": {"type": "string", "minLength": 1},
         "timestamp": {"type": "string", "format": "date-time"},
         "location": {"type": "object", "minProperties": 1},

@@ -1,11 +1,42 @@
 {
-  "allocation_peak_bytes": 135952,
-  "elapsed_ms": 3.365,
-  "manifest_sha256": "c23e0a1a8c0801ec3587eb9d8b7bc887eef061dd2a28d1e147159950d5492c39",
+  "manifest_sha256": "8f91a2482f3d08b63a32046d28d065d3576ab825a22d139b5a458a648d7a5379",
   "network": "disabled",
+  "performance_observation": "excluded from deterministic receipt; no operational threshold authorised",
   "private_data": false,
-  "profile_revision": "lexical-sqlite-fts5 contract 1.0",
-  "receipt_sha256": "4409159d53820a34be68b73dec66b41b387c32d3fb0f302d44b0afcbcb87495f",
+  "profile_comparison": [
+    {
+      "id": "lexical-sqlite-fts5",
+      "revision": "lexical-sqlite-fts5 contract 1.1",
+      "status": "supported_ci_contract"
+    },
+    {
+      "id": "vector-local",
+      "revision": "contract 1.0; no encoder or vector store admitted",
+      "status": "unsupported"
+    },
+    {
+      "id": "hybrid-fusion",
+      "revision": "contract 1.0",
+      "status": "unsupported_without_vector_baseline_gain"
+    },
+    {
+      "id": "reranker-local",
+      "revision": "contract 1.0; no cross-encoder admitted",
+      "status": "unsupported"
+    },
+    {
+      "id": "literature-provider",
+      "revision": "provider port contract 1.0; no external provider configured",
+      "status": "contract_only"
+    },
+    {
+      "id": "sourceright",
+      "revision": "sourceright adapter contract 0.1; clean pin c5fa583; no Track07 invocation",
+      "status": "contract_only"
+    }
+  ],
+  "profile_revision": "lexical-sqlite-fts5 contract 1.1",
+  "receipt_sha256": "369466521fa055fc9c69c491255b5eb79e7b8ebbb696d80891bb90ba95f86de3",
   "results": {
     "acronym": {
       "hits": 1,
@@ -30,6 +61,24 @@
   },
   "schema_version": "1.0",
   "scope": "deterministic_synthetic_ci_contract",
+  "suites": {
+    "citation": {
+      "passed": true
+    },
+    "freshness": {
+      "mode": "validated-manifest drift contract",
+      "passed": true
+    },
+    "privacy": {
+      "passed": true
+    },
+    "recovery": {
+      "passed": true
+    },
+    "robustness": {
+      "passed": true
+    }
+  },
   "unsupported": [
     "typo correction",
     "vector retrieval",

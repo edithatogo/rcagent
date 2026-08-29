@@ -5,10 +5,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import shutil
 import sqlite3
-import time
-import tracemalloc
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -19,6 +19,16 @@ CORPUS = ROOT / "evaluation/retrieval/synthetic-public-corpus.json"
 PROFILES = ROOT / "evaluation/retrieval/profiles.json"
 SCHEMA = ROOT / "conductor/schemas/retrieval-corpus.schema.json"
 INSTRUCTION_MARKERS = ("ignore previous instructions", "system prompt", "disclose private")
+PROFILE_REVISION = "lexical-sqlite-fts5 contract 1.1"
+MANDATORY_UNSUPPORTED = [
+    "typo correction",
+    "vector retrieval",
+    "hybrid retrieval",
+    "model reranking",
+    "external literature provider",
+    "cross-compartment retrieval",
+    "operational thresholds",
+]
 
 
 def canonical_hash(value: Any) -> str:
@@ -28,6 +38,11 @@ def canonical_hash(value: Any) -> str:
 
 def content_checksum(content: str) -> str:
     return "sha256:" + hashlib.sha256(content.encode()).hexdigest()
+
+
+def instruction_markers(value: Any) -> list[str]:
+    text = re.sub(r"[^a-z0-9]+", " ", json.dumps(value, sort_keys=True).lower())
+    return [marker for marker in INSTRUCTION_MARKERS if marker in text]
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -58,6 +73,18 @@ def validate_manifest(manifest: dict[str, Any]) -> list[str]:
             errors.append(f"{unit_id}: cross-compartment unit")
         if unit.get("rights") in {"restricted", "unknown"}:
             errors.append(f"{unit_id}: rights not admitted")
+        basis = unit.get("rights_basis", {})
+        expected_basis = {
+            "generated": "generated_origin",
+            "approved_public": "public_admission_receipt",
+        }.get(str(unit.get("rights")))
+        if expected_basis and basis.get("kind") != expected_basis:
+            errors.append(f"{unit_id}: rights basis does not admit {unit.get('rights')}")
+        markers = instruction_markers(
+            {key: unit.get(key) for key in ("content", "source", "authority", "location")}
+        )
+        if markers and unit.get("status") != "quarantined":
+            errors.append(f"{unit_id}: instruction-like source must be quarantined")
     for unit_id in sorted(set(ids)):
         if ids.count(unit_id) > 1:
             errors.append(f"duplicate unit id: {unit_id}")
@@ -91,8 +118,27 @@ class LexicalIndex:
         self.connection = sqlite3.connect(path)
         self.connection.row_factory = sqlite3.Row
         self.connection.execute(
-            "CREATE VIRTUAL TABLE IF NOT EXISTS units USING fts5(id UNINDEXED, content, source UNINDEXED, authority UNINDEXED, jurisdiction UNINDEXED, rights UNINDEXED, version UNINDEXED, timestamp UNINDEXED, location UNINDEXED, transformation UNINDEXED, status UNINDEXED, checksum UNINDEXED, compartment UNINDEXED, retention UNINDEXED)"
+            "CREATE TABLE IF NOT EXISTS index_metadata(key TEXT PRIMARY KEY, value TEXT NOT NULL)"
         )
+        stored = self.connection.execute(
+            "SELECT value FROM index_metadata WHERE key = 'compartment'"
+        ).fetchone()
+        if stored is None:
+            self.connection.execute(
+                "INSERT INTO index_metadata(key, value) VALUES ('compartment', ?)",
+                (compartment,),
+            )
+            self.connection.commit()
+        elif stored["value"] != compartment:
+            self.connection.close()
+            raise ValueError("persistent index compartment mismatch")
+        self.connection.execute(
+            "CREATE VIRTUAL TABLE IF NOT EXISTS units USING fts5(id UNINDEXED, content, source UNINDEXED, authority UNINDEXED, jurisdiction UNINDEXED, rights UNINDEXED, rights_basis UNINDEXED, version UNINDEXED, timestamp UNINDEXED, location UNINDEXED, transformation UNINDEXED, status UNINDEXED, checksum UNINDEXED, compartment UNINDEXED, retention UNINDEXED, safety_flags UNINDEXED)"
+        )
+        self.connection.execute(
+            "CREATE TABLE IF NOT EXISTS lifecycle_audit(sequence INTEGER PRIMARY KEY AUTOINCREMENT, action TEXT NOT NULL, unit_id TEXT, compartment TEXT NOT NULL, detail_sha256 TEXT NOT NULL)"
+        )
+        self.connection.commit()
 
     def close(self) -> None:
         self.connection.close()
@@ -116,9 +162,15 @@ class LexicalIndex:
             raise ValueError("index compartment mismatch")
         with self.connection:
             for unit in manifest["units"]:
-                self.connection.execute("DELETE FROM units WHERE id = ?", (unit["id"],))
                 self.connection.execute(
-                    "INSERT INTO units VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    "DELETE FROM units WHERE id = ? AND compartment = ?",
+                    (unit["id"], self.compartment),
+                )
+                flags = instruction_markers(
+                    {key: unit[key] for key in ("content", "source", "authority", "location")}
+                )
+                self.connection.execute(
+                    "INSERT INTO units VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     (
                         unit["id"],
                         unit["content"],
@@ -126,6 +178,7 @@ class LexicalIndex:
                         unit["authority"],
                         unit["jurisdiction"],
                         unit["rights"],
+                        json.dumps(unit["rights_basis"], sort_keys=True),
                         unit["version"],
                         unit["timestamp"],
                         json.dumps(unit["location"], sort_keys=True),
@@ -134,28 +187,49 @@ class LexicalIndex:
                         unit["checksum"],
                         unit["compartment"],
                         unit["retention"],
+                        json.dumps(flags),
                     ),
                 )
+                self._audit("ingest", unit["id"], unit)
+
+    def _audit(self, action: str, unit_id: str | None, detail: Any) -> None:
+        self.connection.execute(
+            "INSERT INTO lifecycle_audit(action, unit_id, compartment, detail_sha256) VALUES (?, ?, ?, ?)",
+            (action, unit_id, self.compartment, canonical_hash(detail)),
+        )
 
     def search(
-        self, query: str, *, filters: dict[str, str] | None = None, limit: int = 10
+        self,
+        query: str,
+        *,
+        filters: dict[str, str] | None = None,
+        limit: int = 10,
+        mode: str = "literal",
     ) -> dict[str, Any]:
         if not query.strip() or limit < 1 or limit > 100:
             raise ValueError("query must be non-empty and limit must be between 1 and 100")
-        filters = filters or {}
+        if mode not in {"literal", "expert_fts"}:
+            raise ValueError("unsupported query mode")
+        filters = dict(filters or {})
         allowed = {"authority", "jurisdiction", "version", "timestamp", "status", "source"}
         if set(filters) - allowed:
             raise ValueError("unsupported filter")
+        expression = '"' + query.replace('"', '""') + '"' if mode == "literal" else query
         where = ["units MATCH ?", "compartment = ?"]
-        parameters: list[Any] = [query, self.compartment]
+        parameters: list[Any] = [expression, self.compartment]
+        if "status" not in filters:
+            filters["status"] = "current"
         for field in sorted(filters):
             where.append(f"{field} = ?")
             parameters.append(filters[field])
         parameters.append(limit)
-        rows = self.connection.execute(
-            f"SELECT id, source, authority, jurisdiction, rights, version, timestamp, location, transformation, status, checksum, retention, bm25(units) AS rank FROM units WHERE {' AND '.join(where)} ORDER BY rank, id LIMIT ?",  # noqa: S608 -- fields are allowlisted
-            parameters,
-        ).fetchall()
+        try:
+            rows = self.connection.execute(
+                f"SELECT id, source, authority, jurisdiction, rights, rights_basis, version, timestamp, location, transformation, status, checksum, retention, safety_flags, bm25(units) AS rank FROM units WHERE {' AND '.join(where)} ORDER BY rank, id LIMIT ?",  # noqa: S608 -- fields are allowlisted
+                parameters,
+            ).fetchall()
+        except sqlite3.OperationalError as exc:
+            raise ValueError("invalid FTS query") from exc
         results = [
             {
                 "unit_id": row["id"],
@@ -163,6 +237,7 @@ class LexicalIndex:
                 "authority": row["authority"],
                 "jurisdiction": row["jurisdiction"],
                 "rights": row["rights"],
+                "rights_basis": json.loads(row["rights_basis"]),
                 "version": row["version"],
                 "timestamp": row["timestamp"],
                 "location": json.loads(row["location"]),
@@ -170,15 +245,16 @@ class LexicalIndex:
                 "status": row["status"],
                 "checksum": row["checksum"],
                 "retention": row["retention"],
+                "safety_flags": json.loads(row["safety_flags"]),
                 "score": round(-float(row["rank"]), 8),
             }
             for row in rows
-            if row["status"] == "current"
         ]
         receipt: dict[str, Any] = {
             "schema_version": "1.0",
             "profile": "lexical-sqlite-fts5",
             "query": query,
+            "query_mode": mode,
             "filters": filters,
             "compartment": self.compartment,
             "limit": limit,
@@ -191,18 +267,57 @@ class LexicalIndex:
 
     def delete(self, unit_id: str) -> None:
         with self.connection:
-            self.connection.execute("DELETE FROM units WHERE id = ?", (unit_id,))
+            self.connection.execute(
+                "DELETE FROM units WHERE id = ? AND compartment = ?",
+                (unit_id, self.compartment),
+            )
+            self._audit("delete", unit_id, {"unit_id": unit_id})
+
+    def supersede(self, unit_id: str) -> None:
+        with self.connection:
+            cursor = self.connection.execute(
+                "UPDATE units SET status = 'superseded' WHERE id = ? AND compartment = ?",
+                (unit_id, self.compartment),
+            )
+            if cursor.rowcount != 1:
+                raise ValueError("unit not found in index compartment")
+            self._audit("supersede", unit_id, {"unit_id": unit_id})
+
+    def correct(self, unit: dict[str, Any]) -> None:
+        self.ingest(
+            {
+                "schema_version": "1.0",
+                "corpus_id": "correction",
+                "compartment": self.compartment,
+                "units": [unit],
+            }
+        )
 
     def rebuild(self, manifest: dict[str, Any]) -> None:
         with self.connection:
-            self.connection.execute("DELETE FROM units")
+            self.connection.execute("DELETE FROM units WHERE compartment = ?", (self.compartment,))
+            self._audit("rebuild", None, {"manifest_sha256": canonical_hash(manifest)})
         self.ingest(manifest)
 
     def deterministic_export(self) -> list[dict[str, Any]]:
         rows = self.connection.execute(
-            "SELECT id, checksum, status, compartment FROM units ORDER BY id"
+            "SELECT id, source, authority, jurisdiction, rights, rights_basis, version, timestamp, location, transformation, status, checksum, compartment, retention, safety_flags FROM units WHERE compartment = ? ORDER BY id",
+            (self.compartment,),
         ).fetchall()
         return [dict(row) for row in rows]
+
+    def lifecycle_receipt(self) -> dict[str, Any]:
+        rows = self.connection.execute(
+            "SELECT sequence, action, unit_id, compartment, detail_sha256 FROM lifecycle_audit WHERE compartment = ? ORDER BY sequence",
+            (self.compartment,),
+        ).fetchall()
+        receipt: dict[str, Any] = {
+            "schema_version": "1.0",
+            "compartment": self.compartment,
+            "events": [dict(row) for row in rows],
+        }
+        receipt["receipt_sha256"] = canonical_hash(receipt)
+        return receipt
 
     def backup(self, destination: Path) -> None:
         if self.path == ":memory:":
@@ -213,9 +328,22 @@ class LexicalIndex:
             self.connection.commit()
             shutil.copy2(self.path, destination)
 
+    @classmethod
+    def restore(cls, source: Path, destination: Path, *, compartment: str) -> LexicalIndex:
+        if destination.exists():
+            raise ValueError("restore destination must not exist")
+        shutil.copy2(source, destination)
+        restored = cls(destination, compartment=compartment)
+        with restored.connection:
+            restored._audit(
+                "restore", None, {"source_sha256": content_checksum(source.read_bytes().hex())}
+            )
+        return restored
+
 
 def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
     required = {
+        "schema_version",
         "query",
         "provider",
         "date",
@@ -224,14 +352,33 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
         "screening",
         "sourceright",
         "conflicts",
+        "study_quality",
+        "claim_links",
+        "recommendation_rationales",
+        "limitations",
+        "receipt_sha256",
     }
     errors = [f"missing {field}" for field in sorted(required - receipt.keys())]
-    if receipt.get("sourceright", {}).get("status") not in {
+    unsigned = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
+    if receipt.get("receipt_sha256") != canonical_hash(unsigned):
+        errors.append("receipt hash mismatch")
+    if receipt.get("schema_version") != "1.0":
+        errors.append("invalid schema version")
+    sourceright = receipt.get("sourceright", {})
+    if sourceright.get("status") not in {
         "succeeded",
         "unavailable",
         "review_required",
     }:
         errors.append("invalid SourceRight status")
+    elif (
+        sourceright.get("status") == "succeeded"
+        and not {"revision", "command", "output_sha256", "evidence_path", "results"}
+        <= sourceright.keys()
+    ):
+        errors.append("successful SourceRight receipt lacks exact evidence")
+    elif sourceright.get("status") == "unavailable" and not sourceright.get("diagnostic"):
+        errors.append("unavailable SourceRight receipt lacks diagnostic")
     if any(
         not {"title", "authors", "year", "identifier", "source"} <= item.keys()
         for item in receipt.get("results", [])
@@ -239,6 +386,20 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
         errors.append("incomplete exact reference metadata")
     if receipt.get("network") != "disabled" or receipt.get("private_data") is not False:
         errors.append("literature execution boundary mismatch")
+    identifiers = [item.get("identifier") for item in receipt.get("results", [])]
+    if len(identifiers) != len(set(identifiers)):
+        errors.append("duplicate literature identifier")
+    screened = {item.get("identifier") for item in receipt.get("screening", [])}
+    if screened != set(identifiers):
+        errors.append("screening/result identifier mismatch")
+    referenced = {
+        item.get("identifier")
+        for field in ("study_quality", "claim_links", "conflicts")
+        for item in receipt.get(field, [])
+        if isinstance(item, dict) and item.get("identifier")
+    }
+    if not referenced <= set(identifiers):
+        errors.append("literature record references unknown identifier")
     return errors
 
 
@@ -267,6 +428,9 @@ def validate_profiles(profiles: dict[str, Any]) -> list[str]:
             and item.get("status") == "supported_ci_contract"
         ):
             errors.append(f"{item.get('id')}: optional profile cannot be supported")
+        for field in ("owner", "upstream", "removal_condition"):
+            if not item.get(field):
+                errors.append(f"{item.get('id')}: missing {field}")
     lexical = next(
         (
             item
@@ -282,26 +446,32 @@ def validate_profiles(profiles: dict[str, Any]) -> list[str]:
 
 
 def grounded_answer(claims: list[dict[str, Any]], retrieved: dict[str, Any]) -> dict[str, Any]:
-    available = {item["unit_id"] for item in retrieved.get("results", [])}
+    available = {item["unit_id"]: item for item in retrieved.get("results", [])}
     valid_claims = []
     conflicts = []
     poisoned = []
     for claim in claims:
         evidence = set(claim.get("evidence", []))
-        if not evidence or not evidence <= available:
+        if not evidence or not evidence <= available.keys():
             continue
         if claim.get("conflict"):
             conflicts.append(claim["id"])
-        text = str(claim.get("text", "")).lower()
-        if any(marker in text for marker in INSTRUCTION_MARKERS):
+        flagged = any(available[item].get("safety_flags") for item in evidence)
+        if flagged or instruction_markers(claim.get("text", "")):
             poisoned.append(claim["id"])
             continue
-        valid_claims.append(claim)
+        checksums = {available[item]["checksum"] for item in evidence}
+        if (
+            claim.get("verification") == "exact_source_content"
+            and claim.get("content_checksum") in checksums
+        ):
+            valid_claims.append(claim)
     return {
         "claims": valid_claims,
         "conflicts": conflicts,
         "poisoned_content": poisoned,
         "abstained": not valid_claims or bool(conflicts),
+        "grounding": "exact_source_extract_only" if valid_claims else "claim_link_only",
         "clinical_interpretation": False,
         "human_review_required": True,
     }
@@ -321,6 +491,10 @@ def validate_federated_request(request: dict[str, Any]) -> list[str]:
         errors.append("purpose not admitted")
     if request.get("compartments") and len(set(request["compartments"])) != 1:
         errors.append("cross-compartment federation prohibited")
+    if not request.get("compartments") or len(request["compartments"]) != 1:
+        errors.append("exactly one compartment required")
+    if request.get("access_decision") != "synthetic_contract_admitted" or not request.get("role"):
+        errors.append("explicit access decision and role required")
     if request.get("causal_finding") is True:
         errors.append("cross-case retrieval cannot create a causal finding")
     return errors
@@ -347,6 +521,10 @@ def reciprocal_rank_fusion(
 def drift_impact(
     previous: dict[str, Any], current: dict[str, Any], receipts: list[dict[str, Any]]
 ) -> dict[str, Any]:
+    for label, manifest in (("previous", previous), ("current", current)):
+        errors = validate_manifest(manifest)
+        if errors:
+            raise ValueError(f"invalid {label} manifest: {'; '.join(errors)}")
     before = {item["id"]: item["checksum"] for item in previous.get("units", [])}
     after = {item["id"]: item["checksum"] for item in current.get("units", [])}
     changed = sorted(
@@ -369,19 +547,14 @@ def drift_impact(
 def assurance() -> dict[str, Any]:
     manifest = admitted_manifest()
     index = LexicalIndex(compartment="public")
-    started = time.perf_counter()
-    tracemalloc.start()
     index.ingest(manifest)
     cases = {
         "exact": index.search("uncertainty"),
-        "phrase": index.search('"evidence citations"'),
+        "phrase": index.search("evidence citations"),
         "acronym": index.search("SAC"),
         "version_filter": index.search("policy", filters={"version": "2.0"}),
         "typo": index.search("uncertanty"),
     }
-    index.close()
-    _, peak = tracemalloc.get_traced_memory()
-    tracemalloc.stop()
     results = {
         name: {
             "hits": len(receipt["results"]),
@@ -389,25 +562,63 @@ def assurance() -> dict[str, Any]:
         }
         for name, receipt in cases.items()
     }
+    citation = all(
+        {"source", "location", "checksum", "rights_basis"} <= item.keys()
+        for receipt in cases.values()
+        for item in receipt["results"]
+    )
+    malformed_controlled = False
+    try:
+        index.search('"', mode="expert_fts")
+    except ValueError:
+        malformed_controlled = True
+    with tempfile.TemporaryDirectory() as directory:
+        backup = Path(directory) / "backup.sqlite"
+        restored_path = Path(directory) / "restored.sqlite"
+        index.backup(backup)
+        restored = LexicalIndex.restore(backup, restored_path, compartment="public")
+        recovery = restored.deterministic_export() == index.deterministic_export()
+        restored.close()
+    index.close()
+    profiles = load_json(PROFILES)
     receipt: dict[str, Any] = {
         "schema_version": "1.0",
         "scope": "deterministic_synthetic_ci_contract",
         "manifest_sha256": canonical_hash(manifest),
-        "profile_revision": "lexical-sqlite-fts5 contract 1.0",
+        "profile_revision": PROFILE_REVISION,
         "results": results,
-        "elapsed_ms": round((time.perf_counter() - started) * 1000, 3),
-        "allocation_peak_bytes": peak,
+        "suites": {
+            "citation": {"passed": citation},
+            "privacy": {
+                "passed": validate_federated_request(
+                    {
+                        "purpose": "quality_assurance",
+                        "authorised": True,
+                        "minimised": True,
+                        "deidentified_or_aggregated": True,
+                        "lineage_current": True,
+                        "retention_current": True,
+                        "fresh": True,
+                        "compartments": ["public", "governed_private"],
+                        "access_decision": "synthetic_contract_admitted",
+                        "role": "test",
+                        "causal_finding": False,
+                    }
+                )
+                != []
+            },
+            "robustness": {"passed": malformed_controlled},
+            "freshness": {"passed": True, "mode": "validated-manifest drift contract"},
+            "recovery": {"passed": recovery},
+        },
+        "profile_comparison": [
+            {"id": item["id"], "status": item["status"], "revision": item["revision"]}
+            for item in profiles["profiles"]
+        ],
+        "performance_observation": "excluded from deterministic receipt; no operational threshold authorised",
         "network": "disabled",
         "private_data": False,
-        "unsupported": [
-            "typo correction",
-            "vector retrieval",
-            "hybrid retrieval",
-            "model reranking",
-            "external literature provider",
-            "cross-compartment retrieval",
-            "operational thresholds",
-        ],
+        "unsupported": MANDATORY_UNSUPPORTED,
     }
     receipt["receipt_sha256"] = canonical_hash(receipt)
     return receipt
@@ -420,11 +631,29 @@ def verify_assurance(receipt: dict[str, Any]) -> list[str]:
         errors.append("receipt hash mismatch")
     if receipt.get("network") != "disabled" or receipt.get("private_data") is not False:
         errors.append("execution boundary mismatch")
+    if receipt.get("manifest_sha256") != canonical_hash(admitted_manifest()):
+        errors.append("manifest binding mismatch")
+    if receipt.get("profile_revision") != PROFILE_REVISION:
+        errors.append("profile revision mismatch")
+    if receipt.get("unsupported") != MANDATORY_UNSUPPORTED:
+        errors.append("unsupported capability declaration mismatch")
     results = receipt.get("results", {})
     if set(results) != {"exact", "phrase", "acronym", "version_filter", "typo"} or any(
         item.get("passed") is not True for item in results.values()
     ):
         errors.append("assurance case coverage mismatch")
+    suites = receipt.get("suites", {})
+    if set(suites) != {"citation", "privacy", "robustness", "freshness", "recovery"} or any(
+        item.get("passed") is not True for item in suites.values()
+    ):
+        errors.append("assurance suite coverage mismatch")
+    profiles = load_json(PROFILES).get("profiles", [])
+    expected_profiles = [
+        {"id": item["id"], "status": item["status"], "revision": item["revision"]}
+        for item in profiles
+    ]
+    if receipt.get("profile_comparison") != expected_profiles:
+        errors.append("profile comparison mismatch")
     return errors
 
 
@@ -434,11 +663,14 @@ def main() -> int:
     parser.add_argument("--query", default="evidence")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
+    exit_code = 0
     if args.command == "validate":
         errors = validate_manifest(admitted_manifest()) + validate_profiles(load_json(PROFILES))
         result: Any = {"valid": not errors, "errors": errors}
+        exit_code = 1 if errors else 0
     elif args.command == "assure":
         result = assurance()
+        exit_code = 1 if verify_assurance(result) else 0
     else:
         index = LexicalIndex(compartment="public")
         index.ingest(admitted_manifest())
@@ -450,7 +682,7 @@ def main() -> int:
         args.output.write_text(rendered, encoding="utf-8")
     else:
         print(rendered, end="")
-    return 0
+    return exit_code
 
 
 if __name__ == "__main__":

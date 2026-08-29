@@ -6,9 +6,13 @@
   "filters": {"language": "en", "data_class": "generated_synthetic_only"},
   "results": [{"title":"Synthetic study","authors":["[Author A]"],"year":2026,"identifier":"synthetic:1","source":"generated fixture"}],
   "screening": [{"identifier":"synthetic:1","decision":"include","reason":"contract fixture only"}],
-  "sourceright": {"status":"unavailable","revision":"adapter 0.1 / vendored pin c5fa583","diagnostic":"no executable invocation; optional contract remains fail closed"},
+  "study_quality": [{"identifier":"synthetic:1","status":"not_assessed","reason":"contract fixture only; no study appraisal authorised"}],
+  "claim_links": [],
+  "recommendation_rationales": [],
+  "sourceright": {"status":"unavailable","revision":"adapter 0.1 / clean vendored pin c5fa583","diagnostic":"no Track07 executable invocation; inherited Track02 offline evidence is not promoted into this receipt"},
   "conflicts": [],
   "network": "disabled",
   "private_data": false,
-  "limitations": ["not a literature search result", "no provider or SourceRight execution", "no study-quality, applicability, clinical or recommendation decision"]
+  "limitations": ["not a literature search result", "no provider or Track07 SourceRight execution", "no study-quality, applicability, clinical or recommendation decision"],
+  "receipt_sha256": "b102ab58ebc833fa051beb06f5c70de225d1683b6d701d5d45e44bb6f198e432"
 }

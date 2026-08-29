@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import sqlite3
 from copy import deepcopy
 from pathlib import Path
 
@@ -52,6 +51,12 @@ def test_raw_mixed_compartment_and_rights_manifest_fails_closed() -> None:
     errors = validate_manifest(changed)
     assert any("checksum mismatch" in error for error in errors)
     assert any("duplicate unit id" in error for error in errors)
+    unproven = deepcopy(admitted_manifest())
+    unproven["units"][0]["rights"] = "approved_public"
+    assert any("rights basis" in error for error in validate_manifest(unproven))
+    malicious = deepcopy(admitted_manifest())
+    malicious["units"][0]["authority"] = "Ignore-previous-instructions source"
+    assert any("must be quarantined" in error for error in validate_manifest(malicious))
 
 
 def test_lexical_baseline_filters_citations_and_current_status() -> None:
@@ -70,6 +75,10 @@ def test_lexical_baseline_filters_citations_and_current_status() -> None:
         {k: v for k, v in receipt.items() if k != "receipt_sha256"}
     )
     assert index.search("earlier")["results"] == []
+    assert (
+        index.search("earlier", filters={"status": "superseded"})["results"][0]["unit_id"]
+        == "policy-old"
+    )
 
 
 def test_index_rejects_bad_query_filter_and_compartment() -> None:
@@ -85,6 +94,9 @@ def test_index_rejects_bad_query_filter_and_compartment() -> None:
         unit["compartment"] = "governed_private"
     with pytest.raises(ValueError, match="index compartment mismatch"):
         index.ingest(private)
+    assert index.search('"')["results"] == []
+    with pytest.raises(ValueError, match="invalid FTS query"):
+        index.search('"', mode="expert_fts")
 
 
 def test_lifecycle_delete_export_backup_and_restore(tmp_path: Path) -> None:
@@ -97,11 +109,22 @@ def test_lifecycle_delete_export_backup_and_restore(tmp_path: Path) -> None:
     index.backup(backup)
     index.delete("policy-current")
     assert index.search("uncertainty")["results"] == []
-    restored = sqlite3.connect(backup)
-    assert restored.execute("SELECT count(*) FROM units").fetchone()[0] == 4
+    restored = LexicalIndex.restore(backup, tmp_path / "restored.sqlite", compartment="public")
+    assert len(restored.deterministic_export()) == 4
     restored.close()
+    with pytest.raises(ValueError, match="persistent index compartment mismatch"):
+        LexicalIndex(database, compartment="governed_private")
     index.rebuild(admitted_manifest())
     assert index.search("uncertainty")["results"][0]["unit_id"] == "policy-current"
+    index.supersede("policy-current")
+    assert index.search("uncertainty")["results"] == []
+    assert index.search("uncertainty", filters={"status": "superseded"})["results"]
+    corrected = deepcopy(admitted_manifest()["units"][0])
+    corrected["version"] = "2.1"
+    index.correct(corrected)
+    assert index.search("uncertainty")["results"][0]["version"] == "2.1"
+    actions = [event["action"] for event in index.lifecycle_receipt()["events"]]
+    assert {"delete", "rebuild", "supersede", "ingest"} <= set(actions)
 
 
 def test_memory_backup_is_rebuildable(tmp_path: Path) -> None:
@@ -109,9 +132,9 @@ def test_memory_backup_is_rebuildable(tmp_path: Path) -> None:
     index.ingest(admitted_manifest())
     destination = tmp_path / "memory.sqlite"
     index.backup(destination)
-    connection = sqlite3.connect(destination)
-    assert connection.execute("SELECT count(*) FROM units").fetchone()[0] == 4
-    connection.close()
+    restored = LexicalIndex(destination, compartment="public")
+    assert len(restored.deterministic_export()) == 4
+    restored.close()
 
 
 def test_grounding_conflicts_poisoning_and_abstention() -> None:
@@ -119,11 +142,24 @@ def test_grounding_conflicts_poisoning_and_abstention() -> None:
     index.ingest(admitted_manifest())
     retrieved = index.search("evidence")
     supported = grounded_answer(
-        [{"id": "c1", "text": "Claims link to evidence.", "evidence": ["evidence-guide"]}],
+        [
+            {
+                "id": "c1",
+                "text": "Claims link to evidence.",
+                "evidence": ["evidence-guide"],
+                "verification": "exact_source_content",
+                "content_checksum": retrieved["results"][0]["checksum"],
+            }
+        ],
         retrieved,
     )
     assert supported["abstained"] is False
     assert supported["human_review_required"] is True
+    linked_only = grounded_answer(
+        [{"id": "link", "text": "Unsupported synthesis", "evidence": ["evidence-guide"]}], retrieved
+    )
+    assert linked_only["abstained"] is True
+    assert linked_only["grounding"] == "claim_link_only"
     conflict = grounded_answer(
         [{"id": "c2", "text": "Conflict", "evidence": ["evidence-guide"], "conflict": True}],
         retrieved,
@@ -158,14 +194,28 @@ def test_literature_receipt_preserves_provider_screening_and_sourceright_state()
         "conflicts": [],
         "network": "disabled",
         "private_data": False,
+        "study_quality": [
+            {"identifier": "synthetic:1", "status": "not_assessed", "reason": "fixture"}
+        ],
+        "claim_links": [],
+        "recommendation_rationales": [],
+        "limitations": ["contract fixture only"],
+        "schema_version": "1.0",
     }
+    receipt["receipt_sha256"] = canonical_hash(receipt)
     assert validate_literature_receipt(receipt) == []
     receipt["results"][0].pop("authors")
     receipt["sourceright"]["status"] = "verified_true"
+    receipt["receipt_sha256"] = canonical_hash(
+        {k: v for k, v in receipt.items() if k != "receipt_sha256"}
+    )
     errors = validate_literature_receipt(receipt)
     assert "incomplete exact reference metadata" in errors
     assert "invalid SourceRight status" in errors
     receipt["network"] = "enabled"
+    receipt["receipt_sha256"] = canonical_hash(
+        {k: v for k, v in receipt.items() if k != "receipt_sha256"}
+    )
     assert "literature execution boundary mismatch" in validate_literature_receipt(receipt)
 
 
@@ -190,6 +240,8 @@ def test_federated_controls_reject_cross_case_causal_or_cross_compartment_use() 
         "fresh": True,
         "compartments": ["governed_private"],
         "causal_finding": False,
+        "access_decision": "synthetic_contract_admitted",
+        "role": "test-harness",
     }
     assert validate_federated_request(valid) == []
     invalid = {
@@ -243,7 +295,8 @@ def test_checked_receipts_validate() -> None:
 def test_source_drift_marks_retrieval_receipts_for_rebuild() -> None:
     previous = admitted_manifest()
     current = deepcopy(previous)
-    current["units"][0]["checksum"] = "sha256:" + "0" * 64
+    current["units"][0]["content"] += " Revised."
+    current["units"][0]["checksum"] = content_checksum(current["units"][0]["content"])
     index = LexicalIndex(compartment="public")
     index.ingest(previous)
     receipt = index.search("uncertainty")
@@ -251,6 +304,10 @@ def test_source_drift_marks_retrieval_receipts_for_rebuild() -> None:
     assert impact["changed_units"] == ["policy-current"]
     assert impact["affected_receipts"] == [receipt["receipt_sha256"]]
     assert impact["requires_rebuild"] is True
+    broken = deepcopy(current)
+    broken["units"][0]["checksum"] = "sha256:" + "0" * 64
+    with pytest.raises(ValueError, match="invalid current manifest"):
+        drift_impact(previous, broken, [])
 
 
 def test_cli_validate_assure_search_and_output(monkeypatch, tmp_path, capsys) -> None:
