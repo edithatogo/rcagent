@@ -15,7 +15,7 @@
 
 ## Later Phase Dependencies
 
-- [privacy-security-assurance_20260731](../privacy-security-assurance_20260731/index.md)
+- [privacy-security-assurance_20260731](../../archive/privacy-security-assurance_20260731/index.md)
 - [nsw-health-jurisdiction-pack_20260731](../nsw-health-jurisdiction-pack_20260731/index.md)
 
 ## Track Artefacts

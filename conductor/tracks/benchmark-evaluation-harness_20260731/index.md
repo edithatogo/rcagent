@@ -9,7 +9,7 @@
 ## Hard Start Dependencies
 
 - [evidence-workflow-core_20260731](../evidence-workflow-core_20260731/index.md)
-- [privacy-security-assurance_20260731](../privacy-security-assurance_20260731/index.md)
+- [privacy-security-assurance_20260731](../../archive/privacy-security-assurance_20260731/index.md)
 
 ## Later Phase Dependencies
 

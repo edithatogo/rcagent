@@ -6,6 +6,8 @@
 - Review-fix commit: `a5ff002770c3132e957d622d37b5322263b2a59a`
 - False-completion remediation commit: `aa597fe52b0e4f6b11ad87fd87d88036bda0cf99`
 - Patch-coverage remediation commit: `349e5f4`
+- Remediation evidence head: `17f28f4d818c1c38fb21b5ee446acc16fabff7e2`
+- Remediation pull request: [#45](https://github.com/edithatogo/rcagent/pull/45), merged as `ca07cfb3536f90d57e7a58f695de2c8667d0adf7`
 - Evidence commit: `c49dbd66e33afb87df6c7f5bed2857877a7f3acb`
 - Pull request: [#43](https://github.com/edithatogo/rcagent/pull/43), merged as `5f4b37c2c38f70b1b589fa9e3cfcacb86083d0c0`
 - Evidence date: `2026-08-29`
@@ -46,16 +48,16 @@ python -m ty check tools tests                            passed
 python -m basedpyright                                    0 errors, 0 warnings
 python -m tools.check_gremlins .                          no gremlins found
 python -m tools.validate_repository                       passed
-pytest --cov=tools --cov-report=term-missing              158 passed, 5 skipped, 87.52%
+pytest --cov=tools --cov-report=term-missing              160 passed, 5 skipped, 87.64%
 pytest tests/test_privacy_assurance.py --cov=tools.privacy_assurance   38 passed, 100%
 ```
 
-The five skips are the repository's documented PowerShell-dependent tests on macOS. The 80% repository coverage gate passed. The original hosted checks passed on exact head `c49dbd6`, but fresh-context review subsequently invalidated completion and reopened issue #8. PR #45 then exposed 81.98% patch coverage on the remediation diff. Commit `349e5f4` added negative-path tests and raises focused privacy-assurance coverage to 100%; hosted revalidation is required before renewed completion and archival.
+The five skips are the repository's documented PowerShell-dependent tests on macOS. The 80% repository coverage gate passed. The original hosted checks passed on exact head `c49dbd6`, but fresh-context review subsequently invalidated completion and reopened issue #8. PR #45 then exposed 81.98% patch coverage on the remediation diff. Commit `349e5f4` added negative-path tests and raised focused privacy-assurance coverage to 100%. All renewed hosted checks passed on exact head `17f28f4`; PR #45 merged as `ca07cfb`, issue #8 closed, and the track became archive-eligible.
 
 ## Artefact hashes
 
 - assurance schema: `5484751149393f2f6d8b3b21b356b26cfb2b2bb26fb67e89cadc1493bc4500f4`
-- assurance fixture: `a6f8cea335f44d38bc0f6f7d9daee9cad0ec0cf2d8bc127832391b82778228ee`
+- assurance fixture: `f7f1e0bdb3cc534a2c9ac6d8fa33583e37f7006d741143750f16670f22e9ade1`
 - privacy core: `4941e92c23465128e2bcb919fd93dad343f45e21b0cd346f35e21725b75e5b20`
 - fit-gap and threat model: `95670ce0bf493046948a340ea92ca7c2fad87b9db9263ca56a32859fffae9f4d`
 - mode assurance and runbooks: `e583e875d8ff27d309beb29e2298fab53ae054a0af740d4972ac39e2e52ce951`
