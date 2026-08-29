@@ -14,6 +14,7 @@ from jsonschema import Draft202012Validator
 ROOT = Path(__file__).parents[1]
 REGISTRY_PATH = ROOT / "evaluation/multimodal/registry.json"
 SCHEMA_PATH = ROOT / "conductor/schemas/multimodal-capability.schema.json"
+SUPPORT_MATRIX_PATH = ROOT / "evaluation/multimodal/support-matrix-20260829.json"
 
 
 def _read(path: Path) -> dict[str, Any]:
@@ -53,20 +54,55 @@ def validate_registry(registry: dict[str, Any]) -> list[str]:
             continue
         privacy = profile.get("privacy", {})
         if profile.get("status") != "supported" and privacy.get("network") not in {
-            "disabled", "disabled until admitted"
+            "disabled",
+            "disabled until admitted",
         }:
             errors.append(f"profiles: unadmitted {profile.get('id')!r} must disable network")
         if privacy.get("remote_code") != "prohibited":
             errors.append(f"profiles: {profile.get('id')!r} must prohibit remote code")
         if profile.get("modality") in {"image", "signal"} and (
-            profile.get("governance") != "research_disabled"
-            or profile.get("status") == "supported"
+            profile.get("governance") != "research_disabled" or profile.get("status") == "supported"
         ):
-            errors.append(f"profiles: {profile.get('id')!r} interpretation must remain research-disabled")
+            errors.append(
+                f"profiles: {profile.get('id')!r} interpretation must remain research-disabled"
+            )
+    if SUPPORT_MATRIX_PATH.is_file():
+        matrix = _read(SUPPORT_MATRIX_PATH)
+        matrix_profiles = matrix.get("profiles", [])
+        matrix_ids = {item.get("profile_id") for item in matrix_profiles if isinstance(item, dict)}
+        if matrix_ids != known_profiles:
+            errors.append("support matrix profile identifiers must match the registry")
+        for item in matrix_profiles:
+            if not isinstance(item, dict):
+                errors.append("support matrix profile must be an object")
+                continue
+            registry_profile = next(
+                (profile for profile in profiles if profile.get("id") == item.get("profile_id")),
+                None,
+            )
+            if registry_profile is None:
+                continue
+            if set(item.get("device_classes", {})) != set(
+                registry_profile["limits"]["device_classes"]
+            ):
+                errors.append(
+                    f"support matrix device classes differ for {item.get('profile_id')!r}"
+                )
+            for evidence in item.get("evidence", []):
+                if not isinstance(evidence, str) or not (ROOT / evidence).is_file():
+                    errors.append(f"support matrix evidence missing: {evidence!r}")
+        boundaries = matrix.get("global_boundaries", {})
+        if (
+            boundaries.get("remote_code") != "prohibited"
+            or boundaries.get("clinical_interpretation") != "disabled"
+        ):
+            errors.append("support matrix safety boundary mismatch")
     return sorted(errors)
 
 
-def execution_disclosure(registry: dict[str, Any], profile_id: str, fixture_id: str) -> dict[str, Any]:
+def execution_disclosure(
+    registry: dict[str, Any], profile_id: str, fixture_id: str
+) -> dict[str, Any]:
     errors = validate_registry(registry)
     if errors:
         raise ValueError("invalid registry: " + "; ".join(errors))
@@ -75,14 +111,26 @@ def execution_disclosure(registry: dict[str, Any], profile_id: str, fixture_id: 
     if profile is None or fixture is None or fixture["profile_id"] != profile_id:
         raise ValueError("unknown or mismatched profile and fixture")
     disclosure: dict[str, Any] = {
-        "schema_version": "1.0", "profile_id": profile_id, "fixture_id": fixture_id,
-        "framework": profile["framework"], "revision": profile["revision"],
-        "governance": profile["governance"], "capability_status": profile["status"],
-        "execution_mode": "deterministic-contract-probe", "device": platform.platform(),
-        "network": "disabled", "telemetry": "none", "remote_code": "prohibited",
-        "interpretation_allowed": False, "supported": profile["status"] == "supported",
+        "schema_version": "1.0",
+        "profile_id": profile_id,
+        "fixture_id": fixture_id,
+        "framework": profile["framework"],
+        "revision": profile["revision"],
+        "governance": profile["governance"],
+        "capability_status": profile["status"],
+        "execution_mode": "deterministic-contract-probe",
+        "device": platform.platform(),
+        "network": "disabled",
+        "telemetry": "none",
+        "remote_code": "prohibited",
+        "interpretation_allowed": False,
+        "supported": profile["status"] == "supported",
         "output_provenance": fixture["expected_provenance"],
-        "limitations": ["synthetic descriptor probe only", "no upstream framework executed", "no clinical interpretation or support claim"],
+        "limitations": [
+            "synthetic descriptor probe only",
+            "no upstream framework executed",
+            "no clinical interpretation or support claim",
+        ],
     }
     payload = json.dumps(disclosure, sort_keys=True, separators=(",", ":")).encode()
     disclosure["receipt_sha256"] = hashlib.sha256(payload).hexdigest()
@@ -105,7 +153,11 @@ def main() -> int:
             return 1
         print("Multimodal capability registry validation passed.")
         return 0
-    print(json.dumps(execution_disclosure(registry, args.profile, args.fixture), indent=2, sort_keys=True))
+    print(
+        json.dumps(
+            execution_disclosure(registry, args.profile, args.fixture), indent=2, sort_keys=True
+        )
+    )
     return 0
 
 

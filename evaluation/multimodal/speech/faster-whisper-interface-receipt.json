@@ -1,0 +1,70 @@
+{
+  "backend_interface": "faster-whisper",
+  "data_class": "generated_synthetic_descriptors_only",
+  "diarisation": "unsupported_pending_exact_licence_and_compute_clearance",
+  "execution": "model_free_interface_contract",
+  "external_inference": false,
+  "limitations": [
+    "no audio or speech model was executed",
+    "interface compatibility is not transcription quality or device support",
+    "accents, terminology, overlap and noise remain unmeasured",
+    "speaker labels are always absent and diarisation remains unsupported"
+  ],
+  "network": "disabled_no_network_api_used",
+  "private_audio": false,
+  "profile_id": "speech-local",
+  "quality_dimensions": {
+    "accents": {
+      "reason": "requires an exact model revision and generated audio corpus; neither was executed",
+      "status": "unsupported"
+    },
+    "hallucination": {
+      "reason": "synthetic interface fixture measured",
+      "status": "measured"
+    },
+    "noise": {
+      "reason": "requires an exact model revision and generated audio corpus; neither was executed",
+      "status": "unsupported"
+    },
+    "overlap": {
+      "reason": "requires an exact model revision and generated audio corpus; neither was executed",
+      "status": "unsupported"
+    },
+    "speaker_uncertainty": {
+      "reason": "diarisation is separately licence and compute gated; no diarisation backend was admitted",
+      "status": "unsupported"
+    },
+    "terminology": {
+      "reason": "requires an exact model revision and generated audio corpus; neither was executed",
+      "status": "unsupported"
+    },
+    "timestamps": {
+      "reason": "synthetic interface fixture measured",
+      "status": "measured"
+    }
+  },
+  "receipt_sha256": "9f4b0396ffb0f9809cda8d6ead3a79d9247dd0257fb7e00b5612c01d3b0cd13c",
+  "redistribution": false,
+  "remote_code": "prohibited",
+  "results": [
+    {
+      "case_id": "timestamp-plain",
+      "hallucination_detected": false,
+      "segment_count": 2,
+      "synthetic": true,
+      "timestamp_mean_absolute_error_ms": 0.0,
+      "word_error_rate": 0.0
+    },
+    {
+      "case_id": "silence-hallucination",
+      "hallucination_detected": false,
+      "segment_count": 0,
+      "synthetic": true,
+      "timestamp_mean_absolute_error_ms": null,
+      "word_error_rate": null
+    }
+  ],
+  "schema_version": "1.0",
+  "supported": false,
+  "telemetry": "none"
+}

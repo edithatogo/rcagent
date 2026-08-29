@@ -1,0 +1,9 @@
+{
+  "timestamp-plain": {
+    "transcription": [
+      {"offsets": {"from": 0, "to": 1000}, "text": "synthetic alpha"},
+      {"offsets": {"from": 1100, "to": 2200}, "text": "synthetic beta"}
+    ]
+  },
+  "silence-hallucination": {"transcription": []}
+}

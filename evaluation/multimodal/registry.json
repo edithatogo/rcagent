@@ -6,12 +6,12 @@
       "id": "documents-ocr",
       "modality": "document",
       "framework": "Docling",
-      "revision": "2.123.1 observed 2026-08-29",
-      "licence": "MIT candidate; verify transitive OCR assets",
-      "status": "assessed_not_installed",
+      "revision": "Docling 2.123.1 admitted locally on 2026-08-29; ONNX Runtime 1.23.2 OCR retry bounded and stopped",
+      "licence": "Docling MIT; exact admitted key distribution licences and RECORD hashes in docling-local.json",
+      "status": "contract_only",
       "governance": "conditional",
       "privacy": {
-        "network": "disabled until admitted",
+        "network": "disabled",
         "telemetry": "none permitted",
         "cache": "local selected privacy mode",
         "remote_code": "prohibited"
@@ -25,8 +25,6 @@
           "hostile parser input"
         ],
         "device_classes": [
-          "macos-local",
-          "windows-cpu",
           "ci-contract"
         ]
       },
@@ -47,22 +45,22 @@
         "unsupported operational use"
       ],
       "knowledge_limits": "no embedded knowledge or clinical authority",
-      "context_limit": "unmeasured until adapter admission",
-      "evaluation": "local synthetic contract probe only",
-      "runtime": "not installed",
+      "context_limit": "born-digital generated DOCX only; OCR and all challenge classes unsupported",
+      "evaluation": "born-digital DOCX conversion succeeded; OCR retry did not finish promptly; receipt docling-synthetic-evaluation.json",
+      "runtime": "CPython 3.12.13 isolated Docling 2.123.1 environment",
       "quantisation": "not assessed",
-      "ram": "unmeasured",
-      "latency": "unmeasured",
+      "ram": "unmeasured; no device-class support claim",
+      "latency": "bounded success observed for one generated DOCX; no operational threshold",
       "regulatory": "no medical-device or clinical-validation claim",
       "contribution_point": "reproduce generic gaps with synthetic fixtures; upstream communication requires separate authority"
     },
     {
       "id": "encoders-local",
       "modality": "encoder",
-      "framework": "Transformers 5.16.1 / ONNX Runtime 1.29.0 / OpenVINO 2026.3.1",
-      "revision": "observed 2026-08-29",
-      "licence": "Apache-2.0 / MIT; model licence separately required",
-      "status": "assessed_not_installed",
+      "framework": "Transformers / ONNX Runtime / OpenVINO contract interfaces",
+      "revision": "adapter contract 1.0; no backend or immutable model admitted on 2026-08-29",
+      "licence": "adapter code Apache-2.0; backend and model licences unresolved because none was admitted",
+      "status": "contract_only",
       "governance": "conditional",
       "privacy": {
         "network": "disabled until admitted",
@@ -80,8 +78,6 @@
           "quantisation drift"
         ],
         "device_classes": [
-          "macos-local",
-          "windows-cpu",
           "ci-contract"
         ]
       },
@@ -102,12 +98,12 @@
         "unsupported operational use"
       ],
       "knowledge_limits": "no embedded knowledge or clinical authority",
-      "context_limit": "unmeasured until adapter admission",
-      "evaluation": "local synthetic contract probe only",
-      "runtime": "not installed",
-      "quantisation": "not assessed",
-      "ram": "unmeasured",
-      "latency": "unmeasured",
+      "context_limit": "contract-oracle truncation only; no model context support claim",
+      "evaluation": "deterministic contract oracle measured truncation and int8 numeric error; all model tasks unsupported; receipt encoder-contract-receipt-20260829.json",
+      "runtime": "CPython 3.14.5 contract evaluator; no backend model runtime",
+      "quantisation": "int8 numeric oracle only; not a backend or model result",
+      "ram": "unmeasured for model backends",
+      "latency": "4.127 ms contract receipt only; not model latency",
       "regulatory": "no medical-device or clinical-validation claim",
       "contribution_point": "reproduce generic gaps with synthetic fixtures; upstream communication requires separate authority"
     },
@@ -115,9 +111,9 @@
       "id": "speech-local",
       "modality": "speech",
       "framework": "faster-whisper / whisper.cpp / optional pyannote",
-      "revision": "faster-whisper 1.2.1 and pyannote-audio 4.0.7 observed 2026-08-29",
-      "licence": "MIT candidates; model and diarisation terms separately required",
-      "status": "assessed_not_installed",
+      "revision": "faster-whisper and whisper.cpp interface contract 1.0; no speech or diarisation backend/model admitted",
+      "licence": "adapter code Apache-2.0; backend, model and diarisation terms unresolved because none was admitted",
+      "status": "contract_only",
       "governance": "conditional",
       "privacy": {
         "network": "disabled until admitted",
@@ -135,8 +131,6 @@
           "speaker uncertainty"
         ],
         "device_classes": [
-          "macos-local",
-          "windows-cpu",
           "ci-contract"
         ]
       },
@@ -157,12 +151,12 @@
         "unsupported operational use"
       ],
       "knowledge_limits": "no embedded knowledge or clinical authority",
-      "context_limit": "unmeasured until adapter admission",
-      "evaluation": "local synthetic contract probe only",
-      "runtime": "not installed",
+      "context_limit": "synthetic output-interface fixtures only; no audio context measured",
+      "evaluation": "faster-whisper and whisper.cpp output interfaces normalised; timestamps and silence output measured; no audio or model executed",
+      "runtime": "model-free CPython interface evaluator",
       "quantisation": "not assessed",
       "ram": "unmeasured",
-      "latency": "unmeasured",
+      "latency": "unmeasured for transcription or diarisation",
       "regulatory": "no medical-device or clinical-validation claim",
       "contribution_point": "reproduce generic gaps with synthetic fixtures; upstream communication requires separate authority"
     },
@@ -170,7 +164,7 @@
       "id": "medical-imaging-research",
       "modality": "image",
       "framework": "pydicom / Orthanc-compatible / MONAI",
-      "revision": "pydicom 3.0.2 admitted locally; MONAI 1.6.0 observed only on 2026-08-29",
+      "revision": "pydicom 3.0.2 admitted locally; no MONAI runtime or model admitted",
       "licence": "pydicom MIT plus embedded BSD-3-Clause notice; MONAI and Orthanc assets not admitted",
       "status": "contract_only",
       "governance": "research_disabled",
@@ -210,8 +204,8 @@
         "unsupported operational use"
       ],
       "knowledge_limits": "no embedded knowledge or clinical authority",
-      "context_limit": "unmeasured until adapter admission",
-      "evaluation": "pydicom synthetic metadata, pixel, de-identification, series-integrity and adversarial-file probe passed; receipt pydicom-3.0.2-receipt.json",
+      "context_limit": "generated small uncompressed DICOM and model-free shape contract only",
+      "evaluation": "pydicom synthetic metadata, pixel, de-identification, series-integrity and adversarial-file probe passed; MONAI-compatible preprocessing contract passed without inference",
       "runtime": "CPython 3.12.13 isolated pydicom 3.0.2 environment",
       "quantisation": "not assessed",
       "ram": "35,799,040 byte observed maximum RSS including interpreter startup",
@@ -263,8 +257,8 @@
         "unsupported operational use"
       ],
       "knowledge_limits": "no embedded knowledge or clinical authority",
-      "context_limit": "unmeasured until adapter admission",
-      "evaluation": "WFDB synthetic record, annotation, timestamp, missing-lead and adversarial-header probe passed; receipt wfdb-4.3.1-receipt.json",
+      "context_limit": "generated two-lead bounded signals only; device and diagnostic validity unsupported",
+      "evaluation": "WFDB synthetic record, annotation, timestamp, missing-lead and adversarial-header probe passed; noise, resampling, unit and context fail-closed contracts passed",
       "runtime": "CPython 3.12.13 isolated WFDB 4.3.1 environment",
       "quantisation": "not assessed",
       "ram": "77,070,336 byte observed maximum RSS including interpreter startup",

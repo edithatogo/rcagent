@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "data_class": "generated_synthetic_descriptors_only",
+  "contains_audio": false,
+  "cases": [
+    {
+      "id": "timestamp-plain",
+      "purpose": "timestamp interface contract",
+      "expected": {
+        "text": "synthetic alpha synthetic beta",
+        "segments": [
+          {"start_ms": 0, "end_ms": 1000, "text": "synthetic alpha"},
+          {"start_ms": 1100, "end_ms": 2200, "text": "synthetic beta"}
+        ]
+      }
+    },
+    {
+      "id": "silence-hallucination",
+      "purpose": "non-speech hallucination contract",
+      "expected": {"text": "", "segments": []}
+    }
+  ],
+  "unsupported_dimensions": ["accents", "terminology", "overlap", "noise", "speaker_uncertainty"],
+  "rights": "Project-authored synthetic descriptors; no audio, model output, or third-party corpus."
+}

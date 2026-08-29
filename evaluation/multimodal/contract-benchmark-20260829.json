@@ -1,0 +1,66 @@
+{
+  "benchmark_scope": "conservative_non_operational_ci_contract",
+  "limitations": [
+    "No framework or model benchmark",
+    "Thresholds detect contract regressions only",
+    "No deployment suitability claim"
+  ],
+  "receipt_sha256": "3e2f81d53b8cf57c2d78c62b84d9fcefe69ffbd6ad9d05fbb39bccf0e2b61123",
+  "results": [
+    {
+      "allocation_peak_bytes": 662696,
+      "device_class": "ci-contract",
+      "elapsed_ms": 760.13,
+      "passed": true,
+      "profile_id": "documents-ocr",
+      "scope": "deterministic disclosure contract only; not adapter quality or runtime performance",
+      "threshold_bytes": 1000000,
+      "threshold_ms": 2000.0
+    },
+    {
+      "allocation_peak_bytes": 170594,
+      "device_class": "ci-contract",
+      "elapsed_ms": 282.905,
+      "passed": true,
+      "profile_id": "encoders-local",
+      "scope": "deterministic disclosure contract only; not adapter quality or runtime performance",
+      "threshold_bytes": 1000000,
+      "threshold_ms": 2000.0
+    },
+    {
+      "allocation_peak_bytes": 161563,
+      "device_class": "ci-contract",
+      "elapsed_ms": 425.548,
+      "passed": true,
+      "profile_id": "speech-local",
+      "scope": "deterministic disclosure contract only; not adapter quality or runtime performance",
+      "threshold_bytes": 1000000,
+      "threshold_ms": 2000.0
+    },
+    {
+      "allocation_peak_bytes": 161245,
+      "device_class": "ci-contract",
+      "elapsed_ms": 294.611,
+      "passed": true,
+      "profile_id": "medical-imaging-research",
+      "scope": "deterministic disclosure contract only; not adapter quality or runtime performance",
+      "threshold_bytes": 1000000,
+      "threshold_ms": 2000.0
+    },
+    {
+      "allocation_peak_bytes": 160775,
+      "device_class": "ci-contract",
+      "elapsed_ms": 416.384,
+      "passed": true,
+      "profile_id": "ecg-research",
+      "scope": "deterministic disclosure contract only; not adapter quality or runtime performance",
+      "threshold_bytes": 1000000,
+      "threshold_ms": 2000.0
+    }
+  ],
+  "schema_version": "1.0",
+  "summary": {
+    "passed": 5,
+    "profiles": 5
+  }
+}

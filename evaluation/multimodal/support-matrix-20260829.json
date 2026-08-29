@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "track_id": "multimodal-capability-fabric_20260731",
+  "evidence_date": "2026-08-29",
+  "certification_scope": "repository contract evidence only",
+  "profiles": [
+    {
+      "profile_id": "documents-ocr",
+      "frameworks": ["Docling 2.123.1", "ONNX Runtime 1.23.2"],
+      "licences": ["MIT", "Apache-2.0 transitive components"],
+      "device_classes": {"ci-contract": "contract tests passed; no runtime support claim"},
+      "supported_claims": ["model-free interface and receipt validation"],
+      "measured_observations": ["one generated born-digital DOCX structure extraction; non-reproducible and not certified support"],
+      "unsupported_claims": ["OCR", "PDF layout models", "scanned", "rotated", "low-quality", "multilingual", "handwritten", "hostile", "accelerated execution", "operational use"],
+      "evidence": ["evaluation/multimodal/docling-synthetic-evaluation.json", "evaluation/multimodal/admissions/docling-local.json"],
+      "rollback": "disable the optional profile and retain source artefacts",
+      "disable": "documents-ocr remains non-supported in the portable registry"
+    },
+    {
+      "profile_id": "encoders-local",
+      "frameworks": ["Transformers", "ONNX Runtime", "OpenVINO"],
+      "licences": ["backend licence requires exact admission", "model licence separately required"],
+      "device_classes": {"ci-contract": "contract tests passed; no runtime support claim"},
+      "supported_claims": ["deterministic truncation and numeric quantisation contract oracle"],
+      "unsupported_claims": ["embeddings", "reranking", "classification", "similarity", "extraction", "language quality", "domain quality", "calibration", "model drift", "operational use"],
+      "evidence": ["evaluation/multimodal/encoder-contract-receipt-20260829.json"],
+      "rollback": "disable adapter and remove any separately admitted model cache",
+      "disable": "no model-backed encoder capability is enabled"
+    },
+    {
+      "profile_id": "speech-local",
+      "frameworks": ["faster-whisper interface", "whisper.cpp interface"],
+      "licences": ["backend and model licences require exact admission", "diarisation terms separately required"],
+      "device_classes": {"ci-contract": "contract tests passed; no runtime support claim"},
+      "supported_claims": ["synthetic timestamp and silence-output interface normalisation"],
+      "unsupported_claims": ["transcription quality", "accents", "terminology", "overlap", "noise", "speaker attribution", "diarisation", "operational use"],
+      "evidence": ["evaluation/multimodal/speech/faster-whisper-interface-receipt.json", "evaluation/multimodal/speech/whisper-cpp-interface-receipt.json"],
+      "rollback": "disable diarisation then transcription and retain source audio",
+      "disable": "no audio or model-backed speech capability is enabled"
+    },
+    {
+      "profile_id": "medical-imaging-research",
+      "frameworks": ["pydicom 3.0.2", "MONAI-compatible preprocessing contract"],
+      "licences": ["pydicom MIT with bundled BSD notice", "MONAI inference not admitted"],
+      "device_classes": {"ci-contract": "contract tests passed; no clinical-device support claim"},
+      "supported_claims": ["synthetic DICOM metadata and uncompressed pixels", "identifier and series-integrity gates", "model-free nearest-neighbour shape preprocessing contract"],
+      "unsupported_claims": ["MONAI inference", "diagnosis", "clinical interpretation", "medical-device use", "operational use"],
+      "evidence": ["evaluation/multimodal/pydicom-3.0.2-receipt.json", "evaluation/multimodal/medical-signal-contract-v1.json"],
+      "rollback": "disable profile and quarantine generated derivatives",
+      "disable": "interpretation_allowed remains false"
+    },
+    {
+      "profile_id": "ecg-research",
+      "frameworks": ["WFDB 4.3.1"],
+      "licences": ["MIT with recorded transitive inventory"],
+      "device_classes": {"ci-contract": "contract tests passed; no clinical-device support claim"},
+      "supported_claims": ["generated WFDB ingestion", "generated-signal missing-lead, measured-noise, linear-resampling, units and context fail-closed contracts"],
+      "unsupported_claims": ["diagnosis", "clinical interpretation", "device validity", "model inference", "operational use"],
+      "evidence": ["evaluation/multimodal/wfdb-4.3.1-receipt.json", "evaluation/multimodal/medical-signal-contract-v1.json"],
+      "rollback": "disable inference path and retain raw signal provenance",
+      "disable": "interpretation_allowed remains false"
+    }
+  ],
+  "global_boundaries": {
+    "network_during_evaluation": "disabled except bounded package acquisition recorded by admissions",
+    "telemetry": "none permitted",
+    "remote_code": "prohibited",
+    "private_data": "prohibited; generated synthetic inputs only",
+    "redistribution": "none",
+    "clinical_interpretation": "disabled",
+    "external_validation": "clinical, legal, policy, regulatory, employment, cultural-safety, organisational and deployment validation are outside repository completion"
+  },
+  "compatibility_window": "Only the exact admitted pydicom 3.0.2, WFDB 4.3.1 and Docling 2.123.1 observations are in scope. All other versions are disabled until the same admission and receipt suite passes.",
+  "ci_contract_benchmark": {"evidence": "evaluation/multimodal/contract-benchmark-20260829.json", "threshold_ms": 2000.0, "allocation_peak_bytes": 1000000, "scope": "conservative deterministic disclosure-regression gate only; not framework, model or deployment performance"},
+  "drift_procedure": "Run tools.multimodal_fabric validate plus every referenced receipt verifier and the full repository suite; any version, evidence, hash or boundary mismatch disables the affected profile.",
+  "agent_agreement": "Three-agent panel agreement on repository implementation completion after two falsification/rework rounds; no human or external-domain agreement"
+}

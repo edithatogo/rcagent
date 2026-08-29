@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "data_class": "generated_synthetic_only",
+  "max_tokens": 8,
+  "pairs": [
+    {
+      "id": "same-domain-en",
+      "language": "en",
+      "domain": "general",
+      "left": "[Case ID] review found a delayed synthetic handover",
+      "right": "[Case ID] synthetic handover review was delayed"
+    },
+    {
+      "id": "cross-language-mi",
+      "language": "mi",
+      "domain": "general",
+      "left": "He tauira horihori tenei mo [Case ID]",
+      "right": "This is a synthetic example for [Case ID]"
+    },
+    {
+      "id": "domain-shift",
+      "language": "en",
+      "domain": "specialist_unvalidated",
+      "left": "[Patient A] has a synthetic specialist term alpha",
+      "right": "[Consumer B] has a synthetic general term beta"
+    },
+    {
+      "id": "truncation",
+      "language": "en",
+      "domain": "general",
+      "left": "one two three four five six seven eight nine ten eleven twelve",
+      "right": "one two three four five six seven eight"
+    }
+  ]
+}

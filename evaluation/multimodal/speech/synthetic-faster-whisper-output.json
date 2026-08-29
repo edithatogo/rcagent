@@ -1,0 +1,7 @@
+{
+  "timestamp-plain": [
+    {"start": 0.0, "end": 1.0, "text": "synthetic alpha"},
+    {"start": 1.1, "end": 2.2, "text": "synthetic beta"}
+  ],
+  "silence-hallucination": []
+}

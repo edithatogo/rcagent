@@ -1,0 +1,119 @@
+{
+  "backends": [
+    {
+      "backend": "transformers",
+      "contract_status": "unavailable",
+      "distribution": "transformers",
+      "model_executed": false,
+      "network": "disabled",
+      "observed_version": null,
+      "remote_code": "prohibited",
+      "tasks": {
+        "classification": "unsupported_no_cleared_model_asset",
+        "cross_encoder_reranking": "unsupported_no_cleared_model_asset",
+        "dense_embedding": "unsupported_no_cleared_model_asset",
+        "extraction": "unsupported_no_cleared_model_asset",
+        "similarity": "unsupported_no_cleared_model_asset"
+      }
+    },
+    {
+      "backend": "onnxruntime",
+      "contract_status": "unavailable",
+      "distribution": "onnxruntime",
+      "model_executed": false,
+      "network": "disabled",
+      "observed_version": null,
+      "remote_code": "prohibited",
+      "tasks": {
+        "classification": "unsupported_no_cleared_model_asset",
+        "cross_encoder_reranking": "unsupported_no_cleared_model_asset",
+        "dense_embedding": "unsupported_no_cleared_model_asset",
+        "extraction": "unsupported_no_cleared_model_asset",
+        "similarity": "unsupported_no_cleared_model_asset"
+      }
+    },
+    {
+      "backend": "openvino",
+      "contract_status": "unavailable",
+      "distribution": "openvino",
+      "model_executed": false,
+      "network": "disabled",
+      "observed_version": null,
+      "remote_code": "prohibited",
+      "tasks": {
+        "classification": "unsupported_no_cleared_model_asset",
+        "cross_encoder_reranking": "unsupported_no_cleared_model_asset",
+        "dense_embedding": "unsupported_no_cleared_model_asset",
+        "extraction": "unsupported_no_cleared_model_asset",
+        "similarity": "unsupported_no_cleared_model_asset"
+      }
+    }
+  ],
+  "data_class": "generated_synthetic_only",
+  "effects": {
+    "calibration": "unsupported_no_probabilistic_model_output",
+    "domain": "described_not_quality_validated",
+    "drift": "unsupported_no_baseline_model_revision",
+    "input_length": "measured_on_contract_oracle_only",
+    "language": "described_not_quality_validated",
+    "quantisation": "int8_numeric_oracle_only_not_backend_or_model",
+    "truncation": "measured_on_contract_oracle_only"
+  },
+  "elapsed_ms": 4.127,
+  "execution_mode": "offline_contract_oracle_no_model",
+  "external_inference": false,
+  "limitations": [
+    "No immutable model artefact was locally available or cleared; no model was executed.",
+    "Contract-oracle vectors are deterministic test instrumentation, not embeddings.",
+    "No backend, task, language, domain, calibration, drift or quantisation support claim is made."
+  ],
+  "measurements": [
+    {
+      "contract_oracle_cosine": 0.824958,
+      "domain": "general",
+      "id": "same-domain-en",
+      "int8_oracle_max_abs_error": 0.000777,
+      "language": "en",
+      "left_tokens": 8,
+      "right_tokens": 7,
+      "truncated": false
+    },
+    {
+      "contract_oracle_cosine": 0.565685,
+      "domain": "general",
+      "id": "cross-language-mi",
+      "int8_oracle_max_abs_error": 0.001605,
+      "language": "mi",
+      "left_tokens": 7,
+      "right_tokens": 8,
+      "truncated": false
+    },
+    {
+      "contract_oracle_cosine": 0.5,
+      "domain": "specialist_unvalidated",
+      "id": "domain-shift",
+      "int8_oracle_max_abs_error": 0.001201,
+      "language": "en",
+      "left_tokens": 8,
+      "right_tokens": 8,
+      "truncated": false
+    },
+    {
+      "contract_oracle_cosine": 1.0,
+      "domain": "general",
+      "id": "truncation",
+      "int8_oracle_max_abs_error": 0.001555,
+      "language": "en",
+      "left_tokens": 12,
+      "right_tokens": 8,
+      "truncated": true
+    }
+  ],
+  "network": "disabled_no_network_api_used",
+  "profile_id": "encoders-local",
+  "receipt_sha256": "eb6d96c8c3761d46c564ce89df402b56b07a425f83b69bf273f891103c7d5736",
+  "remote_code": "prohibited",
+  "runtime": "CPython 3.14.5 Darwin arm64",
+  "schema_version": "1.0",
+  "telemetry": "none"
+}

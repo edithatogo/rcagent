@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "receipt_sha256": "37baf50821edd4522df501ec3138f844966cc59834ebb88b86cfdecb528e258e",
+  "profile_id": "documents-ocr",
+  "evaluation_id": "docling-2.123.1-local-synthetic-20260829",
+  "data_class": "synthetic",
+  "execution_boundary": {
+    "network": "disabled during evaluation",
+    "telemetry": "none permitted",
+    "remote_code": "prohibited",
+    "external_inference": "prohibited",
+    "private_data": "prohibited"
+  },
+  "adapter": {
+    "contract": "DoclingDocument-compatible structured output",
+    "portable_core_dependency": false,
+    "environment": "/Volumes/PortableSSD/rcagent-adapter-envs/docling-2.123.1",
+    "python": "3.12.13",
+    "device": "Apple local CPU",
+    "accelerator_measured": false
+  },
+  "cases": [
+    {
+      "id": "born-digital-docx",
+      "class": "born-digital",
+      "state": "measured_contract",
+      "source": {"kind": "generated-docx", "synthetic_markers": ["[Patient A]", "[Case ID]"], "page": null},
+      "output": {"text_items": 2, "tables": 1, "reading_order_preserved": true, "region": null, "confidence": null},
+      "transformations": ["generated DOCX", "Docling local conversion", "DoclingDocument text export"],
+      "provenance_limit": "DOCX conversion exposed document items and table order but no stable page or bounding-box coordinates.",
+      "evidence": "Observed ConversionStatus.SUCCESS; two text items and one 2x2 table."
+    },
+    {
+      "id": "scanned-image",
+      "class": "scanned",
+      "state": "unsupported",
+      "source": {"kind": "generated-raster", "page": 1},
+      "output": {"region": null, "confidence": null},
+      "transformations": ["generated raster"],
+      "provenance_limit": "RapidOCR first failed because its ONNX runtime was absent; the bounded retry did not finish promptly and was stopped.",
+      "evidence": "No OCR support claim."
+    },
+    {
+      "id": "rotated-scan",
+      "class": "rotated",
+      "state": "unsupported",
+      "source": {"kind": "generated-raster", "page": 1, "rotation_degrees": 90},
+      "output": {"region": null, "confidence": null},
+      "transformations": ["generated raster", "rotate 90 degrees"],
+      "provenance_limit": "OCR backend was not measured within the bounded run.",
+      "evidence": "No rotation-correction claim."
+    },
+    {
+      "id": "low-quality-scan",
+      "class": "low-quality",
+      "state": "unsupported",
+      "source": {"kind": "generated-raster", "page": 1, "quality": "low"},
+      "output": {"region": null, "confidence": null},
+      "transformations": ["generated raster", "contrast reduction", "downsampling"],
+      "provenance_limit": "No calibrated confidence or quality threshold was measured.",
+      "evidence": "Fail-closed unsupported state."
+    },
+    {
+      "id": "multilingual-scan",
+      "class": "multilingual",
+      "state": "unsupported",
+      "source": {"kind": "generated-raster", "page": 1, "languages": ["en", "fr", "ar"]},
+      "output": {"region": null, "confidence": null},
+      "transformations": ["generated multilingual raster"],
+      "provenance_limit": "No exact language model or script coverage was admitted or measured.",
+      "evidence": "Fail-closed unsupported state."
+    },
+    {
+      "id": "handwritten-scan",
+      "class": "handwritten",
+      "state": "unsupported",
+      "source": {"kind": "generated-raster", "page": 1, "style": "synthetic-cursive"},
+      "output": {"region": null, "confidence": null},
+      "transformations": ["generated cursive-like raster"],
+      "provenance_limit": "Synthetic cursive is not evidence of handwriting recognition support.",
+      "evidence": "Fail-closed unsupported state."
+    },
+    {
+      "id": "hostile-document",
+      "class": "hostile",
+      "state": "unsupported",
+      "source": {"kind": "generated-invalid-container", "page": null},
+      "output": {"region": null, "confidence": null},
+      "transformations": ["generated malformed bytes"],
+      "provenance_limit": "No parser-sandbox or adversarial corpus validation was completed.",
+      "evidence": "Hostile input remains rejected and unsupported."
+    }
+  ]
+}
