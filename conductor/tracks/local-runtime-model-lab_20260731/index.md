@@ -1,6 +1,6 @@
 # Track 08: Local Runtime and Model Lab
 
-- **Status:** In progress
+- **Status:** Completed (repository negative-result closure; hosted integration pending)
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#13](https://github.com/edithatogo/rcagent/issues/13)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)

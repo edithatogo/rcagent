@@ -30,7 +30,7 @@ Parent: [GitHub #3](https://github.com/edithatogo/rcagent/issues/3)
 | [x] | [05 Benchmark and Evaluation Harness](./archive/benchmark-evaluation-harness_20260731/index.md) | [#10](https://github.com/edithatogo/rcagent/issues/10) | Completed with negative comparator evidence |
 | [x] | [06 Multimodal Capability Fabric](./archive/multimodal-capability-fabric_20260731/index.md) | [#11](https://github.com/edithatogo/rcagent/issues/11) | Completed with explicit negative-result support boundaries |
 | [x] | [07 Retrieval and Knowledge System](./archive/retrieval-knowledge-system_20260731/index.md) | [#12](https://github.com/edithatogo/rcagent/issues/12) | Archived after atomic lifecycle remediation, full validation and unanimous agent-panel review |
-| [~] | [08 Local Runtime and Model Lab](./tracks/local-runtime-model-lab_20260731/index.md) | [#13](https://github.com/edithatogo/rcagent/issues/13) | 05, 06 |
+| [x] | [08 Local Runtime and Model Lab](./tracks/local-runtime-model-lab_20260731/index.md) | [#13](https://github.com/edithatogo/rcagent/issues/13) | Completed with an explicit empty supported set and no model execution |
 | [ ] | [10 Domain Adaptation and Fine-Tuning](./tracks/domain-adaptation-finetuning_20260731/index.md) | [#15](https://github.com/edithatogo/rcagent/issues/15) | 05, 06, 07, 08 |
 
 ### Workstream C: Product, Interfaces, and Distribution
