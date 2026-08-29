@@ -1,7 +1,7 @@
 # Decision: Create the First Public Portable-Skill Release
 
 - **Decision ID:** `20260829-004-track11-first-public-release`
-- **Status:** Proposed
+- **Status:** Approved with conditions
 - **Date raised:** 2026-08-29
 - **Owner:** Repository owner
 - **Track:** `distribution-registries-plugins_20260731`
@@ -67,14 +67,14 @@ Respond exactly: `Approve bounded GitHub release after dependency closure`.
 
 ## Owner Decision
 
-- **Decision:** Pending
-- **Conditions:** Pending
-- **Date:** Pending
-- **Recorded by:** Pending
+- **Decision:** Approved. The owner stated: `I authorise public releases and registry/marketplace submissions.`
+- **Conditions:** For decision `20260829-004`, create the bounded GitHub release only after dependency closure and exact-candidate validation described above. Registry and marketplace authority is recorded in principle; execute only concrete, current, reviewable submissions that pass their applicable publisher, terms, privacy, support, compatibility, security, and rollback gates. No paid service, credential disclosure, unsupported claim, or bypass of a platform's review requirements is authorised.
+- **Date:** 2026-08-29
+- **Recorded by:** Codex from the repository owner's explicit instruction
 
 ## Follow-up
 
-- [ ] Record the decision and conditions in Track 11 metadata and evidence
+- [x] Record the decision and conditions in Track 11 metadata and evidence
 - [ ] Reverify release and client requirements against first-party sources
 - [ ] Build and validate the exact release candidate from its final commit
 - [ ] Keep every marketplace or directory submission behind its own decision

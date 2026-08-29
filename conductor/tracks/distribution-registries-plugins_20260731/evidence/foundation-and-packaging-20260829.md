@@ -58,6 +58,8 @@ fixed in `7655578`.
 ## Safe continuation
 
 Continue local compatibility, negative-test, drift, and submission-packet work.
-Fail closed on public mutation until decision
-`20260829-004-track11-first-public-release` and all affected dependency receipts
-pass.
+The owner authorised public releases and registry or marketplace submissions on
+2026-08-29. Decision `20260829-004-track11-first-public-release` is therefore
+approved with conditions. Continue to fail closed until all affected dependency
+receipts and exact-candidate release or submission checks pass; the instruction
+does not turn an incomplete or unreviewed artefact into a releasable one.
