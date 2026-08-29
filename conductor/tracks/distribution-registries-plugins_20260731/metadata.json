@@ -27,5 +27,19 @@
     "Publisher verification, public legal/privacy policy, support commitment, credentials, or paid service",
     "Distribution through a community registry whose trust or ownership is not established"
   ],
+  "gates": [
+    {
+      "id": "20260829-004-track11-first-public-release",
+      "kind": "owner_decision",
+      "status": "pending",
+      "evidence": "../../decisions/20260829-004-track11-first-public-release.md"
+    },
+    {
+      "id": "track11-phase-dependencies",
+      "kind": "dependency",
+      "status": "pending",
+      "evidence": "../../tracks.md"
+    }
+  ],
   "description": "Package the portable skill suite for trustworthy discovery and installation, then build optional Claude, Codex/OpenAI, and other client plugins without contaminating the standards-compliant core."
 }

@@ -20,61 +20,61 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
-- [~] Task: Establish the system and dependency context
-  - [ ] Read `integration-strategy.md` and this track's entry in `integration-map.json`
-  - [ ] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
-  - [ ] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
-  - [ ] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
+- [x] Task: Establish the system and dependency context (`f310539`)
+  - [x] Read `integration-strategy.md` and this track's entry in `integration-map.json`
+  - [x] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
+  - [x] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
+  - [x] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
 
-- [ ] Task: Select the smallest adequate intervention
-  - [ ] Prefer existing-system configuration or a standards profile
-  - [ ] Prefer a thin replaceable adapter when translation is the remaining gap
-  - [ ] Identify generic gaps suitable for an authorised upstream issue or contribution
-  - [ ] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
-  - [ ] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
+- [x] Task: Select the smallest adequate intervention (`f310539`)
+  - [x] Prefer existing-system configuration or a standards profile
+  - [x] Prefer a thin replaceable adapter when translation is the remaining gap
+  - [x] Identify generic gaps suitable for an authorised upstream issue or contribution
+  - [x] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
+  - [x] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
 
-- [ ] Task: Define the dependency lifecycle
-  - [ ] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile
-  - [ ] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
-  - [ ] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
-  - [ ] Update `integration-map.json` with the selected status and evidence links
+- [x] Task: Define the dependency lifecycle (`f310539`)
+  - [x] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile
+  - [x] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
+  - [x] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
+  - [x] Confirm `integration-map.json` already records the selected project-owned gap; preserve evidence in the fit-gap record
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify that no planned work duplicates an adequate existing capability
-  - [ ] Verify the system-of-record and data-authority boundary
-  - [ ] Verify the smallest remaining gap and ownership rationale
-  - [ ] Record the fit-gap receipt and bounded handoff context
-  - [ ] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
-  - [ ] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
+- [x] Task: Phase Verification & Checkpoint (`f310539`)
+  - [x] Verify that no planned work duplicates an adequate existing capability
+  - [x] Verify the system-of-record and data-authority boundary
+  - [x] Verify the smallest remaining gap and ownership rationale
+  - [x] Record the fit-gap receipt and bounded handoff context
+  - [x] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
+  - [x] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
 
 ## Phase 1: Govern the registry and marketplace funnel
 
-- [ ] Task: Implement the phase scope
-  - [ ] Create a current assessment matrix for specification projects, registries, directories, marketplaces, installers, and community catalogues
-  - [ ] Record operator, ownership, verification, security review, licence, terms, telemetry, maintenance, discoverability, versioning, deprecation, and rollback
-  - [ ] Classify official, first-party, community, experimental, and unsuitable routes
-  - [ ] Require an owner decision before any public submission
+- [x] Task: Implement the phase scope (`f310539`)
+  - [x] Create a current assessment matrix for specification projects, registries, directories, marketplaces, installers, and community catalogues
+  - [x] Record operator, ownership, verification, security review, licence, terms, telemetry, maintenance, discoverability, versioning, deprecation, and rollback
+  - [x] Classify official, first-party, community, experimental, and unsuitable routes
+  - [x] Require an owner decision before any public submission
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #16 and dependency evidence
+- [x] Task: Validate the phase deliverables (`f310539`)
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #16 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint (`f310539`)
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 2: Release the canonical portable skills
 
-- [ ] Task: Implement the phase scope
+- [~] Task: Implement the phase scope (`66831ec`; public release pending owner decision)
   - [ ] Publish core and optional capability bundles independently so advanced dependencies never become mandatory
-  - [ ] Generate signed or reviewable installer manifests for scripted, agent-assisted, offline, update, rollback, and uninstall paths
-  - [ ] Package self-contained skills from the portable core with licences, checksums, provenance, compatibility, changelog, and SBOM-style metadata
-  - [ ] Test clean GitHub installation, archive extraction, offline use, updates, rollback, and uninstallation
+  - [x] Generate reviewable local manifests for scripted, agent-assisted, offline, update, rollback, and uninstall paths
+  - [x] Package self-contained skills from the portable core with licences, checksums, provenance, compatibility, changelog, and SBOM-style metadata
+  - [x] Test deterministic archive extraction and offline package integrity; hosted GitHub installation remains pending a release decision
   - [ ] Reuse GitHub releases, attestations, dependency and security tooling plus current SPDX, CycloneDX, and signing standards where supported
   - [ ] Contribute generic packaging or validator gaps to the relevant client or standard ecosystem instead of maintaining a divergent installer
   - [ ] Keep public release as an explicit owner-approved action
