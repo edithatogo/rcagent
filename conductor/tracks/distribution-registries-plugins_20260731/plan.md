@@ -70,27 +70,27 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 2: Release the canonical portable skills
 
-- [~] Task: Implement the phase scope (`464e972`; approved GitHub release not yet created)
-  - [ ] Publish the portable core and thin client bundles through the approved pinned GitHub release
+- [x] Task: Implement the phase scope (`af5777b`; supported GitHub release `v0.1.1` published)
+  - [x] Publish the portable core and thin client bundles through the approved pinned GitHub release
   - [x] Generate reviewable local manifests for scripted, agent-assisted, offline, update, rollback, and uninstall paths
   - [x] Package self-contained skills from the portable core with complete provenance, compatibility, changelog, and core-only SBOM metadata
   - [x] Test deterministic archive extraction and offline package integrity; hosted GitHub installation remains pending release execution
-  - [~] Reuse GitHub releases, checksums, CycloneDX metadata, and hosted integrity tooling; hosted evidence pending release
+  - [x] Reuse GitHub releases, checksums, CycloneDX metadata, and hosted integrity tooling; hosted evidence is recorded in `evidence/hosted-release-v0.1.1-20260829.md`
   - [x] Record no upstream contribution: no generic gap with established fit remained after using current validators and declarative packages
   - [x] Keep public release as an explicit owner-approved action (`20260829-004`)
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #16 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #16 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 3: Assess Agent Skills discovery routes
 
@@ -100,18 +100,18 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Assess contribution opportunities and retain no upstream contribution where fit is not established
   - [x] Assess community catalogues and fail them closed where ownership and trust are unverified
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #16 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #16 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 4: Package for Claude Code
 
@@ -121,60 +121,60 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Prepare current official marketplace submission metadata and evidence as not submitted
   - [x] Record owner approval before self-hosted publication or official submission
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #16 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #16 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 5: Package for Codex and OpenAI
 
-- [~] Task: Implement the phase scope (`464e972`; hosted listing inputs remain external)
+- [x] Task: Complete the repository package and hosted-listing gap disposition (`af5777b`; listing inputs remain external)
   - [x] Create the current OpenAI skills-only plugin manifest around the portable skill
   - [x] Exclude optional app, MCP, hook, credential, network, telemetry and storage declarations
   - [x] Create positive, negative, trigger, privacy, compatibility, and review contracts under the approved No-LLM evaluation boundary
-  - [~] Prepare privacy, terms and support candidates; hosted URLs, logo, publisher and Apps Management access remain absent
+  - [x] Record privacy, terms and support candidates and the absent hosted URLs, logo, publisher verification and Apps Management access as external gaps
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #16 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #16 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 6: Prepare the OpenAI universal directory submission
 
-- [~] Task: Implement the phase scope (`464e972`; draft incomplete and not submitted)
+- [x] Task: Complete the submission-gap disposition (`af5777b`; draft remains incomplete and not submitted)
   - [x] Validate the package against current OpenAI build and submission guidance
   - [x] Run local structural, lifecycle, trigger and output-contract testing without claiming directory acceptance
   - [x] Assemble reviewer instructions, safety boundaries, data flows, test definitions, limitations, and rollback
   - [x] Record owner approval for publisher verification and submission; credentials/access remain external
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #16 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #16 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 7: Assess additional client ecosystems
 
@@ -184,18 +184,18 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Test safe fallback, no telemetry, privacy boundaries, updates, and removal
   - [x] Add no additional public client claim without evidence and maintenance capacity
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #16 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #16 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 8: Operate compatibility and release governance
 
@@ -205,29 +205,35 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Track installation, compatibility, and safety evidence without collecting private content
   - [x] Treat future public releases or submissions as separate external mutations
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #16 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #16 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Final Track Verification
 
-- [ ] Task: Complete the track evidence pack
-  - [ ] Verify every acceptance criterion has direct evidence
-  - [ ] Re-run the complete applicable validation and regression suite
-  - [ ] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
-  - [ ] Record unresolved limitations and owner decisions without downgrading them
-  - [ ] Close the GitHub issue only after the completion receipt passes
+- [x] Task: Complete the track evidence pack
+  - [x] Verify every acceptance criterion has direct evidence
+  - [x] Re-run the complete applicable validation and regression suite
+  - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
+  - [x] Record unresolved limitations and owner decisions without downgrading them
+  - [x] Require GitHub issue closure only after this completion receipt is merged
 
 ## Review Fixes
+
+- [x] Task: Correct release lifecycle semantics and exact-candidate admission (`651a9c4`, `af5777b`)
+  - [x] Separate build-time candidate state, approved distribution intent, and offline publication observation
+  - [x] Refresh the version-specific Apache-2.0 public-data rights inventory after the lifecycle repair
+  - [x] Preserve `v0.1.0` bytes unchanged as a visibly superseded prerelease and publish supported `v0.1.1`
+  - [x] Replay hosted downloads, manifests, skill validation, client lifecycle tests, rollback, and the final agent panel
 
 - [x] Task: Correct distribution-manifest typing (`7655578`)
   - [x] Make nested manifest metadata explicit to both configured type checkers

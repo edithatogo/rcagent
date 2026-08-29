@@ -4,9 +4,9 @@
   "title": "Distribution, Registries, and Client Plugins",
   "type": "feature",
   "evidence_schema": "1.0",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-31T04:34:01Z",
-  "updated_at": "2026-08-29T11:20:00Z",
+  "updated_at": "2026-08-29T12:05:00Z",
   "workstream": "product-interfaces-distribution",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/16",
@@ -46,6 +46,18 @@
       "kind": "rights_privacy_review",
       "status": "satisfied",
       "evidence": "evidence/release-rights-inventory-0.1.1.json"
+    },
+    {
+      "id": "track11-publisher-and-listing-prerequisites",
+      "kind": "external_prerequisite",
+      "status": "pending",
+      "evidence": "submission/openai/submission-packet.json"
+    },
+    {
+      "id": "track11-directory-submission-and-publication",
+      "kind": "external_action",
+      "status": "pending",
+      "evidence": "evidence/completion-receipt-20260829.md"
     }
   ],
   "description": "Package the portable skill suite for trustworthy discovery and installation, then build optional Claude, Codex/OpenAI, and other client plugins without contaminating the standards-compliant core."

@@ -90,7 +90,7 @@ Later phase gates not drawn as hard-start arrows:
 - Track 08 consumes retrieval scenarios from Track 07.
 - Track 09 consumes multimodal and retrieval capabilities from Tracks 06 and 07.
 - Track 10 also consumes applicable Track 03 and Track 04 governance.
-- Track 11 can package portable skills after Track 00; client-plugin submission evidence waits for Tracks 01, 03, 05, and 09.
+- Track 11 packaged portable skills after Track 00 and reconciled Tracks 01, 03, 05, and 09 before its supported release; directory submission remains a separate external action.
 
 ## Track Portfolio
 
@@ -107,7 +107,7 @@ Later phase gates not drawn as hard-start arrows:
 | [08 Local runtime and model lab](./archive/local-runtime-model-lab_20260731/index.md) | [#13](https://github.com/edithatogo/rcagent/issues/13) | B | 05, 06 | Archived negative-result runtime/model readiness contract; no supported tuple |
 | [09 Interfaces, templates and action loop](./archive/interfaces-templates-action-loop_20260731/index.md) | [#14](https://github.com/edithatogo/rcagent/issues/14) | C | 02, 03, 04 | Archived generated-synthetic contract surface; operational gates retained |
 | [10 Domain adaptation and fine-tuning](./archive/domain-adaptation-finetuning_20260731/index.md) | [#15](https://github.com/edithatogo/rcagent/issues/15) | B | 05, 06, 07, 08 | Archived negative adaptation disposition; no model, data, training, artefact, or release |
-| [11 Distribution, registries and plugins](./tracks/distribution-registries-plugins_20260731/index.md) | [#16](https://github.com/edithatogo/rcagent/issues/16) | C | 00 | Portable releases, registry assessment, Claude and OpenAI packages |
+| [11 Distribution, registries and plugins](./tracks/distribution-registries-plugins_20260731/index.md) | [#16](https://github.com/edithatogo/rcagent/issues/16) | C | 00 | Completed supported v0.1.1 release, registry assessment, and unsubmitted Claude/OpenAI packets |
 
 Cross-cutting repository hardening is coordinated by
 [#18](https://github.com/edithatogo/rcagent/issues/18), with
@@ -168,19 +168,19 @@ otherwise it remains an integrated module using the shared contracts.
 - Independent lane: Track 06 multimodal adapters
 - Independent lane: Track 09 user journeys and deterministic workflow templates
 - Track 07 begins its lexical and corpus foundation when Tracks 02–04 pass
-- Track 11 may prepare private portable-skill packaging without publishing
+- Track 11 published the approved supported portable-skill release `v0.1.1` after exact-candidate admission
 
 ### Wave 4: Measured Intelligence
 
 - Integration lane: Track 07 hybrid retrieval convergence
 - Independent lane: Track 08 device and model lab
 - Independent lane: Track 09 interface and action-loop integration
-- Track 11 prepares client packages and current submission evidence
+- Track 11 completed client packages and current not-submitted directory evidence
 
 ### Wave 5: Adaptation and Distribution Decisions
 
 - Track 10 evaluates domain models and fine-tuning only if benchmark evidence identifies a justified gap
-- Track 11 presents owner decisions for each public release, registry, marketplace, or plugin-directory submission
+- Track 11 used the recorded owner decision for GitHub publication; any directory submission remains a separate external mutation
 - Portfolio closeout verifies privacy modes, policy drift, device profiles, maintenance, and reproducibility
 
 ## Maximal Harness and Context Strategy
@@ -243,7 +243,7 @@ Track 11 uses a governed funnel:
 4. **Codex and OpenAI:** test the current plugin manifest, `agents/openai.yaml`, and any justified app or MCP declarations, then prepare an optional universal plugin-directory submission.
 5. **Other clients:** use the same adapter, compatibility, privacy, maintenance, deprecation, and rollback profile.
 
-Every external publication or submission is a separate owner decision. Packaging readiness does not imply publication.
+The supported GitHub release is `v0.1.1`. OpenAI and Claude directory submission, screening, approval, and directory publication were not performed; packaging readiness does not imply those states.
 
 ## Portfolio Decision Gates
 
