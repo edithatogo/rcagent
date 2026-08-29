@@ -4,10 +4,10 @@
   "title": "Australian Jurisdiction Packs — National Baseline, NSW Health, and Queensland Health",
   "original_title": "NSW Health Jurisdiction Pack",
   "type": "feature",
-  "status": "in_progress",
+  "status": "blocked",
   "evidence_schema": "1.0",
   "created_at": "2026-07-31T04:34:01Z",
-  "updated_at": "2026-08-29T00:54:13Z",
+  "updated_at": "2026-08-29T01:06:32Z",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/9",
@@ -26,6 +26,14 @@
     "Clinical or policy interpretation that is not explicit in an authoritative source",
     "Copying a restricted template or localising a state-wide process",
     "Privilege claims or use of superseded, under-review, or consultation material"
+  ],
+  "gates": [
+    {
+      "id": "20260829-001-active-under-review-pd2020-047",
+      "kind": "owner_decision",
+      "status": "pending",
+      "evidence": "../../decisions/20260829-001-active-under-review-pd2020-047.md"
+    }
   ],
   "description": "Build versioned jurisdiction packs mapping a shared national baseline (NSQHS, ACSQHC, Commonwealth legislation) plus authoritative NSW Health, CEC, ACI, and Queensland Health sources into usable serious-adverse-event workflows without silently converting guidance, drafts, or templates into binding requirements."
 }
