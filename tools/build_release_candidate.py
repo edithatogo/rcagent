@@ -29,6 +29,7 @@ def _hash(path: Path) -> str:
 def _build_claude_marketplace(plugin_archive: Path, output: Path, version: str) -> None:
     catalog = {
         "name": "rcagent",
+        "description": "Skills-only RCA investigation plugins with an Apache-2.0 portable core.",
         "owner": {"name": "edithatogo"},
         "plugins": [
             {"name": "rca-investigation", "source": "./plugins/rca-investigation", "version": version}
