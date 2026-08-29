@@ -17,7 +17,8 @@ execution.
 Dependency Review and Codecov have produced hosted results on current pull
 requests. Renovate configuration now inherits `github>edithatogo/renovate-config`
 while retaining the repository's justified update grouping and admission
-rules. No hosted Renovate Dependency Dashboard or pull request was observed,
+rules. A local catch-all disables inherited automerge until the bounded master
+ruleset is observed. No hosted Renovate Dependency Dashboard or pull request was observed,
 so app installation/health remains an external prerequisite. Dependabot is
 absent and is not reintroduced alongside an unverified Renovate installation.
 
@@ -27,7 +28,8 @@ Quality workflow's Ubuntu, macOS, and Windows validation jobs. Agent Skill
 Conformance is path-conditional; Vale is advisory; Codecov patch arrival is
 external-app dependent. A ruleset must preserve administrator recovery and
 zero mandatory human approvals. Creating that hosted ruleset is a separate
-settings mutation and is not claimed by this repository change.
+settings mutation and is not claimed by this repository change. The ruleset
+must be created and verified before Renovate is granted repository access.
 
 ## Issue #19
 

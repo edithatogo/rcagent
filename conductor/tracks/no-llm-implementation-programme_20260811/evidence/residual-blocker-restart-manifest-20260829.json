@@ -18,9 +18,9 @@
       "owner": "repository owner",
       "class": "hosted_app_access",
       "state": "not_observed",
-      "prerequisite": "Grant the Renovate app repository access and observe its Dependency Dashboard or first pull request",
+      "prerequisite": "First observe the bounded master ruleset, then grant the Renovate app repository access and observe its Dependency Dashboard or first pull request",
       "contingency": "Retain current dependency review and do not remove or add competing update bots",
-      "restart": "Install or grant Renovate access, verify inherited configuration in the first hosted artefact, then record exact URL and timestamp"
+      "restart": "After ruleset verification, install or grant Renovate access, verify inherited configuration and disabled automerge in the first hosted artefact, then record exact URL and timestamp"
     },
     {
       "id": "legacy-evaluation-execution",
