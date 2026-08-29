@@ -1,6 +1,7 @@
 # Track 04: Australian Jurisdiction Packs — National Baseline, NSW Health, and Queensland Health
 
-- **Status:** New
+- **Status:** In progress
+- **Evidence ledger:** Opts into `evidence_schema: "1.0"`; `evidence.jsonl` is the append-only structured evidence source of truth.
 - **Original identity:** Began as "NSW Health Jurisdiction Pack" (`nsw-health-jurisdiction-pack_20260731`); track ID retained for continuity. GitHub issue [#9](https://github.com/edithatogo/rcagent/issues/9) may still carry its original title — reconcile the issue title or close-out notes at the first phase checkpoint.
 - **Workstream:** foundation-governance
 - **GitHub issue:** [#9](https://github.com/edithatogo/rcagent/issues/9)
