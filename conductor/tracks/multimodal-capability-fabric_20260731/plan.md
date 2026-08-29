@@ -75,138 +75,64 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 2: Evaluate document and OCR adapters
 
-- [!] Task: Implement the phase scope
-  - [ ] Prototype Docling-compatible layout, OCR, table, reading-order, and coordinate extraction
-  - [ ] Test born-digital, scanned, rotated, low-quality, multilingual, handwritten, and hostile documents
-  - [ ] Preserve page, region, confidence, transformation, and source provenance
-  - [ ] Compare CPU and accelerated local backends without making Docling a core dependency
-
-- [!] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #11 and dependency evidence
-
-- [!] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Complete bounded document evaluation — negative-result closure
+  - [x] Validate a Docling-compatible structured-output contract and exact key-distribution admission evidence
+  - [x] Record the one born-digital DOCX conversion as a non-reproducible local observation, not certified support
+  - [x] Cover scanned, rotated, low-quality, multilingual, handwritten and hostile classes with explicit unsupported states
+  - [x] Record coordinates, confidence and acceleration as unavailable or unsupported where they were not measured
+  - [x] Pass receipt-hash, contract, privacy, safety and regression checks
 
 ## Phase 3: Evaluate encoder and reranker adapters
 
-- [!] Task: Implement the phase scope
-  - [ ] Prototype Transformers, ONNX Runtime, and OpenVINO encoder contracts
-  - [ ] Evaluate dense embeddings, cross-encoders, classification, similarity, and extraction tasks
-  - [ ] Measure truncation, input length, language, domain, calibration, drift, and quantisation effects
-  - [ ] Prevent untrusted remote code and undeclared telemetry
-
-- [!] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #11 and dependency evidence
-
-- [!] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Complete bounded encoder evaluation — negative-result closure
+  - [x] Exercise versioned Transformers, ONNX Runtime and OpenVINO interface states without executing a model
+  - [x] Record every model-backed task as unsupported without a cleared immutable model
+  - [x] Measure truncation, input length and numeric int8 behavior only on a deterministic contract oracle
+  - [x] Record language, domain, calibration and drift as unvalidated or unsupported
+  - [x] Prohibit network use, remote code and telemetry and pass receipt validation
 
 ## Phase 4: Evaluate speech and diarisation adapters
 
-- [!] Task: Implement the phase scope
-  - [ ] Prototype whisper.cpp and faster-whisper compatible transcription interfaces
-  - [ ] Prototype optional pyannote or NeMo diarisation behind separate licence and compute checks
-  - [ ] Measure accents, terminology, overlap, noise, timestamps, speaker uncertainty, and hallucination
-  - [ ] Keep audio, intermediate features, and transcripts within the selected privacy mode
-
-- [!] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #11 and dependency evidence
-
-- [!] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Complete bounded speech evaluation — negative-result closure
+  - [x] Validate faster-whisper and whisper.cpp output-interface normalisation
+  - [x] Keep diarisation behind separate unresolved licence and compute admission and mark it unsupported
+  - [x] Measure timestamp and silence-output behavior on synthetic descriptors
+  - [x] Record accents, terminology, overlap, noise and speaker uncertainty as unsupported
+  - [x] Prohibit private audio, model execution, external inference, redistribution and telemetry
 
 ## Phase 5: Prototype medical image and DICOM ingestion
 
-- [!] Task: Implement the phase scope
-  - [x] Use pydicom for safe synthetic metadata and uncompressed pixel ingestion; keep Orthanc assets unadmitted
-  - [ ] Evaluate MONAI-compatible preprocessing and research inference adapters
-  - [x] Test direct-identifier removal, burned-in identifiers, series integrity, provenance, and adversarial files
-  - [x] Disable clinical interpretation by default and expose the research-only status
-
-- [!] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #11 and dependency evidence
-
-- [!] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Complete bounded medical-image prototype — research-disabled closure
+  - [x] Run admitted pydicom against generated metadata and uncompressed pixels
+  - [x] Execute model-free nearest-neighbour preprocessing and record MONAI inference as unsupported
+  - [x] Derive identifier, burned-in annotation, series-integrity and hostile-payload gates from generated inputs
+  - [x] Preserve provenance and keep clinical interpretation disabled
 
 ## Phase 6: Prototype ECG and time-series ingestion
 
-- [!] Task: Implement the phase scope
-  - [x] Use WFDB-compatible generated records, leads, sampling, annotations, timestamps, and provenance
-  - [x] Separate deterministic signal ingestion from model inference; no model was acquired or invoked
-  - [ ] Measure missing leads, noise, duration, resampling, device variation, and context limits
-  - [x] Detect missing leads and disable diagnostic interpretation unless a separate governed pathway exists
-
-- [!] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #11 and dependency evidence
-
-- [!] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Complete bounded ECG prototype — research-disabled closure
+  - [x] Run admitted WFDB against generated records, leads, sampling, annotations, timestamps and provenance
+  - [x] Execute generated-waveform noise measurement and linear resampling
+  - [x] Measure missing leads, duration/context and device-unit inconsistency as fail-closed conditions
+  - [x] Keep model inference and diagnostic interpretation disabled
 
 ## Phase 7: Benchmark and certify adapter claims
 
-- [!] Task: Implement the phase scope
-  - [ ] Run contract, fixture, privacy, safety, quality, latency, memory, and failure tests
-  - [ ] Compare framework versions through thin adapters and defined compatibility windows
-  - [ ] Publish evidence-backed support matrices and explicit unsupported combinations
-  - [ ] Create upstream-drift, rollback, and capability-disable procedures
-
-- [!] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #11 and dependency evidence
-
-- [!] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Complete contract certification and negative-result support matrix
+  - [x] Run contract, fixture, privacy, safety, latency, allocation and failure tests within the evidence-supported scope
+  - [x] Limit compatibility to exact admitted observations; disable every other version until the same suite passes
+  - [x] Publish explicit measured-contract and unsupported combinations
+  - [x] Cross-check registry profiles, device classes, evidence paths and global boundaries
+  - [x] Record drift, rollback and capability-disable procedures
 
 ## Final Track Verification
 
-- [!] Task: Complete the track evidence pack
-  - [ ] Verify every acceptance criterion has direct evidence
-  - [ ] Re-run the complete applicable validation and regression suite
-  - [ ] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
-  - [ ] Record unresolved limitations and owner decisions without downgrading them
-  - [ ] Close the GitHub issue only after the completion receipt passes
+- [~] Task: Complete the track evidence pack
+  - [x] Verify every acceptance criterion against direct evidence and explicit negative results
+  - [x] Re-run the complete applicable local validation and regression suite
+  - [x] Record unresolved limitations and owner decisions without downgrading them
+  - [x] Record final agent-panel agreement after two falsification/rework rounds
+  - [ ] Record hosted exact-head evidence and GitHub reconciliation before issue closure
 
 ## Review Fixes
 

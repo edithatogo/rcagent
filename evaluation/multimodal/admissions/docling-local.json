@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "decision": "20260829-003-track06-adapter-acquisition",
+  "admission_status": "package_installed_runtime_partially_measured",
+  "inventory_scope": "Six execution-critical distributions only; the 102-package environment is not a complete rights or redistribution inventory.",
+  "acquired_at": "2026-08-29",
+  "environment": "/Volumes/PortableSSD/rcagent-adapter-envs/docling-2.123.1",
+  "acquisition": {"network": "package acquisition only", "remote_code": "prohibited", "model_downloads": "none authorised or recorded"},
+  "distributions": [
+    {"name":"docling","version":"2.123.1","licence":"MIT","record_sha256":"ea14a81984d2f93544cbb158f8936abc469d7f2ad2ac6a47f993085888a5bec6"},
+    {"name":"docling-core","version":"2.92.0","licence":"MIT","record_sha256":"9dacc19d0b2bbf6cb799d53462d97a3b46b404d46098459f0d12df5cfa13be99"},
+    {"name":"docling-parse","version":"7.16.0","licence":"MIT","record_sha256":"d2389f184cf73d9bfcf0b5848214b8b10c0b8f8812d8795204cd6468f6bf0128"},
+    {"name":"rapidocr","version":"3.9.2","licence":"Apache-2.0","record_sha256":"2836c16ff99cc3506d91ddaaa5a6cd786658b36f3c8d10871eaa794fb486707b"},
+    {"name":"onnxruntime","version":"1.23.2","licence":"MIT","record_sha256":"bcaeaeff6343c0a1c90565cf39fc90bd5af224b7d14ac0e712de20ff61d49377"},
+    {"name":"torch","version":"2.13.0","licence":"Apache-2.0 and bundled notices; exact expression captured from installed metadata","record_sha256":"ffecd0b5144979163c9e1e896bffc631e675d215684c81b26c25007f42943a1c"}
+  ],
+  "cache": "No model cache was admitted; package environment only.",
+  "rollback": "Disable the documents-ocr optional profile; no portable-core dependency exists.",
+  "uninstall": "After verifying it is not in use, remove only /Volumes/PortableSSD/rcagent-adapter-envs/docling-2.123.1.",
+  "support_boundary": "Born-digital DOCX conversion observed locally but not certified as adapter support. OCR, PDF layout models, accelerated execution and all remaining challenge classes are unsupported.",
+  "rights_boundary": "Installed metadata was inspected for key distributions only. Full transitive notice review, third-party rights clearance and redistribution are not claimed."
+}

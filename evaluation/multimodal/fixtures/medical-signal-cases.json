@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "data_class": "generated_synthetic_only",
+  "cases": [
+    {
+      "id": "dicom-monai-preprocess-contract",
+      "profile_id": "medical-imaging-research",
+      "input": {
+        "series_uids": ["synthetic-series", "synthetic-series"],
+        "metadata": {"StudyDescription": "synthetic"},
+        "burned_in_annotation": "YES",
+        "pixels": [[0, 1], [2, 3]],
+        "target_shape": [4, 4],
+        "hostile_payload_hex": "6e6f742d612d6469636f6d"
+      },
+      "expected": {
+        "series_integrity": true,
+        "quarantine": true,
+        "output_shape": [4, 4],
+        "direct_identifiers_absent": true,
+        "hostile_file_rejected": true,
+        "interpretation_allowed": false,
+        "inference_status": "unsupported_not_acquired"
+      }
+    },
+    {
+      "id": "ecg-noise-resampling-context",
+      "profile_id": "ecg-research",
+      "input": {
+        "leads": ["I", "II"],
+        "standard_lead_count": 12,
+        "sampling_hz": 250,
+        "target_sampling_hz": 125,
+        "duration_s": 10,
+        "context_limit_s": 30,
+        "noise_amplitude": 0.2,
+        "device_units": ["mV", "mV"]
+      },
+      "expected": {
+        "input_samples": 2500,
+        "output_samples": 1250,
+        "missing_leads": true,
+        "noisy": true,
+        "context_exceeded": false,
+        "device_units_consistent": true,
+        "interpretation_allowed": false
+      }
+    },
+    {
+      "id": "ecg-device-context-fail-closed",
+      "profile_id": "ecg-research",
+      "input": {
+        "leads": ["I", "II"],
+        "standard_lead_count": 12,
+        "sampling_hz": 250,
+        "target_sampling_hz": 125,
+        "duration_s": 45,
+        "context_limit_s": 30,
+        "noise_amplitude": 0.0,
+        "device_units": ["mV", "uV"]
+      },
+      "expected": {
+        "input_samples": 11250,
+        "output_samples": 5625,
+        "missing_leads": true,
+        "noisy": false,
+        "context_exceeded": true,
+        "device_units_consistent": false,
+        "interpretation_allowed": false
+      }
+    }
+  ]
+}

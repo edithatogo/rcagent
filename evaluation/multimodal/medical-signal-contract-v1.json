@@ -1,0 +1,71 @@
+{
+  "clinical_interpretation": "disabled",
+  "data_class": "generated_synthetic_only",
+  "device": {
+    "allocation_peak_bytes": 914720,
+    "elapsed_ms": 320.606
+  },
+  "fixture_sha256": "c4f768ae60c0f2e41efdee85f14bfe8fb154b8df25f6457e4712a1adfc6e3bc5",
+  "limitations": [
+    "model-free synthetic contract only",
+    "MONAI inference and clinical interpretation were not acquired or executed",
+    "two synthetic ECG leads do not establish diagnostic or device validity"
+  ],
+  "network": "disabled",
+  "receipt_sha256": "42ae9b14b80f28b85719b36deabe4203d5b9b5bbf311415613ac641363b7c693",
+  "remote_code": "prohibited",
+  "results": [
+    {
+      "case_id": "dicom-monai-preprocess-contract",
+      "observed": {
+        "direct_identifiers_absent": true,
+        "hostile_file_rejected": true,
+        "inference_status": "unsupported_not_acquired",
+        "interpretation_allowed": false,
+        "output_shape": [
+          4,
+          4
+        ],
+        "quarantine": true,
+        "series_integrity": true
+      },
+      "passed": true,
+      "profile_id": "medical-imaging-research"
+    },
+    {
+      "case_id": "ecg-noise-resampling-context",
+      "observed": {
+        "context_exceeded": false,
+        "device_units_consistent": true,
+        "input_samples": 2500,
+        "interpretation_allowed": false,
+        "missing_leads": true,
+        "noisy": true,
+        "output_samples": 1250
+      },
+      "passed": true,
+      "profile_id": "ecg-research"
+    },
+    {
+      "case_id": "ecg-device-context-fail-closed",
+      "observed": {
+        "context_exceeded": true,
+        "device_units_consistent": false,
+        "input_samples": 11250,
+        "interpretation_allowed": false,
+        "missing_leads": true,
+        "noisy": false,
+        "output_samples": 5625
+      },
+      "passed": true,
+      "profile_id": "ecg-research"
+    }
+  ],
+  "schema_version": "1.0",
+  "scope": "model_free_medical_signal_contract",
+  "summary": {
+    "cases": 3,
+    "passed": 3
+  },
+  "telemetry": "none"
+}
