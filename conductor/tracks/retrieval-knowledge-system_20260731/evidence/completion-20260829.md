@@ -38,20 +38,42 @@ clinical interpretation or recommendation is claimed.
 
 ## Verification
 
-- Focused retrieval suite before archive review: 18 passed with 90.94% module coverage.
-- Complete repository suite after the final integrity patch: 300 passed with
-  90.11% total tools coverage.
-- Focused static checks: Ruff passed; basedpyright reported zero errors.
-- Repository governance validation: passed.
-- Retrieval manifest/profile validation: passed.
+- Archive-candidate code and specification revision:
+  `bcad1071bdee3481dbaf4574ec73bce4814f8213`.
+- Environment: macOS 26.6.2 arm64; Python 3.14.5; SQLite 3.50.4;
+  network-disabled deterministic retrieval fixtures.
+- `uv run ruff check tools tests`: passed.
+- `uv run ty check tools tests`: passed.
+- `uv run basedpyright`: zero errors.
+- `uv run python -m tools.check_gremlins .`: no gremlins found.
+- `uv run python -m tools.validate_repository`: passed.
+- `uv run python -m tools.benchmark_harness validate`: passed.
+- `uv run python -m tools.benchmark_harness run --suite regression`: seven of
+  seven deterministic cases passed; no model or external execution.
+- `uv run pytest --cov=tools --cov-report=term-missing`: 302 passed in 66.07
+  seconds; 90.73% total tools coverage; retrieval module coverage 91%.
 - PR #54 merged as `c8d0ea3`; its late 80.77% Codecov patch result exposed a
   hosted evidence gap after merge. PR #55 added negative-path tests, merged as
   `a7f2787`, and passed Codecov patch plus Agent Skill Conformance, dependency
   review, Vale, Linux, macOS and Windows quality checks.
-- Agent panel: acceptance, security and falsification agents all recorded
-  ACCEPT after three bounded rework rounds. This is agent agreement only, not
-  clinical, legal, policy, regulatory, employment, cultural-safety,
-  organisational or deployment approval.
+- Fresh archive review panel evidence is recorded in
+  [review-panel-20260829.md](./review-panel-20260829.md). This is agent
+  agreement only, not clinical, legal, policy, regulatory, employment,
+  cultural-safety, organisational or deployment approval.
+
+## Acceptance evidence mapping
+
+| Criterion | Direct evidence |
+|---|---|
+| AC1 source and provenance metadata | `conductor/schemas/retrieval-corpus.schema.json`, `evaluation/retrieval/synthetic-public-corpus.json`, `test_manifest_admits_only_generated_public_units` |
+| AC2 deterministic full-text baseline | `LexicalIndex` in `tools/retrieval_system.py`, `test_lexical_baseline_filters_citations_and_current_status` |
+| AC3 optional stages only after measured benefit | `evaluation/retrieval/profiles.json`, `evidence/fit-gap-20260829.md`, `test_profiles_reject_missing_lifecycle_and_enabled_optional_capability` |
+| AC4 citations, conflict visibility and abstention | `grounded_answer`, `test_grounding_conflicts_poisoning_and_abstention` |
+| AC5 public/private non-join | persistent `index_metadata` compartment binding, `test_lifecycle_delete_export_backup_and_restore` |
+| AC6 lifecycle, injection and drift tests | `test_lifecycle_delete_export_backup_and_restore`, `test_raw_mixed_compartment_and_rights_manifest_fails_closed`, `test_source_drift_marks_retrieval_receipts_for_rebuild` |
+| AC7 literature receipt fidelity | `evaluation/retrieval/literature-contract-receipt-20260829.json`, `validate_literature_receipt`, literature and malformed-receipt regression tests |
+| AC8 governed retrieval controls | `validate_federated_request`, `test_federated_controls_reject_cross_case_causal_or_cross_compartment_use` |
+| AC9 no causal finding from prior retrieval | causal-finding rejection in `validate_federated_request` and the same federation regression test |
 
 ## Boundaries
 
