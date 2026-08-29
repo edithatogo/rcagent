@@ -60,7 +60,7 @@ requires a fit-gap record and an approved Architecture Decision Record.
 
 ## Hard Start Dependencies
 
-- [safety-systems-foundation_20260731](../safety-systems-foundation_20260731/index.md)
+- [safety-systems-foundation_20260731](../../tracks/safety-systems-foundation_20260731/index.md)
 
 The track cannot start until each hard dependency has a passing completion receipt, not merely a closed issue.
 

@@ -8,7 +8,7 @@
 
 ## Hard Start Dependencies
 
-- [evidence-workflow-core_20260731](../evidence-workflow-core_20260731/index.md)
+- [evidence-workflow-core_20260731](../../archive/evidence-workflow-core_20260731/index.md)
 - [privacy-security-assurance_20260731](../../archive/privacy-security-assurance_20260731/index.md)
 - [nsw-health-jurisdiction-pack_20260731](../nsw-health-jurisdiction-pack_20260731/index.md)
 
