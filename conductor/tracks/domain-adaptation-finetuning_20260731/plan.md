@@ -202,9 +202,9 @@ Checked items record completion of the bounded assessment, contract, or stop-pat
 
 ## Final Track Verification
 
-- [ ] Task: Complete the track evidence pack
-  - [ ] Verify every acceptance criterion has direct evidence
-  - [ ] Re-run the complete applicable validation and regression suite
-  - [ ] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
-  - [ ] Record unresolved limitations and owner decisions without downgrading them
+- [x] Task: Complete the track evidence pack
+  - [x] Verify every acceptance criterion has direct evidence
+  - [x] Re-run the complete applicable validation and regression suite
+  - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
+  - [x] Record unresolved limitations and owner decisions without downgrading them
   - [ ] Close the GitHub issue only after the completion receipt passes

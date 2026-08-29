@@ -1,6 +1,6 @@
 # Track 10: Domain Adaptation and Fine-Tuning
 
-- **Status:** In progress
+- **Status:** Completed negative disposition; hosted integration pending
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#15](https://github.com/edithatogo/rcagent/issues/15)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)
@@ -23,4 +23,7 @@
 - [Specification](./spec.md)
 - [Implementation Plan](./plan.md)
 - [Metadata](./metadata.json)
+- [Acceptance map](./evidence/acceptance-map-20260829.md)
+- [Agent-panel review](./evidence/agent-panel-review-20260829.md)
+- [Completion receipt](./evidence/completion-receipt-20260829.md)
 - [Portfolio Roadmap](../../roadmap.md)
