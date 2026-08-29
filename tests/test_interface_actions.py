@@ -477,7 +477,7 @@ def test_synthetic_journey_evaluation_is_non_operational() -> None:
     assert all(item["passed"] for item in result["cases"])
     assert result["metrics"]["external_actions"] == 0
     assert "not human usability research" in result["limitations"][0]
-    checked = json.loads((ROOT / "conductor/tracks/interfaces-templates-action-loop_20260731/evidence/synthetic-evaluation-20260829.json").read_text())
+    checked = json.loads((ROOT / "conductor/archive/interfaces-templates-action-loop_20260731/evidence/synthetic-evaluation-20260829.json").read_text())
     assert result == checked
 
 
