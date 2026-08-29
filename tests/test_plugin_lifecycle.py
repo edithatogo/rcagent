@@ -63,6 +63,7 @@ def test_isolated_installer_rejects_windows_unsafe_paths(tmp_path: Path, name: s
 
 
 @pytest.mark.parametrize("names", [("same", "same"), ("Name", "name")])
+@pytest.mark.filterwarnings("ignore:Duplicate name:UserWarning")
 def test_isolated_installer_rejects_duplicate_or_case_collision(
     tmp_path: Path, names: tuple[str, str]
 ) -> None:
