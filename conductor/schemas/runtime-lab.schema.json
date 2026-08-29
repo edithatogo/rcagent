@@ -19,8 +19,60 @@
         "redistribution": {"const": false}
       }
     },
-    "runtimes": {"type": "array", "items": {"type": "object"}},
-    "models": {"type": "array", "items": {"type": "object"}},
-    "hypotheses": {"type": "array", "items": {"type": "object"}}
+    "runtimes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "dependency_class", "support_state", "interface", "executable_names", "licence", "network", "telemetry", "remote_code", "applicability", "failure_modes", "replacement_path", "freshness_date"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "dependency_class": {"enum": ["optional_adapter", "experimental"]},
+          "support_state": {"enum": ["interface_contract", "installed_unmeasured", "unavailable", "experimental"]},
+          "interface": {"type": "string", "minLength": 1},
+          "executable_names": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+          "licence": {"type": "string", "minLength": 1},
+          "network": {"enum": ["none", "unknown"]},
+          "telemetry": {"enum": ["disabled", "unknown"]},
+          "remote_code": {"const": false},
+          "applicability": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+          "failure_modes": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+          "replacement_path": {"type": "string", "minLength": 1},
+          "freshness_date": {"type": "string", "format": "date"}
+        }
+      }
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "repository", "revision", "licence", "provenance_sha256", "task_fit", "input_limits", "context_limit", "quantisation", "device_evidence", "failure_modes", "admission_status", "remote_code"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "repository": {"type": "string", "minLength": 1},
+          "revision": {"type": "string", "minLength": 7, "not": {"enum": ["main", "latest"]}},
+          "licence": {"type": "string", "minLength": 1},
+          "provenance_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "task_fit": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+          "input_limits": {"type": "object", "additionalProperties": false, "required": ["modalities"], "properties": {"modalities": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1}}},
+          "context_limit": {"type": "integer", "minimum": 1},
+          "quantisation": {"type": "string", "minLength": 1},
+          "device_evidence": {"type": "string", "minLength": 1},
+          "failure_modes": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+          "admission_status": {"enum": ["measured_research", "supported"]},
+          "remote_code": {"const": false}
+        }
+      }
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "status"],
+        "properties": {"name": {"type": "string", "minLength": 1}, "status": {"const": "unverified_hypothesis"}}
+      }
+    }
   }
 }

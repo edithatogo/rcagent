@@ -4,9 +4,15 @@
   "architecture": "arm64",
   "logical_cpu_count": 10,
   "memory_gib_floor": null,
+  "memory_probe_state": "unobserved",
+  "storage_gib_floor": null,
+  "storage_probe_state": "unobserved",
   "accelerator_class": "apple_silicon",
+  "driver_state": "unobserved",
+  "instruction_set_state": "architecture_only_unmeasured",
+  "power_proxy_state": "unobserved",
   "identifiers_redacted": true,
   "network_observation": "not_probed",
   "telemetry_observation": "not_probed",
-  "receipt_sha256": "47896b30a4c877fa04daf8057837b5de7e24e93b5678072674f584885e593e41"
+  "receipt_sha256": "306aa7dd639c061abe615966df7bcb6145d99bc42aded7e79c8ae51feda879c0"
 }

@@ -61,7 +61,7 @@ removed.
 
 - [x] Task: Implement the phase scope (`62be300`)
   - [x] Define current Intel CPU/iGPU 32 GB, Apple silicon/MLX, and larger CPU/GPU device contexts
-  - [x] Implement reproducible probes for CPU, accelerators, RAM, storage, OS, drivers, and supported instructions
+  - [x] Implement a reproducible privacy-safe coarse CPU/accelerator probe and record RAM, storage, drivers, instructions and power as explicitly unobserved where not safely measured
   - [x] Define warm/cold latency, throughput, memory, storage, load time, context, and power-proxy measurements
   - [x] Define privacy-preserving environment manifests and repeatability rules
 
@@ -81,14 +81,14 @@ removed.
 ## Phase 2: Implement thin runtime adapters
 
 - [x] Task: Implement the phase scope (`62be300`; negative-result closure)
-  - [x] Package llama.cpp, OpenVINO, MLX, and MAX/Mojo as independent optional or experimental profiles
-  - [x] Implement device-aware agent-assisted selection that explains resource, privacy, licence, download, and quality trade-offs before invoking scripts
-  - [x] Provide idempotent scripted preflight, installation, verification, rollback, uninstall, and offline-bundle paths
-  - [x] Prototype llama.cpp, ONNX Runtime, OpenVINO, and MLX adapters behind common generation and embedding contracts
-  - [x] Assess Ollama or another maintained local facade, MLX-LM, Transformers, and vLLM for profiles where they remove project-owned model-management work
-  - [x] Evaluate Windows DirectML or other backends only through measured compatibility spikes
+  - [x] Classify llama.cpp, ONNX Runtime, OpenVINO and MLX as independent optional profiles and MAX/Mojo as isolated experimental; none is supported
+  - [x] Implement model-free discovery and fail-closed selection disclosures without invoking installation or inference scripts
+  - [x] Provide an idempotent operator-owned offline inventory verifier; record install, update, rollback and uninstall as unavailable for the empty supported set
+  - [x] Reuse the Track 05 llama.cpp comparator and Track 06 ONNX encoder contracts; record OpenVINO and MLX as unavailable or installed-unmeasured, not executed adapters
+  - [x] Assess maintained facades and frameworks at fit-gap level only; admit none without an exact artefact and execution receipt
+  - [x] Record DirectML and other unobserved backends as unsupported; no measured compatibility spike occurred
   - [x] Isolate experimental Modular MAX or Mojo work from the portable and supported core
-  - [x] Define version, build flag, driver, quantisation, cache, error, timeout, and cancellation receipts
+  - [x] Define required future receipt fields and preserve version, build, driver, quantisation, cache, timeout and cancellation evidence as missing
   - [x] Implement no inference engine, tensor library, model format, or downloader that an admitted upstream runtime already provides
 
 - [x] Task: Validate the phase deliverables (`62be300`)
@@ -107,8 +107,8 @@ removed.
 ## Phase 3: Create the governed model registry
 
 - [x] Task: Implement the phase scope (`62be300`; no models admitted)
-  - [x] Register generic, reasoning, small, medical/domain, diffusion, encoder, OCR, ASR, vision, and signal candidates by exact repository and revision
-  - [x] Record licence, architecture, parameters, context/input envelope, knowledge limits, intended use, exclusions, and remote-code needs
+  - [x] Admit no model because no candidate had a complete exact repository, immutable revision and device receipt
+  - [x] Require licence, provenance, context/input, task, quantisation, device, failure and remote-code fields for any future admitted entry
   - [x] Track Gemma 4 12B, Apriel 15B Thinker, Nemotron, G9, Phi-4 reasoning, Qwen 27B-class, DiffusionGemma, and medical candidates as hypotheses pending verification
   - [x] Record availability and naming uncertainty rather than inventing specifications
 
@@ -128,10 +128,10 @@ removed.
 ## Phase 4: Characterise quantisation and resource fit
 
 - [x] Task: Implement the phase scope (`62be300`; no eligible tuple)
-  - [x] Benchmark supported precision and quantisation variants on each feasible device context
-  - [x] Measure quality, calibration, context degradation, latency, memory, load, and storage trade-offs
-  - [x] Test long-context, structured output, tool-use, retrieval, and failure scenarios
-  - [x] Reject configurations that swap, thrash, crash, or breach privacy/safety gates
+  - [x] Find no supported runtime-model-quantisation-device tuple eligible for benchmarking
+  - [x] Preserve quality, calibration, context, latency, memory, load and storage measures as unavailable rather than estimating them
+  - [x] Define long-context, structured-output, tool-use, retrieval and failure measures for future admitted tuples; execute none
+  - [x] Reject every unmeasured configuration before swap, thrash, crash or privacy/safety exposure
 
 - [x] Task: Validate the phase deliverables (`62be300`)
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -149,10 +149,10 @@ removed.
 ## Phase 5: Run task and privacy benchmarks
 
 - [x] Task: Implement the phase scope (`62be300`; Track 05 evidence reused, no execution)
-  - [x] Run representative incident, policy, retrieval, summarisation, reasoning, and multimodal tasks
-  - [x] Run prompt injection, data leakage, hallucination, refusal, uncertainty, and citation checks
-  - [x] Compare generic models before domain-specific models
-  - [x] Preserve raw outputs, repeated-run variance, exact manifests, and negative results
+  - [x] Reuse Track 05 synthetic task and privacy evidence as dependency context; run no Track 08 model task
+  - [x] Verify routing and admission controls against injection/leakage boundary fixtures without generating model output
+  - [x] Admit neither generic nor domain-specific models, so no comparative ranking occurred
+  - [x] Preserve exact manifests and negative admission results; no Track 08 raw model output or repeated-run variance exists
 
 - [x] Task: Validate the phase deliverables (`62be300`)
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -171,10 +171,10 @@ removed.
 
 - [x] Task: Implement the phase scope (`62be300`)
   - [x] Keep absence or failure of a local runtime non-fatal to the portable core and expose an explicit capability-limited mode
-  - [x] Route by task, modality, governance status, privacy mode, device capability, context, and resource budget
-  - [x] Provide deterministic and smaller-model fallbacks plus explicit no-capability outcomes
-  - [x] Define verified download, checksum, provenance, cache, update, rollback, and air-gapped bundles
-  - [x] Emit pre-run execution disclosures and post-run resource receipts
+  - [x] Validate task, modality, data class, local isolation, runtime/model admission and context; reject governed-private and all unmeasured routes
+  - [x] Preserve existing deterministic workflows as the only fallback and emit explicit no-capability for models
+  - [x] Verify checksums, paths and exact inventory for operator-owned offline directories without download, cache mutation or redistribution
+  - [x] Emit discovery and no-capability receipts; no post-run resource receipt exists because no execution occurred
 
 - [x] Task: Validate the phase deliverables (`62be300`)
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -192,8 +192,8 @@ removed.
 ## Phase 7: Publish device recommendation matrices
 
 - [x] Task: Implement the phase scope (`62be300`; internal unsupported matrix)
-  - [x] Recommend supported, conditional, experimental, and unsuitable profiles by measured evidence
-  - [x] Explain accuracy, knowledge, context, latency, RAM, storage, privacy, licence, and maintenance trade-offs
+  - [x] Publish an internal matrix classifying every declared runtime as unsupported from observed negative evidence
+  - [x] State that accuracy, knowledge, context, latency, RAM, storage and quality trade-offs are unmeasured; preserve privacy, licence and maintenance boundaries
   - [x] Date every recommendation and connect it to drift checks
   - [x] Require owner approval before public comparative claims
 
@@ -217,4 +217,4 @@ removed.
   - [x] Re-run the complete applicable validation and regression suite
   - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
   - [x] Record unresolved limitations and owner decisions without downgrading them
-  - [x] Close the GitHub issue only after the completion receipt passes
+  - [ ] Close the GitHub issue only after the completion receipt and hosted integration checks pass
