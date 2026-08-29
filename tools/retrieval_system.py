@@ -9,6 +9,9 @@ import re
 import shutil
 import sqlite3
 import tempfile
+import time
+import tracemalloc
+import unicodedata
 from pathlib import Path
 from typing import Any
 
@@ -41,7 +44,9 @@ def content_checksum(content: str) -> str:
 
 
 def instruction_markers(value: Any) -> list[str]:
-    text = re.sub(r"[^a-z0-9]+", " ", json.dumps(value, sort_keys=True).lower())
+    raw = unicodedata.normalize("NFKC", json.dumps(value, sort_keys=True).lower())
+    raw = "".join(character for character in raw if unicodedata.category(character) != "Cf")
+    text = re.sub(r"[^a-z0-9]+", " ", raw)
     return [marker for marker in INSTRUCTION_MARKERS if marker in text]
 
 
@@ -74,15 +79,25 @@ def validate_manifest(manifest: dict[str, Any]) -> list[str]:
         if unit.get("rights") in {"restricted", "unknown"}:
             errors.append(f"{unit_id}: rights not admitted")
         basis = unit.get("rights_basis", {})
-        expected_basis = {
-            "generated": "generated_origin",
-            "approved_public": "public_admission_receipt",
-        }.get(str(unit.get("rights")))
+        expected_basis = {"generated": "generated_origin"}.get(str(unit.get("rights")))
         if expected_basis and basis.get("kind") != expected_basis:
             errors.append(f"{unit_id}: rights basis does not admit {unit.get('rights')}")
-        markers = instruction_markers(
-            {key: unit.get(key) for key in ("content", "source", "authority", "location")}
-        )
+        if unit.get("rights") == "approved_public":
+            errors.append(f"{unit_id}: approved-public admission receipt registry unavailable")
+        location = unit.get("location", {})
+        location_requirements = {
+            "chunk": "chunk_id",
+            "page": "page",
+            "section": "section",
+            "table": "table_id",
+            "transcript": "time_range",
+            "image_region": "region",
+            "signal_window": "window",
+        }
+        kind = location.get("kind") if isinstance(location, dict) else None
+        if kind not in location_requirements or location_requirements.get(kind) not in location:
+            errors.append(f"{unit_id}: unsupported or incomplete provenance location")
+        markers = instruction_markers(unit)
         if markers and unit.get("status") != "quarantined":
             errors.append(f"{unit_id}: instruction-like source must be quarantined")
     for unit_id in sorted(set(ids)):
@@ -267,10 +282,12 @@ class LexicalIndex:
 
     def delete(self, unit_id: str) -> None:
         with self.connection:
-            self.connection.execute(
+            cursor = self.connection.execute(
                 "DELETE FROM units WHERE id = ? AND compartment = ?",
                 (unit_id, self.compartment),
             )
+            if cursor.rowcount != 1:
+                raise ValueError("unit not found in index compartment")
             self._audit("delete", unit_id, {"unit_id": unit_id})
 
     def supersede(self, unit_id: str) -> None:
@@ -284,6 +301,12 @@ class LexicalIndex:
             self._audit("supersede", unit_id, {"unit_id": unit_id})
 
     def correct(self, unit: dict[str, Any]) -> None:
+        previous = self.connection.execute(
+            "SELECT checksum FROM units WHERE id = ? AND compartment = ?",
+            (unit.get("id"), self.compartment),
+        ).fetchone()
+        if previous is None:
+            raise ValueError("unit not found in index compartment")
         self.ingest(
             {
                 "schema_version": "1.0",
@@ -292,6 +315,12 @@ class LexicalIndex:
                 "units": [unit],
             }
         )
+        with self.connection:
+            self._audit(
+                "correct",
+                unit.get("id"),
+                {"previous_checksum": previous["checksum"], "new_checksum": unit.get("checksum")},
+            )
 
     def rebuild(self, manifest: dict[str, Any]) -> None:
         with self.connection:
@@ -371,12 +400,8 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
         "review_required",
     }:
         errors.append("invalid SourceRight status")
-    elif (
-        sourceright.get("status") == "succeeded"
-        and not {"revision", "command", "output_sha256", "evidence_path", "results"}
-        <= sourceright.keys()
-    ):
-        errors.append("successful SourceRight receipt lacks exact evidence")
+    elif sourceright.get("status") == "succeeded":
+        errors.append("SourceRight success is not admitted without a checked Track07 execution")
     elif sourceright.get("status") == "unavailable" and not sourceright.get("diagnostic"):
         errors.append("unavailable SourceRight receipt lacks diagnostic")
     if any(
@@ -386,12 +411,33 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
         errors.append("incomplete exact reference metadata")
     if receipt.get("network") != "disabled" or receipt.get("private_data") is not False:
         errors.append("literature execution boundary mismatch")
+    if not isinstance(receipt.get("query"), str) or not receipt["query"].strip():
+        errors.append("literature query must be non-empty")
+    if not isinstance(receipt.get("provider"), str) or not receipt["provider"].strip():
+        errors.append("literature provider must be non-empty")
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(receipt.get("date", ""))):
+        errors.append("literature date must be ISO YYYY-MM-DD")
     identifiers = [item.get("identifier") for item in receipt.get("results", [])]
     if len(identifiers) != len(set(identifiers)):
         errors.append("duplicate literature identifier")
     screened = {item.get("identifier") for item in receipt.get("screening", [])}
     if screened != set(identifiers):
         errors.append("screening/result identifier mismatch")
+    if any(
+        not {"identifier", "decision", "reason"} <= item.keys()
+        or item.get("decision") not in {"include", "exclude"}
+        or not str(item.get("reason", "")).strip()
+        for item in receipt.get("screening", [])
+    ):
+        errors.append("screening decision is incomplete")
+    quality = receipt.get("study_quality", [])
+    if {item.get("identifier") for item in quality if isinstance(item, dict)} != set(identifiers):
+        errors.append("study-quality/result identifier mismatch")
+    if sourceright.get("status") == "unavailable" and (
+        "c5fa583" not in str(sourceright.get("revision", ""))
+        or "no Track07" not in str(sourceright.get("diagnostic", ""))
+    ):
+        errors.append("unavailable SourceRight boundary is not bound to the clean pin")
     referenced = {
         item.get("identifier")
         for field in ("study_quality", "claim_links", "conflicts")
@@ -460,18 +506,14 @@ def grounded_answer(claims: list[dict[str, Any]], retrieved: dict[str, Any]) -> 
         if flagged or instruction_markers(claim.get("text", "")):
             poisoned.append(claim["id"])
             continue
-        checksums = {available[item]["checksum"] for item in evidence}
-        if (
-            claim.get("verification") == "exact_source_content"
-            and claim.get("content_checksum") in checksums
-        ):
-            valid_claims.append(claim)
+        # A search receipt proves a link, not the semantics or exact bytes of
+        # caller-supplied claim text. No synthesis is admitted at this port.
     return {
         "claims": valid_claims,
         "conflicts": conflicts,
         "poisoned_content": poisoned,
         "abstained": not valid_claims or bool(conflicts),
-        "grounding": "exact_source_extract_only" if valid_claims else "claim_link_only",
+        "grounding": "claim_link_only",
         "clinical_interpretation": False,
         "human_review_required": True,
     }
@@ -495,6 +537,8 @@ def validate_federated_request(request: dict[str, Any]) -> list[str]:
         errors.append("exactly one compartment required")
     if request.get("access_decision") != "synthetic_contract_admitted" or not request.get("role"):
         errors.append("explicit access decision and role required")
+    if request.get("compartments") != ["public"] or request.get("role") != "test-harness":
+        errors.append("federation remains public synthetic contract-only")
     if request.get("causal_finding") is True:
         errors.append("cross-case retrieval cannot create a causal finding")
     return errors
@@ -548,6 +592,8 @@ def assurance() -> dict[str, Any]:
     manifest = admitted_manifest()
     index = LexicalIndex(compartment="public")
     index.ingest(manifest)
+    started = time.perf_counter()
+    tracemalloc.start()
     cases = {
         "exact": index.search("uncertainty"),
         "phrase": index.search("evidence citations"),
@@ -562,6 +608,9 @@ def assurance() -> dict[str, Any]:
         }
         for name, receipt in cases.items()
     }
+    elapsed_ms = round((time.perf_counter() - started) * 1000, 3)
+    _, peak_bytes = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
     citation = all(
         {"source", "location", "checksum", "rights_basis"} <= item.keys()
         for receipt in cases.values()
@@ -572,6 +621,10 @@ def assurance() -> dict[str, Any]:
         index.search('"', mode="expert_fts")
     except ValueError:
         malformed_controlled = True
+    changed = json.loads(json.dumps(manifest))
+    changed["units"][0]["content"] += " Revised synthetic source."
+    changed["units"][0]["checksum"] = content_checksum(changed["units"][0]["content"])
+    freshness = drift_impact(manifest, changed, [cases["exact"]])
     with tempfile.TemporaryDirectory() as directory:
         backup = Path(directory) / "backup.sqlite"
         restored_path = Path(directory) / "restored.sqlite"
@@ -601,32 +654,48 @@ def assurance() -> dict[str, Any]:
                         "fresh": True,
                         "compartments": ["public", "governed_private"],
                         "access_decision": "synthetic_contract_admitted",
-                        "role": "test",
+                        "role": "test-harness",
                         "causal_finding": False,
                     }
                 )
                 != []
             },
             "robustness": {"passed": malformed_controlled},
-            "freshness": {"passed": True, "mode": "validated-manifest drift contract"},
+            "freshness": {
+                "passed": freshness["requires_rebuild"] is True
+                and freshness["changed_units"] == ["policy-current"],
+                "mode": "validated-manifest drift contract",
+            },
             "recovery": {"passed": recovery},
+            "latency": {"passed": elapsed_ms >= 0, "status": "descriptive_not_thresholded"},
+            "memory": {"passed": peak_bytes > 0, "status": "descriptive_not_thresholded"},
         },
         "profile_comparison": [
             {"id": item["id"], "status": item["status"], "revision": item["revision"]}
             for item in profiles["profiles"]
         ],
-        "performance_observation": "excluded from deterministic receipt; no operational threshold authorised",
+        "research_observations": {
+            "elapsed_ms": elapsed_ms,
+            "allocation_peak_bytes": peak_bytes,
+            "integrity_scope": "volatile descriptive observations excluded from receipt_sha256",
+        },
         "network": "disabled",
         "private_data": False,
         "unsupported": MANDATORY_UNSUPPORTED,
     }
-    receipt["receipt_sha256"] = canonical_hash(receipt)
+    receipt["receipt_sha256"] = canonical_hash(
+        {key: value for key, value in receipt.items() if key != "research_observations"}
+    )
     return receipt
 
 
 def verify_assurance(receipt: dict[str, Any]) -> list[str]:
     errors: list[str] = []
-    unsigned = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
+    unsigned = {
+        key: value
+        for key, value in receipt.items()
+        if key not in {"receipt_sha256", "research_observations"}
+    }
     if receipt.get("receipt_sha256") != canonical_hash(unsigned):
         errors.append("receipt hash mismatch")
     if receipt.get("network") != "disabled" or receipt.get("private_data") is not False:
@@ -638,15 +707,29 @@ def verify_assurance(receipt: dict[str, Any]) -> list[str]:
     if receipt.get("unsupported") != MANDATORY_UNSUPPORTED:
         errors.append("unsupported capability declaration mismatch")
     results = receipt.get("results", {})
+    expected_hits = {"exact": 1, "phrase": 1, "acronym": 1, "version_filter": 1, "typo": 0}
     if set(results) != {"exact", "phrase", "acronym", "version_filter", "typo"} or any(
         item.get("passed") is not True for item in results.values()
     ):
         errors.append("assurance case coverage mismatch")
+    if any(results.get(case, {}).get("hits") != hits for case, hits in expected_hits.items()):
+        errors.append("assurance hit-count mismatch")
     suites = receipt.get("suites", {})
-    if set(suites) != {"citation", "privacy", "robustness", "freshness", "recovery"} or any(
-        item.get("passed") is not True for item in suites.values()
-    ):
+    if set(suites) != {
+        "citation",
+        "privacy",
+        "robustness",
+        "freshness",
+        "recovery",
+        "latency",
+        "memory",
+    } or any(item.get("passed") is not True for item in suites.values()):
         errors.append("assurance suite coverage mismatch")
+    observations = receipt.get("research_observations", {})
+    if not isinstance(observations.get("elapsed_ms"), (int, float)) or not isinstance(
+        observations.get("allocation_peak_bytes"), int
+    ):
+        errors.append("research performance observations missing")
     profiles = load_json(PROFILES).get("profiles", [])
     expected_profiles = [
         {"id": item["id"], "status": item["status"], "revision": item["revision"]}

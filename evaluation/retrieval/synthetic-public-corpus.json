@@ -13,6 +13,7 @@
       "version": "2.0",
       "timestamp": "2026-08-29T00:00:00Z",
       "location": {
+        "kind": "section",
         "section": "incident review"
       },
       "transformation": [
@@ -35,6 +36,7 @@
       "version": "1.0",
       "timestamp": "2025-08-29T00:00:00Z",
       "location": {
+        "kind": "section",
         "section": "incident review"
       },
       "transformation": [
@@ -56,6 +58,7 @@
       "version": "1.0",
       "timestamp": "2026-08-29T00:00:00Z",
       "location": {
+        "kind": "page",
         "page": 3,
         "section": "citations"
       },
@@ -78,6 +81,7 @@
       "version": "1.0",
       "timestamp": "2026-08-29T00:00:00Z",
       "location": {
+        "kind": "section",
         "section": "malicious"
       },
       "transformation": [
@@ -99,6 +103,8 @@
       "version": "1.0",
       "timestamp": "2026-08-29T00:00:00Z",
       "location": {
+        "kind": "section",
+        "section": "excluded descriptor",
         "record": "[Case ID]"
       },
       "transformation": [
