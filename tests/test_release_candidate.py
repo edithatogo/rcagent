@@ -55,3 +55,9 @@ def test_release_candidate_refuses_nonempty_destination(tmp_path: Path) -> None:
     (destination / "preserve").write_text("preserve")
     with pytest.raises(FileExistsError, match="empty"):
         build_release_candidate(ROOT, destination, version="0.1.0", source_revision=REVISION)
+
+
+@pytest.mark.parametrize("version", ["../inventory", "v0.1.1", "0.1"])
+def test_release_candidate_rejects_unsafe_version(tmp_path: Path, version: str) -> None:
+    with pytest.raises(ValueError, match="strict semantic"):
+        build_release_candidate(ROOT, tmp_path / "candidate", version=version, source_revision=REVISION)

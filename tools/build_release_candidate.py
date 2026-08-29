@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import stat
 import tempfile
 import zipfile
@@ -13,6 +14,8 @@ from pathlib import Path
 from tools.build_client_plugins import build_client_plugin
 from tools.build_distribution import build_distribution
 from tools.release_admission import validate_release_inventory
+
+_SEMVER = re.compile(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\Z")
 
 
 @dataclass(frozen=True)
@@ -54,6 +57,8 @@ def build_release_candidate(
 ) -> ReleaseCandidate:
     """Build core and skills-only client assets with one checksum manifest."""
     repository, destination = repository.resolve(), destination.resolve()
+    if _SEMVER.fullmatch(version) is None:
+        raise ValueError("release candidate version must use strict semantic versioning")
     validate_release_inventory(
         repository,
         repository

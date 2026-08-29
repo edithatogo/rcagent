@@ -4,7 +4,8 @@
 
 - Replaced ambiguous publication booleans with explicit build-time state,
   public-distribution intent, and offline publication-observation scope.
-- Superseded `v0.1.0` without replacing its immutable assets.
+- Prepared `v0.1.1` to supersede `v0.1.0` without replacing its immutable
+  assets.
 
 ## 2026-08-11
 
