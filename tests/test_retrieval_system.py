@@ -11,6 +11,7 @@ from tools.retrieval_system import (
     LexicalIndex,
     admitted_manifest,
     assurance,
+    byte_checksum,
     canonical_hash,
     content_checksum,
     drift_impact,
@@ -133,6 +134,11 @@ def test_lifecycle_delete_export_backup_and_restore(tmp_path: Path) -> None:
     assert index.search("uncertainty")["results"] == []
     restored = LexicalIndex.restore(backup, tmp_path / "restored.sqlite", compartment="public")
     assert len(restored.deterministic_export()) == 4
+    restore_event = restored.lifecycle_receipt()["events"][-1]
+    assert restore_event["action"] == "restore"
+    assert restore_event["detail_sha256"] == canonical_hash(
+        {"source_sha256": byte_checksum(backup.read_bytes())}
+    )
     restored.close()
     with pytest.raises(ValueError, match="persistent index compartment mismatch"):
         LexicalIndex(database, compartment="governed_private")
@@ -438,6 +444,16 @@ def test_fail_closed_validator_and_lifecycle_diagnostics(tmp_path: Path) -> None
     assert "literature screening must be an array" in malformed_errors
     assert "study-quality record is incomplete" in malformed_errors
     assert "claim_links must be an array" in malformed_errors
+
+    unhashable_identifiers = deepcopy(receipt)
+    unhashable_identifiers["results"][0]["identifier"] = {}
+    unhashable_identifiers["screening"][0]["identifier"] = {}
+    unhashable_identifiers["receipt_sha256"] = canonical_hash(
+        {key: value for key, value in unhashable_identifiers.items() if key != "receipt_sha256"}
+    )
+    identifier_errors = validate_literature_receipt(unhashable_identifiers)
+    assert "incomplete exact reference metadata" in identifier_errors
+    assert "screening decision is incomplete" in identifier_errors
 
 
 def test_assurance_rejects_each_bound_contract() -> None:

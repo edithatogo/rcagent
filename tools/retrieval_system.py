@@ -445,7 +445,11 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
         date.fromisoformat(str(receipt.get("date", "")))
     except ValueError:
         errors.append("literature date must be ISO YYYY-MM-DD")
-    identifiers = [item.get("identifier") for item in results if isinstance(item, dict)]
+    identifiers = [
+        item["identifier"]
+        for item in results
+        if isinstance(item, dict) and isinstance(item.get("identifier"), str)
+    ]
     if len(identifiers) != len(set(identifiers)):
         errors.append("duplicate literature identifier")
     screening_value = receipt.get("screening", [])
@@ -454,7 +458,11 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
         screening: list[Any] = []
     else:
         screening = screening_value
-    screened = {item.get("identifier") for item in screening if isinstance(item, dict)}
+    screened = {
+        item["identifier"]
+        for item in screening
+        if isinstance(item, dict) and isinstance(item.get("identifier"), str)
+    }
     if screened != set(identifiers):
         errors.append("screening/result identifier mismatch")
     if len(screening) != len(screened):
