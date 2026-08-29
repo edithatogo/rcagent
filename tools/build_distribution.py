@@ -57,12 +57,13 @@ def build_distribution(
         raise FileExistsError("destination must be empty")
     destination.mkdir(parents=True, exist_ok=True)
 
-    licence = repository / "LICENSE"
-    disclaimer = repository / "DISCLAIMER.md"
+    documents = [
+        repository / name
+        for name in ("LICENSE", "DISCLAIMER.md", "PRIVACY.md", "SUPPORT.md", "CHANGELOG.md")
+    ]
     if (
         not (skill_root / "SKILL.md").is_file()
-        or not licence.is_file()
-        or not disclaimer.is_file()
+        or not all(path.is_file() for path in documents)
     ):
         raise FileNotFoundError("portable skill, repository licence, or disclaimer is missing")
 
@@ -72,8 +73,7 @@ def build_distribution(
             raise ValueError(f"distribution refuses symlink: {path.relative_to(repository)}")
         if path.is_file():
             files.append((path.relative_to(skill_root).as_posix(), path.read_bytes()))
-    files.append(("LICENSE", licence.read_bytes()))
-    files.append(("DISCLAIMER.md", disclaimer.read_bytes()))
+    files.extend((path.name, path.read_bytes()) for path in documents)
 
     file_records = [
         {"path": name, "sha256": _sha256(payload), "size": len(payload)}

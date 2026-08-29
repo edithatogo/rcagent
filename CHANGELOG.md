@@ -17,7 +17,7 @@
 - Recorded the Track 00 implementation review and its remaining owner licence
   gate.
 
-## Unreleased
+## 0.1.0 — 2026-08-29
 
 - Adopted Apache-2.0 for the project and portable skill following explicit
   owner approval; release remains a separate gate.
@@ -28,3 +28,8 @@
   fail-closed upstream drift monitoring.
 - Preserved historical evaluation and root-agent material pending governed
   migration.
+- Added deterministic Apache-2.0 portable-core, Codex, and Claude Code release
+  candidates with exact source provenance, checksums, SBOM metadata, privacy,
+  support, and approval-boundary documents.
+- Kept the client packages skills-only: no MCP server, hooks, credentials,
+  network access, telemetry, persistent storage, private data, or client logic.

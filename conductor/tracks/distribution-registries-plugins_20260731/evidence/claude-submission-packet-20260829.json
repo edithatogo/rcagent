@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "plugin": "rca-investigation",
+  "version": "0.1.0",
+  "state": "prepared_not_submitted",
+  "route": "claude-community",
+  "package_type": "skills_only",
+  "excluded": ["mcp", "hooks", "lsp", "commands", "agents", "package_dependencies", "credentials", "network", "telemetry", "persistent_storage", "private_data"],
+  "validation": {"local_manifest": "required", "automated_safety_screening": "external_not_observed", "catalogue_installability": "external_not_observed"},
+  "publisher": {"identity": "edithatogo", "team_or_console_access": "not_observed"},
+  "submission": {"portal":"https://platform.claude.com/plugins/submit","submitted":false,"approved":false,"catalogue_synced":false},
+  "rollback": "uninstall the exact plugin version; remove or supersede a listing only through an authorised external action"
+}

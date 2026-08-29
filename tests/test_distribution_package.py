@@ -45,6 +45,9 @@ def test_distribution_contains_only_portable_core_and_release_metadata(tmp_path:
         assert "rca-investigation/SKILL.md" in names
         assert "rca-investigation/LICENSE" in names
         assert "rca-investigation/DISCLAIMER.md" in names
+        assert "rca-investigation/PRIVACY.md" in names
+        assert "rca-investigation/SUPPORT.md" in names
+        assert "rca-investigation/CHANGELOG.md" in names
         assert "rca-investigation/distribution-manifest.json" in names
         assert "rca-investigation/sbom.cdx.json" in names
         assert not any(name.startswith("rca-investigation/.git") for name in names)
@@ -80,6 +83,9 @@ def test_distribution_refuses_destination_inside_portable_source(tmp_path: Path)
     (skill / "SKILL.md").write_text("# Example\n", encoding="utf-8")
     (repository / "LICENSE").write_text("Apache License\n", encoding="utf-8")
     (repository / "DISCLAIMER.md").write_text("Disclaimer\n", encoding="utf-8")
+    (repository / "PRIVACY.md").write_text("Privacy\n", encoding="utf-8")
+    (repository / "SUPPORT.md").write_text("Support\n", encoding="utf-8")
+    (repository / "CHANGELOG.md").write_text("Changelog\n", encoding="utf-8")
 
     with pytest.raises(ValueError, match="outside the portable source"):
         build_distribution(repository, skill / "dist", version="1.0.0")
@@ -95,6 +101,8 @@ def test_distribution_rejects_missing_inputs_and_symlinks(tmp_path: Path) -> Non
     (skill / "SKILL.md").write_text("# Example\n", encoding="utf-8")
     (repository / "LICENSE").write_text("Apache License\n", encoding="utf-8")
     (repository / "DISCLAIMER.md").write_text("Disclaimer\n", encoding="utf-8")
+    for name in ("PRIVACY.md", "SUPPORT.md", "CHANGELOG.md"):
+        (repository / name).write_text(name + "\n", encoding="utf-8")
     target = tmp_path / "target.txt"
     target.write_text("outside", encoding="utf-8")
     (skill / "linked.txt").symlink_to(target)
