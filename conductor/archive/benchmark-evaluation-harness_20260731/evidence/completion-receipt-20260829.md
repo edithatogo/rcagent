@@ -73,3 +73,12 @@ implementation while preserving earlier deterministic and comparator history.
 Track 06 may consume the standing agent-panel protocol, but each checkpoint
 must retain these authority boundaries and may complete with an unsupported
 adapter result.
+
+## Hosted reconciliation
+
+Pull request [#49](https://github.com/edithatogo/rcagent/pull/49) passed Vale,
+dependency review, agent-skill validation, macOS, Ubuntu and Windows quality
+jobs, and the 90 percent patch-coverage gate on exact head `eaf3d64`. It merged
+as `6578da11f40e33176eb511f8c677b0b73a78c72c` at
+`2026-08-29T05:46:44Z`; GitHub issue #10 closed one second later. The
+`decision-needed` label was then removed because no Track 05 owner gate remains.

@@ -8,7 +8,7 @@
 
 ## Hard Start Dependencies
 
-- [benchmark-evaluation-harness_20260731](../benchmark-evaluation-harness_20260731/index.md)
+- [benchmark-evaluation-harness_20260731](../../archive/benchmark-evaluation-harness_20260731/index.md)
 - [multimodal-capability-fabric_20260731](../multimodal-capability-fabric_20260731/index.md)
 - [retrieval-knowledge-system_20260731](../retrieval-knowledge-system_20260731/index.md)
 - [local-runtime-model-lab_20260731](../local-runtime-model-lab_20260731/index.md)
