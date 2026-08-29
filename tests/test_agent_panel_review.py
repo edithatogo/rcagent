@@ -11,6 +11,9 @@ import pytest
 from tools import agent_panel_review
 from tools.agent_panel_review import (
     CRITERIA,
+    _ordinal_alpha,
+    _read,
+    _weighted_kappa,
     aggregate,
     validate_adjudication,
     validate_governance_evidence,
@@ -136,3 +139,52 @@ def test_panel_cli_prints_receipt(
     monkeypatch.setattr(agent_panel_review, "aggregate", lambda values: {"threshold_pass": False})
     assert agent_panel_review.main() == 0
     assert '"threshold_pass": false' in capsys.readouterr().out
+
+
+def test_panel_validators_reject_tampered_evidence(tmp_path: Path) -> None:
+    invalid = tmp_path / "array.json"
+    invalid.write_text("[]", encoding="utf-8")
+    with pytest.raises(ValueError, match="expected an object"):
+        _read(invalid)
+
+    submission = _submission("tampered")
+    submission["ratings"][1]["model_id"] = submission["ratings"][0]["model_id"]
+    submission["input_hashes"] = {key: "0" * 64 for key in submission["input_hashes"]}
+    submission["ratings"][0]["criteria"].pop("uncertainty")
+    submission["ratings"][0]["criteria"]["privacy"]["evidence"] = ["missing-case"]
+    errors = validate_submission(submission)
+    assert any("duplicate model_id" in error for error in errors)
+    assert any("does not match" in error for error in errors)
+    assert any("canonical rubric" in error for error in errors)
+    assert any("unknown evidence" in error for error in errors)
+
+
+def test_adjudication_and_governance_tampering_is_detected() -> None:
+    adjudication = json.loads(
+        (ROOT / "evaluation/benchmark/results/agent-panel-v1-adjudication.json").read_text()
+    )
+    adjudication["input_hashes"] = {}
+    adjudication["instructions_sha256"] = "0" * 64
+    adjudication["scores_changed"] = True
+    errors = validate_adjudication(adjudication)
+    assert len(errors) >= 4
+
+    thresholds = json.loads((ROOT / "evaluation/benchmark/research-thresholds.json").read_text())
+    thresholds["receipt_sha256"] = "0" * 64
+    thresholds["current_observation"]["raw_agent_panel_agreement"] = 1
+    thresholds["current_observation"]["ordinal_agent_panel_alpha"] = 1
+    thresholds["current_observation"]["panel_gate_coverage_complete"] = True
+    assert len(validate_governance_evidence(thresholds)) >= 4
+
+    gates = json.loads(
+        (ROOT / "evaluation/benchmark/results/hard-gate-evidence-v1.json").read_text()
+    )
+    gates["gate_evidence"].pop("security")
+    assert any("five approved hard gates" in error for error in validate_governance_evidence(gates))
+
+
+def test_agreement_helpers_reject_empty_or_unpaired_values() -> None:
+    with pytest.raises(ValueError, match="paired"):
+        _weighted_kappa([], [])
+    with pytest.raises(ValueError, match="two raters"):
+        _ordinal_alpha([[1]])

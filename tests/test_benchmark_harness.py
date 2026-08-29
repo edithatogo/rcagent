@@ -149,3 +149,35 @@ def test_benchmark_cli_rejects_invalid_report(
     monkeypatch.setattr(sys, "argv", ["benchmark", "report", "--result", str(result_path)])
     assert benchmark_harness.main() == 1
     assert "ERROR:" in capsys.readouterr().out
+
+
+def test_registry_and_result_validation_cover_fail_closed_edges(tmp_path: Path) -> None:
+    registry = load_registry()
+    registry["cases"].append("malformed")
+    registry["suites"].append("malformed")
+    registry["legacy_map"].append("malformed")
+    registry["hard_gates"] = []
+    assert any("missing" in error for error in validate_registry(registry))
+
+    result = run_suite(load_registry(), "smoke")
+    result["registry_sha256"] = "0" * 64
+    result["runner"] = "wrong"
+    result["results"] = ["malformed"]
+    result["fixture_sha256"] = {"bad": 2, "../registry.json": "0" * 64}
+    errors = verify_result(result)
+    assert "result registry hash is stale" in errors
+    assert "result execution contract does not match the suite" in errors
+    assert "result observation is malformed" in errors
+    assert "result fixture hash entry is malformed" in errors
+    assert any("escapes fixture directory" in error for error in errors)
+
+    unknown = run_suite(load_registry(), "smoke")
+    unknown["suite_id"] = "missing"
+    assert "result suite is unknown" in verify_result(unknown)
+
+    missing_results = run_suite(load_registry(), "smoke")
+    missing_results["results"] = None
+    missing_results["fixture_sha256"] = None
+    errors = verify_result(missing_results)
+    assert "result observations are missing" in errors
+    assert "result fixture hashes are missing" in errors
