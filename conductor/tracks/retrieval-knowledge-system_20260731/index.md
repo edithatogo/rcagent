@@ -1,6 +1,6 @@
 # Track 07: Retrieval and Knowledge System
 
-- **Status:** New
+- **Status:** Completed — synthetic/public deterministic retrieval contracts; optional capabilities fail closed
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#12](https://github.com/edithatogo/rcagent/issues/12)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)
@@ -10,7 +10,7 @@
 
 - [evidence-workflow-core_20260731](../../archive/evidence-workflow-core_20260731/index.md)
 - [privacy-security-assurance_20260731](../../archive/privacy-security-assurance_20260731/index.md)
-- [nsw-health-jurisdiction-pack_20260731](../nsw-health-jurisdiction-pack_20260731/index.md)
+- [nsw-health-jurisdiction-pack_20260731](../../archive/nsw-health-jurisdiction-pack_20260731/index.md)
 
 ## Later Phase Dependencies
 
@@ -23,4 +23,5 @@
 - [Implementation Plan](./plan.md)
 - [Metadata](./metadata.json)
 - [SourceRight Adapter Fit-Gap](./sourceright-adapter-plan.md)
+- [Completion Evidence](./evidence/completion-20260829.md)
 - [Portfolio Roadmap](../../roadmap.md)

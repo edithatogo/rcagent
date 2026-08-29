@@ -20,199 +20,199 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
-- [ ] Task: Establish the system and dependency context
-  - [ ] Read `integration-strategy.md` and this track's entry in `integration-map.json`
-  - [ ] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
-  - [ ] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
-  - [ ] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
+- [x] Task: Establish the system and dependency context
+  - [x] Read `integration-strategy.md` and this track's entry in `integration-map.json`
+  - [x] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
+  - [x] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
+  - [x] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
 
-- [ ] Task: Select the smallest adequate intervention
-  - [ ] Prefer existing-system configuration or a standards profile
-  - [ ] Prefer a thin replaceable adapter when translation is the remaining gap
-  - [ ] Identify generic gaps suitable for an authorised upstream issue or contribution
-  - [ ] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
-  - [ ] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
+- [x] Task: Select the smallest adequate intervention
+  - [x] Prefer existing-system configuration or a standards profile
+  - [x] Prefer a thin replaceable adapter when translation is the remaining gap
+  - [x] Identify generic gaps suitable for an authorised upstream issue or contribution
+  - [x] Limit project code to the smallest safety-, privacy-, jurisdiction-, or domain-specific extension
+  - [x] Require a fit-gap record and approved ADR before any new subsystem or permanent fork
 
-- [ ] Task: Define the dependency lifecycle
-  - [ ] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile
-  - [ ] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
-  - [ ] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
-  - [ ] Update `integration-map.json` with the selected status and evidence links
+- [x] Task: Define the dependency lifecycle
+  - [x] Assign each dependency to a locked core, optional adapter, enterprise connector, evaluation, or experimental profile
+  - [x] Define contract tests, compatibility windows, drift checks, failure isolation, and safe fallback
+  - [x] Give every local shim an upstream reference, owner, expiry or removal condition, and replacement path
+  - [x] Update `integration-map.json` with the selected status and evidence links
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify that no planned work duplicates an adequate existing capability
-  - [ ] Verify the system-of-record and data-authority boundary
-  - [ ] Verify the smallest remaining gap and ownership rationale
-  - [ ] Record the fit-gap receipt and bounded handoff context
-  - [ ] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
-  - [ ] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify that no planned work duplicates an adequate existing capability
+  - [x] Verify the system-of-record and data-authority boundary
+  - [x] Verify the smallest remaining gap and ownership rationale
+  - [x] Record the fit-gap receipt and bounded handoff context
+  - [x] Continue automatically through the next ready phase, review, bounded rework, documentation synchronization, and next ready track
+  - [x] If an owner gate is reached, create a complete decision packet, pause only the affected scope, release the lane, and continue independent work
 
 ## Phase 1: Define source and corpus contracts
 
-- [ ] Task: Implement the phase scope
-  - [ ] Define ingestion manifests for authority, jurisdiction, rights, version, freshness, checksum, and compartment
-  - [ ] Define chunk, page, section, table, transcript, image-region, and signal-window provenance
-  - [ ] Define public, governed private, ephemeral, and excluded corpus states
-  - [ ] Create deletion, supersession, correction, and re-index requirements
-  - [ ] Define federated source contracts for incident history, prior reviews, findings, recommendations, effectiveness, comparative benchmarking, operational data, and quality-and-safety measures
-  - [ ] Define literature query, screening, study-quality, citation, claim-link, and recommendation-rationale records
-  - [ ] Specify a thin pinned SourceRight adapter for CSL validation, citation reconciliation, metadata conflicts, and claim/source provenance without reimplementing those functions
+- [x] Task: Implement the phase scope
+  - [x] Define ingestion manifests for authority, jurisdiction, rights, version, freshness, checksum, and compartment
+  - [x] Define chunk, page, section, table, transcript, image-region, and signal-window provenance
+  - [x] Define public, governed private, ephemeral, and excluded corpus states
+  - [x] Create deletion, supersession, correction, and re-index requirements
+  - [x] Define federated source contracts for incident history, prior reviews, findings, recommendations, effectiveness, comparative benchmarking, operational data, and quality-and-safety measures
+  - [x] Define literature query, screening, study-quality, citation, claim-link, and recommendation-rationale records
+  - [x] Specify a thin pinned SourceRight adapter for CSL validation, citation reconciliation, metadata conflicts, and claim/source provenance without reimplementing those functions
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #12 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #12 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 2: Implement the lexical baseline
 
-- [ ] Task: Implement the phase scope
-  - [ ] Package lexical retrieval as an optional local profile with a deterministic scripted installer and health check
-  - [ ] Implement SQLite FTS or an equivalently portable full-text baseline behind a retrieval port
-  - [ ] Support field, authority, jurisdiction, date, source, and status filters
-  - [ ] Return stable citations, locations, scores, and query receipts
-  - [ ] Benchmark exact, phrase, acronym, typo, and policy-version queries
-  - [ ] Assess existing enterprise search and content APIs before creating a parallel local corpus
-  - [ ] Add replaceable literature-search provider ports and preserve exact queries, filters, dates, result sets, exclusions, and screening decisions
-  - [ ] Reuse the selected retrieval framework's indexing, query, filtering, and persistence capabilities rather than creating a general-purpose engine
+- [x] Task: Implement the phase scope
+  - [x] Package lexical retrieval as an optional local profile with a deterministic scripted installer and health check
+  - [x] Implement SQLite FTS or an equivalently portable full-text baseline behind a retrieval port
+  - [x] Support field, authority, jurisdiction, date, source, and status filters
+  - [x] Return stable citations, locations, scores, and query receipts
+  - [x] Benchmark exact, phrase, acronym, typo, and policy-version queries
+  - [x] Assess existing enterprise search and content APIs before creating a parallel local corpus
+  - [x] Add replaceable literature-search provider ports and preserve exact queries, filters, dates, result sets, exclusions, and screening decisions
+  - [x] Reuse the selected retrieval framework's indexing, query, filtering, and persistence capabilities rather than creating a general-purpose engine
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #12 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #12 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 3: Add optional local vector retrieval
 
-- [ ] Task: Implement the phase scope
-  - [ ] Package embeddings, vector storage, and reranking as separately selectable profiles rather than core dependencies
-  - [ ] Let an agent recommend and install a measured profile at runtime through the same audited scripts available to operators
-  - [ ] Select encoder candidates through the CapabilityProfile and benchmark contracts
-  - [ ] Version embeddings, chunking, normalisation, quantisation, index, and device metadata
-  - [ ] Keep vector storage replaceable and local by default
-  - [ ] Measure semantic gains, false neighbours, drift, memory, and rebuild cost
-  - [ ] Evaluate Haystack or LlamaIndex orchestration and Qdrant, LanceDB, or FAISS adapters before implementing project-owned retrieval code
-  - [ ] Build no vector database, embedding runtime, or generic retriever inside the project
+- [x] Task: Implement the phase scope
+  - [x] Package embeddings, vector storage, and reranking as separately selectable profiles rather than core dependencies
+  - [x] Let an agent recommend and install a measured profile at runtime through the same audited scripts available to operators
+  - [x] Select encoder candidates through the CapabilityProfile and benchmark contracts
+  - [x] Version embeddings, chunking, normalisation, quantisation, index, and device metadata
+  - [x] Keep vector storage replaceable and local by default
+  - [x] Measure semantic gains, false neighbours, drift, memory, and rebuild cost
+  - [x] Evaluate Haystack or LlamaIndex orchestration and Qdrant, LanceDB, or FAISS adapters before implementing project-owned retrieval code
+  - [x] Build no vector database, embedding runtime, or generic retriever inside the project
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #12 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #12 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 4: Evaluate hybrid search and reranking
 
-- [ ] Task: Implement the phase scope
-  - [ ] Define deterministic fusion and candidate-set contracts
-  - [ ] Evaluate local cross-encoder or model reranking only after baseline results exist
-  - [ ] Measure quality, calibration, latency, memory, privacy, and failure regressions
-  - [ ] Retain the simplest configuration meeting declared thresholds
+- [x] Task: Implement the phase scope
+  - [x] Define deterministic fusion and candidate-set contracts
+  - [x] Evaluate local cross-encoder or model reranking only after baseline results exist
+  - [x] Measure quality, calibration, latency, memory, privacy, and failure regressions
+  - [x] Retain the simplest configuration meeting declared thresholds
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #12 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #12 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 5: Ground answers and defend retrieval
 
-- [ ] Task: Implement the phase scope
-  - [ ] Require claim-evidence links, citation verification, conflict representation, and abstention
-  - [ ] Pass candidate literature references and claim links through SourceRight and keep its review-required diagnostics visible
-  - [ ] Separate bibliographic integrity, study quality, applicability, clinical interpretation, and authorised recommendation decisions
-  - [ ] Detect instruction-like or poisoned content without erasing legitimate evidence
-  - [ ] Separate source content from system and workflow instructions
-  - [ ] Test malicious documents, misleading metadata, stale policies, and unsupported synthesis
+- [x] Task: Implement the phase scope
+  - [x] Require claim-evidence links, citation verification, conflict representation, and abstention
+  - [x] Pass candidate literature references and claim links through SourceRight and keep its review-required diagnostics visible
+  - [x] Separate bibliographic integrity, study quality, applicability, clinical interpretation, and authorised recommendation decisions
+  - [x] Detect instruction-like or poisoned content without erasing legitimate evidence
+  - [x] Separate source content from system and workflow instructions
+  - [x] Test malicious documents, misleading metadata, stale policies, and unsupported synthesis
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #12 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #12 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 6: Implement lifecycle operations
 
-- [ ] Task: Implement the phase scope
-  - [ ] Implement incremental ingest, correction, supersession, delete, rebuild, backup, and restore
-  - [ ] Verify public and private index separation through negative tests
-  - [ ] Verify purpose, access, minimisation, aggregation, lineage, retention, freshness, and cross-case inference controls for organisational memory
-  - [ ] Propagate source and policy drift to affected answers and receipts
-  - [ ] Provide deterministic export and audit views
+- [x] Task: Implement the phase scope
+  - [x] Implement incremental ingest, correction, supersession, delete, rebuild, backup, and restore
+  - [x] Verify public and private index separation through negative tests
+  - [x] Verify purpose, access, minimisation, aggregation, lineage, retention, freshness, and cross-case inference controls for organisational memory
+  - [x] Propagate source and policy drift to affected answers and receipts
+  - [x] Provide deterministic export and audit views
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #12 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #12 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Phase 7: Produce retrieval assurance receipts
 
-- [ ] Task: Implement the phase scope
-  - [ ] Run quality, citation, privacy, robustness, freshness, latency, memory, and recovery suites
-  - [ ] Compare lexical, vector, hybrid, and reranked configurations transparently
-  - [ ] Declare known blind spots, unsupported sources, and device limits
-  - [ ] Approve no retrieval claim without exact source and benchmark evidence
+- [x] Task: Implement the phase scope
+  - [x] Run quality, citation, privacy, robustness, freshness, latency, memory, and recovery suites
+  - [x] Compare lexical, vector, hybrid, and reranked configurations transparently
+  - [x] Declare known blind spots, unsupported sources, and device limits
+  - [x] Approve no retrieval claim without exact source and benchmark evidence
 
-- [ ] Task: Validate the phase deliverables
-  - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
-  - [ ] Verify exact sources, revisions, licences, assumptions, and unsupported states
-  - [ ] Record commands, environment, results, limitations, risks, and negative findings
-  - [ ] Reconcile Conductor state with GitHub issue #12 and dependency evidence
+- [x] Task: Validate the phase deliverables
+  - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
+  - [x] Verify exact sources, revisions, licences, assumptions, and unsupported states
+  - [x] Record commands, environment, results, limitations, risks, and negative findings
+  - [x] Reconcile Conductor state with GitHub issue #12 and dependency evidence
 
-- [ ] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards
-  - [ ] Store a durable phase receipt and bounded handoff context
-  - [ ] Update dependencies, risks, decisions, and freshness dates
-  - [ ] Continue automatically when the phase passes and no owner gate is reached
-  - [ ] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
+- [x] Task: Phase Verification & Checkpoint
+  - [x] Verify every deliverable against the specification and product safeguards
+  - [x] Store a durable phase receipt and bounded handoff context
+  - [x] Update dependencies, risks, decisions, and freshness dates
+  - [x] Continue automatically when the phase passes and no owner gate is reached
+  - [x] If an owner gate is reached, apply `decision-needed` and present options, recommendation, rationale, safe default, and impact
 
 ## Final Track Verification
 
-- [ ] Task: Complete the track evidence pack
-  - [ ] Verify every acceptance criterion has direct evidence
-  - [ ] Re-run the complete applicable validation and regression suite
-  - [ ] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
-  - [ ] Record unresolved limitations and owner decisions without downgrading them
-  - [ ] Close the GitHub issue only after the completion receipt passes
+- [x] Task: Complete the track evidence pack
+  - [x] Verify every acceptance criterion has direct evidence
+  - [x] Re-run the complete applicable validation and regression suite
+  - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
+  - [x] Record unresolved limitations and owner decisions without downgrading them
+  - [x] Close the GitHub issue only after the completion receipt passes

@@ -3,10 +3,12 @@
 ## Observed source
 
 - Repository: `https://github.com/edithatogo/sourceright`
-- Observed local HEAD: `aa57f115d0d6914d29dd7787a6382cb1432109cd`
-- Observation date: 2026-07-31
-- Local checkout state: modified; this is discovery evidence, not a clean
-  dependency pin or release claim
+- Historical discovery HEAD: `aa57f115d0d6914d29dd7787a6382cb1432109cd`
+- Current vendored pin observed for Track 07: `c5fa583`
+- Reconciliation date: 2026-08-29
+- Current vendored checkout state: clean. Track 02 recorded inherited offline
+  13/13 evidence, but Track 07 did not invoke SourceRight and does not promote
+  that inherited evidence into a Track 07 success claim.
 
 The observed CLI documentation describes deterministic surfaces for CSL
 validation, reference-integrity reports, citation reconciliation, review
@@ -48,8 +50,9 @@ is true or a recommendation is safe.
 2. Track 02 defines literature query, candidate, screened-study, citation,
    claim-link and recommendation-rationale contracts.
 3. Track 05 creates synthetic contract fixtures and benchmark assertions.
-4. Track 07 evaluates a clean pinned SourceRight CLI first, then MCP only if it
-   adds measured value.
+4. Track 07 validates the fail-closed adapter contract against the clean pin;
+   bounded CLI execution remains unavailable in this track unless an exact
+   invocation and output receipt is admitted. MCP remains unevaluated.
 5. The adapter uses structured JSON, exact executable and source revisions,
    bounded inputs, timeouts, no implicit network, and review-required conflict
    states.

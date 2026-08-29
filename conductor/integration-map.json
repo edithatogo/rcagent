@@ -144,6 +144,7 @@
     },
     {
       "track_id": "retrieval-knowledge-system_20260731",
+      "status": "adapt",
       "candidate_systems": [
         "edithatogo/sourceright for citation integrity and claim-to-source provenance",
         "SQLite FTS",
@@ -152,6 +153,12 @@
         "Docling ingestion",
         "Ragas and established information-retrieval measures"
       ],
+      "selected_system": "SQLite FTS5 deterministic lexical baseline behind a compartment-bound retrieval port; optional vector, hybrid, reranking, literature-provider and SourceRight profiles remain replaceable and fail closed",
+      "dependency_class": "Python standard-library SQLite locked core contract plus optional adapters; no vector database, model, provider, telemetry or enterprise dependency in the portable core",
+      "compatibility_window": "retrieval corpus schema 1.0; SQLite 3.53.4 with FTS5 observed locally; SourceRight 0.1.x adapter at vendored pin c5fa583; all model-backed profiles unsupported until exact receipts pass",
+      "safe_fallback": "use the deterministic single-compartment lexical profile, preserve citations and query receipts, abstain on insufficient or conflicting evidence, and expose optional capabilities as unavailable",
+      "replacement_path": "replace SQLite or optional providers behind the retrieval and literature contracts while preserving manifests, source checksums, locations, query receipts and lifecycle semantics",
+      "evidence": "conductor/tracks/retrieval-knowledge-system_20260731/evidence/completion-20260829.md",
       "project_owned_gap": "literature-search orchestration, authority, rights, jurisdiction, compartment, policy-drift, incident-history federation, SourceRight adapter contracts, evidence quality, conflict, and abstention semantics"
     },
     {

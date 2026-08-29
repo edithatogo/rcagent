@@ -1,0 +1,104 @@
+{
+  "manifest_sha256": "e4a9abef6b64e4c2d58244d928e28f47e4a4bcd0cd1c237cb4c4a32a6bcf2384",
+  "network": "disabled",
+  "observation_sha256": "2024fd84ded40ace9c596b956884fe4eb625047a93fff07175f799b8d2c2542f",
+  "private_data": false,
+  "profile_comparison": [
+    {
+      "id": "lexical-sqlite-fts5",
+      "revision": "lexical-sqlite-fts5 contract 1.1",
+      "status": "supported_ci_contract"
+    },
+    {
+      "id": "vector-local",
+      "revision": "contract 1.0; no encoder or vector store admitted",
+      "status": "unsupported"
+    },
+    {
+      "id": "hybrid-fusion",
+      "revision": "contract 1.0",
+      "status": "unsupported_without_vector_baseline_gain"
+    },
+    {
+      "id": "reranker-local",
+      "revision": "contract 1.0; no cross-encoder admitted",
+      "status": "unsupported"
+    },
+    {
+      "id": "literature-provider",
+      "revision": "provider port contract 1.0; no external provider configured",
+      "status": "contract_only"
+    },
+    {
+      "id": "sourceright",
+      "revision": "sourceright adapter contract 0.1; clean pin c5fa583; no Track07 invocation",
+      "status": "contract_only"
+    }
+  ],
+  "profile_revision": "lexical-sqlite-fts5 contract 1.1",
+  "receipt_sha256": "449a46d66c32981c7c2609c410a8e0dff07e82a9c24cad4fd9f76cdf2840ba83",
+  "research_observations": {
+    "allocation_peak_bytes": 15073,
+    "elapsed_ms": 0.954,
+    "integrity_scope": "volatile descriptive observations excluded from receipt_sha256"
+  },
+  "results": {
+    "acronym": {
+      "hits": 1,
+      "passed": true
+    },
+    "exact": {
+      "hits": 1,
+      "passed": true
+    },
+    "phrase": {
+      "hits": 1,
+      "passed": true
+    },
+    "typo": {
+      "hits": 0,
+      "passed": true
+    },
+    "version_filter": {
+      "hits": 1,
+      "passed": true
+    }
+  },
+  "schema_version": "1.0",
+  "scope": "deterministic_synthetic_ci_contract",
+  "suites": {
+    "citation": {
+      "passed": true
+    },
+    "freshness": {
+      "mode": "validated-manifest drift contract",
+      "passed": true
+    },
+    "latency": {
+      "passed": true,
+      "status": "descriptive_not_thresholded"
+    },
+    "memory": {
+      "passed": true,
+      "status": "descriptive_not_thresholded"
+    },
+    "privacy": {
+      "passed": true
+    },
+    "recovery": {
+      "passed": true
+    },
+    "robustness": {
+      "passed": true
+    }
+  },
+  "unsupported": [
+    "typo correction",
+    "vector retrieval",
+    "hybrid retrieval",
+    "model reranking",
+    "external literature provider",
+    "cross-compartment retrieval",
+    "operational thresholds"
+  ]
+}
