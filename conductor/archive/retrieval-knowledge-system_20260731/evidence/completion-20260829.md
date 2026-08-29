@@ -50,8 +50,11 @@ clinical interpretation or recommendation is claimed.
 - `uv run python -m tools.benchmark_harness validate`: passed.
 - `uv run python -m tools.benchmark_harness run --suite regression`: seven of
   seven deterministic cases passed; no model or external execution.
-- `uv run pytest --cov=tools --cov-report=term-missing`: 302 passed in 66.07
-  seconds; 90.73% total tools coverage; retrieval module coverage 91%.
+- `uv run pytest --cov=tools --cov-report=term-missing`: final archive replay
+  passed 302 tests in 55.53 seconds; 90.90% total tools coverage; retrieval
+  module coverage 93%.
+- `uv run pytest -q tests/test_retrieval_system.py --cov=tools.retrieval_system
+  --cov-report=term-missing`: 18 passed; 92.59% focused module coverage.
 - PR #54 merged as `c8d0ea3`; its late 80.77% Codecov patch result exposed a
   hosted evidence gap after merge. PR #55 added negative-path tests, merged as
   `a7f2787`, and passed Codecov patch plus Agent Skill Conformance, dependency

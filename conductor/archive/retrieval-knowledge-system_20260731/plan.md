@@ -236,3 +236,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Reject non-string result and screening identifiers without raising
   - [x] Assert restore audit provenance against the raw backup-byte SHA-256
   - [x] Clarify specification-level negative admission semantics for optional capabilities
+- [x] Task: Close archive patch-coverage branches — `adefe1d`
+  - [x] Cover wrong-compartment rebuild preservation
+  - [x] Cover non-array literature result, screening, quality and conflict collections
+  - [x] Raise focused retrieval coverage to 92.59% without changing production behaviour
