@@ -74,9 +74,9 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Publish the portable core and thin client bundles through the approved pinned GitHub release
   - [x] Generate reviewable local manifests for scripted, agent-assisted, offline, update, rollback, and uninstall paths
   - [x] Package self-contained skills from the portable core with complete provenance, compatibility, changelog, and core-only SBOM metadata
-  - [x] Test deterministic archive extraction and offline package integrity; hosted GitHub installation remains pending a release decision
+  - [x] Test deterministic archive extraction and offline package integrity; hosted GitHub installation remains pending release execution
   - [~] Reuse GitHub releases, checksums, CycloneDX metadata, and hosted integrity tooling; hosted evidence pending release
-  - [ ] Contribute generic packaging or validator gaps to the relevant client or standard ecosystem instead of maintaining a divergent installer
+  - [x] Record no upstream contribution: no generic gap with established fit remained after using current validators and declarative packages
   - [x] Keep public release as an explicit owner-approved action (`20260829-004`)
 
 - [ ] Task: Validate the phase deliverables
