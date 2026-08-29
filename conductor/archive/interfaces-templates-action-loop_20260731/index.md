@@ -1,6 +1,6 @@
 # Track 09: Interfaces, Templates, and Closed-Loop Actions
 
-- **Status:** Completed (repository contract closure; hosted integration pending)
+- **Status:** Archived (PR #60 merged; issue #14 closed)
 - **Workstream:** product-interfaces-distribution
 - **GitHub issue:** [#14](https://github.com/edithatogo/rcagent/issues/14)
 - **Parent workstream:** [#4](https://github.com/edithatogo/rcagent/issues/4)
@@ -25,4 +25,5 @@
 - [Completion receipt](./evidence/completion-receipt-20260829.md)
 - [Acceptance map](./evidence/acceptance-map-20260829.md)
 - [Agent-panel review](./evidence/agent-panel-review-20260829.md)
+- [Archive receipt](./evidence/archive-receipt-20260829.md)
 - [Portfolio Roadmap](../../roadmap.md)

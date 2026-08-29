@@ -52,7 +52,7 @@
 
 ## Phase 5: Interfaces, distribution, and adaptation readiness
 
-- [~] Task: Implement Track 09 interfaces, templates, and action-loop controls
+- [x] Task: Implement Track 09 interfaces, templates, and action-loop controls
 - [ ] Task: Implement Track 11 packaging, adapters, installation, and release preflights
 - [ ] Task: Implement Track 10 dataset governance and dry-run adaptation pipeline only
 - [ ] Task: Preserve training and model-artefact production as blocked external work

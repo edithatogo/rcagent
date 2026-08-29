@@ -215,4 +215,4 @@ Checked items record completion of the bounded assessment or contract work, not 
   - [x] Re-run the complete applicable validation and regression suite
   - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
   - [x] Record unresolved limitations and owner decisions without downgrading them
-  - [ ] Close the GitHub issue only after the completion receipt passes
+  - [x] Close the GitHub issue only after the completion receipt passes

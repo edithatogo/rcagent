@@ -39,7 +39,7 @@ Parent: [GitHub #4](https://github.com/edithatogo/rcagent/issues/4)
 
 | Status | Track | GitHub | Hard start blockers |
 |---|---|---:|---|
-| [x] | [09 Interfaces, Templates, and Closed-Loop Actions](./tracks/interfaces-templates-action-loop_20260731/index.md) | [#14](https://github.com/edithatogo/rcagent/issues/14) | Repository contract closure; hosted integration pending |
+| [x] | [09 Interfaces, Templates, and Closed-Loop Actions](./archive/interfaces-templates-action-loop_20260731/index.md) | [#14](https://github.com/edithatogo/rcagent/issues/14) | Archived after PR #60 merged and issue #14 closed |
 | [!] | [11 Distribution, Registries, and Client Plugins](./tracks/distribution-registries-plugins_20260731/index.md) | [#16](https://github.com/edithatogo/rcagent/issues/16) | Release authorised; phase dependencies pending |
 
 `metadata.json` records later phase dependencies that deliberately do not block independent foundation work.
