@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
 import pytest
 
+from tools import verify_distribution_sources as source_module
 from tools.verify_distribution_sources import SOURCES, verify_sources
 
 
@@ -32,3 +36,23 @@ def test_source_verifier_fails_closed_on_network_or_marker_drift() -> None:
         verify_sources(fetch=lambda url: (url, b"unexpected"))
     with pytest.raises(ValueError, match="outside HTTPS"):
         verify_sources(fetch=lambda url: ("http://example.invalid", _valid(url)[1]))
+
+
+def test_source_verifier_cli_writes_receipt_and_reports_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    output = tmp_path / "receipt.json"
+    monkeypatch.setattr(source_module, "verify_sources", lambda: {"schema_version": "1.0"})
+    monkeypatch.setattr(sys, "argv", ["verify-sources", "--output", str(output)])
+    assert source_module.main() == 0
+    assert '"schema_version": "1.0"' in output.read_text()
+
+    def _fail() -> dict[str, object]:
+        raise ValueError("source drift")
+
+    monkeypatch.setattr(source_module, "verify_sources", _fail)
+    monkeypatch.setattr(sys, "argv", ["verify-sources", "--output", str(tmp_path / "bad")])
+    with pytest.raises(SystemExit) as error:
+        source_module.main()
+    assert error.value.code == 2
+    assert "source drift" in capsys.readouterr().err
