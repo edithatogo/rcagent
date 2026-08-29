@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "policy": {"generated_synthetic_only": true, "private_data": false, "downloads": false, "remote_inference": false, "training": false, "weight_creation": false, "redistribution": false, "clinical_claims": false, "promotion": false},
+  "frameworks": [
+    {"id":"transformers-peft-trl","status":"unavailable","revision":"not_acquired","licence":"not_evaluated_for_execution","network":"not_used","telemetry":"not_used","remote_code":false,"replacement_path":"admit an exact maintained revision only after readiness"},
+    {"id":"llamafactory-axolotl","status":"unavailable","revision":"not_acquired","licence":"not_evaluated_for_execution","network":"not_used","telemetry":"not_used","remote_code":false,"replacement_path":"admit an exact maintained revision only after readiness"},
+    {"id":"mlx-lm","status":"unavailable","revision":"not_acquired","licence":"not_evaluated_for_execution","network":"not_used","telemetry":"not_used","remote_code":false,"replacement_path":"admit an exact maintained revision only after readiness"},
+    {"id":"mlflow","status":"contract_only","revision":"not_acquired","licence":"not_evaluated_for_execution","network":"not_used","telemetry":"not_used","remote_code":false,"replacement_path":"use an approved local tracker only after readiness"}
+  ],
+  "comparators": [],
+  "readiness_thresholds": {"material_baseline_gap_required":true,"rights_complete_required":true,"privacy_complete_required":true,"supported_runtime_required":true,"admitted_comparator_required":true,"accountable_release_approval_required":true}
+}

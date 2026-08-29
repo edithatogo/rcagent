@@ -31,7 +31,7 @@ Parent: [GitHub #3](https://github.com/edithatogo/rcagent/issues/3)
 | [x] | [06 Multimodal Capability Fabric](./archive/multimodal-capability-fabric_20260731/index.md) | [#11](https://github.com/edithatogo/rcagent/issues/11) | Completed with explicit negative-result support boundaries |
 | [x] | [07 Retrieval and Knowledge System](./archive/retrieval-knowledge-system_20260731/index.md) | [#12](https://github.com/edithatogo/rcagent/issues/12) | Archived after atomic lifecycle remediation, full validation and unanimous agent-panel review |
 | [x] | [08 Local Runtime and Model Lab](./archive/local-runtime-model-lab_20260731/index.md) | [#13](https://github.com/edithatogo/rcagent/issues/13) | Archived after PR #57 passed all hosted checks and merged; explicit empty supported set |
-| [ ] | [10 Domain Adaptation and Fine-Tuning](./tracks/domain-adaptation-finetuning_20260731/index.md) | [#15](https://github.com/edithatogo/rcagent/issues/15) | 05, 06, 07, 08 |
+| [x] | [10 Domain Adaptation and Fine-Tuning](./tracks/domain-adaptation-finetuning_20260731/index.md) | [#15](https://github.com/edithatogo/rcagent/issues/15) | Completed negative disposition; hosted integration pending |
 
 ### Workstream C: Product, Interfaces, and Distribution
 

@@ -200,6 +200,7 @@
     },
     {
       "track_id": "domain-adaptation-finetuning_20260731",
+      "status": "reject",
       "candidate_systems": [
         "Transformers, Datasets, PEFT, TRL, and Accelerate",
         "LlamaFactory and Axolotl",
@@ -207,7 +208,13 @@
         "MLflow local experiment tracking",
         "existing model and dataset registries"
       ],
-      "project_owned_gap": "domain data governance, healthcare benchmark tasks, adaptation readiness, safety gates, and promotion decisions"
+      "selected_system": "Reuse archived benchmark, retrieval, runtime-lab, privacy and jurisdiction contracts; add only a deterministic no-model readiness and rejection contract",
+      "dependency_class": "client-neutral locked validator plus future optional framework adapters; no trainer, tracker, model, dataset or remote provider dependency",
+      "compatibility_window": "adaptation-readiness schema 1.0; reopen only against exact admitted comparator, runtime, dataset and authority receipts",
+      "safe_fallback": "reject weight adaptation, preserve deterministic/retrieval/prompt/tool workflows, and perform no download, training, private-data use or release",
+      "replacement_path": "remove local readiness shims when an approved maintained governance system provides equivalent fail-closed evidence and authority semantics",
+      "evidence": "conductor/tracks/domain-adaptation-finetuning_20260731/evidence/fit-gap-20260829.md",
+      "project_owned_gap": "domain adaptation readiness, generated-synthetic governance contract, stop conditions, rejection evidence and future reopen criteria"
     },
     {
       "track_id": "distribution-registries-plugins_20260731",

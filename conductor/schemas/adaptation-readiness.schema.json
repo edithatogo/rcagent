@@ -1,0 +1,18 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rcagent.example/schemas/adaptation-readiness-1.0.json",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","decision","ready","allowed_levels","blocked_levels","reasons","registry_sha256","dataset_contract_sha256","dependency_manifest_sha256","model_downloaded","training_executed","weights_created","private_data_used","external_inference","release_performed","receipt_sha256"],
+  "properties":{
+    "schema_version":{"const":"1.0"},"decision":{"const":"not_ready_reject_weight_adaptation"},"ready":{"const":false},
+    "allowed_levels":{"type":"array","items":{"enum":["deterministic","retrieval","prompt","structured_output","tool"]}},
+    "blocked_levels":{"type":"array","items":{"enum":["adapter","weight_update"]}},
+    "reasons":{"type":"array","minItems":1,"items":{"type":"string","minLength":1}},
+    "registry_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "dataset_contract_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "dependency_manifest_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "model_downloaded":{"const":false},"training_executed":{"const":false},"weights_created":{"const":false},
+    "private_data_used":{"const":false},"external_inference":{"const":false},"release_performed":{"const":false},
+    "receipt_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+  }
+}

@@ -63,7 +63,7 @@ The track cannot start until each hard dependency has a passing completion recei
 ## Later Phase Dependencies
 
 - [privacy-security-assurance_20260731](../../archive/privacy-security-assurance_20260731/index.md)
-- [nsw-health-jurisdiction-pack_20260731](../nsw-health-jurisdiction-pack_20260731/index.md)
+- [nsw-health-jurisdiction-pack_20260731](../../archive/nsw-health-jurisdiction-pack_20260731/index.md)
 
 These dependencies gate the affected integration or validation phase without needlessly blocking independent foundation work.
 
@@ -80,6 +80,8 @@ Reversible work inside the approved scope proceeds without per-phase approval wh
 Every decision request must include the recommended option, viable alternatives, evidence, rationale, trade-offs, reversibility, cost, safe default, and impact on dependencies.
 
 ## Acceptance Criteria
+
+These criteria are adaptation admission preconditions. When no eligible exact baseline, supported runtime/model pair, or justified material gap exists, a deterministic fail-closed readiness result may complete the repository track under criterion 6. Such closure is not evidence that criteria 1 or 2 produced a positive gap or performance comparison, and it does not imply data admission, training, measured improvement, an adapted artefact, or release.
 
 1. A readiness gate proves a material baseline gap and a justified adaptation hypothesis.
 2. Generic, retrieval-augmented, prompting, adapter, and domain-model baselines are compared before fine-tuning.

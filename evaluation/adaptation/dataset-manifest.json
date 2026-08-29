@@ -1,0 +1,9 @@
+{
+  "schema_version":"1.0","dataset_id":"syn-adaptation-contract-plan-v1","data_class":"generated_synthetic","origin":"repository_authored_synthetic","rights":"Apache-2.0","consent":"not_applicable_generated_synthetic","purpose":"schema contract plan only; no data materialised and no training","deidentification":"no records exist; any future units must be generated placeholders with no source people","deletion":"delete the contract through normal reviewed change; no data or derived weights exist","splits":[
+    {"name":"train","item_ids":[],"sha256":"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"},
+    {"name":"validation","item_ids":[],"sha256":"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"},
+    {"name":"held_out","item_ids":[],"sha256":"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"},
+    {"name":"challenge","item_ids":[],"sha256":"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"},
+    {"name":"contamination_control","item_ids":[],"sha256":"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"}
+  ],"contamination_control":"no units exist; future materialisation must enforce disjoint identifiers","private_data":false,"redistribution":false,"data_materialised":false,"units":[],"manifest_sha256":"12f2e3aabbd9619655924c2429bf4795429b21f9cae322ce82bccb919d8f5b1f"
+}

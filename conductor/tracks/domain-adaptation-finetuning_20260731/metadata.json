@@ -3,9 +3,10 @@
   "track_number": 10,
   "title": "Domain Adaptation and Fine-Tuning",
   "type": "experiment",
-  "status": "new",
+  "evidence_schema": "1.0",
+  "status": "completed",
   "created_at": "2026-07-31T04:34:01Z",
-  "updated_at": "2026-07-31T04:34:01Z",
+  "updated_at": "2026-08-29T11:45:00Z",
   "workstream": "data-models-evaluation",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/15",
@@ -27,6 +28,12 @@
     "Training-data use, de-identification adequacy, or private-case adaptation",
     "Compute spend, model licence, or distribution of adapted weights",
     "Clinical claims or promotion beyond a bounded research profile"
+  ],
+  "gates": [
+    {"id": "track10-private-training-data", "kind": "data_authority", "status": "pending", "evidence": "No private clinical, employee or identifiable data is admitted for repository completion."},
+    {"id": "track10-compute-and-model-acquisition", "kind": "external_artifact", "status": "pending", "evidence": "No paid compute, model download, remote inference or training execution is authorised by track start."},
+    {"id": "track10-adapted-weight-release", "kind": "publication", "status": "pending", "evidence": "No adapted weights or datasets exist; release requires an exact admitted artefact and receipt."},
+    {"id": "track10-clinical-or-operational-promotion", "kind": "accountable_authority", "status": "pending", "evidence": "Agent research may only support a repository research decision, never clinical, policy, legal, regulatory, organisational or deployment approval."}
   ],
   "description": "Assess medical and domain models and pursue retrieval adaptation, prompting, adapters, LoRA, or fine-tuning only when benchmark evidence shows a justified gap and data rights, privacy, and governance conditions are satisfied."
 }
