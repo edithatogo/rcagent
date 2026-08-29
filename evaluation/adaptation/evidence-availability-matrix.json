@@ -1,0 +1,15 @@
+{
+  "schema_version":"1.0","comparison_status":"not_executed_no_eligible_common_baseline","material_gap":"not_established","adaptation_hypothesis":"not_justified",
+  "approaches":[
+    {"approach":"deterministic","state":"existing_not_comparable_as_model_baseline"},
+    {"approach":"retrieval","state":"contract_exists_no_common_model_run"},
+    {"approach":"prompt","state":"not_executed"},
+    {"approach":"structured_output","state":"not_executed"},
+    {"approach":"tool","state":"not_executed"},
+    {"approach":"adapter","state":"blocked_no_admitted_model_runtime"},
+    {"approach":"weight_update","state":"rejected_not_ready"},
+    {"approach":"domain_model","state":"unavailable_no_exact_admitted_revision"}
+  ],
+  "metrics":{"quality":null,"calibration":null,"safety":null,"privacy":null,"fairness":null,"robustness":null,"device_cost":null,"maintenance_burden":null},
+  "limitations":["Track 05 unsupported comparator results and Track 07 retrieval receipts are not a same-benchmark domain-model comparison.","Vendor and leaderboard claims are not measurements."]
+}

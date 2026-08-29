@@ -1,0 +1,7 @@
+{
+  "schema_version":"1.0","decision":"not_ready_reject_weight_adaptation","ready":false,
+  "allowed_levels":["deterministic","retrieval","prompt","structured_output","tool"],"blocked_levels":["adapter","weight_update"],
+  "reasons":["no accountable approval exists for model acquisition, training, private data, or release","no exact admitted comparator exists","no measured material baseline gap exists","no supported runtime and model pair exists"],
+  "model_downloaded":false,"training_executed":false,"weights_created":false,"private_data_used":false,"external_inference":false,"release_performed":false,
+  "receipt_sha256":"37faca30c86f33cbe2f676d4a044dbf6bb95a3bf6360f94822ec86063b4a3324"
+}
