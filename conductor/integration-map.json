@@ -126,6 +126,7 @@
     },
     {
       "track_id": "multimodal-capability-fabric_20260731",
+      "status": "adapt",
       "candidate_systems": [
         "Docling and maintained OCR engines",
         "Transformers, ONNX Runtime, Optimum, and OpenVINO",
@@ -133,6 +134,12 @@
         "pydicom, Orthanc, and MONAI",
         "WFDB"
       ],
+      "selected_system": "Framework-neutral capability and execution-disclosure contracts over assessed Docling, encoder, speech, DICOM/imaging and WFDB candidates",
+      "dependency_class": "optional and research-only adapters; no multimodal runtime dependency in the portable core",
+      "compatibility_window": "multimodal schema 1.0 and registry 0.1.x; observed candidates remain unsupported until exact adapter receipts pass",
+      "safe_fallback": "return explicit unsupported or research-disabled states with network, telemetry, remote code and clinical interpretation disabled",
+      "replacement_path": "replace each optional framework behind the versioned profile while preserving provenance and disclosure contracts",
+      "evidence": "conductor/tracks/multimodal-capability-fabric_20260731/evidence/fit-gap-20260829.md",
       "project_owned_gap": "capability profiles, execution disclosures, privacy routing, source-coordinate provenance, and clinical research gates"
     },
     {

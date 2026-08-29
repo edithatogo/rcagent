@@ -1,6 +1,6 @@
 # Track 06: Multimodal Capability Fabric
 
-- **Status:** In progress
+- **Status:** Decision blocked — adapter acquisition
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#11](https://github.com/edithatogo/rcagent/issues/11)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)
