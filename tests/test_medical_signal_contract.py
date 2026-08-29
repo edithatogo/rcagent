@@ -3,7 +3,17 @@ from __future__ import annotations
 import json
 from copy import deepcopy
 
-from tools.medical_signal_contract import FIXTURE_PATH, evaluate, run, verify
+import pytest
+
+from tools.medical_signal_contract import (
+    FIXTURE_PATH,
+    _read,
+    _resample_linear,
+    evaluate,
+    main,
+    run,
+    verify,
+)
 
 
 def test_model_free_medical_and_signal_contract_passes() -> None:
@@ -53,3 +63,20 @@ def test_receipt_tampering_is_rejected() -> None:
 def test_checked_receipt_matches_current_fixture_and_verifies() -> None:
     receipt_path = FIXTURE_PATH.parent.parent / "medical-signal-contract-v1.json"
     assert verify(json.loads(receipt_path.read_text(encoding="utf-8"))) == []
+
+
+def test_invalid_inputs_and_cli_paths(monkeypatch, tmp_path, capsys) -> None:
+    with pytest.raises(ValueError, match="non-empty"):
+        _resample_linear([], 0)
+    assert _resample_linear([2.0], 1) == [2.0]
+    invalid = tmp_path / "invalid.json"
+    invalid.write_text("[]", encoding="utf-8")
+    with pytest.raises(ValueError, match="expected an object"):
+        _read(invalid)
+    output = tmp_path / "receipt.json"
+    monkeypatch.setattr("sys.argv", ["medical", "--output", str(output)])
+    assert main() == 0
+    assert verify(json.loads(output.read_text(encoding="utf-8"))) == []
+    monkeypatch.setattr("sys.argv", ["medical"])
+    assert main() == 0
+    assert "receipt_sha256" in capsys.readouterr().out

@@ -55,8 +55,8 @@ boundary. This receipt does not enable an operational or clinical capability.
 
 ## Validation
 
-- Full suite: 277 tests passed; total tool coverage 88.55%.
-- Focused Track 06 suite: 30 tests passed.
+- Full suite: 281 tests passed; total tool coverage 90.09%.
+- New Track 06 test files: 27 tests passed.
 - Ruff, ty and basedpyright passed after integration fixes.
 - Final repository and hosted exact-head checks are recorded in the closing
   ledger event before archival.
