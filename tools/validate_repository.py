@@ -8,6 +8,11 @@ from pathlib import Path
 
 REQUIRED_CONTEXT = (
     "AGENTS.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    ".github/pull_request_template.md",
+    ".github/ISSUE_TEMPLATE/bug_report.yml",
+    ".github/ISSUE_TEMPLATE/config.yml",
     "conductor/index.md",
     "conductor/product.md",
     "conductor/product-guidelines.md",
@@ -195,8 +200,11 @@ def validate(root: Path) -> list[str]:
     """Return deterministic diagnostics; an empty list means validation passed."""
     errors: list[str] = []
     for relative in REQUIRED_CONTEXT:
-        if not (root / relative).is_file():
+        context_path = root / relative
+        if not context_path.is_file():
             errors.append(f"missing required context: {relative}")
+        elif not context_path.read_text(encoding="utf-8").strip():
+            errors.append(f"empty required context: {relative}")
 
     errors.extend(_validate_track_directories(root))
 

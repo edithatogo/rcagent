@@ -35,7 +35,7 @@
 - [x] Task: Implement Track 02 evidence-workflow slice — `4a976e0`, review `1431674`, receipt `acca833`
 - [x] Task: Implement Track 03 privacy/security assurance slice — `3f7aad3`, review `a5ff002`
 - [x] Task: Implement Track 04 jurisdiction-pack readiness slice — archived completion `1e32fa4`; bounded active-policy decision retained
-- [ ] Task: Apply issues #17 and #18 controls to each slice
+- [~] Task: Apply issues #17 and #18 controls to each slice — repository controls prepared in PR #72; hosted ruleset and Renovate health remain pending
 - [x] Task: Review, merge, and clean each Phase 3 PR before starting the next — Tracks 01–04 merged and reconciled
 - [ ] Task: Phase verification and checkpoint
 
@@ -62,9 +62,9 @@
 ## Phase 6: Portfolio reconciliation and closure readiness
 
 - [ ] Task: Re-run repository, security, privacy, provenance, and dependency checks
-- [ ] Task: Reconcile child tracks with issues #1-#4 and architecture issue #19
+- [~] Task: Reconcile child tracks with issues #1-#4 and architecture issue #19 — issue #19 acceptance map prepared in PR #72; hosted issue reconciliation remains pending
 - [ ] Task: Close only issues whose acceptance evidence passes
-- [ ] Task: Produce a residual-blocker and restart manifest
+- [~] Task: Produce a residual-blocker and restart manifest — initial manifest prepared in PR #72; final branch and hosted-state observations remain pending
 - [ ] Task: Verify only `master` and intentionally retained branches remain
 - [ ] Task: Verify disposable checkouts and stale lock backups are removed
 - [ ] Task: Phase verification and checkpoint

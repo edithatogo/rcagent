@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "observed_at": "2026-08-29T12:30:00Z",
+  "programme": "no-llm-implementation-programme_20260811",
+  "repository_ready": false,
+  "blockers": [
+    {
+      "id": "github-ruleset",
+      "owner": "repository owner",
+      "class": "hosted_settings_mutation",
+      "state": "not_observed",
+      "prerequisite": "Explicit authority to create the bounded master ruleset after stable-check inventory",
+      "contingency": "Keep the repository unprotected and do not claim issue #17 or #18 completion",
+      "restart": "Re-query rulesets and exact stable check names, create a no-human-approval ruleset with administrator recovery, then verify through the GitHub API"
+    },
+    {
+      "id": "renovate-hosted-health",
+      "owner": "repository owner",
+      "class": "hosted_app_access",
+      "state": "not_observed",
+      "prerequisite": "First observe the bounded master ruleset, then grant the Renovate app repository access and observe its Dependency Dashboard or first pull request",
+      "contingency": "Retain current dependency review and do not remove or add competing update bots",
+      "restart": "After ruleset verification, install or grant Renovate access, verify inherited configuration and disabled automerge in the first hosted artefact, then record exact URL and timestamp"
+    },
+    {
+      "id": "legacy-evaluation-execution",
+      "owner": "applicable data, provider, and evaluation authorities",
+      "class": "external_evidence",
+      "state": "blocked",
+      "prerequisite": "Admitted AU case coverage and exact human/provider execution evidence",
+      "contingency": "Keep historical run, calibration, scoring, and analysis tracks incomplete or blocked",
+      "restart": "Resume eval-case-collection, then follow the blocker-remediation admission contract without fabricating execution"
+    },
+    {
+      "id": "branch-hygiene",
+      "owner": "repository maintainer",
+      "class": "repository_cleanup",
+      "state": "pending",
+      "prerequisite": "Merge the active closeout pull request and verify every remaining codex branch is either its exact merged head or intentionally retained",
+      "contingency": "Retain all branches and keep programme acceptance criterion 3 pending",
+      "restart": "Delete only exact verified merged branches, prune remote tracking refs, and record the final local branches, remote branches, worktrees and cleanup evidence"
+    }
+  ],
+  "non_blocking_external_states": [
+    "OpenAI and Claude directory submissions remain not submitted",
+    "Clinical, legal, policy, regulatory, employment, cultural-safety, organisational and deployment approval remain external",
+    "Model-weight download, inference, fine-tuning and model artefact production remain unsupported"
+  ],
+  "cleanup_observation": {
+    "local_branch_count": 8,
+    "remote_branch_count_including_master": 31,
+    "worktree_count": 1,
+    "stale_operational_lock_or_backup": "not_observed",
+    "vendored_historical_backup": ".agents/plugins/sourceright/AGENTS.md.backup at pinned submodule c5fa583431390eee1bf5eae04dc47b01c50d4a1e; upstream historical artefact tracked by sourceright#100, not an rcagent operational lock backup"
+  }
+}

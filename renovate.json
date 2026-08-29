@@ -1,6 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
+    "github>edithatogo/renovate-config",
     "config:recommended",
     ":dependencyDashboard",
     "helpers:pinGitHubActionDigests"
@@ -40,6 +41,14 @@
       ],
       "groupName": "optional capability profiles",
       "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Disable inherited automerge until the bounded master ruleset is observed",
+      "matchPackageNames": [
+        "*"
+      ],
+      "automerge": false,
+      "platformAutomerge": false
     }
   ],
   "vulnerabilityAlerts": {

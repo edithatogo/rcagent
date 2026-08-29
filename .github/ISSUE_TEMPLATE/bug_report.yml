@@ -1,0 +1,38 @@
+name: Sanitised bug report
+description: Report a reproducible defect without controlled or sensitive data
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include patient, consumer, employee, credential, confidential, or organisation-sensitive information.
+  - type: input
+    id: version
+    attributes:
+      label: Exact version or revision
+      placeholder: v0.1.1 or commit SHA
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Sanitised reproduction
+      description: Use synthetic placeholders and include the expected and observed result.
+    validations:
+      required: true
+  - type: dropdown
+    id: data
+    attributes:
+      label: Data confirmation
+      options:
+        - Synthetic or public data only
+        - No data involved
+    validations:
+      required: true
+  - type: checkboxes
+    id: security
+    attributes:
+      label: Security boundary
+      options:
+        - label: This is not a vulnerability report; security-sensitive reports use the private channel described in SECURITY.md.
+          required: true

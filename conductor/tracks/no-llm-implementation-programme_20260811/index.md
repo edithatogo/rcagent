@@ -1,6 +1,6 @@
 # No-LLM Implementation Programme
 
-- **Status:** New
+- **Status:** In progress — quality-frontier and portfolio closeout
 - **Type:** Chore / delivery programme
 - **Scope:** Remaining work that does not require downloading model weights
 
