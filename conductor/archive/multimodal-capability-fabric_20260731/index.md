@@ -1,6 +1,6 @@
 # Track 06: Multimodal Capability Fabric
 
-- **Status:** In progress — pydicom and WFDB synthetic ingestion admitted; remaining adapters pending
+- **Status:** Archived — repository contract fabric complete with explicit negative-result boundaries
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#11](https://github.com/edithatogo/rcagent/issues/11)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)
@@ -8,12 +8,12 @@
 
 ## Hard Start Dependencies
 
-- [evidence-workflow-core_20260731](../../archive/evidence-workflow-core_20260731/index.md)
-- [privacy-security-assurance_20260731](../../archive/privacy-security-assurance_20260731/index.md)
+- [evidence-workflow-core_20260731](../evidence-workflow-core_20260731/index.md)
+- [privacy-security-assurance_20260731](../privacy-security-assurance_20260731/index.md)
 
 ## Later Phase Dependencies
 
-- [benchmark-evaluation-harness_20260731](../../archive/benchmark-evaluation-harness_20260731/index.md)
+- [benchmark-evaluation-harness_20260731](../benchmark-evaluation-harness_20260731/index.md)
 
 ## Track Artefacts
 

@@ -127,12 +127,12 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Final Track Verification
 
-- [~] Task: Complete the track evidence pack
+- [x] Task: Complete the track evidence pack
   - [x] Verify every acceptance criterion against direct evidence and explicit negative results
   - [x] Re-run the complete applicable local validation and regression suite
   - [x] Record unresolved limitations and owner decisions without downgrading them
   - [x] Record final agent-panel agreement after two falsification/rework rounds
-  - [ ] Record hosted exact-head evidence and GitHub reconciliation before issue closure
+  - [x] Record hosted exact-head evidence and GitHub reconciliation before issue closure
 
 ## Review Fixes
 

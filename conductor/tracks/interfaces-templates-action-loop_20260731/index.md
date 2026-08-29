@@ -14,7 +14,7 @@
 
 ## Later Phase Dependencies
 
-- [multimodal-capability-fabric_20260731](../multimodal-capability-fabric_20260731/index.md)
+- [multimodal-capability-fabric_20260731](../../archive/multimodal-capability-fabric_20260731/index.md)
 - [retrieval-knowledge-system_20260731](../retrieval-knowledge-system_20260731/index.md)
 
 ## Track Artefacts
