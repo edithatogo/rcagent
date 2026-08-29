@@ -220,3 +220,14 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
   - [x] Record unresolved limitations and owner decisions without downgrading them
   - [x] Close the GitHub issue only after the completion receipt passes
+
+## Review Remediation — 2026-08-29
+
+- [~] Task: Re-prove completion and close review gaps
+  - [ ] Reconcile the follow-up hosted patch check and merge in the append-only ledger
+  - [ ] Reject discontinuous workflow histories rather than validating isolated transitions only
+  - [ ] Make malformed audit receipts and invalid adapter timeouts fail closed
+  - [ ] Add regression tests for each repaired boundary
+  - [ ] Run focused and repository-wide validation from a clean commit
+  - [ ] Record the review-fix commit and durable completion receipt
+  - [ ] Close issue #7 only after local and hosted evidence pass
