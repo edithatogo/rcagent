@@ -177,7 +177,7 @@
       "compatibility_window": "runtime-lab registry schema 1.0; exact runtime and model revisions require per-artefact receipts before measured or supported status",
       "safe_fallback": "return explicit no-capability, preserve deterministic workflows, and never route externally or execute remote code",
       "replacement_path": "replace optional runtimes behind the common contracts and remove project admission shims when upstream provides equivalent privacy, provenance and offline lifecycle evidence",
-      "evidence": "conductor/tracks/local-runtime-model-lab_20260731/evidence/fit-gap-20260829.md",
+      "evidence": "conductor/archive/local-runtime-model-lab_20260731/evidence/fit-gap-20260829.md",
       "project_owned_gap": "privacy-safe device probes, exact admission manifests, safety and privacy routing, negative recommendation evidence, and operator-owned offline-bundle verification"
     },
     {

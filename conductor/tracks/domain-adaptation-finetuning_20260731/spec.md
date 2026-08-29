@@ -56,7 +56,7 @@ requires a fit-gap record and an approved Architecture Decision Record.
 - [benchmark-evaluation-harness_20260731](../../archive/benchmark-evaluation-harness_20260731/index.md)
 - [multimodal-capability-fabric_20260731](../../archive/multimodal-capability-fabric_20260731/index.md)
 - [retrieval-knowledge-system_20260731](../../archive/retrieval-knowledge-system_20260731/index.md)
-- [local-runtime-model-lab_20260731](../local-runtime-model-lab_20260731/index.md)
+- [local-runtime-model-lab_20260731](../../archive/local-runtime-model-lab_20260731/index.md)
 
 The track cannot start until each hard dependency has a passing completion receipt, not merely a closed issue.
 

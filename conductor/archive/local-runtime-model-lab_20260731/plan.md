@@ -217,7 +217,7 @@ removed.
   - [x] Re-run the complete applicable validation and regression suite
   - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
   - [x] Record unresolved limitations and owner decisions without downgrading them
-  - [ ] Close the GitHub issue only after the completion receipt and hosted integration checks pass
+  - [x] Close the GitHub issue only after the completion receipt and hosted integration checks pass — PR #57 merged as `3689a02`; issue #13 closed at `2026-08-29T09:04:00Z`
 
 ## Review Fixes
 
