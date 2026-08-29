@@ -28,7 +28,7 @@ Parent: [GitHub #3](https://github.com/edithatogo/rcagent/issues/3)
 | Status | Track | GitHub | Hard start blockers |
 |---|---|---:|---|
 | [!] | [05 Benchmark and Evaluation Harness](./tracks/benchmark-evaluation-harness_20260731/index.md) | [#10](https://github.com/edithatogo/rcagent/issues/10) | Owner decision on comparator staging |
-| [ ] | [06 Multimodal Capability Fabric](./tracks/multimodal-capability-fabric_20260731/index.md) | [#11](https://github.com/edithatogo/rcagent/issues/11) | 02, 03 |
+| [~] | [06 Multimodal Capability Fabric](./tracks/multimodal-capability-fabric_20260731/index.md) | [#11](https://github.com/edithatogo/rcagent/issues/11) | 02, 03 |
 | [ ] | [07 Retrieval and Knowledge System](./tracks/retrieval-knowledge-system_20260731/index.md) | [#12](https://github.com/edithatogo/rcagent/issues/12) | 02, 03, 04 |
 | [ ] | [08 Local Runtime and Model Lab](./tracks/local-runtime-model-lab_20260731/index.md) | [#13](https://github.com/edithatogo/rcagent/issues/13) | 05, 06 |
 | [ ] | [10 Domain Adaptation and Fine-Tuning](./tracks/domain-adaptation-finetuning_20260731/index.md) | [#15](https://github.com/edithatogo/rcagent/issues/15) | 05, 06, 07, 08 |
