@@ -1,7 +1,7 @@
 # Decision: Use Active NSW Incident Policy While Under Review
 
 - **Decision ID:** `20260829-001-active-under-review-pd2020-047`
-- **Status:** Proposed
+- **Status:** Approved with conditions
 - **Date raised:** 2026-08-29
 - **Owner:** Repository owner
 - **Track:** `nsw-health-jurisdiction-pack_20260731`
@@ -54,10 +54,10 @@ Reply `Approve bounded active-policy use` to select the recommendation, or selec
 
 ## Owner Decision
 
-- **Decision:** Pending
-- **Conditions:** Pending
-- **Date:** Pending
-- **Recorded by:** Pending
+- **Decision:** Approve bounded active-policy use.
+- **Conditions:** Preserve `under_review`; use only corroborated explicit requirements; retain accountable human applicability review; prohibit privilege inference; check every 30 days; suspend affected mappings and invalidate receipts on material source change, withdrawal, replacement, or contradiction.
+- **Date:** 2026-08-29
+- **Recorded by:** Codex from the repository owner's explicit panel-ratification response
 
 ## Follow-up
 

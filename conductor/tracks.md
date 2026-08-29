@@ -19,7 +19,7 @@ Parent: [GitHub #2](https://github.com/edithatogo/rcagent/issues/2)
 | [x] | [01 Safety Systems Foundation and Solo-Developer Harness](./tracks/safety-systems-foundation_20260731/index.md) | [#6](https://github.com/edithatogo/rcagent/issues/6) | None; 00 remains a phase gate for licence/release scope |
 | [x] | [02 Evidence Workflow Core](./archive/evidence-workflow-core_20260731/index.md) | [#7](https://github.com/edithatogo/rcagent/issues/7) | 01 |
 | [x] | [03 Privacy, Security, and Assurance](./archive/privacy-security-assurance_20260731/index.md) | [#8](https://github.com/edithatogo/rcagent/issues/8) | 01 |
-| [!] | [04 Jurisdiction Packs — National Baseline, NSW and Queensland](./tracks/nsw-health-jurisdiction-pack_20260731/index.md) | [#9](https://github.com/edithatogo/rcagent/issues/9) | 01 |
+| [~] | [04 Jurisdiction Packs — National Baseline, NSW and Queensland](./tracks/nsw-health-jurisdiction-pack_20260731/index.md) | [#9](https://github.com/edithatogo/rcagent/issues/9) | Decision approved; completion reconciliation |
 
 ### Workstream B: Data, Models, and Evaluation
 
@@ -27,8 +27,8 @@ Parent: [GitHub #3](https://github.com/edithatogo/rcagent/issues/3)
 
 | Status | Track | GitHub | Hard start blockers |
 |---|---|---:|---|
-| [!] | [05 Benchmark and Evaluation Harness](./tracks/benchmark-evaluation-harness_20260731/index.md) | [#10](https://github.com/edithatogo/rcagent/issues/10) | Owner decision on comparator staging |
-| [!] | [06 Multimodal Capability Fabric](./tracks/multimodal-capability-fabric_20260731/index.md) | [#11](https://github.com/edithatogo/rcagent/issues/11) | Owner decision on adapter acquisition |
+| [~] | [05 Benchmark and Evaluation Harness](./tracks/benchmark-evaluation-harness_20260731/index.md) | [#10](https://github.com/edithatogo/rcagent/issues/10) | Local comparator acquisition approved |
+| [~] | [06 Multimodal Capability Fabric](./tracks/multimodal-capability-fabric_20260731/index.md) | [#11](https://github.com/edithatogo/rcagent/issues/11) | Local adapter acquisition approved |
 | [ ] | [07 Retrieval and Knowledge System](./tracks/retrieval-knowledge-system_20260731/index.md) | [#12](https://github.com/edithatogo/rcagent/issues/12) | 02, 03, 04 |
 | [ ] | [08 Local Runtime and Model Lab](./tracks/local-runtime-model-lab_20260731/index.md) | [#13](https://github.com/edithatogo/rcagent/issues/13) | 05, 06 |
 | [ ] | [10 Domain Adaptation and Fine-Tuning](./tracks/domain-adaptation-finetuning_20260731/index.md) | [#15](https://github.com/edithatogo/rcagent/issues/15) | 05, 06, 07, 08 |

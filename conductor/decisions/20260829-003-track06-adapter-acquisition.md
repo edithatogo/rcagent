@@ -1,7 +1,7 @@
 # Decision: Acquire multimodal adapter dependencies
 
 - **Decision ID:** 20260829-003-track06-adapter-acquisition
-- **Status:** Proposed
+- **Status:** Approved with conditions
 - **Date raised:** 2026-08-29
 - **Owner:** Repository owner
 - **Track:** multimodal-capability-fabric_20260731
@@ -52,10 +52,10 @@ Respond exactly: `Approve bounded local adapter acquisition`.
 
 ## Owner Decision
 
-- **Decision:** Pending
-- **Conditions:** Pending
-- **Date:** Pending
-- **Recorded by:** Pending
+- **Decision:** Approve bounded local adapter acquisition.
+- **Conditions:** Admit one isolated optional profile at a time, beginning with model-free pydicom and WFDB, then document/OCR, encoders, and local speech; diarisation and MONAI-compatible research assets require exact candidate clearance. Every artefact requires immutable revision, hash, licence/provenance, acquisition-only egress, telemetry-off, remote-code-off, device, cache, uninstall, rollback, and synthetic-fixture receipts. No private clinical or employee data, external inference, redistribution, clinical interpretation, or unsupported support claim.
+- **Date:** 2026-08-29
+- **Recorded by:** Codex from the repository owner's explicit panel-ratification response
 
 ## Follow-up
 

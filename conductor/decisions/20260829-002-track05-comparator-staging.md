@@ -1,7 +1,7 @@
 # Decision: Stage generative model comparators after the canonical harness
 
 - **Decision ID:** 20260829-002-track05-comparator-staging
-- **Status:** Proposed
+- **Status:** Approved with conditions
 - **Date raised:** 2026-08-29
 - **Owner:** Repository owner
 - **Track:** benchmark-evaluation-harness_20260731
@@ -54,10 +54,10 @@ Respond exactly: `Approve staged comparator deferral`.
 
 ## Owner Decision
 
-- **Decision:** Pending
-- **Conditions:** Pending
-- **Date:** Pending
-- **Recorded by:** Pending
+- **Decision:** Approve bounded local comparator acquisition now under synthetic-only, no-redistribution, per-artefact admission controls.
+- **Conditions:** Exact immutable revision, hash, licence, redistribution terms, transitive rights, provenance, device/resource fit, telemetry, remote-code, network, cache, uninstall, rollback, and reproducibility checks for every candidate. Use synthetic or authorised public fixtures only. Disable remote code, telemetry, and external inference. Do not use credentials or paid services, redistribute weights, or make suitability, support, promotion, clinical, legal, policy, or organisational claims without a new applicable approval and passing receipts.
+- **Date:** 2026-08-29
+- **Recorded by:** Codex from the repository owner's explicit panel-ratification response
 
 ## Follow-up
 
