@@ -109,6 +109,11 @@ def test_device_profile_validator_fails_closed() -> None:
     assert "device profile fields are invalid" in errors
     assert "device identifiers must be redacted" in errors
     assert "device profile receipt hash mismatched" in errors
+    profile = runtime_lab.privacy_safe_device_profile()
+    profile["os_family"] = "secret-sentinel"
+    unsigned = {key: value for key, value in profile.items() if key != "receipt_sha256"}
+    profile["receipt_sha256"] = runtime_lab._digest(unsigned)
+    assert "device os_family is not a coarse allowed value" in runtime_lab.validate_device_profile(profile)
 
 
 def test_discovery_never_exposes_paths_or_executes_models(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -119,6 +124,18 @@ def test_discovery_never_exposes_paths_or_executes_models(monkeypatch: pytest.Mo
     assert observed["llama-cpp"]["executable_path"] is None
     assert receipt["model_executed"] is False
     assert receipt["network"] == "not_used"
+    assert runtime_lab.validate_discovery_receipt(receipt, registry()) == []
+
+
+def test_discovery_validator_rejects_rehashed_private_fields() -> None:
+    receipt = runtime_lab.discover_runtimes(registry())
+    receipt["observations"][0]["executable_path"] = "/Users/[Clinician A]/private"
+    receipt["observations"][0]["secret"] = "HF_TOKEN=value"
+    unsigned = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
+    receipt["receipt_sha256"] = runtime_lab._digest(unsigned)
+    errors = runtime_lab.validate_discovery_receipt(receipt, registry())
+    assert "discovery.observations[0] fields are invalid" in errors
+    assert "discovery.observations[0] executable path must be redacted" in errors
 
 
 def _bundle(tmp_path: Path) -> tuple[dict, Path]:
@@ -213,6 +230,11 @@ def test_bundle_rejects_intermediate_symlink_and_undeclared_file(tmp_path: Path)
     manifest, root = _bundle(other)
     (root / "extra.bin").write_bytes(b"extra")
     assert "bundle inventory does not exactly match regular files" in runtime_lab.validate_bundle_manifest(manifest, root)
+    outside = tmp_path / "secret"
+    outside.write_bytes(b"secret")
+    (root / "extra-link").symlink_to(outside)
+    errors = runtime_lab.validate_bundle_manifest(manifest, root)
+    assert "bundle contains undeclared symlink: extra-link" in errors
 
 
 def test_routing_fails_closed_without_measured_runtime_and_model() -> None:
@@ -261,6 +283,18 @@ def test_routing_rejects_nonobject_and_unisolated_runtime() -> None:
     reasons = runtime_lab.route_request(request, value, {"observations": []})["reasons"]
     assert "request.data_class is invalid" in reasons
     assert "runtime isolation is not established" in reasons
+
+
+@pytest.mark.parametrize(
+    ("bad_registry", "bad_discovery"),
+    [(None, {}), (registry(), None), (registry(), []), ({"runtimes": "bad", "models": []}, {})],
+)
+def test_routing_malformed_evidence_returns_no_capability(
+    bad_registry: object, bad_discovery: object
+) -> None:
+    result = runtime_lab.route_request({}, bad_registry, bad_discovery)
+    assert result["status"] == "no_capability"
+    assert any(reason.startswith(("registry invalid:", "discovery invalid:")) for reason in result["reasons"])
 
 
 def test_forged_measured_evidence_cannot_become_eligible() -> None:

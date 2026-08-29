@@ -93,6 +93,30 @@ def validate_device_profile(profile: object) -> list[str]:
         errors.append("device profile schema version is invalid")
     if profile.get("identifiers_redacted") is not True:
         errors.append("device identifiers must be redacted")
+    if profile.get("os_family") not in {"darwin", "linux", "windows", "unknown"}:
+        errors.append("device os_family is not a coarse allowed value")
+    if profile.get("architecture") not in {"arm64", "aarch64", "x86_64", "amd64", "unknown"}:
+        errors.append("device architecture is not a coarse allowed value")
+    cpu_count = profile.get("logical_cpu_count")
+    if cpu_count is not None and (isinstance(cpu_count, bool) or not isinstance(cpu_count, int) or not 1 <= cpu_count <= 4096):
+        errors.append("device logical_cpu_count is invalid")
+    for field in ("memory_gib_floor", "storage_gib_floor"):
+        value = profile.get(field)
+        if value is not None and (isinstance(value, bool) or not isinstance(value, int) or value < 0 or value > 1048576 or value % 4):
+            errors.append(f"device {field} must be a coarse four-GiB floor")
+    categorical = {
+        "memory_probe_state": {"provided_coarse", "unobserved"},
+        "storage_probe_state": {"provided_coarse", "unobserved"},
+        "accelerator_class": {"apple_silicon", "intel_igpu", "discrete_gpu", "unobserved"},
+        "driver_state": {"unobserved"},
+        "instruction_set_state": {"architecture_only_unmeasured", "unobserved"},
+        "power_proxy_state": {"unobserved"},
+        "network_observation": {"not_probed"},
+        "telemetry_observation": {"not_probed"},
+    }
+    for field, choices in categorical.items():
+        if profile.get(field) not in choices:
+            errors.append(f"device {field} is invalid")
     supplied = profile.get("receipt_sha256")
     unsigned = {key: value for key, value in profile.items() if key != "receipt_sha256"}
     if not _is_sha256(supplied) or supplied != _digest(unsigned):
@@ -253,7 +277,7 @@ def discover_runtimes(registry: dict[str, Any]) -> dict[str, Any]:
     return receipt
 
 
-def validate_discovery_receipt(discovery: object, registry: dict[str, Any]) -> list[str]:
+def validate_discovery_receipt(discovery: object, registry: object) -> list[str]:
     if not isinstance(discovery, dict):
         return ["discovery must be an object"]
     errors: list[str] = []
@@ -279,7 +303,11 @@ def validate_discovery_receipt(discovery: object, registry: dict[str, Any]) -> l
     if not isinstance(observations, list):
         errors.append("discovery.observations must be an array")
         return sorted(errors)
-    runtime_ids = {item.get("id") for item in registry.get("runtimes", []) if isinstance(item, dict)}
+    safe_registry = registry if isinstance(registry, dict) else {}
+    runtimes = safe_registry.get("runtimes", [])
+    if not isinstance(runtimes, list):
+        runtimes = []
+    runtime_ids = {item.get("id") for item in runtimes if isinstance(item, dict)}
     observed_ids = [item.get("runtime_id") for item in observations if isinstance(item, dict)]
     if len(observed_ids) != len(observations) or set(observed_ids) != runtime_ids or len(set(observed_ids)) != len(observed_ids):
         errors.append("discovery observations must bind every registered runtime exactly once")
@@ -290,6 +318,21 @@ def validate_discovery_receipt(discovery: object, registry: dict[str, Any]) -> l
             errors.append(f"discovery.observations[{index}] cannot contain measured support evidence")
         if observation.get("support_state") != "unsupported_without_execution_receipt":
             errors.append(f"discovery.observations[{index}] must remain unsupported")
+        observation_fields = {
+            "runtime_id", "observed_state", "executable_observed", "executable_path",
+            "version", "support_state",
+        }
+        if set(observation) != observation_fields:
+            errors.append(f"discovery.observations[{index}] fields are invalid")
+        if observation.get("executable_path") is not None:
+            errors.append(f"discovery.observations[{index}] executable path must be redacted")
+        executable_observed = observation.get("executable_observed")
+        if not isinstance(executable_observed, bool):
+            errors.append(f"discovery.observations[{index}] executable_observed must be boolean")
+        expected_version = "unmeasured" if executable_observed else "unavailable"
+        expected_state = "installed_unmeasured" if executable_observed else "unavailable"
+        if observation.get("version") != expected_version or observation.get("observed_state") != expected_state:
+            errors.append(f"discovery.observations[{index}] state is inconsistent")
     return sorted(errors)
 
 
@@ -351,6 +394,21 @@ def validate_bundle_manifest(manifest: object, root: Path) -> list[str]:
         if resolved.stat().st_size != entry.get("bytes"):
             errors.append(f"{prefix}.bytes mismatched")
     declared = {str(entry.get("path")).casefold() for entry in entries if isinstance(entry, dict)}
+    allowed_directories = {
+        str(parent).casefold()
+        for entry in entries
+        if isinstance(entry, dict) and isinstance(entry.get("path"), str)
+        for parent in Path(entry["path"]).parents
+        if str(parent) != "."
+    }
+    for path in root.rglob("*"):
+        relative = str(path.relative_to(root)).casefold()
+        if path.is_symlink():
+            errors.append(f"bundle contains undeclared symlink: {relative}")
+        elif path.is_dir() and relative not in allowed_directories:
+            errors.append(f"bundle contains undeclared directory: {relative}")
+        elif not path.is_file() and not path.is_dir():
+            errors.append(f"bundle contains unsupported filesystem entry: {relative}")
     actual = {
         str(path.relative_to(root)).casefold()
         for path in root.rglob("*")
@@ -363,8 +421,8 @@ def validate_bundle_manifest(manifest: object, root: Path) -> list[str]:
 
 def route_request(
     request: object,
-    registry: dict[str, Any],
-    discovery: dict[str, Any],
+    registry: object,
+    discovery: object,
 ) -> dict[str, Any]:
     reasons: list[str] = []
     registry_errors = validate_runtime_registry(registry)
@@ -385,9 +443,17 @@ def route_request(
         reasons.append("external routing is forbidden")
     if request.get("allow_remote_code") is not False:
         reasons.append("remote code is forbidden")
-    runtime = next((item for item in registry.get("runtimes", []) if item.get("id") == request.get("runtime_id")), None)
-    model = next((item for item in registry.get("models", []) if item.get("id") == request.get("model_id")), None)
-    observation = next((item for item in discovery.get("observations", []) if item.get("runtime_id") == request.get("runtime_id")), None)
+    safe_registry = registry if isinstance(registry, dict) else {}
+    safe_discovery = discovery if isinstance(discovery, dict) else {}
+    runtimes = safe_registry.get("runtimes", [])
+    models = safe_registry.get("models", [])
+    observations = safe_discovery.get("observations", [])
+    runtimes = runtimes if isinstance(runtimes, list) else []
+    models = models if isinstance(models, list) else []
+    observations = observations if isinstance(observations, list) else []
+    runtime = next((item for item in runtimes if isinstance(item, dict) and item.get("id") == request.get("runtime_id")), None)
+    model = next((item for item in models if isinstance(item, dict) and item.get("id") == request.get("model_id")), None)
+    observation = next((item for item in observations if isinstance(item, dict) and item.get("runtime_id") == request.get("runtime_id")), None)
     if runtime is None:
         reasons.append("runtime is not registered")
     elif runtime.get("network") != "none" or runtime.get("telemetry") != "disabled":

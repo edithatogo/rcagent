@@ -79,7 +79,7 @@ Every decision request must include the recommended option, viable alternatives,
 ## Acceptance Criteria
 
 1. Device profiles and resource probes are reproducible and contain no sensitive identifiers.
-2. Runtime adapter contracts cover llama.cpp, ONNX Runtime, OpenVINO, and MLX where applicable; each profile distinguishes interface-only, unavailable, installed-unmeasured, measured, and supported states. Experimental MAX or Mojo work is isolated. Only exact execution evidence counts as runtime coverage.
+2. Runtime adapter contracts cover llama.cpp, ONNX Runtime, OpenVINO, and MLX where applicable; registry schema 1.0 distinguishes interface-only, unavailable and installed-unmeasured states, while experimental MAX or Mojo work is isolated. Measured and supported states are deliberately impossible in schema 1.0 and require a separately versioned exact execution-receipt contract. Only that future exact evidence may count as runtime coverage.
 3. Every admitted model entry names an exact revision, licence, provenance, task fit, context/input limits, quantisation, device evidence, and known failure modes. Unverified roadmap names remain separate hypotheses and cannot be routed or recommended.
 4. Recommendations follow measured benchmark and resource evidence rather than parameter count or vendor claims.
 5. Routing fails safely when resources or declared capabilities are unavailable.
