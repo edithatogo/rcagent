@@ -136,7 +136,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 5: Run pilot baselines
 
-- [!] Task: Implement the phase scope — deterministic baseline `7a7257e`; manifest fix `b954a33`; local comparator pilot `429bf7c`
+- [x] Task: Implement the phase scope — deterministic baseline `7a7257e`; manifest fix `b954a33`; local comparator pilot `429bf7c`; panel `f1090f5`
   - [x] Run deterministic and retrieval-only baselines before generative models
   - [x] Run representative small, medium, and larger generic-model comparators — approved decision `20260829-002-track05-comparator-staging`; exact-revision synthetic-only receipt `evaluation/benchmark/results/local-comparators-v1.json`
   - [x] Measure repeated-run variance, agent-panel agreement, device feasibility, and failure modes — panel receipt `evaluation/benchmark/results/agent-panel-v1.json`; all comparators unsupported
@@ -148,7 +148,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Record commands, environment, results, limitations, risks, and negative findings
   - [x] Reconcile Conductor state with GitHub issue #10 and dependency evidence
 
-- [!] Task: Phase Verification & Checkpoint
+- [x] Task: Phase Verification & Checkpoint — `f1090f5`
   - [x] Verify every deliverable against the specification and product safeguards after decision `20260829-004-agent-panel-research-governance`
   - [x] Store a durable phase receipt and bounded handoff context
   - [x] Update dependencies, risks, decisions, and freshness dates
@@ -157,7 +157,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 6: Reconcile and calibrate the evaluation estate
 
-- [!] Task: Implement the phase scope — `7a7257e`
+- [x] Task: Implement the phase scope — `7a7257e`, `f1090f5`
   - [x] Map H0-H8 cases, conditions, outputs, and scoring into the new schemas
   - [x] Preserve incompatible historical results with explicit limitations
   - [x] Set research regression and blocking thresholds from pilot and panel evidence — `evaluation/benchmark/research-thresholds.json`; all comparators remain unsupported and non-promoted
@@ -169,8 +169,8 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Record commands, environment, results, limitations, risks, and negative findings
   - [x] Reconcile Conductor state with GitHub issue #10 and dependency evidence
 
-- [!] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards after the decision
+- [x] Task: Phase Verification & Checkpoint — `f1090f5`
+  - [x] Verify every deliverable against the specification and product safeguards after the decision
   - [x] Store a durable phase receipt and bounded handoff context
   - [x] Update dependencies, risks, decisions, and freshness dates
   - [x] Continue automatically through unaffected work
@@ -199,12 +199,12 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Final Track Verification
 
-- [!] Task: Complete the track evidence pack
-  - [~] Verify every acceptance criterion has direct evidence after decisions `20260829-002` and `20260829-004`
+- [x] Task: Complete the track evidence pack
+  - [x] Verify every acceptance criterion has direct evidence after decisions `20260829-002` and `20260829-004`
   - [x] Re-run the complete applicable validation and regression suite
   - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
   - [x] Record unresolved limitations and owner decisions without downgrading them
-  - [ ] Close the GitHub issue only after the completion receipt passes
+  - [x] Completion receipt passes; reconcile GitHub issue before archival
 
 ## Review Fixes
 

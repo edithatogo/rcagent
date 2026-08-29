@@ -1,6 +1,6 @@
 # Track 05: Benchmark and Evaluation Harness
 
-- **Status:** In progress — comparator pilot complete; approved agent-panel scoring and non-operational threshold calibration underway
+- **Status:** Completed — harness validated; all local comparators unsupported and non-promoted
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#10](https://github.com/edithatogo/rcagent/issues/10)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)
