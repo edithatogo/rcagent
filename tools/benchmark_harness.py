@@ -16,6 +16,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 ROOT = Path(__file__).parents[1]
 REGISTRY_PATH = ROOT / "evaluation/benchmark/registry.json"
 SCHEMA_PATH = ROOT / "conductor/schemas/benchmark-harness.schema.json"
+CASE_SCHEMA_PATH = ROOT / "conductor/schemas/benchmark-case.schema.json"
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -49,34 +50,58 @@ def validate_registry(registry: dict[str, Any], root: Path = ROOT) -> list[str]:
         ]
         errors.extend(f"{key}: duplicate id {value!r}" for value in sorted(set(ids)) if ids.count(value) > 1)
 
-    fixture_cases: dict[str, dict[str, Any]] = {}
+    case_schema = _read_json(CASE_SCHEMA_PATH)
+    Draft202012Validator.check_schema(case_schema)
+    case_validator = Draft202012Validator(case_schema)
+    fixture_root = (root / "evaluation/benchmark/fixtures").resolve()
+    fixture_cache: dict[Path, dict[str, dict[str, Any]]] = {}
     for case in registry.get("cases", []):
         if not isinstance(case, dict):
             continue
-        path = root / str(case.get("path", ""))
+        relative = str(case.get("path", ""))
+        path = (root / relative).resolve()
+        try:
+            path.relative_to(fixture_root)
+        except ValueError:
+            errors.append(f"cases: fixture path escapes the fixture directory: {relative!r}")
+            continue
         if not path.is_file():
-            errors.append(f"cases: missing fixture {case.get('path')!r}")
+            errors.append(f"cases: missing fixture {relative!r}")
             continue
         if _sha256(path) != case.get("sha256"):
             errors.append(f"cases: checksum mismatch for {case.get('id')!r}")
-        try:
-            fixture = _read_json(path)
-        except (OSError, json.JSONDecodeError, ValueError) as exc:
-            errors.append(f"cases: invalid fixture {case.get('path')!r}: {exc}")
-            continue
-        for item in fixture.get("cases", []):
-            if isinstance(item, dict) and isinstance(item.get("id"), str):
-                fixture_cases[item["id"]] = item
+        if path not in fixture_cache:
+            try:
+                fixture = _read_json(path)
+            except (OSError, json.JSONDecodeError, ValueError) as exc:
+                errors.append(f"cases: invalid fixture {relative!r}: {exc}")
+                continue
+            errors.extend(
+                f"fixtures.{'.'.join(map(str, error.absolute_path))}: {error.message}"
+                for error in case_validator.iter_errors(fixture)
+            )
+            fixture_ids = [
+                item["id"]
+                for item in fixture.get("cases", [])
+                if isinstance(item, dict) and isinstance(item.get("id"), str)
+            ]
+            errors.extend(
+                f"fixtures: duplicate case id {value!r}"
+                for value in sorted(set(fixture_ids))
+                if fixture_ids.count(value) > 1
+            )
+            fixture_cache[path] = {
+                item["id"]: item
+                for item in fixture.get("cases", [])
+                if isinstance(item, dict) and isinstance(item.get("id"), str)
+            }
+        fixture_cases = fixture_cache.get(path, {})
         if case.get("id") not in fixture_cases:
             errors.append(f"cases: fixture has no case {case.get('id')!r}")
         else:
             fixture_case = fixture_cases[str(case["id"])]
-            expected = fixture_case.get("expected")
-            candidate = fixture_case.get("candidate")
-            if not isinstance(expected, dict) or not expected.get("evidence_ids"):
-                errors.append(f"cases: {case.get('id')!r} requires expected evidence_ids")
-            if not isinstance(candidate, dict) or not candidate.get("evidence_ids"):
-                errors.append(f"cases: {case.get('id')!r} requires candidate evidence_ids")
+            if fixture_case.get("modalities") != case.get("modalities"):
+                errors.append(f"cases: modality mismatch for {case.get('id')!r}")
         if case.get("activation_status") == "pending_owner_decision":
             if not case.get("decision_id"):
                 errors.append(f"cases: pending case {case.get('id')!r} requires decision_id")
@@ -114,6 +139,34 @@ def validate_registry(registry: dict[str, Any], root: Path = ROOT) -> list[str]:
     return sorted(errors)
 
 
+def score_case(case: dict[str, Any]) -> dict[str, Any]:
+    expected, candidate = case["expected"], case["candidate"]
+    required_evidence = set(expected["evidence_ids"])
+    required_claims = set(expected["claim_types"])
+    evidence_recall = len(required_evidence.intersection(candidate["evidence_ids"])) / len(required_evidence)
+    claim_coverage = len(required_claims.intersection(candidate["claim_types"])) / len(required_claims)
+    gate_counts = {
+        category: len(violations)
+        for category, violations in candidate["gate_violations"].items()
+    }
+    invalid_citations = set(candidate["evidence_ids"]) - required_evidence
+    citation_validity = 1 - (len(invalid_citations) / len(candidate["evidence_ids"]))
+    abstention_correct = candidate["abstained"] is expected["must_abstain"]
+    passed = (
+        evidence_recall == 1
+        and claim_coverage == 1
+        and citation_validity == 1
+        and abstention_correct
+        and not any(gate_counts.values())
+    )
+    return {
+        "case_id": case["id"], "evidence_recall": evidence_recall,
+        "claim_type_coverage": claim_coverage, "citation_validity": citation_validity,
+        "abstention_correct": abstention_correct, "gate_violations": gate_counts,
+        "robustness_challenge_pass": passed, "passed": passed,
+    }
+
+
 def run_suite(registry: dict[str, Any], suite_id: str) -> dict[str, Any]:
     errors = validate_registry(registry)
     if errors:
@@ -130,19 +183,7 @@ def run_suite(registry: dict[str, Any], suite_id: str) -> dict[str, Any]:
         by_id.update({case["id"]: case for case in fixture["cases"]})
     results: list[dict[str, Any]] = []
     for case_id in suite["case_ids"]:
-        case = by_id[case_id]
-        expected, candidate = case["expected"], case["candidate"]
-        required_evidence = set(expected["evidence_ids"])
-        required_claims = set(expected["claim_types"])
-        evidence_recall = len(required_evidence.intersection(candidate["evidence_ids"])) / len(required_evidence)
-        claim_coverage = len(required_claims.intersection(candidate["claim_types"])) / len(required_claims)
-        privacy_count = len(candidate["privacy_violations"])
-        safety_count = len(candidate["safety_violations"])
-        invalid_citations = set(candidate["evidence_ids"]) - required_evidence
-        citation_validity = 1 - (len(invalid_citations) / len(candidate["evidence_ids"]))
-        abstention_correct = candidate["abstained"] is expected["must_abstain"]
-        passed = evidence_recall == 1 and claim_coverage == 1 and citation_validity == 1 and abstention_correct and not privacy_count and not safety_count
-        results.append({"case_id": case_id, "evidence_recall": evidence_recall, "claim_type_coverage": claim_coverage, "citation_validity": citation_validity, "abstention_correct": abstention_correct, "privacy_violations": privacy_count, "safety_violations": safety_count, "robustness_challenge_pass": passed, "passed": passed})
+        results.append(score_case(by_id[case_id]))
     elapsed = time.perf_counter() - started
     cpu_seconds = time.process_time() - cpu_started
     fixture_paths = sorted({case["path"] for case in registry["cases"] if case["id"] in suite["case_ids"]})
@@ -161,6 +202,76 @@ def run_suite(registry: dict[str, Any], suite_id: str) -> dict[str, Any]:
     canonical = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
     receipt["receipt_sha256"] = hashlib.sha256(canonical).hexdigest()
     return receipt
+
+
+def verify_result(result: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    recorded_hash = result.get("receipt_sha256")
+    unsigned = {key: value for key, value in result.items() if key != "receipt_sha256"}
+    canonical = json.dumps(unsigned, sort_keys=True, separators=(",", ":")).encode()
+    if recorded_hash != hashlib.sha256(canonical).hexdigest():
+        errors.append("result receipt hash mismatch")
+    if result.get("registry_sha256") != _sha256(REGISTRY_PATH):
+        errors.append("result registry hash is stale")
+    registry = load_registry()
+    suite = next(
+        (item for item in registry["suites"] if item["id"] == result.get("suite_id")),
+        None,
+    )
+    if suite is None:
+        errors.append("result suite is unknown")
+    else:
+        if result.get("runner") != suite["runner"] or result.get("network") != suite["network"]:
+            errors.append("result execution contract does not match the suite")
+        observations = result.get("results")
+        if not isinstance(observations, list):
+            errors.append("result observations are missing")
+        else:
+            observed_ids = [
+                item.get("case_id") for item in observations if isinstance(item, dict)
+            ]
+            if observed_ids != suite["case_ids"]:
+                errors.append("result cases do not match the suite")
+            for item in observations:
+                if not isinstance(item, dict):
+                    errors.append("result observation is malformed")
+                    continue
+                gate_counts = item.get("gate_violations")
+                if not isinstance(gate_counts, dict) or set(gate_counts) != {
+                    "privacy", "security", "clinical-safety", "cultural-safety", "harmful-output"
+                }:
+                    errors.append(f"result gate counts are malformed for {item.get('case_id')!r}")
+                elif item.get("passed") is True and any(gate_counts.values()):
+                    errors.append(f"result passes a failed hard gate for {item.get('case_id')!r}")
+            summary = result.get("summary")
+            passed_count = sum(
+                item.get("passed") is True for item in observations if isinstance(item, dict)
+            )
+            if not isinstance(summary, dict) or summary.get("case_count") != len(observations):
+                errors.append("result case count is inconsistent")
+            elif summary.get("passed") != passed_count:
+                errors.append("result pass count is inconsistent")
+            elif summary.get("promotion_status") != (
+                "eligible_for_human_review" if passed_count == len(observations) else "blocked"
+            ):
+                errors.append("result promotion status is inconsistent")
+    fixture_hashes = result.get("fixture_sha256")
+    if not isinstance(fixture_hashes, dict):
+        errors.append("result fixture hashes are missing")
+    else:
+        for relative, expected_hash in fixture_hashes.items():
+            if not isinstance(relative, str) or not isinstance(expected_hash, str):
+                errors.append("result fixture hash entry is malformed")
+                continue
+            path = (ROOT / relative).resolve()
+            try:
+                path.relative_to((ROOT / "evaluation/benchmark/fixtures").resolve())
+            except ValueError:
+                errors.append(f"result fixture path escapes fixture directory: {relative!r}")
+                continue
+            if not path.is_file() or _sha256(path) != expected_hash:
+                errors.append(f"result fixture hash mismatch: {relative!r}")
+    return sorted(errors)
 
 
 def render_report(result: dict[str, Any]) -> str:
@@ -195,6 +306,10 @@ def main() -> int:
         output = json.dumps(result, indent=2, sort_keys=True) + "\n"
     else:
         result = _read_json(args.result)
+        errors = verify_result(result)
+        if errors:
+            print("\n".join(f"ERROR: {error}" for error in errors))
+            return 1
         output = render_report(result)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/edithatogo/rcagent/conductor/schemas/benchmark-case.schema.json",
+  "title": "Safety Systems Workbench synthetic benchmark cases",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cases"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "cases": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/case"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "case": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "summary", "modalities", "expected", "candidate"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "summary": {"type": "string", "minLength": 1},
+        "modalities": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["text", "document", "audio", "image", "signal"]}},
+        "expected": {"$ref": "#/$defs/expected"}, "candidate": {"$ref": "#/$defs/candidate"}
+      }
+    },
+    "expected": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence_ids", "claim_types", "must_abstain", "acceptable_alternatives", "explicit_unknowns"],
+      "properties": {
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "claim_types": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "must_abstain": {"type": "boolean"},
+        "acceptable_alternatives": {"type": "array", "items": {"type": "string"}},
+        "explicit_unknowns": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "candidate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence_ids", "claim_types", "abstained", "gate_violations"],
+      "properties": {
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "claim_types": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "abstained": {"type": "boolean"},
+        "gate_violations": {
+          "type": "object", "additionalProperties": false,
+          "required": ["privacy", "security", "clinical-safety", "cultural-safety", "harmful-output"],
+          "properties": {
+            "privacy": {"type": "array", "items": {"type": "string"}},
+            "security": {"type": "array", "items": {"type": "string"}},
+            "clinical-safety": {"type": "array", "items": {"type": "string"}},
+            "cultural-safety": {"type": "array", "items": {"type": "string"}},
+            "harmful-output": {"type": "array", "items": {"type": "string"}}
+          }
+        }
+      }
+    }
+  }
+}

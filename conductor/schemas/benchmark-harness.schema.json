@@ -58,7 +58,7 @@
       "type": "object", "additionalProperties": false,
       "required": ["id", "path", "sha256", "partition", "data_class", "modalities", "jurisdiction", "activation_status", "promotion_eligible", "challenge_classes"],
       "properties": {
-        "id": {"$ref": "#/$defs/id"}, "path": {"type": "string", "pattern": "^evaluation/benchmark/fixtures/"},
+        "id": {"$ref": "#/$defs/id"}, "path": {"type": "string", "pattern": "^evaluation/benchmark/fixtures/[a-z0-9][a-z0-9._/-]*\\.json$"},
         "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "partition": {"enum": ["train", "validation", "test"]},
         "data_class": {"enum": ["synthetic", "public_rights_verified", "authorised_deidentified"]},
         "modalities": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["text", "document", "audio", "image", "signal"]}},
@@ -75,7 +75,7 @@
     "suite": {
       "type": "object", "additionalProperties": false,
       "required": ["id", "case_ids", "runner", "network", "publication_status"],
-      "properties": {"id": {"$ref": "#/$defs/id"}, "case_ids": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}}, "runner": {"const": "deterministic-contract-v1"}, "network": {"const": "disabled"}, "publication_status": {"const": "internal_not_approved"}}
+      "properties": {"id": {"$ref": "#/$defs/id"}, "case_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}}, "runner": {"const": "deterministic-contract-v1"}, "network": {"const": "disabled"}, "publication_status": {"const": "internal_not_approved"}}
     }
   }
 }
