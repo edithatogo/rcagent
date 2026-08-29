@@ -15,7 +15,14 @@ CHECKS: tuple[tuple[str, ...], ...] = (
     (sys.executable, "-m", "tools.validate_repository"),
     (sys.executable, "-m", "tools.benchmark_harness", "validate"),
     (sys.executable, "-m", "tools.benchmark_harness", "run", "--suite", "regression"),
-    (sys.executable, "-m", "pytest"),
+    (
+        sys.executable,
+        "-m",
+        "pytest",
+        "--cov=tools",
+        "--cov-report=xml",
+        "--cov-report=term-missing",
+    ),
 )
 
 

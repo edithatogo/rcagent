@@ -22,6 +22,11 @@ def test_full_validation_is_local_deterministic_and_matches_quality_gate() -> No
     ]
     command_text = " ".join(part for command in CHECKS for part in command).lower()
     assert all(token not in command_text for token in ("curl", "wget", "download", "ollama", "huggingface"))
+    assert CHECKS[-1][3:] == (
+        "--cov=tools",
+        "--cov-report=xml",
+        "--cov-report=term-missing",
+    )
 
 
 def test_full_validation_runs_every_check_on_success(monkeypatch) -> None:

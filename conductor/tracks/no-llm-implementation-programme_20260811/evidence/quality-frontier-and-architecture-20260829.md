@@ -1,7 +1,7 @@
 # Quality frontier and architecture reconciliation
 
-Date: 2026-08-29  
-Base revision: `69ca2d09278758fbed885104cf852b0fc74599cd`  
+Date: 2026-08-29
+Base revision: `69ca2d09278758fbed885104cf852b0fc74599cd`
 Data boundary: repository metadata, public GitHub state, and synthetic tests only
 
 ## Issues #17 and #18
@@ -33,12 +33,16 @@ must be created and verified before Renovate is granted repository access.
 
 ## Issue #19
 
-`conductor/clinical-governance-architecture.json` validates every layer and
-integration owner against the canonical track registry. The incident lifecycle
-is owned by Tracks 02, 04, and 09; shared services include Track 07. Those four
-tracks have completed evidence and provide the first vertical slice. The
-architecture records five extraction criteria and five shared contracts before
-any specialist track, agent, skill, workflow, or plugin split.
+`architecture-issue-19-acceptance-map.json` maps all four issue criteria to
+exact artefacts. `conductor/clinical-governance-architecture.json` validates
+every layer and integration owner against `conductor/roadmap.json`. Track 02
+plan lines covering the canonical lifecycle and its completion receipt, Track
+04's policy-transition mapping and completion receipt, Track 07's federated
+retrieval contract and completion receipt, and Track 09's end-to-end surface
+and completion receipt directly evidence the first vertical slice. Their
+metadata maps issues #7, #9, #12, and #14 and records completed or archived
+repository state; those issues were observed closed. The architecture's five
+extraction criteria and five shared contracts govern any specialist split.
 
 This is repository architecture conformance, not clinical, policy, legal,
 regulatory, employment, cultural-safety, organisational, or deployment

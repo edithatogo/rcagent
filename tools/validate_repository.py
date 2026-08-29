@@ -200,8 +200,11 @@ def validate(root: Path) -> list[str]:
     """Return deterministic diagnostics; an empty list means validation passed."""
     errors: list[str] = []
     for relative in REQUIRED_CONTEXT:
-        if not (root / relative).is_file():
+        context_path = root / relative
+        if not context_path.is_file():
             errors.append(f"missing required context: {relative}")
+        elif not context_path.read_text(encoding="utf-8").strip():
+            errors.append(f"empty required context: {relative}")
 
     errors.extend(_validate_track_directories(root))
 

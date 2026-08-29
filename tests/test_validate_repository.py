@@ -123,6 +123,12 @@ def test_missing_context_is_reported(tmp_path: Path) -> None:
     assert "missing required context: conductor/autonomy.json" in validate(tmp_path)
 
 
+def test_empty_context_is_reported(tmp_path: Path) -> None:
+    _write_valid_repository(tmp_path)
+    (tmp_path / "SECURITY.md").write_text("", encoding="utf-8")
+    assert "empty required context: SECURITY.md" in validate(tmp_path)
+
+
 def test_duplicate_issue_and_missing_contract_are_reported(tmp_path: Path) -> None:
     _write_valid_repository(tmp_path)
     second = tmp_path / "conductor/tracks/second_20260731"
@@ -289,6 +295,37 @@ def test_clinical_governance_first_vertical_slice_and_split_contract_are_mapped(
         "decision-ledger",
         "orchestration-contract",
     }
+
+
+def test_issue_19_acceptance_map_resolves_completed_vertical_slice_evidence() -> None:
+    root = Path(__file__).parents[1]
+    path = (
+        root
+        / "conductor/tracks/no-llm-implementation-programme_20260811/evidence"
+        / "architecture-issue-19-acceptance-map.json"
+    )
+    acceptance = json.loads(path.read_text(encoding="utf-8"))
+    assert acceptance["issue"] == 19
+    assert acceptance["issue_state_at_review"] == "open_pending_hosted_reconciliation"
+    assert {item["criterion"] for item in acceptance["criteria"]} == {
+        "architecture_schema_validates_against_real_track_owners",
+        "first_vertical_slice_covered",
+        "specialist_split_criteria_applied",
+        "github_and_conductor_mappings_reconciled",
+    }
+    for item in acceptance["criteria"]:
+        assert item["repository_status"] == "pass"
+        for relative in item["evidence"]:
+            evidence_path = root / relative
+            assert evidence_path.is_file() and evidence_path.read_text(encoding="utf-8").strip()
+    for track in acceptance["vertical_slice_tracks"]:
+        track_root = root / track["root"]
+        metadata = json.loads((track_root / "metadata.json").read_text(encoding="utf-8"))
+        assert metadata["track_number"] == track["track_number"]
+        assert metadata["github"]["issue"].endswith(f"/{track['issue']}")
+        assert metadata["status"] in {"completed", "archived"}
+        plan = (track_root / "plan.md").read_text(encoding="utf-8")
+        assert all(marker in plan for marker in track["required_completed_plan_markers"])
 
 
 def test_invalid_metadata_and_wrong_issue_mapping_are_reported(tmp_path: Path) -> None:

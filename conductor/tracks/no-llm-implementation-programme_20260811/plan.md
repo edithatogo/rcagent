@@ -35,7 +35,7 @@
 - [x] Task: Implement Track 02 evidence-workflow slice — `4a976e0`, review `1431674`, receipt `acca833`
 - [x] Task: Implement Track 03 privacy/security assurance slice — `3f7aad3`, review `a5ff002`
 - [x] Task: Implement Track 04 jurisdiction-pack readiness slice — archived completion `1e32fa4`; bounded active-policy decision retained
-- [ ] Task: Apply issues #17 and #18 controls to each slice
+- [~] Task: Apply issues #17 and #18 controls to each slice — repository controls prepared in PR #72; hosted ruleset and Renovate health remain pending
 - [x] Task: Review, merge, and clean each Phase 3 PR before starting the next — Tracks 01–04 merged and reconciled
 - [ ] Task: Phase verification and checkpoint
 
