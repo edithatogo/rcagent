@@ -33,7 +33,7 @@
 
 - [x] Task: Implement Track 01 safety-systems foundation slice
 - [x] Task: Implement Track 02 evidence-workflow slice — `4a976e0`, review `1431674`, receipt `acca833`
-- [ ] Task: Implement Track 03 privacy/security assurance slice
+- [x] Task: Implement Track 03 privacy/security assurance slice — `3f7aad3`, review `a5ff002`
 - [ ] Task: Implement Track 04 jurisdiction-pack readiness slice
 - [ ] Task: Apply issues #17 and #18 controls to each slice
 - [ ] Task: Review, merge, and clean each PR before starting the next

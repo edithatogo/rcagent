@@ -1,6 +1,6 @@
 # Track 03: Privacy, Security, and Assurance
 
-- **Status:** New
+- **Status:** In progress
 - **Workstream:** foundation-governance
 - **GitHub issue:** [#8](https://github.com/edithatogo/rcagent/issues/8)
 - **Parent workstream:** [#2](https://github.com/edithatogo/rcagent/issues/2)

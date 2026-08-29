@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/edithatogo/rcagent/conductor/schemas/assurance-case.schema.json",
+  "title": "Mode-specific assurance case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "case_id", "mode", "risks", "controls", "tests", "evidence", "owners", "review_due", "dependency_status", "residual_risks", "residual_risk_acceptance"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"},
+    "mode": {"enum": ["public_remote", "governed_hybrid", "fully_local", "air_gapped"]},
+    "risks": {"type": "array", "items": {"$ref": "#/$defs/risk"}},
+    "controls": {"type": "array", "items": {"$ref": "#/$defs/control"}},
+    "tests": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "evidence": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "owners": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "review_due": {"type": "string", "format": "date-time"},
+    "dependency_status": {"enum": ["current", "drifted", "unknown", "unavailable"]},
+    "residual_risks": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "residual_risk_acceptance": {"const": "owner_required"},
+    "limitations": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["risk_id", "threat", "harm", "control_id"],
+      "properties": {
+        "risk_id": {"type": "string", "minLength": 1},
+        "threat": {"type": "string", "minLength": 1},
+        "harm": {"type": "string", "minLength": 1},
+        "control_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["control_id", "status", "authority"],
+      "properties": {
+        "control_id": {"type": "string", "minLength": 1},
+        "status": {"enum": ["inherited", "implemented", "supplemented", "unavailable", "out_of_scope"]},
+        "authority": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
