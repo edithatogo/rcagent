@@ -29,5 +29,5 @@ def main() -> int:
     return 0
 
 
-if __name__ == "__main__":
-    raise SystemExit(main())
+if __name__ == "__main__":  # pragma: no branch - exercised by the documented command
+    raise SystemExit(main())  # pragma: no cover - subprocess entry point
