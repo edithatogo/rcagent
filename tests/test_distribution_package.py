@@ -29,6 +29,7 @@ def test_distribution_is_deterministic_and_self_describing(tmp_path: Path) -> No
     assert first.manifest["network_required"] is False
     assert first.manifest["data_classification"] == "public-only-no-clinical-or-employee-data"
     assert first.manifest["third_party_content"] == "prohibited-unless-release-cleared"
+    assert first.manifest["source_revision"] == "uncommitted-test-build"
     assert first.manifest["approval_boundaries"] == [
         "clinical",
         "policy",
@@ -108,6 +109,14 @@ def test_distribution_rejects_missing_inputs_and_symlinks(tmp_path: Path) -> Non
     (skill / "linked.txt").symlink_to(target)
     with pytest.raises(ValueError, match="refuses symlink"):
         build_distribution(repository, tmp_path / "symlink-dist", version="1.0.0")
+
+
+def test_distribution_binds_exact_release_revision(tmp_path: Path) -> None:
+    result = build_distribution(ROOT, tmp_path / "valid", version="0.1.0", source_revision="a" * 40)
+    assert result.manifest["source_revision"] == "a" * 40
+    assert result.manifest["source"] == "https://github.com/edithatogo/rcagent"
+    with pytest.raises(ValueError, match="full Git commit"):
+        build_distribution(ROOT, tmp_path / "invalid", version="0.1.0", source_revision="main")
 
 
 def test_distribution_cli_success_and_parser_error(

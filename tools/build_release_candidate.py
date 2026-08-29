@@ -33,7 +33,9 @@ def build_release_candidate(
     destination.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="rcagent-release-") as temporary:
         work = Path(temporary)
-        core = build_distribution(repository, work / "core", version=version)
+        core = build_distribution(
+            repository, work / "core", version=version, source_revision=source_revision
+        )
         codex = build_client_plugin(
             repository, work / "codex", client="codex", version=version, source_revision=source_revision
         )

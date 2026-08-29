@@ -86,11 +86,15 @@ def build_client_plugin(
     destination.mkdir(parents=True, exist_ok=True)
     skill = repository / "skills/rca-investigation"
     documents = [repository / name for name in ("LICENSE", "DISCLAIMER.md", "PRIVACY.md", "SUPPORT.md")]
-    if not (skill / "SKILL.md").is_file() or not all(path.is_file() for path in documents):
+    if not (skill / "SKILL.md").is_file() or not all(
+        path.is_file() and not path.is_symlink() for path in documents
+    ):
         raise FileNotFoundError("plugin release inputs are incomplete")
     paths = sorted(skill.rglob("*"))
     if any(path.is_symlink() for path in paths):
         raise ValueError("plugin release refuses symlinks")
+    if any(not path.is_file() and not path.is_dir() for path in paths):
+        raise ValueError("plugin release refuses special files")
     manifest_path, manifest = _manifest(client, version)
     provenance = {
         "schema_version": "1.0",
