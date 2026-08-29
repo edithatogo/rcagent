@@ -5,7 +5,11 @@ from pathlib import Path
 
 import pytest
 
-from tools.release_source import verify_release_payloads, verify_release_source
+from tools.release_source import (
+    require_release_version,
+    verify_release_payloads,
+    verify_release_source,
+)
 
 
 def _git(repository: Path, *args: str) -> str:
@@ -67,3 +71,10 @@ def test_release_source_rejects_wrong_head_missing_and_outside_inputs(tmp_path: 
         verify_release_source(repository, head, [repository / "missing"])
     with pytest.raises(ValueError, match="absent from source revision"):
         verify_release_payloads(repository, head, {"missing.txt": b"missing"})
+
+
+def test_release_version_rejects_mismatch(tmp_path: Path) -> None:
+    (tmp_path / "VERSION").write_text("1.0.0\n", encoding="utf-8")
+    (tmp_path / "CHANGELOG.md").write_text("## 1.0.0 — 2026-08-29\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="does not match"):
+        require_release_version(tmp_path, "2.0.0")

@@ -56,3 +56,24 @@ def test_source_verifier_cli_writes_receipt_and_reports_failure(
         source_module.main()
     assert error.value.code == 2
     assert "source drift" in capsys.readouterr().err
+
+
+def test_default_fetcher_returns_final_url_and_bytes(monkeypatch: pytest.MonkeyPatch) -> None:
+    class Response:
+        def __enter__(self) -> Response:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def geturl(self) -> str:
+            return "https://example.invalid/final"
+
+        def read(self) -> bytes:
+            return b"payload"
+
+    monkeypatch.setattr(source_module.urllib.request, "urlopen", lambda *_args, **_kwargs: Response())
+    assert source_module._fetch("https://example.invalid") == (
+        "https://example.invalid/final",
+        b"payload",
+    )
