@@ -220,3 +220,10 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Require uncertainty disclosure for rules citing an under-review source
   - [x] Validate baseline and candidate snapshots before drift comparison
   - [x] Add a deterministic cadence queue and negative regression tests
+
+- [x] Task: Eliminate false NSW activation while the owner gate is pending — `475bf14`
+  - [x] Mark the NSW jurisdiction pack and capability profile blocked
+  - [x] Add explicit active and pending-owner-decision rule states
+  - [x] Require under-review rules to cite their decision and remain pending
+  - [x] Reject a jurisdiction pack marked implemented while any of its rules await a decision
+  - [x] Re-run 184 tests, lint, types, gremlin, schema, and repository-governance validation
