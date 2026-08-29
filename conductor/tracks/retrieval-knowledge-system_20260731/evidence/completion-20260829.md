@@ -38,12 +38,16 @@ clinical interpretation or recommendation is claimed.
 
 ## Verification
 
-- Focused retrieval suite: 16 passed.
+- Focused retrieval suite before archive review: 18 passed with 90.94% module coverage.
 - Complete repository suite after the final integrity patch: 300 passed with
   90.11% total tools coverage.
 - Focused static checks: Ruff passed; basedpyright reported zero errors.
 - Repository governance validation: passed.
 - Retrieval manifest/profile validation: passed.
+- PR #54 merged as `c8d0ea3`; its late 80.77% Codecov patch result exposed a
+  hosted evidence gap after merge. PR #55 added negative-path tests, merged as
+  `a7f2787`, and passed Codecov patch plus Agent Skill Conformance, dependency
+  review, Vale, Linux, macOS and Windows quality checks.
 - Agent panel: acceptance, security and falsification agents all recorded
   ACCEPT after three bounded rework rounds. This is agent agreement only, not
   clinical, legal, policy, regulatory, employment, cultural-safety,
