@@ -1,0 +1,9 @@
+[
+  {"id":"novice_interruption","kind":"registry_checkpoint","payload":{"role":"investigator"}},
+  {"id":"expert_conflicting_evidence","kind":"method_abstention","payload":{"purpose":"unknown","evidence_state":"conflicting","capability":[]}},
+  {"id":"consumer_disagreement","kind":"communication_boundary","payload":{"purpose":"account","status":"sent","recipient":"unresolved","delivery_channel":"email","questions":[],"disagreement":["unresolved"],"human_owner_role":"disclosure_lead"}},
+  {"id":"staff_procedural_fairness","kind":"registry_checkpoint","payload":{"role":"staff"}},
+  {"id":"accessibility_keyboard_language","kind":"registry_checkpoint","payload":{"role":"consumer_family"}},
+  {"id":"automation_bias_unsafe_certainty","kind":"unsafe_export","payload":{"claim":"=WEBSERVICE('https://example.test')"}},
+  {"id":"specialist_pathway_separation","kind":"specialist_separation","payload":{"pathway":"cultural_review","merged_with_incident_finding":true,"status":"requested","external_authority_verified":false}}
+]

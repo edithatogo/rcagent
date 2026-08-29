@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "scope": "skills/rca-investigation/assets/templates",
+  "status": "quarantined_legacy_not_supported",
+  "admission": false,
+  "manifest": "evaluation/interfaces/legacy-template-manifest.sha256",
+  "manifest_entries": 36,
+  "redistribution_decision": "not_assessed_for_track09",
+  "findings": [
+    {
+      "pattern": "blanket quality-improvement confidentiality marking",
+      "count": 17,
+      "risk": "may imply privilege, confidentiality or organisational policy without authority"
+    },
+    {
+      "pattern": "SAC timing or mandatory open-disclosure language",
+      "count": 2,
+      "risk": "may encode jurisdictional or organisational requirements without current applicability evidence"
+    }
+  ],
+  "supported_template_source": "evaluation/interfaces/registry.json",
+  "limitations": [
+    "Quarantine is a Track 09 admission decision, not a rights determination or deletion request.",
+    "Legacy material requires separate policy, legal, clinical and organisational review before use."
+  ]
+}

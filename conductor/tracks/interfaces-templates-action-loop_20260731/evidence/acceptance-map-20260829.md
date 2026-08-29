@@ -1,0 +1,11 @@
+# Track 09 acceptance map
+
+1. **Auditable interfaces:** `render_view` binds canonical source version/hash, applies audience-specific minimisation and recursive sanitisation, and exposes citations, model involvement, limitations, approval receipt IDs, outstanding review IDs, uncertainty-bearing statements and explicit disclaimers. Tests cover consumer leakage and active content.
+2. **Methods:** the registry covers retrospective and proactive workflows; `method_guidance` uses declared questions, evidence signals, capability and a method budget, returns rationale/rejections/stop rule, and abstains when unsupported.
+3. **Templates and rights:** the supported registry contains newly authored Apache-2.0 manifests with a fixed allowlist of canonical safety-work paths. The 36 preserved legacy templates have exact hashes and are quarantined from admission; this is not rights clearance.
+4. **Closed-loop actions:** recommendations carry ownership, dates, dependencies, measures and residual risk. Governed transitions require exact action approval and implementation evidence. Effectiveness requires distinct outcome/balancing evidence, an exact review, and a current scoped accountable-human approval; completion never implies effectiveness.
+5. **Participation:** disclosure is preparation-only; generated-synthetic participation preserves questions, disagreement, withdrawal, support, procedural fairness, accessibility/interpreter and cultural-needs checkpoints without inferring cultural authority or sending communication.
+6. **Oversight:** seven executable generated-synthetic scenarios exercise recovery, abstention, communication rejection, unsafe export rejection and specialist separation. Unmeasured usability, accessibility, bias, disclosure and review-burden metrics remain null/descriptive; no human study or deployment validation is claimed.
+7. **Specialist pathways:** referral validation covers all specified pathways while restricting repository-created status to local proposed/requested/declined or reported-unverified state. It cannot merge the specialist result with an incident finding or verify external authority.
+
+Agent-panel agreement is research review evidence only. Clinical, legal, policy, regulatory, employment, cultural-safety, organisational and deployment validation remain outside repository completion.

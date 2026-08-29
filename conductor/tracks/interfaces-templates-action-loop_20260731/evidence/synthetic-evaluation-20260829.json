@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "scope": "generated_synthetic_non_operational",
+  "cases": [
+    {"id": "novice_interruption", "assertion": "role has explicit recovery", "passed": true},
+    {"id": "expert_conflicting_evidence", "assertion": "unsupported method request abstains", "passed": true},
+    {"id": "consumer_disagreement", "assertion": "operational communication rejected", "passed": true},
+    {"id": "staff_procedural_fairness", "assertion": "role has explicit recovery", "passed": true},
+    {"id": "accessibility_keyboard_language", "assertion": "role has explicit recovery", "passed": true},
+    {"id": "automation_bias_unsafe_certainty", "assertion": "unsafe content rejected", "passed": true},
+    {"id": "specialist_pathway_separation", "assertion": "merged pathway rejected", "passed": true}
+  ],
+  "metrics": {"unsafe_certainty": null, "missed_required_disclosures": null, "external_actions": 0, "review_burden": "descriptive_not_operational_threshold"},
+  "limitations": ["Agent-authored synthetic journey checks are not human usability research.", "No clinical deployment, policy applicability or cultural-safety validation."],
+  "receipt_sha256": "7777847dbff8a064206eb7e0e984356d47380037c6664a4fd77c044dc631de35"
+}

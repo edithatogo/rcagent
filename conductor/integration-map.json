@@ -182,6 +182,7 @@
     },
     {
       "track_id": "interfaces-templates-action-loop_20260731",
+      "status": "adapt",
       "candidate_systems": [
         "ims+ or another approved incident system of record",
         "approved Microsoft 365, SharePoint, Teams, Power Automate, and Dataverse capabilities",
@@ -189,7 +190,13 @@
         "FHIR Task, Questionnaire, QuestionnaireResponse, and DocumentReference",
         "maintained Markdown, Mermaid, Pandoc, Quarto, office, and PDF tooling"
       ],
-      "project_owned_gap": "privacy-preserving analysis workspace, evidence views, investigation methods, disclosure prompts, and closed-loop action effectiveness"
+      "selected_system": "approved external incident platform remains the system of record; project-local JSON contracts provide generated-synthetic views, prompts, method guidance and dry-run exchange validation",
+      "dependency_class": "client-neutral locked contract plus optional replaceable enterprise, standards and workflow adapters",
+      "compatibility_window": "interface-workspace schema 1.0 and safety-work schema 1.x; exact optional dependency revisions recorded per receipt",
+      "safe_fallback": "retain local generated-synthetic preparation state, reject credentials and endpoints, perform no external action or enterprise mutation, and preserve unresolved authority",
+      "replacement_path": "replace contract-only adapters with organisation-approved connectors without changing canonical evidence values; remove local rendering gaps when the authoritative platform provides equivalent privacy, provenance and recovery controls",
+      "evidence": "conductor/tracks/interfaces-templates-action-loop_20260731/evidence/fit-gap-20260829.md",
+      "project_owned_gap": "privacy-preserving generated-synthetic evidence views, investigation-method guidance, disclosure preparation prompts, and action-effectiveness separation"
     },
     {
       "track_id": "domain-adaptation-finetuning_20260731",

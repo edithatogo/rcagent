@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "policy": {
+    "synthetic_only": true,
+    "external_actions": false,
+    "enterprise_mutation": false,
+    "automated_approval": false,
+    "effectiveness_inferred_from_completion": false,
+    "organisation_branding": false
+  },
+  "journeys": [
+    {"role":"investigator","checkpoints":["scope","evidence","analysis","handoff"],"failure_recovery":["save draft","reconcile"],"accessibility":["keyboard","plain language"]},
+    {"role":"reviewer","checkpoints":["conflict","uncertainty","approval boundary"],"failure_recovery":["return with reasons"],"accessibility":["structured headings"]},
+    {"role":"consumer_family","checkpoints":["questions","account","disagreement","feedback"],"failure_recovery":["human contact route"],"accessibility":["language","interpreter","plain language"]},
+    {"role":"staff","checkpoints":["support","procedural fairness","response"],"failure_recovery":["support escalation"],"accessibility":["trauma informed"]},
+    {"role":"governance","checkpoints":["authority","risk","assurance"],"failure_recovery":["escalate unresolved"],"accessibility":["audit view"]},
+    {"role":"executive","checkpoints":["system hazard","resources","residual risk"],"failure_recovery":["request evidence"],"accessibility":["summary view"]},
+    {"role":"auditor","checkpoints":["provenance","decision","correction"],"failure_recovery":["preserve discrepancy"],"accessibility":["machine readable"]}
+  ],
+  "workflows": [
+    {"id":"retrospective-investigation","purpose":"retrospective incident review","steps":["intake","huddle","provisional assessment","team","evidence","chronology","analysis","findings","recommendations","actions","effectiveness","learning","closure"],"methods":["RCA","SEIPS","AcciMap","FRAM","STPA","bow_tie","barrier_analysis"],"human_checkpoints":["scope","finding approval","action acceptance","closure"],"system_of_record":"external_approved_platform"},
+    {"id":"proactive-systems-analysis","purpose":"proactive risk review","steps":["scope","work as done","hazards","controls","recommendations","monitoring"],"methods":["SEIPS","STPA","bow_tie","FMEA"],"human_checkpoints":["scope","risk acceptance","monitoring review"],"system_of_record":"external_approved_platform"}
+  ],
+  "templates": [
+    {"id":"investigation-view","title":"Investigation evidence view","rights":"original_apache_2_0","fields":[{"name":"evidence","canonical_path":"$.evidence","provenance_required":true},{"name":"uncertainty","canonical_path":"$.statements[*].uncertainty","provenance_required":true}],"audiences":["investigator","reviewer","auditor"],"disclaimers":["clinical","policy","legal","organisational","external_action"]},
+    {"id":"action-effectiveness-view","title":"Action and effectiveness view","rights":"original_apache_2_0","fields":[{"name":"recommendations","canonical_path":"$.statements[*].kind=recommendation","provenance_required":true},{"name":"actions","canonical_path":"$.actions","provenance_required":true},{"name":"effectiveness","canonical_path":"$.outcomes","provenance_required":true}],"audiences":["governance","executive","auditor"],"disclaimers":["clinical","policy","legal","organisational","external_action"]},
+    {"id":"consumer-family-view","title":"Consumer and family review view","rights":"original_apache_2_0","fields":[{"name":"accounts","canonical_path":"$.statements[*].kind=reported_account","provenance_required":true},{"name":"outstanding_reviews","canonical_path":"$.reviews","provenance_required":true}],"audiences":["consumer_family"],"disclaimers":["clinical","policy","legal","organisational","external_action"]}
+  ],
+  "interfaces": [
+    {"id":"portable-cli-json","kind":"portable_core","status":"contract_only","operations":["read","import","export","reconcile"],"mutation":false,"external_send":false,"replacement_path":"retain stable JSON contract"},
+    {"id":"enterprise-surface","kind":"enterprise_connector","status":"unavailable","operations":["read","import","export","reconcile"],"mutation":false,"external_send":false,"replacement_path":"approved organisation connector"},
+    {"id":"fhir-exchange","kind":"standards_adapter","status":"contract_only","operations":["import","export","reconcile"],"mutation":false,"external_send":false,"replacement_path":"source-system FHIR profile"},
+    {"id":"workflow-engine","kind":"optional_adapter","status":"unavailable","operations":["import","export"],"mutation":false,"external_send":false,"replacement_path":"approved CMMN BPMN DMN engine"}
+  ],
+  "participation": {
+    "open_disclosure":"prompt_and_human_checkpoint",
+    "consumer_family":"prompt_and_human_checkpoint",
+    "staff_support":"prompt_and_human_checkpoint",
+    "procedural_fairness":"prompt_and_human_checkpoint",
+    "accessibility":"prompt_and_human_checkpoint",
+    "language_interpreter":"prompt_and_human_checkpoint",
+    "aboriginal_cultural_safety":"prompt_and_human_checkpoint"
+  }
+}
