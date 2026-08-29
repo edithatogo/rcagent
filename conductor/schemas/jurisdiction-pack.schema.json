@@ -53,7 +53,7 @@
         "jurisdiction": {"enum": ["national", "AU-NSW", "AU-QLD"]},
         "inherits": {"type": ["string", "null"]},
         "capability_profile": {"type": "string", "pattern": "^jurisdiction-"},
-        "status": {"const": "implemented"}
+        "status": {"enum": ["implemented", "blocked"]}
       }
     },
     "source": {
@@ -86,13 +86,15 @@
     "rule": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["rule_id", "jurisdiction", "source_ids", "authority_state", "requirement_level", "statement", "workflow", "human_review_required", "safeguards"],
+      "required": ["rule_id", "jurisdiction", "source_ids", "authority_state", "requirement_level", "activation_status", "statement", "workflow", "human_review_required", "safeguards"],
       "properties": {
         "rule_id": {"$ref": "#/$defs/id"},
         "jurisdiction": {"enum": ["national", "AU-NSW", "AU-QLD"]},
         "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
         "authority_state": {"enum": ["binding", "mandatory", "advisory", "explanatory", "draft", "consultation", "local", "superseded"]},
         "requirement_level": {"enum": ["must", "should", "may", "do_not_infer"]},
+        "activation_status": {"enum": ["active", "pending_owner_decision"]},
+        "decision_id": {"$ref": "#/$defs/id"},
         "statement": {"type": "string", "minLength": 1},
         "workflow": {
           "type": "object",

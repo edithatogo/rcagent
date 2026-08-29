@@ -83,8 +83,17 @@ def validate_registry(registry: dict[str, Any]) -> list[str]:
             errors.append(
                 f"rules: {rule.get('rule_id')!r} uses 'must' without a binding, mandatory or accreditation source"
             )
-        if any(source.get("status") == "under_review" for source in cited_sources) and not rule.get("uncertainty"):
+        under_review = any(source.get("status") == "under_review" for source in cited_sources)
+        if under_review and not rule.get("uncertainty"):
             errors.append(f"rules: {rule.get('rule_id')!r} must disclose under-review source uncertainty")
+        if under_review and rule.get("activation_status") != "pending_owner_decision":
+            errors.append(
+                f"rules: {rule.get('rule_id')!r} must remain pending while an under-review source lacks owner approval"
+            )
+        if under_review and not rule.get("decision_id"):
+            errors.append(f"rules: {rule.get('rule_id')!r} must reference its owner decision")
+        if rule.get("activation_status") == "pending_owner_decision" and not rule.get("decision_id"):
+            errors.append(f"rules: {rule.get('rule_id')!r} pending activation must reference an owner decision")
         workflow = rule.get("workflow", {})
         if isinstance(workflow, dict):
             to_state = workflow.get("to_state")
@@ -104,6 +113,21 @@ def validate_registry(registry: dict[str, Any]) -> list[str]:
                 errors.append(
                     f"rules: national rule {rule.get('rule_id')!r} references state sources {state_sources!r}"
                 )
+
+    pending_jurisdictions = {
+        rule.get("jurisdiction")
+        for rule in rules
+        if isinstance(rule, dict) and rule.get("activation_status") == "pending_owner_decision"
+    }
+    for pack in packs:
+        if (
+            isinstance(pack, dict)
+            and pack.get("jurisdiction") in pending_jurisdictions
+            and pack.get("status") != "blocked"
+        ):
+            errors.append(
+                f"packs: {pack.get('pack_id')!r} must be blocked while its rules await an owner decision"
+            )
 
     for artefact in artefacts:
         if not isinstance(artefact, dict):

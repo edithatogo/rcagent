@@ -21,6 +21,12 @@ For every source, record:
 
 Use `current`, `under_review`, `draft`, `consultation`, `superseded`, `local`, `advisory` or `unavailable` exactly. Draft, consultation, superseded and unavailable sources cannot drive rules. Link to restricted or unclear-rights content; do not copy it.
 
+Rules sourced from an `under_review` authority must use
+`activation_status: pending_owner_decision`, cite the corresponding
+`decision_id`, disclose the uncertainty, and keep their jurisdiction pack and
+capability profile blocked. Change those states to active/implemented only
+after the decision record contains explicit approval evidence.
+
 ## Rule authoring
 
 Each rule must cite at least one registered current, under-review, local or advisory source, state its authority and requirement level, and map to a valid canonical state transition. Preserve the external system-of-record boundary and require accountable human review.
