@@ -1,0 +1,42 @@
+{
+  "data_class": "generated_synthetic_only",
+  "elapsed_ms": 13.775,
+  "framework": "WFDB 4.3.1",
+  "limitations": [
+    "generated two-channel waveform only",
+    "no diagnostic or clinical interpretation",
+    "no model inference, clinical validation, or operational support claim"
+  ],
+  "network": "disabled_local_file_api_only",
+  "observations": {
+    "adversarial_header_rejected": true,
+    "annotation_samples": [
+      250,
+      500
+    ],
+    "annotation_timestamps_ms": [
+      1000.0,
+      2000.0
+    ],
+    "diagnostic_interpretation": "disabled",
+    "missing_standard_12_leads": true,
+    "provenance_files": [
+      "synthetic.atr",
+      "synthetic.dat",
+      "synthetic.hea"
+    ],
+    "samples": 2500,
+    "sampling_hz": 250.0,
+    "signal_names": [
+      "I",
+      "II"
+    ]
+  },
+  "passed": true,
+  "probe_sha256": "e032ce6ec2704035167e7508ecf59c1b4dac80a583c5065b65c869a823f20900",
+  "profile_id": "ecg-research",
+  "receipt_sha256": "8c77f1d4fa99c33e562b4ec0e208f9a28e06f6f670716614039e5a91d236780d",
+  "remote_code": "prohibited",
+  "schema_version": "1.0",
+  "telemetry": "none"
+}

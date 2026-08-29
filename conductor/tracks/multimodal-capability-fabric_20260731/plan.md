@@ -139,10 +139,10 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Phase 5: Prototype medical image and DICOM ingestion
 
 - [!] Task: Implement the phase scope
-  - [ ] Use pydicom and Orthanc-compatible contracts for safe metadata and pixel ingestion
+  - [x] Use pydicom for safe synthetic metadata and uncompressed pixel ingestion; keep Orthanc assets unadmitted
   - [ ] Evaluate MONAI-compatible preprocessing and research inference adapters
-  - [ ] Test de-identification, burned-in identifiers, series integrity, provenance, and adversarial files
-  - [ ] Disable clinical interpretation by default and expose the research-only status
+  - [x] Test direct-identifier removal, burned-in identifiers, series integrity, provenance, and adversarial files
+  - [x] Disable clinical interpretation by default and expose the research-only status
 
 - [!] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -160,10 +160,10 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Phase 6: Prototype ECG and time-series ingestion
 
 - [!] Task: Implement the phase scope
-  - [ ] Use WFDB-compatible records, leads, sampling, annotations, and provenance
-  - [ ] Separate deterministic signal processing from model inference
+  - [x] Use WFDB-compatible generated records, leads, sampling, annotations, timestamps, and provenance
+  - [x] Separate deterministic signal ingestion from model inference; no model was acquired or invoked
   - [ ] Measure missing leads, noise, duration, resampling, device variation, and context limits
-  - [ ] Disable diagnostic interpretation unless a separate governed pathway exists
+  - [x] Detect missing leads and disable diagnostic interpretation unless a separate governed pathway exists
 
 - [!] Task: Validate the phase deliverables
   - [ ] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks

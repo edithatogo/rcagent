@@ -59,5 +59,10 @@ Respond exactly: `Approve bounded local adapter acquisition`.
 
 ## Follow-up
 
-- [ ] Update plans, metadata, receipts and GitHub state
-- [ ] Execute one admitted profile at a time and preserve rollback evidence
+- [x] Update plans, metadata, receipts and GitHub state for approved acquisition
+- [!] Execute one admitted profile at a time and preserve rollback evidence — pydicom 3.0.2 and WFDB 4.3.1 complete; document/OCR, encoders and local speech remain
+- [x] Preserve exact local package inventories, distribution RECORD hashes, observed licences, cache locations, uninstall and rollback instructions
+- [x] Run generated synthetic-only pydicom and WFDB probes with interpretation disabled
+- [ ] Clear and measure the bounded document/OCR profile
+- [ ] Clear and measure the bounded encoder profile
+- [ ] Clear and measure the bounded local speech profile

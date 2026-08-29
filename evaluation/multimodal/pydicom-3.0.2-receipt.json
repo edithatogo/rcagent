@@ -1,0 +1,41 @@
+{
+  "data_class": "generated_synthetic_only",
+  "elapsed_ms": 3.236,
+  "framework": "pydicom 3.0.2",
+  "limitations": [
+    "metadata and uncompressed synthetic pixels only",
+    "burned-in annotation is detected but not removed",
+    "no clinical interpretation, validation, or operational support claim"
+  ],
+  "network": "disabled_no_network_api_used",
+  "observations": {
+    "adversarial_file_rejected": true,
+    "burned_in_annotation_detected": true,
+    "clinical_interpretation": "disabled",
+    "direct_identifiers_removed": true,
+    "instance_numbers": [
+      1,
+      2
+    ],
+    "instances": 2,
+    "pixel_regions": [
+      {
+        "columns": 2,
+        "rows": 2
+      },
+      {
+        "columns": 2,
+        "rows": 2
+      }
+    ],
+    "quarantine_required": true,
+    "series_integrity": true
+  },
+  "passed": true,
+  "probe_sha256": "e032ce6ec2704035167e7508ecf59c1b4dac80a583c5065b65c869a823f20900",
+  "profile_id": "medical-imaging-research",
+  "receipt_sha256": "e90956734bb77f327aa281a48db8e9a7e57dc7bba2fc96d3e622d033e5377100",
+  "remote_code": "prohibited",
+  "schema_version": "1.0",
+  "telemetry": "none"
+}

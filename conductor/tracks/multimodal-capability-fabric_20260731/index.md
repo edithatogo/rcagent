@@ -1,6 +1,6 @@
 # Track 06: Multimodal Capability Fabric
 
-- **Status:** Decision blocked — adapter acquisition
+- **Status:** In progress — pydicom and WFDB synthetic ingestion admitted; remaining adapters pending
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#11](https://github.com/edithatogo/rcagent/issues/11)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)

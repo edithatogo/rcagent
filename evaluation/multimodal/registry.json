@@ -170,8 +170,8 @@
       "id": "medical-imaging-research",
       "modality": "image",
       "framework": "pydicom / Orthanc-compatible / MONAI",
-      "revision": "pydicom 3.0.2 and MONAI 1.6.0 observed 2026-08-29",
-      "licence": "MIT/Apache-2.0 candidates; Orthanc plugin terms separately reviewed",
+      "revision": "pydicom 3.0.2 admitted locally; MONAI 1.6.0 observed only on 2026-08-29",
+      "licence": "pydicom MIT plus embedded BSD-3-Clause notice; MONAI and Orthanc assets not admitted",
       "status": "contract_only",
       "governance": "research_disabled",
       "privacy": {
@@ -194,8 +194,8 @@
         ]
       },
       "lifecycle": {
-        "install": "not installable while research-disabled",
-        "discover": "explicit unsupported state",
+        "install": "isolated pydicom 3.0.2 environment; no MONAI or Orthanc assets",
+        "discover": "exact version, RECORD hash and synthetic receipt probe",
         "health_check": "synthetic de-identification fixture",
         "rollback": "disable and quarantine derivatives",
         "uninstall": "remove optional research environment",
@@ -211,11 +211,11 @@
       ],
       "knowledge_limits": "no embedded knowledge or clinical authority",
       "context_limit": "unmeasured until adapter admission",
-      "evaluation": "local synthetic contract probe only",
-      "runtime": "not installed",
+      "evaluation": "pydicom synthetic metadata, pixel, de-identification, series-integrity and adversarial-file probe passed; receipt pydicom-3.0.2-receipt.json",
+      "runtime": "CPython 3.12.13 isolated pydicom 3.0.2 environment",
       "quantisation": "not assessed",
-      "ram": "unmeasured",
-      "latency": "unmeasured",
+      "ram": "35,799,040 byte observed maximum RSS including interpreter startup",
+      "latency": "3.236 ms final in-probe receipt; 1.27 s observed process wall including interpreter startup",
       "regulatory": "no medical-device or clinical-validation claim",
       "contribution_point": "reproduce generic gaps with synthetic fixtures; upstream communication requires separate authority"
     },
@@ -223,8 +223,8 @@
       "id": "ecg-research",
       "modality": "signal",
       "framework": "WFDB",
-      "revision": "4.3.1 observed 2026-08-29",
-      "licence": "MIT",
+      "revision": "WFDB 4.3.1 admitted locally on 2026-08-29",
+      "licence": "MIT with exact transitive distribution inventory",
       "status": "contract_only",
       "governance": "research_disabled",
       "privacy": {
@@ -247,8 +247,8 @@
         ]
       },
       "lifecycle": {
-        "install": "not installable while research-disabled",
-        "discover": "explicit unsupported state",
+        "install": "isolated WFDB 4.3.1 environment with exact transitive inventory",
+        "discover": "exact version, distribution RECORD hashes and synthetic receipt probe",
         "health_check": "synthetic timestamp fixture",
         "rollback": "disable inference path",
         "uninstall": "remove optional research environment",
@@ -264,11 +264,11 @@
       ],
       "knowledge_limits": "no embedded knowledge or clinical authority",
       "context_limit": "unmeasured until adapter admission",
-      "evaluation": "local synthetic contract probe only",
-      "runtime": "not installed",
+      "evaluation": "WFDB synthetic record, annotation, timestamp, missing-lead and adversarial-header probe passed; receipt wfdb-4.3.1-receipt.json",
+      "runtime": "CPython 3.12.13 isolated WFDB 4.3.1 environment",
       "quantisation": "not assessed",
-      "ram": "unmeasured",
-      "latency": "unmeasured",
+      "ram": "77,070,336 byte observed maximum RSS including interpreter startup",
+      "latency": "13.775 ms final in-probe receipt; 4.35 s observed process wall including interpreter startup",
       "regulatory": "no medical-device or clinical-validation claim",
       "contribution_point": "reproduce generic gaps with synthetic fixtures; upstream communication requires separate authority"
     }
