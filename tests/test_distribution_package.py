@@ -24,6 +24,14 @@ def test_distribution_is_deterministic_and_self_describing(tmp_path: Path) -> No
     assert first.manifest["public_release"] is False
     assert first.manifest["telemetry"] == "none"
     assert first.manifest["network_required"] is False
+    assert first.manifest["data_classification"] == "public-only-no-clinical-or-employee-data"
+    assert first.manifest["third_party_content"] == "prohibited-unless-release-cleared"
+    assert first.manifest["approval_boundaries"] == [
+        "clinical",
+        "policy",
+        "legal",
+        "organisational",
+    ]
 
 
 def test_distribution_contains_only_portable_core_and_release_metadata(tmp_path: Path) -> None:
@@ -33,6 +41,7 @@ def test_distribution_contains_only_portable_core_and_release_metadata(tmp_path:
         names = set(archive.namelist())
         assert "rca-investigation/SKILL.md" in names
         assert "rca-investigation/LICENSE" in names
+        assert "rca-investigation/DISCLAIMER.md" in names
         assert "rca-investigation/distribution-manifest.json" in names
         assert "rca-investigation/sbom.cdx.json" in names
         assert not any(name.startswith("rca-investigation/.git") for name in names)
@@ -69,6 +78,7 @@ def test_distribution_refuses_destination_inside_portable_source(tmp_path: Path)
     skill.mkdir(parents=True)
     (skill / "SKILL.md").write_text("# Example\n", encoding="utf-8")
     (repository / "LICENSE").write_text("Apache License\n", encoding="utf-8")
+    (repository / "DISCLAIMER.md").write_text("Disclaimer\n", encoding="utf-8")
 
     with pytest.raises(ValueError, match="outside the portable source"):
         build_distribution(repository, skill / "dist", version="1.0.0")

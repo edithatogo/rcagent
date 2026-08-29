@@ -58,8 +58,13 @@ def build_distribution(
     destination.mkdir(parents=True, exist_ok=True)
 
     licence = repository / "LICENSE"
-    if not (skill_root / "SKILL.md").is_file() or not licence.is_file():
-        raise FileNotFoundError("portable skill or repository licence is missing")
+    disclaimer = repository / "DISCLAIMER.md"
+    if (
+        not (skill_root / "SKILL.md").is_file()
+        or not licence.is_file()
+        or not disclaimer.is_file()
+    ):
+        raise FileNotFoundError("portable skill, repository licence, or disclaimer is missing")
 
     files: list[tuple[str, bytes]] = []
     for path in sorted(skill_root.rglob("*")):
@@ -68,6 +73,7 @@ def build_distribution(
         if path.is_file():
             files.append((path.relative_to(skill_root).as_posix(), path.read_bytes()))
     files.append(("LICENSE", licence.read_bytes()))
+    files.append(("DISCLAIMER.md", disclaimer.read_bytes()))
 
     file_records = [
         {"path": name, "sha256": _sha256(payload), "size": len(payload)}
@@ -82,6 +88,9 @@ def build_distribution(
         "public_release": False,
         "network_required": False,
         "telemetry": "none",
+        "data_classification": "public-only-no-clinical-or-employee-data",
+        "third_party_content": "prohibited-unless-release-cleared",
+        "approval_boundaries": ["clinical", "policy", "legal", "organisational"],
         "files": file_records,
     }
     sbom = {
