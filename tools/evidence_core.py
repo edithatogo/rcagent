@@ -83,7 +83,8 @@ def validate_record(record: dict[str, Any]) -> list[str]:
         for key in ("from_id", "to_id"):
             if relationship.get(key) not in ids:
                 errors.append(f"relationships: unknown {key} {relationship.get(key)!r}")
-    for event in record.get("events", []):
+    previous_to_state: str | None = None
+    for event_index, event in enumerate(record.get("events", [])):
         if not isinstance(event, dict):
             continue
         actor_id = event.get("actor_role_id")
@@ -94,6 +95,13 @@ def validate_record(record: dict[str, Any]) -> list[str]:
         valid_non_state_event = from_state == to_state and event_type in NON_STATE_EVENTS
         if isinstance(from_state, str) and isinstance(to_state, str) and not (can_transition(from_state, to_state) or valid_non_state_event):
             errors.append(f"events: invalid transition {from_state!r} -> {to_state!r}")
+        if previous_to_state is not None and from_state != previous_to_state:
+            errors.append(
+                f"events[{event_index}]: discontinuous history; "
+                f"expected from_state {previous_to_state!r}, got {from_state!r}"
+            )
+        if isinstance(to_state, str):
+            previous_to_state = to_state
         for evidence_id in event.get("evidence_ids", []):
             if evidence_id not in ids:
                 errors.append(f"events: unknown evidence_id {evidence_id!r}")
@@ -173,10 +181,14 @@ def append_audit_receipt(receipts: list[dict[str, Any]], event: dict[str, Any]) 
     return receipt
 
 
-def verify_audit_receipts(receipts: list[dict[str, Any]]) -> list[str]:
+def verify_audit_receipts(receipts: list[Any]) -> list[str]:
     errors: list[str] = []
     previous: str | None = None
     for index, receipt in enumerate(receipts):
+        if not isinstance(receipt, dict):
+            errors.append(f"receipts[{index}]: receipt must be an object")
+            previous = None
+            continue
         payload = {"sequence": index + 1, "previous_hash": previous, "event": receipt.get("event")}
         expected = fingerprint(payload)
         if receipt.get("sequence") != index + 1:
