@@ -1,6 +1,6 @@
 # Track 07: Retrieval and Knowledge System
 
-- **Status:** In progress — synthetic/public deterministic retrieval contracts only
+- **Status:** Completed — synthetic/public deterministic retrieval contracts; optional capabilities fail closed
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#12](https://github.com/edithatogo/rcagent/issues/12)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)
@@ -23,4 +23,5 @@
 - [Implementation Plan](./plan.md)
 - [Metadata](./metadata.json)
 - [SourceRight Adapter Fit-Gap](./sourceright-adapter-plan.md)
+- [Completion Evidence](./evidence/completion-20260829.md)
 - [Portfolio Roadmap](../../roadmap.md)
