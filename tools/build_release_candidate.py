@@ -62,7 +62,7 @@ def build_release_candidate(
     validate_release_inventory(
         repository,
         repository
-        / f"conductor/tracks/distribution-registries-plugins_20260731/evidence/release-rights-inventory-{version}.json",
+        / f"conductor/archive/distribution-registries-plugins_20260731/evidence/release-rights-inventory-{version}.json",
     )
     if destination.exists() and any(destination.iterdir()):
         raise FileExistsError("release candidate destination must be empty")

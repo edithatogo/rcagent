@@ -4,7 +4,19 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
-TRACK = ROOT / "conductor/tracks/distribution-registries-plugins_20260731/evidence"
+TRACK_ROOT = ROOT / "conductor/archive/distribution-registries-plugins_20260731"
+TRACK = TRACK_ROOT / "evidence"
+
+
+def test_metadata_gate_evidence_paths_resolve() -> None:
+    metadata = json.loads((TRACK_ROOT / "metadata.json").read_text())
+    for gate in metadata["gates"]:
+        evidence = Path(gate["evidence"])
+        if evidence.is_absolute() or evidence.parts[0] == "..":
+            target = (TRACK_ROOT / evidence).resolve()
+        else:
+            target = TRACK_ROOT / evidence
+        assert target.exists(), f"missing gate evidence for {gate['id']}: {evidence}"
 
 
 def test_route_assessment_has_complete_current_fields_and_no_universal_registry_claim() -> None:
