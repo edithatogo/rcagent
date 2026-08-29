@@ -136,7 +136,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 5: Run pilot baselines
 
-- [!] Task: Implement the phase scope — deterministic baseline `7a7257e`; manifest fix `b954a33`; local comparator pilot pending commit
+- [!] Task: Implement the phase scope — deterministic baseline `7a7257e`; manifest fix `b954a33`; local comparator pilot `429bf7c`
   - [x] Run deterministic and retrieval-only baselines before generative models
   - [x] Run representative small, medium, and larger generic-model comparators — approved decision `20260829-002-track05-comparator-staging`; exact-revision synthetic-only receipt `evaluation/benchmark/results/local-comparators-v1.json`
   - [!] Measure repeated-run variance, human agreement, device feasibility, and failure modes — model determinism, latency and failures measured; human agreement remains unobserved pending authorised raters
