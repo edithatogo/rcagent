@@ -121,7 +121,7 @@
       "compatibility_window": "benchmark schema 1.0 and registry 0.1.x; exact observed candidate versions and limitations recorded in evaluation/benchmark/registry.json",
       "safe_fallback": "run the network-disabled deterministic suite, retain canonical JSON receipts, exclude pending jurisdictions and unadmitted adapters, and block promotion on any privacy or safety failure",
       "replacement_path": "replace optional framework adapters behind the registry contract; preserve fixture hashes, raw receipts, legacy mappings, and the dependency-free deterministic runner",
-      "evidence": "conductor/tracks/benchmark-evaluation-harness_20260731/evidence/fit-gap-20260829.md",
+      "evidence": "conductor/archive/benchmark-evaluation-harness_20260731/evidence/fit-gap-20260829.md",
       "project_owned_gap": "healthcare incident cases, evidence and citation rubrics, privacy and clinical-safety hard gates, and device profiles"
     },
     {
