@@ -138,6 +138,14 @@ def test_lifecycle_delete_export_backup_and_restore(tmp_path: Path) -> None:
         LexicalIndex(database, compartment="governed_private")
     index.rebuild(admitted_manifest())
     assert index.search("uncertainty")["results"][0]["unit_id"] == "policy-current"
+    before_invalid_rebuild = index.deterministic_export()
+    audit_before_invalid_rebuild = index.lifecycle_receipt()
+    invalid = deepcopy(admitted_manifest())
+    invalid["units"][0]["checksum"] = "sha256:" + "0" * 64
+    with pytest.raises(ValueError, match="checksum mismatch"):
+        index.rebuild(invalid)
+    assert index.deterministic_export() == before_invalid_rebuild
+    assert index.lifecycle_receipt() == audit_before_invalid_rebuild
     index.supersede("policy-current")
     assert index.search("uncertainty")["results"] == []
     assert index.search("uncertainty", filters={"status": "superseded"})["results"]
@@ -410,6 +418,26 @@ def test_fail_closed_validator_and_lifecycle_diagnostics(tmp_path: Path) -> None
     assert "duplicate screening identifier" in errors
     assert "study-quality record is incomplete" in errors
     assert "unavailable SourceRight boundary is not bound to the clean pin" in errors
+
+    malformed = deepcopy(receipt)
+    malformed.update(
+        {
+            "results": ["not-an-object"],
+            "screening": "not-an-array",
+            "study_quality": ["not-an-object"],
+            "sourceright": [],
+            "claim_links": {},
+        }
+    )
+    malformed["receipt_sha256"] = canonical_hash(
+        {key: value for key, value in malformed.items() if key != "receipt_sha256"}
+    )
+    malformed_errors = validate_literature_receipt(malformed)
+    assert "SourceRight receipt must be an object" in malformed_errors
+    assert "incomplete exact reference metadata" in malformed_errors
+    assert "literature screening must be an array" in malformed_errors
+    assert "study-quality record is incomplete" in malformed_errors
+    assert "claim_links must be an array" in malformed_errors
 
 
 def test_assurance_rejects_each_bound_contract() -> None:

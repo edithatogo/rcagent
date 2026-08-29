@@ -44,6 +44,10 @@ def content_checksum(content: str) -> str:
     return "sha256:" + hashlib.sha256(content.encode()).hexdigest()
 
 
+def byte_checksum(content: bytes) -> str:
+    return "sha256:" + hashlib.sha256(content).hexdigest()
+
+
 def instruction_markers(value: Any) -> list[str]:
     raw = unicodedata.normalize(
         "NFKC", json.dumps(value, sort_keys=True, ensure_ascii=False).lower()
@@ -179,36 +183,39 @@ class LexicalIndex:
         if manifest["compartment"] != self.compartment:
             raise ValueError("index compartment mismatch")
         with self.connection:
-            for unit in manifest["units"]:
-                self.connection.execute(
-                    "DELETE FROM units WHERE id = ? AND compartment = ?",
-                    (unit["id"], self.compartment),
-                )
-                flags = instruction_markers(
-                    {key: unit[key] for key in ("content", "source", "authority", "location")}
-                )
-                self.connection.execute(
-                    "INSERT INTO units VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    (
-                        unit["id"],
-                        unit["content"],
-                        unit["source"],
-                        unit["authority"],
-                        unit["jurisdiction"],
-                        unit["rights"],
-                        json.dumps(unit["rights_basis"], sort_keys=True),
-                        unit["version"],
-                        unit["timestamp"],
-                        json.dumps(unit["location"], sort_keys=True),
-                        json.dumps(unit["transformation"], sort_keys=True),
-                        unit["status"],
-                        unit["checksum"],
-                        unit["compartment"],
-                        unit["retention"],
-                        json.dumps(flags),
-                    ),
-                )
-                self._audit("ingest", unit["id"], unit)
+            self._ingest_validated(manifest)
+
+    def _ingest_validated(self, manifest: dict[str, Any]) -> None:
+        for unit in manifest["units"]:
+            self.connection.execute(
+                "DELETE FROM units WHERE id = ? AND compartment = ?",
+                (unit["id"], self.compartment),
+            )
+            flags = instruction_markers(
+                {key: unit[key] for key in ("content", "source", "authority", "location")}
+            )
+            self.connection.execute(
+                "INSERT INTO units VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    unit["id"],
+                    unit["content"],
+                    unit["source"],
+                    unit["authority"],
+                    unit["jurisdiction"],
+                    unit["rights"],
+                    json.dumps(unit["rights_basis"], sort_keys=True),
+                    unit["version"],
+                    unit["timestamp"],
+                    json.dumps(unit["location"], sort_keys=True),
+                    json.dumps(unit["transformation"], sort_keys=True),
+                    unit["status"],
+                    unit["checksum"],
+                    unit["compartment"],
+                    unit["retention"],
+                    json.dumps(flags),
+                ),
+            )
+            self._audit("ingest", unit["id"], unit)
 
     def _audit(self, action: str, unit_id: str | None, detail: Any) -> None:
         self.connection.execute(
@@ -326,10 +333,15 @@ class LexicalIndex:
             )
 
     def rebuild(self, manifest: dict[str, Any]) -> None:
+        errors = validate_manifest(manifest)
+        if errors:
+            raise ValueError("; ".join(errors))
+        if manifest["compartment"] != self.compartment:
+            raise ValueError("index compartment mismatch")
         with self.connection:
             self.connection.execute("DELETE FROM units WHERE compartment = ?", (self.compartment,))
             self._audit("rebuild", None, {"manifest_sha256": canonical_hash(manifest)})
-        self.ingest(manifest)
+            self._ingest_validated(manifest)
 
     def deterministic_export(self) -> list[dict[str, Any]]:
         rows = self.connection.execute(
@@ -367,9 +379,7 @@ class LexicalIndex:
         shutil.copy2(source, destination)
         restored = cls(destination, compartment=compartment)
         with restored.connection:
-            restored._audit(
-                "restore", None, {"source_sha256": content_checksum(source.read_bytes().hex())}
-            )
+            restored._audit("restore", None, {"source_sha256": byte_checksum(source.read_bytes())})
         return restored
 
 
@@ -396,7 +406,12 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
         errors.append("receipt hash mismatch")
     if receipt.get("schema_version") != "1.0":
         errors.append("invalid schema version")
-    sourceright = receipt.get("sourceright", {})
+    sourceright_value = receipt.get("sourceright", {})
+    if not isinstance(sourceright_value, dict):
+        errors.append("SourceRight receipt must be an object")
+        sourceright: dict[str, Any] = {}
+    else:
+        sourceright = sourceright_value
     if sourceright.get("status") not in {
         "succeeded",
         "unavailable",
@@ -407,41 +422,64 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
         errors.append("SourceRight success is not admitted without a checked Track07 execution")
     elif sourceright.get("status") == "unavailable" and not sourceright.get("diagnostic"):
         errors.append("unavailable SourceRight receipt lacks diagnostic")
+    results_value = receipt.get("results", [])
+    if not isinstance(results_value, list):
+        errors.append("literature results must be an array")
+        results: list[Any] = []
+    else:
+        results = results_value
     if any(
-        not {"title", "authors", "year", "identifier", "source"} <= item.keys()
-        for item in receipt.get("results", [])
+        not isinstance(item, dict)
+        or not {"title", "authors", "year", "identifier", "source"} <= item.keys()
+        or not isinstance(item.get("identifier"), str)
+        for item in results
     ):
         errors.append("incomplete exact reference metadata")
     if receipt.get("network") != "disabled" or receipt.get("private_data") is not False:
         errors.append("literature execution boundary mismatch")
-    if not isinstance(receipt.get("query"), str) or not receipt["query"].strip():
+    if not isinstance(receipt.get("query"), str) or not str(receipt.get("query", "")).strip():
         errors.append("literature query must be non-empty")
-    if not isinstance(receipt.get("provider"), str) or not receipt["provider"].strip():
+    if not isinstance(receipt.get("provider"), str) or not str(receipt.get("provider", "")).strip():
         errors.append("literature provider must be non-empty")
     try:
         date.fromisoformat(str(receipt.get("date", "")))
     except ValueError:
         errors.append("literature date must be ISO YYYY-MM-DD")
-    identifiers = [item.get("identifier") for item in receipt.get("results", [])]
+    identifiers = [item.get("identifier") for item in results if isinstance(item, dict)]
     if len(identifiers) != len(set(identifiers)):
         errors.append("duplicate literature identifier")
-    screened = {item.get("identifier") for item in receipt.get("screening", [])}
+    screening_value = receipt.get("screening", [])
+    if not isinstance(screening_value, list):
+        errors.append("literature screening must be an array")
+        screening: list[Any] = []
+    else:
+        screening = screening_value
+    screened = {item.get("identifier") for item in screening if isinstance(item, dict)}
     if screened != set(identifiers):
         errors.append("screening/result identifier mismatch")
-    if len(receipt.get("screening", [])) != len(screened):
+    if len(screening) != len(screened):
         errors.append("duplicate screening identifier")
     if any(
-        not {"identifier", "decision", "reason"} <= item.keys()
+        not isinstance(item, dict)
+        or not {"identifier", "decision", "reason"} <= item.keys()
+        or not isinstance(item.get("identifier"), str)
         or item.get("decision") not in {"include", "exclude"}
         or not str(item.get("reason", "")).strip()
-        for item in receipt.get("screening", [])
+        for item in screening
     ):
         errors.append("screening decision is incomplete")
-    quality = receipt.get("study_quality", [])
+    quality_value = receipt.get("study_quality", [])
+    if not isinstance(quality_value, list):
+        errors.append("study quality must be an array")
+        quality: list[Any] = []
+    else:
+        quality = quality_value
     if {item.get("identifier") for item in quality if isinstance(item, dict)} != set(identifiers):
         errors.append("study-quality/result identifier mismatch")
     if any(
-        not {"identifier", "status", "reason"} <= item.keys()
+        not isinstance(item, dict)
+        or not {"identifier", "status", "reason"} <= item.keys()
+        or not isinstance(item.get("identifier"), str)
         or item.get("status") not in {"not_assessed", "assessed"}
         or not str(item.get("reason", "")).strip()
         for item in quality
@@ -452,12 +490,17 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
         or "no Track07" not in str(sourceright.get("diagnostic", ""))
     ):
         errors.append("unavailable SourceRight boundary is not bound to the clean pin")
-    referenced = {
-        item.get("identifier")
-        for field in ("study_quality", "claim_links", "conflicts")
-        for item in receipt.get(field, [])
-        if isinstance(item, dict) and item.get("identifier")
-    }
+    referenced: set[Any] = set()
+    for field in ("study_quality", "claim_links", "conflicts"):
+        records = receipt.get(field, [])
+        if not isinstance(records, list):
+            errors.append(f"{field} must be an array")
+            continue
+        referenced.update(
+            item.get("identifier")
+            for item in records
+            if isinstance(item, dict) and isinstance(item.get("identifier"), str)
+        )
     if not referenced <= set(identifiers):
         errors.append("literature record references unknown identifier")
     return errors
