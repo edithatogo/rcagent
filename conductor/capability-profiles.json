@@ -28,6 +28,7 @@
     {"id": "retrieval-lexical", "class": "optional", "status": "planned", "default": false, "owner_track": 7},
     {"id": "retrieval-vector", "class": "optional", "status": "planned", "default": false, "owner_track": 7},
     {"id": "documents-ocr", "class": "optional", "status": "planned", "default": false, "owner_track": 6},
+    {"id": "encoders-local", "class": "optional", "status": "planned", "default": false, "owner_track": 6},
     {"id": "speech-local", "class": "optional", "status": "planned", "default": false, "owner_track": 6},
     {"id": "medical-imaging-research", "class": "research-only", "status": "planned", "default": false, "owner_track": 6},
     {"id": "ecg-research", "class": "research-only", "status": "planned", "default": false, "owner_track": 6},
