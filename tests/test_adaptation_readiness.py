@@ -139,27 +139,27 @@ def test_readiness_records_invalid_inputs_without_raising() -> None:
 
 
 def test_safe_non_weight_proposal_is_dry_run_only() -> None:
-    assert validate_experiment_proposal(proposal(), readiness(), registry=registry(), dataset=dataset(), dependencies=dependencies()) == []
+    assert validate_experiment_proposal(proposal(), readiness(), registry=registry(), dataset=dataset(), dependencies=dependencies(), root=ROOT) == []
 
 
 def test_proposal_rejects_weight_update_execution_private_remote_and_forgery() -> None:
     value = proposal("weight_update")
     value.update(data_class="governed_private", base_revision="model", framework_revision="main", compute_budget="paid", network="internet", telemetry="wandb", remote_code=True, execute=True, readiness_sha256="0"*64, rollback=[], stop_conditions=[])
-    errors = validate_experiment_proposal(value, readiness(), registry=registry(), dataset=dataset(), dependencies=dependencies())
+    errors = validate_experiment_proposal(value, readiness(), registry=registry(), dataset=dataset(), dependencies=dependencies(), root=ROOT)
     assert "weight-affecting experiment is blocked" in errors
     assert "experiment execution is not authorised" in errors
     assert "proposal is not bound to the negative readiness receipt" in errors
 
 
 def test_proposal_rejects_non_object_unknown_level_and_fields() -> None:
-    assert validate_experiment_proposal([], {}, registry=registry(), dataset=dataset(), dependencies=dependencies()) == ["experiment proposal must be an object"]
+    assert validate_experiment_proposal([], {}, registry=registry(), dataset=dataset(), dependencies=dependencies(), root=ROOT) == ["experiment proposal must be an object"]
     value = proposal()
     value.update(level="unknown", extra=True)
-    assert validate_experiment_proposal(value, readiness(), registry=registry(), dataset=dataset(), dependencies=dependencies())
+    assert validate_experiment_proposal(value, readiness(), registry=registry(), dataset=dataset(), dependencies=dependencies(), root=ROOT)
 
 
 def test_rejection_card_proves_no_artefact_or_release() -> None:
-    card = build_rejection_card(readiness(), dataset(), registry=registry(), dependencies=dependencies(), evidence_matrix=evidence_matrix())
+    card = build_rejection_card(readiness(), dataset(), registry=registry(), dependencies=dependencies(), evidence_matrix=evidence_matrix(), root=ROOT)
     assert card["artefact_status"] == "no_adapted_artefact_created"
     assert card["training_executed"] is False
     assert card["release_performed"] is False
@@ -171,11 +171,11 @@ def test_rejection_card_rejects_forged_positive_or_invalid_dataset() -> None:
     positive = readiness()
     positive["ready"] = True
     with pytest.raises(ValueError, match="negative readiness"):
-        build_rejection_card(positive, dataset(), registry=registry(), dependencies=dependencies(), evidence_matrix=evidence_matrix())
+        build_rejection_card(positive, dataset(), registry=registry(), dependencies=dependencies(), evidence_matrix=evidence_matrix(), root=ROOT)
     bad = dataset()
     bad["private_data"] = True
     with pytest.raises(ValueError, match="valid generated-synthetic"):
-        build_rejection_card(readiness(), bad, registry=registry(), dependencies=dependencies(), evidence_matrix=evidence_matrix())
+        build_rejection_card(readiness(), bad, registry=registry(), dependencies=dependencies(), evidence_matrix=evidence_matrix(), root=ROOT)
 
 
 def test_dependency_manifest_rejects_hash_path_and_claim_forgery() -> None:
@@ -222,21 +222,48 @@ def test_dependency_manifest_rejects_bad_claim_paths_and_receipt_locations() -> 
     assert "claims[1] hash or path mismatched" in errors
 
 
+def test_dependency_manifest_rejects_intermediate_symlink(tmp_path: Path) -> None:
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "receipt.md").write_text("forged")
+    track_dir = tmp_path / "conductor/archive/benchmark-evaluation-harness_20260731"
+    track_dir.mkdir(parents=True)
+    (track_dir / "linked").symlink_to(outside, target_is_directory=True)
+    value = dependencies()
+    value["dependencies"][0]["receipt_path"] = "conductor/archive/benchmark-evaluation-harness_20260731/linked/receipt.md"
+    assert "dependencies[0] receipt path is invalid" in validate_dependency_manifest(value, tmp_path)
+
+
 def test_readiness_receipt_rejects_tampering_and_wrong_input_binding() -> None:
     value = readiness()
     value["ready"] = True
-    assert validate_readiness_receipt(value, registry=registry(), dataset=dataset(), dependencies=dependencies())
+    assert validate_readiness_receipt(value, registry=registry(), dataset=dataset(), dependencies=dependencies(), root=ROOT)
     other_registry = registry()
     other_registry["comparators"] = [{"id": "forged"}]
     assert "readiness registry_sha256 binding mismatched" in validate_readiness_receipt(
-        readiness(), registry=other_registry, dataset=dataset(), dependencies=dependencies()
+        readiness(), registry=other_registry, dataset=dataset(), dependencies=dependencies(), root=ROOT
     )
-    assert validate_readiness_receipt([], registry=registry(), dataset=dataset(), dependencies=dependencies()) == ["readiness receipt must be an object"]
+    assert validate_readiness_receipt([], registry=registry(), dataset=dataset(), dependencies=dependencies(), root=ROOT) == ["readiness receipt must be an object"]
     value = readiness()
     value.update(extra=True, model_downloaded=True)
-    errors = validate_readiness_receipt(value, registry=registry(), dataset=dataset(), dependencies=dependencies())
+    errors = validate_readiness_receipt(value, registry=registry(), dataset=dataset(), dependencies=dependencies(), root=ROOT)
     assert "readiness receipt fields are invalid" in errors
     assert "readiness model_downloaded must be false" in errors
+
+
+def test_consumers_reject_self_consistent_receipt_bound_to_invalid_inputs() -> None:
+    bad_registry = registry()
+    bad_registry["policy"]["training"] = True
+    forged = assess_readiness(bad_registry, dataset(), dependencies(), ROOT)
+    errors = validate_readiness_receipt(forged, registry=bad_registry, dataset=dataset(), dependencies=dependencies(), root=ROOT)
+    assert "bound registry is invalid" in errors
+    value = proposal()
+    value["readiness_sha256"] = forged["receipt_sha256"]
+    assert "proposal is not bound to the negative readiness receipt" in validate_experiment_proposal(
+        value, forged, registry=bad_registry, dataset=dataset(), dependencies=dependencies(), root=ROOT
+    )
+    with pytest.raises(ValueError, match="negative readiness"):
+        build_rejection_card(forged, dataset(), registry=bad_registry, dependencies=dependencies(), evidence_matrix=evidence_matrix(), root=ROOT)
 
 
 def test_evidence_matrix_is_complete_null_and_hash_bound() -> None:
@@ -254,20 +281,24 @@ def test_evidence_matrix_is_complete_null_and_hash_bound() -> None:
     assert "evidence matrix readiness binding mismatched" in errors
     assert "unexecuted evidence matrix metrics must be null" in errors
     assert "evidence matrix limitations are invalid" in errors
+    value = evidence_matrix()
+    value["approaches"][0]["state"] = "executed_supported"
+    value["receipt_sha256"] = canonical_hash({key: item for key, item in value.items() if key != "receipt_sha256"})
+    assert "evidence matrix approaches are incomplete" in validate_evidence_matrix(value, readiness())
 
 
 def test_rejection_card_rejects_invalid_evidence_matrix() -> None:
     bad_matrix = evidence_matrix()
     bad_matrix["metrics"]["quality"] = 1
     with pytest.raises(ValueError, match="valid negative evidence matrix"):
-        build_rejection_card(readiness(), dataset(), registry=registry(), dependencies=dependencies(), evidence_matrix=bad_matrix)
+        build_rejection_card(readiness(), dataset(), registry=registry(), dependencies=dependencies(), evidence_matrix=bad_matrix, root=ROOT)
 
 
 def test_proposal_rejects_unsafe_content_bad_identifier_and_seed() -> None:
     value = proposal()
     value.update(experiment_id="human@example.com", seed=True)
     value["rollback"] = ["https://example.invalid?token=secret"]
-    errors = validate_experiment_proposal(value, readiness(), registry=registry(), dataset=dataset(), dependencies=dependencies())
+    errors = validate_experiment_proposal(value, readiness(), registry=registry(), dataset=dataset(), dependencies=dependencies(), root=ROOT)
     assert "experiment_id must be an opaque synthetic identifier" in errors
     assert "experiment seed is invalid" in errors
     assert "experiment rollback contains unsafe content" in errors

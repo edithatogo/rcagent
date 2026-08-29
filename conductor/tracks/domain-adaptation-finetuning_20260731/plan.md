@@ -54,7 +54,7 @@ Checked items record completion of the bounded assessment, contract, or stop-pat
 ## Phase 1: Establish adaptation readiness
 
 - [x] Task: Implement the phase scope
-  - [x] Define the target task, baseline gap, minimum meaningful improvement, risks, users, and rollback
+  - [x] Assess target-task readiness; record target task, users, minimum meaningful improvement, and target-specific risks as not defined, so the pre-experiment stop disposition applies
   - [x] Verify benchmark maturity, data need, rights, privacy, compute, licence, and maintenance capacity
   - [x] Prefer deterministic, retrieval, prompting, and adapter changes before weight updates
   - [x] Require an owner decision for any private data, spend, licence exception, or release
@@ -97,7 +97,7 @@ Checked items record completion of the bounded assessment, contract, or stop-pat
 
 - [x] Task: Implement the phase scope
   - [x] Define collection, rights, consent, purpose, minimisation, de-identification, lineage, and deletion
-  - [x] Create generated-synthetic validator fixtures for train, validation, held-out, challenge, and contamination-control split contracts; admit no training dataset
+  - [x] Define empty generated-synthetic train, validation, held-out, challenge, and contamination-control split contract slots; create no fixtures and admit no training dataset
   - [x] Assess representativeness, label reliability, leakage, bias, and hidden policy signals
   - [x] Record the data-card requirements as not reached and create a hash-bound, unmaterialised dataset-contract manifest
 
@@ -122,7 +122,7 @@ Checked items record completion of the bounded assessment, contract, or stop-pat
   - [x] Evaluate the run-lineage gate; use no tracker because no experiment is authorised or executed
   - [x] Apply the readiness stop rule before LoRA or other parameter-efficient training; no framework is selected and no training runs
   - [x] Record the dry-run contract, negative readiness receipt, exact dependency hashes, zero compute, and absence of base revisions or intermediate artefacts
-  - [x] Stop experiments early for privacy, safety, instability, or non-material gains
+  - [x] Apply the pre-experiment readiness stop gate; no experiment starts and no privacy, safety, instability, or gain condition is observed
 
 - [x] Task: Validate the phase deliverables
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
