@@ -111,16 +111,12 @@ def test_distribution_rejects_missing_inputs_and_symlinks(tmp_path: Path) -> Non
         build_distribution(repository, tmp_path / "symlink-dist", version="1.0.0")
 
 
-def test_distribution_binds_exact_release_revision(tmp_path: Path) -> None:
-    original = distribution_module.verify_release_source
-    original_payloads = distribution_module.verify_release_payloads
-    distribution_module.verify_release_source = lambda *_args, **_kwargs: None
-    distribution_module.verify_release_payloads = lambda *_args, **_kwargs: None
-    try:
-        result = build_distribution(ROOT, tmp_path / "valid", version="0.1.0", source_revision="a" * 40)
-    finally:
-        distribution_module.verify_release_source = original
-        distribution_module.verify_release_payloads = original_payloads
+def test_distribution_binds_exact_release_revision(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(distribution_module, "verify_release_source", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(distribution_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
+    result = build_distribution(ROOT, tmp_path / "valid", version="0.1.0", source_revision="a" * 40)
     assert result.manifest["source_revision"] == "a" * 40
     assert result.manifest["source"] == "https://github.com/edithatogo/rcagent"
     with pytest.raises(ValueError, match="full Git commit"):

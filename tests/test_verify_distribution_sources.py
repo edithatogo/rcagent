@@ -13,9 +13,16 @@ def _valid(url: str) -> tuple[str, bytes]:
 def test_source_verifier_emits_hash_bound_receipt() -> None:
     value = verify_sources(fetch=_valid, retrieved_at="2026-08-29T00:00:00Z")
     assert value["retrieved_at"] == "2026-08-29T00:00:00Z"
-    assert len(value["sources"]) == len(SOURCES)
-    assert all(record["status"] == "verified" for record in value["sources"])
-    assert all(len(record["content_sha256"]) == 64 for record in value["sources"])
+    sources = value["sources"]
+    assert isinstance(sources, list)
+    assert len(sources) == len(SOURCES)
+    assert all(isinstance(record, dict) and record["status"] == "verified" for record in sources)
+    assert all(
+        isinstance(record, dict)
+        and isinstance(record["content_sha256"], str)
+        and len(record["content_sha256"]) == 64
+        for record in sources
+    )
 
 
 def test_source_verifier_fails_closed_on_network_or_marker_drift() -> None:
