@@ -511,7 +511,12 @@ def recommendation_matrix(registry: dict[str, Any], discovery: dict[str, Any], *
         "date": date,
         "scope": "internal_non_operational_recommendation",
         "rows": rows,
-        "agent_agreement": "pending_panel",
+        "agent_agreement": {
+            "status": "unanimous_accept",
+            "reviewed_revision": "8000b2c",
+            "roles": ["acceptance", "security_privacy", "lifecycle_archive"],
+            "human_agreement": False,
+        },
         "human_agreement": False,
         "limitations": [
             "No model was downloaded or executed by Track 08.",
