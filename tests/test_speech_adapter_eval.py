@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import json
 from types import SimpleNamespace
 
 import pytest
 
 from tools.speech_adapter_eval import (
     interface_receipt,
+    main,
     normalise_faster_whisper,
     normalise_whisper_cpp,
     verify,
@@ -90,3 +92,23 @@ def test_tampered_speech_receipt_is_rejected() -> None:
     receipt["supported"] = True
     assert "receipt hash mismatch" in verify(receipt)
     assert "support boundary mismatch" in verify(receipt)
+
+
+def test_invalid_numeric_segment_and_privacy_tamper_fail() -> None:
+    with pytest.raises(ValueError, match="numeric start and end"):
+        normalise_faster_whisper([{"start": "bad", "end": 1, "text": "x"}])
+    receipt = interface_receipt("whisper.cpp", _cpp_outputs())
+    receipt["private_audio"] = True
+    assert "privacy boundary mismatch" in verify(receipt)
+
+
+def test_cli_writes_and_prints_receipts(monkeypatch, tmp_path, capsys) -> None:
+    source = tmp_path / "outputs.json"
+    source.write_text(json.dumps(_cpp_outputs()), encoding="utf-8")
+    output = tmp_path / "receipt.json"
+    monkeypatch.setattr("sys.argv", ["speech", "whisper.cpp", str(source), "--output", str(output)])
+    assert main() == 0
+    assert verify(json.loads(output.read_text(encoding="utf-8"))) == []
+    monkeypatch.setattr("sys.argv", ["speech", "whisper.cpp", str(source)])
+    assert main() == 0
+    assert '"supported": false' in capsys.readouterr().out

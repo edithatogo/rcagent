@@ -78,3 +78,12 @@ def test_tampered_receipt_is_rejected() -> None:
     receipt["backends"][0]["model_executed"] = True
     assert "receipt hash mismatch" in encoder_adapter_eval.verify(receipt)
     assert any("boundary invalid" in error for error in encoder_adapter_eval.verify(receipt))
+
+
+def test_cli_prints_and_non_synthetic_receipt_fails(monkeypatch, capsys) -> None:
+    monkeypatch.setattr(sys, "argv", ["encoder-adapter-eval"])
+    assert encoder_adapter_eval.main() == 0
+    assert '"data_class": "generated_synthetic_only"' in capsys.readouterr().out
+    receipt = encoder_adapter_eval.evaluate()
+    receipt["data_class"] = "private"
+    assert "data class is not synthetic" in encoder_adapter_eval.verify(receipt)
