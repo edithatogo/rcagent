@@ -4,6 +4,15 @@ from __future__ import annotations
 
 import subprocess
 from pathlib import Path
+from typing import Literal, overload
+
+
+@overload
+def _git(repository: Path, *args: str, text: Literal[True] = True) -> str: ...
+
+
+@overload
+def _git(repository: Path, *args: str, text: Literal[False]) -> bytes: ...
 
 
 def _git(repository: Path, *args: str, text: bool = True) -> str | bytes:
@@ -49,7 +58,7 @@ def verify_release_source(repository: Path, revision: str, paths: list[Path]) ->
         raise ValueError("release source paths contain uncommitted drift")
     for path, relative in zip(expanded, relative_paths, strict=True):
         try:
-            committed = bytes(_git(repository, "show", f"{revision}:{relative}", text=False))
+            committed = _git(repository, "show", f"{revision}:{relative}", text=False)
         except (OSError, subprocess.CalledProcessError) as error:
             raise ValueError(f"release input is absent from source revision: {relative}") from error
         if committed != path.read_bytes():
