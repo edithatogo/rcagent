@@ -63,7 +63,7 @@ The track cannot start until each hard dependency has a passing completion recei
 ## Later Phase Dependencies
 
 - [privacy-security-assurance_20260731](../../archive/privacy-security-assurance_20260731/index.md)
-- [nsw-health-jurisdiction-pack_20260731](../nsw-health-jurisdiction-pack_20260731/index.md)
+- [nsw-health-jurisdiction-pack_20260731](../../archive/nsw-health-jurisdiction-pack_20260731/index.md)
 
 These dependencies gate the affected integration or validation phase without needlessly blocking independent foundation work.
 

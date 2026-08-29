@@ -82,6 +82,7 @@
 9. Track 07 deterministic retrieval interfaces.
 10. Track 08 runtime discovery and dry-run controls.
 11. Track 09 interfaces and action loop.
+12. Track 10 adaptation readiness and negative-result closure.
 12. Track 11 distribution and release preflights.
 13. Track 10 adaptation governance and dry-run pipeline.
 14. Cross-cutting quality and portfolio reconciliation.
