@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "artifact_type": "research_thresholds",
+  "receipt_sha256": "edf8ac76891eb38ea19f4c54d3666e726045a5ff599aff74401a293e3ac52818",
+  "decision_id": "20260829-004-agent-panel-research-governance",
+  "scope": "synthetic_internal_non_operational_regression",
+  "status": "owner_approved",
+  "thresholds": {
+    "receipt_and_evidence_resolution": 1.0,
+    "hard_gate_conflicts_max": 0,
+    "raw_agent_panel_agreement_min": 0.8,
+    "ordinal_agent_panel_alpha_min": 0.67
+  },
+  "current_observation": {
+    "panel_receipt": "results/agent-panel-v1.json",
+    "raw_agent_panel_agreement": 0.703704,
+    "ordinal_agent_panel_alpha": 0.575597,
+    "panel_scored_gate_conflicts": 0,
+    "panel_gate_coverage_complete": false,
+    "deterministic_hard_gate_evidence": "results/hard-gate-evidence-v1.json",
+    "threshold_pass": false,
+    "comparator_disposition": "unsupported"
+  },
+  "failure_effect": "Preserve the negative result, narrow claims, clarify the rubric prospectively, or keep the candidate unsupported. Do not lower a threshold retrospectively.",
+  "claim_boundary": "These thresholds do not establish model promotion, clinical validity, legal or policy applicability, cultural authority, organisational approval, deployment suitability, operational acceptance, or external publication approval."
+}

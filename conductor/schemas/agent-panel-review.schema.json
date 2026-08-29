@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/edithatogo/rcagent/conductor/schemas/agent-panel-review.schema.json",
+  "title": "Agent-panel benchmark review submission",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "reviewer_id", "reviewer_class", "role", "context_isolation", "agent_revision", "tools", "network", "correlated_error_limitations", "input_hashes", "ratings", "overall_recommendation"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "reviewer_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+    "reviewer_class": {"const": "agent"},
+    "role": {"enum": ["reproducibility_rater", "heterogeneous_challenger"]},
+    "context_isolation": {"const": "blind_no_peer_outputs"},
+    "agent_revision": {"type": "string", "minLength": 1},
+    "tools": {"type": "array", "items": {"type": "string"}},
+    "network": {"enum": ["not_used", "disabled"]},
+    "correlated_error_limitations": {"type": "string", "minLength": 1},
+    "input_hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rubric_sha256", "comparator_file_sha256", "comparator_receipt_sha256", "fixtures_sha256"],
+      "properties": {
+        "rubric_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "comparator_file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "comparator_receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "fixtures_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "ratings": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["model_id", "criteria", "abstain", "uncertainty", "hard_gate_flags"],
+        "properties": {
+          "model_id": {"type": "string"},
+          "criteria": {
+            "type": "object",
+            "minProperties": 9,
+            "maxProperties": 9,
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["score", "evidence", "rationale"],
+              "properties": {
+                "score": {"type": "integer", "minimum": 0, "maximum": 2},
+                "evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+                "rationale": {"type": "string", "minLength": 1}
+              }
+            }
+          },
+          "abstain": {"type": "boolean"},
+          "uncertainty": {"type": "string", "minLength": 1},
+          "hard_gate_flags": {"type": "array", "items": {"enum": ["privacy", "security", "cultural_safety", "clinical_safety", "harmful_output", "authority_boundaries"]}, "uniqueItems": true}
+        }
+      }
+    },
+    "overall_recommendation": {"enum": ["conditional", "experimental", "unsupported"]}
+  }
+}

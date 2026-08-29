@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "assessed_at": "2026-08-29T01:55:05Z",
+  "policy": "no-public-mutation-without-owner-decision",
+  "routes": [
+    {
+      "id": "git-source-installation",
+      "class": "first_party_source_route",
+      "operator": "repository host selected at release time",
+      "status": "local_dry_run_supported",
+      "verification": "pinned revision, archive checksum, isolated-copy conformance",
+      "telemetry": "host-dependent and must be reviewed at release time",
+      "rollback": "revert local install or select a prior pinned revision",
+      "public_gate": true
+    },
+    {
+      "id": "github-release",
+      "class": "first_party_hosted_release",
+      "operator": "GitHub",
+      "status": "decision_pending",
+      "verification": "current release, attestation, terms, and security review required",
+      "telemetry": "GitHub terms and privacy apply",
+      "rollback": "release-specific supersession or revocation plan",
+      "public_gate": true
+    },
+    {
+      "id": "agent-skills-discovery",
+      "class": "specification_and_discovery_ecosystem",
+      "operator": "must be verified for each route",
+      "status": "assessment_only",
+      "verification": "do not infer a universal official registry from specification conformance",
+      "telemetry": "route-specific review required",
+      "rollback": "remove the listing without changing the portable core",
+      "public_gate": true
+    },
+    {
+      "id": "claude-code-marketplace",
+      "class": "client_marketplace",
+      "operator": "must be reverified immediately before packaging or submission",
+      "status": "phase_dependency_pending",
+      "verification": "current manifest, client revision, terms, review, support, and removal tests required",
+      "telemetry": "client and marketplace-specific review required",
+      "rollback": "remove or deprecate the thin adapter listing",
+      "public_gate": true
+    },
+    {
+      "id": "openai-directory",
+      "class": "client_directory",
+      "operator": "must be reverified immediately before packaging or submission",
+      "status": "phase_dependency_pending",
+      "verification": "current build guidance, publisher, privacy, support, compatibility, and review evidence required",
+      "telemetry": "client and directory-specific review required",
+      "rollback": "withdraw or supersede only under an authorised directory action",
+      "public_gate": true
+    },
+    {
+      "id": "community-catalogue",
+      "class": "community",
+      "operator": "unverified",
+      "status": "unsuitable_until_trust_review",
+      "verification": "ownership, moderation, licence, supply chain, privacy, maintenance, and removal must pass",
+      "telemetry": "unknown",
+      "rollback": "do not submit while ownership or removal is unclear",
+      "public_gate": true
+    }
+  ]
+}

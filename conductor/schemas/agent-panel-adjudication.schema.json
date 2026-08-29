@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/edithatogo/rcagent/conductor/schemas/agent-panel-adjudication.schema.json",
+  "title": "Post-submission agent-panel adjudication",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "receipt_sha256", "review_mode", "adjudicator", "instructions_path", "instructions_sha256", "input_hashes", "owner_disposition", "source_receipt", "scores_changed", "dissent_preserved", "comparator_recommendation", "threshold_recommendation", "track_recommendation", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "review_mode": {"const": "post_submission_agent_adjudication"},
+    "adjudicator": {
+      "type": "object",
+      "required": ["reviewer_id", "reviewer_class", "role", "agent_revision", "tools", "network"],
+      "properties": {
+        "reviewer_class": {"const": "agent"},
+        "role": {"const": "post_submission_adjudicator"}
+      }
+    },
+    "instructions_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "scores_changed": {"const": false},
+    "dissent_preserved": {"const": true}
+  }
+}

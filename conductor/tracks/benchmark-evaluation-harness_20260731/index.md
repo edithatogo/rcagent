@@ -1,6 +1,6 @@
 # Track 05: Benchmark and Evaluation Harness
 
-- **Status:** New
+- **Status:** Completed — harness validated; all local comparators unsupported and non-promoted
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#10](https://github.com/edithatogo/rcagent/issues/10)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)
@@ -13,7 +13,7 @@
 
 ## Later Phase Dependencies
 
-- [nsw-health-jurisdiction-pack_20260731](../nsw-health-jurisdiction-pack_20260731/index.md)
+- [nsw-health-jurisdiction-pack_20260731](../../archive/nsw-health-jurisdiction-pack_20260731/index.md)
 
 ## Track Artefacts
 

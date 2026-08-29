@@ -88,6 +88,7 @@
     },
     {
       "track_id": "nsw-health-jurisdiction-pack_20260731",
+      "status": "adapt",
       "candidate_systems": [
         "ims+ and approved local incident systems",
         "NSW Health Policy Distribution System",
@@ -96,10 +97,17 @@
         "My Health Learning and approved SharePoint sources",
         "NSQHS standards and national guidance"
       ],
+      "selected_system": "Australian Commission national standards and frameworks plus the NSW Health Policy Distribution System, Queensland Health directives, and organisation-owned incident systems, exposed through versioned data-only jurisdiction profiles",
+      "dependency_class": "optional jurisdiction profiles over the locked evidence and privacy cores; organisation-owned incident systems remain enterprise authorities",
+      "compatibility_window": "jurisdiction registry schema 1.0; NSQHS second edition updated May 2021; National Model for Clinical Governance 2026; Australian Open Disclosure Framework June 2026; exact state-source versions recorded in the registry",
+      "safe_fallback": "retain the last verified snapshot, mark upstream unavailable or material drift review-required, invalidate affected receipts, and never silently change workflow behaviour or infer authority",
+      "replacement_path": "replace data-only mappings when authoritative issuers provide equivalent machine-readable versioned profiles; replace enterprise connectors without changing the generic core",
+      "evidence": "conductor/tracks/nsw-health-jurisdiction-pack_20260731/evidence/fit-gap-and-source-verification-20260829.md",
       "project_owned_gap": "versioned authority mapping, rights-safe workflow rules, policy drift, and portable jurisdiction adapters"
     },
     {
       "track_id": "benchmark-evaluation-harness_20260731",
+      "status": "adapt",
       "candidate_systems": [
         "Inspect AI and Inspect Evals",
         "EleutherAI Language Model Evaluation Harness",
@@ -108,10 +116,17 @@
         "pytest and property-based testing",
         "existing security and red-team evaluation tools"
       ],
+      "selected_system": "pytest and JSON Schema for the locked deterministic contract layer, with Inspect AI as the future primary model-evaluation adapter and LM Evaluation Harness, MLflow, and Ragas remaining optional until admitted",
+      "dependency_class": "locked core validation plus evaluation-development and optional adapters; no model, provider, telemetry, or enterprise dependency in the portable core",
+      "compatibility_window": "benchmark schema 1.0 and registry 0.1.x; exact observed candidate versions and limitations recorded in evaluation/benchmark/registry.json",
+      "safe_fallback": "run the network-disabled deterministic suite, retain canonical JSON receipts, exclude pending jurisdictions and unadmitted adapters, and block promotion on any privacy or safety failure",
+      "replacement_path": "replace optional framework adapters behind the registry contract; preserve fixture hashes, raw receipts, legacy mappings, and the dependency-free deterministic runner",
+      "evidence": "conductor/tracks/benchmark-evaluation-harness_20260731/evidence/fit-gap-20260829.md",
       "project_owned_gap": "healthcare incident cases, evidence and citation rubrics, privacy and clinical-safety hard gates, and device profiles"
     },
     {
       "track_id": "multimodal-capability-fabric_20260731",
+      "status": "adapt",
       "candidate_systems": [
         "Docling and maintained OCR engines",
         "Transformers, ONNX Runtime, Optimum, and OpenVINO",
@@ -119,6 +134,12 @@
         "pydicom, Orthanc, and MONAI",
         "WFDB"
       ],
+      "selected_system": "Framework-neutral capability and execution-disclosure contracts over assessed Docling, encoder, speech, DICOM/imaging and WFDB candidates",
+      "dependency_class": "optional and research-only adapters; no multimodal runtime dependency in the portable core",
+      "compatibility_window": "multimodal schema 1.0 and registry 0.1.x; observed candidates remain unsupported until exact adapter receipts pass",
+      "safe_fallback": "return explicit unsupported or research-disabled states with network, telemetry, remote code and clinical interpretation disabled",
+      "replacement_path": "replace each optional framework behind the versioned profile while preserving provenance and disclosure contracts",
+      "evidence": "conductor/tracks/multimodal-capability-fabric_20260731/evidence/fit-gap-20260829.md",
       "project_owned_gap": "capability profiles, execution disclosures, privacy routing, source-coordinate provenance, and clinical research gates"
     },
     {

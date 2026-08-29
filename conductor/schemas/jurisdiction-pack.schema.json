@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/edithatogo/rcagent/conductor/schemas/jurisdiction-pack.schema.json",
+  "title": "Safety Systems Workbench jurisdiction pack registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "registry_version", "retrieved_at", "system_boundaries", "packs", "sources", "rules", "artefacts", "drift_policy"],
+  "properties": {
+    "$schema": {"type": "string", "minLength": 1},
+    "schema_version": {"const": "1.0"},
+    "registry_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "retrieved_at": {"type": "string", "format": "date-time"},
+    "system_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["national", "AU-NSW", "AU-QLD"],
+      "properties": {
+        "national": {"type": "string", "minLength": 1},
+        "AU-NSW": {"type": "string", "minLength": 1},
+        "AU-QLD": {"type": "string", "minLength": 1}
+      }
+    },
+    "packs": {
+      "type": "array",
+      "minItems": 3,
+      "items": {"$ref": "#/$defs/pack"}
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/source"}
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/rule"}
+    },
+    "artefacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/artefact"}
+    },
+    "drift_policy": {"$ref": "#/$defs/driftPolicy"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pack_id", "jurisdiction", "inherits", "capability_profile", "status"],
+      "properties": {
+        "pack_id": {"$ref": "#/$defs/id"},
+        "jurisdiction": {"enum": ["national", "AU-NSW", "AU-QLD"]},
+        "inherits": {"type": ["string", "null"]},
+        "capability_profile": {"type": "string", "pattern": "^jurisdiction-"},
+        "status": {"enum": ["implemented", "blocked"]}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "jurisdiction", "tier", "issuer", "title", "document_id", "version", "authority_level", "status", "rights_status", "retrieved_at", "url", "checksum", "checksum_basis", "review_cadence_days", "source_class"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/id"},
+        "jurisdiction": {"enum": ["national", "AU-NSW", "AU-QLD", "local"]},
+        "tier": {"enum": ["baseline", "state", "local"]},
+        "issuer": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "document_id": {"type": ["string", "null"]},
+        "version": {"type": "string", "minLength": 1},
+        "published_at": {"type": ["string", "null"], "format": "date"},
+        "review_at": {"type": ["string", "null"], "format": "date"},
+        "replaces": {"type": "array", "items": {"type": "string"}},
+        "authority_level": {"enum": ["legislation", "regulation", "mandatory_policy", "accreditation_standard", "official_guidance", "explanatory", "local"]},
+        "status": {"enum": ["current", "under_review", "draft", "consultation", "superseded", "local", "advisory", "unavailable"]},
+        "rights_status": {"enum": ["link_only", "open_licensed", "public_official_no_republication_claim", "locally_supplied_restricted", "unknown"]},
+        "retrieved_at": {"type": "string", "format": "date-time"},
+        "url": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "checksum": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"},
+        "checksum_basis": {"enum": ["downloaded_bytes", "canonical_metadata", "not_available"]},
+        "review_cadence_days": {"type": "integer", "minimum": 1, "maximum": 366},
+        "source_class": {"enum": ["policy", "standard", "framework", "guideline", "legislation", "regulation", "system", "catalogue", "court"]},
+        "limitations": {"type": "string"}
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule_id", "jurisdiction", "source_ids", "authority_state", "requirement_level", "activation_status", "statement", "workflow", "human_review_required", "safeguards"],
+      "properties": {
+        "rule_id": {"$ref": "#/$defs/id"},
+        "jurisdiction": {"enum": ["national", "AU-NSW", "AU-QLD"]},
+        "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "authority_state": {"enum": ["binding", "mandatory", "advisory", "explanatory", "draft", "consultation", "local", "superseded"]},
+        "requirement_level": {"enum": ["must", "should", "may", "do_not_infer"]},
+        "activation_status": {"enum": ["active", "pending_owner_decision"]},
+        "decision_id": {"$ref": "#/$defs/id"},
+        "decision_status": {"enum": ["pending", "approved"]},
+        "statement": {"type": "string", "minLength": 1},
+        "workflow": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["event_type", "from_states", "to_state"],
+          "properties": {
+            "event_type": {"type": "string", "minLength": 1},
+            "from_states": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+            "to_state": {"type": "string", "minLength": 1},
+            "deadline": {"type": ["string", "null"]},
+            "authority_boundary": {"type": "string"},
+            "exception_path": {"type": "string"}
+          }
+        },
+        "human_review_required": {"type": "boolean"},
+        "safeguards": {"type": "array", "minItems": 1, "items": {"enum": ["open_disclosure", "consumer_family", "staff_support", "procedural_fairness", "conflict_of_interest", "cultural_safety", "systems_analysis", "effectiveness", "privacy", "no_privilege_inference"]}},
+        "uncertainty": {"type": ["string", "null"]}
+      }
+    },
+    "artefact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artefact_id", "jurisdiction", "title", "source_ids", "rights_status", "availability", "canonical_fields"],
+      "properties": {
+        "artefact_id": {"$ref": "#/$defs/id"},
+        "jurisdiction": {"enum": ["national", "AU-NSW", "AU-QLD", "local"]},
+        "title": {"type": "string", "minLength": 1},
+        "source_ids": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}},
+        "rights_status": {"enum": ["linked_only", "original", "generated", "locally_supplied_restricted"]},
+        "availability": {"enum": ["public", "enterprise_only", "local_only"]},
+        "canonical_fields": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "notes": {"type": "string"}
+      }
+    },
+    "driftPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schedule", "change_classes", "material_classes", "unavailable_upstream", "receipt_invalidation"],
+      "properties": {
+        "schedule": {"type": "string", "minLength": 1},
+        "change_classes": {"const": ["cosmetic", "guidance", "normative", "breaking"]},
+        "material_classes": {"const": ["guidance", "normative", "breaking"]},
+        "unavailable_upstream": {"const": "unavailable_not_passed"},
+        "receipt_invalidation": {"const": "affected_rules_and_compatibility_receipts_pending_human_review"}
+      }
+    }
+  }
+}

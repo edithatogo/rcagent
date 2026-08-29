@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "scope": "isolated_model_free_synthetic_only",
+  "python": "CPython 3.12.13 macOS arm64",
+  "policy": {
+    "network": "acquisition_only_then_disabled",
+    "telemetry": "none",
+    "remote_code": "prohibited",
+    "external_inference": false,
+    "redistribution": false,
+    "clinical_interpretation": false
+  },
+  "profiles": [
+    {
+      "id": "pydicom-3.0.2",
+      "environment": "/Volumes/PortableSSD/rcagent-adapter-envs/pydicom-3.0.2",
+      "packages": [
+        {"name": "pydicom", "version": "3.0.2", "record_sha256": "632d180083cfde7885440b40d7daf165a13d3aed7add3e704f0416145c3e87c0", "licence": "MIT plus embedded BSD-3-Clause dictionary notice", "licence_sha256": "39b3259cb15151df25167119087df1fef33624765e639af42447ba6fe86dada3"}
+      ],
+      "receipt": "../pydicom-3.0.2-receipt.json",
+      "uninstall": "Remove only /Volumes/PortableSSD/rcagent-adapter-envs/pydicom-3.0.2 after verifying it is not in use.",
+      "rollback": "Keep medical image interpretation disabled and revert registry runtime fields to not installed."
+    },
+    {
+      "id": "wfdb-4.3.1",
+      "environment": "/Volumes/PortableSSD/rcagent-adapter-envs/wfdb-4.3.1",
+      "packages": [
+        {"name":"aiohappyeyeballs","version":"2.7.1","record_sha256":"14263431f101aad85e690b74756640a356c3f311654f0db92305c7fd5fcfa75c","licence":"PSF-2.0"},
+        {"name":"aiohttp","version":"3.14.3","record_sha256":"26dc8198685849144dff2d19f9301372b114903889a0c90ba7661bbdc63b55e7","licence":"Apache-2.0 AND MIT"},
+        {"name":"aiosignal","version":"1.4.0","record_sha256":"b9a6cd07dac78298d856613e8140b7da26b20506ed07747802bd513bf9b3ea35","licence":"Apache-2.0"},
+        {"name":"attrs","version":"26.1.0","record_sha256":"6b0b326d4b4ee0fac27909ac7cbb066fc4bdf8e93d87031e27e770db059e5a04","licence":"MIT"},
+        {"name":"certifi","version":"2026.7.22","record_sha256":"cff9d243744c96445494c29abee3d592d0a6955d5504f4fbe034dce7aaf38490","licence":"MPL-2.0"},
+        {"name":"cffi","version":"2.1.1","record_sha256":"fd13d2109bbae56b32d631a562632643bf5a2e9c2019b0f7a90b6181ad860a7a","licence":"MIT-0"},
+        {"name":"charset-normalizer","version":"3.5.1","record_sha256":"d87f2c96e4729dffaf7026bfe9955278a8b0a689b39cffeb236c12621644e35c","licence":"MIT"},
+        {"name":"contourpy","version":"1.3.3","record_sha256":"45b3b4265a64190c65bc6b98e915e92a617583ae6eb5ed3f837f295da3bc354a","licence":"BSD-3-Clause"},
+        {"name":"cycler","version":"0.12.1","record_sha256":"cbcbee5f18d75bd4935199b135aa33c3ed62df14991110a35c428883798d7979","licence":"BSD-style matplotlib"},
+        {"name":"fonttools","version":"4.63.0","record_sha256":"43ae9ae221287094d3a65170edf84c450db2c434096def66af27c4790934dc46","licence":"MIT"},
+        {"name":"frozenlist","version":"1.8.0","record_sha256":"e8a81aedb662eb6d0586bdbd7d78c70ab4853bad46bd06ba303eb8144ecd2a21","licence":"Apache-2.0"},
+        {"name":"fsspec","version":"2026.7.0","record_sha256":"bf8970ef32f4fa1da4c23e55e648fbcd3980d3d67f14268a514a5973514fd2a0","licence":"BSD-3-Clause"},
+        {"name":"idna","version":"3.19","record_sha256":"a3c3d1dce8acb5b62f62be840dc4c77e9242e3f5ebceb46cadbd275af62c0442","licence":"BSD-3-Clause"},
+        {"name":"kiwisolver","version":"1.5.1","record_sha256":"0bc366d714ba47dafd947d80576cbc7ea8007dab54e7e1500c75cf4f8efd1b03","licence":"BSD-3-Clause"},
+        {"name":"matplotlib","version":"3.11.1","record_sha256":"799bbf91f25e51f6f8ad40439e64e86971510042e00224e5d820eb7e0052cc3e","licence":"PSF-derived matplotlib"},
+        {"name":"multidict","version":"6.7.1","record_sha256":"ec855bc522f72fd804a273e502d891f1c2ce30ec44ee37a8f11335aafb9cd09f","licence":"Apache-2.0"},
+        {"name":"numpy","version":"2.5.2","record_sha256":"21e21f527d2daaf23204c6026b5723e77271c95f87b8c3c3574f8369a2a2b7d8","licence":"BSD-3-Clause and bundled permissive notices"},
+        {"name":"packaging","version":"26.3","record_sha256":"1b8655965b0d83e9a067fd7f84b977bd1e117e0fb9f2874b2572781bdc9e2147","licence":"Apache-2.0 OR BSD-2-Clause"},
+        {"name":"pandas","version":"3.0.5","record_sha256":"247d1ec923d463ec1ce6a3f04887541a0660a5e34e2afbd70e1172565fd69e18","licence":"BSD-3-Clause"},
+        {"name":"pillow","version":"12.3.0","record_sha256":"45c037b8a45b62c77f1a01fe5895a67a77c9c3cb68634f80a0d7a5b060ac5f65","licence":"MIT-CMU"},
+        {"name":"propcache","version":"0.5.2","record_sha256":"b6895c7811e0c86235fb79506c067e515181b95ac8ac47499355e8e4a2c17af4","licence":"Apache-2.0"},
+        {"name":"pycparser","version":"3.0","record_sha256":"e752c5c64ce06f508a80e0edeef0c165df849587b829cb9a7b7bb22ac43b0c7e","licence":"BSD-3-Clause"},
+        {"name":"pyparsing","version":"3.3.2","record_sha256":"239325f438cc3542c4d936b77d4539132f7db3b83d55bf9b811db76cce83f0ee","licence":"MIT"},
+        {"name":"python-dateutil","version":"2.9.0.post0","record_sha256":"e15e868a50b9c4e71df17b31369843617780146ac5adb1bbfdcced0ebe501824","licence":"Apache-2.0 OR BSD-3-Clause"},
+        {"name":"requests","version":"2.34.2","record_sha256":"fc8c5216d0e865d815bd04cc240b5adc5d56f6c3dbe9aef3b4ea3b83d735bdfe","licence":"Apache-2.0"},
+        {"name":"scipy","version":"1.18.1","record_sha256":"d95b7aa2c03940de0bec301021a5753ff3577b5b7ce28e6342d59f9d8556258a","licence":"BSD-3-Clause and bundled permissive notices"},
+        {"name":"six","version":"1.17.0","record_sha256":"d16e50f347969b1e1919fb0c88bac4b9c644f5305bcfcfb00f72b646dbd4065d","licence":"MIT"},
+        {"name":"soundfile","version":"0.14.0","record_sha256":"32ca7c8447dfe723d95e058f23be4f9e82a8b8b836566237c2b26293d6f7f6d8","licence":"BSD-3-Clause"},
+        {"name":"typing-extensions","version":"4.16.0","record_sha256":"9e07fea845cac76293d927afa7157a14ecba39b318bc8af236b8de530b7656c1","licence":"PSF-2.0"},
+        {"name":"urllib3","version":"2.7.0","record_sha256":"4869c7ca2082c964b4e2bb8244deda15cfa069d93e4543d3a16eca6a63cbb81f","licence":"MIT"},
+        {"name":"wfdb","version":"4.3.1","record_sha256":"73c55524c10670cf029f2f5f4bfb53a125c220fa3f82eb95f6dc756a61db9230","licence":"MIT","licence_sha256":"12e06e4e62afe9a31864587484f78d511a7a3b5eb63de48b31f6997c0eeee474"},
+        {"name":"yarl","version":"1.24.5","record_sha256":"0baa0d24ed31ad21f1031628b98f82e5d3f761376eb09994fe99d507fba3eb99","licence":"Apache-2.0"}
+      ],
+      "receipt": "../wfdb-4.3.1-receipt.json",
+      "uninstall": "Remove only /Volumes/PortableSSD/rcagent-adapter-envs/wfdb-4.3.1 after verifying it is not in use.",
+      "rollback": "Keep signal interpretation disabled and revert registry runtime fields to not installed."
+    }
+  ],
+  "rights_boundary": "Licences are observed from installed distribution metadata and bundled licence files. No redistribution or warranty of third-party rights is made."
+}
