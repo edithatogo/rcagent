@@ -239,3 +239,9 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Refuse package output inside the portable source tree
   - [x] Add positive and negative regression tests
   - [x] Return unverified hosted-route, provenance, compatibility, and changelog claims to pending state
+
+- [x] Task: Enforce release disclaimers and public-data boundaries (`b8b2b7a`)
+  - [x] Bundle clinical, policy, legal, organisational-approval, privacy, rights, and release-status disclaimers
+  - [x] Declare public-only packaging and prohibit private clinical or employee data
+  - [x] Declare third-party-controlled content prohibited unless release-specific rights review passes
+  - [x] Add package-content and manifest regression tests

@@ -68,7 +68,7 @@ Respond exactly: `Approve bounded GitHub release after dependency closure`.
 ## Owner Decision
 
 - **Decision:** Approved. The owner stated: `I authorise public releases and registry/marketplace submissions.`
-- **Conditions:** For decision `20260829-004`, create the bounded GitHub release only after dependency closure and exact-candidate validation described above. Registry and marketplace authority is recorded in principle; execute only concrete, current, reviewable submissions that pass their applicable publisher, terms, privacy, support, compatibility, security, and rollback gates. No paid service, credential disclosure, unsupported claim, or bypass of a platform's review requirements is authorised.
+- **Conditions:** For decision `20260829-004`, create the bounded GitHub release only after dependency closure and exact-candidate validation described above. Registry and marketplace authority is recorded in principle; execute only concrete, current, reviewable submissions that pass their applicable publisher, terms, privacy, support, compatibility, security, and rollback gates. The owner further requires no third-party-controlled content and no private clinical or employee data in public artefacts, plus explicit clinical, policy, legal, and organisational-approval disclaimers. No paid service, credential disclosure, unsupported claim, or bypass of a platform's review requirements is authorised.
 - **Date:** 2026-08-29
 - **Recorded by:** Codex from the repository owner's explicit instruction
 

@@ -26,6 +26,12 @@ Fresh-context review added six negative release-identifier cases and one
 negative source-tree-output case in `a4a2c77`. The focused distribution suite
 now contains ten passing tests.
 
+Owner conditions added on 2026-08-29 require public artefacts to contain no
+third-party-controlled material and no private clinical or employee data, and
+to carry clinical, policy, legal, and organisational-approval disclaimers.
+Commit `b8b2b7a` bundles `DISCLAIMER.md` and adds machine-readable public-only,
+rights, and approval-boundary declarations to each local package.
+
 Repository governance validation passed after the fit-gap and registry records
 were added. Existing adapter contract tests cover isolated copies of the
 unmodified portable core for Codex, Claude Code, OpenCode, Cline, and Cursor.
@@ -50,6 +56,7 @@ fixed in `7655578`.
 - Current hosted marketplace and directory guidance was not established by the local package tests.
 - The registry assessment is provisional rather than a current-source matrix; exact hosted versions, terms, telemetry, maintenance, and deprecation evidence remain pending.
 - The archive does not yet satisfy the plan's complete changelog, source-revision provenance, and client-compatibility metadata claim.
+- The package controls express and test policy, but do not prove file-by-file third-party rights clearance or the absence of private data; an exact-candidate rights and public-data review remains pending.
 - No tag, GitHub release, attestation, signing event, upload, submission, or acceptance was performed.
 - Tracks 01, 03, 05, and 09 remain phase dependencies for later Track 11 validation.
 - Community catalogue ownership and removal guarantees remain unverified and unsuitable for submission.
