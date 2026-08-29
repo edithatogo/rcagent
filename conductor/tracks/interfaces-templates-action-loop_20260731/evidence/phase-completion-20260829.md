@@ -13,12 +13,12 @@ Scope: generated-synthetic, local, client-neutral, non-operational contracts
 
 ## Validation
 
-- `uv run pytest -q tests/test_interface_actions.py`: 37 passed.
+- `uv run pytest -q tests/test_interface_actions.py`: 40 passed.
 - `uv run ruff check tools/interface_actions.py tests/test_interface_actions.py`: passed.
 - `uv run ty check tools/interface_actions.py tests/test_interface_actions.py`: passed.
 - `uv run basedpyright tools/interface_actions.py tests/test_interface_actions.py`: passed.
 - `uv run python tools/validate_repository.py`: passed.
-- `uv run pytest -q`: 377 passed before the final authority/privacy rework; a fresh final full-suite run is required for the completion receipt.
+- `uv run pytest -q`: 384 passed in 54.69 seconds.
 - `uv run ruff check .`: 14 findings, all in the vendored SourceRight plugin and outside the Track 09 diff. Track-owned files pass.
 
 ## Negative states retained
