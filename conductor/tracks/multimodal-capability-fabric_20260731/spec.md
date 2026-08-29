@@ -53,7 +53,7 @@ requires a fit-gap record and an approved Architecture Decision Record.
 
 ## Hard Start Dependencies
 
-- [evidence-workflow-core_20260731](../evidence-workflow-core_20260731/index.md)
+- [evidence-workflow-core_20260731](../../archive/evidence-workflow-core_20260731/index.md)
 - [privacy-security-assurance_20260731](../../archive/privacy-security-assurance_20260731/index.md)
 
 The track cannot start until each hard dependency has a passing completion receipt, not merely a closed issue.

@@ -12,7 +12,7 @@
 
 ## Later Phase Dependencies
 
-- [evidence-workflow-core_20260731](../../tracks/evidence-workflow-core_20260731/index.md)
+- [evidence-workflow-core_20260731](../evidence-workflow-core_20260731/index.md)
 
 ## Track Artefacts
 

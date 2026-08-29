@@ -66,7 +66,7 @@
       "compatibility_window": "safety-work schema 1.0 and 1.1; SourceRight 0.1.x at vendored pin c5fa583 with read-only JSON operations",
       "safe_fallback": "retain unverified source state and continue local schema validation; never infer verification, authority, or hosted availability",
       "replacement_path": "replace the subprocess adapter when SourceRight exposes an equally fail-closed stable native contract; replace system connectors without changing core JSON values",
-      "evidence": "conductor/tracks/evidence-workflow-core_20260731/evidence/phase-completion-20260829.md"
+      "evidence": "conductor/archive/evidence-workflow-core_20260731/evidence/phase-completion-20260829.md"
     },
     {
       "track_id": "privacy-security-assurance_20260731",

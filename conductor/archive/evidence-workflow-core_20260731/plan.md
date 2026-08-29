@@ -223,11 +223,11 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Review Remediation — 2026-08-29
 
-- [~] Task: Re-prove completion and close review gaps — review fix `d4d279c`
+- [x] Task: Re-prove completion and close review gaps — review fix `d4d279c`; hosted merge `4252535`
   - [x] Reconcile the follow-up hosted patch check and merge in the append-only ledger
   - [x] Reject discontinuous workflow histories rather than validating isolated transitions only
   - [x] Make malformed audit receipts and invalid adapter timeouts fail closed
   - [x] Add regression tests for each repaired boundary
   - [x] Run focused and repository-wide validation from a clean commit
   - [x] Record the review-fix commit and durable completion receipt
-  - [ ] Close issue #7 only after local and hosted evidence pass
+  - [x] Close issue #7 only after local and hosted evidence pass

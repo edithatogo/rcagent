@@ -1,6 +1,6 @@
 # Track 02: Evidence Workflow Core
 
-- **Status:** Review remediation in progress
+- **Status:** Completed and archived
 - **Evidence ledger:** Opts into `evidence_schema: "1.0"` — the append-only `evidence.jsonl` ledger is this track's structured evidence source of truth, dogfooding the schema before downstream tracks depend on it.
 - **Workstream:** foundation-governance
 - **GitHub issue:** [#7](https://github.com/edithatogo/rcagent/issues/7)
@@ -9,7 +9,7 @@
 
 ## Hard Start Dependencies
 
-- [safety-systems-foundation_20260731](../safety-systems-foundation_20260731/index.md)
+- [safety-systems-foundation_20260731](../../tracks/safety-systems-foundation_20260731/index.md)
 
 ## Later Phase Dependencies
 

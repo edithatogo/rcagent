@@ -59,7 +59,7 @@ The track cannot start until each hard dependency has a passing completion recei
 
 ## Later Phase Dependencies
 
-- [evidence-workflow-core_20260731](../../tracks/evidence-workflow-core_20260731/index.md)
+- [evidence-workflow-core_20260731](../evidence-workflow-core_20260731/index.md)
 
 These dependencies gate the affected integration or validation phase without needlessly blocking independent foundation work.
 
