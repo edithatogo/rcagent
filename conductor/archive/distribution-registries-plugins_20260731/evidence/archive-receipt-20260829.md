@@ -1,7 +1,7 @@
 # Track 11 archive receipt
 
 Date: 2026-08-29  
-Lifecycle result: archive candidate prepared; hosted archive integration not yet observed
+Lifecycle result: archived after hosted integration
 
 Completion reconciliation PR #69 merged as
 `7c16d8c3a2a687129c00d15b9031822197d95bc6` at
@@ -31,3 +31,14 @@ inputs, screening, approval, and directory publication remain not performed or
 not observed. Candidate or future archive status does not imply those external achievements or any
 clinical, legal, policy, regulatory, employment, cultural-safety,
 organisational, deployment, or effectiveness approval.
+
+## Hosted archive integration
+
+Archive PR #70 used exact head
+`14326a27d3206547970ff737af908a21b843e709`. Codecov patch, dependency review,
+Vale, repository governance validation, and macOS, Ubuntu, and Windows
+validation all passed. The PR merged as
+`1c9c783707ee23bfc557882afdbc121d82cdbbc9` at
+`2026-08-29T12:13:20Z`. The merged `master` tree was then observed with the
+Track 11 directory under `conductor/archive` and no active
+`conductor/tracks/distribution-registries-plugins_20260731` path.

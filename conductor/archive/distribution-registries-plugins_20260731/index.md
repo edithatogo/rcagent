@@ -1,6 +1,6 @@
 # Track 11: Distribution, Registries, and Client Plugins
 
-- **Status:** Archive candidate after completion integration — supported GitHub release `v0.1.1`; directory submissions not performed
+- **Status:** Archived after hosted integration — supported GitHub release `v0.1.1`; directory submissions not performed
 - **Workstream:** product-interfaces-distribution
 - **GitHub issue:** [#16](https://github.com/edithatogo/rcagent/issues/16)
 - **Parent workstream:** [#4](https://github.com/edithatogo/rcagent/issues/4)

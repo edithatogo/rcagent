@@ -40,7 +40,7 @@ Parent: [GitHub #4](https://github.com/edithatogo/rcagent/issues/4)
 | Status | Track | GitHub | Hard start blockers |
 |---|---|---:|---|
 | [x] | [09 Interfaces, Templates, and Closed-Loop Actions](./archive/interfaces-templates-action-loop_20260731/index.md) | [#14](https://github.com/edithatogo/rcagent/issues/14) | Archived via PR #61 after implementation PR #60 merged and issue #14 closed |
-| [x] | [11 Distribution, Registries, and Client Plugins](./archive/distribution-registries-plugins_20260731/index.md) | [#16](https://github.com/edithatogo/rcagent/issues/16) | Archive candidate prepared; hosted archive integration pending; supported release v0.1.1, directory submissions not performed |
+| [x] | [11 Distribution, Registries, and Client Plugins](./archive/distribution-registries-plugins_20260731/index.md) | [#16](https://github.com/edithatogo/rcagent/issues/16) | Archived after hosted integration; supported release v0.1.1, directory submissions not performed |
 
 `metadata.json` records later phase dependencies that deliberately do not block independent foundation work.
 
