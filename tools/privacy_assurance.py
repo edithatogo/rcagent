@@ -12,6 +12,8 @@ from tools.evidence_core import fingerprint
 MODES = {"public_remote", "governed_hybrid", "fully_local", "air_gapped"}
 CLASSIFICATIONS = {"public", "internal", "confidential", "sensitive"}
 REMOTE_MODES = {"public_remote", "governed_hybrid"}
+DESTINATIONS = {"local", "model", "remote_log", "telemetry", "public_index"}
+CONNECTION_STATES = {"off", "on", "unknown"}
 SENSITIVE_PATTERNS = {
     "nsw_mrn": re.compile(r"\b(?:MRN|URN)\s*[:#-]?\s*\d{6,10}\b", re.IGNORECASE),
     "qld_ur": re.compile(r"\b(?:UR|URN)\s*[:#-]?\s*\d{6,10}\b", re.IGNORECASE),
@@ -31,8 +33,8 @@ class RouteRequest:
     classification: str | None
     mode: str | None
     destination: str
-    egress_known: bool
-    telemetry_known: bool
+    network: str
+    telemetry: str
     model_provenance_known: bool
     deidentified: bool = False
 
@@ -49,12 +51,18 @@ def route(request: RouteRequest) -> RouteDecision:
         return RouteDecision(False, "classification unknown", "privacy review")
     if request.mode not in MODES:
         return RouteDecision(False, "execution mode unknown", "security review")
-    if not request.egress_known:
+    if request.destination not in DESTINATIONS:
+        return RouteDecision(False, "destination unknown", "security review")
+    if request.network not in CONNECTION_STATES or request.network == "unknown":
         return RouteDecision(False, "egress status unknown", "security review")
-    if not request.telemetry_known:
+    if request.telemetry not in CONNECTION_STATES or request.telemetry == "unknown":
         return RouteDecision(False, "telemetry status unknown", "privacy review")
     if request.destination == "model" and not request.model_provenance_known:
         return RouteDecision(False, "model provenance unknown", "model governance review")
+    if request.mode in {"fully_local", "air_gapped"} and request.network != "off":
+        return RouteDecision(False, "local-only mode requires network off", "security review")
+    if request.mode in {"fully_local", "air_gapped"} and request.telemetry != "off":
+        return RouteDecision(False, "local-only mode requires telemetry off", "privacy review")
     if request.mode in {"fully_local", "air_gapped"} and request.destination != "local":
         return RouteDecision(False, "local-only mode forbids remote destination", "privacy review")
     if request.classification in {"confidential", "sensitive"} and request.mode == "public_remote":
@@ -112,6 +120,49 @@ def quarantine_output(*, output_id: str, reasons: list[str], actor: str, at: str
         raise ValueError("quarantine requires at least one reason")
     receipt = {"output_id": output_id, "status": "quarantined", "reasons": sorted(set(reasons)), "actor": actor, "at": at}
     return {**receipt, "receipt_hash": fingerprint(receipt)}
+
+
+def sanitise_diagnostic(text: str) -> str:
+    """Remove sensitive sentinels, credentials, and local paths from diagnostic text."""
+    sanitised = text
+    for pattern in SENSITIVE_PATTERNS.values():
+        sanitised = pattern.sub("[REDACTED]", sanitised)
+    sanitised = re.sub(
+        r"\b(?:api[_-]?key|token|password|secret)\s*[:=]\s*\S+",
+        "credential=[REDACTED]",
+        sanitised,
+        flags=re.IGNORECASE,
+    )
+    sanitised = re.sub(r"(?<!\w)/(?:Users|home|Volumes|private|var)/\S+", "[LOCAL_PATH]", sanitised)
+    return sanitised
+
+
+def deletion_receipt(*, resource_id: str, compartment: str, actor: str, at: str) -> dict[str, Any]:
+    """Create a content-free receipt after a caller has verified deletion."""
+    if not resource_id or not compartment or not actor or not at:
+        raise ValueError("deletion receipt fields must be explicit")
+    receipt = {
+        "resource_hash": fingerprint({"resource_id": resource_id}),
+        "compartment": compartment,
+        "status": "deletion_verified",
+        "actor": actor,
+        "at": at,
+    }
+    return {**receipt, "receipt_hash": fingerprint(receipt)}
+
+
+def recovery_action(failure: str, *, mode: str) -> RouteDecision:
+    """Return a bounded fail-closed action for operational failure states."""
+    if mode not in MODES:
+        return RouteDecision(False, "execution mode unknown", "security review")
+    actions = {
+        "model_unavailable": "abstain and request human review",
+        "index_corrupt": "isolate index and rebuild from verified sources",
+        "network_loss": "continue local-only without remote fallback" if mode != "public_remote" else "abstain until route is restored",
+        "power_loss": "halt and verify receipts before resume",
+    }
+    reason = actions.get(failure, "halt and escalate unknown recovery state")
+    return RouteDecision(False, reason, "human recovery review")
 
 
 def evaluate_assurance(case: dict[str, Any], *, now: datetime | None = None) -> list[str]:

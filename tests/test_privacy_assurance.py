@@ -10,9 +10,12 @@ from jsonschema import Draft202012Validator, FormatChecker
 from tools.privacy_assurance import (
     RouteRequest,
     compartment_key,
+    deletion_receipt,
     evaluate_assurance,
     quarantine_output,
+    recovery_action,
     route,
+    sanitise_diagnostic,
     scan_adversarial_text,
     scan_sensitive_text,
     validate_execution_disclosure,
@@ -24,8 +27,8 @@ def request(**changes: object) -> RouteRequest:
         "classification": "public",
         "mode": "public_remote",
         "destination": "model",
-        "egress_known": True,
-        "telemetry_known": True,
+        "network": "on",
+        "telemetry": "off",
         "model_provenance_known": True,
         "deidentified": False,
     }
@@ -38,10 +41,13 @@ def request(**changes: object) -> RouteRequest:
     [
         ({"classification": None}, "classification unknown"),
         ({"mode": None}, "execution mode unknown"),
-        ({"egress_known": False}, "egress status unknown"),
-        ({"telemetry_known": False}, "telemetry status unknown"),
+        ({"destination": "unknown"}, "destination unknown"),
+        ({"network": "unknown"}, "egress status unknown"),
+        ({"telemetry": "unknown"}, "telemetry status unknown"),
         ({"model_provenance_known": False}, "model provenance unknown"),
-        ({"mode": "fully_local", "destination": "model"}, "local-only mode forbids remote destination"),
+        ({"mode": "fully_local", "network": "on", "destination": "local"}, "local-only mode requires network off"),
+        ({"mode": "fully_local", "network": "off", "telemetry": "on", "destination": "local"}, "local-only mode requires telemetry off"),
+        ({"mode": "fully_local", "network": "off", "destination": "model"}, "local-only mode forbids remote destination"),
         ({"classification": "sensitive"}, "private content cannot use public remote mode"),
         ({"classification": "sensitive", "mode": "governed_hybrid"}, "sensitive hybrid content requires approved de-identification"),
     ],
@@ -54,7 +60,7 @@ def test_routing_fails_closed(changes: dict[str, object], reason: str) -> None:
 
 
 def test_routing_allows_declared_local_and_deidentified_hybrid_paths() -> None:
-    assert route(request(mode="fully_local", destination="local", classification="sensitive")).allowed
+    assert route(request(mode="fully_local", destination="local", classification="sensitive", network="off")).allowed
     assert route(request(mode="governed_hybrid", classification="sensitive", deidentified=True)).allowed
 
 
@@ -101,6 +107,47 @@ def test_unsafe_output_quarantine_is_hashed_and_requires_reason() -> None:
     assert receipt["receipt_hash"].startswith("sha256:")
     with pytest.raises(ValueError, match="at least one reason"):
         quarantine_output(output_id="output-01", reasons=[], actor="system", at="2026-08-29T03:00:00Z")
+
+
+def test_diagnostics_are_redacted_before_logging() -> None:
+    diagnostic = "token=synthetic-secret MRN 12345678 at /Users/example/private/case.json"
+    sanitised = sanitise_diagnostic(diagnostic)
+    assert "synthetic-secret" not in sanitised
+    assert "12345678" not in sanitised
+    assert "/Users/" not in sanitised
+    assert sanitised == "credential=[REDACTED] [REDACTED] at [LOCAL_PATH]"
+
+
+def test_deletion_receipt_contains_no_resource_identifier_or_content() -> None:
+    receipt = deletion_receipt(
+        resource_id="synthetic-private-record",
+        compartment="fully_local:private:index",
+        actor="system",
+        at="2026-08-29T03:00:00Z",
+    )
+    assert receipt["status"] == "deletion_verified"
+    assert "resource_id" not in receipt
+    assert "synthetic-private-record" not in json.dumps(receipt)
+    with pytest.raises(ValueError, match="must be explicit"):
+        deletion_receipt(resource_id="", compartment="private", actor="system", at="2026-08-29T03:00:00Z")
+
+
+@pytest.mark.parametrize(
+    ("failure", "mode", "reason"),
+    [
+        ("model_unavailable", "fully_local", "abstain and request human review"),
+        ("index_corrupt", "fully_local", "isolate index and rebuild from verified sources"),
+        ("network_loss", "governed_hybrid", "continue local-only without remote fallback"),
+        ("network_loss", "public_remote", "abstain until route is restored"),
+        ("power_loss", "air_gapped", "halt and verify receipts before resume"),
+        ("unexpected", "fully_local", "halt and escalate unknown recovery state"),
+    ],
+)
+def test_recovery_states_remain_fail_closed_and_usable(failure: str, mode: str, reason: str) -> None:
+    decision = recovery_action(failure, mode=mode)
+    assert not decision.allowed
+    assert decision.reason == reason
+    assert decision.required_review == "human recovery review"
 
 
 def test_assurance_links_risks_and_invalidates_drift_and_staleness() -> None:
