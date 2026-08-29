@@ -7,7 +7,7 @@ PR #66 implemented distribution and merged as `e0ec1f2`. PR #67 corrected lifecy
 
 Supported release `v0.1.1` is public, non-draft, non-prerelease and pinned by annotated tag object `7c58551339dd5fe1f4010ea977ef8ce7ea66bb9b`, which peels to `af5777b`. All hosted SHA-256 values, manifest replay, core validation, and isolated client lifecycle checks passed. The tag is unsigned and no attestation claim is made.
 
-The six acceptance criteria have direct dispositions in `acceptance-map-20260829.md`. The final three-role agent panel unanimously passed after rework. Local evidence includes 462 full tests, scoped Ruff, ty and basedpyright, repository governance, exact rights validation, and clean diff checks.
+The six acceptance criteria have direct dispositions in `acceptance-map-20260829.md`. The final three-role agent panel unanimously passed after rework. Pre-completion release verification at admitted source revision `af5777b` included 462 full tests, scoped Ruff, ty and basedpyright, repository governance, exact rights validation, and clean diff checks. Later completion reconciliation and archive-candidate replays increased the collected suite as new governance regressions were added; they do not rewrite this revision-bound result.
 
 `v0.1.0` is preserved unchanged as a superseded prerelease because its embedded lifecycle labels were ambiguous. `v0.1.1` is the supported release.
 
