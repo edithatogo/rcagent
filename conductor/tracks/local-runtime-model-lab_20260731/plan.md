@@ -224,3 +224,4 @@ removed.
 - [x] Task: Close forged routing, malformed-input, modality, private-data, registry and bundle-integrity findings (`eaf9ea3`)
 - [x] Task: Close receipt privacy, undeclared-symlink and negative-state contract findings (`8000b2c`)
 - [x] Task: Record phase, completion and unanimous agent-panel evidence while preserving external gates
+- [x] Task: Reject POSIX and Windows absolute bundle paths consistently after hosted Windows replay

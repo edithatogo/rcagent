@@ -156,7 +156,9 @@ def test_offline_bundle_verifies_operator_owned_bytes(tmp_path: Path) -> None:
     assert runtime_lab.validate_bundle_manifest(manifest, root) == []
 
 
-@pytest.mark.parametrize("path", ["../escape", "/absolute", "sub/../../escape"])
+@pytest.mark.parametrize(
+    "path", ["../escape", "/absolute", "C:\\absolute", "sub/../../escape"]
+)
 def test_bundle_rejects_path_escape(tmp_path: Path, path: str) -> None:
     manifest, root = _bundle(tmp_path)
     manifest["files"][0]["path"] = path

@@ -11,7 +11,7 @@ import json
 import os
 import platform
 import shutil
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Any
 
 SCHEMA_VERSION = "1.0"
@@ -359,7 +359,14 @@ def validate_bundle_manifest(manifest: object, root: Path) -> list[str]:
             errors.append(f"{prefix}.path must be a non-empty string")
             continue
         candidate_relative = Path(relative)
-        if candidate_relative.is_absolute() or ".." in candidate_relative.parts:
+        if (
+            candidate_relative.is_absolute()
+            or PurePosixPath(relative).is_absolute()
+            or PureWindowsPath(relative).is_absolute()
+            or ".." in candidate_relative.parts
+            or ".." in PurePosixPath(relative).parts
+            or ".." in PureWindowsPath(relative).parts
+        ):
             errors.append(f"{prefix}.path escapes bundle root")
             continue
         if relative.casefold() in seen:
