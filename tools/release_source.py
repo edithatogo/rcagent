@@ -80,7 +80,7 @@ def verify_release_payloads(
 
 def require_release_version(repository: Path, version: str) -> None:
     """Use VERSION and changelog as the single release-version authority."""
-    declared = (repository / "VERSION").read_text().strip()
-    changelog = (repository / "CHANGELOG.md").read_text()
+    declared = (repository / "VERSION").read_text(encoding="utf-8").strip()
+    changelog = (repository / "CHANGELOG.md").read_text(encoding="utf-8")
     if version != declared or f"## {version} —" not in changelog:
         raise ValueError("release version does not match VERSION and CHANGELOG.md")

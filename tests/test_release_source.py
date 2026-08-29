@@ -17,7 +17,7 @@ def _git(repository: Path, *args: str) -> str:
 def _repository(tmp_path: Path) -> tuple[Path, str]:
     repository = tmp_path / "repository"
     (repository / "input/nested").mkdir(parents=True)
-    (repository / "input/nested/file.txt").write_text("exact\n", encoding="utf-8")
+    (repository / "input/nested/file.txt").write_bytes(b"exact\n")
     _git(repository, "init", "-q")
     _git(repository, "config", "user.name", "Test")
     _git(repository, "config", "user.email", "test@example.invalid")
@@ -31,7 +31,7 @@ def test_release_source_requires_real_exact_clean_head(tmp_path: Path) -> None:
     verify_release_source(repository, revision, [repository / "input"])
     with pytest.raises(ValueError, match="repository commit"):
         verify_release_source(repository, "1" * 40, [repository / "input"])
-    (repository / "input/nested/file.txt").write_text("drift\n", encoding="utf-8")
+    (repository / "input/nested/file.txt").write_bytes(b"drift\n")
     with pytest.raises(ValueError, match="uncommitted drift"):
         verify_release_source(repository, revision, [repository / "input"])
 
