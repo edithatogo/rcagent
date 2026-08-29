@@ -213,7 +213,7 @@
       "compatibility_window": "adaptation-readiness schema 1.0; reopen only against exact admitted comparator, runtime, dataset and authority receipts",
       "safe_fallback": "reject weight adaptation, preserve deterministic/retrieval/prompt/tool workflows, and perform no download, training, private-data use or release",
       "replacement_path": "remove local readiness shims when an approved maintained governance system provides equivalent fail-closed evidence and authority semantics",
-      "evidence": "conductor/tracks/domain-adaptation-finetuning_20260731/evidence/fit-gap-20260829.md",
+      "evidence": "conductor/archive/domain-adaptation-finetuning_20260731/evidence/fit-gap-20260829.md",
       "project_owned_gap": "domain adaptation readiness, generated-synthetic governance contract, stop conditions, rejection evidence and future reopen criteria"
     },
     {
