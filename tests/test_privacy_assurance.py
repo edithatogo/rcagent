@@ -8,6 +8,7 @@ import pytest
 from jsonschema import Draft202012Validator, FormatChecker
 
 from tools.privacy_assurance import (
+    RouteDecision,
     RouteRequest,
     assess_input_artifact,
     compartment_key,
@@ -125,6 +126,42 @@ def test_execution_disclosure_rejects_unknown_or_inconsistent_boundaries() -> No
         "local-only disclosure requires telemetry off",
         "network status must be known",
     ]
+    assert validate_execution_disclosure(
+        {
+            "task": "",
+            "tool": 7,
+            "revision": "",
+            "mode": "unknown",
+            "classification": "unknown",
+            "network": "on",
+            "telemetry": "unknown",
+            "storage": "",
+            "limitations": ["bounded"],
+            "human_review": "required",
+        }
+    ) == [
+        "disclosure field must be a non-empty string: revision",
+        "disclosure field must be a non-empty string: storage",
+        "disclosure field must be a non-empty string: task",
+        "disclosure field must be a non-empty string: tool",
+        "invalid disclosure classification",
+        "invalid disclosure mode",
+        "telemetry status must be known",
+    ]
+    assert "public remote disclosure requires public classification" in validate_execution_disclosure(
+        {
+            "task": "review",
+            "tool": "remote-model",
+            "revision": "1",
+            "mode": "public_remote",
+            "classification": "internal",
+            "network": "on",
+            "telemetry": "off",
+            "storage": "ephemeral",
+            "limitations": ["bounded"],
+            "human_review": "required",
+        }
+    )
 
 
 def test_every_model_result_requires_a_complete_disclosure() -> None:
@@ -186,6 +223,22 @@ def test_deletion_receipt_contains_no_resource_identifier_or_content() -> None:
             at="2026-08-29T03:00:00Z",
             verification={},
         )
+    with pytest.raises(ValueError, match="fields must be explicit"):
+        deletion_receipt(
+            resource_id="",
+            compartment="fully_local:private:index",
+            actor="system",
+            at="2026-08-29T03:00:00Z",
+            verification={"method": "check", "evidence_hash": "sha256:" + "0" * 64, "verified_by": "test"},
+        )
+    with pytest.raises(ValueError, match="canonical compartment"):
+        deletion_receipt(
+            resource_id="synthetic",
+            compartment="private",
+            actor="system",
+            at="2026-08-29T03:00:00Z",
+            verification={"method": "check", "evidence_hash": "sha256:" + "0" * 64, "verified_by": "test"},
+        )
 
 
 def test_malicious_artifacts_are_isolated_before_parsing() -> None:
@@ -210,6 +263,15 @@ def test_poisoned_or_cross_compartment_retrieval_is_rejected() -> None:
         "retrieval provenance is not current",
         "retrieval source hash invalid",
     ]
+    valid_item = {
+        "compartment": "fully_local:private:index",
+        "provenance_status": "current",
+        "source_hash": "sha256:" + "b" * 64,
+        "content": "synthetic evidence",
+    }
+    assert validate_retrieval_item(valid_item, expected_compartment="fully_local:private:index") == []
+    valid_item.pop("content")
+    assert validate_retrieval_item(valid_item, expected_compartment="fully_local:private:index") == ["retrieval content missing"]
 
 
 def test_unsafe_plugin_manifest_fails_admission_without_activation() -> None:
@@ -227,6 +289,16 @@ def test_unsafe_plugin_manifest_fails_admission_without_activation() -> None:
     manifest.update({"remote_code": True, "telemetry": "on", "network": "disclosed"})
     assert validate_plugin_manifest(manifest) == [
         "plugin external processing disclosure missing",
+        "plugin remote code must be disabled",
+        "plugin telemetry must default off",
+    ]
+    assert validate_plugin_manifest({}) == [
+        "plugin checksum invalid",
+        "plugin field missing: licence",
+        "plugin field missing: plugin_id",
+        "plugin field missing: revision",
+        "plugin field missing: sandbox",
+        "plugin network state must be off or disclosed",
         "plugin remote code must be disabled",
         "plugin telemetry must default off",
     ]
@@ -248,6 +320,11 @@ def test_recovery_states_remain_fail_closed_and_usable(failure: str, mode: str, 
     assert not decision.allowed
     assert decision.reason == reason
     assert decision.required_review == "human recovery review"
+
+
+def test_recovery_rejects_unknown_mode() -> None:
+    decision = recovery_action("network_loss", mode="unknown")
+    assert decision == RouteDecision(False, "execution mode unknown", "security review")
 
 
 def test_assurance_links_risks_and_invalidates_drift_and_staleness() -> None:
