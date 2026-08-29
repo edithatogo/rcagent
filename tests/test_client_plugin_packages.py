@@ -26,8 +26,8 @@ def _unit_release_source(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_client_plugin_is_deterministic_thin_and_offline(
     tmp_path: Path, client: str, manifest_path: str
 ) -> None:
-    first = build_client_plugin(ROOT, tmp_path / "first", client=client, version="0.1.0", source_revision=REVISION)
-    second = build_client_plugin(ROOT, tmp_path / "second", client=client, version="0.1.0", source_revision=REVISION)
+    first = build_client_plugin(ROOT, tmp_path / "first", client=client, version="0.1.1", source_revision=REVISION)
+    second = build_client_plugin(ROOT, tmp_path / "second", client=client, version="0.1.1", source_revision=REVISION)
     assert first.archive.read_bytes() == second.archive.read_bytes()
     with zipfile.ZipFile(first.archive) as archive:
         names = set(archive.namelist())

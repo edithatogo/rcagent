@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 — 2026-08-29
+
+- Replaced ambiguous publication booleans with explicit build-time state,
+  public-distribution intent, and offline publication-observation scope.
+- Prepared `v0.1.1` to supersede `v0.1.0` without replacing its immutable
+  assets.
+
 ## 2026-08-11
 
 - Reviewed upstream Agent Skills normative drift through revision

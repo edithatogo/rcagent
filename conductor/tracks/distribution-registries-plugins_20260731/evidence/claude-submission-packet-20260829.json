@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "plugin": "rca-investigation",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "state": "prepared_not_submitted",
   "route": "claude-community",
   "package_type": "skills_only",

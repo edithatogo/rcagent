@@ -28,10 +28,10 @@ def test_isolated_install_update_discovery_reference_parity_and_remove(
     tmp_path: Path, client: str, manifest: str
 ) -> None:
     built = build_client_plugin(
-        ROOT, tmp_path / "build", client=client, version="0.1.0", source_revision="1" * 40
+        ROOT, tmp_path / "build", client=client, version="0.1.1", source_revision="1" * 40
     )
     install = install_plugin_archive(built.archive, tmp_path / "installed")
-    assert json.loads((install / manifest).read_text())["version"] == "0.1.0"
+    assert json.loads((install / manifest).read_text())["version"] == "0.1.1"
     for source in (ROOT / "skills/rca-investigation").rglob("*"):
         if source.is_file():
             target = install / "skills/rca-investigation" / source.relative_to(

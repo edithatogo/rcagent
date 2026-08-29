@@ -24,7 +24,9 @@ def test_distribution_is_deterministic_and_self_describing(tmp_path: Path) -> No
         == hashlib.sha256(first.archive.read_bytes()).hexdigest()
     )
     assert first.manifest["licence"] == "Apache-2.0"
-    assert first.manifest["public_release"] is False
+    assert first.manifest["build_state"] == "release_candidate_at_build_time"
+    assert first.manifest["distribution_intent"] == "public_release"
+    assert first.manifest["publication_observation"] == "not_observed_by_offline_builder"
     assert first.manifest["telemetry"] == "none"
     assert first.manifest["network_required"] is False
     assert first.manifest["data_classification"] == "public-only-no-clinical-or-employee-data"
@@ -116,7 +118,7 @@ def test_distribution_binds_exact_release_revision(
 ) -> None:
     monkeypatch.setattr(distribution_module, "verify_release_source", lambda *_args, **_kwargs: None)
     monkeypatch.setattr(distribution_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
-    result = build_distribution(ROOT, tmp_path / "valid", version="0.1.0", source_revision="a" * 40)
+    result = build_distribution(ROOT, tmp_path / "valid", version="0.1.1", source_revision="a" * 40)
     assert result.manifest["source_revision"] == "a" * 40
     assert result.manifest["source"] == "https://github.com/edithatogo/rcagent"
     with pytest.raises(ValueError, match="full Git commit"):

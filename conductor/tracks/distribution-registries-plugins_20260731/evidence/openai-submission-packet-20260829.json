@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "plugin": "rca-investigation",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "state": "draft_incomplete_not_submitted",
   "package_type": "skills_only",
   "excluded": ["mcp", "app", "hooks", "credentials", "network", "telemetry", "persistent_storage", "private_data"],

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import stat
 import tempfile
 import zipfile
@@ -13,6 +14,8 @@ from pathlib import Path
 from tools.build_client_plugins import build_client_plugin
 from tools.build_distribution import build_distribution
 from tools.release_admission import validate_release_inventory
+
+_SEMVER = re.compile(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\Z")
 
 
 @dataclass(frozen=True)
@@ -54,9 +57,12 @@ def build_release_candidate(
 ) -> ReleaseCandidate:
     """Build core and skills-only client assets with one checksum manifest."""
     repository, destination = repository.resolve(), destination.resolve()
+    if _SEMVER.fullmatch(version) is None:
+        raise ValueError("release candidate version must use strict semantic versioning")
     validate_release_inventory(
         repository,
-        repository / "conductor/tracks/distribution-registries-plugins_20260731/evidence/release-rights-inventory-0.1.0.json",
+        repository
+        / f"conductor/tracks/distribution-registries-plugins_20260731/evidence/release-rights-inventory-{version}.json",
     )
     if destination.exists() and any(destination.iterdir()):
         raise FileExistsError("release candidate destination must be empty")
@@ -91,7 +97,9 @@ def build_release_candidate(
         "source_repository": "https://github.com/edithatogo/rcagent",
         "source_revision": source_revision,
         "licence": "Apache-2.0",
-        "release_state": "candidate_not_published",
+        "build_state": "release_candidate_at_build_time",
+        "distribution_intent": "public_release",
+        "publication_observation": "not_observed_by_offline_builder",
         "rights_state": "release_inventory_passed",
         "private_data": False,
         "third_party_controlled_bytes": False,
