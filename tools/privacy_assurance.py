@@ -14,6 +14,10 @@ CLASSIFICATIONS = {"public", "internal", "confidential", "sensitive"}
 REMOTE_MODES = {"public_remote", "governed_hybrid"}
 DESTINATIONS = {"local", "model", "remote_log", "telemetry", "public_index"}
 CONNECTION_STATES = {"off", "on", "unknown"}
+ASSURANCE_DOMAINS = {"security", "privacy", "cultural_safety", "clinical_safety"}
+ASSURANCE_CONTROL_STATUSES = {"inherited", "implemented", "supplemented"}
+SAFE_ARTIFACT_TYPES = {"application/json", "text/csv", "text/markdown", "text/plain"}
+UNSAFE_ARTIFACT_SUFFIXES = {".app", ".bat", ".cmd", ".com", ".dll", ".exe", ".jar", ".js", ".msi", ".ps1", ".scr", ".vbs"}
 SENSITIVE_PATTERNS = {
     "nsw_mrn": re.compile(r"\b(?:MRN|URN)\s*[:#-]?\s*\d{6,10}\b", re.IGNORECASE),
     "qld_ur": re.compile(r"\b(?:UR|URN)\s*[:#-]?\s*\d{6,10}\b", re.IGNORECASE),
@@ -65,8 +69,8 @@ def route(request: RouteRequest) -> RouteDecision:
         return RouteDecision(False, "local-only mode requires telemetry off", "privacy review")
     if request.mode in {"fully_local", "air_gapped"} and request.destination != "local":
         return RouteDecision(False, "local-only mode forbids remote destination", "privacy review")
-    if request.classification in {"confidential", "sensitive"} and request.mode == "public_remote":
-        return RouteDecision(False, "private content cannot use public remote mode", "privacy review")
+    if request.classification != "public" and request.mode == "public_remote":
+        return RouteDecision(False, "non-public content cannot use public remote mode", "privacy review")
     if request.classification == "sensitive" and request.mode == "governed_hybrid" and not request.deidentified:
         return RouteDecision(False, "sensitive hybrid content requires approved de-identification", "privacy review")
     return RouteDecision(True, "declared route satisfies the core policy")
@@ -110,9 +114,40 @@ def validate_execution_disclosure(disclosure: dict[str, Any]) -> list[str]:
         errors.append("invalid disclosure mode")
     if disclosure.get("classification") not in CLASSIFICATIONS:
         errors.append("invalid disclosure classification")
+    for key in ("task", "tool", "revision", "storage"):
+        if key in disclosure and (not isinstance(disclosure[key], str) or not disclosure[key].strip()):
+            errors.append(f"disclosure field must be a non-empty string: {key}")
+    if disclosure.get("network") not in CONNECTION_STATES or disclosure.get("network") == "unknown":
+        errors.append("network status must be known")
+    if disclosure.get("telemetry") not in CONNECTION_STATES or disclosure.get("telemetry") == "unknown":
+        errors.append("telemetry status must be known")
+    if disclosure.get("mode") in {"fully_local", "air_gapped"} and disclosure.get("network") != "off":
+        errors.append("local-only disclosure requires network off")
+    if disclosure.get("mode") in {"fully_local", "air_gapped"} and disclosure.get("telemetry") != "off":
+        errors.append("local-only disclosure requires telemetry off")
+    if disclosure.get("mode") == "public_remote" and disclosure.get("classification") != "public":
+        errors.append("public remote disclosure requires public classification")
+    limitations = disclosure.get("limitations")
+    if not isinstance(limitations, list) or not limitations or not all(isinstance(item, str) and item.strip() for item in limitations):
+        errors.append("limitations must contain at least one explicit limitation")
     if disclosure.get("human_review") in {None, "", False}:
         errors.append("human review must be explicit")
-    return errors
+    return sorted(set(errors))
+
+
+def validate_model_result(result: dict[str, Any]) -> list[str]:
+    """Require every model-assisted result to carry its complete disclosure."""
+    errors: list[str] = []
+    if not isinstance(result.get("output_id"), str) or not result.get("output_id", "").strip():
+        errors.append("model result output_id must be explicit")
+    if result.get("status") not in {"produced", "abstained", "quarantined"}:
+        errors.append("model result status invalid")
+    disclosure = result.get("disclosure")
+    if not isinstance(disclosure, dict):
+        errors.append("model result disclosure missing")
+    else:
+        errors.extend(f"model result {error}" for error in validate_execution_disclosure(disclosure))
+    return sorted(errors)
 
 
 def quarantine_output(*, output_id: str, reasons: list[str], actor: str, at: str) -> dict[str, Any]:
@@ -137,18 +172,77 @@ def sanitise_diagnostic(text: str) -> str:
     return sanitised
 
 
-def deletion_receipt(*, resource_id: str, compartment: str, actor: str, at: str) -> dict[str, Any]:
+def deletion_receipt(
+    *, resource_id: str, compartment: str, actor: str, at: str, verification: dict[str, str]
+) -> dict[str, Any]:
     """Create a content-free receipt after a caller has verified deletion."""
     if not resource_id or not compartment or not actor or not at:
         raise ValueError("deletion receipt fields must be explicit")
+    if not compartment.count(":") == 2:
+        raise ValueError("deletion compartment must be a canonical compartment key")
+    method = verification.get("method", "").strip()
+    evidence_hash = verification.get("evidence_hash", "").strip()
+    verified_by = verification.get("verified_by", "").strip()
+    if not method or not re.fullmatch(r"sha256:[0-9a-f]{64}", evidence_hash) or not verified_by:
+        raise ValueError("deletion verification evidence must be explicit and hashed")
     receipt = {
         "resource_hash": fingerprint({"resource_id": resource_id}),
         "compartment": compartment,
         "status": "deletion_verified",
         "actor": actor,
         "at": at,
+        "verification": {"method": method, "evidence_hash": evidence_hash, "verified_by": verified_by},
     }
     return {**receipt, "receipt_hash": fingerprint(receipt)}
+
+
+def assess_input_artifact(*, name: str, media_type: str, text: str) -> list[str]:
+    """Identify artifact properties that require isolation before parsing."""
+    findings = scan_adversarial_text(name)
+    suffix = "." + name.rsplit(".", 1)[-1].lower() if "." in name else ""
+    if suffix in UNSAFE_ARTIFACT_SUFFIXES:
+        findings.append("executable_artifact")
+    if media_type not in SAFE_ARTIFACT_TYPES:
+        findings.append("unsupported_media_type")
+    if scan_adversarial_text(text):
+        findings.append("untrusted_active_or_instructional_content")
+    return sorted(set(findings))
+
+
+def validate_retrieval_item(item: dict[str, Any], *, expected_compartment: str) -> list[str]:
+    """Reject cross-compartment or unprovenanced retrieval before use."""
+    errors: list[str] = []
+    if item.get("compartment") != expected_compartment:
+        errors.append("retrieval compartment mismatch")
+    if item.get("provenance_status") != "current":
+        errors.append("retrieval provenance is not current")
+    if not re.fullmatch(r"sha256:[0-9a-f]{64}", str(item.get("source_hash", ""))):
+        errors.append("retrieval source hash invalid")
+    content = item.get("content")
+    if not isinstance(content, str):
+        errors.append("retrieval content missing")
+    elif scan_adversarial_text(content):
+        errors.append("retrieval content is adversarial")
+    return sorted(errors)
+
+
+def validate_plugin_manifest(manifest: dict[str, Any]) -> list[str]:
+    """Validate a bounded plugin admission declaration without activating it."""
+    errors: list[str] = []
+    for key in ("plugin_id", "revision", "licence", "sandbox"):
+        if not isinstance(manifest.get(key), str) or not manifest.get(key, "").strip():
+            errors.append(f"plugin field missing: {key}")
+    if not re.fullmatch(r"sha256:[0-9a-f]{64}", str(manifest.get("checksum", ""))):
+        errors.append("plugin checksum invalid")
+    if manifest.get("remote_code") is not False:
+        errors.append("plugin remote code must be disabled")
+    if manifest.get("telemetry") != "off":
+        errors.append("plugin telemetry must default off")
+    if manifest.get("network") not in {"off", "disclosed"}:
+        errors.append("plugin network state must be off or disclosed")
+    if manifest.get("network") == "disclosed" and not manifest.get("external_processing"):
+        errors.append("plugin external processing disclosure missing")
+    return sorted(errors)
 
 
 def recovery_action(failure: str, *, mode: str) -> RouteDecision:
@@ -168,21 +262,62 @@ def recovery_action(failure: str, *, mode: str) -> RouteDecision:
 def evaluate_assurance(case: dict[str, Any], *, now: datetime | None = None) -> list[str]:
     now = now or datetime.now(UTC)
     errors: list[str] = []
-    for key in ("mode", "risks", "controls", "tests", "evidence", "owners", "review_due", "residual_risks"):
+    for key in (
+        "schema_version",
+        "mode",
+        "risks",
+        "controls",
+        "tests",
+        "evidence",
+        "owners",
+        "review_due",
+        "residual_risks",
+        "limitations",
+        "domains",
+    ):
         if key not in case:
             errors.append(f"assurance case missing: {key}")
+    if case.get("schema_version") != "1.1":
+        errors.append("assurance case schema version invalid")
     if case.get("mode") not in MODES:
         errors.append("assurance case mode invalid")
-    for risk in case.get("risks", []):
-        if risk.get("control_id") not in {control.get("control_id") for control in case.get("controls", [])}:
+    for key in ("risks", "controls", "tests", "evidence", "owners", "limitations"):
+        if key in case and (not isinstance(case[key], list) or not case[key]):
+            errors.append(f"assurance case requires non-empty: {key}")
+    controls = case.get("controls", []) if isinstance(case.get("controls", []), list) else []
+    risks = case.get("risks", []) if isinstance(case.get("risks", []), list) else []
+    control_ids = [control.get("control_id") for control in controls if isinstance(control, dict)]
+    risk_ids = [risk.get("risk_id") for risk in risks if isinstance(risk, dict)]
+    if len(control_ids) != len(set(control_ids)):
+        errors.append("assurance control identifiers must be unique")
+    if len(risk_ids) != len(set(risk_ids)):
+        errors.append("assurance risk identifiers must be unique")
+    valid_controls = {
+        control.get("control_id")
+        for control in controls
+        if isinstance(control, dict) and control.get("status") in ASSURANCE_CONTROL_STATUSES
+    }
+    for risk in risks:
+        if isinstance(risk, dict) and risk.get("control_id") not in valid_controls:
             errors.append(f"risk has no valid control: {risk.get('risk_id')}")
+    domains = case.get("domains")
+    if not isinstance(domains, dict) or set(domains) != ASSURANCE_DOMAINS:
+        errors.append("assurance domains must cover security, privacy, cultural safety, and clinical safety")
+    else:
+        for domain, result in domains.items():
+            if not isinstance(result, dict) or result.get("status") not in {"tested_bounded", "owner_required"}:
+                errors.append(f"assurance domain status invalid: {domain}")
+            if not isinstance(result, dict) or not isinstance(result.get("evidence"), list) or not result["evidence"]:
+                errors.append(f"assurance domain evidence missing: {domain}")
     if case.get("dependency_status") != "current":
         errors.append("assurance invalidated by dependency drift")
     try:
         review_due = datetime.fromisoformat(str(case.get("review_due", "")).replace("Z", "+00:00"))
-        if review_due < now:
+        if review_due.tzinfo is None:
+            errors.append("assurance review date must include timezone")
+        elif review_due < now:
             errors.append("assurance review is stale")
-    except ValueError:
+    except (TypeError, ValueError):
         errors.append("assurance review date invalid")
     if case.get("residual_risks") and case.get("residual_risk_acceptance") != "owner_required":
         errors.append("residual risk acceptance must remain owner-required")

@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "case_id": "assurance-fully-local-01",
   "mode": "fully_local",
   "risks": [{"risk_id": "risk-egress-01", "threat": "unexpected network egress", "harm": "synthetic private content leaves its authorised compartment", "control_id": "control-route-01"}],
@@ -11,5 +11,11 @@
   "dependency_status": "current",
   "residual_risks": [],
   "residual_risk_acceptance": "owner_required",
-  "limitations": ["Synthetic deterministic assurance only; not production certification."]
+  "limitations": ["Synthetic deterministic assurance only; not production certification."],
+  "domains": {
+    "security": {"status": "tested_bounded", "evidence": ["test_routing_fails_closed"]},
+    "privacy": {"status": "tested_bounded", "evidence": ["test_diagnostics_are_redacted_before_logging"]},
+    "cultural_safety": {"status": "owner_required", "evidence": ["mode-assurance-and-runbooks-20260829.md#legal-records-cultural-and-participation-safeguards"]},
+    "clinical_safety": {"status": "owner_required", "evidence": ["mode-assurance-and-runbooks-20260829.md#ai-and-clinical-safety-gate"]}
+  }
 }

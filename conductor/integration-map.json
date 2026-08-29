@@ -81,7 +81,7 @@
       "project_owned_gap": "mode-specific clinical-safety, cultural-safety, evidence, egress, and human-review assurance cases",
       "selected_system": "organisation-owned identity, device, key, audit, records, backup, and incident controls supplemented by client-neutral NIST/OWASP/MITRE-mapped routing and assurance contracts",
       "dependency_class": "locked portable policy core plus organisation-owned enterprise controls and optional capability adapters",
-      "compatibility_window": "Python 3.11+ repository support; assurance schema 1.0; NIST AI RMF 1.0 and AI 600-1, NIST Privacy Framework 1.0, OWASP GenAI LLM Top 10 2026, and living MITRE ATLAS reviewed 2026-08-29",
+      "compatibility_window": "Python 3.11+ repository support; assurance schema 1.1 (1.0 superseded because it did not enforce non-empty evidence or all safety domains); NIST AI RMF 1.0 and AI 600-1, NIST Privacy Framework 1.0, OWASP GenAI LLM Top 10 2026, and living MITRE ATLAS reviewed 2026-08-29",
       "safe_fallback": "deny routing, quarantine output, retain local evidence, and require accountable review whenever classification, mode, egress, telemetry, provenance, authority, or assurance freshness is unknown",
       "replacement_path": "replace project routing or sentinel shims when approved organisational platforms expose equivalent tested portable contracts; never replace enterprise identity, key, records, or incident authority",
       "evidence": "conductor/tracks/privacy-security-assurance_20260731/evidence/fit-gap-and-threat-model-20260829.md"
