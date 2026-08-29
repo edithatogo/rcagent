@@ -2,10 +2,23 @@
   "benchmark_version": "0.1.0",
   "device_observations": {
     "context_bytes": 2638,
-    "cpu_seconds_energy_proxy": 0.000654,
-    "latency_ms": 0.652,
-    "peak_ram_bytes": 144779,
-    "throughput_cases_s": 7669.206
+    "cpu_seconds_energy_proxy": 0.000713,
+    "latency_ms": 0.711,
+    "peak_ram_bytes": 144661,
+    "throughput_cases_s": 7036.476
+  },
+  "execution_manifest": {
+    "device": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "model": "none-deterministic-contract",
+    "prompt": "none",
+    "retries": 0,
+    "retrieval": "fixture identifiers only",
+    "runtime": "Python 3.14.5",
+    "sampling": "none",
+    "sandbox": "no external execution",
+    "seed": 0,
+    "timeout": "not applicable",
+    "tools": []
   },
   "fixture_sha256": {
     "evaluation/benchmark/fixtures/synthetic-cases.json": "5383c666141746099499824923a6ddd1b2121ff22c64bc9485b0216fb1cb2ca6"
@@ -17,7 +30,7 @@
     "no external publication approval"
   ],
   "network": "disabled",
-  "receipt_sha256": "f5c25dd41bfae9fff5f528075d3a329ad8708a38681d2d88dfa8cd7aa3e8ce06",
+  "receipt_sha256": "7a851f5cbabbc6bc7e82595ab45f0813cd47fb3b7b800690e9a602144e9894f3",
   "registry_sha256": "7ae958da63d4c24ce827c3b65a0aa9233de98f3778d3ee7ea6b6ae9408700951",
   "results": [
     {

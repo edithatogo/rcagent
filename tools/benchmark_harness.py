@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import platform
 import time
 import tracemalloc
 from pathlib import Path
@@ -141,6 +142,7 @@ def run_suite(registry: dict[str, Any], suite_id: str) -> dict[str, Any]:
     receipt: dict[str, Any] = {
         "schema_version": "1.0", "benchmark_version": registry["benchmark_version"],
         "suite_id": suite_id, "runner": suite["runner"], "network": suite["network"],
+        "execution_manifest": {"model":"none-deterministic-contract", "runtime":f"Python {platform.python_version()}", "prompt":"none", "retrieval":"fixture identifiers only", "tools":[], "device":platform.platform(), "seed":0, "sampling":"none", "retries":0, "timeout":"not applicable", "sandbox":"no external execution"},
         "registry_sha256": _sha256(REGISTRY_PATH), "fixture_sha256": {path: _sha256(ROOT / path) for path in fixture_paths},
         "results": results, "summary": {"case_count": len(results), "passed": sum(item["passed"] for item in results), "promotion_status": "eligible_for_human_review" if all(item["passed"] for item in results) else "blocked", "external_cost": {"amount": 0, "currency": "AUD"}},
         "device_observations": {"latency_ms": round(elapsed * 1000, 3), "throughput_cases_s": round(len(results) / elapsed, 3), "peak_ram_bytes": peak_ram, "context_bytes": context_bytes, "cpu_seconds_energy_proxy": round(cpu_seconds, 6)},

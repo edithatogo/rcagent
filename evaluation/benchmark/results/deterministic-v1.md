@@ -3,7 +3,7 @@
 - Suite: `regression`
 - Cases passed: 5/5
 - Promotion state: `eligible_for_human_review`
-- Receipt SHA-256: `f5c25dd41bfae9fff5f528075d3a329ad8708a38681d2d88dfa8cd7aa3e8ce06`
+- Receipt SHA-256: `7a851f5cbabbc6bc7e82595ab45f0813cd47fb3b7b800690e9a602144e9894f3`
 
 ## Boundaries
 

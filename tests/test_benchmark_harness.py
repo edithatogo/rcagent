@@ -44,6 +44,8 @@ def test_deterministic_baseline_passes_structural_and_hard_gates() -> None:
     assert all(item["privacy_violations"] == 0 for item in result["results"])
     assert all(item["safety_violations"] == 0 for item in result["results"])
     assert result["network"] == "disabled"
+    assert result["execution_manifest"]["model"] == "none-deterministic-contract"
+    assert result["execution_manifest"]["seed"] == 0
 
 
 def test_unknown_suite_is_rejected() -> None:
