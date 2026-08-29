@@ -43,6 +43,9 @@ def test_deterministic_baseline_passes_structural_and_hard_gates() -> None:
     assert result["summary"]["promotion_status"] == "eligible_for_human_review"
     assert all(item["privacy_violations"] == 0 for item in result["results"])
     assert all(item["safety_violations"] == 0 for item in result["results"])
+    assert all(item["citation_validity"] == 1 for item in result["results"])
+    assert all(item["robustness_challenge_pass"] for item in result["results"])
+    assert result["device_observations"]["storage_bytes"] > 0
     assert result["network"] == "disabled"
     assert result["execution_manifest"]["model"] == "none-deterministic-contract"
     assert result["execution_manifest"]["seed"] == 0

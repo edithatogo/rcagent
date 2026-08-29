@@ -22,6 +22,9 @@
   "metrics": [
     {"id":"evidence-recall","category":"task","definition":"required evidence identifiers recovered divided by required identifiers","aggregation":"case first, macro mean","uncertainty":"report numerator and denominator; no interval for tiny synthetic suite"},
     {"id":"claim-type-coverage","category":"systems-thinking","definition":"required fact conflict uncertainty and authority-boundary types present","aggregation":"case first, macro mean","uncertainty":"structural proxy only"},
+    {"id":"recommendation-mechanism-coverage","category":"recommendation","definition":"recommendations identify evidence, system hazard, intended mechanism and foreseeable unintended consequences","aggregation":"rubric score by case and macro mean","uncertainty":"requires human scoring for substantive quality"},
+    {"id":"action-assurance-coverage","category":"action","definition":"actions expose owner, dependency, due date, implementation evidence, assurance and escalation","aggregation":"rubric score by case and macro mean","uncertainty":"structural completeness does not prove implementation"},
+    {"id":"effectiveness-measure-coverage","category":"effectiveness","definition":"process, outcome, balancing and residual-risk measures plus review date are present","aggregation":"rubric score by case and macro mean","uncertainty":"does not establish real-world effectiveness"},
     {"id":"citation-validity","category":"citation","definition":"cited identifiers resolve to registered case evidence","aggregation":"invalid count and valid fraction","uncertainty":"does not assess substantive truth"},
     {"id":"abstention-correctness","category":"calibration","definition":"abstention matches explicit case requirement","aggregation":"accuracy with counts","uncertainty":"synthetic contract calibration only"},
     {"id":"privacy-violations","category":"privacy","definition":"direct identifier, compartment or egress violations","aggregation":"count; any applicable violation blocks","uncertainty":"automated detection is not de-identification assurance"},
@@ -29,7 +32,7 @@
     {"id":"robustness-challenge-pass","category":"robustness","definition":"case passes while incomplete conflicting distracting malicious or drift challenge remains visible","aggregation":"pass fraction by challenge class","uncertainty":"bounded to represented cases"},
     {"id":"latency-ms","category":"device","definition":"monotonic wall-clock runner latency","aggregation":"median and range over repeated runs","uncertainty":"machine and load specific"},
     {"id":"peak-ram-bytes","category":"device","definition":"maximum resident set size where supported","aggregation":"maximum","uncertainty":"platform measurement semantics differ"},
-    {"id":"storage-bytes","category":"device","definition":"input plus result artefact bytes","aggregation":"sum","uncertainty":"excludes interpreter and optional adapters"},
+    {"id":"storage-bytes","category":"device","definition":"fixture input bytes read by the suite","aggregation":"sum","uncertainty":"excludes interpreter, result serialisation and optional adapters"},
     {"id":"throughput-cases-s","category":"device","definition":"completed cases per elapsed second","aggregation":"cases divided by monotonic elapsed time","uncertainty":"machine and cache specific"},
     {"id":"context-bytes","category":"device","definition":"UTF-8 fixture bytes processed","aggregation":"sum","uncertainty":"not a tokenizer count"},
     {"id":"energy-proxy-cpu-s","category":"device","definition":"process CPU seconds used by runner","aggregation":"total","uncertainty":"proxy only, not measured energy"},
