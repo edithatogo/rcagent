@@ -1,6 +1,6 @@
 # Track 08: Local Runtime and Model Lab
 
-- **Status:** Completed (repository negative-result closure; hosted integration pending)
+- **Status:** Archived after hosted integration
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#13](https://github.com/edithatogo/rcagent/issues/13)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)
@@ -8,12 +8,12 @@
 
 ## Hard Start Dependencies
 
-- [benchmark-evaluation-harness_20260731](../../archive/benchmark-evaluation-harness_20260731/index.md)
-- [multimodal-capability-fabric_20260731](../../archive/multimodal-capability-fabric_20260731/index.md)
+- [benchmark-evaluation-harness_20260731](../benchmark-evaluation-harness_20260731/index.md)
+- [multimodal-capability-fabric_20260731](../multimodal-capability-fabric_20260731/index.md)
 
 ## Later Phase Dependencies
 
-- [retrieval-knowledge-system_20260731](../../archive/retrieval-knowledge-system_20260731/index.md)
+- [retrieval-knowledge-system_20260731](../retrieval-knowledge-system_20260731/index.md)
 
 ## Track Artefacts
 
