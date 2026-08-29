@@ -26,6 +26,21 @@ Repository governance validation passed after the fit-gap and registry records
 were added. Existing adapter contract tests cover isolated copies of the
 unmodified portable core for Codex, Claude Code, OpenCode, Cline, and Cursor.
 
+The closeout checkpoint reported:
+
+- Ruff over `tools` and `tests`: passed;
+- ty over `tools` and `tests`: passed;
+- basedpyright: passed with no diagnostics;
+- repository governance validation: passed;
+- portable-skill validation: passed; and
+- pytest: 202 passed.
+
+A bare unscoped `ty check` also inspected the vendored SourceRight submodule and
+reported seven diagnostics in its optional Colab and Streamlit surfaces. Those
+files are outside the Track 11 revision and configured project type boundary;
+the repository-owned scoped gate passed after the Track 11 manifest typing was
+fixed in `7655578`.
+
 ## Limitations and negative findings
 
 - Current hosted marketplace and directory guidance was not established by the local package tests.

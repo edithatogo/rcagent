@@ -226,3 +226,10 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [ ] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
   - [ ] Record unresolved limitations and owner decisions without downgrading them
   - [ ] Close the GitHub issue only after the completion receipt passes
+
+## Review Fixes
+
+- [x] Task: Correct distribution-manifest typing (`7655578`)
+  - [x] Make nested manifest metadata explicit to both configured type checkers
+  - [x] Re-run Ruff, scoped ty, basedpyright, repository governance, skill validation, and the full test suite
+  - [x] Preserve unrelated vendored SourceRight diagnostics outside the Track 11 change scope
