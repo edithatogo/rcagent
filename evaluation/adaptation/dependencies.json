@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "dependencies": [
+    {"track_id":"benchmark-evaluation-harness_20260731","receipt_path":"conductor/archive/benchmark-evaluation-harness_20260731/evidence/completion-receipt-20260829.md","sha256":"b99f6b30239a0299b94d389b3399fe00d3d9e1908cf81c88e83c15b9a3afb602","state":"archived_passing"},
+    {"track_id":"multimodal-capability-fabric_20260731","receipt_path":"conductor/archive/multimodal-capability-fabric_20260731/evidence/completion-receipt-20260829.md","sha256":"e08146e7f46e07fa76a0d193efd73fb001c2781f9f5c4919d78f3f750b0d52d9","state":"archived_passing"},
+    {"track_id":"retrieval-knowledge-system_20260731","receipt_path":"conductor/archive/retrieval-knowledge-system_20260731/evidence/completion-20260829.md","sha256":"bff11dc8f2731ceab8609c7b174418fe14c085c08a4db6a1e099990755813d20","state":"archived_passing"},
+    {"track_id":"local-runtime-model-lab_20260731","receipt_path":"conductor/archive/local-runtime-model-lab_20260731/evidence/completion-receipt-20260829.md","sha256":"2deff3a77615526a70d2541e11d57ae33c6e4d60940d61822307c0e55ea29964","state":"archived_passing"},
+    {"track_id":"privacy-security-assurance_20260731","receipt_path":"conductor/archive/privacy-security-assurance_20260731/evidence/completion-receipt-20260829.md","sha256":"4188fd0b9a641d047f4b56c20957acd92ed91e5f00e771f9c021deeb78acbc1f","state":"archived_passing"},
+    {"track_id":"nsw-health-jurisdiction-pack_20260731","receipt_path":"conductor/archive/nsw-health-jurisdiction-pack_20260731/evidence/completion-receipt-20260829.md","sha256":"3077a2b9aa5523487e53d9ca46310abd29de995b9cad4153fa38144a08a9df1c","state":"archived_passing"}
+  ],
+  "claims": [
+    {"id":"runtime_models_empty","path":"evaluation/runtime-lab/registry.json","sha256":"23ede14db831ec84cbb078f1cf41ad6ea432a6e6dc8eeb5e2add75613ec9e806","expected":true},
+    {"id":"benchmark_comparators_nonpromotion","path":"evaluation/benchmark/results/local-comparators-v1.json","sha256":"1b0eeb85387f9910b85954ddcaa8bde4c087e039d62ae075fe08613de21a8457","expected":true}
+  ],
+  "manifest_sha256": "4c5e48d07b8ec9ffdb1904e265e0d3d22fd5a8f6153a946893c465d2f175a825"
+}

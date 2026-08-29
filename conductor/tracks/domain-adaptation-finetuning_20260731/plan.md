@@ -99,7 +99,7 @@ Checked items record completion of the bounded assessment, contract, or stop-pat
   - [x] Define collection, rights, consent, purpose, minimisation, de-identification, lineage, and deletion
   - [x] Create generated-synthetic validator fixtures for train, validation, held-out, challenge, and contamination-control split contracts; admit no training dataset
   - [x] Assess representativeness, label reliability, leakage, bias, and hidden policy signals
-  - [x] Generate data cards and immutable manifests
+  - [x] Record the data-card requirements as not reached and create a hash-bound, unmaterialised dataset-contract manifest
 
 - [x] Task: Validate the phase deliverables
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -117,11 +117,11 @@ Checked items record completion of the bounded assessment, contract, or stop-pat
 ## Phase 4: Run least-complexity experiments first
 
 - [x] Task: Implement the phase scope
-  - [x] Compare retrieval, prompt, structured-output, tool, and lightweight adapter approaches
-  - [x] Select an admitted maintained training path from Transformers, PEFT, TRL, LlamaFactory, Axolotl, or MLX-LM rather than implementing a training framework
-  - [x] Reuse MLflow or another admitted local tracker for run lineage when it meets the privacy mode
+  - [x] Assess whether retrieval, prompt, structured-output, tool, and lightweight adapter approaches can be compared; record comparison as not executed because no eligible common baseline exists
+  - [x] Evaluate the training-path admission gate; select no framework because no exact maintained revision is admitted
+  - [x] Evaluate the run-lineage gate; use no tracker because no experiment is authorised or executed
   - [x] Apply the readiness stop rule before LoRA or other parameter-efficient training; no framework is selected and no training runs
-  - [x] Record exact code, configuration, seed, base revision, dependencies, compute, and intermediate artefacts
+  - [x] Record the dry-run contract, negative readiness receipt, exact dependency hashes, zero compute, and absence of base revisions or intermediate artefacts
   - [x] Stop experiments early for privacy, safety, instability, or non-material gains
 
 - [x] Task: Validate the phase deliverables
@@ -141,9 +141,9 @@ Checked items record completion of the bounded assessment, contract, or stop-pat
 
 - [x] Task: Implement the phase scope
   - [x] Record held-out quality, retrieval, calibration, safety, privacy, fairness, robustness, and policy-drift suites as not reached with null metrics because no run exists
-  - [x] Measure device latency, memory, storage, energy proxy, context, and maintenance burden
-  - [x] Compare repeated runs and confidence intervals against every relevant baseline
-  - [x] Investigate regressions rather than averaging them away
+  - [x] Record device latency, memory, storage, energy proxy, context, and maintenance burden as not measured because no run exists
+  - [x] Record repeated-run and confidence-interval comparison as not reached because no eligible common baseline or run exists
+  - [x] Record regression investigation as not reached; preserve null metrics rather than inventing or averaging results
 
 - [x] Task: Validate the phase deliverables
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -164,7 +164,7 @@ Checked items record completion of the bounded assessment, contract, or stop-pat
   - [x] Record the conditional model-card and training-provenance requirements in a rejection card; create no model card for a nonexistent artefact
   - [x] Document de-identification, residual re-identification risk, memorisation, and deletion limitations
   - [x] State the research, clinical, and medical-device boundaries
-  - [x] Create incident, rollback, deprecation, and upstream-base-change procedures
+  - [x] Record conditional incident, rollback, deprecation, and upstream-base-change requirements in the rejection card; no operational procedure or artefact was activated
 
 - [x] Task: Validate the phase deliverables
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -202,9 +202,9 @@ Checked items record completion of the bounded assessment, contract, or stop-pat
 
 ## Final Track Verification
 
-- [x] Task: Complete the track evidence pack
-  - [x] Verify every acceptance criterion has direct evidence
-  - [x] Re-run the complete applicable validation and regression suite
-  - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
-  - [x] Record unresolved limitations and owner decisions without downgrading them
+- [ ] Task: Complete the track evidence pack
+  - [ ] Verify every acceptance criterion has direct evidence
+  - [ ] Re-run the complete applicable validation and regression suite
+  - [ ] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
+  - [ ] Record unresolved limitations and owner decisions without downgrading them
   - [ ] Close the GitHub issue only after the completion receipt passes
