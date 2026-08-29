@@ -107,7 +107,7 @@ Later phase gates not drawn as hard-start arrows:
 | [08 Local runtime and model lab](./archive/local-runtime-model-lab_20260731/index.md) | [#13](https://github.com/edithatogo/rcagent/issues/13) | B | 05, 06 | Archived negative-result runtime/model readiness contract; no supported tuple |
 | [09 Interfaces, templates and action loop](./archive/interfaces-templates-action-loop_20260731/index.md) | [#14](https://github.com/edithatogo/rcagent/issues/14) | C | 02, 03, 04 | Archived generated-synthetic contract surface; operational gates retained |
 | [10 Domain adaptation and fine-tuning](./archive/domain-adaptation-finetuning_20260731/index.md) | [#15](https://github.com/edithatogo/rcagent/issues/15) | B | 05, 06, 07, 08 | Archived negative adaptation disposition; no model, data, training, artefact, or release |
-| [11 Distribution, registries and plugins](./archive/distribution-registries-plugins_20260731/index.md) | [#16](https://github.com/edithatogo/rcagent/issues/16) | C | 00 | Archive candidate pending hosted integration; supported v0.1.1 release and unsubmitted Claude/OpenAI packets |
+| [11 Distribution, registries and plugins](./archive/distribution-registries-plugins_20260731/index.md) | [#16](https://github.com/edithatogo/rcagent/issues/16) | C | 00 | Archived after hosted integration; supported v0.1.1 release and unsubmitted Claude/OpenAI packets |
 
 Cross-cutting repository hardening is coordinated by
 [#18](https://github.com/edithatogo/rcagent/issues/18), with
