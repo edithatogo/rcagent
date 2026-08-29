@@ -1,6 +1,6 @@
 # Track 05: Benchmark and Evaluation Harness
 
-- **Status:** Decision blocked — generative comparator staging
+- **Status:** In progress — comparator pilot complete; human agreement and operational thresholds remain owner-governed
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#10](https://github.com/edithatogo/rcagent/issues/10)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)

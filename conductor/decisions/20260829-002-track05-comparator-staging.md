@@ -61,5 +61,10 @@ Respond exactly: `Approve staged comparator deferral`.
 
 ## Follow-up
 
-- [ ] Update affected specifications, plans, metadata, risks, ADRs, tests, and receipts
-- [ ] Reconcile GitHub labels and dependencies
+- [x] Update affected plans, metadata, tests, and receipts for bounded comparator acquisition
+- [x] Reconcile GitHub labels and dependencies for the approved acquisition decision
+- [x] Admit exact-revision Apache-2.0 small, medium, and larger comparators in an isolated no-redistribution cache
+- [x] Preserve the rejected Qwen2.5 3B research-licence candidate as a negative rights finding without acquiring its model bytes
+- [x] Run the synthetic-only fixed-seed pilot and retain negative results without promotion or external publication
+- [ ] Obtain authorised independent human ratings if the owner wishes to close the human-agreement criterion
+- [ ] Approve operational promotion/regression thresholds, or explicitly approve completion with those thresholds unestablished

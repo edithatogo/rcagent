@@ -136,10 +136,10 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 5: Run pilot baselines
 
-- [!] Task: Implement the phase scope — deterministic baseline `7a7257e`; manifest fix `b954a33`
+- [!] Task: Implement the phase scope — deterministic baseline `7a7257e`; manifest fix `b954a33`; local comparator pilot pending commit
   - [x] Run deterministic and retrieval-only baselines before generative models
-  - [!] Run representative small, medium, and larger generic-model comparators — decision `20260829-002-track05-comparator-staging`
-  - [!] Measure repeated-run variance, human agreement, device feasibility, and failure modes — device proxy complete; model and human observations await the decision
+  - [x] Run representative small, medium, and larger generic-model comparators — approved decision `20260829-002-track05-comparator-staging`; exact-revision synthetic-only receipt `evaluation/benchmark/results/local-comparators-v1.json`
+  - [!] Measure repeated-run variance, human agreement, device feasibility, and failure modes — model determinism, latency and failures measured; human agreement remains unobserved pending authorised raters
   - [!] Calibrate thresholds without leaking held-out test cases — structural hard gates exist; operational thresholds require pilot evidence and owner authority
 
 - [x] Task: Validate the available phase deliverables — `b954a33`
@@ -149,7 +149,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Reconcile Conductor state with GitHub issue #10 and dependency evidence
 
 - [!] Task: Phase Verification & Checkpoint
-  - [ ] Verify every deliverable against the specification and product safeguards after the decision
+  - [!] Verify every deliverable against the specification and product safeguards after the decision — comparator evidence verified; human agreement and operational threshold gates remain
   - [x] Store a durable phase receipt and bounded handoff context
   - [x] Update dependencies, risks, decisions, and freshness dates
   - [x] Continue automatically through unaffected work
@@ -160,7 +160,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 - [!] Task: Implement the phase scope — `7a7257e`
   - [x] Map H0-H8 cases, conditions, outputs, and scoring into the new schemas
   - [x] Preserve incompatible historical results with explicit limitations
-  - [!] Set promotion, regression, and blocking thresholds from pilot evidence — operational thresholds remain an owner gate
+  - [!] Set promotion, regression, and blocking thresholds from pilot evidence — all comparators remain non-promoted; operational thresholds remain an owner gate
   - [x] Document which comparisons remain invalid or underpowered
 
 - [x] Task: Validate the available phase deliverables — `b954a33`
