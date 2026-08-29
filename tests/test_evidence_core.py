@@ -53,6 +53,26 @@ def test_lifecycle_is_explicit_and_fail_closed() -> None:
     assert not can_transition("unknown", "review")
 
 
+def test_workflow_history_must_be_continuous() -> None:
+    value = record()
+    value["events"].append(
+        {
+            "event_id": "event-action-01",
+            "event_type": "action_started",
+            "occurred_at": "2026-08-29T02:00:00Z",
+            "actor_role_id": "role-reviewer",
+            "from_state": "approval",
+            "to_state": "action",
+            "authority": "fixture",
+        }
+    )
+    value["state"] = "action"
+    assert (
+        "events[1]: discontinuous history; expected from_state 'investigation', got 'approval'"
+        in validate_record(value)
+    )
+
+
 @pytest.mark.parametrize(
     ("mutator", "expected"),
     [
@@ -200,3 +220,8 @@ def test_audit_chain_reports_sequence_and_previous_hash_tampering() -> None:
     errors = verify_audit_receipts(receipts)
     assert "receipts[0]: invalid sequence" in errors
     assert "receipts[1]: invalid previous_hash" in errors
+
+
+def test_malformed_audit_receipt_returns_diagnostic() -> None:
+    receipts: list[Any] = ["not-an-object"]
+    assert verify_audit_receipts(receipts) == ["receipts[0]: receipt must be an object"]
