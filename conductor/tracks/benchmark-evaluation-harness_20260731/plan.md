@@ -218,3 +218,11 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Emit fixture storage bytes alongside latency, throughput, allocation peak, context and CPU-energy proxy
   - [x] Define recommendation, action-assurance and effectiveness measures without claiming human scores
   - [x] Reject malformed fixtures before runner execution
+
+- [x] Task: Fail closed on fixture, hard-gate, and receipt integrity — `704011f`
+  - [x] Constrain fixture paths to the canonical directory and reject symlink or traversal escape
+  - [x] Validate fixture structure, unique identifiers, suite membership, and modality claims
+  - [x] Enforce privacy, security, clinical-safety, cultural-safety, and harmful-output gates independently
+  - [x] Verify receipt, registry, fixture, suite, count, promotion, and hard-gate consistency before reporting
+  - [x] Add an explicit distracting case, acceptable alternatives, and explicit unknowns
+  - [x] Re-run 194 tests plus benchmark, lint, type, gremlin, and repository-governance validation
