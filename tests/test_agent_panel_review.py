@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from copy import deepcopy
 from pathlib import Path
 
 import pytest
 
+from tools import agent_panel_review
 from tools.agent_panel_review import (
     CRITERIA,
     aggregate,
@@ -104,3 +106,33 @@ def test_frozen_adjudication_receipt_validates() -> None:
 def test_governance_evidence_validates(path: str) -> None:
     value = json.loads((ROOT / path).read_text())
     assert validate_governance_evidence(value) == []
+
+
+def test_panel_cli_writes_reproducible_receipt(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    output = tmp_path / "panel.json"
+    submissions = [
+        ROOT / "evaluation/benchmark/panel/blind-rater-a.json",
+        ROOT / "evaluation/benchmark/panel/blind-rater-b.json",
+        ROOT / "evaluation/benchmark/panel/blind-challenger.json",
+    ]
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["agent-panel", *(str(path) for path in submissions), "--output", str(output)],
+    )
+    assert agent_panel_review.main() == 0
+    assert json.loads(output.read_text())["threshold_pass"] is False
+
+
+def test_panel_cli_prints_receipt(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    submission = ROOT / "evaluation/benchmark/panel/blind-rater-a.json"
+    monkeypatch.setattr(
+        sys, "argv", ["agent-panel", str(submission), str(submission), str(submission)]
+    )
+    monkeypatch.setattr(agent_panel_review, "aggregate", lambda values: {"threshold_pass": False})
+    assert agent_panel_review.main() == 0
+    assert '"threshold_pass": false' in capsys.readouterr().out

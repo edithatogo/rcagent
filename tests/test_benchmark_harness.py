@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from copy import deepcopy
+from pathlib import Path
 
 import pytest
 
+from tools import benchmark_harness
 from tools.benchmark_harness import (
     ROOT,
     load_registry,
@@ -109,3 +112,40 @@ def test_report_preserves_nonpublication_boundaries() -> None:
     report = render_report(run_suite(load_registry(), "smoke"))
     assert "not an approved model ranking" in report
     assert "no generative model comparator" in report
+
+
+def test_benchmark_cli_run_and_report(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    result_path = tmp_path / "result.json"
+    report_path = tmp_path / "report.md"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["benchmark", "run", "--suite", "smoke", "--output", str(result_path)],
+    )
+    assert benchmark_harness.main() == 0
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["benchmark", "report", "--result", str(result_path), "--output", str(report_path)],
+    )
+    assert benchmark_harness.main() == 0
+    assert "not an approved model ranking" in report_path.read_text()
+
+
+def test_benchmark_cli_validate_failure(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr(sys, "argv", ["benchmark", "validate"])
+    monkeypatch.setattr(benchmark_harness, "validate_registry", lambda registry: ["bad registry"])
+    assert benchmark_harness.main() == 1
+    assert "ERROR: bad registry" in capsys.readouterr().out
+
+
+def test_benchmark_cli_rejects_invalid_report(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    result_path = tmp_path / "bad.json"
+    result_path.write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(sys, "argv", ["benchmark", "report", "--result", str(result_path)])
+    assert benchmark_harness.main() == 1
+    assert "ERROR:" in capsys.readouterr().out
