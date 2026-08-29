@@ -20,20 +20,19 @@ from tools.benchmark_harness import (
 def test_registry_is_valid_and_legacy_estate_is_preserved() -> None:
     registry = load_registry()
     assert validate_registry(registry) == []
-    assert {item["condition"] for item in registry["legacy_map"]} == {f"H{number}" for number in range(9)}
+    assert {item["condition"] for item in registry["legacy_map"]} == {
+        f"H{number}" for number in range(9)
+    }
     assert all(item["mapping_status"] != "mapped" for item in registry["legacy_map"])
 
 
-def test_pending_nsw_case_is_not_promotion_eligible_or_runnable() -> None:
+def test_active_under_review_nsw_case_remains_non_promotion_eligible() -> None:
     registry = load_registry()
     case = next(item for item in registry["cases"] if item["id"] == "nsw-policy-drift")
-    assert case["activation_status"] == "pending_owner_decision"
+    assert case["activation_status"] == "active"
     assert case["promotion_eligible"] is False
-    assert all(case["id"] not in suite["case_ids"] for suite in registry["suites"])
-
-    changed = deepcopy(registry)
-    changed["suites"][0]["case_ids"].append(case["id"])
-    assert any("pending cases cannot run" in error for error in validate_registry(changed))
+    regression = next(suite for suite in registry["suites"] if suite["id"] == "regression")
+    assert case["id"] in regression["case_ids"]
 
 
 def test_fixture_checksum_and_pending_decision_fail_closed() -> None:
@@ -42,7 +41,9 @@ def test_fixture_checksum_and_pending_decision_fail_closed() -> None:
     assert any("checksum mismatch" in error for error in validate_registry(registry))
 
     registry = load_registry()
-    next(item for item in registry["cases"] if item["id"] == "nsw-policy-drift").pop("decision_id")
+    nsw_case = next(item for item in registry["cases"] if item["id"] == "nsw-policy-drift")
+    nsw_case["activation_status"] = "pending_owner_decision"
+    nsw_case.pop("decision_id")
     assert any("requires decision_id" in error for error in validate_registry(registry))
 
 
@@ -58,9 +59,9 @@ def test_fixture_paths_and_modality_claims_fail_closed() -> None:
 
 def test_deterministic_baseline_passes_structural_and_hard_gates() -> None:
     result = run_suite(load_registry(), "regression")
-    assert result["summary"]["case_count"] == 6
-    assert result["summary"]["passed"] == 6
-    assert result["summary"]["promotion_status"] == "eligible_for_human_review"
+    assert result["summary"]["case_count"] == 7
+    assert result["summary"]["passed"] == 7
+    assert result["summary"]["promotion_status"] == "eligible_for_agent_panel_review"
     assert all(not any(item["gate_violations"].values()) for item in result["results"])
     assert all(item["citation_validity"] == 1 for item in result["results"])
     assert all(item["robustness_challenge_pass"] for item in result["results"])
@@ -96,9 +97,7 @@ def test_rehashed_result_cannot_claim_a_pass_over_a_failed_hard_gate() -> None:
     result["receipt_sha256"] = hashlib.sha256(
         json.dumps(unsigned, sort_keys=True, separators=(",", ":")).encode()
     ).hexdigest()
-    assert verify_result(result) == [
-        "result passes a failed hard gate for 'incomplete-evidence'"
-    ]
+    assert verify_result(result) == ["result passes a failed hard gate for 'incomplete-evidence'"]
 
 
 def test_unknown_suite_is_rejected() -> None:

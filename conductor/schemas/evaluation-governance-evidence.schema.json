@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/edithatogo/rcagent/conductor/schemas/evaluation-governance-evidence.schema.json",
+  "title": "Evaluation governance evidence",
+  "type": "object",
+  "required": ["schema_version", "artifact_type", "decision_id", "scope", "receipt_sha256", "claim_boundary"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "artifact_type": {"enum": ["research_thresholds", "hard_gate_evidence"]},
+    "decision_id": {"const": "20260829-004-agent-panel-research-governance"},
+    "scope": {"const": "synthetic_internal_non_operational_regression"},
+    "receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "claim_boundary": {"type": "string", "minLength": 1}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"artifact_type": {"const": "research_thresholds"}}},
+      "then": {"required": ["status", "thresholds", "current_observation", "failure_effect"]}
+    },
+    {
+      "if": {"properties": {"artifact_type": {"const": "hard_gate_evidence"}}},
+      "then": {"required": ["panel_receipt", "deterministic_receipt", "comparator_receipt", "gate_evidence", "panel_gate_coverage_complete", "effect"]}
+    }
+  ]
+}

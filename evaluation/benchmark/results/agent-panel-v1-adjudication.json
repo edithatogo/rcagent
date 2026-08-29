@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "receipt_sha256": "03e0e66318388d9c3767617f53758e525187145b82f8f9e68cc9bf95e7a125f3",
+  "decision_id": "20260829-004-post-submission-adjudication",
+  "review_mode": "post_submission_agent_adjudication",
+  "adjudicator": {
+    "reviewer_id": "governance_panel",
+    "reviewer_class": "agent",
+    "role": "post_submission_adjudicator",
+    "agent_revision": "codex-subagent-revision-not-exposed",
+    "tools": ["read_only_filesystem"],
+    "network": "not_used"
+  },
+  "instructions_path": "../panel/adjudicator-instructions.txt",
+  "instructions_sha256": "158ec6646d7d2245cf7461d2a21f337e71c671034ceb286f31442e7b8969918a",
+  "input_hashes": {
+    "panel_receipt_sha256": "ab1fd836bdaeb047cd5be674f50997f3c159ef5c9898d53f553094b14f34b7fd",
+    "blind_challenger_submission_sha256": "527d49097b7a24bae3a017ae54a01ac25ca43573832b450c77030a71f88aeb4a",
+    "blind_rater_a_submission_sha256": "10e252053093d8403fe50ad81d6b5216ebc22766eacb3e69812cb16fd50e788e",
+    "blind_rater_b_submission_sha256": "c0139cfc51852c3db06d6f646e32821ea124ea20f8e84efcd0aceb11cfbc9cd3"
+  },
+  "owner_disposition": "standing agent-panel authorisation applied; no reserved action authorised",
+  "source_receipt": "agent-panel-v1.json",
+  "scores_changed": false,
+  "dissent_preserved": true,
+  "non_unanimous_item_count": 8,
+  "disagreement_classes": {
+    "rubric_ambiguity": 1,
+    "rubric_ambiguity_with_candidate_weakness": 3,
+    "rubric_ambiguity_with_candidate_defect": 2,
+    "candidate_weakness_amplified_by_rubric_ambiguity": 2
+  },
+  "comparator_recommendation": "all_unsupported",
+  "threshold_recommendation": "stand_unchanged",
+  "track_recommendation": "may_complete_as_harness",
+  "completion_conditions": [
+    "all other acceptance evidence and the Track 04 phase dependency reconcile",
+    "threshold failure and unsupported comparators remain explicit",
+    "no model promotion or positive panel recommendation is claimed",
+    "frozen dissent and negative findings remain linked"
+  ],
+  "rationale": "All three blind reviewers independently recommended unsupported. Raw agreement 0.703704 and ordinal alpha 0.575597 missed the approved thresholds, while no submitted zero-score hard-gate conflict occurred. A benchmark harness may truthfully complete with a reproducible negative comparator result; completion attests the harness and evidence pipeline, not comparator suitability.",
+  "limitations": [
+    "agent agreement only; no human agreement",
+    "seven synthetic cases with weak external validity and sparse broad-safety coverage",
+    "single quantised Qwen family and shared prompt contract create correlated error",
+    "agent revisions were not exposed",
+    "fixed-seed repeats show repeatability, not robustness",
+    "eight disagreements expose rubric-anchor ambiguity",
+    "no clinical gold standard or operational threshold",
+    "no external validation, organisational approval, deployment suitability, or universal ranking",
+    "no comparator promotion; weights remain local and non-redistributed",
+    "absence of submitted hard-gate conflicts is not proof of safety",
+    "the frozen panel rubric did not separately score security or harmful-output; deterministic gates reported zero observed violations, and incomplete panel gate coverage independently prohibits a positive recommendation"
+  ],
+  "prospective_follow_up": "Clarify identifier integrity versus semantic coverage and implicit versus explicit boundary anchors only in a new rubric version and new blind run. Never alter the frozen scores."
+}

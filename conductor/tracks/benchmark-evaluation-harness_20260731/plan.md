@@ -95,7 +95,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Create synthetic and de-identified text, document, audio, image, and signal fixtures at appropriate governance levels
   - [x] Create incomplete, conflicting, distracting, malicious, and policy-drift scenarios
   - [x] Define gold evidence graphs, acceptable alternatives, and explicit unknowns
-  - [x] Create human-review rubrics and inter-rater calibration cases
+  - [x] Create reviewer rubrics and inter-rater calibration cases; agent-panel protocol superseded the independent-human requirement through decision `20260829-004-agent-panel-research-governance`
 
 - [x] Task: Validate the phase deliverables — `7a7257e`
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -114,10 +114,10 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 - [x] Task: Implement the phase scope — `7a7257e`
   - [x] Define model, runtime, prompt, retrieval, tool, device, seed, and environment manifests
-  - [x] Implement healthcare tasks, datasets, solvers, and scorers as Inspect AI extensions unless the fit-gap evidence rejects it
-  - [x] Bridge applicable standard language-model benchmarks through EleutherAI's Language Model Evaluation Harness rather than copying them
-  - [x] Assess local MLflow tracking for experiment and artefact lineage and Ragas or established retrieval measures for diagnostics
-  - [x] Compose deterministic orchestration, retries, timeouts, sampling, sandboxing, and raw-result preservation from the selected frameworks
+  - [x] Assess Inspect AI extensions; fit-gap evidence rejects installation at this checkpoint pending exact-version model, sandbox, provider, privacy, and offline contract evidence
+  - [x] Assess LM Evaluation Harness; no external standard benchmark is admitted in this synthetic-only checkpoint, so retain a future bridge candidate and copy no tasks or datasets
+  - [x] Assess MLflow and Ragas; canonical hashed JSON receipts and deterministic measures are adequate now, so retain both as optional uninstalled candidates
+  - [x] Compose deterministic orchestration, retries, timeouts, sampling, sandboxing, and raw-result preservation from the selected JSON Schema and pytest contracts; defer model-framework adapters behind their admission gates
   - [x] Implement only project-specific scoring adapters, uncertainty intervals, clinical-safety gates, error taxonomy, and failure triage
   - [x] Emit signed or hashed result receipts without sensitive content
 
@@ -139,8 +139,8 @@ Execution follows [workflow.md](../../workflow.md) and the
 - [!] Task: Implement the phase scope — deterministic baseline `7a7257e`; manifest fix `b954a33`; local comparator pilot `429bf7c`
   - [x] Run deterministic and retrieval-only baselines before generative models
   - [x] Run representative small, medium, and larger generic-model comparators — approved decision `20260829-002-track05-comparator-staging`; exact-revision synthetic-only receipt `evaluation/benchmark/results/local-comparators-v1.json`
-  - [!] Measure repeated-run variance, human agreement, device feasibility, and failure modes — model determinism, latency and failures measured; human agreement remains unobserved pending authorised raters
-  - [!] Calibrate thresholds without leaking held-out test cases — structural hard gates exist; operational thresholds require pilot evidence and owner authority
+  - [x] Measure repeated-run variance, agent-panel agreement, device feasibility, and failure modes — panel receipt `evaluation/benchmark/results/agent-panel-v1.json`; all comparators unsupported
+  - [x] Calibrate conservative non-operational thresholds without leaking held-out test cases — approved thresholds stand; current panel failed without retrospective relaxation
 
 - [x] Task: Validate the available phase deliverables — `b954a33`
   - [x] Run applicable schema, link, fixture, contract, privacy, safety, and regression checks
@@ -149,7 +149,7 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Reconcile Conductor state with GitHub issue #10 and dependency evidence
 
 - [!] Task: Phase Verification & Checkpoint
-  - [!] Verify every deliverable against the specification and product safeguards after the decision — comparator evidence verified; human agreement and operational threshold gates remain
+  - [x] Verify every deliverable against the specification and product safeguards after decision `20260829-004-agent-panel-research-governance`
   - [x] Store a durable phase receipt and bounded handoff context
   - [x] Update dependencies, risks, decisions, and freshness dates
   - [x] Continue automatically through unaffected work
@@ -160,7 +160,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 - [!] Task: Implement the phase scope — `7a7257e`
   - [x] Map H0-H8 cases, conditions, outputs, and scoring into the new schemas
   - [x] Preserve incompatible historical results with explicit limitations
-  - [!] Set promotion, regression, and blocking thresholds from pilot evidence — all comparators remain non-promoted; operational thresholds remain an owner gate
+  - [x] Set research regression and blocking thresholds from pilot and panel evidence — `evaluation/benchmark/research-thresholds.json`; all comparators remain unsupported and non-promoted
   - [x] Document which comparisons remain invalid or underpowered
 
 - [x] Task: Validate the available phase deliverables — `b954a33`
@@ -200,7 +200,7 @@ Execution follows [workflow.md](../../workflow.md) and the
 ## Final Track Verification
 
 - [!] Task: Complete the track evidence pack
-  - [ ] Verify every acceptance criterion has direct evidence after decision `20260829-002-track05-comparator-staging`
+  - [~] Verify every acceptance criterion has direct evidence after decisions `20260829-002` and `20260829-004`
   - [x] Re-run the complete applicable validation and regression suite
   - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
   - [x] Record unresolved limitations and owner decisions without downgrading them

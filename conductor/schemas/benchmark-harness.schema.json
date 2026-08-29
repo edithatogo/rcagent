@@ -12,14 +12,14 @@
     "created_at": {"type": "string", "format": "date-time"},
     "governance": {
       "type": "object", "additionalProperties": false,
-      "required": ["intended_decisions", "excluded_decisions", "permitted_data", "contamination_controls", "retirement", "human_scoring"],
+      "required": ["intended_decisions", "excluded_decisions", "permitted_data", "contamination_controls", "retirement", "reviewer_scoring"],
       "properties": {
         "intended_decisions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
         "excluded_decisions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-        "permitted_data": {"const": ["synthetic", "public_rights_verified", "authorised_deidentified"]},
+        "permitted_data": {"const": ["synthetic", "public_rights_verified"]},
         "contamination_controls": {"type": "array", "minItems": 1, "items": {"type": "string"}},
         "retirement": {"type": "object", "required": ["triggers", "challenge_path", "correction_policy"], "additionalProperties": {"type": "string"}},
-        "human_scoring": {"type": "object", "required": ["instructions", "agreement_metric", "unresolved_disagreement"], "additionalProperties": {"type": "string"}}
+        "reviewer_scoring": {"type": "object", "required": ["reviewer_class", "instructions", "agreement_metric", "unresolved_disagreement", "claim_boundary"], "additionalProperties": {"type": "string"}}
       }
     },
     "dependencies": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/dependency"}},
@@ -60,7 +60,7 @@
       "properties": {
         "id": {"$ref": "#/$defs/id"}, "path": {"type": "string", "pattern": "^evaluation/benchmark/fixtures/[a-z0-9][a-z0-9._/-]*\\.json$"},
         "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "partition": {"enum": ["train", "validation", "test"]},
-        "data_class": {"enum": ["synthetic", "public_rights_verified", "authorised_deidentified"]},
+        "data_class": {"enum": ["synthetic", "public_rights_verified"]},
         "modalities": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["text", "document", "audio", "image", "signal"]}},
         "jurisdiction": {"enum": ["national", "AU-NSW", "AU-QLD", "none"]},
         "activation_status": {"enum": ["active", "pending_owner_decision"]}, "decision_id": {"$ref": "#/$defs/id"},

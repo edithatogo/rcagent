@@ -17,7 +17,7 @@ All fixed-seed responses were identical within each model and case. Across the 6
 
 - No comparator is promoted or declared suitable for operational use.
 - No clinical gold standard or operational threshold is established.
-- Human agreement is not observed; independent authorised raters remain required.
+- The original receipt recorded human agreement as unobserved. Decision `20260829-004-agent-panel-research-governance` supersedes that workflow requirement with a separately recorded agent-panel review; human agreement remains unclaimed.
 - Weights remain in an isolated local cache and are not redistributed.
 - No external comparative publication has been approved.
 - This report is not clinical advice or clinical, policy, legal, regulatory, organisational, procurement, deployment, or accountable-human approval.

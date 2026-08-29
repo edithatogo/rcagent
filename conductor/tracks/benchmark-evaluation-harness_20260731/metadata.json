@@ -6,7 +6,7 @@
   "status": "in_progress",
   "evidence_schema": "1.0",
   "created_at": "2026-07-31T04:34:01Z",
-  "updated_at": "2026-08-29T04:13:24Z",
+  "updated_at": "2026-08-29T04:30:00Z",
   "workstream": "data-models-evaluation",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/10",
@@ -24,6 +24,7 @@
   "decision_gates": [
     "Use of real cases or externally restricted benchmark data",
     "Gold-standard clinical judgements and operational acceptance thresholds",
+    "Repository-owner approval of research-only regression thresholds after an agent-panel recommendation",
     "Publication of comparative model or product claims"
   ],
   "gates": [
@@ -32,6 +33,12 @@
       "kind": "owner_decision",
       "status": "approved",
       "evidence": "../../decisions/20260829-002-track05-comparator-staging.md"
+    },
+    {
+      "id": "20260829-004-agent-panel-research-governance",
+      "kind": "owner_decision",
+      "status": "approved",
+      "evidence": "../../decisions/20260829-004-agent-panel-research-governance.md"
     }
   ],
   "description": "Create a benchmark-first assurance system for incident-analysis quality, retrieval, provenance, safety, privacy, calibration, multimodal capability, and device performance before model selection or fine-tuning."

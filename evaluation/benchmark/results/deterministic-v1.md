@@ -1,9 +1,9 @@
 # Deterministic benchmark report
 
 - Suite: `regression`
-- Cases passed: 6/6
-- Promotion state: `eligible_for_human_review`
-- Receipt SHA-256: `dda98cc90e377690d2fc57ac2fa29dac1c796766eeb9ecd642dc1dc0a0a0c13b`
+- Cases passed: 7/7
+- Promotion state: `eligible_for_agent_panel_review`
+- Receipt SHA-256: `559001807442ff927d2492f753fc022d3bc00c2b7d46e3eef266b3fe27f4fb20`
 
 ## Boundaries
 

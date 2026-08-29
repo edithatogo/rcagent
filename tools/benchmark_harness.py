@@ -48,7 +48,9 @@ def validate_registry(registry: dict[str, Any], root: Path = ROOT) -> list[str]:
             for item in registry.get(key, [])
             if isinstance(item, dict) and isinstance(item.get("id"), str)
         ]
-        errors.extend(f"{key}: duplicate id {value!r}" for value in sorted(set(ids)) if ids.count(value) > 1)
+        errors.extend(
+            f"{key}: duplicate id {value!r}" for value in sorted(set(ids)) if ids.count(value) > 1
+        )
 
     case_schema = _read_json(CASE_SCHEMA_PATH)
     Draft202012Validator.check_schema(case_schema)
@@ -106,7 +108,9 @@ def validate_registry(registry: dict[str, Any], root: Path = ROOT) -> list[str]:
             if not case.get("decision_id"):
                 errors.append(f"cases: pending case {case.get('id')!r} requires decision_id")
             if case.get("promotion_eligible") is not False:
-                errors.append(f"cases: pending case {case.get('id')!r} cannot be promotion eligible")
+                errors.append(
+                    f"cases: pending case {case.get('id')!r} cannot be promotion eligible"
+                )
 
     case_ids = {case.get("id") for case in registry.get("cases", []) if isinstance(case, dict)}
     for suite in registry.get("suites", []):
@@ -126,8 +130,16 @@ def validate_registry(registry: dict[str, Any], root: Path = ROOT) -> list[str]:
         if included_pending:
             errors.append(f"suites: pending cases cannot run: {sorted(included_pending)!r}")
 
-    required_gate_categories = {"privacy", "security", "clinical-safety", "cultural-safety", "harmful-output"}
-    represented = {gate.get("category") for gate in registry.get("hard_gates", []) if isinstance(gate, dict)}
+    required_gate_categories = {
+        "privacy",
+        "security",
+        "clinical-safety",
+        "cultural-safety",
+        "harmful-output",
+    }
+    represented = {
+        gate.get("category") for gate in registry.get("hard_gates", []) if isinstance(gate, dict)
+    }
     for category in sorted(required_gate_categories - represented):
         errors.append(f"hard_gates: missing {category!r}")
     for legacy in registry.get("legacy_map", []):
@@ -143,11 +155,14 @@ def score_case(case: dict[str, Any]) -> dict[str, Any]:
     expected, candidate = case["expected"], case["candidate"]
     required_evidence = set(expected["evidence_ids"])
     required_claims = set(expected["claim_types"])
-    evidence_recall = len(required_evidence.intersection(candidate["evidence_ids"])) / len(required_evidence)
-    claim_coverage = len(required_claims.intersection(candidate["claim_types"])) / len(required_claims)
+    evidence_recall = len(required_evidence.intersection(candidate["evidence_ids"])) / len(
+        required_evidence
+    )
+    claim_coverage = len(required_claims.intersection(candidate["claim_types"])) / len(
+        required_claims
+    )
     gate_counts = {
-        category: len(violations)
-        for category, violations in candidate["gate_violations"].items()
+        category: len(violations) for category, violations in candidate["gate_violations"].items()
     }
     invalid_citations = set(candidate["evidence_ids"]) - required_evidence
     citation_validity = 1 - (len(invalid_citations) / len(candidate["evidence_ids"]))
@@ -160,10 +175,14 @@ def score_case(case: dict[str, Any]) -> dict[str, Any]:
         and not any(gate_counts.values())
     )
     return {
-        "case_id": case["id"], "evidence_recall": evidence_recall,
-        "claim_type_coverage": claim_coverage, "citation_validity": citation_validity,
-        "abstention_correct": abstention_correct, "gate_violations": gate_counts,
-        "robustness_challenge_pass": passed, "passed": passed,
+        "case_id": case["id"],
+        "evidence_recall": evidence_recall,
+        "claim_type_coverage": claim_coverage,
+        "citation_validity": citation_validity,
+        "abstention_correct": abstention_correct,
+        "gate_violations": gate_counts,
+        "robustness_challenge_pass": passed,
+        "passed": passed,
     }
 
 
@@ -186,18 +205,56 @@ def run_suite(registry: dict[str, Any], suite_id: str) -> dict[str, Any]:
         results.append(score_case(by_id[case_id]))
     elapsed = time.perf_counter() - started
     cpu_seconds = time.process_time() - cpu_started
-    fixture_paths = sorted({case["path"] for case in registry["cases"] if case["id"] in suite["case_ids"]})
+    fixture_paths = sorted(
+        {case["path"] for case in registry["cases"] if case["id"] in suite["case_ids"]}
+    )
     context_bytes = sum((ROOT / path).stat().st_size for path in fixture_paths)
     _, peak_ram = tracemalloc.get_traced_memory()
     tracemalloc.stop()
     receipt: dict[str, Any] = {
-        "schema_version": "1.0", "benchmark_version": registry["benchmark_version"],
-        "suite_id": suite_id, "runner": suite["runner"], "network": suite["network"],
-        "execution_manifest": {"model":"none-deterministic-contract", "runtime":f"Python {platform.python_version()}", "prompt":"none", "retrieval":"fixture identifiers only", "tools":[], "device":platform.platform(), "seed":0, "sampling":"none", "retries":0, "timeout":"not applicable", "sandbox":"no external execution"},
-        "registry_sha256": _sha256(REGISTRY_PATH), "fixture_sha256": {path: _sha256(ROOT / path) for path in fixture_paths},
-        "results": results, "summary": {"case_count": len(results), "passed": sum(item["passed"] for item in results), "promotion_status": "eligible_for_human_review" if all(item["passed"] for item in results) else "blocked", "external_cost": {"amount": 0, "currency": "AUD"}},
-        "device_observations": {"latency_ms": round(elapsed * 1000, 3), "throughput_cases_s": round(len(results) / elapsed, 3), "peak_ram_bytes": peak_ram, "storage_bytes": context_bytes, "context_bytes": context_bytes, "cpu_seconds_energy_proxy": round(cpu_seconds, 6)},
-        "limitations": ["deterministic structural baseline only", "no clinical gold standard", "no generative model comparator", "no external publication approval"]
+        "schema_version": "1.0",
+        "benchmark_version": registry["benchmark_version"],
+        "suite_id": suite_id,
+        "runner": suite["runner"],
+        "network": suite["network"],
+        "execution_manifest": {
+            "model": "none-deterministic-contract",
+            "runtime": f"Python {platform.python_version()}",
+            "prompt": "none",
+            "retrieval": "fixture identifiers only",
+            "tools": [],
+            "device": platform.platform(),
+            "seed": 0,
+            "sampling": "none",
+            "retries": 0,
+            "timeout": "not applicable",
+            "sandbox": "no external execution",
+        },
+        "registry_sha256": _sha256(REGISTRY_PATH),
+        "fixture_sha256": {path: _sha256(ROOT / path) for path in fixture_paths},
+        "results": results,
+        "summary": {
+            "case_count": len(results),
+            "passed": sum(item["passed"] for item in results),
+            "promotion_status": "eligible_for_agent_panel_review"
+            if all(item["passed"] for item in results)
+            else "blocked",
+            "external_cost": {"amount": 0, "currency": "AUD"},
+        },
+        "device_observations": {
+            "latency_ms": round(elapsed * 1000, 3),
+            "throughput_cases_s": round(len(results) / elapsed, 3),
+            "peak_ram_bytes": peak_ram,
+            "storage_bytes": context_bytes,
+            "context_bytes": context_bytes,
+            "cpu_seconds_energy_proxy": round(cpu_seconds, 6),
+        },
+        "limitations": [
+            "deterministic structural baseline only",
+            "no clinical gold standard",
+            "no generative model comparator",
+            "no external publication approval",
+        ],
     }
     canonical = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
     receipt["receipt_sha256"] = hashlib.sha256(canonical).hexdigest()
@@ -227,9 +284,7 @@ def verify_result(result: dict[str, Any]) -> list[str]:
         if not isinstance(observations, list):
             errors.append("result observations are missing")
         else:
-            observed_ids = [
-                item.get("case_id") for item in observations if isinstance(item, dict)
-            ]
+            observed_ids = [item.get("case_id") for item in observations if isinstance(item, dict)]
             if observed_ids != suite["case_ids"]:
                 errors.append("result cases do not match the suite")
             for item in observations:
@@ -238,7 +293,11 @@ def verify_result(result: dict[str, Any]) -> list[str]:
                     continue
                 gate_counts = item.get("gate_violations")
                 if not isinstance(gate_counts, dict) or set(gate_counts) != {
-                    "privacy", "security", "clinical-safety", "cultural-safety", "harmful-output"
+                    "privacy",
+                    "security",
+                    "clinical-safety",
+                    "cultural-safety",
+                    "harmful-output",
                 }:
                     errors.append(f"result gate counts are malformed for {item.get('case_id')!r}")
                 elif item.get("passed") is True and any(gate_counts.values()):
@@ -252,7 +311,9 @@ def verify_result(result: dict[str, Any]) -> list[str]:
             elif summary.get("passed") != passed_count:
                 errors.append("result pass count is inconsistent")
             elif summary.get("promotion_status") != (
-                "eligible_for_human_review" if passed_count == len(observations) else "blocked"
+                "eligible_for_agent_panel_review"
+                if passed_count == len(observations)
+                else "blocked"
             ):
                 errors.append("result promotion status is inconsistent")
     fixture_hashes = result.get("fixture_sha256")
@@ -276,9 +337,25 @@ def verify_result(result: dict[str, Any]) -> list[str]:
 
 def render_report(result: dict[str, Any]) -> str:
     summary = result["summary"]
-    lines = ["# Deterministic benchmark report", "", f"- Suite: `{result['suite_id']}`", f"- Cases passed: {summary['passed']}/{summary['case_count']}", f"- Promotion state: `{summary['promotion_status']}`", f"- Receipt SHA-256: `{result['receipt_sha256']}`", "", "## Boundaries", ""]
+    lines = [
+        "# Deterministic benchmark report",
+        "",
+        f"- Suite: `{result['suite_id']}`",
+        f"- Cases passed: {summary['passed']}/{summary['case_count']}",
+        f"- Promotion state: `{summary['promotion_status']}`",
+        f"- Receipt SHA-256: `{result['receipt_sha256']}`",
+        "",
+        "## Boundaries",
+        "",
+    ]
     lines.extend(f"- {item}" for item in result["limitations"])
-    lines.extend(["", "This internal report is not an approved model ranking, clinical judgement, operational threshold, or publication.", ""])
+    lines.extend(
+        [
+            "",
+            "This internal report is not an approved model ranking, clinical judgement, operational threshold, or publication.",
+            "",
+        ]
+    )
     return "\n".join(lines)
 
 

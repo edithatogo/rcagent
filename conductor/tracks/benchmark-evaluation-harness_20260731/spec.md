@@ -71,7 +71,8 @@ Reversible work inside the approved scope proceeds without per-phase approval wh
 ### Owner Decision Gates
 
 - Use of real cases or externally restricted benchmark data
-- Gold-standard clinical judgements and operational acceptance thresholds
+- Any clinical gold standard or operational acceptance threshold
+- Repository-owner approval of research-only regression thresholds after an agent-panel recommendation
 - Publication of comparative model or product claims
 
 Every decision request must include the recommended option, viable alternatives, evidence, rationale, trade-offs, reversibility, cost, safe default, and impact on dependencies.
@@ -81,7 +82,7 @@ Every decision request must include the recommended option, viable alternatives,
 1. Datasets, prompts, rubrics, models, runtimes, and results are versioned and contamination-aware.
 2. Task, retrieval, citation, safety, privacy, calibration, robustness, latency, memory, and energy-proxy measures are reproducible.
 3. Synthetic and de-identified cases cover incomplete, conflicting, adversarial, and jurisdictional uncertainty.
-4. Human scoring exposes rater instructions, agreement, uncertainty, and unresolved disagreement.
+4. Reviewer scoring identifies reviewer class, instructions, exact revisions where exposed, agreement, uncertainty, abstentions, correlated-error limitations, and unresolved disagreement. Agent-panel scores are never represented as human agreement or clinical gold-standard judgement.
 5. A model or framework cannot be promoted solely from aggregate quality if it fails privacy or safety gates.
 6. Legacy H0-H8 work is preserved and mapped into the canonical harness rather than silently discarded.
 

@@ -224,9 +224,9 @@ def run(manifest: dict[str, Any], model_root: Path, repeats: int, timeout: int) 
         "network": "disabled_by_runtime_design_no_network_api",
         "observations": observations,
         "summary": by_model,
-        "human_agreement": {
+        "agent_panel_agreement": {
             "status": "not_observed",
-            "reason": "requires authorised independent human raters",
+            "reason": "requires a blind agent-panel receipt under decision 20260829-004",
         },
         "limitations": [
             "internal research evidence only",

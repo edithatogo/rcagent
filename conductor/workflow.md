@@ -68,6 +68,12 @@ Pause only the affected scope when progress requires one of these:
 - an irreversible architecture decision, destructive migration, deletion, or history rewrite; or
 - a material product-scope choice with more than one reasonable outcome.
 
+### Multi-Agent Review Panels
+
+Multi-agent panels may satisfy repository engineering review, rubric quality assurance, synthetic benchmark scoring, evidence reconciliation, adversarial review, and recommendation duties when receipts identify reviewer class, exact revisions where exposed, instructions, evidence, disagreement, abstention, and correlated-error limitations. They do not constitute independent human review, clinical validation, legal advice, policy applicability, cultural authority, organisational approval, regulatory approval, employment authority, deployment approval, or residual-risk acceptance.
+
+Use one durable standing decision and reusable protocol for recurring in-scope checkpoints. Do not request repetitive approvals when the panel recommendation remains inside an already approved reversible, synthetic-only, non-operational envelope. Escalate only a genuinely new reserved action or material scope change.
+
 ### Decision Request Contract
 
 Apply the GitHub `decision-needed` label when available and create a record
