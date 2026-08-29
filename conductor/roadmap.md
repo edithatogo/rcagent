@@ -106,7 +106,7 @@ Later phase gates not drawn as hard-start arrows:
 | [07 Retrieval and knowledge system](./archive/retrieval-knowledge-system_20260731/index.md) | [#12](https://github.com/edithatogo/rcagent/issues/12) | B | 02, 03, 04 | Archived deterministic lexical retrieval; vector, hybrid, reranking and external-provider profiles explicitly unsupported |
 | [08 Local runtime and model lab](./archive/local-runtime-model-lab_20260731/index.md) | [#13](https://github.com/edithatogo/rcagent/issues/13) | B | 05, 06 | Archived negative-result runtime/model readiness contract; no supported tuple |
 | [09 Interfaces, templates and action loop](./archive/interfaces-templates-action-loop_20260731/index.md) | [#14](https://github.com/edithatogo/rcagent/issues/14) | C | 02, 03, 04 | Archived generated-synthetic contract surface; operational gates retained |
-| [10 Domain adaptation and fine-tuning](./tracks/domain-adaptation-finetuning_20260731/index.md) | [#15](https://github.com/edithatogo/rcagent/issues/15) | B | 05, 06, 07, 08 | Evidence-gated medical model comparison and optional adaptation |
+| [10 Domain adaptation and fine-tuning](./archive/domain-adaptation-finetuning_20260731/index.md) | [#15](https://github.com/edithatogo/rcagent/issues/15) | B | 05, 06, 07, 08 | Archived negative adaptation disposition; no model, data, training, artefact, or release |
 | [11 Distribution, registries and plugins](./tracks/distribution-registries-plugins_20260731/index.md) | [#16](https://github.com/edithatogo/rcagent/issues/16) | C | 00 | Portable releases, registry assessment, Claude and OpenAI packages |
 
 Cross-cutting repository hardening is coordinated by

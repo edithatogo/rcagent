@@ -1,6 +1,6 @@
 # Track 10: Domain Adaptation and Fine-Tuning
 
-- **Status:** Completed negative disposition; hosted integration pending
+- **Status:** Archived after hosted integration
 - **Workstream:** data-models-evaluation
 - **GitHub issue:** [#15](https://github.com/edithatogo/rcagent/issues/15)
 - **Parent workstream:** [#3](https://github.com/edithatogo/rcagent/issues/3)
