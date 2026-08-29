@@ -12,6 +12,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from tools.release_source import require_release_version, verify_release_source
+
 _ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 _SAFE_VERSION = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9._+-]{0,127})\Z")
 _REVISION = re.compile(r"[0-9a-f]{40}\Z")
@@ -55,6 +57,8 @@ def build_distribution(
     if source_revision is not None and _REVISION.fullmatch(source_revision) is None:
         raise ValueError("source revision must be a full Git commit hash")
     skill_root = repository / "skills" / "rca-investigation"
+    if skill_root.is_symlink() or not skill_root.resolve().is_relative_to(repository):
+        raise ValueError("portable skill root must be a contained non-symlink directory")
     if destination == skill_root or skill_root in destination.parents:
         raise ValueError("destination must be outside the portable source")
     if destination.exists() and any(destination.iterdir()):
@@ -63,7 +67,7 @@ def build_distribution(
 
     documents = [
         repository / name
-        for name in ("LICENSE", "DISCLAIMER.md", "PRIVACY.md", "SUPPORT.md", "CHANGELOG.md")
+        for name in ("LICENSE", "DISCLAIMER.md", "PRIVACY.md", "SUPPORT.md", "CHANGELOG.md", "VERSION")
     ]
     if (
         not (skill_root / "SKILL.md").is_file()
@@ -80,6 +84,9 @@ def build_distribution(
         if path.is_file():
             files.append((path.relative_to(skill_root).as_posix(), path.read_bytes()))
     files.extend((path.name, path.read_bytes()) for path in documents)
+    if source_revision is not None:
+        require_release_version(repository, version)
+        verify_release_source(repository, source_revision, [skill_root, *documents])
 
     file_records = [
         {"path": name, "sha256": _sha256(payload), "size": len(payload)}

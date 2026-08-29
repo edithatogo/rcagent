@@ -10,6 +10,7 @@ from pathlib import Path
 
 from tools.build_client_plugins import build_client_plugin
 from tools.build_distribution import build_distribution
+from tools.release_admission import validate_release_inventory
 
 
 @dataclass(frozen=True)
@@ -28,6 +29,10 @@ def build_release_candidate(
 ) -> ReleaseCandidate:
     """Build core and skills-only client assets with one checksum manifest."""
     repository, destination = repository.resolve(), destination.resolve()
+    validate_release_inventory(
+        repository,
+        repository / "conductor/tracks/distribution-registries-plugins_20260731/evidence/release-rights-inventory-0.1.0.json",
+    )
     if destination.exists() and any(destination.iterdir()):
         raise FileExistsError("release candidate destination must be empty")
     destination.mkdir(parents=True, exist_ok=True)
@@ -42,7 +47,24 @@ def build_release_candidate(
         claude = build_client_plugin(
             repository, work / "claude", client="claude-code", version=version, source_revision=source_revision
         )
-        sources = [core.archive, core.manifest_path, core.sbom_path, codex.archive, claude.archive]
+        marketplace_assets = {
+            "codex-marketplace.json": {
+                "name": "rcagent",
+                "owner": {"name": "edithatogo"},
+                "plugins": [{"name": "rca-investigation", "source": f"./rca-investigation-codex-{version}.zip", "version": version}],
+            },
+            "claude-marketplace.json": {
+                "name": "rcagent",
+                "owner": {"name": "edithatogo"},
+                "plugins": [{"name": "rca-investigation", "source": f"./rca-investigation-claude-code-{version}.zip", "version": version}],
+            },
+        }
+        generated: list[Path] = []
+        for name, value in marketplace_assets.items():
+            path = work / name
+            path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n")
+            generated.append(path)
+        sources = [core.archive, core.manifest_path, core.sbom_path, codex.archive, claude.archive, *generated]
         outputs: list[Path] = []
         for source in sources:
             target = destination / source.name
@@ -60,7 +82,7 @@ def build_release_candidate(
         "source_revision": source_revision,
         "licence": "Apache-2.0",
         "release_state": "candidate_not_published",
-        "rights_state": "repository_authored_public_only_candidate",
+        "rights_state": "release_inventory_passed",
         "private_data": False,
         "third_party_controlled_bytes": False,
         "clients": ["agent-skills", "codex", "claude-code"],

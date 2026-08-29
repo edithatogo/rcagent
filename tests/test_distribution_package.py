@@ -102,7 +102,7 @@ def test_distribution_rejects_missing_inputs_and_symlinks(tmp_path: Path) -> Non
     (skill / "SKILL.md").write_text("# Example\n", encoding="utf-8")
     (repository / "LICENSE").write_text("Apache License\n", encoding="utf-8")
     (repository / "DISCLAIMER.md").write_text("Disclaimer\n", encoding="utf-8")
-    for name in ("PRIVACY.md", "SUPPORT.md", "CHANGELOG.md"):
+    for name in ("PRIVACY.md", "SUPPORT.md", "CHANGELOG.md", "VERSION"):
         (repository / name).write_text(name + "\n", encoding="utf-8")
     target = tmp_path / "target.txt"
     target.write_text("outside", encoding="utf-8")
@@ -112,7 +112,12 @@ def test_distribution_rejects_missing_inputs_and_symlinks(tmp_path: Path) -> Non
 
 
 def test_distribution_binds_exact_release_revision(tmp_path: Path) -> None:
-    result = build_distribution(ROOT, tmp_path / "valid", version="0.1.0", source_revision="a" * 40)
+    original = distribution_module.verify_release_source
+    distribution_module.verify_release_source = lambda *_args, **_kwargs: None
+    try:
+        result = build_distribution(ROOT, tmp_path / "valid", version="0.1.0", source_revision="a" * 40)
+    finally:
+        distribution_module.verify_release_source = original
     assert result.manifest["source_revision"] == "a" * 40
     assert result.manifest["source"] == "https://github.com/edithatogo/rcagent"
     with pytest.raises(ValueError, match="full Git commit"):

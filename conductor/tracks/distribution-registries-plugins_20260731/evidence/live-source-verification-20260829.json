@@ -1,0 +1,11 @@
+{
+  "normative_scope": "point-in-time route and packaging guidance; reverify immediately before submission",
+  "retrieved_at": "2026-08-29T11:00:07.665185+00:00",
+  "schema_version": "1.0",
+  "sources": [
+    {"content_sha256":"e852c4e6c0abd306ff54662732bffd3a369b2355db9b0abd5253d59ba13d595c","final_url":"https://agentskills.io/specification","id":"agent-skills","markers":["SKILL.md","name","description"],"requested_url":"https://agentskills.io/specification","status":"verified"},
+    {"content_sha256":"63eb97213926addaf3dbc2a42e7bb88de974a4510439d4d248eed7f379215d87","final_url":"https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases","id":"github-releases","markers":["release","tag"],"requested_url":"https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases","status":"verified"},
+    {"content_sha256":"d1a0bbc23f03ea08a87f6fdf04e0681886413c66cb099b189c7753f83d0e2799","final_url":"https://code.claude.com/docs/en/plugins-reference","id":"claude-plugins","markers":["plugin.json",".claude-plugin"],"requested_url":"https://code.claude.com/docs/en/plugins-reference","status":"verified"},
+    {"content_sha256":"e09e06f65c6e1443c20f126f293770355df431ff825926527165d5364b634e90","final_url":"https://developers.openai.com/plugins/build/plugins","id":"openai-plugins","markers":["plugin.json",".codex-plugin"],"requested_url":"https://developers.openai.com/plugins/build/plugins","status":"verified"}
+  ]
+}

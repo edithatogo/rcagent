@@ -1,65 +1,51 @@
 # Investigation Quality Checklist
 
-Use this checklist to self-assess the quality of an RCA or SAE investigation before governance submission. Adapted from ACSQHC National RCA Guidelines and Joint Commission RCA² standards.
+Use this repository-authored checklist to assess whether a safety investigation handoff is evidence-grounded and ready for the applicable authorised review. It is not a clinical, legal, policy, regulatory, employment, disclosure, or organisational approval instrument.
 
-## 1. Scope and Context
+## Scope and authority
 
-- [ ] Incident clearly described with SAC classification rationale
-- [ ] Investigation scope defined (what is included, what is excluded)
-- [ ] Terms of Reference completed and endorsed
-- [ ] Investigation team documented with roles
-- [ ] Patient/family involvement offered and decision documented
+- [ ] Purpose, scope, exclusions, jurisdiction, audience, and accountable authority are recorded.
+- [ ] Applicable policy names, versions, status, sources, and local applicability are verified or marked unresolved.
+- [ ] Investigation roles, participation opportunities, support needs, conflicts, and procedural-fairness safeguards are recorded.
+- [ ] Clinical, legal, employment, disclosure, notification, severity, and final-approval decisions remain with authorised people.
 
-## 2. Data Collection
+## Evidence integrity
 
-- [ ] Timeline completed with multiple evidence sources cross-referenced
-- [ ] All relevant clinical records reviewed
-- [ ] All involved staff interviewed (individually, before group sessions)
-- [ ] Relevant policies and procedures reviewed (version current at time of event)
-- [ ] Equipment and environment inspected (where relevant)
-- [ ] Previous incidents reviewed for patterns
+- [ ] Each material fact points to a source or is explicitly labelled as an account, analysis, hypothesis, decision, or uncertainty.
+- [ ] Chronology entries retain source, timestamp quality, transformations, conflicts, and missing intervals.
+- [ ] Relevant records, accounts, equipment, environment, policies, prior events, and work-as-done evidence are considered in proportion to scope.
+- [ ] Missing, late, conflicting, low-quality, potentially biased, or unavailable evidence remains visible.
+- [ ] Direct identifiers and unnecessary sensitive detail are absent from the handoff.
 
-## 3. Analysis Quality
+## Analysis quality
 
-- [ ] Analysis extends beyond "human error" to system factors
-- [ ] All major contributing factor categories addressed (not just ones with obvious findings)
-- [ ] Proximate and root causes distinguished
-- [ ] Root causes identified (not just contributing factors)
-- [ ] Just Culture assessment completed for individual actions
-- [ ] Analysis is evidence-based (not speculative without caveat)
+- [ ] Method selection follows the declared question, evidence signals, capability, method budget, and stop rule.
+- [ ] Analysis considers task, technology, team, environment, organisation, policy, resources, controls, demand, and adaptation where relevant.
+- [ ] Alternative explanations and contradictory evidence are tested rather than averaged away.
+- [ ] Individual blame, culpability, diagnosis, causation, legal conclusions, and policy applicability are not inferred automatically.
+- [ ] Candidate findings state supporting evidence, conflicting evidence, limitations, uncertainty, and required human review.
 
-## 4. Action Plan Quality (RCA²)
+## Recommendations and actions
 
-- [ ] Every root cause has at least one action
-- [ ] At least one strong or intermediate action per root cause
-- [ ] Actions are specific and measurable (not "improve communication")
-- [ ] Named owner and realistic timeline for each action
-- [ ] Effectiveness review date specified for each action
-- [ ] Risk register updated where relevant
-- [ ] Clinical risk assessment skill cross-referenced for HIGH/EXTREME residual risks
+- [ ] Each recommendation links to evidence and a system condition or hazard.
+- [ ] Intended mechanism, foreseeable unintended consequences, dependencies, residual risk, owner, date, and escalation are recorded.
+- [ ] Stronger system controls are considered before relying only on reminders, training, or policy republication.
+- [ ] Process, outcome, and balancing measures plus an effectiveness-review date are defined.
+- [ ] Completion, publication, or implementation is not represented as effectiveness.
 
-## 5. Report Quality
+## Participation and communication
 
-- [ ] Report is clear and factual; avoids blame language
-- [ ] Conclusions supported by evidence cited in the report
-- [ ] Patient/family perspective included where obtained
-- [ ] Confidentiality marking applied (CONFIDENTIAL: QUALITY IMPROVEMENT)
-- [ ] Report de-identified appropriately
-- [ ] Executive summary suitable for governance committee
+- [ ] Consumer, family, staff, accessibility, language, interpreter, trauma-informed, and cultural-safety needs are considered without inferring authority or agreement.
+- [ ] Questions, disagreement, withdrawal, support, and unresolved concerns remain visible.
+- [ ] No external notification, disclosure, referral, submission, or communication is marked sent without direct system evidence.
 
-## 6. Process Compliance (AU/NZ)
+## Handoff boundary
 
-- [ ] Mandatory external notification assessed (ACSQHC/state health department for SAC 1)
-- [ ] Open disclosure initiated and documented
-- [ ] Timeframes met (SAC 1: investigation commenced within 5 business days)
-- [ ] Clinical Governance Committee submission prepared
-- [ ] Learning shared with relevant teams (de-identified)
+- [ ] Disclaimers, privacy mode, evidence limitations, model/tool involvement, approvals, and outstanding reviews are exposed to the intended audience.
+- [ ] Confidentiality, privilege, statutory protection, and mandated labels are applied only under an exact authorised process.
+- [ ] A durable receipt identifies the revision, inputs, checks, limitations, and rollback path.
+- [ ] The handoff asks the applicable authorised people to inspect the evidence and decide whether findings or actions can be accepted.
 
-## Red Flags — Do Not Submit if Any Apply
+## Stop conditions
 
-- [ ] Investigation stopped at "human error" without system analysis
-- [ ] All recommendations are training/education only (no system-level actions)
-- [ ] Contributing factors from only one level (e.g., only individual, no organisational)
-- [ ] No involvement of frontline staff in investigation
-- [ ] Investigation led by direct supervisor of involved staff without independent oversight
-- [ ] No patient/family contact offered for SAC 1
+Do not present the investigation as complete when material evidence is absent, authority is unresolved, private data handling is not approved, required participants have not had the applicable opportunity, or the proposed finding exceeds the evidence. Return a bounded gap list and safe next steps instead.

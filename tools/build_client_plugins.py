@@ -11,6 +11,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from tools.release_source import require_release_version, verify_release_source
+
 _TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 _SEMVER = re.compile(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\Z")
 _REVISION = re.compile(r"[0-9a-f]{40}\Z")
@@ -59,7 +61,7 @@ def _manifest(client: str, version: str) -> tuple[str, dict[str, Any]]:
             "developerName": "edithatogo",
             "category": "Productivity",
             "capabilities": [],
-            "defaultPrompt": "Help me scope a generated-synthetic safety investigation.",
+            "defaultPrompt": ["Help me scope a generated-synthetic safety investigation."],
         }
         return ".codex-plugin/plugin.json", common
     return ".claude-plugin/plugin.json", common
@@ -85,7 +87,9 @@ def build_client_plugin(
         raise FileExistsError("destination must be empty")
     destination.mkdir(parents=True, exist_ok=True)
     skill = repository / "skills/rca-investigation"
-    documents = [repository / name for name in ("LICENSE", "DISCLAIMER.md", "PRIVACY.md", "SUPPORT.md")]
+    if skill.is_symlink() or not skill.resolve().is_relative_to(repository):
+        raise ValueError("plugin skill root must be a contained non-symlink directory")
+    documents = [repository / name for name in ("LICENSE", "DISCLAIMER.md", "PRIVACY.md", "SUPPORT.md", "VERSION")]
     if not (skill / "SKILL.md").is_file() or not all(
         path.is_file() and not path.is_symlink() for path in documents
     ):
@@ -95,6 +99,8 @@ def build_client_plugin(
         raise ValueError("plugin release refuses symlinks")
     if any(not path.is_file() and not path.is_dir() for path in paths):
         raise ValueError("plugin release refuses special files")
+    require_release_version(repository, version)
+    verify_release_source(repository, source_revision, [skill, *documents, repository / "CHANGELOG.md"])
     manifest_path, manifest = _manifest(client, version)
     provenance = {
         "schema_version": "1.0",
@@ -106,15 +112,27 @@ def build_client_plugin(
         "telemetry": "none-in-package",
         "private_data": False,
     }
+    packaged = [
+        (f"skills/rca-investigation/{path.relative_to(skill).as_posix()}", path.read_bytes())
+        for path in paths
+        if path.is_file()
+    ]
+    packaged.extend((path.name, path.read_bytes()) for path in documents)
+    inventory = {
+        "schema_version": "1.0",
+        "scope": "package-members-excluding-INVENTORY.json",
+        "client": client,
+        "files": [
+            {"path": name, "sha256": _hash(payload), "size": len(payload)}
+            for name, payload in packaged
+        ],
+    }
     archive_path = destination / f"rca-investigation-{client}-{version}.zip"
     with zipfile.ZipFile(archive_path, "w") as archive:
         _member(archive, manifest_path, _json(manifest))
         _member(archive, "PROVENANCE.json", _json(provenance))
-        for path in paths:
-            if path.is_file():
-                relative = path.relative_to(skill).as_posix()
-                _member(archive, f"skills/rca-investigation/{relative}", path.read_bytes())
-        for path in documents:
-            _member(archive, path.name, path.read_bytes())
+        _member(archive, "INVENTORY.json", _json(inventory))
+        for name, payload in packaged:
+            _member(archive, name, payload)
     payload = archive_path.read_bytes()
     return ClientPluginResult(archive_path, manifest, _hash(payload))

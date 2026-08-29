@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires an Agent Skills client that can read bundled Markdown files.
 metadata:
   rca-workbench-profile: portable-core
-  rca-workbench-version: "0.1"
+  rca-workbench-version: "0.1.0"
 ---
 
 # Healthcare Incident Investigation

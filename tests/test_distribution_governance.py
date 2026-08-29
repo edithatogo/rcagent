@@ -23,10 +23,13 @@ def test_route_assessment_has_complete_current_fields_and_no_universal_registry_
 
 def test_openai_packet_has_minimum_cases_and_preserves_external_states() -> None:
     value = json.loads((TRACK / "openai-submission-packet-20260829.json").read_text())
-    assert value["state"] == "prepared_not_submitted"
+    assert value["state"] == "draft_incomplete_not_submitted"
     assert len(value["positive_tests"]) >= 5
     assert len(value["negative_tests"]) >= 3
     assert value["publisher"]["verification"] == "not_observed"
+    assert all(value["public_material"][key] == "not_hosted" for key in value["public_material"])
+    assert all({"expected_workflow", "expected_result_shape", "fixture"} <= set(case) for case in value["positive_tests"])
+    assert all({"scenario", "expected_fallback", "rationale"} <= set(case) for case in value["negative_tests"])
     assert value["submission"] == {
         "portal": "https://platform.openai.com/apps-manage",
         "submitted": False,
