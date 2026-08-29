@@ -12,7 +12,7 @@
 
 | Reviewer class | Role | Bounded instruction | Pre-final disposition |
 |---|---|---|---|
-| Acceptance reviewer agent | Specification and false-completion audit | Compare specification, plan, implementation, tests and durable evidence; reject unsupported completion | Conditional rework until this revision-bound receipt and ledger update |
+| Acceptance reviewer agent | Specification and false-completion audit | Compare specification, plan, implementation, tests and durable evidence; reject unsupported completion | Accept-to-archive at `32b71f0` |
 | Security reviewer agent | Privacy, provenance and adversarial lifecycle audit | Replay compartment, rebuild, malformed-receipt, rights, injection and restore-integrity failures | Accept at `bcad107` |
 | Archive-integrity reviewer agent | Conductor, GitHub and link-continuity audit | Verify issue/PR/check state, programme status, panel evidence and required archive rewrites | Accept-to-archive at `bcad107` |
 
@@ -49,11 +49,10 @@ repository root, Track 07 identity and exact candidate revision.
 ## Agreement, disagreement and abstention
 
 The panel agreed that implementation and specification false-completion
-findings were closed at `bcad107`. The acceptance reviewer withheld final
-archive acceptance only until the current receipt, evidence mapping and ledger
-update were committed; the other two reviewers accepted the implementation
-and archive plan. No reviewer abstained. Final post-evidence agreement is
-appended to the ledger before archive integration.
+findings were closed at `bcad107`. After the revision-bound receipt, evidence
+mapping and ledger update were committed as `32b71f0`, all three reviewers
+recorded ACCEPT-to-archive. No reviewer abstained. The append-only ledger
+records this final agent agreement.
 
 ## Correlated-error and authority limitations
 

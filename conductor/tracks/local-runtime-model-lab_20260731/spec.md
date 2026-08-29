@@ -60,7 +60,7 @@ The track cannot start until each hard dependency has a passing completion recei
 
 ## Later Phase Dependencies
 
-- [retrieval-knowledge-system_20260731](../retrieval-knowledge-system_20260731/index.md)
+- [retrieval-knowledge-system_20260731](../../archive/retrieval-knowledge-system_20260731/index.md)
 
 These dependencies gate the affected integration or validation phase without needlessly blocking independent foundation work.
 
