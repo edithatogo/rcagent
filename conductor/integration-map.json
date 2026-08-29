@@ -163,6 +163,7 @@
     },
     {
       "track_id": "local-runtime-model-lab_20260731",
+      "status": "adapt",
       "candidate_systems": [
         "llama.cpp and evaluated local facades such as Ollama",
         "ONNX Runtime, Optimum, and OpenVINO",
@@ -171,7 +172,13 @@
         "Hugging Face Hub model metadata",
         "Modular MAX and Mojo as experimental adapters"
       ],
-      "project_owned_gap": "device probes, reproducible profiles, safety and privacy routing, recommendation evidence, and offline bundles"
+      "selected_system": "Existing Track 05 comparator and benchmark contracts, Track 06 capability disclosures, Track 07 retrieval receipts, and maintained optional runtimes behind a model-free Track 08 admission and routing contract",
+      "dependency_class": "Python standard-library locked contract plus optional runtime adapters; no inference engine, model, downloader, telemetry or provider dependency in the portable core",
+      "compatibility_window": "runtime-lab registry schema 1.0; exact runtime and model revisions require per-artefact receipts before measured or supported status",
+      "safe_fallback": "return explicit no-capability, preserve deterministic workflows, and never route externally or execute remote code",
+      "replacement_path": "replace optional runtimes behind the common contracts and remove project admission shims when upstream provides equivalent privacy, provenance and offline lifecycle evidence",
+      "evidence": "conductor/tracks/local-runtime-model-lab_20260731/evidence/fit-gap-20260829.md",
+      "project_owned_gap": "privacy-safe device probes, exact admission manifests, safety and privacy routing, negative recommendation evidence, and operator-owned offline-bundle verification"
     },
     {
       "track_id": "interfaces-templates-action-loop_20260731",

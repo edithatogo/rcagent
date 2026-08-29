@@ -31,6 +31,27 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _admitted_file(directory: Path, relative: Any) -> Path | None:
+    """Return a regular, non-symlinked file contained by ``directory``."""
+    if not isinstance(relative, str) or not relative:
+        return None
+    declared = Path(relative)
+    if declared.is_absolute() or ".." in declared.parts:
+        return None
+    candidate = directory / declared
+    try:
+        resolved = candidate.resolve(strict=True)
+        resolved.relative_to(directory)
+    except (FileNotFoundError, OSError, ValueError):
+        return None
+    current = candidate
+    while current != directory:
+        if current.is_symlink():
+            return None
+        current = current.parent
+    return resolved if resolved.is_file() else None
+
+
 def validate_admission(manifest: dict[str, Any], model_root: Path) -> list[str]:
     errors: list[str] = []
     policy = manifest.get("admission_policy", {})
@@ -60,19 +81,38 @@ def validate_admission(manifest: dict[str, Any], model_root: Path) -> list[str]:
             errors.append(f"{model.get('id')}: licence is not Apache-2.0")
         if model.get("admission_status") != "admitted_local_research_only":
             errors.append(f"{model.get('id')}: model is not locally admitted")
-        directory = (model_root / str(model.get("cache_subdirectory"))).resolve()
+        cache_subdirectory = Path(str(model.get("cache_subdirectory", "")))
+        root = model_root.resolve()
+        declared_directory = root / cache_subdirectory
+        unsafe_directory = (
+            not str(cache_subdirectory)
+            or cache_subdirectory.is_absolute()
+            or ".." in cache_subdirectory.parts
+        )
+        current = declared_directory
+        while not unsafe_directory and current != root:
+            if current.is_symlink():
+                unsafe_directory = True
+                break
+            current = current.parent
+        directory: Path | None = None
         try:
+            directory = declared_directory.resolve(strict=True)
             directory.relative_to(model_root.resolve())
-        except ValueError:
+        except (FileNotFoundError, OSError, ValueError):
+            unsafe_directory = True
+        if unsafe_directory or directory is None:
             errors.append(f"{model.get('id')}: cache path escapes model root")
             continue
-        license_path = directory / "LICENSE"
-        if not license_path.is_file() or _sha256(license_path) != model.get("license_sha256"):
+        license_path = _admitted_file(directory, "LICENSE")
+        if license_path is None or _sha256(license_path) != model.get("license_sha256"):
             errors.append(f"{model.get('id')}: licence file is missing or mismatched")
         for item in model.get("files", []):
-            path = directory / str(item.get("path"))
-            if not path.is_file():
-                errors.append(f"{model.get('id')}: missing {path.name}")
+            declared_path = item.get("path")
+            path = _admitted_file(directory, declared_path)
+            display_name = Path(str(declared_path)).name
+            if path is None:
+                errors.append(f"{model.get('id')}: missing or unsafe {display_name}")
             elif path.stat().st_size != item.get("bytes") or _sha256(path) != item.get("sha256"):
                 errors.append(f"{model.get('id')}: size or hash mismatch for {path.name}")
     if classes != {"small", "medium", "larger"}:
@@ -94,8 +134,13 @@ def _extract_object(output: str) -> dict[str, Any] | None:
     return None
 
 
-def _score(expected: dict[str, Any], response: dict[str, Any] | None) -> dict[str, Any]:
-    if response is None:
+def _score(
+    expected: dict[str, Any],
+    response: dict[str, Any] | None,
+    *,
+    execution_succeeded: bool = True,
+) -> dict[str, Any]:
+    if response is None or not execution_succeeded:
         return {
             "schema_valid": False,
             "evidence_exact": False,
@@ -179,6 +224,7 @@ def run(manifest: dict[str, Any], model_root: Path, repeats: int, timeout: int) 
                     )
                     output = completed.stdout
                     exit_code: int | str = completed.returncode
+                    execution_succeeded = completed.returncode == 0
                 except subprocess.TimeoutExpired as exc:
                     output = (
                         exc.stdout.decode(errors="replace")
@@ -186,6 +232,7 @@ def run(manifest: dict[str, Any], model_root: Path, repeats: int, timeout: int) 
                         else (exc.stdout or "")
                     )
                     exit_code = "timeout"
+                    execution_succeeded = False
                 elapsed = time.perf_counter() - started
                 response = _extract_object(output)
                 observations.append(
@@ -199,7 +246,11 @@ def run(manifest: dict[str, Any], model_root: Path, repeats: int, timeout: int) 
                         "latency_ms": round(elapsed * 1000, 3),
                         "response": response,
                         "raw_output_sha256": hashlib.sha256(output.encode()).hexdigest(),
-                        "score": _score(case["expected"], response),
+                        "score": _score(
+                            case["expected"],
+                            response,
+                            execution_succeeded=execution_succeeded,
+                        ),
                     }
                 )
     by_model: dict[str, dict[str, Any]] = {}
