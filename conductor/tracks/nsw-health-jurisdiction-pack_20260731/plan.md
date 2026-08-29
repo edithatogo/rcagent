@@ -205,9 +205,9 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Final Track Verification
 
-- [!] Task: Complete the track evidence pack
-  - [ ] Resolve decision `20260829-001-active-under-review-pd2020-047`
-  - [ ] Verify every acceptance criterion has direct evidence after the decision
+- [x] Task: Complete the track evidence pack — `1e32fa4`
+  - [x] Resolve decision `20260829-001-active-under-review-pd2020-047`
+  - [x] Verify every acceptance criterion has direct evidence after the decision
   - [x] Re-run the complete applicable validation and regression suite
   - [x] Reconcile local files, Git history, GitHub hierarchy, native dependencies, and receipts
   - [x] Record unresolved limitations and owner decisions without downgrading them
@@ -227,3 +227,10 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Require under-review rules to cite their decision and remain pending
   - [x] Reject a jurisdiction pack marked implemented while any of its rules await a decision
   - [x] Re-run 184 tests, lint, types, gremlin, schema, and repository-governance validation
+
+- [x] Task: Activate the owner-approved under-review mappings — `1e32fa4`
+  - [x] Record the decision status separately from source review status
+  - [x] Keep `PD2020_047` visibly `under_review` with 30-day drift review
+  - [x] Activate only the two bounded, human-reviewed NSW rules
+  - [x] Preserve ims+ authority and prohibit privilege inference
+  - [x] Add negative tests for missing or pending approval
