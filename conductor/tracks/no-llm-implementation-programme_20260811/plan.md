@@ -34,15 +34,15 @@
 - [x] Task: Implement Track 01 safety-systems foundation slice
 - [x] Task: Implement Track 02 evidence-workflow slice — `4a976e0`, review `1431674`, receipt `acca833`
 - [x] Task: Implement Track 03 privacy/security assurance slice — `3f7aad3`, review `a5ff002`
-- [ ] Task: Implement Track 04 jurisdiction-pack readiness slice
+- [x] Task: Implement Track 04 jurisdiction-pack readiness slice — archived completion `1e32fa4`; bounded active-policy decision retained
 - [ ] Task: Apply issues #17 and #18 controls to each slice
-- [ ] Task: Review, merge, and clean each PR before starting the next
+- [x] Task: Review, merge, and clean each Phase 3 PR before starting the next — Tracks 01–04 merged and reconciled
 - [ ] Task: Phase verification and checkpoint
 
 ## Phase 4: Evaluation, multimodal, retrieval, and runtime readiness
 
-- [ ] Task: Implement Track 05 deterministic benchmark and admission infrastructure
-- [ ] Task: Implement Track 06 multimodal contracts, fixtures, mocks, and safety gates
+- [x] Task: Implement Track 05 deterministic benchmark and admission infrastructure — PR #49 merged as `6578da1`; archived with all comparators unsupported
+- [x] Task: Implement Track 06 multimodal contracts, fixtures, mocks, and safety gates — PR #51 merged as `42d64ea`; archive PR #52 merged as `569344b`
 - [ ] Task: Implement Track 07 deterministic retrieval and citation interfaces
 - [ ] Task: Implement Track 08 runtime discovery, resource limits, and dry-run checks
 - [ ] Task: Preserve hosted API, human, and local-model execution as explicit gates
