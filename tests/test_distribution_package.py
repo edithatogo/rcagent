@@ -5,6 +5,8 @@ import json
 import zipfile
 from pathlib import Path
 
+import pytest
+
 from tools.build_distribution import build_distribution
 
 ROOT = Path(__file__).parents[1]
@@ -53,3 +55,20 @@ def test_distribution_rejects_nonempty_destination(tmp_path: Path) -> None:
         assert "destination must be empty" in str(error)
     else:
         raise AssertionError("non-empty destination was overwritten")
+
+
+@pytest.mark.parametrize("version", ["../escape", "a/b", "a\\b", "", ".", ".."])
+def test_distribution_rejects_unsafe_version(version: str, tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="safe release identifier"):
+        build_distribution(ROOT, tmp_path / "dist", version=version)
+
+
+def test_distribution_refuses_destination_inside_portable_source(tmp_path: Path) -> None:
+    repository = tmp_path / "repository"
+    skill = repository / "skills/rca-investigation"
+    skill.mkdir(parents=True)
+    (skill / "SKILL.md").write_text("# Example\n", encoding="utf-8")
+    (repository / "LICENSE").write_text("Apache License\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="outside the portable source"):
+        build_distribution(repository, skill / "dist", version="1.0.0")

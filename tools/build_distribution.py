@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import stat
 import zipfile
 from dataclasses import dataclass
@@ -12,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 _ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
+_SAFE_VERSION = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9._+-]{0,127})\Z")
 
 
 @dataclass(frozen=True)
@@ -46,11 +48,15 @@ def build_distribution(
     """Create a deterministic local package without publishing or network access."""
     repository = repository.resolve()
     destination = destination.resolve()
+    if not _SAFE_VERSION.fullmatch(version) or version in {".", ".."}:
+        raise ValueError("version must be a safe release identifier")
+    skill_root = repository / "skills" / "rca-investigation"
+    if destination == skill_root or skill_root in destination.parents:
+        raise ValueError("destination must be outside the portable source")
     if destination.exists() and any(destination.iterdir()):
         raise FileExistsError("destination must be empty")
     destination.mkdir(parents=True, exist_ok=True)
 
-    skill_root = repository / "skills" / "rca-investigation"
     licence = repository / "LICENSE"
     if not (skill_root / "SKILL.md").is_file() or not licence.is_file():
         raise FileNotFoundError("portable skill or repository licence is missing")
