@@ -4,21 +4,32 @@
   "title": "Mode-specific assurance case",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "case_id", "mode", "risks", "controls", "tests", "evidence", "owners", "review_due", "dependency_status", "residual_risks", "residual_risk_acceptance"],
+  "required": ["schema_version", "case_id", "mode", "risks", "controls", "tests", "evidence", "owners", "review_due", "dependency_status", "residual_risks", "residual_risk_acceptance", "limitations", "domains"],
   "properties": {
-    "schema_version": {"const": "1.0"},
+    "schema_version": {"const": "1.1"},
     "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"},
     "mode": {"enum": ["public_remote", "governed_hybrid", "fully_local", "air_gapped"]},
-    "risks": {"type": "array", "items": {"$ref": "#/$defs/risk"}},
-    "controls": {"type": "array", "items": {"$ref": "#/$defs/control"}},
-    "tests": {"type": "array", "items": {"type": "string", "minLength": 1}},
-    "evidence": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "risks": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/risk"}},
+    "controls": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/control"}},
+    "tests": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
     "owners": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
     "review_due": {"type": "string", "format": "date-time"},
     "dependency_status": {"enum": ["current", "drifted", "unknown", "unavailable"]},
     "residual_risks": {"type": "array", "items": {"type": "string", "minLength": 1}},
     "residual_risk_acceptance": {"const": "owner_required"},
-    "limitations": {"type": "array", "items": {"type": "string"}}
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "domains": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["security", "privacy", "cultural_safety", "clinical_safety"],
+      "properties": {
+        "security": {"$ref": "#/$defs/domain"},
+        "privacy": {"$ref": "#/$defs/domain"},
+        "cultural_safety": {"$ref": "#/$defs/domain"},
+        "clinical_safety": {"$ref": "#/$defs/domain"}
+      }
+    }
   },
   "$defs": {
     "risk": {
@@ -40,6 +51,15 @@
         "control_id": {"type": "string", "minLength": 1},
         "status": {"enum": ["inherited", "implemented", "supplemented", "unavailable", "out_of_scope"]},
         "authority": {"type": "string", "minLength": 1}
+      }
+    },
+    "domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "evidence"],
+      "properties": {
+        "status": {"enum": ["tested_bounded", "owner_required", "unavailable"]},
+        "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
       }
     }
   }
