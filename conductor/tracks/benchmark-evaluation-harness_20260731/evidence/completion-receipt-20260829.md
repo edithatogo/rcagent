@@ -40,7 +40,7 @@ proof of domain safety.
 On 2026-08-29, the functional evidence tree passed:
 
 ```text
-uv run pytest -q --cov=tools --cov-report=term --cov-fail-under=80      226 passed; 80.45%
+uv run pytest -q --cov=tools --cov-report=term --cov-fail-under=80      250 passed; 88.44%
 uv run ruff check tools tests                                           passed
 uv run ty check tools tests                                             passed
 uv run basedpyright                                                     0 errors, 0 warnings, 0 notes
