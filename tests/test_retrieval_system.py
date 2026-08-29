@@ -376,3 +376,58 @@ def test_non_object_json_is_rejected(tmp_path: Path) -> None:
     path.write_text("[]", encoding="utf-8")
     with pytest.raises(ValueError, match="expected an object"):
         load_json(path)
+
+
+def test_fail_closed_validator_and_lifecycle_diagnostics(tmp_path: Path) -> None:
+    index = LexicalIndex(tmp_path / "index.sqlite", compartment="public")
+    index.ingest(admitted_manifest())
+    with pytest.raises(ValueError, match="unit not found"):
+        index.supersede("missing")
+    with pytest.raises(ValueError, match="unit not found"):
+        index.correct({"id": "missing"})
+    backup = tmp_path / "backup.sqlite"
+    index.backup(backup)
+    destination = tmp_path / "occupied.sqlite"
+    destination.write_text("occupied", encoding="utf-8")
+    with pytest.raises(ValueError, match="must not exist"):
+        LexicalIndex.restore(backup, destination, compartment="public")
+
+    receipt = load_json(Path("evaluation/retrieval/literature-contract-receipt-20260829.json"))
+    broken = deepcopy(receipt)
+    broken["date"] = "2026-02-31"
+    broken["query"] = ""
+    broken["provider"] = ""
+    broken["screening"].append(deepcopy(broken["screening"][0]))
+    broken["study_quality"][0].pop("reason")
+    broken["sourceright"]["revision"] = "bogus-c5fa583"
+    broken["receipt_sha256"] = canonical_hash(
+        {key: value for key, value in broken.items() if key != "receipt_sha256"}
+    )
+    errors = validate_literature_receipt(broken)
+    assert "literature date must be ISO YYYY-MM-DD" in errors
+    assert "literature query must be non-empty" in errors
+    assert "literature provider must be non-empty" in errors
+    assert "duplicate screening identifier" in errors
+    assert "study-quality record is incomplete" in errors
+    assert "unavailable SourceRight boundary is not bound to the clean pin" in errors
+
+
+def test_assurance_rejects_each_bound_contract() -> None:
+    receipt = assurance()
+    mutations = (
+        ("manifest_sha256", "invalid", "manifest binding mismatch"),
+        ("profile_revision", "invalid", "profile revision mismatch"),
+        ("unsupported", [], "unsupported capability declaration mismatch"),
+        ("profile_comparison", [], "profile comparison mismatch"),
+    )
+    for field, value, expected in mutations:
+        changed = deepcopy(receipt)
+        changed[field] = value
+        changed["receipt_sha256"] = canonical_hash(
+            {
+                key: item
+                for key, item in changed.items()
+                if key not in {"receipt_sha256", "research_observations", "observation_sha256"}
+            }
+        )
+        assert expected in verify_assurance(changed)
