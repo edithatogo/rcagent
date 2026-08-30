@@ -1,0 +1,32 @@
+{
+  "blockers": [
+    "protocol_not_frozen",
+    "execution_adapter_unassigned",
+    "semantic_admission_not_implemented"
+  ],
+  "counts": {
+    "admitted": 0,
+    "expected": 2,
+    "pending": 2,
+    "quarantined": 0,
+    "unexpected": 0
+  },
+  "manifest_sha256": "a21bf8cd1676a20f422b75275307e5be30e203ba7a9755f2ba50d78735e8f2be",
+  "schema_version": "1.0",
+  "scope": "manifest-adjacent-submissions-only",
+  "slots": [
+    {
+      "disposition": "pending",
+      "reason": "submission_missing",
+      "slot_id": "case-conflict__condition-local-text__r1"
+    },
+    {
+      "disposition": "pending",
+      "reason": "submission_missing",
+      "slot_id": "case-missing__condition-local-text__r1"
+    }
+  ],
+  "status": "planning_inventory",
+  "study_id": "prospective-agent-text-20260830",
+  "study_unlocked": false
+}
