@@ -103,6 +103,9 @@ incomplete. No further reviewer or routine phase approval is required.
         server arguments or implement socket/session probing.
       - [ ] Integrate fixed admitted server launch, private socket ownership and
         concurrent request supervision before claiming server lifecycle complete.
+        First add distinct graceful-stop/final-drain semantics under the
+        [next context](../../context-packs/server-graceful-stop-20260830.md);
+        cancellation does not preserve complete shutdown logs.
 
 ## Historical design and current execution choice
 
