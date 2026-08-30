@@ -39,6 +39,14 @@ is executed by the test suite. Initial fixture import failed before the module
 existed; subsequent checks and exact-head hosted results belong to this PR's
 validation evidence.
 
+The first full local gate passed 702 tests at 92.95% coverage, and all three
+hosted operating-system suites passed. Hosted patch coverage nevertheless
+rejected the new module's 88% coverage: several explicit rejection/error paths
+had no direct tests. The follow-up adds focused failure-path tests without
+changing production behaviour or lowering any coverage threshold.
+The expanded 30-test focused suite passed with 100% statement and branch
+coverage (73 statements, 26 branches), using an isolated coverage data file.
+
 `protocol_contract_review` implements only the two named source/test files;
 the main agent reviews integration, and `root_acceptance_map` performs a
 separate read-only review. Exact agent revisions are unavailable, and correlated

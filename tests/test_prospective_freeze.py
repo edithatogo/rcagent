@@ -224,3 +224,79 @@ def test_git_disables_lazy_fetch(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 
     monkeypatch.setattr(prospective_freeze.subprocess, "run", inspect)
     assert prospective_freeze._git(tmp_path, "--version").startswith(b"git version")
+
+
+@pytest.mark.parametrize("failure", [OSError("synthetic"), subprocess.TimeoutExpired("git", 10)])
+def test_git_launch_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, failure: Exception
+) -> None:
+    def fail(*args, **kwargs):
+        raise failure
+
+    monkeypatch.setattr(prospective_freeze.subprocess, "run", fail)
+    with pytest.raises(ValueError, match="git_unavailable"):
+        prospective_freeze._git(tmp_path, "--version")
+
+
+def test_git_oversized_output(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    def oversized(*args, **kwargs):
+        kwargs["stdout"].write(b"x" * (prospective_freeze.MAX_BYTES + 1))
+        return subprocess.CompletedProcess(args=[], returncode=0)
+
+    monkeypatch.setattr(prospective_freeze.subprocess, "run", oversized)
+    with pytest.raises(ValueError, match="git_lookup_failed"):
+        prospective_freeze._git(tmp_path, "--version")
+
+
+def test_missing_repository_root(tmp_path: Path) -> None:
+    root = tmp_path / "missing"
+    with pytest.raises(ValueError, match="invalid_repository_root"):
+        verify_freeze(root / "protocol.json", "a" * 64, "b" * 40, root)
+
+
+@pytest.mark.parametrize("mutation", ["root", "commit", "tree-path"])
+def test_git_identity_mismatch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str
+) -> None:
+    protocol, commit = fixture(tmp_path)
+    original = prospective_freeze._git
+
+    def mismatched(root: Path, *args: str) -> bytes:
+        if mutation == "root" and args == ("rev-parse", "--show-toplevel"):
+            return str(tmp_path.parent).encode()
+        if mutation == "commit" and args[:2] == ("rev-parse", "--verify"):
+            return b"0" * 40
+        value = original(root, *args)
+        if mutation == "tree-path" and args[0] == "ls-tree":
+            return value.replace(b"\tprotocol.json", b"\tother.json")
+        return value
+
+    monkeypatch.setattr(prospective_freeze, "_git", mismatched)
+    reason = {
+        "root": "repository_root_mismatch",
+        "commit": "freeze_commit_mismatch",
+        "tree-path": "untracked_or_nonregular_freeze_file",
+    }[mutation]
+    with pytest.raises(ValueError, match=reason):
+        verify_freeze(protocol, pin(protocol), commit, tmp_path)
+
+
+@pytest.mark.parametrize("component", ["protocol.json", "bad:path", "tools/../bad.py"])
+def test_component_path_contract(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, component: str
+) -> None:
+    protocol, commit = fixture(tmp_path)
+    monkeypatch.setattr(prospective_freeze, "COMPONENTS", (component,))
+    reason = "duplicate_freeze_path" if component == "protocol.json" else "invalid_freeze_path"
+    with pytest.raises(ValueError, match=reason):
+        verify_freeze(protocol, pin(protocol), commit, tmp_path)
+
+
+def test_same_size_component_change(tmp_path: Path) -> None:
+    protocol, commit = fixture(tmp_path)
+    component = tmp_path / COMPONENTS[0]
+    original = component.read_bytes()
+    component.write_bytes(original.replace(b"Synthetic", b"Different"))
+    assert component.stat().st_size == len(original)
+    with pytest.raises(ValueError, match="freeze_bytes_mismatch"):
+        verify_freeze(protocol, pin(protocol), commit, tmp_path)
