@@ -36,7 +36,8 @@ incomplete. No further reviewer or routine phase approval is required.
   - [x] Establish a separate prospective planning manifest and scoped inventory
     (`b0bbcc6`): [evidence](./prospective-inventory-20260830.md). No historical
     audit, executable-condition admission or study freeze implied.
-- [ ] Produce a root #1 acceptance map without closing it from child counts.
+- [~] Produce a root #1 acceptance map without closing it from child counts,
+  and record the [durable continuation queue](./continuation-queue.md).
 - [x] Record owner approval of prospective Option B with Option C fallback.
 - [ ] Implement the approved versioned protocol and admission gates; approval
   is not evidence of completed implementation or an admitted study cohort.
