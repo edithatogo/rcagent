@@ -197,7 +197,9 @@ def _reserved(destination: Path, descriptor: int, parent: tuple[int, int]) -> No
         raise ValueError("receipt_identity_changed")
 
 
-def _run(model_root: Path, destination: Path, descriptor: int, parent: tuple[int, int]) -> dict:
+def _run(
+    model_root: Path, destination: Path, descriptor: int, parent: tuple[int, int], primary=None
+) -> dict:
     global _BLOCKED
     result: dict = {
         "status": "session_failed",
@@ -222,6 +224,12 @@ def _run(model_root: Path, destination: Path, descriptor: int, parent: tuple[int
     }
     if (platform.system(), platform.machine()) != ("Darwin", "arm64"):
         return {**result, "error": "unsupported_platform"}
+    request = REQUEST
+    if primary is not None:
+        request = base64.b64decode(
+            primary.plan.value()["request"]["request"]["base64"], validate=True
+        )
+        result["limitations"][0] = "guarded-primary-observation-not-admitted"
     worker: threading.Thread | None = None
     worker_attempted = False
     path: Path | None = None
@@ -235,7 +243,9 @@ def _run(model_root: Path, destination: Path, descriptor: int, parent: tuple[int
     stage = "preflight_failed"
     try:
         pins = source_pins()
-        admission = model.admit_model(model_root)
+        admission = (
+            model.admit_model(model_root) if primary is None else primary.plan.value()["admission"]
+        )
         profile_pin = profile.profile_digest()
         if admission["profile_sha256"] != profile_pin:
             raise ValueError("profile_identity_mismatch")
@@ -243,8 +253,8 @@ def _run(model_root: Path, destination: Path, descriptor: int, parent: tuple[int
             admission=admission,
             source_sha256=pins,
             profile_sha256=profile_pin,
-            request_base64=base64.b64encode(REQUEST).decode(),
-            request_sha256=hashlib.sha256(REQUEST).hexdigest(),
+            request_base64=base64.b64encode(request).decode(),
+            request_sha256=hashlib.sha256(request).hexdigest(),
         )
         path = Path(tempfile.mkdtemp(prefix="rca-session-", dir="/tmp")).resolve() / "server.sock"
         result["socket_path"] = str(path)
@@ -324,12 +334,12 @@ def _run(model_root: Path, destination: Path, descriptor: int, parent: tuple[int
         if done.is_set():
             raise ValueError("worker_ended_before_completion")
         _socket(path, directory, identity)
-        completion = transport.capture(path, "POST", "/completion", REQUEST, deadline=deadline)
+        completion = transport.capture(path, "POST", "/completion", request, deadline=deadline)
         result["completion"] = completion
         _socket(path, directory, identity)
         if completion["status"] != "http_response_captured" or not completion["body_complete"]:
             raise ValueError("completion_transport_failed")
-        if completion["request_body_sha256"] != hashlib.sha256(REQUEST).hexdigest():
+        if completion["request_body_sha256"] != hashlib.sha256(request).hexdigest():
             raise ValueError("completion_request_mismatch")
         result["decoded"] = native.decode_completion(
             _body(completion), expected_model=model.MODEL_ID
@@ -426,11 +436,18 @@ def _run(model_root: Path, destination: Path, descriptor: int, parent: tuple[int
 
 def capture_session(model_root: Path, receipt: Path) -> dict:
     """Reserve a private receipt before the fixed non-study session; never overwrite."""
+    return _capture_session(model_root, receipt)
+
+
+def _capture_session(model_root: Path, receipt: Path, primary=None) -> dict:
+    """Private shared lifecycle; primary context is created only by its guarded entry."""
     if not _LOCK.acquire(blocking=False):
         raise ValueError("session_already_running")
     try:
         if _BLOCKED:
             raise ValueError("session_circuit_breaker")
+        if primary is not None:
+            primary.verify()
         if ".." in receipt.parts:
             raise ValueError("unsafe_receipt_path")
         destination = receipt.absolute()
@@ -448,7 +465,13 @@ def capture_session(model_root: Path, receipt: Path) -> dict:
         try:
             with os.fdopen(descriptor, "wb") as stream:
                 _reserved(destination, descriptor, parent)
-                result = _run(model_root, destination, descriptor, parent)
+                result = (
+                    _run(model_root, destination, descriptor, parent)
+                    if primary is None
+                    else _run(model_root, destination, descriptor, parent, primary)
+                )
+                if primary is not None:
+                    primary.finish(result)
                 try:
                     _reserved(destination, descriptor, parent)
                 except (ValueError, OSError):
