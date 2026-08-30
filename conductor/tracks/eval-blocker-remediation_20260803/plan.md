@@ -93,10 +93,14 @@ incomplete. No further reviewer or routine phase approval is required.
       30 focused tests at 100%, and final agent-panel review pass.
       Prepared while PR #88 waited; parent now merged as `8918936` and integrated;
       no model execution, protocol freeze or study admission is enabled.
-    - [ ] Implement bounded child-process lifecycle with synthetic children under
+    - [~] Implement bounded child-process lifecycle with synthetic children under
       the [process context](../../context-packs/server-process-lifecycle-20260830.md).
       PR #89 is merged with exact tree parity; real server probing remains a
       separate step after implementation, validation and agent review.
+      - [~] Build the low-level bounded dual-pipe child-capture primitive; it does
+        not select/admit real server arguments or implement socket/session probing.
+      - [ ] Integrate fixed admitted server launch, private socket ownership and
+        concurrent request supervision before claiming server lifecycle complete.
 
 ## Historical design and current execution choice
 

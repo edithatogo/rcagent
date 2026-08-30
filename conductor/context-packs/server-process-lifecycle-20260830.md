@@ -9,9 +9,18 @@ Branch `codex/server-process-lifecycle`; no worktree lease enabled.
 Implement the small lifecycle gap around the installed server, not a service
 manager or replacement inference stack. Main owns integration, task records and
 the supervisor; agent panels review acceptance/evidence and runtime safety.
-Assign non-overlapping tests to an agent when implementation begins. Owned paths:
+Agent `runtime_profile_tests` owns the primitive and tests; main owns integration
+and scope, and `root_acceptance_map` reviews acceptance and safety. Owned paths:
 `tools/server_process.py`, `tests/test_server_process.py` and linked track records.
 Keep existing profile/model helpers and historical receipts unchanged.
+
+First bounded substep: a POSIX `capture_child` primitive with explicit argv/env,
+nonblocking dual-pipe capture, cancellation/deadline/output caps and bounded direct
+child cleanup. This is an internal building block with no CLI or model admission.
+Do not claim descendant containment or safely signal a process group after its
+leader has been reaped. Fixed admitted server launch, private socket ownership
+and concurrent HTTP supervision remain a separate integration task; neither the
+primitive nor its synthetic tests completes that server lifecycle contract.
 
 Reuse Python subprocess/pipe facilities, `darwin_server_v030`,
 `prospective_server_model`, `unix_http_capture` and `native_completion` rather
