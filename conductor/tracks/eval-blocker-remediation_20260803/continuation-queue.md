@@ -8,15 +8,29 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `prospective-execution-freeze-20260831`; reviewer class: agent.
-- Implementation base: `4d621e6427b7024012f631a77f197ac117690f26` (PR #101).
+**Current terminal capture state:** sole invocation/session 14492 completed;
+do not restart it. [Negative receipt](./prospective-capture-20260831.md) records
+first-slot fixed-cap `incomplete_generation`, second not-attempted, 0/2 admitted.
+All three operational agent reviews passed retained-evidence integrity, not
+study success. Historical in-progress notes below are superseded. Current work
+is evidence delivery on the existing branch, then scoped readiness-only/root
+acceptance reconciliation under [post-capture Branch B](../../context-packs/prospective-postcapture-20260831.md).
+No retries, substitute conditions, threshold changes, positive custody or
+scoring. No new owner approval is needed for this negative-evidence route.
+The [scoped readiness addendum](./readiness-addendum-20260831.md) applies Option C
+only to this consumed cohort. After delivery, reconcile existing supported
+client/mode receipts against actual execution and concrete distribution
+prerequisites. Do not add a new inventory verifier or positive custody scaffold.
+
+- Run ID: `prospective-capture-20260831`; reviewer class: agent.
+- Implementation base: `cecf38529b0ec78ccf5271494a28d2f735c448bd` (PR #102).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/prospective-execution-freeze`; no worktree lease is
+- Integration branch: `codex/prospective-two-slot-capture`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
-  The original failed diagnostic is preserved. No study observation or score
-  was generated; no actual protocol has been frozen.
+  The original failed diagnostic is preserved. Those earlier slices generated
+  no study observations or scores; the later actual S/R freeze is recorded below.
 - Implemented: [exact-commit protocol/reference/component verification](./freeze-verification-20260830.md)
   (`46dcf31`), with agent review and expanded 30-test/100%-coverage fixtures
   (`a302486`). PR #84 passed all seven checks at head `8e70082`, merged as
@@ -169,8 +183,9 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   were reverified and no overlapping writer found. The panel selected exact
   committed-byte verification of native protocol/slot/references and a fixed
   known source subset, not the incomplete full gate. See
-  [prerequisite receipt](./native-prerequisites-20260831.md). Full closure,
-  primary adapter, agent-review binding and execution permission remain pending.
+  [prerequisite receipt](./native-prerequisites-20260831.md). At that earlier
+  prerequisite checkpoint, full closure, primary adapter, agent-review binding
+  and execution permission remained pending.
   Code `f2f76d0` passed agent review, 65 focused tests, native coverage 100%,
   and full validation (1,286 tests, 94.05%). PR #99 passed all seven checks at
   `74a995e` and merged as `acd251d` with exact tree parity. Completed branch
@@ -212,16 +227,29 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   `33333964444` passed; local master and completed-branch cleanup were verified.
   The successor was activated from clean checkpoint `95b418f`. Do not duplicate completed
   implementation. Existing hourly continuation was read back as active.
-- Current scope: prepare the actual synthetic protocol and complete
+- Completed local scope: prepare the actual synthetic protocol and complete
   execution freeze using the [next context](../../context-packs/prospective-execution-freeze-20260831.md).
   Activated `4cab688`; source S `e6c1453` has four pinned protocol files and
   four passing input tests. All three exact-source panel reviews passed;
   full 1,536 tests passed at 94.56%. Read-only local eligibility and the clean
   interpreter identity passed. R `cd09dba` and both real execution preflights
-  passed without capture. Next: verify hosted delivery with a normal merge
-  preserving S/R ancestry, then activate the reviewed
+  passed without capture. PR #102 passed all seven checks at `f114bfa`, merged
+  normally as `cecf385` with exact tree parity and S/R ancestry verified in a
+  fresh fetch. Both post-merge workflows passed (`33335734417`, `33335734411`);
+  local master and completed-branch cleanup were verified. Next activate the reviewed
   [capture context](../../context-packs/prospective-capture-20260831.md).
   No new owner decision is required.
+  Capture activation started from clean checkpoint `cf9e71d`; main owns the
+  sole invocation after baseline validation. S/R and all frozen files were
+  rechecked unchanged; the canonical study-evidence root was absent. Agent
+  lanes review operational evidence read-only. If invocation is in progress,
+  do not start another, retry or select another root. No observation is yet claimed.
+  Baseline passed 1,536 tests at 94.56% in 290.23 seconds. Sole controller
+  invocation started on 2026-08-30 at approximately 21:27 UTC, observed PID
+  40772 (verify command identity, not PID alone), tool session 14492. Its
+  exclusive local return/stderr files are in the canonical `study-evidence`
+  root. Invocation is in progress; do not overwrite empty/partial return files
+  or relaunch merely because a journal has not appeared during preflight.
   Offline custody/scoring is a separate later source/evidence boundary, not a
   reason to defer a complete unchanged execution freeze indefinitely. No actual
   model/cache eligibility, study freeze, capture, admission or scoring occurred

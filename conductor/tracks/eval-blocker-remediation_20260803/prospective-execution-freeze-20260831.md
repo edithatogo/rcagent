@@ -139,7 +139,7 @@ back byte-identically; SHA-256
 
 This establishes the bounded S/R execution freeze and point-in-time preflight,
 not a study result or exemption from fresh checks at capture. Hosted delivery
-remains pending. The [next capture context](../../context-packs/prospective-capture-20260831.md)
+was pending at that preflight checkpoint. The [next capture context](../../context-packs/prospective-capture-20260831.md)
 passed acceptance review and fixes one canonical private evidence root, no
 retry, failure retention and separate trusted custody/scoring gates. No actual
 capture root or journal was created here.
@@ -149,6 +149,29 @@ S/R ancestry and unchanged execution bytes. It found one stale cursor sentence
 calling the execution gate unfinished; that wording was corrected to identify
 the remaining capture/admission and custody/scoring evidence instead. No code,
 protocol or review-bound bytes changed.
+
+## Hosted delivery
+
+PR #102 passed all seven checks at reviewed head
+`f114bfa41f2f3c92daf44afb48a1c33018a8d83e`: conformance `33335587436`, Quality
+`33335589345`, dependency review `33335589269` and patch coverage. It merged
+normally at 2026-08-30T21:11:34Z as
+`cecf38529b0ec78ccf5271494a28d2f735c448bd`, with parents `4d621e6` and
+`f114bfa`. Reviewed and merged trees both equal
+`16a12305dacbc8a0d4677d22513cab35d9c322ed`.
+
+Hosted agent comment 3890543187 flagged S/R loss in a squashed preview. The
+delivered commit is the normal merge required by the context and PR, not that
+preview. Main verified S and R as ancestors locally and in a fresh depth-20,
+blob-filtered bare fetch from origin/master. The fresh fetched merge parents
+and tree also matched. S/R remain reachable; no tags or history rewrite were
+needed. Local master was fast-forwarded and the successor branch
+`codex/prospective-two-slot-capture` prepared. Post-merge conformance
+`33335734417` and Quality `33335734411` passed. Completed local branch and stale
+remote-tracking reference were removed after merge verification; the remote
+branch was already absent. S and R remain reachable through master.
+
+## Remaining authority and rollback
 
 Only a passing exact S/R execution gate may precede controller capture. Capture
 must use one canonical private evidence root, preserve consumed attempts and

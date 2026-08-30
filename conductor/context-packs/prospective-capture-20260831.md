@@ -1,10 +1,41 @@
 # Context Pack: Frozen prospective two-slot capture
 
+## Terminal outcome — do not invoke again
+
+The sole invocation completed at 2026-08-30T21:37:06Z with
+`controller_failed`: first slot `incomplete_generation` at the fixed 512-token
+limit, second slot not-attempted, 0/2 admitted. Three-agent negative-evidence
+review passed. [Actual receipt](../tracks/eval-blocker-remediation_20260803/prospective-capture-20260831.md)
+supersedes the historical activation/in-progress notes below. No retry, new
+root, altered cap, blinding or scoring. Deliver this result, then use Branch B
+of the [post-capture context](./prospective-postcapture-20260831.md).
+
 Prepared successor, not an execution receipt. Activate only after the exact
 source/review freeze preflight, three-role review, full validation, hosted
 delivery and post-merge checks are verified. Start at AGENTS and the Conductor
 index, then the owning plan/cursor, standing decisions 20260830-001/002 and
 the [freeze receipt](../tracks/eval-blocker-remediation_20260803/prospective-execution-freeze-20260831.md).
+
+Ready checkpoint: PR #102 merged normally as `cecf385`, matching reviewed tree
+`16a12305dacbc8a0d4677d22513cab35d9c322ed`; all seven checks and both post-merge
+workflows passed. Fresh fetch verified S/R ancestry. Parent branch cleanup and
+local master were verified; `codex/prospective-two-slot-capture` is prepared.
+Activate the capture plan task before invoking the controller. No study-evidence
+root, capture journal, primary observation or score exists from this slice.
+
+Activated from clean checkpoint `cf9e71d` on the prepared branch after fresh
+PR #102/post-merge verification and S/R ancestry/source parity checks. The
+canonical evidence root was absent. Main owns the sole controller invocation;
+agent lanes are read-only operational-evidence reviewers, not scorers. Baseline
+full validation is running before invocation. Preserve an in-progress invocation
+across client/session boundaries; never restart it or infer failure from silence.
+
+Activation commit `3d1693a`; baseline passed 1,536 tests in 290.23 seconds at
+94.56%. Main created the sole canonical root with mode 0700 and invoked the
+controller once using `.venv/bin/python -I`, explicit repository import path,
+fixed protocol/R arguments and exclusive mode-0600 return/stderr files. No
+source bytes changed. Invocation is in progress; operational results and panel
+review remain pending. The queue retains the observed process/session cursor.
 
 ## Exact bounded scope
 
