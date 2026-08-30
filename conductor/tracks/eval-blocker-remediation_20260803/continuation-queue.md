@@ -111,11 +111,18 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   cases: 43 session tests at 97.33%, full 1,106 tests at 93.91%. All seven
   checks passed head `2176465`; merged as `64810aa` with exact tree parity.
   Local master and completed local/remote branch cleanup were verified.
-  Post-merge workflows `33319059110` and `33319059107` are running.
+  Post-merge workflows `33319059110` and `33319059107` passed.
   No actual model launch,
   study execution or affirmative admission occurred.
-- Next execution/implementation: a distinct structured non-study probe after
-  fresh eligibility and provenance checks, then the
+- Observed slice: [one actual structured non-study probe](./structured-server-probe-20260830.md).
+  Fresh eligibility and unchanged source checks passed, then the fixed session
+  captured complete native JSON with all 15 loader images and confirmed cleanup.
+  Exact READY equality was false (32 decoded bytes); preserve that negative
+  finding separately from structured capability. Raw evidence remains private,
+  admission false. Receipt and public-projection reviews passed (`ba832ef`);
+  full validation passed 1,106 tests in 85.03 seconds at 93.91% coverage.
+  Hosted evidence delivery remains pending. Do not rerun the probe.
+- Next implementation: the
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
   identities into a reviewed full-component freeze. Implement affirmative

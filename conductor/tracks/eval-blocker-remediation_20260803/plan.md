@@ -111,8 +111,8 @@ incomplete. No further reviewer or routine phase approval is required.
         concurrent request supervision under the
         [session context](../../context-packs/server-session-20260830.md) (`4f561e7`);
         [evidence](./server-session-20260830.md): 1,098 tests, 93.69% coverage,
-        final agent-panel review. Synthetic composition only; actual model
-        serving, structured probe and study admission remain unverified.
+        final agent-panel review. That implementation receipt is synthetic-only;
+        the later actual observation is recorded below, without study admission.
         - [x] Review fixes (`4f561e7`): retain uncertain worker-start ownership, prevent
           cleanup before join/reap, and verify receipt identity/persistence and
           actual invocation provenance before a positive session result.
@@ -121,11 +121,17 @@ incomplete. No further reviewer or routine phase approval is required.
           Session coverage is now 97.33%; 1,106 full tests pass at 93.91%.
           Thresholds unchanged; all seven PR #92 checks passed and exact tree
           parity was verified after merge `64810aa`.
-      - [~] Verify one distinct structured non-study session after fresh model,
+      - [x] Verify one distinct structured non-study session after fresh model,
         runtime and source eligibility checks; retain raw local evidence and
         reviewed public projection under the
         [probe context](../../context-packs/structured-server-probe-20260830.md).
-        Do not infer study admission from READY.
+        [Observed evidence](./structured-server-probe-20260830.md) (`ba832ef`):
+        complete structured capture, fifteen loader images, verified cleanup;
+        exact READY equality failed and is retained. Agent receipt/projection
+        reviews and 1,106 full tests passed. No study admission.
+      - [ ] Implement the fixture-only primary runner and explicit prompt/
+        normalization contract, then full-component freeze and affirmative
+        admission-before-blinding. Do not repeat the non-study observation.
 
 ## Historical design and current execution choice
 

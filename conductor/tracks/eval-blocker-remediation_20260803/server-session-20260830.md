@@ -123,7 +123,7 @@ PR #92 passed all seven checks at exact head
 Reviewed and merged trees both equal
 `b128fd7ac5912c29b27ce690122f2cd8beff7ba3`. Local master was fast-forwarded;
 completed local and remote branches are absent. Post-merge Quality
-`33319059110` and conformance `33319059107` are running.
+`33319059110` and conformance `33319059107` both passed.
 
 A distinct structured non-study probe comes
 after fresh eligibility checks; runner, source freeze and affirmative admission
