@@ -11,6 +11,7 @@ import base64
 import hashlib
 import os
 import selectors
+import signal
 import subprocess
 import threading
 import time
@@ -68,6 +69,7 @@ def _validate(
     output_limit: int,
     cleanup_grace: float,
     cancel: threading.Event | None,
+    stop_event: threading.Event | None,
 ) -> None:
     if not POSIX:
         raise ValueError("unsupported_platform")
@@ -96,8 +98,47 @@ def _validate(
         or type(output_limit) is not int
         or not 0 < output_limit <= 1048576
         or (cancel is not None and not isinstance(cancel, threading.Event))
+        or (stop_event is not None and not isinstance(stop_event, threading.Event))
     ):
         raise ValueError("invalid_capture_limits")
+
+
+def _finish_stop(
+    process: Any,
+    deadline: float,
+    terminate_sent: bool,
+    kill_attempted: bool,
+    kill_sent: bool,
+    errors: list[str],
+) -> dict:
+    """Finish within the stop budget, never resending an attempted signal."""
+    result: dict = {
+        "reaped": False,
+        "terminate_sent": terminate_sent,
+        "kill_sent": kill_sent,
+        "cleanup_errors": list(errors),
+        "returncode": None,
+    }
+    try:
+        code = process.poll()
+        if code is not None:
+            return {**result, "reaped": True, "returncode": code}
+    except OSError:
+        result["cleanup_errors"].append("poll_failed")
+    if not kill_attempted:
+        try:
+            process.kill()
+            result["kill_sent"] = True
+        except OSError:
+            result["cleanup_errors"].append("kill_failed")
+    try:
+        code = process.wait(timeout=max(0, deadline - time.monotonic()))
+        result.update(reaped=True, returncode=code)
+    except subprocess.TimeoutExpired:
+        result["cleanup_errors"].append("reap_timeout")
+    except OSError:
+        result["cleanup_errors"].append("reap_failed")
+    return result
 
 
 def capture_child(
@@ -108,14 +149,17 @@ def capture_child(
     output_limit: int = 1048576,
     cleanup_grace: float = 1,
     cancel: threading.Event | None = None,
+    stop_event: threading.Event | None = None,
 ) -> dict:
     """Capture authorised caller-selected bytes with bounded direct-child cleanup.
 
     Invalid inputs raise before launch. Operational failures retain the original
     reason and separate cleanup errors. A full-stream digest requires observed
     EOF without truncation; retained-prefix digests never assert completeness.
+    A stop requests TERM while draining; cancellation aborts capture. Stopped
+    means observed cleanup, not proof that our signal caused the process exit.
     """
-    _validate(argv, environment, timeout, output_limit, cleanup_grace, cancel)
+    _validate(argv, environment, timeout, output_limit, cleanup_grace, cancel, stop_event)
     set_blocking = getattr(os, "set_blocking", None)
     if not callable(set_blocking):
         raise ValueError("unsupported_nonblocking_pipes")
@@ -126,6 +170,11 @@ def capture_child(
     started = time.monotonic()
     deadline = started + timeout
     error = "none"
+    stop_requested = stop_event is not None and stop_event.is_set()
+    stop_started = False
+    stop_term_deadline = stop_final_deadline = deadline
+    stop_term_sent = stop_kill_attempted = stop_kill_sent = False
+    stop_errors: list[str] = []
     process: subprocess.Popen[bytes] | None = None
     cleanup: dict = {
         "reaped": False,
@@ -137,6 +186,8 @@ def capture_child(
     try:
         if cancel is not None and cancel.is_set():
             error = "cancelled"
+        elif stop_requested:
+            error = "stop_before_launch"
         else:
             try:
                 process = subprocess.Popen(
@@ -159,15 +210,48 @@ def capture_child(
                         selector.register(stream, selectors.EVENT_READ, name)
                     while True:
                         if cancel is not None and cancel.is_set():
-                            error = "cancelled"
+                            error = error if error != "none" else "cancelled"
                             break
-                        remaining = deadline - time.monotonic()
+                        now = time.monotonic()
+                        remaining = deadline - now
                         if remaining <= 0:
-                            error = "deadline_exceeded"
+                            error = error if error != "none" else "deadline_exceeded"
                             break
-                        if all(eof.values()) and process.poll() is not None:
+                        code = process.poll()
+                        if stop_event is not None and stop_event.is_set():
+                            stop_requested = True
+                            if not stop_started and code is None:
+                                stop_started = True
+                                stop_term_deadline = min(deadline, now + cleanup_grace)
+                                stop_final_deadline = now + 2 * cleanup_grace
+                                try:
+                                    process.terminate()
+                                    stop_term_sent = True
+                                except OSError:
+                                    stop_errors.append("terminate_failed")
+                                    error = "stop_signal_failed"
+                                    break
+                        if stop_started:
+                            if now >= stop_term_deadline and error == "none":
+                                error = "stop_grace_exceeded"
+                                if code is None:
+                                    stop_kill_attempted = True
+                                    try:
+                                        process.kill()
+                                        stop_kill_sent = True
+                                    except OSError:
+                                        stop_errors.append("kill_failed")
+                            drain_deadline = (
+                                stop_term_deadline if error == "none" else stop_final_deadline
+                            )
+                            remaining = min(remaining, drain_deadline - now)
+                            if remaining <= 0:
+                                error = error if error != "none" else "stop_grace_exceeded"
+                                break
+                        if all(eof.values()) and code is not None:
                             break
                         events = selector.select(min(remaining, 0.05))
+                        overflow = False
                         for key, _ in events:
                             name = key.data
                             available = output_limit - len(buffers[name])
@@ -183,15 +267,26 @@ def capture_child(
                             buffers[name].extend(chunk[:available])
                             if len(chunk) > available:
                                 truncated[name] = True
-                                error = "output_limit_exceeded"
+                                error = error if error != "none" else "output_limit_exceeded"
+                                overflow = True
                                 break
-                        if error != "none":
+                        if overflow:
                             break
     except (OSError, ValueError):
         error = "capture_io_failed" if error == "none" else error
     finally:
         if process is not None:
-            cleanup = _cleanup(process, cleanup_grace)
+            if stop_started:
+                cleanup = _finish_stop(
+                    process,
+                    stop_final_deadline,
+                    stop_term_sent,
+                    stop_kill_attempted,
+                    stop_kill_sent,
+                    stop_errors,
+                )
+            else:
+                cleanup = _cleanup(process, cleanup_grace)
             for stream in (process.stdout, process.stderr):
                 if stream is not None:
                     try:
@@ -201,18 +296,24 @@ def capture_child(
     if error == "none":
         if cleanup["cleanup_errors"] or not cleanup["reaped"]:
             error = "cleanup_failed"
-        elif cleanup["returncode"] != 0:
+        elif cleanup["returncode"] not in ((0, -signal.SIGTERM) if stop_started else (0,)):
             error = "nonzero_exit"
         elif not all(eof.values()):
             error = "incomplete_output"
     result = {
-        "status": "process_captured" if error == "none" else "capture_failed",
+        "status": (
+            ("process_stopped" if stop_started else "process_captured")
+            if error == "none"
+            else "capture_failed"
+        ),
         "error": error,
         "execution_observed": process is not None,
         "pid": process.pid if process is not None else None,
         "admitted": False,
         "study_unlocked": False,
         "runtime_verified": False,
+        "stop_requested": stop_requested,
+        "stop_started": stop_started,
         "elapsed_seconds": time.monotonic() - started,
         **cleanup,
         "limitations": [
@@ -223,6 +324,7 @@ def capture_child(
             "process-creation-and-scheduling-not-hard-real-time-bounded",
             "raw-streams-require-inspection-before-publication",
             "capture-stops-on-failure-shutdown-bytes-may-be-unretained",
+            "signal-requests-not-proven-delivery-or-exit-causality",
             "not-study-admission",
         ],
     }
