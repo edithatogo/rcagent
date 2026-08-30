@@ -150,6 +150,7 @@ def capture_child(
     cleanup_grace: float = 1,
     cancel: threading.Event | None = None,
     stop_event: threading.Event | None = None,
+    deadline: float | None = None,
 ) -> dict:
     """Capture authorised caller-selected bytes with bounded direct-child cleanup.
 
@@ -158,6 +159,8 @@ def capture_child(
     EOF without truncation; retained-prefix digests never assert completeness.
     A stop requests TERM while draining; cancellation aborts capture. Stopped
     means observed cleanup, not proof that our signal caused the process exit.
+    An absolute monotonic deadline can only shorten the relative timeout. An
+    already-expired valid deadline refuses launch, including delayed workers.
     """
     _validate(argv, environment, timeout, output_limit, cleanup_grace, cancel, stop_event)
     set_blocking = getattr(os, "set_blocking", None)
@@ -168,7 +171,11 @@ def capture_child(
     eof = {name: False for name in buffers}
     truncated = {name: False for name in buffers}
     started = time.monotonic()
-    deadline = started + timeout
+    if deadline is not None and (
+        type(deadline) not in (int, float) or not 0 < deadline <= started + 120
+    ):
+        raise ValueError("invalid_deadline")
+    deadline = min(started + timeout, deadline) if deadline is not None else started + timeout
     error = "none"
     stop_requested = stop_event is not None and stop_event.is_set()
     stop_started = False
@@ -188,6 +195,8 @@ def capture_child(
             error = "cancelled"
         elif stop_requested:
             error = "stop_before_launch"
+        elif time.monotonic() >= deadline:
+            error = "deadline_exceeded"
         else:
             try:
                 process = subprocess.Popen(
@@ -315,6 +324,7 @@ def capture_child(
         "stop_requested": stop_requested,
         "stop_started": stop_started,
         "elapsed_seconds": time.monotonic() - started,
+        "execution_deadline_monotonic": deadline,
         **cleanup,
         "limitations": [
             "caller-authorises-argv-and-environment",
