@@ -3,14 +3,14 @@
   "name": "Evaluation Blocker Remediation and Admission",
   "status": "blocked",
   "created": "2026-08-03",
-  "updated_at": "2026-08-30T07:54:17Z",
+  "updated_at": "2026-08-30T08:16:27Z",
   "gates": [
     {
       "id": "prospective-runtime-availability",
       "kind": "execution_dependency",
       "status": "pending",
-      "description": "Separate 0.3.0 profile passed exact-byte version/help diagnostics; model inference compatibility and study-condition admission remain pending. Old profile files remain missing.",
-      "evidence": "./runtime-v030-20260830.md"
+      "description": "Separate 0.3.0 profile passed a bounded synthetic model probe with stable pins; stdout remains wrapped. Study-specific grammar, execution and admission remain pending. Old profile files remain missing.",
+      "evidence": "./output-mode-probe-20260830.md"
     },
     {
       "id": "prospective-semantic-admission",

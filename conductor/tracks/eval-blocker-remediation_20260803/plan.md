@@ -57,6 +57,13 @@ incomplete. No further reviewer or routine phase approval is required.
     bytes and component-level licence evidence; preserve the old profile.
     [Evidence](./runtime-v030-20260830.md): 739 tests, agent review and live
     version/help diagnostics; no model inference or study admission.
+  - [x] Implement a fixed synthetic output-mode probe using an explicit runtime
+    overlay and unchanged model-rights checks; establish observed output grammar
+    before implementing normalisation (`a82acb1`).
+    [Evidence](./output-mode-probe-20260830.md): 776 tests and one complete live
+    probe; stdout remains wrapped, so response-only normalisation is unverified.
+  - [ ] Establish a strict, implementation-supported output grammar or separately
+    admitted response-only entrypoint, then implement deterministic normalisation.
 
 ## Historical design and current execution choice
 

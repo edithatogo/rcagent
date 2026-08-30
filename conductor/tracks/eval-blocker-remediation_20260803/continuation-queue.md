@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `runtime-v030-20260830`; reviewer class: agent.
-- Implementation base: `4582b8e84e84469fcba03ea407353d4eb6f7d7e1`.
+- Run ID: `output-mode-probe-20260830`; reviewer class: agent.
+- Implementation base: `f6178dc0c03cb2d0e73345934bedd16704b95eb4`.
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/runtime-profile-v030`; no worktree lease is
+- Integration branch: `codex/synthetic-output-probe`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -28,23 +28,36 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   [Recovery inspection](./runtime-drift-20260830.md) recommends a separately
   versioned installed-runtime candidate; exact component rights and pins must
   be reconciled before admission. Never overwrite the historical profile.
-- Current slice: [explicit runtime 0.3.0 profile](./runtime-v030-20260830.md).
+- Completed slice: [explicit runtime 0.3.0 profile](./runtime-v030-20260830.md).
   Agent panel checked installed component/licence bytes and preserved metadata
-  contradictions. Legacy defaults remain unchanged. All 739 tests passed
+  contradictions. Legacy defaults remain unchanged. Initial 739 tests passed
   (93.19% coverage); live version/help diagnostics passed all 16 loaded-image
-  pins. No model inference, study admission or freeze. Inspect the linked
-  receipt and exact hosted head before integrating this branch.
+  pins. PR #85 additionally fixed benchmark CLI false success and isolated its
+  serialization test without changing live thresholds. Final 740 tests passed;
+  all seven checks passed head `5440076`, merged as `f6178dc` with exact tree
+  parity. Both post-merge workflows passed; completed branch cleanup verified.
+  No model inference, study admission or freeze was claimed by that slice.
+- Current slice: fixed synthetic output-mode probe and explicit model/runtime
+  eligibility overlay. Preserve original registry and model-rights controls;
+  [live output-grammar evidence](./output-mode-probe-20260830.md) now records
+  one successful complete non-study probe with all 16 loader pins verified.
+  Stdout remains wrapped despite suppression flags. Local full validation:
+  776 tests, 93.33% coverage. Check this branch's exact PR/merge state before
+  resuming; do not repeat the probe without a distinct new evidentiary purpose.
 - Next implementation: a study-specific runner with deterministic output
   extraction, reusing the pinned runtime profile. Verify the pinned CLI's
   output-only mode or an exact wrapper parser on non-study fixtures, then bind
   actual adapter/input/rubric identities into a reviewed, committed protocol
   freeze. Implement affirmative admission separately; do not use READY probe
   output or candidate consistency as primary study evidence.
+  Inspect pinned local implementation evidence for an exact wrapper grammar,
+  or separately admit a response-only entrypoint. Do not generic-strip banners,
+  choose the first JSON object, or infer a universal grammar from one READY run.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Scope ownership: the explicit profile, shared verifier, their tests and
+- Scope ownership: the model eligibility overlay, fixed probe, their tests and
   linked records belong to this slice; the
-  [context pack](../../context-packs/runtime-v030-20260830.md) records its
+  [context pack](../../context-packs/output-mode-probe-20260830.md) records its
   checks and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
