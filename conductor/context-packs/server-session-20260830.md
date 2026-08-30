@@ -15,8 +15,9 @@ worker and synchronous bounded health/completion requests; main concurs.
 
 Planned owned paths: `tools/prospective_server_session.py`, matching tests,
 necessary narrow `tools/server_process.py` deadline support and linked records.
-Assign one implementation owner per file and an acceptance/integrity reviewer;
-main owns integration and safety review. Preserve existing profiles, registry,
+Main owns the deadline delta/tests, source checks, records, integration and safety;
+`runtime_profile_tests` owns the session module/tests; `root_acceptance_map`
+owns acceptance/integrity review. Preserve existing profiles, registry,
 historical evidence and default capture/stop contracts.
 
 Reuse `darwin_server_v030`, `prospective_server_model`, `server_process`,

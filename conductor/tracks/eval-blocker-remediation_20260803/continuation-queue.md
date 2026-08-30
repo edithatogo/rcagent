@@ -100,10 +100,16 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   `bb3c76b` at 2026-08-30T13:55:50Z with exact tree parity; local master and
   completed branch cleanup were verified. Post-merge Quality `33315490265` and
   conformance `33315490275` passed.
-  No real model ran. The next branch contains context/records only; fixed-session
-  implementation has not begun.
-- Next implementation: integrate fixed admitted server launch, private socket
-  ownership and concurrent request supervision, then a structured non-study probe and
+  No real model ran. The successor implementation is now in progress on the
+  integration branch; do not mistake the parent results for successor validation.
+- Implemented slice: [fixed non-study server session](./server-session-20260830.md)
+  (`4f561e7`). Final agent-panel review passed; 35 session and 13 deadline tests
+  pass, including real synthetic child/Unix HTTP composition. Full validation
+  passed 1,098 tests in 82.90 seconds at 93.69% coverage. Native and Windows
+  type checks pass. Hosted CI and delivery are pending. No actual model launch,
+  study execution or affirmative admission occurred.
+- Next execution/implementation: a distinct structured non-study probe after
+  fresh eligibility and provenance checks, then the
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
   identities into a reviewed full-component freeze. Implement affirmative

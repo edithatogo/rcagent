@@ -107,10 +107,18 @@ incomplete. No further reviewer or routine phase approval is required.
         coverage and final agent review passed. Cancellation remains separate.
         - [x] Review fix (`3d4f109`): reject completion first observed after TERM
           grace; preserve failure and protect it with a deterministic late-EOF fixture.
-      - [~] Integrate fixed admitted server launch, private socket ownership and
+      - [x] Integrate fixed admitted server launch, private socket ownership and
         concurrent request supervision under the
-        [session context](../../context-packs/server-session-20260830.md)
-        before claiming server lifecycle complete.
+        [session context](../../context-packs/server-session-20260830.md) (`4f561e7`);
+        [evidence](./server-session-20260830.md): 1,098 tests, 93.69% coverage,
+        final agent-panel review. Synthetic composition only; actual model
+        serving, structured probe and study admission remain unverified.
+        - [x] Review fixes (`4f561e7`): retain uncertain worker-start ownership, prevent
+          cleanup before join/reap, and verify receipt identity/persistence and
+          actual invocation provenance before a positive session result.
+      - [ ] Verify one distinct structured non-study session after fresh model,
+        runtime and source eligibility checks; retain raw local evidence and
+        reviewed public projection. Do not infer study admission from READY.
 
 ## Historical design and current execution choice
 
