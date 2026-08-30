@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "kind": "prospective-study-plan",
+  "study_id": "prospective-agent-text-20260830",
+  "version": "0.1.0",
+  "state": "planning",
+  "data_class": "synthetic",
+  "repeats": 1,
+  "cases": [
+    {
+      "id": "case-missing",
+      "input": {
+        "path": "case-missing.md",
+        "sha256": "5d069a0e6c2f27bc00ba693777e15cf6c7d3e381a109159ac864e5fb1cd629ce"
+      }
+    },
+    {
+      "id": "case-conflict",
+      "input": {
+        "path": "case-conflict.md",
+        "sha256": "4f25ac17035c4672ace7fcb1dba39fb1ed756eac85dc0ccb28be66efa17fb5dc"
+      }
+    }
+  ],
+  "conditions": [
+    {"id": "condition-local-text", "execution_status": "unassigned"}
+  ],
+  "rubric": {
+    "path": "rubric-plan.md",
+    "sha256": "38066f9bec5314b7f5bf15d4bfb9c0340cd61da04ad26ea37eb413f366a36cf3"
+  },
+  "expected_slots": [
+    "case-missing__condition-local-text__r1",
+    "case-conflict__condition-local-text__r1"
+  ]
+}
