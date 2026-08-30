@@ -161,12 +161,18 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   `234360d` with exact tree parity. Post-merge conformance `33323914284` and
   Quality `33323914292` passed; local master and completed branch cleanup verified.
   The existing hourly continuation is active; no new owner decision is required.
-- Immediate next prepared slice: a
+- Implemented prerequisite slice towards a
   [fail-closed pre-launch gate](../../context-packs/prelaunch-gate-20260831.md),
   rejecting absent primary adapter and incomplete component closure. Do not
   claim gate completion from placeholders or synthetic production permits.
-  No gate source or tests have been started. Parent post-merge checks passed;
-  reconcile clean ownership, then activate its bounded design/implementation checkpoint.
+  Activated `162dfba` from clean checkpoint `c6b23db`; parent post-merge checks
+  were reverified and no overlapping writer found. The panel selected exact
+  committed-byte verification of native protocol/slot/references and a fixed
+  known source subset, not the incomplete full gate. See
+  [prerequisite receipt](./native-prerequisites-20260831.md). Full closure,
+  primary adapter, agent-review binding and execution permission remain pending.
+  Code `f2f76d0` passed agent review, 65 focused tests, native coverage 100%,
+  and full validation (1,286 tests, 94.05%). Hosted delivery is pending.
 - Subsequent implementation: the
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
@@ -176,10 +182,11 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Scope ownership: the prepared pre-launch prerequisites, matching synthetic fixtures and
-  records belong to the successor; the
-  [context pack](../../context-packs/prelaunch-gate-20260831.md) records its
-  checks and exclusions. Preserve overlapping active work.
+- Next ready scope: implement the guarded single-slot primary adapter and full
+  gate together, after defining complete dependency closure and trusted review
+  provenance. The [next context](../../context-packs/primary-session-gate-20260831.md)
+  records panel recommendations and boundaries. Finish current hosted delivery
+  before activating the next slice; preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
 

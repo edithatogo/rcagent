@@ -71,7 +71,9 @@ deliver only the independently testable prerequisite checks with explicit pendin
 gates. Do not ship an always-pass placeholder or claim full gate completion from
 an always-fail stub. Synthetic fixtures must not issue a usable production permit.
 The later primary adapter's sole entry must verify all prerequisites before any
-receipt reservation, temporary directory, worker, socket or process is created.
+session receipt reservation, session directory, model worker, socket or model
+process is created. Bounded read-only Git subprocesses are prerequisite checks,
+not model execution.
 Preserve the fixed READY entrypoint and its historical source-pin receipts.
 
 ## Validation, boundaries and handoff
