@@ -102,7 +102,22 @@ synthetic validation. All historical H0–H8/H8P evidence remains unchanged.
 
 ## Next action
 
-Deliver only the exact reviewed green head; hosted CI remains pending. A
+PR #92 at `f027f02` passed all three OS Quality jobs, conformance, dependency
+review and advisory prose checks. The external Codecov check reported 88.67%
+patch coverage against its 90.00% target, so delivery remains blocked on
+additional repository adversarial fixtures. No threshold or production gate
+is weakened; the external service itself is not modified or debugged.
+
+The eight-case follow-up passes 43 session tests at 97.33% isolated module
+coverage. It covers unavailable source pins, body integrity, lock refusal,
+directory/symlink and cleanup identity, preflight profile disagreement,
+health-attempt exhaustion and interruption cleanup. Final tests SHA-256:
+`daf9668b18bab7574c88c2a6d726c33f82ae4f349e5d511b004790e18fca0f3e`.
+Both agent reviews passed the tests-only delta; production source is unchanged.
+Full validation then passed 1,106 tests in 84.17 seconds at 93.91% coverage;
+Ruff and native/Windows type checks passed. Fresh hosted coverage is pending.
+
+Deliver only the exact reviewed green head after that follow-up. A
 distinct structured non-study probe comes
 after fresh eligibility checks; runner, source freeze and affirmative admission
 remain separate unfinished work. Rollback only this session/deadline delta.

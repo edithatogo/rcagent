@@ -106,7 +106,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   (`4f561e7`). Final agent-panel review passed; 35 session and 13 deadline tests
   pass, including real synthetic child/Unix HTTP composition. Full validation
   passed 1,098 tests in 82.90 seconds at 93.69% coverage. Native and Windows
-  type checks pass. Hosted CI and delivery are pending. No actual model launch,
+  type checks pass. PR #92 at `f027f02` passed all OS jobs; patch coverage
+  reported 88.67% against 90%. Follow-up `cf89192` adds eight reviewed guard
+  cases: 43 session tests at 97.33%, full 1,106 tests at 93.91%. Fresh hosted
+  confirmation and delivery remain pending. No actual model launch,
   study execution or affirmative admission occurred.
 - Next execution/implementation: a distinct structured non-study probe after
   fresh eligibility and provenance checks, then the

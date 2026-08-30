@@ -107,7 +107,7 @@ incomplete. No further reviewer or routine phase approval is required.
         coverage and final agent review passed. Cancellation remains separate.
         - [x] Review fix (`3d4f109`): reject completion first observed after TERM
           grace; preserve failure and protect it with a deterministic late-EOF fixture.
-      - [x] Integrate fixed admitted server launch, private socket ownership and
+      - [~] Integrate fixed admitted server launch, private socket ownership and
         concurrent request supervision under the
         [session context](../../context-packs/server-session-20260830.md) (`4f561e7`);
         [evidence](./server-session-20260830.md): 1,098 tests, 93.69% coverage,
@@ -116,6 +116,10 @@ incomplete. No further reviewer or routine phase approval is required.
         - [x] Review fixes (`4f561e7`): retain uncertain worker-start ownership, prevent
           cleanup before join/reap, and verify receipt identity/persistence and
           actual invocation provenance before a positive session result.
+        - [x] Hosted coverage follow-up (`cf89192`): add eight adversarial guard
+          cases after patch coverage observed 88.67% against a 90% target.
+          Session coverage is now 97.33%; 1,106 full tests pass at 93.91%.
+          Thresholds unchanged; fresh hosted confirmation remains pending.
       - [ ] Verify one distinct structured non-study session after fresh model,
         runtime and source eligibility checks; retain raw local evidence and
         reviewed public projection. Do not infer study admission from READY.
