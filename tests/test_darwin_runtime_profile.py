@@ -4,6 +4,7 @@ import base64
 import hashlib
 import json
 import subprocess
+from pathlib import PurePosixPath, PureWindowsPath
 from types import SimpleNamespace
 
 import pytest
@@ -45,12 +46,44 @@ def pinned(tmp_path, monkeypatch):
         raise AssertionError("real execution forbidden")
 
     monkeypatch.setattr(profile.subprocess, "run", forbidden)
+    # File checks use native temporary paths; loader records always use Darwin paths.
+    real_loader = profile.verify_loaded_images
+
+    def mapped_loader(stderr):
+        with monkeypatch.context() as patch:
+            patch.setattr(
+                profile,
+                "PINNED_FILES",
+                {wire_path(name): digest for name, digest in profile.PINNED_FILES.items()},
+            )
+            patch.setattr(
+                profile, "REQUIRED_IMAGES", {wire_path(name) for name in profile.REQUIRED_IMAGES}
+            )
+            return real_loader(stderr)
+
+    monkeypatch.setattr(profile, "verify_loaded_images", mapped_loader)
+    return paths
+
+
+def wire_path(path):
+    return path if path.startswith("/") else "/synthetic/" + PureWindowsPath(path).name
+
+
+def test_windows_fixture_path_maps_to_darwin_wire_format():
+    assert wire_path(r"C:\fixture\libllama.dylib") == "/synthetic/libllama.dylib"
+
+
+@pytest.fixture
+def loader_pinned(monkeypatch):
+    paths = ["/synthetic/" + name for name in ("llama-cli", "libllama.dylib", "libggml-cpu.dylib")]
+    monkeypatch.setattr(profile, "PINNED_FILES", dict.fromkeys(paths, "a" * 64))
+    monkeypatch.setattr(profile, "REQUIRED_IMAGES", set(paths[:2]))
     return paths
 
 
 def trace(paths):
     return "".join(
-        f"dyld[123]: <12345678-1234-1234-1234-123456789ABC> {path}\n" for path in paths
+        f"dyld[123]: <12345678-1234-1234-1234-123456789ABC> {wire_path(path)}\n" for path in paths
     ).encode()
 
 
@@ -106,24 +139,32 @@ def test_verify_files_accepts_exact_bytes(pinned):
     assert profile.verify_files() is None
 
 
-def test_backend_discovery_directory_rejects_extra_or_missing(pinned, tmp_path, monkeypatch):
-    backend_dir = tmp_path.resolve() / "libexec"
-    backend_dir.mkdir()
-    backend = backend_dir / "cpu.so"
-    backend.write_bytes(b"backend")
-    monkeypatch.setattr(
-        profile,
-        "PINNED_FILES",
-        {**profile.PINNED_FILES, str(backend): hashlib.sha256(b"backend").hexdigest()},
-    )
+def test_backend_discovery_directory_rejects_extra_or_missing(monkeypatch):
+    # Model Darwin directory enumeration independently of the host path syntax.
+    entries = {"/synthetic/libexec/cpu.so"}
+    available = True
+
+    class DarwinPath(PurePosixPath):
+        def iterdir(self):
+            if not available:
+                raise FileNotFoundError
+            return iter(DarwinPath(name) for name in entries)
+
+        def resolve(self, strict=False):
+            return self
+
+        def is_file(self):
+            return str(self) in entries
+
+    monkeypatch.setattr(profile, "Path", DarwinPath)
+    monkeypatch.setattr(profile, "LOAD_ALIASES", {})
+    monkeypatch.setattr(profile, "PINNED_FILES", {"/synthetic/libexec/cpu.so": "a" * 64})
+    monkeypatch.setattr(profile, "_sha256", lambda path: "a" * 64)
     profile.verify_files()
-    extra = backend_dir / "unknown.so"
-    extra.write_bytes(b"extra")
+    entries.add("/synthetic/libexec/unknown.so")
     with pytest.raises(ValueError, match="profile_backend_inventory_mismatch"):
         profile.verify_files()
-    extra.unlink()
-    backend.unlink()
-    backend_dir.rmdir()
+    available = False
     with pytest.raises(ValueError, match="profile_backend_directory_unavailable"):
         profile.verify_files()
 
@@ -170,7 +211,8 @@ def test_verify_files_rejects_damage(pinned, damage):
         profile.verify_files()
 
 
-def test_loader_accepts_system_and_optional_backend(pinned):
+def test_loader_accepts_system_and_optional_backend(loader_pinned):
+    pinned = loader_pinned
     stderr = trace(
         pinned
         + [
@@ -182,23 +224,27 @@ def test_loader_accepts_system_and_optional_backend(pinned):
     assert profile.verify_loaded_images(stderr) == sorted(pinned)
 
 
-def test_loader_allows_delayed_diagnostic(pinned):
+def test_loader_allows_delayed_diagnostic(loader_pinned):
+    pinned = loader_pinned
     stderr = trace(pinned) + b"dyld[123]: move delayed to loaded: libggml-cpu.dylib\n"
     assert profile.verify_loaded_images(stderr) == sorted(pinned)
 
 
-def test_loader_rejects_delayed_image_without_full_record(pinned):
+def test_loader_rejects_delayed_image_without_full_record(loader_pinned):
+    pinned = loader_pinned
     stderr = trace(pinned[:2]) + b"dyld[123]: move delayed to loaded: libggml-cpu.dylib\n"
     with pytest.raises(ValueError):
         profile.verify_loaded_images(stderr)
 
 
-def test_loader_allows_runtime_logs_without_treating_them_as_images(pinned):
+def test_loader_allows_runtime_logs_without_treating_them_as_images(loader_pinned):
+    pinned = loader_pinned
     stderr = b"runtime: initialising\n" + trace(pinned[:2])
     assert profile.verify_loaded_images(stderr) == sorted(pinned[:2])
 
 
-def test_loader_accepts_reverse_transition_only_with_full_image(pinned):
+def test_loader_accepts_reverse_transition_only_with_full_image(loader_pinned):
+    pinned = loader_pinned
     known = trace(pinned) + b"dyld[123]: move loaded to delayed: libggml-cpu.dylib\n"
     assert profile.verify_loaded_images(known) == sorted(pinned)
     with pytest.raises(ValueError, match="incomplete_loader_evidence"):
@@ -212,17 +258,20 @@ def test_loader_accepts_reverse_transition_only_with_full_image(pinned):
     [
         b"dyld[123]: malformed\n",
         b"dyld[123]: <UUID> /private/evil.dylib\n",
+        b"dyld[123]: <12345678-1234-1234-1234-123456789ABC> C:\\fixture\\llama-cli\n",
         b"\xff",
         b"dyld[123]: <12345678-1234-1234-1234-123456789ABC> /usr/lib/../private/evil.dylib\n",
     ],
 )
-def test_loader_rejects_malformed_or_unknown(pinned, extra):
+def test_loader_rejects_malformed_or_unknown(loader_pinned, extra):
+    pinned = loader_pinned
     with pytest.raises(ValueError):
         profile.verify_loaded_images(trace(pinned) + extra)
 
 
 @pytest.mark.parametrize("kind", ["none", "missing", "unknown-backend", "fake-system"])
-def test_loader_requires_attested_images(pinned, kind):
+def test_loader_requires_attested_images(loader_pinned, kind):
+    pinned = loader_pinned
     paths = {
         "none": [],
         "missing": pinned[1:],
@@ -233,14 +282,16 @@ def test_loader_requires_attested_images(pinned, kind):
         profile.verify_loaded_images(trace(paths))
 
 
-def test_loader_rejects_mixed_process_evidence(pinned):
+def test_loader_rejects_mixed_process_evidence(loader_pinned):
+    pinned = loader_pinned
     stderr = trace(pinned[:1]) + trace(pinned[1:]).replace(b"dyld[123]", b"dyld[456]")
     with pytest.raises(ValueError):
         profile.verify_loaded_images(stderr)
 
 
 @pytest.mark.parametrize("suffix", ["/../evil", "//evil", "/./evil", "/evil\x00"])
-def test_loader_rejects_noncanonical_system_paths(pinned, suffix):
+def test_loader_rejects_noncanonical_system_paths(loader_pinned, suffix):
+    pinned = loader_pinned
     with pytest.raises(ValueError):
         profile.verify_loaded_images(trace(pinned + ["/usr/lib" + suffix]))
 

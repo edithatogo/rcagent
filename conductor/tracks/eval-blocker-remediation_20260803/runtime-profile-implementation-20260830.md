@@ -83,6 +83,19 @@ statement/branch coverage. Full `uv run python -m tools.full_validation` passed
 681 tests, 93.02% coverage, lint, both type checks, governance and benchmark
 checks on macOS/Python 3.14.5. Hosted checks must be refreshed on the new PR head.
 
+The first implementation head `0df9b6f` passed hosted macOS and Linux checks
+but failed ten Windows tests: native temporary paths were incorrectly used as
+Darwin POSIX loader records, and a backend fixture used Windows separators.
+The follow-up separates synthetic Darwin wire identities from real temporary
+filesystem checks. Production runtime/probe sources and all retained receipt
+hashes remain unchanged. The failed run is retained as
+[hosted evidence](https://github.com/edithatogo/rcagent/actions/runs/33298138182);
+it is not a passing cross-platform checkpoint.
+The repaired fixtures pass 116 focused tests with 100% statement/branch
+coverage, including two explicit malformed Windows-path loader records.
+Agent security review confirms that native file checks and the real parser
+remain exercised; the repair does not relax production admission boundaries.
+
 `runtime_profile_tests` implemented adversarial tests; `runtime_security_review`
 independently reproduced the delayed-image defect, reviewed the fixes and
 replayed the retained trace, verifying all 16 local pins and aliases. The main

@@ -111,7 +111,19 @@ def profiled(admitted, monkeypatch):
     monkeypatch.setattr(profile, "LOAD_ALIASES", {})
     monkeypatch.setattr(profile.platform, "system", lambda: "Darwin")
     monkeypatch.setattr(profile.platform, "machine", lambda: "arm64")
-    return f"dyld[123]: <12345678-1234-1234-1234-123456789ABC> {name}\n".encode()
+    # The real temporary file verifies host filesystem behaviour; the loader
+    # wire format remains Darwin/POSIX even when this test runs on Windows.
+    wire_name = "/synthetic-darwin/private-runtime"
+    verify_loaded_images = profile.verify_loaded_images
+
+    def verify_trace(stderr):
+        with monkeypatch.context() as patch:
+            patch.setattr(profile, "PINNED_FILES", {wire_name: probe._sha256(runtime)})
+            patch.setattr(profile, "REQUIRED_IMAGES", {wire_name})
+            return verify_loaded_images(stderr)
+
+    monkeypatch.setattr(profile, "verify_loaded_images", verify_trace)
+    return f"dyld[123]: <12345678-1234-1234-1234-123456789ABC> {wire_name}\n".encode()
 
 
 def test_profiled_probe_captures_verified_loader(admitted, profiled, monkeypatch):
