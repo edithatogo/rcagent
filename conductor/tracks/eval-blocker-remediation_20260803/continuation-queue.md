@@ -69,8 +69,9 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   941 tests at 93.54% coverage and both Windows-targeted type checkers; agent
   re-review passed. Windows collection repair `fc1ca0f` then passed 942 tests.
   PR #88 passed all seven checks at `eeba35e`, merged as `8918936` at
-  2026-08-30T11:42:11Z, with exact tree parity verified. Post-merge checks remain
-  to be read back. Do not repeat diagnostics without a distinct new purpose.
+  2026-08-30T11:42:11Z, with exact tree parity verified. Post-merge Quality
+  `33309589305` and conformance `33309589298` passed. Completed parent branch
+  cleanup was verified. Do not repeat diagnostics without a distinct new purpose.
 - Current slice: [separate server-specific model eligibility](./server-model-eligibility-20260830.md)
   (`34e56ae`), prepared while parent PR #88 waited for hosted runners. Reuses the
   original rights validator without changing the CLI helper, registry or profiles.
@@ -79,6 +80,8 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   Parent PR #88 is merged. Its tested Windows collection fix is retained in this
   branch; both parent and downstream evidence are preserved. Validate the combined
   tree, then deliver only the new slice through its own exact-head checks.
+  Combined-tree validation at integration `bde18c7` passed 972 tests at 93.60%;
+  both agent re-reviews passed. Publish/reconcile this branch's PR next.
 - Next implementation: implement bounded child-process lifecycle, then a structured non-study probe and
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric

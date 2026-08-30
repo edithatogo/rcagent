@@ -43,6 +43,13 @@ not an implemented supervisor or an execution receipt.
 
 ## Evidence and boundaries
 
+Integration checkpoint: PR #88 passed all seven checks at `eeba35e` and merged
+as `8918936`. Merge `bde18c7` preserved this helper and its tests byte-for-byte,
+retained the exact parent transport/collection tests, and kept both evidence
+histories. Both agent re-reviews passed; main fixed one Markdown blank line.
+Combined-tree full validation passed 972 tests at 93.60% coverage. This slice
+still requires its own hosted checks and merge; parent success is not its pass.
+
 The helper (`34e56ae`) is implemented with deterministic receipts binding original registry,
 effective server overlay, profile ID/digest and selected model/licence hashes.
 It runs the original all-class validator twice and rejects observed profile,
