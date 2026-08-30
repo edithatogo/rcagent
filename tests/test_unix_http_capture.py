@@ -196,6 +196,15 @@ def test_body_deadline_retains_partial_bytes(server, monkeypatch):
         ("POST", "/completion", "{}"),
         ("POST", "/completion", b"x" * (subject.MAX_BYTES + 1)),
     ],
+    ids=[
+        "get-completion",
+        "post-health",
+        "remote-route",
+        "health-body",
+        "empty-completion",
+        "text-not-bytes",
+        "oversized-body",
+    ],
 )
 def test_bad_request_fails_before_connection(tmp_path, method, route, body):
     with pytest.raises(ValueError):
@@ -204,7 +213,11 @@ def test_bad_request_fails_before_connection(tmp_path, method, route, body):
         )
 
 
-@pytest.mark.parametrize("deadline", [0, float("inf"), float("nan"), True, "1", 10**1000])
+@pytest.mark.parametrize(
+    "deadline",
+    [0, float("inf"), float("nan"), True, "1", 10**1000],
+    ids=["expired", "infinite", "nan", "boolean", "string", "oversized-integer"],
+)
 def test_invalid_deadline(deadline, tmp_path):
     with pytest.raises(ValueError):
         subject.capture(tmp_path / "missing.sock", "GET", "/health", b"", deadline=deadline)
