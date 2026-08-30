@@ -2,8 +2,9 @@
 
 Repository reproducibility, failure-mode and claims reviews use the
 [approved agent-panel protocol](../../decisions/20260830-001-legacy-agent-review.md).
-Actual analysis remains blocked on admitted scoring evidence and the
-[prospective protocol choice](../../decisions/20260830-002-prospective-agent-study.md).
+Actual analysis remains blocked on admitted scoring evidence and implementation
+of the [approved prospective protocol](../../decisions/20260830-002-prospective-agent-study.md),
+not on another owner approval.
 The historical denominators below are not automatically applicable to a new
 agent-scored cohort. No human comparison or clinical validity is inferred.
 

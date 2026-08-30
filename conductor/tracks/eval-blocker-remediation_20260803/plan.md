@@ -12,7 +12,9 @@ governs repository reviews, overriding human-review appointments in the older
 runbooks. Human comparator data, operator provenance and accountable authority
 are not review duties. The historical Option A remains incomplete/unadmitted; the
 [recommended prospective Option B](../../decisions/20260830-002-prospective-agent-study.md)
-is pending owner protocol approval, not silently activated.
+was explicitly approved on 2026-08-30 with readiness-only Option C fallback.
+Implement the new synthetic study separately; historical Option A remains
+incomplete. No further reviewer or routine phase approval is required.
 
 ## Next repository-owned slice
 
@@ -26,9 +28,11 @@ is pending owner protocol approval, not silently activated.
 - [ ] Produce a fresh eligibility inventory; historical zero eligibility is
   not evidence of a current full inventory audit.
 - [ ] Produce a root #1 acceptance map without closing it from child counts.
-- [ ] Apply the prospective protocol decision only after owner approval.
+- [x] Record owner approval of prospective Option B with Option C fallback.
+- [ ] Implement the approved versioned protocol and admission gates; approval
+  is not evidence of completed implementation or an admitted study cohort.
 
-## Blocker strategy and trade-offs
+## Historical design and current execution choice
 
 The active execution runbook is
 `evaluation/analysis/phase4-evidence-remediation-plan-20260808.md`. It governs
@@ -41,10 +45,12 @@ fail-closed admission boundary.
 | B. Amended reduced scope | Produces bounded results when capacity is permanently unavailable | Requires protocol amendment; excludes comparisons and reduces denominators | Publish exclusions and revise claims boundary | Authorised decision required |
 | C. Evidence-readiness closeout | Preserves implementation, validation, and governance outputs | Produces no Track 5/6 performance results | Retain handoff as a restart package | Use if execution is not feasible or authorised |
 
-Decision rule: remain on A while execution is recoverable; select B only through
-an authorised protocol amendment; select C when neither execution nor amendment
-is feasible. Automation must not resolve human, licence, credential, or
-protocol decisions by assumption.
+The table records the historical alternatives, not a new approval request.
+Current execution follows approved decision 20260830-002: implement a separate
+synthetic Option B study and use Option C if no condition is admissible.
+Historical Option A evidence remains preserved and incomplete. Do not recruit
+human reviewers or re-request B/C selection. Licence, credential and other
+reserved actions still require applicable exact-scope authority.
 
 ## Phase 1: Baseline and controls
 
@@ -128,7 +134,9 @@ uncertainty, or any attempt to score/unblind before the relevant preflight.
 
 - [x] Record full-evaluation, reduced-scope, and readiness-only options.
 - [x] Record rationale, contingencies, and decision authority.
-- [x] Keep Option A active while H2-H8 execution is recoverable.
-- [ ] Obtain an authorised protocol decision before selecting Option B or C.
-- [ ] Update the manifest, acceptance criteria, and claims boundary if Option B
-  or C is selected.
+- [x] Preserve the historical Option A decision; the approved new synthetic
+  study does not retrospectively complete or relabel its observations.
+- [x] Obtain an authorised protocol decision — decision 20260830-002 approves
+  a new synthetic Option B study with Option C fallback; no repeat request.
+- [ ] Implement the new study manifest, acceptance criteria and claims boundary
+  under approved Option B, with an evidence-backed Option C fallback.

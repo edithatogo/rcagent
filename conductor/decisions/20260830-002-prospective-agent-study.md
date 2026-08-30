@@ -1,7 +1,7 @@
 # Decision: Prospective reduced-scope agent research study
 
 - **Decision ID:** 20260830-002-prospective-agent-study
-- **Status:** Proposed
+- **Status:** Approved with conditions
 - **Date raised:** 2026-08-30
 - **Owner:** Repository owner, for repository research protocol only
 - **Track:** eval-blocker-remediation_20260803
@@ -27,7 +27,7 @@ question, condition identity, denominator and claims, not reviewer recruitment.
 | A: retain full historical design | Preserves the original H0–H8 study question | Missing provenance, provider evidence and genuine H8 observations still block execution | Quarantine unresolved slots and retain restart instructions |
 | C: readiness-only closeout | Delivers verified admission controls, fixtures, quarantine inventory and handoff | No performance, agreement or comparative study results | Resume a separately approved study later |
 
-## Required implementation if approved
+## Authorised implementation
 
 1. Assign a new study ID; version condition/case manifests and denominators.
 2. Freeze eligible inputs, scoring rubric, blinding method and conservative
@@ -53,13 +53,21 @@ generated synthetic. No new credentials, provider execution, paid compute,
 rights exception, private data or publication is authorised here. Any use of
 existing authority must be checked against the exact artefact and action.
 
-If deferred, preserve the historical protocol and keep scoring/unblinding
-blocked. Continue repository-only preflight hardening, synthetic fixtures,
-read-only eligibility inventory and root acceptance mapping. No decision
-deadline is imposed; study execution waits for this choice and admission.
+The pre-approval safe default was to preserve the historical protocol and keep
+scoring/unblinding blocked. Approval is now recorded: continue preflight
+hardening, synthetic fixtures, read-only eligibility inventory and root
+acceptance mapping. Study execution waits for implementation and admission,
+not another protocol decision.
 
 ## Owner decision
 
-- **Decision:** Pending
-- **Response requested:** Approve the recommended Option B with Option C fallback.
-- **Wake condition:** Explicit protocol approval, then passing admission gates.
+- **Decision:** Owner approved Option B with Option C fallback on 2026-08-30.
+- **Evidence:** Owner stated “I approve” and reiterated agent review and minimal
+  approval requests in the current conversation.
+- **Conditions:** All synthetic-only, provenance, blinding, scope and authority
+  boundaries above remain in force. No historical result is relabelled.
+- **Execution gate:** Passing admission gates, not another protocol approval.
+- **Standing delegation:** Routine implementation, panel review and rework,
+  prospective rubric/manifest preparation, deterministic validation and the
+  no-admissible-condition Option C fallback proceed without repeat approval.
+  Record fallback evidence and limitations; do not claim study results.

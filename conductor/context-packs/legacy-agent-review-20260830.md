@@ -2,8 +2,9 @@
 
 - **Track:** eval-blocker-remediation_20260803
 - **GitHub issue:** https://github.com/edithatogo/rcagent/issues/1
-- **Base revision:** 9fcfab4e37d85aa1dffc1457ca605f24c558f21b
+- **Base revision:** 2833db1c65351338416d6b94d06fff7578e590ea
 - **Created:** 2026-08-30T04:40:11Z
+- **Refreshed:** 2026-08-30T04:50:13Z after owner approval
 - **Fresh until:** Source, protocol or owner-decision change
 - **Privacy mode:** Repository metadata only; no case narrative processing
 - **Context budget:** Selected remediation, scoring and analysis plans/specs;
@@ -13,8 +14,8 @@
 
 ## Objective and acceptance
 
-Replace external-human repository reviews with agent panels, preserve genuine
-condition/provenance/authority gates, and present one protocol choice. Do not
+Apply the approved agent-panel review and prospective synthetic Option B/C
+decision; preserve genuine condition/provenance/authority gates. Do not
 execute, score, admit, unblind or complete the historical study.
 
 ## Inputs and dependencies
@@ -31,4 +32,5 @@ Run uv run python -m tools.full_validation, repository governance validation,
 JSON and diff checks. Panel reviews acceptance, provenance and authority.
 Rollback is a scoped revert of this amendment, preserving historical evidence.
 Next work: structured preflight hardening and synthetic fixtures; study
-execution awaits decision 20260830-002-prospective-agent-study and admission.
+execution awaits implementation and admission under approved decision
+20260830-002-prospective-agent-study, not repeat owner approval.

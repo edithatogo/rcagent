@@ -70,11 +70,27 @@ Pause only the affected scope when progress requires one of these:
 
 ### Multi-Agent Review Panels
 
+Agent panels are the default required repository review mechanism. Independent
+human reviewer recruitment is not a repository completion gate. Historical
+human-review wording in retained runbooks is superseded for repository reviews
+by decision 20260830-001; it cannot block ready engineering work. Human study
+observations and accountable external authority are not replaced by agents.
+
 Multi-agent panels may satisfy repository engineering review, rubric quality assurance, synthetic benchmark scoring, evidence reconciliation, adversarial review, and recommendation duties when receipts identify reviewer class, exact revisions where exposed, instructions, evidence, disagreement, abstention, and correlated-error limitations. They do not constitute independent human review, clinical validation, legal advice, policy applicability, cultural authority, organisational approval, regulatory approval, employment authority, deployment approval, or residual-risk acceptance.
 
 Use one durable standing decision and reusable protocol for recurring in-scope checkpoints. Do not request repetitive approvals when the panel recommendation remains inside an already approved reversible, synthetic-only, non-operational envelope. Escalate only a genuinely new reserved action or material scope change.
 
 ### Decision Request Contract
+
+Before asking, check the decision registry and the current conversation for
+existing authority. Reuse approval within its exact scope. Do not ask again for
+panel appointments, routine tests, review fixes, phase transitions, or the
+approved no-admissible-condition readiness fallback. Record and execute those
+steps autonomously. A failed test or panel disagreement requires bounded
+rework or an unsupported result, not another approval for the same work.
+Consolidate coupled new decisions into one request; retain one stable decision
+ID and never repeat an unchanged request. Escalate only the new scope delta or
+reserved action. Platform-required confirmation cannot be waived by this rule.
 
 Apply the GitHub `decision-needed` label when available and create a record
 from `conductor/decisions/template.md` containing:
