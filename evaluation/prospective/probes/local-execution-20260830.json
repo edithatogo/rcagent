@@ -1,0 +1,71 @@
+{
+  "adapter_sha256": "d415f6a253860458f9a7eedb340e5137f58b9d499b51e30a323b5bcab3e5247d",
+  "admitted": false,
+  "arguments_without_local_paths": [
+    "<pinned-runtime>",
+    "-m",
+    "<pinned-model>",
+    "-p",
+    "This is a synthetic software capability probe. Reply with the word READY.",
+    "-n",
+    "16",
+    "--seed",
+    "42",
+    "--temp",
+    "0",
+    "--no-display-prompt",
+    "--log-disable",
+    "--single-turn"
+  ],
+  "device": {
+    "machine": "arm64",
+    "python": "3.14.5",
+    "release": "25.6.0",
+    "system": "Darwin"
+  },
+  "elapsed_ns": 29949992917,
+  "environment_keys": [
+    "LANG",
+    "PATH"
+  ],
+  "execution_observed": true,
+  "exit_state": 0,
+  "finished_at": "2026-08-30T05:40:47.325414+00:00",
+  "limitations": [
+    "not a study observation",
+    "no semantic correctness or model suitability claim",
+    "shared libraries and OS not hash-attested",
+    "not tamper-proof provenance",
+    "stderr bytes not published",
+    "temporary output storage is not a disk quota"
+  ],
+  "model_id": "qwen2.5-0.5b-instruct-q4_k_m",
+  "model_revision": "9217f5db79a29953eb74d5343926648285ec7e67",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "network": "local-file arguments; egress not independently monitored or sandboxed",
+  "output_complete": true,
+  "pins_unchanged_after": true,
+  "prompt": "This is a synthetic software capability probe. Reply with the word READY.",
+  "prompt_sha256": "ec9098d13bc036cd49e0902c970157faa654ec91c4649da9e5f01ea8590ed1ec",
+  "purpose": "capability-probe-only",
+  "quantisation": "Q4_K_M",
+  "registry_sha256": "6921d6ff0df9e41c28c59ca077c5c2ae0b84835822cb0d5d7e12eeca1d4485a5",
+  "runtime_sha256": "456af2d481095b6a953b6ad21e9caa0411e5508955eb841f37574235da10a44e",
+  "runtime_version": "0.2.0 build 10566 commit bb4caa754",
+  "schema_version": "1.0",
+  "started_at": "2026-08-30T05:40:17.369559+00:00",
+  "status": "process_completed",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 1141,
+  "stdout_sha256": "f9e354c9e091a7259a75e8111bfbf5a035d898df21320526a3c5b01e26b30ea8",
+  "study_unlocked": false,
+  "timeout_seconds": 60,
+  "receipt_form": "public-projection",
+  "omitted_fields": [
+    "stdout_base64"
+  ],
+  "raw_receipt_local_filename": "probe-20260830T054017Z.json",
+  "raw_stdout_publication": "withheld: runtime banner includes local cache path",
+  "raw_receipt_sha256": "8b19a909875439e1a259ced6a9aece8586eeb851cc6f439ab89cfe292672bb05"
+}
