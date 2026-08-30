@@ -56,8 +56,8 @@ def _git(root: Path, *args: str) -> bytes:
     return data
 
 
-def verify_freeze(protocol_path: Path, expected_sha256: str, commit: str, root: Path) -> dict:
-    """Bind working files to an explicit commit; hashes do not prove their approval."""
+def _repository(protocol_path: Path, commit: str, root: Path) -> tuple[Path, Path, str]:
+    """Resolve the original repository and exact-commit identity checks."""
     if not re.fullmatch(r"[0-9a-f]{40}", commit):
         raise ValueError("invalid_freeze_commit")
     root = root.absolute()
@@ -72,20 +72,13 @@ def verify_freeze(protocol_path: Path, expected_sha256: str, commit: str, root: 
         raise ValueError("repository_root_mismatch")
     if _git(root, "rev-parse", "--verify", f"{commit}^{{commit}}").decode().strip() != commit:
         raise ValueError("freeze_commit_mismatch")
-    candidate = validate_protocol(protocol_path, expected_sha256)
-    value, second_pin = read_json(protocol_path)
-    if second_pin != expected_sha256:
-        raise ValueError("protocol_changed_during_verification")
-    refs = [case["input"] for case in value["cases"]]
-    refs.extend(value[key] for key in ("rubric", "scoring_instructions", "prompt_template"))
-    paths = [relative_protocol]
-    paths.extend((protocol_path.parent / ref["path"]).relative_to(root).as_posix() for ref in refs)
-    paths.extend(COMPONENTS)
-    expected = {relative_protocol: expected_sha256}
-    expected.update(
-        ((protocol_path.parent / ref["path"]).relative_to(root).as_posix(), ref["sha256"])
-        for ref in refs
-    )
+    return root, protocol_path, relative_protocol
+
+
+def _committed_files(
+    root: Path, commit: str, paths: list[str], expected: dict[str, str]
+) -> list[dict]:
+    """Compare the enumerated working files and optional pins with exact committed bytes."""
     if len(set(path.casefold() for path in paths)) != len(paths):
         raise ValueError("duplicate_freeze_path")
     files = []
@@ -110,6 +103,27 @@ def verify_freeze(protocol_path: Path, expected_sha256: str, commit: str, root: 
         if committed != working:
             raise ValueError("freeze_bytes_mismatch")
         files.append({"path": relative, "sha256": digest})
+    return files
+
+
+def verify_freeze(protocol_path: Path, expected_sha256: str, commit: str, root: Path) -> dict:
+    """Bind working files to an explicit commit; hashes do not prove their approval."""
+    root, protocol_path, relative_protocol = _repository(protocol_path, commit, root)
+    candidate = validate_protocol(protocol_path, expected_sha256)
+    value, second_pin = read_json(protocol_path)
+    if second_pin != expected_sha256:
+        raise ValueError("protocol_changed_during_verification")
+    refs = [case["input"] for case in value["cases"]]
+    refs.extend(value[key] for key in ("rubric", "scoring_instructions", "prompt_template"))
+    paths = [relative_protocol]
+    paths.extend((protocol_path.parent / ref["path"]).relative_to(root).as_posix() for ref in refs)
+    paths.extend(COMPONENTS)
+    expected = {relative_protocol: expected_sha256}
+    expected.update(
+        ((protocol_path.parent / ref["path"]).relative_to(root).as_posix(), ref["sha256"])
+        for ref in refs
+    )
+    files = _committed_files(root, commit, paths, expected)
     return {
         "status": "freeze_verified",
         "commit": commit,

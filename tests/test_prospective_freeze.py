@@ -90,6 +90,39 @@ def test_exact_commit_is_not_admission(tmp_path: Path) -> None:
     assert len(result["files"]) == len(COMPONENTS) + 6
 
 
+def test_extracted_checks_preserve_legacy_result_and_order(tmp_path):
+    protocol, commit = fixture(tmp_path)
+    result = verify_freeze(protocol, pin(protocol), commit, tmp_path)
+    value = json.loads(protocol.read_bytes())
+    assert set(result) == {
+        "status",
+        "commit",
+        "protocol_sha256",
+        "study_id",
+        "files",
+        "admitted",
+        "study_unlocked",
+        "limitations",
+    }
+    assert [item["path"] for item in result["files"]] == [
+        "protocol.json",
+        *(case["input"]["path"] for case in value["cases"]),
+        *(value[key]["path"] for key in ("rubric", "scoring_instructions", "prompt_template")),
+        *COMPONENTS,
+    ]
+    assert result["limitations"] == [
+        "exact-commit-byte-consistency-only",
+        "ancestry-and-timestamps-not-verified",
+        "loaded-python-code-not-attested",
+        "review-and-approval-not-verified",
+        "privacy-not-verified",
+        "runtime-admission-not-verified",
+        "runner-not-bound",
+        "execution-not-authorised-by-this-check",
+        "no-primary-observations",
+    ]
+
+
 @pytest.mark.parametrize("commit", ["HEAD", "a" * 39, "a" * 40 + "\n", "0" * 40])
 def test_bad_commit(tmp_path: Path, commit: str) -> None:
     protocol, _ = fixture(tmp_path)

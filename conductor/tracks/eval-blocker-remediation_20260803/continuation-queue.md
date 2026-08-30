@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `slot-session-20260831`; reviewer class: agent.
-- Implementation base: `09a9058c1d69031d2d00de18d8356903f3962d92` (PR #97).
+- Run ID: `prelaunch-gate-20260831`; reviewer class: agent.
+- Implementation base: `234360de763515776ba50ea4542543b1004f712f` (PR #98).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/prospective-slot-session`; no worktree lease is
+- Integration branch: `codex/prospective-prelaunch-gate`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -147,7 +147,7 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   tree parity. Local master was fast-forwarded; post-merge conformance
   `33321812017` and Quality `33321812059` passed. Completed parent local and
   remote-tracking branch cleanup was verified.
-- Active slice: the
+- Delivered read-only fallback for the
   [single-slot session adapter](../../context-packs/slot-session-20260831.md).
   Its agent-reviewed context preserves READY behavior and prevents a callable
   primary-execution path before full-component freeze and admission controls.
@@ -157,12 +157,22 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   identity remains explicitly unverified. Fixture-first missing-module RED is
   recorded in the [binding receipt](./slot-binding-20260831.md).
   Implementation and agent review passed: 56 focused tests at 100%, full 1,251
-  tests at 94.02%. Hosted delivery remains pending.
+  tests at 94.02%. PR #98 passed all seven checks at `24a10ca`, merged as
+  `234360d` with exact tree parity. Post-merge conformance `33323914284` and
+  Quality `33323914292` passed; local master and completed branch cleanup verified.
   The existing hourly continuation is active; no new owner decision is required.
-- Prepared successor after verified delivery: a
+- Implemented prerequisite slice towards a
   [fail-closed pre-launch gate](../../context-packs/prelaunch-gate-20260831.md),
   rejecting absent primary adapter and incomplete component closure. Do not
   claim gate completion from placeholders or synthetic production permits.
+  Activated `162dfba` from clean checkpoint `c6b23db`; parent post-merge checks
+  were reverified and no overlapping writer found. The panel selected exact
+  committed-byte verification of native protocol/slot/references and a fixed
+  known source subset, not the incomplete full gate. See
+  [prerequisite receipt](./native-prerequisites-20260831.md). Full closure,
+  primary adapter, agent-review binding and execution permission remain pending.
+  Code `f2f76d0` passed agent review, 65 focused tests, native coverage 100%,
+  and full validation (1,286 tests, 94.05%). Hosted delivery is pending.
 - Subsequent implementation: the
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
@@ -172,10 +182,11 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Scope ownership: the prepared single-slot adapter, matching synthetic fixtures and
-  records belong to the successor; the
-  [context pack](../../context-packs/slot-session-20260831.md) records its
-  checks and exclusions. Preserve overlapping active work.
+- Next ready scope: implement the guarded single-slot primary adapter and full
+  gate together, after defining complete dependency closure and trusted review
+  provenance. The [next context](../../context-packs/primary-session-gate-20260831.md)
+  records panel recommendations and boundaries. Finish current hosted delivery
+  before activating the next slice; preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
 

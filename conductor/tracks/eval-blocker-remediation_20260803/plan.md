@@ -156,10 +156,23 @@ incomplete. No further reviewer or routine phase approval is required.
             eligibility; keep the absent primary adapter explicitly unverified.
             Do not extract a callable primary session before freeze/admission.
             Code `0ca2a2f`, [receipt](./slot-binding-20260831.md): 56 focused tests at 100%,
-            full 1,251 tests at 94.02%, final agent review passed.
-          - [ ] Add fail-closed pre-launch prerequisites before primary lifecycle
+            full 1,251 tests at 94.02%, final agent review passed. PR #98 passed
+            all seven checks and merged as `234360d` with exact tree parity.
+          - [~] Add fail-closed pre-launch prerequisites before primary lifecycle
             integration; reject missing adapter and incomplete component closure.
             Follow the [gate context](../../context-packs/prelaunch-gate-20260831.md).
+            - [x] Verify native protocol, exact slot, references and a fixed known
+              source subset against an explicit commit; keep complete adapter
+              closure, review, eligibility and execution permission pending.
+              Code `f2f76d0`, [receipt](./native-prerequisites-20260831.md): agent review passed,
+              65 focused tests, native coverage 100%, full 1,286 tests at 94.05%.
+              - [x] Review fix (`f2f76d0`): reject outside-root and parent-traversal protocol
+                paths before parsing, with no-read regression fixtures.
+            - [ ] Implement guarded single-slot primary adapter and full prelaunch
+              verifier together, following the
+              [primary gate context](../../context-packs/primary-session-gate-20260831.md).
+              Resolve complete closure and trusted agent-review binding before
+              exposing lifecycle; synthetic fixtures cannot confer permission.
 
 ## Historical design and current execution choice
 

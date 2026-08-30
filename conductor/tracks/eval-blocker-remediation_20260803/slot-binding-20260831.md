@@ -38,7 +38,15 @@ pytest -q tests/test_prospective_slot_binding.py tests/test_prospective_native_p
 --cov-report=term-missing`. Ruff and native/Windows `ty` and `basedpyright` passed.
 Final full validation passed with exit 0: 1,251 tests in 80.73 seconds at 94.02%
 coverage, with lint, types, governance and deterministic regression gates passing.
-Implementation commit `0ca2a2f`; hosted delivery remains pending.
+Implementation commit `0ca2a2f`. PR #98 passed all seven hosted checks at
+`24a10ca4aa0dcfec60499606cf34d4fa594372a3`, then merged as
+`234360de763515776ba50ea4542543b1004f712f` at 2026-08-30T16:58:01Z.
+Exact head/merge tree equality was verified:
+`97dc4df93a9690cbad6031c59f7a9f7b1fd4ab72`. Local master was fast-forwarded;
+completed local and remote-tracking branch cleanup was verified after the exact
+merge checks. Post-merge conformance `33323914284` and Quality `33323914292`
+passed. The next pre-launch branch contains only a prepared context/cursor;
+no gate implementation or usable execution permit is claimed.
 Fixtures replace the existing eligibility I/O boundary; no actual model-cache
 eligibility check or model invocation was performed in this heartbeat.
 
