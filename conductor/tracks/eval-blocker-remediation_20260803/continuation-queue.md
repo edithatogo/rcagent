@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `server-process-lifecycle-20260830`; reviewer class: agent.
-- Implementation base: `1e6b9bcc2a9af03b462d8295f9dfd05eb3243699` (PR #89).
+- Run ID: `server-graceful-stop-20260830`; reviewer class: agent.
+- Implementation base: `8acbd6180bb12259060c4fe156a835b9fe93a226` (PR #90).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/server-process-lifecycle`; no worktree lease is
+- Integration branch: `codex/server-graceful-stop`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -85,9 +85,18 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 - Implemented slice: [bounded POSIX child-capture primitive](./server-process-lifecycle-20260830.md)
   (`b995ecc`), with 50 focused synthetic tests, 98.89% module coverage and final
   agent-panel review passed. Full validation: 1,022 tests, 93.71% coverage;
-  native and Windows-targeted type checks passed. Hosted delivery is pending.
+  native and Windows-targeted type checks passed. PR #90 passed all seven checks
+  at `1696db1`, merged as `8acbd61` at 2026-08-30T12:56:32Z with exact tree parity.
+  Local master was fast-forwarded and completed branch cleanup verified.
+  Post-merge conformance `33312827938` and Quality `33312827893` passed.
+  The successor preserves the reviewed default capture contract.
   Only the direct child is supervised; no descendant containment, real server
   launch, socket/session lifecycle or runtime/study admission is claimed.
+- Implemented slice: [graceful stop and final drain](./server-graceful-stop-20260830.md)
+  (`3d4f109`), with 28 new tests / 78 supervisor tests, 99.24% module coverage,
+  native/Windows type checks and final agent-panel review. Full validation passed
+  1,050 tests at 93.77% coverage. A late-EOF completion-ordering gap was fixed
+  and regression-tested. Hosted CI and merge are pending. No real model ran.
 - Next implementation: integrate fixed admitted server launch, private socket
   ownership and concurrent request supervision, then a structured non-study probe and
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
@@ -99,7 +108,7 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   30 focused tests at 100%. These results do not validate this runtime slice.
 - Scope ownership: the new process supervisor, synthetic tests and linked records
   belong to this slice; the
-  [context pack](../../context-packs/server-process-lifecycle-20260830.md) records its
+  [context pack](../../context-packs/server-graceful-stop-20260830.md) records its
   checks and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.

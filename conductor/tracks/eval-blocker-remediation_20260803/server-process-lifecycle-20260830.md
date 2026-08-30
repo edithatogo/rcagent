@@ -67,7 +67,18 @@ Implementation commit: `b995ecc`. Final integration command
 1,022 tests in 67.87 seconds, 93.71% overall branch-inclusive coverage, Ruff,
 ty, basedpyright, gremlin scan, governance, benchmark registry and all seven
 deterministic regression cases. The helper retains 98.89% isolated coverage.
-Hosted CI and merge are pending; local validation does not imply hosted delivery.
+PR #90 passed all seven checks at exact head
+`1696db10a27b6e039b47f5db2d2768c9ae85ee2e` and merged at
+2026-08-30T12:56:32Z as `8acbd6180bb12259060c4fe156a835b9fe93a226`.
+Head and merge trees match `87d084cc7a430af7cb47d423692dd7a09021c192`.
+Local master was fast-forwarded; obsolete local/remote-tracking branch refs were
+removed only after remote absence and merged tree parity were verified. Commits
+remain recoverable from the recorded head. Post-merge conformance `33312827938`
+and Quality `33312827893` both passed, including all three OS jobs.
+Hosted Quality emitted a non-failing Node.js 20 deprecation/forced-Node-24
+annotation for the pinned `actions/github-script` dependency. This is retained
+as workflow-maintenance follow-up, not a child-capture failure or a claim that
+the warning has been fixed.
 Retain all negative results.
 Do not repeat the earlier real model/version diagnostics.
 Next: fixed admitted server launch, private socket lifecycle and supervised HTTP
@@ -95,3 +106,12 @@ Focused commands: `uv run pytest --no-cov -q tests/test_server_process.py`,
 Isolated coverage used `--cov=tools.server_process --cov-report=term-missing`
 with a separate temporary coverage file. Synthetic fixtures use the local Python
 interpreter, not llama-server or downloaded code.
+
+## Next composition gap
+
+Acceptance-agent design review and main agree that emergency cancellation must
+not be reinterpreted as successful server shutdown: final log bytes may be lost.
+Add a distinct bounded graceful-stop-and-drain path first, under the
+[next context](../../context-packs/server-graceful-stop-20260830.md), then compose
+fixed admitted launch, private socket ownership and concurrent HTTP supervision.
+No new owner decision is needed for these synthetic implementation steps.

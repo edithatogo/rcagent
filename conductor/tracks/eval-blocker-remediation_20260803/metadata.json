@@ -3,14 +3,14 @@
   "name": "Evaluation Blocker Remediation and Admission",
   "status": "blocked",
   "created": "2026-08-03",
-  "updated_at": "2026-08-30T12:55:00Z",
+  "updated_at": "2026-08-30T13:55:00Z",
   "gates": [
     {
       "id": "prospective-runtime-availability",
       "kind": "execution_dependency",
       "status": "pending",
       "description": "Separate 0.3.0 server profile passed bounded version/help diagnostics with 15 loaded-image pins. Unix-socket transport, server-specific model eligibility and a direct-child capture primitive are fixture-tested; fixed model-serving/socket lifecycle, concurrent request supervision, structured probe, runner and study admission remain pending. Old profile files remain missing.",
-      "evidence": "./server-process-lifecycle-20260830.md"
+      "evidence": "./server-graceful-stop-20260830.md"
     },
     {
       "id": "prospective-semantic-admission",
