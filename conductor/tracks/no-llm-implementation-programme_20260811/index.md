@@ -1,6 +1,6 @@
 # No-LLM Implementation Programme
 
-- **Status:** Completion candidate — repository-owned acceptance passed; final PR and issue reconciliation pending
+- **Status:** Completed — repository-owned acceptance passed; legacy evaluation and root portfolio remain separate
 - **Type:** Chore / delivery programme
 - **Scope:** Remaining work that does not require downloading model weights
 

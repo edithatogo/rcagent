@@ -68,7 +68,7 @@
 - [x] Task: Produce a residual-blocker and restart manifest — final current blockers and restart instructions recorded
 - [x] Task: Verify only `master` and intentionally retained branches remain — only local and remote `master` remain after exact merged-head verification
 - [x] Task: Verify disposable checkouts and stale lock backups are removed — one canonical worktree; no operational lock/backup observed
-- [~] Task: Phase verification and checkpoint — bounded programme acceptance passed; close after this evidence passes hosted checks and merges and issues #17 and #18 are reconciled; root #1 and legacy evaluation remain separately open pending their own acceptance evidence
+- [x] Task: Phase verification and checkpoint — PR #75 passed all exact-head hosted checks and merged as `279f831`; issues #17 and #18 closed; root #1 and legacy evaluation remain separately open pending their own acceptance evidence
 
 ## Planned PR sequence
 
