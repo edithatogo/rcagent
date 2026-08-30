@@ -217,9 +217,11 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   Activated `4cab688`; source S `e6c1453` has four pinned protocol files and
   four passing input tests. All three exact-source panel reviews passed;
   full 1,536 tests passed at 94.56%. Read-only local eligibility and the clean
-  interpreter identity passed. Next: commit the actual review record R, verify
-  the real execution preflight without capture, and deliver with a normal merge
-  preserving S/R ancestry. No new owner decision is required.
+  interpreter identity passed. R `cd09dba` and both real execution preflights
+  passed without capture. Next: verify hosted delivery with a normal merge
+  preserving S/R ancestry, then activate the reviewed
+  [capture context](../../context-packs/prospective-capture-20260831.md).
+  No new owner decision is required.
   Offline custody/scoring is a separate later source/evidence boundary, not a
   reason to defer a complete unchanged execution freeze indefinitely. No actual
   model/cache eligibility, study freeze, capture, admission or scoring occurred

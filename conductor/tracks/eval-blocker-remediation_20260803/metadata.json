@@ -3,21 +3,21 @@
   "name": "Evaluation Blocker Remediation and Admission",
   "status": "blocked",
   "created": "2026-08-03",
-  "updated_at": "2026-08-30T21:00:55Z",
+  "updated_at": "2026-08-30T21:05:30Z",
   "gates": [
     {
       "id": "prospective-runtime-availability",
       "kind": "execution_dependency",
       "status": "pending",
-      "description": "Separate 0.3.0 server session passed one actual structured non-study probe with 15 loader images and verified cleanup. Exact READY equality failed and is retained. Guarded primary capture and two-slot controller/admission code pass synthetic validation; actual study freeze and observed admission remain pending. The historical profile remains unavailable.",
-      "evidence": "./structured-server-probe-20260830.md"
+      "description": "Separate 0.3.0 server profile and model passed fresh eligibility; exact source/review freeze and both execution preflights passed without model launch. Hosted freeze delivery and actual study capture/admission remain pending. Negative READY evidence and the unavailable historical profile are preserved.",
+      "evidence": "./prospective-execution-freeze-20260831.md"
     },
     {
       "id": "prospective-semantic-admission",
       "kind": "implementation",
       "status": "pending",
-      "description": "Two-slot controller and immediate observation admission are implemented and agent-reviewed with full validation. Actual source/review freeze, observed study admission and offline custody/scoring remain pending. Synthetic tests are not primary observations.",
-      "evidence": "./controller-admission-20260831.md"
+      "description": "Two-slot controller and immediate admission are implemented. Exact source/review freeze and preflight passed; actual capture/observation admission and offline custody/scoring remain pending. Synthetic tests and execution permission are not primary observations.",
+      "evidence": "./prospective-execution-freeze-20260831.md"
     },
     {
       "id": "legacy-repository-agent-review",

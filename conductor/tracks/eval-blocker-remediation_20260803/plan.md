@@ -211,8 +211,13 @@ incomplete. No further reviewer or routine phase approval is required.
               rules (`e6c1453`); preserve planning snapshots and existing cases.
               [Preparation receipt](./prospective-execution-freeze-20260831.md)
               records actual read-only eligibility and clean-interpreter checks.
-            - [~] Bind exact three-role source review R after S, run the real
-              execution preflight without capture, and verify hosted delivery.
+            - [x] Bind exact three-role source review R `cd09dba` after S
+              `e6c1453`; both real execution preflights passed without capture.
+              Full validation: 1,536 tests, 94.56%; actual admission remains false.
+            - [~] Verify hosted delivery with a normal merge retaining S/R.
+          - [ ] Execute the frozen two-slot capture under the
+            [capture context](../../context-packs/prospective-capture-20260831.md)
+            only after verified freeze delivery; preserve consumed attempts.
 
 ## Historical design and current execution choice
 

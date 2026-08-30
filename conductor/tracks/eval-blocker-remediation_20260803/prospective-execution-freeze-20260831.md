@@ -125,6 +125,25 @@ Use a normal merge, not squash/rebase, to retain S and R in reachable history.
 
 ## Execution and completion boundary
 
+Review R is `cd09dba47704f3c87b95975a216a9a5be98158bd`. Main called
+`prospective_study_controller._plans` for the exact protocol/S/R from the same
+explicit repository and `.venv/bin/python -I` environment. Both ordered slots
+passed with `execution_permitted: true`; returned `execution_observed`,
+`admitted` and `study_unlocked` remain false. This exercised committed review
+records, exact source/reference parity, static closure, environment identity
+and fresh local eligibility, without calling capture or launching a model.
+The mode-0600 local receipt `prospective-gate-preflight-20260831.json` in the
+existing `probe-evidence` directory was copied without replacement and read
+back byte-identically; SHA-256
+`a9d7220cdf0f0895b993a4d0e68ef09b16b5e5f603ddf89fa353af404dd38669`.
+
+This establishes the bounded S/R execution freeze and point-in-time preflight,
+not a study result or exemption from fresh checks at capture. Hosted delivery
+remains pending. The [next capture context](../../context-packs/prospective-capture-20260831.md)
+passed acceptance review and fixes one canonical private evidence root, no
+retry, failure retention and separate trusted custody/scoring gates. No actual
+capture root or journal was created here.
+
 Only a passing exact S/R execution gate may precede controller capture. Capture
 must use one canonical private evidence root, preserve consumed attempts and
 all failures, and never retry via another root. No study run, observation

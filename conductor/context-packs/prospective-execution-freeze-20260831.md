@@ -27,6 +27,12 @@ without capture. Use a normal merge to preserve S/R ancestry. The
 records exact identities, limits and final validation. Offline custody/scoring
 and actual observations are not established by these checks.
 
+R committed as `cd09dba`; both actual execution preflights passed against the
+exact S/R and environment without model launch. Freeze delivery remains pending.
+After hosted checks and a normal merge preserve S/R, use the reviewed
+[capture context](./prospective-capture-20260831.md). Do not repeat completed
+preparation or treat execution permission as an observation.
+
 ## Ready scope and inputs
 
 Start at AGENTS and `conductor/index.md`, then the owning plan/metadata/cursor,
