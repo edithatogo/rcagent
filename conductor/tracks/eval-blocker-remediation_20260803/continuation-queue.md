@@ -8,11 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `server-model-eligibility-20260830`; reviewer class: agent.
-- Implementation base: `5a782e5d81ed5c87f6148d4bb40ae6bdca82016b`; integrated
-  parent merge `89189363b9a1764264bac97b870eb1975ce0d1b1` after PR #88 passed.
+- Run ID: `server-process-lifecycle-20260830`; reviewer class: agent.
+- Implementation base: `1e6b9bcc2a9af03b462d8295f9dfd05eb3243699` (PR #89).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/server-model-eligibility`; no worktree lease is
+- Integration branch: `codex/server-process-lifecycle`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -72,16 +71,17 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   2026-08-30T11:42:11Z, with exact tree parity verified. Post-merge Quality
   `33309589305` and conformance `33309589298` passed. Completed parent branch
   cleanup was verified. Do not repeat diagnostics without a distinct new purpose.
-- Current slice: [separate server-specific model eligibility](./server-model-eligibility-20260830.md)
+- Completed slice: [separate server-specific model eligibility](./server-model-eligibility-20260830.md)
   (`34e56ae`), prepared while parent PR #88 waited for hosted runners. Reuses the
   original rights validator without changing the CLI helper, registry or profiles.
   Agent-panel review passed; 30 focused tests at 100%, full 971 tests at 93.60%.
   No real model inspection, model execution or admission occurred.
-  Parent PR #88 is merged. Its tested Windows collection fix is retained in this
-  branch; both parent and downstream evidence are preserved. Validate the combined
-  tree, then deliver only the new slice through its own exact-head checks.
-  Combined-tree validation at integration `bde18c7` passed 972 tests at 93.60%;
-  both agent re-reviews passed. Publish/reconcile this branch's PR next.
+  Integration `bde18c7` retained the parent Windows fix and passed 972 tests at
+  93.60%; both agent re-reviews passed. PR #89 passed all seven checks at
+  `02eef75`, merged as `1e6b9bc` at 2026-08-30T11:48:22Z, and exact tree parity
+  was verified. Local master was fast-forwarded and completed branch cleanup
+  verified. Post-merge Quality `33309842839` and conformance `33309842815` passed.
+  Next branch contains the lifecycle context/plan only; implementation has not begun.
 - Next implementation: implement bounded child-process lifecycle, then a structured non-study probe and
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
@@ -90,9 +90,9 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   decoder. Do not use READY output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Scope ownership: the new server model helper, its tests and linked records
+- Scope ownership: the new process supervisor, synthetic tests and linked records
   belong to this slice; the
-  [context pack](../../context-packs/server-model-eligibility-20260830.md) records its
+  [context pack](../../context-packs/server-process-lifecycle-20260830.md) records its
   checks and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.

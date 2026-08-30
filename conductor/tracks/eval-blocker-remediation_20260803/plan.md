@@ -93,6 +93,10 @@ incomplete. No further reviewer or routine phase approval is required.
       30 focused tests at 100%, and final agent-panel review pass.
       Prepared while PR #88 waited; parent now merged as `8918936` and integrated;
       no model execution, protocol freeze or study admission is enabled.
+    - [ ] Implement bounded child-process lifecycle with synthetic children under
+      the [process context](../../context-packs/server-process-lifecycle-20260830.md).
+      PR #89 is merged with exact tree parity; real server probing remains a
+      separate step after implementation, validation and agent review.
 
 ## Historical design and current execution choice
 

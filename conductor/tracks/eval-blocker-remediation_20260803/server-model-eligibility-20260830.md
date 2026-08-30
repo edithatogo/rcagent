@@ -47,8 +47,13 @@ Integration checkpoint: PR #88 passed all seven checks at `eeba35e` and merged
 as `8918936`. Merge `bde18c7` preserved this helper and its tests byte-for-byte,
 retained the exact parent transport/collection tests, and kept both evidence
 histories. Both agent re-reviews passed; main fixed one Markdown blank line.
-Combined-tree full validation passed 972 tests at 93.60% coverage. This slice
-still requires its own hosted checks and merge; parent success is not its pass.
+Combined-tree full validation passed 972 tests at 93.60% coverage. PR #89 then
+passed all seven checks at `02eef75b717e0c7b93c9e879ebb350cdd6be75c5`, merged
+as `1e6b9bcc2a9af03b462d8295f9dfd05eb3243699` at 2026-08-30T11:48:22Z, and
+exact tree parity was verified (`f2161554410ce7e53b41841d07885487021fee57`).
+Post-merge Quality `33309842839` and conformance `33309842815` passed. Local
+master was fast-forwarded and completed branch refs removed after verification;
+all content remains in the merged commit. This does not admit a study condition.
 
 The helper (`34e56ae`) is implemented with deterministic receipts binding original registry,
 effective server overlay, profile ID/digest and selected model/licence hashes.
