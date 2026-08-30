@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `server-session-20260830`; reviewer class: agent.
-- Implementation base: `bb3c76b0985ee1590ccab519177009f12c5aad95` (PR #91).
+- Run ID: `structured-server-probe-20260830`; reviewer class: agent.
+- Implementation base: `64810aa3a7a42f7b3f6f18c36d1e6c55fcea4b47` (PR #92).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/server-session`; no worktree lease is
+- Integration branch: `codex/structured-server-probe`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -108,8 +108,11 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   passed 1,098 tests in 82.90 seconds at 93.69% coverage. Native and Windows
   type checks pass. PR #92 at `f027f02` passed all OS jobs; patch coverage
   reported 88.67% against 90%. Follow-up `cf89192` adds eight reviewed guard
-  cases: 43 session tests at 97.33%, full 1,106 tests at 93.91%. Fresh hosted
-  confirmation and delivery remain pending. No actual model launch,
+  cases: 43 session tests at 97.33%, full 1,106 tests at 93.91%. All seven
+  checks passed head `2176465`; merged as `64810aa` with exact tree parity.
+  Local master and completed local/remote branch cleanup were verified.
+  Post-merge workflows `33319059110` and `33319059107` are running.
+  No actual model launch,
   study execution or affirmative admission occurred.
 - Next execution/implementation: a distinct structured non-study probe after
   fresh eligibility and provenance checks, then the
@@ -120,9 +123,9 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   decoder. Do not use READY output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Scope ownership: the new process supervisor, synthetic tests and linked records
-  belong to this slice; the
-  [context pack](../../context-packs/server-session-20260830.md) records its
+- Scope ownership: the bounded structured observation and reviewed evidence
+  records belong to the successor; the
+  [context pack](../../context-packs/structured-server-probe-20260830.md) records its
   checks and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
