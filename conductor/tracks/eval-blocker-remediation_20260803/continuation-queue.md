@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `server-graceful-stop-20260830`; reviewer class: agent.
-- Implementation base: `8acbd6180bb12259060c4fe156a835b9fe93a226` (PR #90).
+- Run ID: `server-session-20260830`; reviewer class: agent.
+- Implementation base: `bb3c76b0985ee1590ccab519177009f12c5aad95` (PR #91).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/server-graceful-stop`; no worktree lease is
+- Integration branch: `codex/server-session`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -96,9 +96,23 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   (`3d4f109`), with 28 new tests / 78 supervisor tests, 99.24% module coverage,
   native/Windows type checks and final agent-panel review. Full validation passed
   1,050 tests at 93.77% coverage. A late-EOF completion-ordering gap was fixed
-  and regression-tested. Hosted CI and merge are pending. No real model ran.
-- Next implementation: integrate fixed admitted server launch, private socket
-  ownership and concurrent request supervision, then a structured non-study probe and
+  and regression-tested. PR #91 passed all seven checks at `b53b13b`, merged as
+  `bb3c76b` at 2026-08-30T13:55:50Z with exact tree parity; local master and
+  completed branch cleanup were verified. Post-merge Quality `33315490265` and
+  conformance `33315490275` passed.
+  No real model ran. The successor implementation is now in progress on the
+  integration branch; do not mistake the parent results for successor validation.
+- Implemented slice: [fixed non-study server session](./server-session-20260830.md)
+  (`4f561e7`). Final agent-panel review passed; 35 session and 13 deadline tests
+  pass, including real synthetic child/Unix HTTP composition. Full validation
+  passed 1,098 tests in 82.90 seconds at 93.69% coverage. Native and Windows
+  type checks pass. PR #92 at `f027f02` passed all OS jobs; patch coverage
+  reported 88.67% against 90%. Follow-up `cf89192` adds eight reviewed guard
+  cases: 43 session tests at 97.33%, full 1,106 tests at 93.91%. Fresh hosted
+  confirmation and delivery remain pending. No actual model launch,
+  study execution or affirmative admission occurred.
+- Next execution/implementation: a distinct structured non-study probe after
+  fresh eligibility and provenance checks, then the
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
   identities into a reviewed full-component freeze. Implement affirmative
@@ -108,7 +122,7 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   30 focused tests at 100%. These results do not validate this runtime slice.
 - Scope ownership: the new process supervisor, synthetic tests and linked records
   belong to this slice; the
-  [context pack](../../context-packs/server-graceful-stop-20260830.md) records its
+  [context pack](../../context-packs/server-session-20260830.md) records its
   checks and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
