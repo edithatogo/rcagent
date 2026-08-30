@@ -47,6 +47,12 @@ incomplete. No further reviewer or routine phase approval is required.
   - [x] Add a strict read-only prospective protocol-candidate contract and
     adversarial fixtures (`3114c01`): [evidence](./protocol-contract-20260830.md).
     Candidate consistency does not assert freeze or admission.
+  - [x] Implement exact committed protocol/reference/component byte checks
+    (`46dcf31`): [contract and boundaries](./freeze-verification-20260830.md).
+    This consistency-only verifier neither admits nor unlocks execution; the
+    actual runner/component closure and protocol freeze remain pending.
+  - [x] Review fix: cover all freeze-verifier error paths (`a302486`), with
+    30 focused tests at 100% statement/branch coverage; retain production gates.
 
 ## Historical design and current execution choice
 

@@ -8,29 +8,39 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `runtime-profile-20260830`; reviewer class: agent.
-- Reviewed implementation base: `370d0689aebc0d440da723a21e9a044d20b3f860`.
+- Run ID: `prospective-freeze-20260830`; reviewer class: agent.
+- Implementation base: `b10abeb68df1258b3d82beec73aacc790ebce6b2`.
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/prospective-continuation`; no worktree lease is
+- Integration branch: `codex/prospective-study-runner`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
   The original failed diagnostic is preserved. No study observation or score
   was generated; no actual protocol has been frozen.
+- Implemented: [exact-commit protocol/reference/component verification](./freeze-verification-20260830.md)
+  (`46dcf31`), with agent review and expanded 30-test/100%-coverage fixtures
+  (`a302486`). Full integration evidence must be checked against PR #84's
+  exact head before merging; resume from master after a verified merge.
+  The fresh runtime precheck failed before launch: the old executable, libomp
+  and ggml backends are missing. Earlier successful observations remain valid
+  only for their recorded time and bytes; do not infer current availability.
+  [Recovery inspection](./runtime-drift-20260830.md) recommends a separately
+  versioned installed-runtime candidate; exact component rights and pins must
+  be reconciled before admission. Never overwrite the historical profile.
 - Next implementation: a study-specific runner with deterministic output
   extraction, reusing the pinned runtime profile. Verify the pinned CLI's
   output-only mode or an exact wrapper parser on non-study fixtures, then bind
   actual adapter/input/rubric identities into a reviewed, committed protocol
   freeze. Implement affirmative admission separately; do not use READY probe
   output or candidate consistency as primary study evidence.
-- Local checks: `uv run python -m tools.full_validation` passed 681 tests with
-  93.02% coverage; 114 focused tests cover all three affected modules at 100%.
-  Earlier seven hosted checks passed the documentation head only. Refresh the
-  enclosing PR #83's exact head before claiming hosted implementation success.
-- Scope ownership: current slice owns runtime helper/probe integration,
-  protocol-candidate validator, their tests and linked receipts. Reserve the
-  new study runner/normaliser and protocol paths before the next implementation;
-  preserve any overlapping active work. Resume this branch/PR, not a duplicate.
+- Prior checkpoint: 683 local tests, 93.02% coverage; 116 focused tests at 100%.
+  All seven hosted checks passed PR #83 head `2cc31da`; merged as `b10abeb`
+  with exact tree parity. Both post-merge workflows passed. Its local branch
+  was removed; GitHub had already removed the remote branch. These results do
+  not validate later freeze-verifier changes.
+- Scope ownership: the new freeze verifier/tests and linked records belong to
+  this slice; the [context pack](../../context-packs/prospective-execution-20260830.md)
+  records the runtime check and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
 
@@ -68,10 +78,11 @@ Proceed across ready tasks, tests, agent reviews and bounded fixes without
 another owner prompt. Update the cursor and evidence at every handoff; never
 restart completed probes merely because a session resumed.
 
-Protected-branch integration remains subject to the workflow's separate
-authorisation boundary. Check exact existing authority before merging; green
-hosted checks are readiness, not permission. Continue reversible branch work
-while that integration boundary is unresolved rather than re-asking per commit.
+The owner's active goal explicitly authorises committing, opening PRs, waiting
+for CI, merging and branch/worktree cleanup, one track at a time. Apply that
+standing authority to reviewed exact-head green changes; do not ask again per
+commit. It does not waive source rights, evidence, private-data or accountable
+external-authority boundaries, and green checks alone do not prove completion.
 
 Pause the heartbeat when the approved ready queue is exhausted, a safety
 circuit breaker fires, or all remaining paths require genuinely new authority
