@@ -51,6 +51,8 @@ incomplete. No further reviewer or routine phase approval is required.
     (`46dcf31`): [contract and boundaries](./freeze-verification-20260830.md).
     This consistency-only verifier neither admits nor unlocks execution; the
     actual runner/component closure and protocol freeze remain pending.
+  - [x] Review fix: cover all freeze-verifier error paths (`a302486`), with
+    30 focused tests at 100% statement/branch coverage; retain production gates.
 
 ## Historical design and current execution choice
 

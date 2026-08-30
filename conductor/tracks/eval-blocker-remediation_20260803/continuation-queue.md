@@ -18,8 +18,9 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   The original failed diagnostic is preserved. No study observation or score
   was generated; no actual protocol has been frozen.
 - Implemented: [exact-commit protocol/reference/component verification](./freeze-verification-20260830.md)
-  (`46dcf31`), with 19 focused tests and agent review. Full integration evidence
-  must be checked against the enclosing PR's exact head before merging.
+  (`46dcf31`), with agent review and expanded 30-test/100%-coverage fixtures
+  (`a302486`). Full integration evidence must be checked against PR #84's
+  exact head before merging; resume from master after a verified merge.
   The fresh runtime precheck failed before launch: the old executable, libomp
   and ggml backends are missing. Earlier successful observations remain valid
   only for their recorded time and bytes; do not infer current availability.
