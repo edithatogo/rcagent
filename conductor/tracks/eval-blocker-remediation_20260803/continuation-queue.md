@@ -8,6 +8,20 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+**Current terminal capture state:** sole invocation/session 14492 completed;
+do not restart it. [Negative receipt](./prospective-capture-20260831.md) records
+first-slot fixed-cap `incomplete_generation`, second not-attempted, 0/2 admitted.
+All three operational agent reviews passed retained-evidence integrity, not
+study success. Historical in-progress notes below are superseded. Current work
+is evidence delivery on the existing branch, then scoped readiness-only/root
+acceptance reconciliation under [post-capture Branch B](../../context-packs/prospective-postcapture-20260831.md).
+No retries, substitute conditions, threshold changes, positive custody or
+scoring. No new owner approval is needed for this negative-evidence route.
+The [scoped readiness addendum](./readiness-addendum-20260831.md) applies Option C
+only to this consumed cohort. After delivery, reconcile existing supported
+client/mode receipts against actual execution and concrete distribution
+prerequisites. Do not add a new inventory verifier or positive custody scaffold.
+
 - Run ID: `prospective-capture-20260831`; reviewer class: agent.
 - Implementation base: `cecf38529b0ec78ccf5271494a28d2f735c448bd` (PR #102).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.

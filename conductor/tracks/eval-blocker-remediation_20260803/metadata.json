@@ -3,21 +3,21 @@
   "name": "Evaluation Blocker Remediation and Admission",
   "status": "blocked",
   "created": "2026-08-03",
-  "updated_at": "2026-08-30T21:21:22Z",
+  "updated_at": "2026-08-30T21:40:00Z",
   "gates": [
     {
       "id": "prospective-runtime-availability",
       "kind": "execution_dependency",
       "status": "pending",
-      "description": "Separate 0.3.0 server profile and model passed fresh eligibility; exact source/review freeze and both execution preflights passed without model launch. PR #102 freeze delivery and post-merge checks passed with S/R ancestry preserved. Actual study capture/admission remain pending. Negative READY evidence and the unavailable historical profile are preserved.",
-      "evidence": "./prospective-execution-freeze-20260831.md"
+      "description": "Frozen sole controller invocation completed with first-slot incomplete_generation at the 512-token limit and second slot not-attempted. Agent panel verified negative evidence and cleanup; no cohort admitted. Preserve consumed attempts and historical negative evidence. This does not establish universal runtime unavailability.",
+      "evidence": "./prospective-capture-20260831.md"
     },
     {
       "id": "prospective-semantic-admission",
       "kind": "implementation",
       "status": "pending",
-      "description": "Two-slot controller and immediate admission are implemented. Exact source/review freeze and preflight passed; actual capture/observation admission and offline custody/scoring remain pending. Synthetic tests and execution permission are not primary observations.",
-      "evidence": "./prospective-execution-freeze-20260831.md"
+      "description": "Two-slot controller and immediate admission are implemented, but actual frozen capture failed: zero of two slots admitted. Blinding and scoring remain locked; no positive custody record is permitted. Proceed with scoped negative/readiness evidence, not retry or retrospective threshold changes.",
+      "evidence": "./prospective-capture-20260831.md"
     },
     {
       "id": "legacy-repository-agent-review",

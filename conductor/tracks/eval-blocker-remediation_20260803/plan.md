@@ -218,9 +218,20 @@ incomplete. No further reviewer or routine phase approval is required.
               `f114bfa`, merged normally as `cecf385` with tree parity and S/R
               ancestry verified in a fresh fetch. Both post-merge workflows
               passed; local master and completed-branch cleanup verified.
-          - [~] Execute the frozen two-slot capture under the
+          - [!] Execute the frozen two-slot capture under the
             [capture context](../../context-packs/prospective-capture-20260831.md)
             only after verified freeze delivery; preserve consumed attempts.
+            Sole invocation completed: first slot reached the frozen 512-token
+            limit and failed EOS admission; second was not attempted. Three-role
+            review verified retained evidence and cleanup, not study success.
+            [Negative receipt](./prospective-capture-20260831.md): 0/2 admitted;
+            no retry, blinding or scoring. Frozen source remains unchanged.
+            - [~] Deliver reviewed negative evidence, then reconcile scoped
+              readiness-only fallback and the broader root acceptance map using
+              [post-capture Branch B](../../context-packs/prospective-postcapture-20260831.md).
+              [Scoped fallback addendum](./readiness-addendum-20260831.md)
+              preserves historical inventories and names supported-mode and
+              distribution acceptance reconciliation as the successor.
 
 ## Historical design and current execution choice
 

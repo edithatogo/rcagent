@@ -1,5 +1,15 @@
 # Context Pack: Frozen prospective two-slot capture
 
+## Terminal outcome — do not invoke again
+
+The sole invocation completed at 2026-08-30T21:37:06Z with
+`controller_failed`: first slot `incomplete_generation` at the fixed 512-token
+limit, second slot not-attempted, 0/2 admitted. Three-agent negative-evidence
+review passed. [Actual receipt](../tracks/eval-blocker-remediation_20260803/prospective-capture-20260831.md)
+supersedes the historical activation/in-progress notes below. No retry, new
+root, altered cap, blinding or scoring. Deliver this result, then use Branch B
+of the [post-capture context](./prospective-postcapture-20260831.md).
+
 Prepared successor, not an execution receipt. Activate only after the exact
 source/review freeze preflight, three-role review, full validation, hosted
 delivery and post-merge checks are verified. Start at AGENTS and the Conductor
