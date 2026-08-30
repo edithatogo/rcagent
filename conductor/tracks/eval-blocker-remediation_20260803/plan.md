@@ -62,8 +62,12 @@ incomplete. No further reviewer or routine phase approval is required.
     before implementing normalisation (`a82acb1`).
     [Evidence](./output-mode-probe-20260830.md): 776 tests and one complete live
     probe; stdout remains wrapped, so response-only normalisation is unverified.
-  - [ ] Establish a strict, implementation-supported output grammar or separately
+  - [~] Establish a strict, implementation-supported output grammar or separately
     admitted response-only entrypoint, then implement deterministic normalisation.
+    Exact upstream inspection rejects byte-preserving CLI wrapper recovery;
+    implement a read-only native JSON contract under the
+    [bounded context](../../context-packs/structured-completion-20260830.md).
+    Runner, transport and actual study admission remain pending.
 
 ## Historical design and current execution choice
 
