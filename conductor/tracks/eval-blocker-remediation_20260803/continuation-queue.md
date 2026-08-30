@@ -198,9 +198,19 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   together under the [next context](../../context-packs/controller-admission-20260831.md).
   The panel moved actual freeze after that implementation so the complete
   execution dependencies are included. No new signing infrastructure or owner
-  approval is needed. Parent hosted delivery is verified; successor source
-  edits are ready for fresh bounded ownership. Existing hourly continuation
-  remains active.
+  approval is needed. Activated as `37331aa` from checkpoint `3ae9a3f` after
+  parent hosted delivery and the stable 1,407-test baseline were reverified.
+  Implementation `a1e4399` and final agent-panel review passed: full 1,507 tests
+  at 94.18%. [Current receipt](./controller-admission-20260831.md) retains all
+  findings, fixes and exact source/test hashes. All agent file ownership is
+  released; main owns hosted delivery, which remains pending. Do not duplicate
+  completed implementation. Existing hourly continuation remains active.
+- After verified delivery, prepare the actual synthetic protocol and complete
+  execution freeze using the [next context](../../context-packs/prospective-execution-freeze-20260831.md).
+  Offline custody/scoring is a separate later source/evidence boundary, not a
+  reason to defer a complete unchanged execution freeze indefinitely. No actual
+  model/cache eligibility, study freeze, capture, admission or scoring occurred
+  in the controller implementation slice.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
 

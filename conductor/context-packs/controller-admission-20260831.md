@@ -31,7 +31,12 @@ and scoring transitions remain separate future work. Persist attempt-start
 before calling the primary entry; an exception may occur after execution and
 must consume the attempt. No automatic retry or inferred resume is permitted.
 This is a stricter execution subset of the protocol's retry allowance, not a
-change to historical protocols. Implementation and validation remain pending.
+change to historical protocols. Implementation `a1e4399` and final agent review
+passed: full validation 1,507 tests, 94.18% coverage. See the
+[implementation receipt](../tracks/eval-blocker-remediation_20260803/controller-admission-20260831.md).
+Hosted delivery is pending. Next use the
+[execution-freeze context](./prospective-execution-freeze-20260831.md), after
+delivery is verified. No actual model/cache scan, freeze or study operation occurred.
 
 ## Panel recommendation and sequencing repair
 
