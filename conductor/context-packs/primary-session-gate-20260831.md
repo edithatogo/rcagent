@@ -4,9 +4,9 @@ Track `eval-blocker-remediation_20260803`, issue #1. Prepared after the committe
 native prerequisite slice; reconcile its delivery receipt and current Git/CI
 before activation. This preparation is not a study freeze or execution permit.
 PR #99 merged as `acd251d` with reviewed-tree parity; successor branch
-`codex/primary-session-gate` starts there. Main and the implementation agent
-have begun the design checkpoint only; no successor code or model operation
-has started. Post-merge conformance `33326897765` and Quality `33326897749`
+`codex/primary-session-gate` starts there. At preparation, main and the
+implementation agent had completed design only. Post-merge conformance
+`33326897765` and Quality `33326897749`
 passed; local master and completed branch cleanup were verified.
 
 Activated on the 2026-08-30T18:46Z heartbeat from clean checkpoint `0c68b95`.
@@ -16,6 +16,13 @@ safety; `runtime_profile_tests` owns gate/session code and fixtures, with
 `root_acceptance_map` providing read-only acceptance review. No actual model
 eligibility operation, study freeze or execution is authorised by this fixture
 implementation checkpoint. Existing bounded study authority remains unchanged.
+
+Implementation `1d01242` and final agent acceptance now pass, including full
+1,407-test validation at 94.29%; see the
+[implementation receipt](../tracks/eval-blocker-remediation_20260803/primary-session-gate-20260831.md).
+Hosted delivery is pending. No actual model or study operation occurred. Next,
+implement the [controller/admission slice](./controller-admission-20260831.md)
+before actual freeze so the reviewed dependency closure includes that path.
 
 ## Selected next implementation
 
@@ -132,5 +139,6 @@ Agent engineering agreement is not clinical, legal, policy, regulatory,
 employment, cultural-safety, organisational or deployment approval.
 
 Record exact implementation and remaining evidence; verify delivery tree parity.
-Next after this slice: actual protocol/closure review and freeze, then governed
-two-slot orchestration and affirmative admission before any blinding.
+Next after this slice: implement governed two-slot orchestration and affirmative
+admission, then actual complete protocol/closure review and freeze before study
+execution. Admission must precede blinding.

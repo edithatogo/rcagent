@@ -176,8 +176,14 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   `74a995e` and merged as `acd251d` with exact tree parity. Completed branch
   cleanup verified; post-merge conformance `33326897765` and Quality
   `33326897749` passed on the merged commit.
-- Subsequent implementation: the
-  primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
+- Implemented guarded primary adapter and execution gate, code `1d01242`:
+  [receipt](./primary-session-gate-20260831.md). Final agent review passed;
+  full 1,407 tests at 94.29%. Review commit R binds source S, protocol,
+  supported dependency identities and actual recorded panel scope. The fixed
+  READY wrapper is preserved; no actual model/cache eligibility, freeze,
+  study capture or observation admission occurred. Hosted delivery is pending.
+- Subsequent implementation: the two-slot controller and affirmative observation
+  admission. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
   identities into a reviewed full-component freeze. Implement affirmative
   admission separately. Legacy protocol modes remain unchanged; native protocol
@@ -185,15 +191,12 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Next ready scope: implement the guarded single-slot primary adapter and full
-  gate together, after defining complete dependency closure and trusted review
-  provenance. The [next context](../../context-packs/primary-session-gate-20260831.md)
-  records panel recommendations and boundaries. Hosted delivery is complete;
-  next design checkpoint selected trusted repository review commit R after source
-  commit S, with exact closure parity and actual panel evidence; no new signing
-  infrastructure or owner approval is needed. No successor source edits yet.
-  Resume by reading that recorded design, verifying ownership and implementing
-  the guarded adapter/gate together. Existing hourly continuation remains active.
+- Next ready scope: implement the two-slot controller and affirmative admission
+  together under the [next context](../../context-packs/controller-admission-20260831.md).
+  The panel moved actual freeze after that implementation so the complete
+  execution dependencies are included. No new signing infrastructure or owner
+  approval is needed. Finish current hosted delivery before activating successor
+  source edits. Existing hourly continuation remains active.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
 
