@@ -433,3 +433,174 @@ def test_fresh_gate_drift_during_consume_persists_locked_failure(capture_fixture
     assert persisted["admitted"] is False
     assert persisted["failure_stage"] == "admission"
     assert not (directory / "admission.json").exists()
+
+
+@pytest.mark.parametrize("stage", ["before-mkdir", "after-mkdir"])
+def test_changed_evidence_root_prevents_journal_and_primary(capture_fixture, monkeypatch, stage):
+    args, calls, _ = capture_fixture
+    original = session._directory
+    checks = 0
+
+    def changed(path):
+        nonlocal checks
+        identity = original(path)
+        if path == args[-1]:
+            checks += 1
+            if checks == (2 if stage == "before-mkdir" else 3):
+                return (0, 0)
+        return identity
+
+    monkeypatch.setattr(session, "_directory", changed)
+    with pytest.raises(ValueError, match="evidence_root_changed"):
+        controller.run_study(*args)
+    assert not calls
+    assert not list(args[-1].glob("*/journal.jsonl"))
+
+
+@pytest.mark.parametrize("stage", ["append", "before-primary"])
+def test_owned_directory_identity_drift_blocks_launch(capture_fixture, monkeypatch, stage):
+    args, calls, _ = capture_fixture
+    original = session._directory
+    appended = False
+    append = controller._append
+
+    def record(*parameters):
+        nonlocal appended
+        append(*parameters)
+        if parameters[-1]["type"] == "slot_started":
+            appended = True
+
+    def changed(path):
+        identity = original(path)
+        if path.name.startswith("run-") and (
+            appended if stage == "before-primary" else (path / "journal.jsonl").exists()
+        ):
+            return (0, 0)
+        return identity
+
+    monkeypatch.setattr(controller, "_append", record)
+    monkeypatch.setattr(session, "_directory", changed)
+    result = controller.run_study(*args)
+    assert result["admitted"] is False
+    assert not calls
+
+
+@pytest.mark.parametrize("target", ["journal", "admission"])
+def test_short_write_is_never_success(capture_fixture, monkeypatch, target):
+    args, calls, _ = capture_fixture
+    fdopen = os.fdopen
+
+    class ShortWriter:
+        def __init__(self, stream):
+            self.stream = stream
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            self.stream.close()
+
+        def fileno(self):
+            return self.stream.fileno()
+
+        def write(self, raw):
+            return self.stream.write(raw[:-1])
+
+    def opened(descriptor, mode, *positional, **keywords):
+        stream = fdopen(descriptor, mode, *positional, **keywords)
+        if mode == ("w+b" if target == "journal" else "wb"):
+            return ShortWriter(stream)
+        return stream
+
+    if target == "journal":
+        monkeypatch.setattr(os, "fdopen", opened)
+        result = controller.run_study(*args)
+        assert result["admitted"] is False
+        assert not calls
+    else:
+        parent = session._directory(args[-1])
+        monkeypatch.setattr(os, "fdopen", opened)
+        with pytest.raises(OSError, match="short_admission_write"):
+            controller._write_result(args[-1] / "result.json", parent, {"admitted": False})
+
+
+@pytest.mark.parametrize("point", ["append-readback", "sealed-readback"])
+def test_journal_readback_corruption_fails_closed(capture_fixture, monkeypatch, point):
+    args, calls, _ = capture_fixture
+    read = admission._read
+    complete_reads = 0
+
+    def changed(path, *parameters, **keywords):
+        nonlocal complete_reads
+        raw, identity = read(path, *parameters, **keywords)
+        if path.name == "journal.jsonl":
+            if point == "append-readback" and b'"run_started"' in raw:
+                return b"corrupt", identity
+            if point == "sealed-readback" and b'"capture_complete"' in raw:
+                complete_reads += 1
+                if complete_reads == 2:
+                    return b"corrupt", identity
+        return raw, identity
+
+    monkeypatch.setattr(admission, "_read", changed)
+    result = controller.run_study(*args)
+    assert result["admitted"] is False
+    assert len(calls) == (0 if point == "append-readback" else 2)
+
+
+def test_controller_defensive_denominator_guard(capture_fixture, monkeypatch):
+    args, calls, _ = capture_fixture
+    validate = controller.native._validated_candidate
+
+    def one_slot(*parameters):
+        value, candidate = validate(*parameters)
+        value["expected_slots"] = value["expected_slots"][:1]
+        return value, candidate
+
+    # Isolate the controller guard: the actual native validator already rejects this.
+    plans = controller._plans(args[0], args[1], args[2], args[3], args[4])[2]
+    monkeypatch.setattr(controller.native, "_validated_candidate", one_slot)
+    monkeypatch.setattr(gate, "_verify", lambda *parameters: plans[0])
+    with pytest.raises(ValueError, match="invalid_controller_denominator"):
+        controller.run_study(*args)
+    assert not calls
+    assert not list(args[-1].iterdir())
+
+
+@pytest.mark.parametrize("failed_receipt", [False, True])
+def test_each_raw_directory_sync_precedes_completion_and_next_slot(
+    capture_fixture, monkeypatch, failed_receipt
+):
+    args, calls, capture = capture_fixture
+    sync = controller._sync_directory
+    reached = False
+
+    def returned(*parameters):
+        result = capture(*parameters)
+        if failed_receipt:
+            result["status"] = "session_failed"
+            result["error"] = "synthetic_failure"
+            parameters[-1].write_bytes(admission._canonical(result))
+        return result
+
+    def fail_first_receipt_sync(path, expected):
+        nonlocal reached
+        if (path / "slot-1.json").exists():
+            reached = True
+            events = [
+                json.loads(row)["event"]["type"]
+                for row in (path / "journal.jsonl").read_bytes().splitlines()
+            ]
+            assert events == ["run_started", "slot_started"]
+            assert len(calls) == 1
+            raise OSError("synthetic_raw_directory_sync_failure")
+        sync(path, expected)
+
+    monkeypatch.setattr(controller.primary, "run_primary", returned)
+    monkeypatch.setattr(controller, "_sync_directory", fail_first_receipt_sync)
+    result = controller.run_study(*args)
+    assert reached
+    assert len(calls) == 1
+    assert result["admitted"] is False
+    assert list(result["dispositions"].values()) == ["attempted-outcome-unknown", "not-attempted"]
+    assert result["failure_stage"] == "readback"

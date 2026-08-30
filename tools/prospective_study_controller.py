@@ -182,6 +182,7 @@ def run_study(
                 raw, identity = admission._read(
                     receipt_path, owned_parent, admission.MAX_RECEIPT, synchronize=True
                 )
+                _sync_directory(directory, owned_parent)
                 returned_bytes = admission._canonical(returned)
                 if admission._canonical(admission._parse(raw)) != returned_bytes:
                     raise ValueError("primary_return_receipt_mismatch")
