@@ -30,7 +30,10 @@ def _remaining(deadline: float) -> float:
 
 class _DeadlineSocket(socket.socket):
     def __init__(self, deadline: float):
-        super().__init__(socket.AF_UNIX, socket.SOCK_STREAM)
+        family = getattr(socket, "AF_UNIX", None)
+        if family is None:
+            raise ValueError("unix_socket_unavailable")
+        super().__init__(family, socket.SOCK_STREAM)
         self.deadline = deadline
 
     def recv_into(self, buffer: Any, nbytes: int = 0, flags: int = 0) -> int:
@@ -56,6 +59,9 @@ class _Connection(http.client.HTTPConnection):
 
 
 def _path_identity(path: Path) -> tuple[int, int, int, int]:
+    getuid = getattr(os, "getuid", None)
+    if getuid is None:
+        raise ValueError("unix_identity_unavailable")
     try:
         if (
             not path.is_absolute()
@@ -68,9 +74,9 @@ def _path_identity(path: Path) -> tuple[int, int, int, int]:
         target = path.lstat()
         if (
             stat.S_IMODE(parent.st_mode) != 0o700
-            or parent.st_uid != os.getuid()
+            or parent.st_uid != getuid()
             or not stat.S_ISSOCK(target.st_mode)
-            or target.st_uid != os.getuid()
+            or target.st_uid != getuid()
         ):
             raise ValueError("unsafe_socket_permissions")
         return parent.st_dev, parent.st_ino, target.st_dev, target.st_ino

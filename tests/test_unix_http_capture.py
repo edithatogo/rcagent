@@ -27,7 +27,9 @@ def server():
 
         def start(response, delay=0):
             path = directory / f"{len(listeners)}.sock"
-            listener = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            family = getattr(socket, "AF_UNIX", None)
+            assert family is not None
+            listener = socket.socket(family, socket.SOCK_STREAM)
             listener.bind(str(path))
             listener.listen(1)
             listener.settimeout(2)
@@ -165,12 +167,22 @@ def test_absolute_deadline_stops_trickling_headers(server):
     assert time.monotonic() - start < 1
 
 
-def test_body_deadline_retains_partial_bytes(server):
+def test_body_deadline_retains_partial_bytes(server, monkeypatch):
     headers = b"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 100\r\n\r\n"
-    path = server([headers, b"abc"] * 8, delay=0.04)
-    result = subject.capture(path, "GET", "/health", b"", deadline=time.monotonic() + 0.13)
+    path = server(headers + b"abc")
+    original = subject.http.client.HTTPResponse.read1
+    calls = []
+
+    def read1(response, amount):
+        if calls:
+            raise TimeoutError
+        calls.append(True)
+        return original(response, amount)
+
+    monkeypatch.setattr(subject.http.client.HTTPResponse, "read1", read1)
+    result = capture(path)
     assert result["error"] == "deadline_exceeded"
-    assert base64.b64decode(result["body_base64"]).startswith(b"abc")
+    assert base64.b64decode(result["body_base64"]) == b"abc"
 
 
 @pytest.mark.parametrize(
@@ -236,7 +248,9 @@ def test_connection_setup_expiry_returns_receipt(server, monkeypatch):
 def test_connect_failure_returns_receipt():
     with tempfile.TemporaryDirectory(prefix="rca-", dir="/tmp") as name:
         path = Path(name).resolve() / "closed.sock"
-        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as listener:
+        family = getattr(socket, "AF_UNIX", None)
+        assert family is not None
+        with socket.socket(family, socket.SOCK_STREAM) as listener:
             listener.bind(str(path))
         assert capture(path)["error"] == "socket_io_failed"
 
@@ -276,3 +290,12 @@ def test_http_header_line_bound(server):
 def test_malformed_header_not_silently_ignored(server):
     result = capture(server(wire(extra=b"not-a-header\r\n")))
     assert result["error"] == "unsupported_http_framing"
+
+
+def test_absent_unix_capabilities_never_fall_back(monkeypatch, tmp_path):
+    monkeypatch.setattr(socket, "AF_UNIX", None)
+    with pytest.raises(ValueError, match="unix_socket_unavailable"):
+        subject._DeadlineSocket(time.monotonic() + 1)
+    monkeypatch.setattr(os, "getuid", None)
+    with pytest.raises(ValueError, match="unix_identity_unavailable"):
+        subject._path_identity(tmp_path / "missing.sock")
