@@ -2,8 +2,11 @@
 
 Track `eval-blocker-remediation_20260803`, issue #1. Parent PR #96 merged as
 `3305c4b` with verified head/merge tree equality. Activation `73c6778` began on
-`codex/prospective-native-protocol` while parent CI ran. Reconcile ancestry after
-the implementation agent releases its files. This is not model execution.
+`codex/prospective-native-protocol` while parent CI ran. Integration `290a146`
+reconciled the verified parent. Squash ancestry produced documentation-only
+conflicts; retaining the newer reviewed successor records preserved the exact
+pre-integration tree `43273486d1d327005754b3a2e6f7b7cc9f61c8e0`.
+No source/test bytes changed during integration. This is not model execution.
 
 ## Agent panel and scope
 

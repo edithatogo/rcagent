@@ -141,7 +141,8 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   Activated as `73c6778`; fixture-first missing-module RED was observed before
   implementation. Agent review passed; 63 focused tests at 100%, full 1,218
   tests at 94.00%. See [receipt](./native-protocol-20260831.md).
-  Reconcile successor ancestry onto the verified merged parent before delivery.
+  Integration `290a146` reconciled the merged parent with exact pre/post tree
+  equality; documentation-only squash-ancestry conflicts retained current records.
 - Prepared successor after delivery: the
   [single-slot session adapter](../../context-packs/slot-session-20260831.md).
   Its agent-reviewed context preserves READY behavior and prevents a callable

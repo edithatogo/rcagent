@@ -2,7 +2,8 @@
 
 Track `eval-blocker-remediation_20260803`, issue #1. Activated on
 `codex/prospective-native-protocol` at parent PR #96 head `427ce4d` while its
-hosted checks run. Reconcile the merged parent before successor delivery.
+hosted checks ran. Verified merged parent `3305c4b` was reconciled by `290a146`
+with unchanged source/test bytes and exact integration tree equality.
 No model or study execution is scoped.
 
 ## Purpose and bounded inputs
