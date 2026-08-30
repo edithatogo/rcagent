@@ -78,6 +78,35 @@ re-review found no weakening of the transport boundary. Final full validation
 passed 941 tests at 93.54% coverage, including all repository checks. Hosted
 validation of this repair is pending at this checkpoint.
 
+## Windows collection follow-up
+
+The 10:41 UTC heartbeat found Windows job `99237298852` still reporting the
+test step after more than 70 minutes. The other six checks passed. Quality run
+`33304040763` was cancelled to stop the stalled log output. Direct job logs
+revealed a real collection/skip-teardown error, not a transport failure: pytest
+expanded the 1 MiB oversized-body parameter into `PYTEST_CURRENT_TEST`, exceeding
+Windows' 32,767-character environment-value limit. The log recorded 900 passed,
+41 skipped and one error; no Windows pass is claimed.
+
+A portable collect-only regression reproduced a 1,048,669-character node ID
+before repair. Explicit short IDs now retain the unchanged oversized-body and
+invalid-deadline parameters. The regression limits collected node IDs to fewer
+than 512 characters and does not execute Unix socket tests. Both agent reviewers
+checked this test-only repair; no transport, model, rights or admission behaviour
+changed. Repair commit: `fc1ca0f`; 42 focused tests passed. Full validation passed
+942 tests at 93.54% coverage, including lint, both type checkers, governance and
+the seven-case deterministic regression. Windows-targeted ty and basedpyright
+also passed. The new exact-head hosted run remains required.
+
+## Hosted delivery
+
+All seven PR checks passed at `eeba35e2c27af21938b33fff8ea35b238f079e21`,
+including Windows job `99246036418` (completed 2026-08-30T10:49:19Z).
+PR #88 merged at 2026-08-30T11:42:11Z as
+`89189363b9a1764264bac97b870eb1975ce0d1b1`. Exact head/merge tree parity was
+verified: `18a1869c3379fe81fb3e753b1515cc1b4b1158c5`. Local master was
+fast-forwarded before integrating the preserved model-eligibility branch.
+Post-merge workflows remain a separate readback; no study admission is implied.
 ## Actual non-study diagnostics
 
 The version diagnostic ran 09:13:56–09:13:57 UTC on 2026-08-30 (1.25 seconds);

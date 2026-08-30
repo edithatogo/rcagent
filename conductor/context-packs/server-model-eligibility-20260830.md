@@ -1,8 +1,9 @@
 # Context Pack: Server-specific model eligibility
 
-Track `eval-blocker-remediation_20260803`, issue #1; base `5a782e5` (PR #88,
-hosted checks queued, not merged). Local branch `codex/server-model-eligibility`
-is stacked preparation; do not integrate before its parent passes hosted checks.
+Track `eval-blocker-remediation_20260803`, issue #1; original base `5a782e5`.
+PR #88 subsequently passed all seven checks at `eeba35e`, merged as `8918936`,
+and its exact tree was verified. Branch `codex/server-model-eligibility` now
+integrates that parent while preserving its unique eligibility helper and tests.
 No worktree lease is enabled.
 
 ## Scope and ownership
@@ -26,7 +27,7 @@ checks. No subprocess, socket, download, real model probe or admission transitio
 Load track spec/plan/metadata, workflow/guidelines, continuation cursor and
 decisions 20260829-002 and 20260830-001/002. Bound code context to the server
 profile, existing prospective model helper, original comparator validator and
-their tests. Current dependency is local parent code, not a hosted-pass claim.
+their tests. Parent checks passed; this combined branch requires its own validation.
 
 Use synthetic fixture-first tests, Ruff, both type checkers (including Windows
 target), full repository validation and agent-panel review. The project remains

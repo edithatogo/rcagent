@@ -9,7 +9,8 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 ## Resume cursor
 
 - Run ID: `server-model-eligibility-20260830`; reviewer class: agent.
-- Implementation base: `5a782e5d81ed5c87f6148d4bb40ae6bdca82016b` (PR #88, not yet merged).
+- Implementation base: `5a782e5d81ed5c87f6148d4bb40ae6bdca82016b`; integrated
+  parent merge `89189363b9a1764264bac97b870eb1975ce0d1b1` after PR #88 passed.
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
 - Integration branch: `codex/server-model-eligibility`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
@@ -66,16 +67,18 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   image pins and unchanged pre/post identity. Local receipts are linked in the
   evidence record. CI portability/timing repair `348eca9` subsequently passed
   941 tests at 93.54% coverage and both Windows-targeted type checkers; agent
-  re-review passed. Reconcile PR #88's exact hosted/merge state on resume;
-  do not repeat diagnostics without a distinct new purpose.
+  re-review passed. Windows collection repair `fc1ca0f` then passed 942 tests.
+  PR #88 passed all seven checks at `eeba35e`, merged as `8918936` at
+  2026-08-30T11:42:11Z, with exact tree parity verified. Post-merge checks remain
+  to be read back. Do not repeat diagnostics without a distinct new purpose.
 - Current slice: [separate server-specific model eligibility](./server-model-eligibility-20260830.md)
   (`34e56ae`), prepared while parent PR #88 waited for hosted runners. Reuses the
   original rights validator without changing the CLI helper, registry or profiles.
   Agent-panel review passed; 30 focused tests at 100%, full 971 tests at 93.60%.
   No real model inspection, model execution or admission occurred.
-  Deliver parent PR #88 first after exact head `5a782e5` passes; verify merged tree
-  parity before integrating this stacked branch. Then deliver only the new slice
-  through its own exact-head checks. Do not discard either branch's unique work.
+  Parent PR #88 is merged. Its tested Windows collection fix is retained in this
+  branch; both parent and downstream evidence are preserved. Validate the combined
+  tree, then deliver only the new slice through its own exact-head checks.
 - Next implementation: implement bounded child-process lifecycle, then a structured non-study probe and
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
