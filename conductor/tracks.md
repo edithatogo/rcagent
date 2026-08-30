@@ -50,9 +50,9 @@ These issues refine existing tracks and must not become duplicate subsystems:
 
 | Status | GitHub issue | Owning Conductor scope |
 |---|---|---|
-| [ ] | [#19 Clinical governance system-of-systems roadmap](https://github.com/edithatogo/rcagent/issues/19) | Track 01 architecture with first vertical slice across Tracks 02, 04, 07, and 09 |
-| [ ] | [#17 Maximise security and solo-maintainer context](https://github.com/edithatogo/rcagent/issues/17) | Track 01 foundation harness, with Track 03 security assurance |
-| [ ] | [#18 Complete evidence-based repository hardening](https://github.com/edithatogo/rcagent/issues/18) | Portfolio-level closeout; #17 is its tracked subissue |
+| [x] | [#19 Clinical governance system-of-systems roadmap](https://github.com/edithatogo/rcagent/issues/19) | Track 01 architecture with first vertical slice across Tracks 02, 04, 07, and 09 |
+| [x] | [#17 Maximise security and solo-maintainer context](https://github.com/edithatogo/rcagent/issues/17) | Track 01 foundation harness, with Track 03 security assurance |
+| [x] | [#18 Complete evidence-based repository hardening](https://github.com/edithatogo/rcagent/issues/18) | Portfolio-level closeout; #17 is its tracked subissue |
 
 Issue state is reconciled at every owning phase checkpoint. An issue is not
 closed until its Conductor acceptance evidence and hosted repository state
@@ -60,7 +60,7 @@ both pass.
 
 ### Delivery Programme
 
-- [~] [No-LLM Implementation Programme](./tracks/no-llm-implementation-programme_20260811/index.md) — sequential small PRs, one active branch, and no model-weight downloads
+- [x] [No-LLM Implementation Programme](./tracks/no-llm-implementation-programme_20260811/index.md) — completed bounded repository programme; root portfolio and legacy evaluation remain separate
 
 ## Legacy Evaluation Study
 
