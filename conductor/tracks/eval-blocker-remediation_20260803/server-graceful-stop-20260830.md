@@ -64,8 +64,19 @@ or abstention remains. Implementation and review fix commit: `3d4f109`.
 Final `uv run python -m tools.full_validation` passed all 1,050 tests in 79.44
 seconds, with 93.77% overall branch-inclusive coverage on macOS arm64 / Python
 3.14.5. Ruff, ty, basedpyright, gremlin scan, repository governance, benchmark
-registry and all seven deterministic regression cases passed. Hosted CI/merge
-remain pending; local validation is not a delivery claim.
+registry and all seven deterministic regression cases passed.
+
+PR #91 passed all seven checks at exact head
+`b53b13b305f4a9326befddf3b3143db4fdce18d3`, merged at 2026-08-30T13:55:50Z
+as `bb3c76b0985ee1590ccab519177009f12c5aad95`. Head and merge trees match
+`92369ef0d7967a8ffdd4e22a3aaec27dbfe4d541`. Local master was fast-forwarded;
+obsolete local and remote-tracking refs were removed after remote absence and
+merged tree verification. Recorded commits remain recoverable. Post-merge
+Quality `33315490265` and conformance `33315490275` both passed, including
+all three operating-system Quality jobs.
+Quality again emitted the existing non-failing Node.js 20/forced-Node-24
+annotation for pinned `actions/github-script`; no warning-remediation claim is
+made by this supervisor slice.
 
 Focused commands: `uv run pytest --no-cov -q tests/test_server_process.py
 tests/test_server_process_stop.py`; isolated coverage adds
@@ -80,8 +91,9 @@ or private-data execution occurred. The wider lifecycle and study remain open.
 
 ## Next action and rollback
 
-Finish fixtures and review, validate the exact change, then deliver through
-exact-head hosted checks. Compose fixed admitted server launch, private socket
-ownership and concurrent HTTP only after this primitive passes. Recheck exact
-upstream source before selecting real arguments. Rollback reverts this delta
+The [next context](../../context-packs/server-session-20260830.md) records the
+agent-reviewed fixed session contract: one owned worker, shared deadlines,
+private socket identities, no cleanup before join/reap and separate failure
+dispositions. Recheck exact upstream source before selecting real arguments.
+Rollback reverts this delta
 without changing default capture or historical receipts.

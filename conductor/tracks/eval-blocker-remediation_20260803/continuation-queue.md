@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `server-graceful-stop-20260830`; reviewer class: agent.
-- Implementation base: `8acbd6180bb12259060c4fe156a835b9fe93a226` (PR #90).
+- Run ID: `server-session-20260830`; reviewer class: agent.
+- Implementation base: `bb3c76b0985ee1590ccab519177009f12c5aad95` (PR #91).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/server-graceful-stop`; no worktree lease is
+- Integration branch: `codex/server-session`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -96,7 +96,12 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   (`3d4f109`), with 28 new tests / 78 supervisor tests, 99.24% module coverage,
   native/Windows type checks and final agent-panel review. Full validation passed
   1,050 tests at 93.77% coverage. A late-EOF completion-ordering gap was fixed
-  and regression-tested. Hosted CI and merge are pending. No real model ran.
+  and regression-tested. PR #91 passed all seven checks at `b53b13b`, merged as
+  `bb3c76b` at 2026-08-30T13:55:50Z with exact tree parity; local master and
+  completed branch cleanup were verified. Post-merge Quality `33315490265` and
+  conformance `33315490275` passed.
+  No real model ran. The next branch contains context/records only; fixed-session
+  implementation has not begun.
 - Next implementation: integrate fixed admitted server launch, private socket
   ownership and concurrent request supervision, then a structured non-study probe and
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
@@ -108,7 +113,7 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   30 focused tests at 100%. These results do not validate this runtime slice.
 - Scope ownership: the new process supervisor, synthetic tests and linked records
   belong to this slice; the
-  [context pack](../../context-packs/server-graceful-stop-20260830.md) records its
+  [context pack](../../context-packs/server-session-20260830.md) records its
   checks and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.

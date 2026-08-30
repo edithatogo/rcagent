@@ -108,7 +108,9 @@ incomplete. No further reviewer or routine phase approval is required.
         - [x] Review fix (`3d4f109`): reject completion first observed after TERM
           grace; preserve failure and protect it with a deterministic late-EOF fixture.
       - [ ] Integrate fixed admitted server launch, private socket ownership and
-        concurrent request supervision before claiming server lifecycle complete.
+        concurrent request supervision under the
+        [session context](../../context-packs/server-session-20260830.md)
+        before claiming server lifecycle complete.
 
 ## Historical design and current execution choice
 
