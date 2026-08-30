@@ -42,7 +42,7 @@ incomplete. No further reviewer or routine phase approval is required.
 - [x] Produce a root #1 acceptance map without closing it from child counts,
   and record the [durable continuation queue](./continuation-queue.md) (`3b2142f`).
 - [x] Record owner approval of prospective Option B with Option C fallback.
-- [ ] Implement the approved versioned protocol and admission gates; approval
+- [~] Implement the approved versioned protocol and admission gates; approval
   is not evidence of completed implementation or an admitted study cohort.
   - [x] Add a strict read-only prospective protocol-candidate contract and
     adversarial fixtures (`3114c01`): [evidence](./protocol-contract-20260830.md).
@@ -146,11 +146,20 @@ incomplete. No further reviewer or routine phase approval is required.
           reference and denominator validation while preserving legacy behavior.
           Follow the [native context](../../context-packs/native-protocol-20260831.md).
           [Receipt](./native-protocol-20260831.md), code `29fce7c`: agent review passed, 63 focused
-          tests at 100%, full 1,218 tests at 94.00%; hosted delivery pending.
-        - [ ] Bind a single slot's native request and condition identity before
+          tests at 100%, full 1,218 tests at 94.00%; PR #97 passed all seven
+          checks and merged as `09a9058` with exact tree parity.
+        - [~] Bind a single slot's native request and condition identity before
           orchestration, preserving fixed READY behavior and keeping primary
           execution unavailable until complete freeze/admission controls exist.
           Follow the [slot context](../../context-packs/slot-session-20260831.md).
+          - [x] Implement read-only binding with internally refreshed filesystem
+            eligibility; keep the absent primary adapter explicitly unverified.
+            Do not extract a callable primary session before freeze/admission.
+            Code `0ca2a2f`, [receipt](./slot-binding-20260831.md): 56 focused tests at 100%,
+            full 1,251 tests at 94.02%, final agent review passed.
+          - [ ] Add fail-closed pre-launch prerequisites before primary lifecycle
+            integration; reject missing adapter and incomplete component closure.
+            Follow the [gate context](../../context-packs/prelaunch-gate-20260831.md).
 
 ## Historical design and current execution choice
 

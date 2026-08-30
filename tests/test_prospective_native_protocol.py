@@ -35,6 +35,27 @@ def test_native_version_is_distinct():
     assert subject.PROTOCOL_VERSION == "2.0.0"
 
 
+def test_private_validated_view_preserves_public_api(tmp_path):
+    path, value = fixture(tmp_path)
+    parsed, candidate = subject._validated_candidate(path, pin(path))
+    assert parsed == value
+    assert candidate == subject.validate_protocol(path, pin(path))
+    assert set(candidate) == {
+        "status",
+        "protocol_sha256",
+        "study_id",
+        "expected_slots",
+        "study_unlocked",
+        "admitted",
+        "limitations",
+        "protocol_version",
+        "normalization",
+        "runner_contract_version",
+        "requests",
+        "execution_observed",
+    }
+
+
 def test_native_rejects_unchanged_legacy_declaration(tmp_path):
     path, _ = legacy_fixture(tmp_path)
     with pytest.raises(ValueError):

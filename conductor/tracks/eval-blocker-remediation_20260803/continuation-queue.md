@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `native-protocol-20260831`; reviewer class: agent.
-- Implementation base: `3305c4be6416b65c4820b29aaaa653c17564bd6a` (PR #96).
+- Run ID: `slot-session-20260831`; reviewer class: agent.
+- Implementation base: `09a9058c1d69031d2d00de18d8356903f3962d92` (PR #97).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/prospective-native-protocol`; no worktree lease is
+- Integration branch: `codex/prospective-slot-session`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -134,7 +134,7 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   `3305c4b` with exact tree parity. Post-merge conformance `33321374528` and
   Quality `33321374538` passed; local master and parent branch cleanup verified.
   No existing probe was repeated.
-- Active slice: the separately versioned
+- Delivered slice: the separately versioned
   [native protocol candidate](../../context-packs/native-protocol-20260831.md).
   Reuse reference/denominator validation without widening legacy acceptance;
   preserve false execution/admission flags and leave the legacy freeze unchanged.
@@ -143,22 +143,38 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   tests at 94.00%. See [receipt](./native-protocol-20260831.md).
   Integration `290a146` reconciled the merged parent with exact pre/post tree
   equality; documentation-only squash-ancestry conflicts retained current records.
-- Prepared successor after delivery: the
+  PR #97 passed all seven checks at `a36dcef`, merged as `09a9058` with exact
+  tree parity. Local master was fast-forwarded; post-merge conformance
+  `33321812017` and Quality `33321812059` passed. Completed parent local and
+  remote-tracking branch cleanup was verified.
+- Active slice: the
   [single-slot session adapter](../../context-packs/slot-session-20260831.md).
   Its agent-reviewed context preserves READY behavior and prevents a callable
   primary-execution path before full-component freeze and admission controls.
+  Activated as `744f850` from clean checkpoint `1c1f86f`; parent checks were
+  reverified and no overlapping writer found. The panel selected read-only
+  binding with internal fresh eligibility, not lifecycle extraction. Adapter
+  identity remains explicitly unverified. Fixture-first missing-module RED is
+  recorded in the [binding receipt](./slot-binding-20260831.md).
+  Implementation and agent review passed: 56 focused tests at 100%, full 1,251
+  tests at 94.02%. Hosted delivery remains pending.
+  The existing hourly continuation is active; no new owner decision is required.
+- Prepared successor after verified delivery: a
+  [fail-closed pre-launch gate](../../context-packs/prelaunch-gate-20260831.md),
+  rejecting absent primary adapter and incomplete component closure. Do not
+  claim gate completion from placeholders or synthetic production permits.
 - Subsequent implementation: the
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
   identities into a reviewed full-component freeze. Implement affirmative
-  admission separately. The existing protocol enum does not yet enable the new
-  decoder. Do not use READY output or candidate consistency as primary evidence.
+  admission separately. Legacy protocol modes remain unchanged; native protocol
+  2.0 candidates do not enable execution or the legacy freeze. Do not use READY
+  output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Scope ownership: the native protocol candidate, narrow shared-validator extraction,
-  matching synthetic fixtures and
+- Scope ownership: the prepared single-slot adapter, matching synthetic fixtures and
   records belong to the successor; the
-  [context pack](../../context-packs/native-protocol-20260831.md) records its
+  [context pack](../../context-packs/slot-session-20260831.md) records its
   checks and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
