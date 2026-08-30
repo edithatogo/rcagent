@@ -3,7 +3,7 @@
 Track `eval-blocker-remediation_20260803`, issue #1. Base `5b194a8` (PR #95),
 tree `e5996b18b35d7e279d7f4872971cdc1248d6c61c` equals reviewed head `4973f9b`.
 Branch `codex/prospective-runner-contract`; no lease enabled. This context is
-prepared, not proof implementation has started. No further model run is scoped.
+activated for fixture-only implementation. No further model run is scoped.
 
 ## Smallest remaining gap and reuse
 
@@ -16,14 +16,26 @@ candidate records. Main concurs; no new owner approval is needed for fixtures.
 Read the selected spec/plan/metadata, workflow/guidelines, continuation cursor,
 structured observation and `prospective_protocol`, `prospective_freeze` and
 `native_completion` contracts. Do not import unrelated historical outputs or
-private material. Reuse protocol denominator/reference checks, `GENERATION`
-values and the existing strict native decoder; do not replace these validators.
+private material. Reuse `GENERATION` values and the existing strict native
+decoder. Later integration must reuse protocol denominator/reference checks;
+do not duplicate or weaken those validators here.
 
 ## Owned paths and acceptance
 
 Own only new `tools/prospective_runner_contract.py`, its matching tests and
 linked Conductor records. Main integrates and owns records; assign bounded
 implementation and independent acceptance/privacy roles before starting.
+Assigned: `runtime_profile_tests` owns both new files, `root_acceptance_map`
+owns read-only acceptance/privacy review, main owns integration, safety and records.
+
+API boundary agreed by the panel: pure `build_request(template, input_bytes)`
+and `normalize_candidate(request, raw_body, slot_id, expected_slot_id,
+expected_model)` only. Do not read or claim compatibility with a legacy protocol.
+Literal slot equality is caller-label consistency, not denominator membership
+or input provenance. Reconstruct the full canonical request package from retained
+template/input bytes, checking its exact fields, types, hashes and bytes before
+normalizing. Leave protocol compatibility, denominator/slot provenance, request/
+response binding, model identity and execution unverified.
 
 Construct prompts from exact valid UTF-8 template/input bytes using one explicit
 insertion marker. Reject absent/duplicate markers; preserve whitespace, Unicode

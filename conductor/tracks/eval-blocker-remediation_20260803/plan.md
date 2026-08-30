@@ -129,11 +129,14 @@ incomplete. No further reviewer or routine phase approval is required.
         complete structured capture, fifteen loader images, verified cleanup;
         exact READY equality failed and is retained. Agent receipt/projection
         reviews and 1,106 full tests passed. No study admission.
-      - [ ] Implement the fixture-only primary runner and explicit prompt/
+      - [~] Implement the fixture-only primary runner and explicit prompt/
         normalization contract, then full-component freeze and affirmative
         admission-before-blinding. Do not repeat the non-study observation.
         Start with the bounded
         [pure contract context](../../context-packs/runner-contract-20260830.md).
+        - [~] Build the pure deterministic request and normalization candidate
+          API, preserving exact bytes and rejecting tampered packages. It does
+          not consume legacy protocols, execute or admit observations.
 
 ## Historical design and current execution choice
 
