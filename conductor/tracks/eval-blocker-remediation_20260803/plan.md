@@ -29,6 +29,8 @@ incomplete. No further reviewer or routine phase approval is required.
   - [x] Capture a bounded local non-study execution probe using existing
     comparator admission, with raw output and invocation provenance (`852c8d8`):
     [receipt and boundaries](./local-execution-provenance-20260830.md).
+  - [~] Implement and verify a bounded pinned Darwin runtime dependency profile
+    before using it for prospective execution; retain OS/loader limitations.
 - [~] Add synthetic positive and adversarial fixtures, including empty prose,
   header-only CSV, stale hashes and fixture-as-study-evidence rejection.
 - [~] Produce a fresh eligibility inventory; historical zero eligibility is
@@ -41,6 +43,9 @@ incomplete. No further reviewer or routine phase approval is required.
 - [x] Record owner approval of prospective Option B with Option C fallback.
 - [ ] Implement the approved versioned protocol and admission gates; approval
   is not evidence of completed implementation or an admitted study cohort.
+  - [x] Add a strict read-only prospective protocol-candidate contract and
+    adversarial fixtures (`3114c01`): [evidence](./protocol-contract-20260830.md).
+    Candidate consistency does not assert freeze or admission.
 
 ## Historical design and current execution choice
 
