@@ -60,7 +60,7 @@ both pass.
 
 ### Delivery Programme
 
-- [x] [No-LLM Implementation Programme](./tracks/no-llm-implementation-programme_20260811/index.md) — completed bounded repository programme; root portfolio and legacy evaluation remain separate
+- [x] [No-LLM Implementation Programme](./archive/no-llm-implementation-programme_20260811/index.md) — archived bounded repository programme; root portfolio and legacy evaluation remain separate
 
 ## Legacy Evaluation Study
 
