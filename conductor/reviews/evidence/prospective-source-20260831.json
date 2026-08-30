@@ -1,0 +1,132 @@
+{
+  "source_commit": "e6c1453d68b562829b99f40b925de6d287496601",
+  "protocol_sha256": "650186fd54dd832532ea995c954862026203b848bb520e8e0cae7a4af8c80628",
+  "adapter_sha256": "0c166718febbd9656f2cb713a51c414ada74ce9b5fd85e6d87b84cca8c3c12c0",
+  "closure_sha256": "d0f56b93276bd65abc14f13b3435c333f039cb678e8770e95d3661747c7eb1bd",
+  "files": [
+    {
+      "path": "evaluation/prospective/prospective-agent-text-20260830/protocol.json",
+      "sha256": "650186fd54dd832532ea995c954862026203b848bb520e8e0cae7a4af8c80628"
+    },
+    {
+      "path": "evaluation/prospective/prospective-agent-text-20260830/case-missing.md",
+      "sha256": "5d069a0e6c2f27bc00ba693777e15cf6c7d3e381a109159ac864e5fb1cd629ce"
+    },
+    {
+      "path": "evaluation/prospective/prospective-agent-text-20260830/case-conflict.md",
+      "sha256": "4f25ac17035c4672ace7fcb1dba39fb1ed756eac85dc0ccb28be66efa17fb5dc"
+    },
+    {
+      "path": "evaluation/prospective/prospective-agent-text-20260830/rubric-v1.md",
+      "sha256": "a9a3eaa4d56644b85951c0ac5f30f576a634906d02d7784b03c5dd37059713b2"
+    },
+    {
+      "path": "evaluation/prospective/prospective-agent-text-20260830/scoring-instructions.md",
+      "sha256": "637ee2ff959127668d263995b064ea3d71101f8a47f6bfc2970e593509fb8a7b"
+    },
+    {
+      "path": "evaluation/prospective/prospective-agent-text-20260830/prompt-template.md",
+      "sha256": "cbdac19fa2dae483a532bac5d6ab1d9bc7240557146f81c7d1ee2ed2e7ee6096"
+    },
+    {
+      "path": "tools/__init__.py",
+      "sha256": "16063e5c75a32458029b1999c973a92e00c282a7df7ca270d5107e31bcd9ee5c"
+    },
+    {
+      "path": "tools/prospective_execution_gate.py",
+      "sha256": "600dd38881d579ba14dc1e2b9551f38d77c64f57252ab94ec64bf3b2d02cdfd4"
+    },
+    {
+      "path": "tools/prospective_execution_identity.py",
+      "sha256": "f021984950cef86aec95cbab74b962985c21350f5c103a6e0e35c8a6bdedcae0"
+    },
+    {
+      "path": "tools/prospective_primary_session.py",
+      "sha256": "0c166718febbd9656f2cb713a51c414ada74ce9b5fd85e6d87b84cca8c3c12c0"
+    },
+    {
+      "path": "tools/prospective_study_controller.py",
+      "sha256": "05e6d0e7ef4cff578479d4588bb51924e2faf346e7b2eded7529f01ab0e7c62a"
+    },
+    {
+      "path": "tools/prospective_observation_admission.py",
+      "sha256": "ba5b6142f39d747ac659598a4872fc3a2e552ded1dcca1dfa096e7b4cec9e936"
+    },
+    {
+      "path": "tools/prospective_native_prerequisites.py",
+      "sha256": "8eb43a47e365aaa279a95cf2f3cdbd2654833b8f68570fabdfd3827f12937e79"
+    },
+    {
+      "path": "tools/prospective_freeze.py",
+      "sha256": "b3a4e7ec8c3a7c1f9f5ea005d5e243f2a2f5b786812c94d95f0c1319f7608272"
+    },
+    {
+      "path": "tools/prospective_slot_binding.py",
+      "sha256": "a8d0f544f135bfde77adefba46e83df27ef5f97bc1ca10be0ea9bd0c85903bf1"
+    },
+    {
+      "path": "tools/prospective_native_protocol.py",
+      "sha256": "69838be7e8e730554e81219952146cf40b654bf5253e5a17ea19c579eef11064"
+    },
+    {
+      "path": "tools/prospective_protocol.py",
+      "sha256": "75ea1607b314e10087e7750c934c357eaa30fa8b8467a0bf99b1f63d3ef077b8"
+    },
+    {
+      "path": "tools/prospective_runner_contract.py",
+      "sha256": "7d01ff4b2e930a7d3a412fe3ee5e9f193139628ba32190db58bb015f45702b51"
+    },
+    {
+      "path": "tools/native_completion.py",
+      "sha256": "ce689f925cb4d1a8d1a3518cafab8d09a89d25aa34e5163cb9ee6ecc8130276c"
+    },
+    {
+      "path": "tools/prospective_inventory.py",
+      "sha256": "c62073e1fa7047b895419869b39b2ce32a17102ba712eee1440894d82af7f893"
+    },
+    {
+      "path": "tools/evaluation_preflight.py",
+      "sha256": "85f579f50ca6236b57fc5e094ef19455f84b0aa80560e6c7ba5726833de064c5"
+    },
+    {
+      "path": "tools/prospective_server_model.py",
+      "sha256": "ccd415735613c85592d7f894514495dfa59446f1f95076d3e0d5d2b44f2cd13a"
+    },
+    {
+      "path": "tools/prospective_model.py",
+      "sha256": "6354ad67f005b7462368f0741acc216e10db0a06303a972b67ff365fcc671967"
+    },
+    {
+      "path": "tools/local_model_comparator.py",
+      "sha256": "429ae531533c5a90f618c3eb2f4d8f04c745c06ebf993159603710cefd25b090"
+    },
+    {
+      "path": "tools/prospective_server_session.py",
+      "sha256": "997f5d2c549af7819a1504263cd4b842351a1bdbf3c59d76284d6e57a93e9941"
+    },
+    {
+      "path": "tools/server_process.py",
+      "sha256": "a15475a09ffa1cd751ed9f28bd017540dbc209638b87c80d1e0f8bbcbda45f04"
+    },
+    {
+      "path": "tools/unix_http_capture.py",
+      "sha256": "235668e0eda6adba26f16eb2381663fcc991e292d46b38a0581c434ba6e30db7"
+    },
+    {
+      "path": "tools/darwin_server_v030.py",
+      "sha256": "419d4fb56e00f4117b637f5b31eb1961179f8b649a155e366e8db5fd53259acb"
+    },
+    {
+      "path": "tools/darwin_runtime_v030.py",
+      "sha256": "d84755db8d098393887e0fca0e67ef4d5d76bdfcacdda2a229d3138fe2605f37"
+    },
+    {
+      "path": "tools/darwin_runtime_profile.py",
+      "sha256": "c910b867fa1bb71c397fd466fe0f57931cfe1894f2b49a5752befb4d3b854998"
+    },
+    {
+      "path": "evaluation/benchmark/comparators.json",
+      "sha256": "6921d6ff0df9e41c28c59ca077c5c2ae0b84835822cb0d5d7e12eeca1d4485a5"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "role": "acceptance",
+  "reviewer_id": "root_acceptance_map",
+  "source_commit": "e6c1453d68b562829b99f40b925de6d287496601",
+  "protocol_sha256": "650186fd54dd832532ea995c954862026203b848bb520e8e0cae7a4af8c80628",
+  "closure_sha256": "d0f56b93276bd65abc14f13b3435c333f039cb678e8770e95d3661747c7eb1bd",
+  "environment_sha256": "e1cce063c824a4597baf24efed27c88605432f6319254617bf8a65fffb143caa",
+  "outcome": "pass",
+  "evidence_locator": "conductor/tracks/eval-blocker-remediation_20260803/prospective-execution-freeze-20260831.md#exact-source-panel-review",
+  "unresolved_findings": []
+}

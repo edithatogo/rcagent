@@ -1,0 +1,32 @@
+{
+  "version": "primary-review-v1",
+  "source_commit": "e6c1453d68b562829b99f40b925de6d287496601",
+  "protocol_sha256": "650186fd54dd832532ea995c954862026203b848bb520e8e0cae7a4af8c80628",
+  "adapter_sha256": "0c166718febbd9656f2cb713a51c414ada74ce9b5fd85e6d87b84cca8c3c12c0",
+  "closure_sha256": "d0f56b93276bd65abc14f13b3435c333f039cb678e8770e95d3661747c7eb1bd",
+  "environment_sha256": "e1cce063c824a4597baf24efed27c88605432f6319254617bf8a65fffb143caa",
+  "reviewers": [
+    {
+      "role": "acceptance",
+      "reviewer_id": "root_acceptance_map",
+      "outcome": "pass",
+      "evidence_path": "conductor/reviews/evidence/prospective-acceptance-20260831.json",
+      "evidence_sha256": "499a5f0e4dc599e16099c2f0d31da7fe2644e2aeff6cc7dd13d7c9b77a8cb324"
+    },
+    {
+      "role": "evidence-integrity",
+      "reviewer_id": "runtime_profile_tests",
+      "outcome": "pass",
+      "evidence_path": "conductor/reviews/evidence/prospective-evidence-integrity-20260831.json",
+      "evidence_sha256": "8d6eaaba6a903c3998d0eaa9774d579da50d2fd3abf8d90911c176946915b2f3"
+    },
+    {
+      "role": "safety-privacy",
+      "reviewer_id": "runtime_security_review",
+      "outcome": "pass",
+      "evidence_path": "conductor/reviews/evidence/prospective-safety-privacy-20260831.json",
+      "evidence_sha256": "7e6558560b13492ccaff96e12d613ae96fc0fecbc1c297f19df2eb17c94a0c9c"
+    }
+  ],
+  "unresolved_findings": []
+}

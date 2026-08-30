@@ -18,6 +18,15 @@ lane may own only those two new files. No overlapping writer or worktree lease
 is present. Full baseline validation is running before finalisation.
 Preparation is active; S/R freeze and any actual capture remain unestablished.
 
+Preparation committed as S `e6c1453`; all three exact-source panel roles passed
+with no unresolved findings, and full validation passed 1,536 tests at 94.56%.
+Actual read-only local eligibility and clean-interpreter identity passed; no
+model launched. Review records are ready for R, then a real gate preflight
+without capture. Use a normal merge to preserve S/R ancestry. The
+[current receipt](../tracks/eval-blocker-remediation_20260803/prospective-execution-freeze-20260831.md)
+records exact identities, limits and final validation. Offline custody/scoring
+and actual observations are not established by these checks.
+
 ## Ready scope and inputs
 
 Start at AGENTS and `conductor/index.md`, then the owning plan/metadata/cursor,

@@ -194,7 +194,7 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Next ready scope: implement the two-slot controller and affirmative admission
+- Completed scope: implement the two-slot controller and affirmative admission
   together under the [next context](../../context-packs/controller-admission-20260831.md).
   The panel moved actual freeze after that implementation so the complete
   execution dependencies are included. No new signing infrastructure or owner
@@ -203,7 +203,7 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   Implementation `a1e4399` and final agent-panel review passed: full 1,507 tests
   at 94.18%. [Current receipt](./controller-admission-20260831.md) retains all
   findings, fixes and exact source/test hashes. All agent file ownership is
-  released; main owns hosted delivery, which remains pending. PR #101 at
+  released; initial hosted delivery was held for repair. PR #101 at
   `0f5d562` passed Actions but failed patch coverage and received a valid
   per-receipt directory-durability P1. The repair passed agent re-review and
   125 focused tests; repair `1c33af4` passed full validation (1,532 tests,
@@ -214,6 +214,12 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   implementation. Existing hourly continuation was read back as active.
 - Current scope: prepare the actual synthetic protocol and complete
   execution freeze using the [next context](../../context-packs/prospective-execution-freeze-20260831.md).
+  Activated `4cab688`; source S `e6c1453` has four pinned protocol files and
+  four passing input tests. All three exact-source panel reviews passed;
+  full 1,536 tests passed at 94.56%. Read-only local eligibility and the clean
+  interpreter identity passed. Next: commit the actual review record R, verify
+  the real execution preflight without capture, and deliver with a normal merge
+  preserving S/R ancestry. No new owner decision is required.
   Offline custody/scoring is a separate later source/evidence boundary, not a
   reason to defer a complete unchanged execution freeze indefinitely. No actual
   model/cache eligibility, study freeze, capture, admission or scoring occurred

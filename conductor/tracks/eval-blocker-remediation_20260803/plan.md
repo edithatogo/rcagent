@@ -207,6 +207,12 @@ incomplete. No further reviewer or routine phase approval is required.
             [next context](../../context-packs/prospective-execution-freeze-20260831.md).
             Only passing fresh gates permit controller capture; later offline
             custody/scoring needs separately reviewed evidence and source closure.
+            - [x] Prepare directly pinned protocol, prompt and operative scoring
+              rules (`e6c1453`); preserve planning snapshots and existing cases.
+              [Preparation receipt](./prospective-execution-freeze-20260831.md)
+              records actual read-only eligibility and clean-interpreter checks.
+            - [~] Bind exact three-role source review R after S, run the real
+              execution preflight without capture, and verify hosted delivery.
 
 ## Historical design and current execution choice
 
