@@ -1,8 +1,10 @@
 # Context Pack: Fail-closed primary pre-launch gate
 
-Track `eval-blocker-remediation_20260803`, issue #1. Prepared after read-only
-slot binding on `codex/prospective-slot-session`. Reconcile its exact merged
-head, tree, validation and ownership before activation. No primary adapter or
+Track `eval-blocker-remediation_20260803`, issue #1. Prepared on
+`codex/prospective-prelaunch-gate` after PR #98 merged as `234360d`, tree
+`97dc4df93a9690cbad6031c59f7a9f7b1fd4ab72` matching reviewed head `24a10ca`.
+Post-merge conformance `33323914284` and Quality `33323914292` passed.
+Reconcile fresh ownership before activation. No primary adapter or
 usable execution permit exists merely because this context is prepared.
 
 ## Gap, reuse and bounded inputs
