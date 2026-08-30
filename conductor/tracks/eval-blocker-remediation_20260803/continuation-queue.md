@@ -27,6 +27,13 @@ prerequisites. Do not add a new inventory verifier or positive custody scaffold.
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
 - Integration branch: `codex/prospective-two-slot-capture`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
+  Superseded by delivered PR #103: merged `25f7f3a` with reviewed tree parity,
+  seven green checks and final 1,536-test/94.56% local validation. Completed
+  branch cleanup is verified. Prepared branch is now
+  `codex/client-mode-evidence-reconciliation`; first wait for post-merge Quality
+  `33337488195` and conformance `33337488240` (last observed queued), then
+  activate the [bounded successor](../../context-packs/client-mode-evidence-reconciliation-20260831.md).
+  Do not redo capture, preparation or completed PR delivery.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
   The original failed diagnostic is preserved. Those earlier slices generated
