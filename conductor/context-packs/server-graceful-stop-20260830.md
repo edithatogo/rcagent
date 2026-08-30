@@ -13,9 +13,11 @@ serving session. Acceptance-agent design review therefore recommends a distinct
 graceful-stop event before composing the fixed server adapter. Main concurs.
 Reuse the stdlib supervisor rather than introduce callbacks or a service manager.
 
-Owned files: `tools/server_process.py`, `tests/test_server_process.py` and linked
-track records. Assign one implementation owner and an acceptance/integrity agent;
-main owns integration and safety review. Preserve existing default/cancel behaviour.
+Owned files: main owns `tools/server_process.py` and linked track records;
+`runtime_profile_tests` owns `tests/test_server_process_stop.py` and fixture review;
+`root_acceptance_map` owns read-only acceptance/integrity review. Existing
+`tests/test_server_process.py` remains the default/cancel regression contract.
+Main also owns integration and safety review.
 
 ## Required contract and fixtures
 

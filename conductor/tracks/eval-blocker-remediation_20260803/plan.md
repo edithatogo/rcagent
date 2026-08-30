@@ -101,9 +101,12 @@ incomplete. No further reviewer or routine phase approval is required.
         [evidence](./server-process-lifecycle-20260830.md): 1,022 tests, 93.71%
         coverage and agent-panel review passed. It does not select/admit real
         server arguments or implement socket/session probing.
-      - [~] Add distinct graceful-stop/final-drain semantics under the
+      - [x] Add distinct graceful-stop/final-drain semantics (`3d4f109`) under the
         [next context](../../context-packs/server-graceful-stop-20260830.md);
-        cancellation does not preserve complete shutdown logs.
+        [evidence](./server-graceful-stop-20260830.md): 1,050 tests, 93.77%
+        coverage and final agent review passed. Cancellation remains separate.
+        - [x] Review fix (`3d4f109`): reject completion first observed after TERM
+          grace; preserve failure and protect it with a deterministic late-EOF fixture.
       - [ ] Integrate fixed admitted server launch, private socket ownership and
         concurrent request supervision before claiming server lifecycle complete.
 

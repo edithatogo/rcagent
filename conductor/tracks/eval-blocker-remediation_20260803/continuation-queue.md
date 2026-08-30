@@ -89,13 +89,15 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   at `1696db1`, merged as `8acbd61` at 2026-08-30T12:56:32Z with exact tree parity.
   Local master was fast-forwarded and completed branch cleanup verified.
   Post-merge conformance `33312827938` and Quality `33312827893` passed.
-  The successor branch contains context and
-  delivery records only; graceful-stop implementation has not begun.
+  The successor preserves the reviewed default capture contract.
   Only the direct child is supervised; no descendant containment, real server
   launch, socket/session lifecycle or runtime/study admission is claimed.
-- Next implementation: add a distinct bounded graceful-stop-and-final-drain path;
-  cancellation currently stops capture and cannot prove complete shutdown logs.
-  Then integrate fixed admitted server launch, private socket
+- Implemented slice: [graceful stop and final drain](./server-graceful-stop-20260830.md)
+  (`3d4f109`), with 28 new tests / 78 supervisor tests, 99.24% module coverage,
+  native/Windows type checks and final agent-panel review. Full validation passed
+  1,050 tests at 93.77% coverage. A late-EOF completion-ordering gap was fixed
+  and regression-tested. Hosted CI and merge are pending. No real model ran.
+- Next implementation: integrate fixed admitted server launch, private socket
   ownership and concurrent request supervision, then a structured non-study probe and
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
