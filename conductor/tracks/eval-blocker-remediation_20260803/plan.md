@@ -29,8 +29,9 @@ incomplete. No further reviewer or routine phase approval is required.
   - [x] Capture a bounded local non-study execution probe using existing
     comparator admission, with raw output and invocation provenance (`852c8d8`):
     [receipt and boundaries](./local-execution-provenance-20260830.md).
-  - [~] Implement and verify a bounded pinned Darwin runtime dependency profile
-    before using it for prospective execution; retain OS/loader limitations.
+  - [x] Implement and verify a bounded pinned Darwin runtime dependency profile
+    (`478f799`): [evidence](./runtime-profile-implementation-20260830.md).
+    Retain OS/loader limitations; non-study success does not admit a study.
 - [~] Add synthetic positive and adversarial fixtures, including empty prose,
   header-only CSV, stale hashes and fixture-as-study-evidence rejection.
 - [~] Produce a fresh eligibility inventory; historical zero eligibility is
