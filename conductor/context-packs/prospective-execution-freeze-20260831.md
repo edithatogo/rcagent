@@ -5,6 +5,34 @@ Do not activate until the controller/admission implementation has final agent
 review, full validation and verified hosted delivery. Preparation is not freeze,
 execution, custody, scoring or completion evidence.
 
+Readiness checkpoint: PR #101 merged as `4d621e6` with reviewed tree parity,
+all seven checks and both post-merge workflows passed. Local master and parent
+branch cleanup were verified. Branch `codex/prospective-execution-freeze` is
+prepared; activate the plan task before creating final protocol artefacts.
+
+Activated from clean checkpoint `95b418f` on the prepared branch after fresh
+verification of PR #101 and both post-merge workflows. Main owns protocol,
+prompt, exact-condition verification and integration records. Agent lanes
+review acceptance and safety/privacy read-only; a bounded rubric/instructions
+lane may own only those two new files. No overlapping writer or worktree lease
+is present. Full baseline validation is running before finalisation.
+Preparation is active; S/R freeze and any actual capture remain unestablished.
+
+Preparation committed as S `e6c1453`; all three exact-source panel roles passed
+with no unresolved findings, and full validation passed 1,536 tests at 94.56%.
+Actual read-only local eligibility and clean-interpreter identity passed; no
+model launched. Review records are ready for R, then a real gate preflight
+without capture. Use a normal merge to preserve S/R ancestry. The
+[current receipt](../tracks/eval-blocker-remediation_20260803/prospective-execution-freeze-20260831.md)
+records exact identities, limits and final validation. Offline custody/scoring
+and actual observations are not established by these checks.
+
+R committed as `cd09dba`; both actual execution preflights passed against the
+exact S/R and environment without model launch. Freeze delivery remains pending.
+After hosted checks and a normal merge preserve S/R, use the reviewed
+[capture context](./prospective-capture-20260831.md). Do not repeat completed
+preparation or treat execution permission as an observation.
+
 ## Ready scope and inputs
 
 Start at AGENTS and `conductor/index.md`, then the owning plan/metadata/cursor,
@@ -23,6 +51,24 @@ No private clinical or employee data, human-comparator labels or operational
 approval claims may enter the new protocol.
 
 ## Freeze and execution boundary
+
+Read-only successor review found no demonstrated need for more execution-code
+engineering before S/R. Add `protocol.json`, `prompt-template.md`, `rubric-v1.md`
+and `scoring-instructions.md` beside the existing prospective planning files.
+Preserve `manifest.json`, `rubric-plan.md` and inventory as planning snapshots.
+The prompt has exactly one `{{INPUT}}` placeholder. Panel-review the existing
+two synthetic case files for reuse without silently changing their bytes.
+The protocol-pinned rubric and scoring-instructions files must contain every
+operative scoring rule. Links or hashes embedded inside them are not
+transitively validated; the planning link does not freeze its target.
+Specify metadata blinding, three sealed agent submissions, adjudication,
+agreement/undefined-result handling and the controller's stricter no-retry rule.
+
+There is no circular S/R hash requirement: the protocol pins the adapter file,
+not S/R. S contains the protocol, references and complete execution closure;
+later R adds actual three-role review records while preserving those files.
+Use the gate's exact path ordering for closure hashes. This readiness review
+did not inspect model/cache eligibility or establish a freeze.
 
 Reconcile the existing approved local model/runtime artefacts and bounded
 clean-interpreter identity against their exact rights and hash requirements.

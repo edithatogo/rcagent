@@ -200,13 +200,24 @@ incomplete. No further reviewer or routine phase approval is required.
             - [x] Hosted review fixes (`1c33af4`): sync each raw receipt directory entry
               before completion or the next slot; add rejection-path coverage
               without reducing the 90% patch target. Agent re-review and 125
-              focused tests pass; full 1,532 tests at 94.56%. New hosted checks
-              remain pending; do not infer delivery from this local result.
-          - [ ] Prepare the actual synthetic protocol/inputs/rubric and complete
+              focused tests pass; full 1,532 tests at 94.56%. PR #101 passed all
+              seven checks at `1618d91`, merged as `4d621e6` with exact tree parity.
+          - [~] Prepare the actual synthetic protocol/inputs/rubric and complete
             execution S/R freeze under the
             [next context](../../context-packs/prospective-execution-freeze-20260831.md).
             Only passing fresh gates permit controller capture; later offline
             custody/scoring needs separately reviewed evidence and source closure.
+            - [x] Prepare directly pinned protocol, prompt and operative scoring
+              rules (`e6c1453`); preserve planning snapshots and existing cases.
+              [Preparation receipt](./prospective-execution-freeze-20260831.md)
+              records actual read-only eligibility and clean-interpreter checks.
+            - [x] Bind exact three-role source review R `cd09dba` after S
+              `e6c1453`; both real execution preflights passed without capture.
+              Full validation: 1,536 tests, 94.56%; actual admission remains false.
+            - [~] Verify hosted delivery with a normal merge retaining S/R.
+          - [ ] Execute the frozen two-slot capture under the
+            [capture context](../../context-packs/prospective-capture-20260831.md)
+            only after verified freeze delivery; preserve consumed attempts.
 
 ## Historical design and current execution choice
 

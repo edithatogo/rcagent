@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "kind": "prospective-study-protocol",
+  "protocol_version": "2.0.0",
+  "study_id": "prospective-agent-text-20260830",
+  "data_class": "synthetic",
+  "case_exposure": "public",
+  "held_out": false,
+  "claims_boundary": "research-only-public-two-case-one-condition-no-comparative-or-operational-claims",
+  "repeats": 1,
+  "cases": [
+    {"id": "case-missing", "input": {"path": "case-missing.md", "sha256": "5d069a0e6c2f27bc00ba693777e15cf6c7d3e381a109159ac864e5fb1cd629ce"}},
+    {"id": "case-conflict", "input": {"path": "case-conflict.md", "sha256": "4f25ac17035c4672ace7fcb1dba39fb1ed756eac85dc0ccb28be66efa17fb5dc"}}
+  ],
+  "condition": {
+    "id": "condition-local-text",
+    "model_id": "qwen2.5-0.5b-instruct-q4_k_m",
+    "model_revision": "9217f5db79a29953eb74d5343926648285ec7e67",
+    "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+    "runtime_sha256": "07c17ec087076d582147208beadba5cbe534ae6e5015658e6f4c96d9457232f6",
+    "profile_sha256": "c5bdd37eb8391baedd191c482996210ebdfbd43888ab8afb578092fafd8896c1",
+    "adapter_sha256": "0c166718febbd9656f2cb713a51c414ada74ce9b5fd85e6d87b84cca8c3c12c0",
+    "registry_sha256": "6921d6ff0df9e41c28c59ca077c5c2ae0b84835822cb0d5d7e12eeca1d4485a5"
+  },
+  "expected_slots": ["case-missing__condition-local-text__r1", "case-conflict__condition-local-text__r1"],
+  "rubric": {"path": "rubric-v1.md", "sha256": "a9a3eaa4d56644b85951c0ac5f30f576a634906d02d7784b03c5dd37059713b2"},
+  "scoring_instructions": {"path": "scoring-instructions.md", "sha256": "637ee2ff959127668d263995b064ea3d71101f8a47f6bfc2970e593509fb8a7b"},
+  "prompt_template": {"path": "prompt-template.md", "sha256": "cbdac19fa2dae483a532bac5d6ab1d9bc7240557146f81c7d1ee2ed2e7ee6096"},
+  "generation": {"seed": 42, "temperature": 0, "max_tokens": 512, "context_tokens": 2048, "timeout_seconds": 120},
+  "technical_retries": 1,
+  "blinding": "metadata-blinding-v1",
+  "normalization": "llama-native-json-v1",
+  "runner_contract_version": "native-runner-candidate-v1",
+  "scoring": {
+    "reviewer_class": "agent",
+    "roles": ["scorer-1", "scorer-2", "scorer-3"],
+    "adjudication": "after-three-sealed-submissions",
+    "raw_agreement_minimum": 0.80,
+    "ordinal_agreement_minimum": 0.67,
+    "hard_gates": ["privacy", "cultural-safety", "clinical-safety", "authority-boundaries"],
+    "non_operational": true
+  }
+}

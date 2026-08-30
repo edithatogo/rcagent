@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `controller-admission-20260831`; reviewer class: agent.
-- Implementation base: `135881d42b50a710744ff353c317af80316c8935` (PR #100).
+- Run ID: `prospective-execution-freeze-20260831`; reviewer class: agent.
+- Implementation base: `4d621e6427b7024012f631a77f197ac117690f26` (PR #101).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/prospective-controller-admission`; no worktree lease is
+- Integration branch: `codex/prospective-execution-freeze`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -194,7 +194,7 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Next ready scope: implement the two-slot controller and affirmative admission
+- Completed scope: implement the two-slot controller and affirmative admission
   together under the [next context](../../context-packs/controller-admission-20260831.md).
   The panel moved actual freeze after that implementation so the complete
   execution dependencies are included. No new signing infrastructure or owner
@@ -203,21 +203,32 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   Implementation `a1e4399` and final agent-panel review passed: full 1,507 tests
   at 94.18%. [Current receipt](./controller-admission-20260831.md) retains all
   findings, fixes and exact source/test hashes. All agent file ownership is
-  released; main owns hosted delivery, which remains pending. PR #101 at
+  released; initial hosted delivery was held for repair. PR #101 at
   `0f5d562` passed Actions but failed patch coverage and received a valid
   per-receipt directory-durability P1. The repair passed agent re-review and
   125 focused tests; repair `1c33af4` passed full validation (1,532 tests,
-  94.56%). Next: push the repair and verify all new exact-head checks before
-  merge. Do not duplicate
-  completed implementation. Existing hourly continuation remains active.
-- After verified delivery, prepare the actual synthetic protocol and complete
+  94.56%). All seven checks passed at `1618d91`; PR #101 merged as `4d621e6`
+  with exact tree parity. Post-merge conformance `33333964501` and Quality
+  `33333964444` passed; local master and completed-branch cleanup were verified.
+  The successor was activated from clean checkpoint `95b418f`. Do not duplicate completed
+  implementation. Existing hourly continuation was read back as active.
+- Current scope: prepare the actual synthetic protocol and complete
   execution freeze using the [next context](../../context-packs/prospective-execution-freeze-20260831.md).
+  Activated `4cab688`; source S `e6c1453` has four pinned protocol files and
+  four passing input tests. All three exact-source panel reviews passed;
+  full 1,536 tests passed at 94.56%. Read-only local eligibility and the clean
+  interpreter identity passed. R `cd09dba` and both real execution preflights
+  passed without capture. Next: verify hosted delivery with a normal merge
+  preserving S/R ancestry, then activate the reviewed
+  [capture context](../../context-packs/prospective-capture-20260831.md).
+  No new owner decision is required.
   Offline custody/scoring is a separate later source/evidence boundary, not a
   reason to defer a complete unchanged execution freeze indefinitely. No actual
   model/cache eligibility, study freeze, capture, admission or scoring occurred
   in the controller implementation slice.
-- No unresolved owner decision for local implementation of this queue. The study execution gate is
-  unfinished implementation and evidence, not missing reviewer approval.
+- No unresolved owner decision for local implementation of this queue.
+  Remaining capture/admission and custody/scoring gates need their own evidence;
+  there is no reviewer-approval gap.
 
 ## Dependency-ordered delivery
 

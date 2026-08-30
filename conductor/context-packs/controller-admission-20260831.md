@@ -107,7 +107,9 @@ Hosted PR #101 repair supersedes the initial local review: the hosted agent
 found a per-receipt directory-sync P1, and patch coverage was below target.
 The narrow durability fix and 25 rejection cases passed agent re-review and
 125 focused tests. Repair `1c33af4` passed full validation (1,532 tests, 94.56%);
-new exact-head hosted delivery is pending. Identities and the missed finding are retained in the
+PR #101 then passed all seven checks at `1618d91` and merged as `4d621e6` with
+exact tree parity. Post-merge conformance and Quality passed; completed-branch
+cleanup was verified. Identities and the missed finding are retained in the
 track receipt. All implementation lanes released ownership to main.
 
 Add the controller/admission source identities to the reviewed execution
