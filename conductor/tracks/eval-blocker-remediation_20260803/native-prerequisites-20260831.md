@@ -38,7 +38,19 @@ A separate fresh coverage run passed 34 native tests in 62.18 seconds with
 artifact was discarded; it is not evidence. Ruff and native/Windows type checks
 passed. Full `uv run python -m tools.full_validation` passed: 1,286 tests in
 146.72 seconds, 94.05% coverage, plus lint, types, governance and regression
-checks. Code commit `f2f76d0`. Hosted delivery remains pending.
+checks. Code commit `f2f76d0`.
+
+## Hosted delivery
+
+PR [#99](https://github.com/edithatogo/rcagent/pull/99) passed all seven checks
+at exact head `74a995eb75b87a3fd7ca669a38c53153d09465c8` and merged on
+2026-08-30 at 18:02:00Z as `acd251d19c4814f9f1b93a1cf3acf3718443e3dd`.
+Reviewed and merged trees both equal `aa73b1e3e7706e66adbcc947897d6fdc1d766d8c`.
+Local master fast-forwarded; remote completed branch absence was checked before
+removing its local ref (recoverable from reviewed commit and PR). Successor
+`codex/primary-session-gate` starts from the merged commit. Post-merge
+conformance `33326897765` and Quality `33326897749` both passed on the exact
+merged commit. Root issue #1 remains open. No owning-track archive is justified.
 Positive fixtures use generated temporary Git repositories; bounded Git subprocesses are not model
 execution. No actual model cache eligibility, model/runtime probe, raw historical
 data read, receipt admission, blinding or scoring is performed.

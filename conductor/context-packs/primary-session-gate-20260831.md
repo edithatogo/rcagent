@@ -3,6 +3,11 @@
 Track `eval-blocker-remediation_20260803`, issue #1. Prepared after the committed
 native prerequisite slice; reconcile its delivery receipt and current Git/CI
 before activation. This preparation is not a study freeze or execution permit.
+PR #99 merged as `acd251d` with reviewed-tree parity; successor branch
+`codex/primary-session-gate` starts there. Main and the implementation agent
+have begun the design checkpoint only; no successor code or model operation
+has started. Post-merge conformance `33326897765` and Quality `33326897749`
+passed; local master and completed branch cleanup were verified.
 
 ## Selected next implementation
 
@@ -43,6 +48,52 @@ record trust boundary before extracting lifecycle behavior. Gate requirements:
   from an established trusted record. A caller JSON receipt, boolean or schema
   match alone proves neither review provenance nor execution permission.
 - Review record outside the frozen source commit to avoid circular self-hashes.
+
+### Recorded panel recommendation
+
+The implementation agent proposed a signed review policy and new trust key.
+Main and acceptance rejected that unnecessary infrastructure/authority expansion
+under the standing decisions. No owner decision is outstanding for this design.
+Use the existing trusted, owner-controlled repository delivery workflow:
+
+1. Integration records actual panel findings, reviewer task/message evidence
+   locators, reviewed scope, dispositions and unresolved findings.
+2. Source commit S contains the real adapter and complete declared dependency
+   closure. A later review commit R contains the fixed-path review record,
+   referring to S and exact protocol, adapter and closure hashes.
+3. Select immutable R through the reviewed delivery workflow. The gate reads
+   the record from R with sanitized Git, verifies S ancestry, closure-source
+   parity between S/R/working bytes, all referenced hashes and resolved hard
+   gates, then obtains fresh internal model eligibility.
+4. Do not demand whole-tree S/R parity: the review record necessarily differs.
+   Do not accept caller receipt dictionaries, booleans or arbitrary review paths.
+
+The trust root is the established repository workflow and actual recorded panel
+evidence, not schema conformance. This verifies integrity of a trusted review
+record, not cryptographic reviewer identity, agent independence or protection
+against a malicious repository owner. Preserve same-user mutation and loaded-code
+limitations. Do not invent actual review evidence for synthetic test fixtures.
+
+Proposed sole public entry is `run_primary(protocol_path, pin, slot_id,
+review_commit, root, model_root, receipt)`. Resolve S from the committed review
+record at R; bind a private immutable gate plan. Do not expose requests, argv,
+environment, callbacks, eligibility receipts or bypasses. Recheck identities
+immediately before reservation; two checks narrow races but do not prove atomicity.
+Extract only shared private lifecycle internals; preserve READY wrapper constants.
+
+Candidate project closure includes gate/primary session, prerequisite/freeze,
+binder, native/prospective protocol, runner/decoder, inventory/preflight,
+server/model/profile/runtime helpers, comparator, process/transport and package
+initialiser, plus exact registry and protocol references. Verify the actual import
+closure rather than copying this candidate list blindly. Separately enumerate
+supported interpreter, installed validator dependency files and runtime/model/
+licence identities; do not claim OS or in-memory-code attestation from file hashes.
+Resolve the supported loaded-identity boundary honestly before activation.
+
+Adversarial fixtures must cover review replay/tampering, dependency drift,
+gate-to-reservation changes and every failed prerequisite preventing lifecycle,
+then exact request selection, synthetic failure cleanup and legacy READY parity.
+No always-failing placeholder is an acceptable completed gate.
 
 The existing prerequisite checker deliberately cannot attest loaded code or
 complete dependency closure. Resolve those boundaries explicitly; never promote

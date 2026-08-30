@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `prelaunch-gate-20260831`; reviewer class: agent.
-- Implementation base: `234360de763515776ba50ea4542543b1004f712f` (PR #98).
+- Run ID: `primary-session-gate-20260831`; reviewer class: agent.
+- Implementation base: `acd251d19c4814f9f1b93a1cf3acf3718443e3dd` (PR #99).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/prospective-prelaunch-gate`; no worktree lease is
+- Integration branch: `codex/primary-session-gate`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -172,7 +172,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   [prerequisite receipt](./native-prerequisites-20260831.md). Full closure,
   primary adapter, agent-review binding and execution permission remain pending.
   Code `f2f76d0` passed agent review, 65 focused tests, native coverage 100%,
-  and full validation (1,286 tests, 94.05%). Hosted delivery is pending.
+  and full validation (1,286 tests, 94.05%). PR #99 passed all seven checks at
+  `74a995e` and merged as `acd251d` with exact tree parity. Completed branch
+  cleanup verified; post-merge conformance `33326897765` and Quality
+  `33326897749` passed on the merged commit.
 - Subsequent implementation: the
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
@@ -185,8 +188,12 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 - Next ready scope: implement the guarded single-slot primary adapter and full
   gate together, after defining complete dependency closure and trusted review
   provenance. The [next context](../../context-packs/primary-session-gate-20260831.md)
-  records panel recommendations and boundaries. Finish current hosted delivery
-  before activating the next slice; preserve overlapping active work.
+  records panel recommendations and boundaries. Hosted delivery is complete;
+  next design checkpoint selected trusted repository review commit R after source
+  commit S, with exact closure parity and actual panel evidence; no new signing
+  infrastructure or owner approval is needed. No successor source edits yet.
+  Resume by reading that recorded design, verifying ownership and implementing
+  the guarded adapter/gate together. Existing hourly continuation remains active.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
 

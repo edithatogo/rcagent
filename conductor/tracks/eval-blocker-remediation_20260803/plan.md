@@ -166,6 +166,8 @@ incomplete. No further reviewer or routine phase approval is required.
               closure, review, eligibility and execution permission pending.
               Code `f2f76d0`, [receipt](./native-prerequisites-20260831.md): agent review passed,
               65 focused tests, native coverage 100%, full 1,286 tests at 94.05%.
+              PR #99 passed all seven checks and merged as `acd251d` with exact
+              tree parity; both post-merge workflows passed.
               - [x] Review fix (`f2f76d0`): reject outside-root and parent-traversal protocol
                 paths before parsing, with no-read regression fixtures.
             - [ ] Implement guarded single-slot primary adapter and full prelaunch
