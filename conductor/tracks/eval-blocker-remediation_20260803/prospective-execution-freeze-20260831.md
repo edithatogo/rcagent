@@ -144,6 +144,12 @@ passed acceptance review and fixes one canonical private evidence root, no
 retry, failure retention and separate trusted custody/scoring gates. No actual
 capture root or journal was created here.
 
+Final delivery review verified the retained preflight hash, both slot states,
+S/R ancestry and unchanged execution bytes. It found one stale cursor sentence
+calling the execution gate unfinished; that wording was corrected to identify
+the remaining capture/admission and custody/scoring evidence instead. No code,
+protocol or review-bound bytes changed.
+
 Only a passing exact S/R execution gate may precede controller capture. Capture
 must use one canonical private evidence root, preserve consumed attempts and
 all failures, and never retry via another root. No study run, observation

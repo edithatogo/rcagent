@@ -226,8 +226,9 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   reason to defer a complete unchanged execution freeze indefinitely. No actual
   model/cache eligibility, study freeze, capture, admission or scoring occurred
   in the controller implementation slice.
-- No unresolved owner decision for local implementation of this queue. The study execution gate is
-  unfinished implementation and evidence, not missing reviewer approval.
+- No unresolved owner decision for local implementation of this queue.
+  Remaining capture/admission and custody/scoring gates need their own evidence;
+  there is no reviewer-approval gap.
 
 ## Dependency-ordered delivery
 
