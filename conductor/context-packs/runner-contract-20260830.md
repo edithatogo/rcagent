@@ -37,8 +37,8 @@ template/input bytes, checking its exact fields, types, hashes and bytes before
 normalizing. Leave protocol compatibility, denominator/slot provenance, request/
 response binding, model identity and execution unverified.
 
-Construct prompts from exact valid UTF-8 template/input bytes using one explicit
-insertion marker. Reject absent/duplicate markers; preserve whitespace, Unicode
+Construct prompts from exact valid UTF-8 template/input bytes using one fixed
+`{{INPUT}}` insertion marker. Reject absent/duplicate markers; preserve whitespace, Unicode
 and input markers literally, without trimming or recursive substitution.
 Construct canonical non-stream native request bytes using existing fixed
 generation values. Retain template, input, prompt and request hashes.

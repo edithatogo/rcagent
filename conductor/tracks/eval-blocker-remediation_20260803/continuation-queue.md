@@ -125,9 +125,16 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   2026-08-30T15:23:55Z with exact tree parity; local master and completed
   local/remote branch cleanup were verified. Post-merge Quality `33319523276`
   and conformance `33319523348` passed. Do not rerun the probe.
-- Immediate next slice: [fixture-only runner contract](../../context-packs/runner-contract-20260830.md),
+- Implemented slice: [fixture-only runner contract](../../context-packs/runner-contract-20260830.md),
   with deterministic prompt/request bytes, native normalization and slot identity;
-  no launch, freeze or admission. Context prepared; implementation not begun.
+  no launch, freeze or admission. Activated as `104cc1a`; fixture-first missing
+  module failure is recorded in the [implementation receipt](./runner-contract-20260830.md).
+  Code `ec2b63e` passed agent review, 85 focused tests at 100% and 1,191 full
+  tests at 93.98%. Hosted delivery remains pending. No existing probe was repeated.
+- Immediate next slice after delivery: the separately versioned
+  [native protocol candidate](../../context-packs/native-protocol-20260831.md).
+  Reuse reference/denominator validation without widening legacy acceptance;
+  preserve false execution/admission flags and leave the legacy freeze unchanged.
 - Subsequent implementation: the
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric

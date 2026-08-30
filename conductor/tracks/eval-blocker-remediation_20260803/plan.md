@@ -134,9 +134,17 @@ incomplete. No further reviewer or routine phase approval is required.
         admission-before-blinding. Do not repeat the non-study observation.
         Start with the bounded
         [pure contract context](../../context-packs/runner-contract-20260830.md).
-        - [~] Build the pure deterministic request and normalization candidate
+        - [x] Build the pure deterministic request and normalization candidate
           API, preserving exact bytes and rejecting tampered packages. It does
-          not consume legacy protocols, execute or admit observations.
+          not consume legacy protocols, execute or admit observations. Code
+          `ec2b63e`: agent review passed; 85 focused tests at 100% and 1,191
+          full tests at 93.98%. See [receipt](./runner-contract-20260830.md).
+          - [x] Review fix (`ec2b63e`): reject malformed/oversized request-package fields
+            without serializing arbitrary incoming structures; retain exact
+            type checks and reject an empty final prompt.
+        - [ ] Add a separately versioned native protocol candidate, reusing
+          reference and denominator validation while preserving legacy behavior.
+          Follow the [native context](../../context-packs/native-protocol-20260831.md).
 
 ## Historical design and current execution choice
 
