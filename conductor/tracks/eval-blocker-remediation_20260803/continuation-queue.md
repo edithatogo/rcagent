@@ -68,6 +68,15 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   941 tests at 93.54% coverage and both Windows-targeted type checkers; agent
   re-review passed. Reconcile PR #88's exact hosted/merge state on resume;
   do not repeat diagnostics without a distinct new purpose.
+  Follow-up: Windows run `33304040763` was cancelled after a >70-minute test/log
+  stall. Logs revealed an oversized pytest parameter ID exceeding Windows'
+  environment limit (900 passed, 41 skipped, one error). Test-only repair
+  `fc1ca0f` gives bounded IDs and a portable collection regression. Reconcile
+  the new PR head; do not reuse `5a782e5` as a passing head.
+  Preserve downstream branch `codex/server-model-eligibility` at `062b776`,
+  already pushed with its separate helper and 971-test receipt. After PR #88
+  passes and merges, integrate the parent fix into that branch without dropping
+  its unique commits, then deliver its new slice before lifecycle implementation.
 - Next implementation: implement bounded child-process lifecycle and the
   server-specific model/runtime overlay, then a structured non-study probe and
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.

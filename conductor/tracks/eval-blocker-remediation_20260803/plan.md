@@ -82,6 +82,10 @@ incomplete. No further reviewer or routine phase approval is required.
       - [x] Hosted review fixes (`348eca9`): make Unix-only capability references portable
         to Windows type checking and remove timing dependence from the
         partial-body retention fixture, preserving the live trickle deadline test.
+      - [x] Windows collection repair (`fc1ca0f`): use bounded parameter IDs
+        while retaining oversized request/deadline values; add a portable
+        collect-only regression. Both agent reviews passed; full and hosted
+        validation are recorded in the server evidence receipt.
 
 ## Historical design and current execution choice
 
