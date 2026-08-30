@@ -70,6 +70,22 @@ incomplete. No further reviewer or routine phase approval is required.
       at 100%. Server entrypoint, runner, transport, protocol mode integration
       and actual study admission remain pending under the
       [bounded context](../../context-packs/structured-completion-20260830.md).
+    - [x] Verify a separate server-entrypoint profile and implement bounded
+      Unix-socket HTTP capture (`d14c81b`):
+      [evidence](./server-capture-20260830.md), 940 tests and 93.53% coverage;
+      actual version/help diagnostics verified all 15 loaded-image pins under the
+      [server context](../../context-packs/server-capture-20260830.md).
+      Child-process lifecycle and model probe remain separate pending work.
+      - [x] Review fixes (`d14c81b`): reject parent traversal before platform path
+        normalisation and handle arbitrarily large deadlines before connection;
+        retain explicit malformed-header rejection and regression fixtures.
+      - [x] Hosted review fixes (`348eca9`): make Unix-only capability references portable
+        to Windows type checking and remove timing dependence from the
+        partial-body retention fixture, preserving the live trickle deadline test.
+      - [x] Windows collection repair (`fc1ca0f`): use bounded parameter IDs
+        while retaining oversized request/deadline values; add a portable
+        collect-only regression. Both agent reviews passed; full and hosted
+        validation are recorded in the server evidence receipt.
 
 ## Historical design and current execution choice
 

@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `structured-completion-20260830`; reviewer class: agent.
-- Implementation base: `0e0e66bda07e7344a7755cb261e01a1b84c9c36a`.
+- Run ID: `server-capture-20260830`; reviewer class: agent.
+- Implementation base: `19747637b248b82b4522551caf44fab7c87469ba`.
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/structured-completion-contract`; no worktree lease is
+- Integration branch: `codex/server-capture-foundation`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -46,25 +46,49 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   as `0e0e66b` with exact tree parity, and both post-merge workflows succeeded
   (33301407812 and 33301407802). Completed branch cleanup was verified.
   Do not repeat the probe without a distinct new evidentiary purpose.
-- Current slice: [structured completion contract](./structured-completion-20260830.md).
+- Completed slice: [structured completion contract](./structured-completion-20260830.md).
   Exact upstream source and agent-panel review show irreversible CLI newline
   changes and missing completion-status evidence. Do not implement wrapper
   stripping or use the output-file path as byte-preserving evidence.
   A read-only native JSON decoder passed both agent reviews and full validation
   (871 tests, 93.38% coverage; decoder 95 tests at 100%). It does not verify
   transport, runtime identity, request binding, freeze or admission.
-- Next implementation: separately verify the installed server entrypoint and
-  dependency/licence closure, implement bounded loopback transport/process
-  lifecycle controls and a structured non-study probe, then the study runner.
+  PR #87 passed all seven checks at `eea531a`, merged as `1974763` with exact
+  tree parity, and both post-merge workflows passed (33302547251, 33302547218).
+  Completed local/remote-tracking branch cleanup was verified; master was clean.
+- Current slice: [separate server profile and Unix-socket capture](./server-capture-20260830.md).
+  The server executable is distinct from the CLI; its profile retains exact
+  dependency/licence/source pins. The transport uses only a private Unix socket,
+  strict bounded HTTP framing and an absolute I/O deadline. Fixture results do
+  not prove a real model server or its process/egress lifecycle.
+  Code `d14c81b` passed 940 tests (93.53% coverage); both new modules have full
+  statement/branch coverage. Version/help diagnostics then passed with all 15
+  image pins and unchanged pre/post identity. Local receipts are linked in the
+  evidence record. CI portability/timing repair `348eca9` subsequently passed
+  941 tests at 93.54% coverage and both Windows-targeted type checkers; agent
+  re-review passed. Reconcile PR #88's exact hosted/merge state on resume;
+  do not repeat diagnostics without a distinct new purpose.
+  Follow-up: Windows run `33304040763` was cancelled after a >70-minute test/log
+  stall. Logs revealed an oversized pytest parameter ID exceeding Windows'
+  environment limit (900 passed, 41 skipped, one error). Test-only repair
+  `fc1ca0f` gives bounded IDs and a portable collection regression. Reconcile
+  the new PR head; do not reuse `5a782e5` as a passing head.
+  Preserve downstream branch `codex/server-model-eligibility` at `062b776`,
+  already pushed with its separate helper and 971-test receipt. After PR #88
+  passes and merges, integrate the parent fix into that branch without dropping
+  its unique commits, then deliver its new slice before lifecycle implementation.
+- Next implementation: implement bounded child-process lifecycle and the
+  server-specific model/runtime overlay, then a structured non-study probe and
+  primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
   identities into a reviewed full-component freeze. Implement affirmative
   admission separately. The existing protocol enum does not yet enable the new
   decoder. Do not use READY output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Scope ownership: the native completion decoder, its tests and
+- Scope ownership: the server profile, Unix-socket transport, their tests and
   linked records belong to this slice; the
-  [context pack](../../context-packs/structured-completion-20260830.md) records its
+  [context pack](../../context-packs/server-capture-20260830.md) records its
   checks and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
