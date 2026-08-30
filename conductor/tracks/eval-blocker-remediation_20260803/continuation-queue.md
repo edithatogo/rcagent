@@ -210,9 +210,9 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   94.56%). All seven checks passed at `1618d91`; PR #101 merged as `4d621e6`
   with exact tree parity. Post-merge conformance `33333964501` and Quality
   `33333964444` passed; local master and completed-branch cleanup were verified.
-  The successor is ready for activation. Do not duplicate completed
+  The successor was activated from clean checkpoint `95b418f`. Do not duplicate completed
   implementation. Existing hourly continuation was read back as active.
-- After verified delivery, prepare the actual synthetic protocol and complete
+- Current scope: prepare the actual synthetic protocol and complete
   execution freeze using the [next context](../../context-packs/prospective-execution-freeze-20260831.md).
   Offline custody/scoring is a separate later source/evidence boundary, not a
   reason to defer a complete unchanged execution freeze indefinitely. No actual

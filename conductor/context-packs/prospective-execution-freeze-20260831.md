@@ -10,6 +10,14 @@ all seven checks and both post-merge workflows passed. Local master and parent
 branch cleanup were verified. Branch `codex/prospective-execution-freeze` is
 prepared; activate the plan task before creating final protocol artefacts.
 
+Activated from clean checkpoint `95b418f` on the prepared branch after fresh
+verification of PR #101 and both post-merge workflows. Main owns protocol,
+prompt, exact-condition verification and integration records. Agent lanes
+review acceptance and safety/privacy read-only; a bounded rubric/instructions
+lane may own only those two new files. No overlapping writer or worktree lease
+is present. Full baseline validation is running before finalisation.
+Preparation is active; S/R freeze and any actual capture remain unestablished.
+
 ## Ready scope and inputs
 
 Start at AGENTS and `conductor/index.md`, then the owning plan/metadata/cursor,

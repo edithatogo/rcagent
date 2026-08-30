@@ -202,7 +202,7 @@ incomplete. No further reviewer or routine phase approval is required.
               without reducing the 90% patch target. Agent re-review and 125
               focused tests pass; full 1,532 tests at 94.56%. PR #101 passed all
               seven checks at `1618d91`, merged as `4d621e6` with exact tree parity.
-          - [ ] Prepare the actual synthetic protocol/inputs/rubric and complete
+          - [~] Prepare the actual synthetic protocol/inputs/rubric and complete
             execution S/R freeze under the
             [next context](../../context-packs/prospective-execution-freeze-20260831.md).
             Only passing fresh gates permit controller capture; later offline
