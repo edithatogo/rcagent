@@ -1,7 +1,7 @@
 # Portfolio closeout checkpoint
 
-Date: 2026-08-29
-Programme status: in progress at external quality-frontier gates
+Date: 2026-08-30
+Programme status: completion candidate; final PR and issue reconciliation pending
 
 ## Integrated repository controls
 
@@ -27,8 +27,9 @@ hygiene findings were fixed.
   #15 passed with bounded or negative capability dispositions.
 - Workstream #4 closed at `2026-08-29T12:46:24Z` after children #14 and #16
   passed.
-- Root roadmap #1 remains open until the No-LLM programme reaches its honest
-  terminal state. Quality-frontier issues #17 and #18 remain open.
+- Root roadmap #1 remains open pending a separate root acceptance audit and
+  evidence-backed disposition of its criteria and active legacy tracks.
+  Quality-frontier issues #17 and #18 remain open.
 
 ## Cleanup
 
@@ -41,11 +42,24 @@ operational lock or backup was observed. The pinned SourceRight submodule's
 `AGENTS.md.backup` is a historical upstream artefact tracked by upstream issue
 #100, not an rcagent operational backup.
 
-## Remaining gates
+## Hosted quality-frontier closeout
 
-No GitHub ruleset or legacy branch protection is observed. No hosted Renovate
-Dashboard or pull request is observed. The repository-local Renovate override
-keeps automerge disabled. Ruleset creation must precede Renovate access.
-Legacy evaluation execution also remains blocked on admitted AU cases and
-applicable human/provider evidence. These boundaries prevent programme and
-root-roadmap completion but do not invalidate the merged repository controls.
+Active repository ruleset `21834601` was observed through the GitHub API at
+`2026-08-30T02:56:33Z`. It applies to `refs/heads/master`, blocks deletion and
+non-fast-forward updates, requires zero approving reviews, preserves owner
+recovery, and requires `dependency-review` plus the Ubuntu, macOS and Windows
+validation jobs.
+
+The Renovate app created Dependency Dashboard #74 at
+`2026-08-30T02:44:48Z`. Its first hosted artefact lists updates as pending
+approval or awaiting schedule, matching the repository override that disables
+automerge. This satisfies the bounded hosted-health criterion without creating
+or approving any dependency update pull request.
+
+The legacy evaluation estate remains outside this programme. Unfinished
+repository-owned collection, QA, admission-fixture and client-conformance work
+remains visible alongside external data, provider, human-execution and protocol
+authority gates. None is waived or marked complete. Root issue #1 therefore
+remains open for its own acceptance audit. Clinical, legal, policy, regulatory,
+employment, cultural-safety, organisational and deployment validation remain
+outside repository completion.

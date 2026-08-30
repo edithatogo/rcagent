@@ -6,10 +6,11 @@
 - [x] Task: Record the one-branch and one-checkout operating baseline — see `evidence/programme-baseline.md`
 - [x] Task: Define the receipt template for commits, checks, merge, cleanup, and blockers — see `evidence/receipt-template.md`
 - [x] Task: Confirm no-model-download test doubles and fixture boundaries — see `evidence/no-model-boundary.md`
-- [x] Task: Reconcile legacy evaluation records
+- [x] Task: Reconcile the legacy evaluation estate without absorbing its unfinished work
   - [x] Verify eval-pilot-calibration_20260225 metadata against its recorded H0/H1 evidence and registry status; current evidence is insufficient and the track is blocked fail-closed
   - [x] Archive completed `eval-protocol`; retain incomplete `eval-case-collection` and superseded-but-incomplete `eval-data-collection` in active records without claiming completion
   - [x] Normalize remaining metadata timestamps to UTC ISO-8601
+  - [x] Preserve unfinished public-source collection, formatting, QA, manifest re-audits, positive-fixture, client-trial, execution, scoring and analysis work in the legacy tracks and restart manifest
 - [x] Task: Record execution-policy precedence — see `evidence/execution-policy-precedence.md`
   - [x] State explicitly that this programme's one-branch baseline preempts autonomy.json lane limits while the programme is active
   - [x] Record single-active-phase-checkpoint WIP discipline for all track plans
@@ -35,9 +36,9 @@
 - [x] Task: Implement Track 02 evidence-workflow slice — `4a976e0`, review `1431674`, receipt `acca833`
 - [x] Task: Implement Track 03 privacy/security assurance slice — `3f7aad3`, review `a5ff002`
 - [x] Task: Implement Track 04 jurisdiction-pack readiness slice — archived completion `1e32fa4`; bounded active-policy decision retained
-- [~] Task: Apply issues #17 and #18 controls to each slice — repository controls prepared in PR #72; hosted ruleset and Renovate health remain pending
+- [x] Task: Apply issues #17 and #18 controls to each slice — repository controls merged in PR #72; active ruleset `21834601` and Renovate Dashboard #74 verified on 2026-08-30
 - [x] Task: Review, merge, and clean each Phase 3 PR before starting the next — Tracks 01–04 merged and reconciled
-- [ ] Task: Phase verification and checkpoint
+- [x] Task: Phase verification and checkpoint — see `evidence/quality-frontier-hosted-closeout-20260830.md`
 
 ## Phase 4: Evaluation, multimodal, retrieval, and runtime readiness
 
@@ -62,12 +63,12 @@
 ## Phase 6: Portfolio reconciliation and closure readiness
 
 - [x] Task: Re-run repository, security, privacy, provenance, and dependency checks — full gate passed 473 tests with 92.35% coverage; PR #72 exact-head checks passed
-- [x] Task: Reconcile child tracks with issues #1-#4 and architecture issue #19 — issues #2, #3, #4 and #19 closed after PR #72; root #1 retained for programme closeout
+- [x] Task: Reconcile child tracks with issues #1-#4 and architecture issue #19 — issues #2, #3, #4 and #19 closed after PR #72; root #1 retained for its separate root acceptance audit
 - [x] Task: Close only issues whose acceptance evidence passes — #2, #3, #4 and #19 closed; #1, #17 and #18 remain open
 - [x] Task: Produce a residual-blocker and restart manifest — final current blockers and restart instructions recorded
 - [x] Task: Verify only `master` and intentionally retained branches remain — only local and remote `master` remain after exact merged-head verification
 - [x] Task: Verify disposable checkouts and stale lock backups are removed — one canonical worktree; no operational lock/backup observed
-- [ ] Task: Phase verification and checkpoint
+- [~] Task: Phase verification and checkpoint — bounded programme acceptance passed; close after this evidence passes hosted checks and merges and issues #17 and #18 are reconciled; root #1 and legacy evaluation remain separately open pending their own acceptance evidence
 
 ## Planned PR sequence
 

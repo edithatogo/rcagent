@@ -1,35 +1,40 @@
 {
   "schema_version": "1.0",
-  "observed_at": "2026-08-29T12:50:00Z",
+  "observed_at": "2026-08-30T02:56:33Z",
   "programme": "no-llm-implementation-programme_20260811",
-  "repository_ready": false,
-  "blockers": [
+  "repository_ready": true,
+  "readiness_scope": "bounded No-LLM implementation programme only; excludes the root portfolio and preserved legacy evaluation workstream",
+  "satisfied_gates": [
     {
       "id": "github-ruleset",
       "owner": "repository owner",
       "class": "hosted_settings_mutation",
-      "state": "not_observed",
-      "prerequisite": "Explicit authority to create the bounded master ruleset after stable-check inventory",
-      "contingency": "Keep the repository unprotected and do not claim issue #17 or #18 completion",
-      "restart": "Re-query rulesets and exact stable check names, create a no-human-approval ruleset with administrator recovery, then verify through the GitHub API"
+      "state": "satisfied",
+      "prerequisite": "Satisfied: owner authority recorded before mutation",
+      "contingency": "Reopen quality-frontier completion if the ruleset is disabled, deleted, or loses its stable checks",
+      "restart": "Re-query ruleset 21834601 and the effective rules for refs/heads/master",
+      "evidence": "Active ruleset 21834601 observed at 2026-08-30T02:56:33Z; it blocks deletion and non-fast-forward updates, requires zero approving reviews, preserves owner bypass, and requires dependency-review plus Ubuntu, macOS and Windows validation"
     },
     {
       "id": "renovate-hosted-health",
       "owner": "repository owner",
       "class": "hosted_app_access",
-      "state": "not_observed",
-      "prerequisite": "First observe the bounded master ruleset, then grant the Renovate app repository access and observe its Dependency Dashboard or first pull request",
-      "contingency": "Retain current dependency review and do not remove or add competing update bots",
-      "restart": "After ruleset verification, install or grant Renovate access, verify inherited configuration and disabled automerge in the first hosted artefact, then record exact URL and timestamp"
-    },
+      "state": "satisfied",
+      "prerequisite": "Satisfied after ruleset verification: repository owner configured Renovate access",
+      "contingency": "Retain dependency review and reopen quality-frontier completion if Dashboard runs cease or automerge becomes enabled without a new decision",
+      "restart": "Inspect Dependency Dashboard #74 and the repository Renovate override before admitting an update pull request",
+      "evidence": "Renovate app created Dependency Dashboard #74 at 2026-08-30T02:44:48Z; updates are pending approval or awaiting schedule, consistent with disabled automerge"
+    }
+  ],
+  "blockers": [
     {
       "id": "legacy-evaluation-execution",
-      "owner": "applicable data, provider, and evaluation authorities",
-      "class": "external_evidence",
+      "owner": "legacy evaluation workstream and applicable data, provider, evaluation and protocol authorities",
+      "class": "excluded_legacy_workstream",
       "state": "blocked",
-      "prerequisite": "Admitted AU case coverage and exact human/provider execution evidence",
-      "contingency": "Keep historical run, calibration, scoring, and analysis tracks incomplete or blocked",
-      "restart": "Resume eval-case-collection, then follow the blocker-remediation admission contract without fabricating execution"
+      "prerequisite": "Complete repository-owned AU public-source collection, formatting, QA, manifest re-audits, positive-fixture and client-conformance tasks, then obtain exact authorised human/provider execution evidence",
+      "contingency": "Keep historical collection, run, calibration, scoring, analysis and remediation tracks incomplete or blocked outside this programme",
+      "restart": "Resume eval-case-collection and eval-blocker-remediation under their own plans; follow the admission contract without fabricating execution or independent-human evidence"
     }
   ],
   "non_blocking_external_states": [

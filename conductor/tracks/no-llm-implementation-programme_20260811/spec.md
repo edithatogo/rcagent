@@ -20,6 +20,9 @@ Git state.
    #18 throughout the programme.
 6. Preserve external API, human-evaluator, licence, publication, and model-run
    gates as explicit blockers rather than simulated completion.
+7. Reconcile, but do not absorb or complete, the preserved legacy evaluation
+   workstream: archive only completed records and retain incomplete
+   repository-owned and external tasks with exact restart instructions.
 
 ## Delivery requirements
 
@@ -46,6 +49,8 @@ Git state.
 - No more than one implementation branch and one disposable checkout remain
   active between slices.
 - Parent roadmap issues close only after child-track acceptance evidence passes.
+- Completion of this programme does not close the root portfolio issue or
+  imply completion of the separately preserved legacy evaluation workstream.
 
 ## Out of scope
 
@@ -54,3 +59,5 @@ Git state.
 - Fabricating provider, operator, patient, clinical, or human-evaluator evidence.
 - Selecting a project licence or making a public release without owner authority.
 - Archiving the GitHub repository while open roadmap work remains.
+- Completing the preserved legacy evaluation case collection, execution,
+  scoring, analysis, client trials, or protocol disposition.

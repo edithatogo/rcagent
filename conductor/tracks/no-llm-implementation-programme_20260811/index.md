@@ -1,6 +1,6 @@
 # No-LLM Implementation Programme
 
-- **Status:** In progress — quality-frontier and portfolio closeout
+- **Status:** Completion candidate — repository-owned acceptance passed; final PR and issue reconciliation pending
 - **Type:** Chore / delivery programme
 - **Scope:** Remaining work that does not require downloading model weights
 
@@ -29,5 +29,7 @@ single-active-phase-checkpoint WIP discipline per
 2. CI evidence across the merged history shows zero model-weight downloads and no network egress beyond disclosed dependencies.
 3. Only `master` and intentionally retained branches remain; disposable checkouts and stale lock backups are removed.
 4. Track 00 checklist reconciliation is evidence-backed and genuine decision gates are retained rather than closed silently.
-5. Legacy evaluation records are reconciled and archived without deleting original artefacts.
+5. The legacy evaluation estate is reconciled: completed records are archived,
+   and incomplete or blocked tracks remain preserved outside this programme
+   with their repository-owned and external restart work explicit.
 6. Issues are closed only where acceptance evidence passes; the residual-blocker and restart manifest is produced even when no blockers remain.
