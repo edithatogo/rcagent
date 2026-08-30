@@ -57,6 +57,9 @@ incomplete. No further reviewer or routine phase approval is required.
     bytes and component-level licence evidence; preserve the old profile.
     [Evidence](./runtime-v030-20260830.md): 739 tests, agent review and live
     version/help diagnostics; no model inference or study admission.
+  - [~] Implement a fixed synthetic output-mode probe using an explicit runtime
+    overlay and unchanged model-rights checks; establish observed output grammar
+    before implementing normalisation.
 
 ## Historical design and current execution choice
 
