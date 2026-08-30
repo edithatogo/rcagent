@@ -86,6 +86,13 @@ incomplete. No further reviewer or routine phase approval is required.
         while retaining oversized request/deadline values; add a portable
         collect-only regression. Both agent reviews passed; full and hosted
         validation are recorded in the server evidence receipt.
+    - [x] Add separate server-specific model eligibility (`34e56ae`), preserving the CLI
+      helper and original registry/model rights checks under the
+      [bounded context](../../context-packs/server-model-eligibility-20260830.md).
+      [Evidence](./server-model-eligibility-20260830.md): 971 tests, 93.60% coverage,
+      30 focused tests at 100%, and final agent-panel review pass.
+      Prepared while PR #88 waited; parent now merged as `8918936` and integrated;
+      no model execution, protocol freeze or study admission is enabled.
 
 ## Historical design and current execution choice
 

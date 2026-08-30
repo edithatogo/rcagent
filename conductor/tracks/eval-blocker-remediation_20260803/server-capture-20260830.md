@@ -98,6 +98,19 @@ changed. Repair commit: `fc1ca0f`; 42 focused tests passed. Full validation pass
 the seven-case deterministic regression. Windows-targeted ty and basedpyright
 also passed. The new exact-head hosted run remains required.
 
+## Hosted delivery
+
+All seven PR checks passed at `eeba35e2c27af21938b33fff8ea35b238f079e21`,
+including Windows job `99246036418` (completed 2026-08-30T10:49:19Z).
+PR #88 merged at 2026-08-30T11:42:11Z as
+`89189363b9a1764264bac97b870eb1975ce0d1b1`. Exact head/merge tree parity was
+verified: `18a1869c3379fe81fb3e753b1515cc1b4b1158c5`. Local master was
+fast-forwarded before integrating the preserved model-eligibility branch.
+Post-merge Quality `33309589305` and conformance `33309589298` both passed.
+The remote parent branch was absent; its local and stale remote-tracking refs
+were removed after tree verification. Content remains in the merged commit;
+the downstream branch was preserved. No study admission is implied.
+
 ## Actual non-study diagnostics
 
 The version diagnostic ran 09:13:56–09:13:57 UTC on 2026-08-30 (1.25 seconds);
