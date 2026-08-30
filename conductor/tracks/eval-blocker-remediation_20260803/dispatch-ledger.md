@@ -1,5 +1,12 @@
 # External Evidence Dispatch Ledger
 
+Current review override: use
+[agent panels](../../decisions/20260830-001-legacy-agent-review.md) for
+repository review appointments. This ledger preserves historical execution
+requests; no request has been sent by this amendment. H8 remains a human data
+condition, not a review role. Its disposition awaits the
+[prospective protocol decision](../../decisions/20260830-002-prospective-agent-study.md).
+
 Updated: 2026-08-03
 Admission status: blocked; zero eligible Phase 4 slots
 
@@ -27,7 +34,7 @@ deadlines are intentionally blank until authorised appointments are supplied.
 | H2-H7 credentials and trust | Unverified | Harness preflight receipts without secrets |
 | H8 evaluator authority/conflicts | Unverified | Appointment, confidentiality, and conflict receipt |
 | Submission schedule | Not started | Study-owner T0 declaration and dated deadlines |
-| Automated slot admission | Planned | Passing validator and fixture receipt |
+| Automated slot admission | Validator implemented; full positive primary-slot fixture pending | Passing validator and synthetic fixture receipt; fixture is not an admitted study observation |
 | Irrecoverability review | Not scheduled | T0+22 owner decision receipt |
 
 ## Admission procedure

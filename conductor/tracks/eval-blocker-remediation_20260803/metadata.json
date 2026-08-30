@@ -3,8 +3,20 @@
   "name": "Evaluation Blocker Remediation and Admission",
   "status": "blocked",
   "created": "2026-08-03",
-  "updated_at": "2026-08-27T09:10:00Z",
+  "updated_at": "2026-08-30T04:40:11Z",
   "gates": [
+    {
+      "id": "legacy-repository-agent-review",
+      "kind": "owner_decision",
+      "status": "approved",
+      "evidence": "../../decisions/20260830-001-legacy-agent-review.md"
+    },
+    {
+      "id": "prospective-agent-study-protocol",
+      "kind": "protocol_decision",
+      "status": "pending",
+      "evidence": "../../decisions/20260830-002-prospective-agent-study.md"
+    },
     {
       "id": "phase-4-external-evidence-execution",
       "kind": "external",

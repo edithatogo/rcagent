@@ -1,5 +1,12 @@
 # Blocker Resolution Decision Record
 
+Current amendment: repository-review duties use
+[approved agent panels](../../decisions/20260830-001-legacy-agent-review.md).
+The recommendations below are historical. The current recommendation is
+[prospective Option B with readiness-only fallback](../../decisions/20260830-002-prospective-agent-study.md),
+pending owner decision. No new human-review recruitment or external dispatch
+is authorised by the historical immediate-actions list below.
+
 Date: 2026-08-03
 Status: recommended plan pending external execution
 

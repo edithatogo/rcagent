@@ -1,5 +1,12 @@
 # Evaluation Analysis — Plan
 
+Repository reproducibility, failure-mode and claims reviews use the
+[approved agent-panel protocol](../../decisions/20260830-001-legacy-agent-review.md).
+Actual analysis remains blocked on admitted scoring evidence and the
+[prospective protocol choice](../../decisions/20260830-002-prospective-agent-study.md).
+The historical denominators below are not automatically applicable to a new
+agent-scored cohort. No human comparison or clinical validity is inferred.
+
 ## Phase 1: Data Preparation
 
 - [ ] Task: Reveal blinding map and annotate rubric-scores.csv
@@ -56,3 +63,5 @@
     - [ ] Discussion (skill contribution, cross-model, limitations)
     - [ ] Conclusions
     - [ ] References (from literature-review.md)
+- [ ] Task: Obtain agent-panel reproducibility and claims review of exact
+  admitted inputs, analysis outputs, exclusions and unsupported conclusions

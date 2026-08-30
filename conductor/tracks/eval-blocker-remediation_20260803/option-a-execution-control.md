@@ -3,6 +3,18 @@
 Version: 2026-08-03
 Status: mandatory control plan for full primary evaluation
 
+## Current review override
+
+For repository reviews, the
+[2026-08-30 agent-panel decision](../../decisions/20260830-001-legacy-agent-review.md)
+supersedes the reviewer appointment/independence wording below. Admission
+review, scoring custody, method review, Track 5 closure, and Track 6 claims
+review use disclosed agents and evidence receipts, not recruited human
+reviewers. Historical operator attestations, H8 human observations, source
+rights, credentials and protocol authority remain distinct requirements.
+The original role table is retained for historical interpretation; it cannot
+be used to claim agent independence or human-evaluator execution.
+
 ## Roles and accountability
 
 | Role | Accountable work | Appointment evidence |
