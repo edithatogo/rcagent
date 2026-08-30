@@ -301,7 +301,7 @@ def test_issue_19_acceptance_map_resolves_completed_vertical_slice_evidence() ->
     root = Path(__file__).parents[1]
     path = (
         root
-        / "conductor/tracks/no-llm-implementation-programme_20260811/evidence"
+        / "conductor/archive/no-llm-implementation-programme_20260811/evidence"
         / "architecture-issue-19-acceptance-map.json"
     )
     acceptance = json.loads(path.read_text(encoding="utf-8"))

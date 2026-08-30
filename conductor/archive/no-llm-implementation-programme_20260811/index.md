@@ -1,6 +1,6 @@
 # No-LLM Implementation Programme
 
-- **Status:** Completed — repository-owned acceptance passed; legacy evaluation and root portfolio remain separate
+- **Status:** Archived — bounded repository programme completed; legacy evaluation and root portfolio remain separate
 - **Type:** Chore / delivery programme
 - **Scope:** Remaining work that does not require downloading model weights
 
