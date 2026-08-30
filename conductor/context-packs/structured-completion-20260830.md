@@ -14,7 +14,7 @@ Main owns a small read-only decoder, synthetic tests and linked track records.
 Two agents review source semantics, provenance and acceptance independently.
 
 This is a thin project-specific evidence checker, not a new inference system.
-It checks an original JSON body's content, terminal state, prompt, model label
+It checks an original JSON body's content, terminal state, model label
 and selected settings without changing content whitespace. It cannot establish
 transport, model/runtime identity, execution truth, privacy, freeze or admission.
 An eventual runner must bind those independently. No live normalisation mode
@@ -36,7 +36,7 @@ Bound context to these files and relevant tests; do not load raw model bytes.
 
 Reject display transcripts, malformed/duplicate JSON, invalid Unicode,
 oversized input, absent/contradictory terminal metadata, truncated/partial
-responses, and prompt/model/selected-generation mismatch. Preserve decoded
+responses, missing detokenised prompt and model/selected-generation mismatch. Preserve decoded
 content bytes and original body hashes; all results stay unadmitted/locked.
 Use failing fixtures first, then scoped lint/types, full validation and agent
 review. Fixture success is not an observed server response or live readiness.
