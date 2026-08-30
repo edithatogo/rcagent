@@ -54,3 +54,11 @@ No historical run is claimed absent merely because its evidence is incomplete.
 The baseline full gate passed 473 tests with 92.35% coverage; repository
 governance and diff checks also passed on the planning changes. Hosted
 integration must be observed separately.
+
+## Subsequent owner disposition
+
+On 2026-08-30 the owner approved prospective Option B with Option C fallback
+and reaffirmed agent review without repeated routine approvals. The pending
+recommendation above is historical; current execution authority is recorded in
+decision 20260830-002. Implementation, admission and actual study results are
+not claimed by that approval.

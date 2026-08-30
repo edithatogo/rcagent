@@ -6,8 +6,10 @@ The specification below preserves the historical study design, not permission
 to execute it. The owner has replaced external-human repository review with
 [agent panels](../../decisions/20260830-001-legacy-agent-review.md). Human–AI
 kappa and the fixed Claude Opus second-rater design below must not be claimed
-for an agent panel. A prospective scoring protocol and condition manifest await
-[decision 20260830-002](../../decisions/20260830-002-prospective-agent-study.md).
+for an agent panel. A separate prospective scoring protocol and condition
+manifest are authorised by
+[decision 20260830-002](../../decisions/20260830-002-prospective-agent-study.md),
+but still require implementation and admission.
 No scoring or blinding is unlocked by review substitution. Preserve original
 scores; any rubric revision is prospective, with a new blinded run and an
 unsupported outcome allowed. Do not optimise historical scores to pass kappa.

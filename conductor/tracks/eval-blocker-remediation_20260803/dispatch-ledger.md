@@ -4,8 +4,9 @@ Current review override: use
 [agent panels](../../decisions/20260830-001-legacy-agent-review.md) for
 repository review appointments. This ledger preserves historical execution
 requests; no request has been sent by this amendment. H8 remains a human data
-condition, not a review role. Its disposition awaits the
-[prospective protocol decision](../../decisions/20260830-002-prospective-agent-study.md).
+condition, not a review role. The
+[approved prospective protocol decision](../../decisions/20260830-002-prospective-agent-study.md)
+preserves historical H8 and excludes unavailable human comparisons from the new study.
 
 Updated: 2026-08-03
 Admission status: blocked; zero eligible Phase 4 slots

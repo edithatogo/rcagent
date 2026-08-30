@@ -4,10 +4,10 @@
 
 Repository reviews and prospective research scoring use the
 [agent-panel decision](../../decisions/20260830-001-legacy-agent-review.md).
-The historical condition counts below remain blocked until a versioned
-protocol decision and canonical admission receipt exist. H8 is not an agent
+The historical condition counts below remain blocked; the approved new study
+still needs a versioned protocol implementation and canonical admission receipt. H8 is not an agent
 reviewer and is not renamed. See
-[pending protocol choice](../../decisions/20260830-002-prospective-agent-study.md).
+[approved protocol choice](../../decisions/20260830-002-prospective-agent-study.md).
 
 ## Phase 1: Pre-Scoring Setup
 

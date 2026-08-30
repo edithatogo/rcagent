@@ -15,6 +15,11 @@ panel of subagents and changing the plan.” This extends the approved
 to remaining repository reviews. It supersedes requirements to recruit
 independent human reviewers for those duties. Historical receipts remain intact.
 
+The owner reaffirmed this rule on 2026-08-30 and approved the prospective study
+with readiness fallback. Do not request reviewer recruitment, repeat review
+authorisation or routine phase approvals. Reuse existing exact-scope decisions;
+escalate only a genuinely new reserved action or material scope change.
+
 ## Review protocol
 
 - Use at least three agents with explicit acceptance, evidence-integrity and

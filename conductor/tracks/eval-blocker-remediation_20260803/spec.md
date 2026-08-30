@@ -12,7 +12,9 @@ Repository review duties now use the approved agent-panel protocol in
 [decision 20260830-001](../../decisions/20260830-001-legacy-agent-review.md).
 This does not replace H8 observations, historical operator attestations or
 missing execution. Changes to study conditions and research-scoring methodology
-remain pending [decision 20260830-002](../../decisions/20260830-002-prospective-agent-study.md).
+are authorised for a separate synthetic study by
+[decision 20260830-002](../../decisions/20260830-002-prospective-agent-study.md).
+Implementation and admission remain required; the historical study is not complete.
 
 Acceptance requires:
 
