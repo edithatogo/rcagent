@@ -107,7 +107,7 @@ incomplete. No further reviewer or routine phase approval is required.
         coverage and final agent review passed. Cancellation remains separate.
         - [x] Review fix (`3d4f109`): reject completion first observed after TERM
           grace; preserve failure and protect it with a deterministic late-EOF fixture.
-      - [ ] Integrate fixed admitted server launch, private socket ownership and
+      - [~] Integrate fixed admitted server launch, private socket ownership and
         concurrent request supervision under the
         [session context](../../context-packs/server-session-20260830.md)
         before claiming server lifecycle complete.
