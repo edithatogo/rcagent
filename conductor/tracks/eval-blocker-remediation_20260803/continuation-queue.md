@@ -230,6 +230,12 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   rechecked unchanged; the canonical study-evidence root was absent. Agent
   lanes review operational evidence read-only. If invocation is in progress,
   do not start another, retry or select another root. No observation is yet claimed.
+  Baseline passed 1,536 tests at 94.56% in 290.23 seconds. Sole controller
+  invocation started on 2026-08-30 at approximately 21:27 UTC, observed PID
+  40772 (verify command identity, not PID alone), tool session 14492. Its
+  exclusive local return/stderr files are in the canonical `study-evidence`
+  root. Invocation is in progress; do not overwrite empty/partial return files
+  or relaunch merely because a journal has not appeared during preflight.
   Offline custody/scoring is a separate later source/evidence boundary, not a
   reason to defer a complete unchanged execution freeze indefinitely. No actual
   model/cache eligibility, study freeze, capture, admission or scoring occurred

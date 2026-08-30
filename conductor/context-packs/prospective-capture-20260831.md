@@ -20,6 +20,13 @@ agent lanes are read-only operational-evidence reviewers, not scorers. Baseline
 full validation is running before invocation. Preserve an in-progress invocation
 across client/session boundaries; never restart it or infer failure from silence.
 
+Activation commit `3d1693a`; baseline passed 1,536 tests in 290.23 seconds at
+94.56%. Main created the sole canonical root with mode 0700 and invoked the
+controller once using `.venv/bin/python -I`, explicit repository import path,
+fixed protocol/R arguments and exclusive mode-0600 return/stderr files. No
+source bytes changed. Invocation is in progress; operational results and panel
+review remain pending. The queue retains the observed process/session cursor.
+
 ## Exact bounded scope
 
 Use protocol `evaluation/prospective/prospective-agent-text-20260830/protocol.json`
