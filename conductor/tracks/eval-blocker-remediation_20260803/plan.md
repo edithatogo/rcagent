@@ -64,10 +64,12 @@ incomplete. No further reviewer or routine phase approval is required.
     probe; stdout remains wrapped, so response-only normalisation is unverified.
   - [~] Establish a strict, implementation-supported output grammar or separately
     admitted response-only entrypoint, then implement deterministic normalisation.
-    Exact upstream inspection rejects byte-preserving CLI wrapper recovery;
-    implement a read-only native JSON contract under the
-    [bounded context](../../context-packs/structured-completion-20260830.md).
-    Runner, transport and actual study admission remain pending.
+    - [x] Reject lossy CLI wrapper recovery and implement a read-only native JSON
+      contract (`9038d51`): [source/panel/test evidence](./structured-completion-20260830.md).
+      Both agent reviews passed; 871 full tests, 93.38% coverage, 95 decoder tests
+      at 100%. Server entrypoint, runner, transport, protocol mode integration
+      and actual study admission remain pending under the
+      [bounded context](../../context-packs/structured-completion-20260830.md).
 
 ## Historical design and current execution choice
 
