@@ -28,6 +28,8 @@ SOURCES = tuple(
         "prospective_execution_gate",
         "prospective_execution_identity",
         "prospective_primary_session",
+        "prospective_study_controller",
+        "prospective_observation_admission",
         "prospective_native_prerequisites",
         "prospective_freeze",
         "prospective_slot_binding",
