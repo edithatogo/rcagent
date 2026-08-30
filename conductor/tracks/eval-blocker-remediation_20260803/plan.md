@@ -82,10 +82,12 @@ incomplete. No further reviewer or routine phase approval is required.
       - [x] Hosted review fixes (`348eca9`): make Unix-only capability references portable
         to Windows type checking and remove timing dependence from the
         partial-body retention fixture, preserving the live trickle deadline test.
-    - [~] Add separate server-specific model eligibility, preserving the CLI
+    - [x] Add separate server-specific model eligibility (`34e56ae`), preserving the CLI
       helper and original registry/model rights checks under the
       [bounded context](../../context-packs/server-model-eligibility-20260830.md).
-      Local stacked preparation only while PR #88 waits for hosted checks;
+      [Evidence](./server-model-eligibility-20260830.md): 971 tests, 93.60% coverage,
+      30 focused tests at 100%, and final agent-panel review pass.
+      Stacked preparation only while PR #88 waits for hosted checks;
       no model execution, protocol freeze or study admission is enabled.
 
 ## Historical design and current execution choice
