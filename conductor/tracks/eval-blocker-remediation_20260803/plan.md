@@ -53,6 +53,10 @@ incomplete. No further reviewer or routine phase approval is required.
     actual runner/component closure and protocol freeze remain pending.
   - [x] Review fix: cover all freeze-verifier error paths (`a302486`), with
     30 focused tests at 100% statement/branch coverage; retain production gates.
+  - [x] Add and verify a separate llama 0.3 runtime profile using exact installed
+    bytes and component-level licence evidence; preserve the old profile.
+    [Evidence](./runtime-v030-20260830.md): 739 tests, agent review and live
+    version/help diagnostics; no model inference or study admission.
 
 ## Historical design and current execution choice
 

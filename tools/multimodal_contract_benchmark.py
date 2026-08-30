@@ -107,7 +107,7 @@ def main() -> int:
         args.output.write_text(rendered, encoding="utf-8")
     else:
         print(rendered, end="")
-    return 0
+    return 1 if verify(receipt) else 0
 
 
 if __name__ == "__main__":

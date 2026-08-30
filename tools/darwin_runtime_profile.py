@@ -10,10 +10,12 @@ import os
 import platform
 import re
 import subprocess
+import sys
 import tempfile
 import time
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
+from types import ModuleType
 
 from tools.local_model_comparator import _sha256
 
@@ -61,35 +63,37 @@ DELAYED_LINE = re.compile(
 )
 
 
-def profile_digest() -> str:
+def profile_digest(config: ModuleType | None = None) -> str:
+    cfg = config or sys.modules[__name__]
     value = {
-        "files": PINNED_FILES,
-        "required": sorted(REQUIRED_IMAGES),
-        "directories": LIBRARY_DIRS,
-        "executable": EXECUTABLE,
-        "aliases": LOAD_ALIASES,
+        "files": cfg.PINNED_FILES,
+        "required": sorted(cfg.REQUIRED_IMAGES),
+        "directories": cfg.LIBRARY_DIRS,
+        "executable": cfg.EXECUTABLE,
+        "aliases": cfg.LOAD_ALIASES,
     }
     return hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
 
 
-def verify_files() -> None:
+def verify_files(config: ModuleType | None = None) -> None:
     """Check exact resolved local bytes, not arbitrary caller-selected artefacts."""
+    cfg = config or sys.modules[__name__]
     # ggml discovers backends in libexec: extra files must fail before discovery.
-    for directory in {Path(name).parent for name in PINNED_FILES if "/libexec/" in name}:
+    for directory in {Path(name).parent for name in cfg.PINNED_FILES if "/libexec/" in name}:
         try:
             if {str(entry) for entry in directory.iterdir()} != {
-                name for name in PINNED_FILES if Path(name).parent == directory
+                name for name in cfg.PINNED_FILES if Path(name).parent == directory
             }:
                 raise ValueError("profile_backend_inventory_mismatch")
         except OSError as exc:
             raise ValueError("profile_backend_directory_unavailable") from exc
-    for alias, target in LOAD_ALIASES.items():
+    for alias, target in cfg.LOAD_ALIASES.items():
         try:
-            if target not in PINNED_FILES or Path(alias).resolve(strict=True) != Path(target):
+            if target not in cfg.PINNED_FILES or Path(alias).resolve(strict=True) != Path(target):
                 raise ValueError("profile_alias_mismatch")
         except OSError as exc:
             raise ValueError("profile_alias_unavailable") from exc
-    for name, digest in PINNED_FILES.items():
+    for name, digest in cfg.PINNED_FILES.items():
         path = Path(name)
         try:
             if path.resolve(strict=True) != path or not path.is_file():
@@ -100,17 +104,19 @@ def verify_files() -> None:
             raise ValueError("profile_file_unavailable") from exc
 
 
-def profile_environment() -> dict[str, str]:
+def profile_environment(config: ModuleType | None = None) -> dict[str, str]:
+    cfg = config or sys.modules[__name__]
     return {
         "PATH": "/usr/bin:/bin",
         "LANG": "C",
-        "DYLD_LIBRARY_PATH": ":".join(LIBRARY_DIRS),
+        "DYLD_LIBRARY_PATH": ":".join(cfg.LIBRARY_DIRS),
         "DYLD_PRINT_LIBRARIES": "1",
     }
 
 
-def verify_loaded_images(stderr: bytes) -> list[str]:
+def verify_loaded_images(stderr: bytes, config: ModuleType | None = None) -> list[str]:
     """Validate reported userland images; OS shared-cache bytes are not attested."""
+    cfg = config or sys.modules[__name__]
     try:
         lines = stderr.decode("utf-8", errors="strict").splitlines()
     except UnicodeError as exc:
@@ -138,32 +144,44 @@ def verify_loaded_images(stderr: bytes) -> list[str]:
         reported_names.add(path.name)
         if name.startswith(("/usr/lib/", "/System/Library/")):
             continue
-        if name not in PINNED_FILES:
+        if name not in cfg.PINNED_FILES:
             raise ValueError("unexpected_loaded_image")
         images.add(name)
     if (
         len(pids) != 1
-        or not REQUIRED_IMAGES.issubset(images)
+        or not cfg.REQUIRED_IMAGES.issubset(images)
         or not delayed_names.issubset(reported_names)
     ):
         raise ValueError("incomplete_loader_evidence")
     return sorted(images)
 
 
-def capture_version() -> dict:
-    receipt = {
+def capture_version(config: ModuleType | None = None, diagnostic: str = "version") -> dict:
+    """Capture fixed version/help diagnostics; explicit profiles bind both sources."""
+    if diagnostic not in {"version", "help"}:
+        raise ValueError("unsupported_diagnostic")
+    cfg = config or sys.modules[__name__]
+    explicit = cfg is not sys.modules[__name__]
+    receipt: dict = {
         "schema_version": "1.0",
         "purpose": "runtime-profile-observation-only",
         "admitted": False,
         "study_unlocked": False,
         "execution_observed": False,
     }
+    if explicit or diagnostic != "version":
+        receipt["purpose"] = "runtime-profile-diagnostic-only"
+        receipt["diagnostic"] = diagnostic
     if (platform.system(), platform.machine()) != ("Darwin", "arm64"):
         return {**receipt, "status": "unsupported_platform"}
     try:
-        verify_files()
-        pin = profile_digest()
+        cfg.verify_files()
+        pin = cfg.profile_digest()
         adapter_pin = _sha256(Path(__file__))
+        module_file = cfg.__file__
+        if not isinstance(module_file, str):
+            raise ValueError("profile_source_unavailable")
+        module_pin = _sha256(Path(module_file)) if explicit else adapter_pin
     except (ValueError, OSError):
         return {**receipt, "status": "profile_failed", "reason": "profile_preflight_failed"}
     start = datetime.now(UTC).isoformat()
@@ -172,11 +190,11 @@ def capture_version() -> dict:
     with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
         try:
             result = subprocess.run(
-                [EXECUTABLE, "--version"],
+                [cfg.EXECUTABLE, "--" + diagnostic],
                 stdin=subprocess.DEVNULL,
                 stdout=stdout,
                 stderr=stderr,
-                env=profile_environment(),
+                env=cfg.profile_environment(),
                 timeout=TIMEOUT,
                 check=False,
             )
@@ -196,17 +214,26 @@ def capture_version() -> dict:
     reason = "none"
     unchanged = False
     try:
-        verify_files()
-        unchanged = pin == profile_digest() and adapter_pin == _sha256(Path(__file__))
+        cfg.verify_files()
+        unchanged = pin == cfg.profile_digest() and adapter_pin == _sha256(Path(__file__))
+        if explicit:
+            unchanged = (
+                unchanged
+                and cfg.__file__ == module_file
+                and module_pin == _sha256(Path(module_file))
+            )
         if not unchanged:
             raise ValueError("profile_changed")
         if exit_state != 0:
             raise ValueError("process_failed")
         if not complete:
             raise ValueError("output_limit_exceeded")
-        if VERSION_LINE not in out + err:
+        markers = getattr(cfg, "VERSION_MARKERS", (cfg.VERSION_LINE,))
+        if diagnostic == "version" and not all(marker in out + err for marker in markers):
             raise ValueError("version_mismatch")
-        images = verify_loaded_images(err)
+        if diagnostic == "help" and not out:
+            raise ValueError("empty_help_output")
+        images = cfg.verify_loaded_images(err)
     except (ValueError, OSError) as exc:
         reason = str(exc) if isinstance(exc, ValueError) else "profile_file_unavailable"
     receipt.update(
@@ -221,8 +248,8 @@ def capture_version() -> dict:
             "adapter_sha256": adapter_pin,
             "pins_unchanged_after": unchanged,
             "loaded_non_system_images": images,
-            "environment": profile_environment(),
-            "arguments": [EXECUTABLE, "--version"],
+            "environment": cfg.profile_environment(),
+            "arguments": [cfg.EXECUTABLE, "--" + diagnostic],
             "device": {
                 "system": platform.system(),
                 "release": platform.release(),
@@ -242,10 +269,25 @@ def capture_version() -> dict:
                 "no protection against concurrent replacement or unreported dynamic loads",
                 "network egress not independently monitored or sandboxed",
                 "temporary output storage is not a disk quota",
-                "OpenSSL package 3.6.3 revision 0 bottle rebuild 1; historical label differs",
             ],
         }
     )
+    if explicit:
+        receipt.update(
+            {
+                "profile_module_sha256": module_pin,
+                "shared_helper_sha256": adapter_pin,
+                "diagnostic": diagnostic,
+                "version_markers_base64": [
+                    base64.b64encode(marker).decode()
+                    for marker in getattr(cfg, "VERSION_MARKERS", (cfg.VERSION_LINE,))
+                ],
+            }
+        )
+    else:
+        receipt["limitations"].append(
+            "OpenSSL package 3.6.3 revision 0 bottle rebuild 1; historical label differs"
+        )
     return receipt
 
 

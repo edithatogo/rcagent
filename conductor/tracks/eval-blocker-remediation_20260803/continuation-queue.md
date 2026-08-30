@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `prospective-freeze-20260830`; reviewer class: agent.
-- Implementation base: `b10abeb68df1258b3d82beec73aacc790ebce6b2`.
+- Run ID: `runtime-v030-20260830`; reviewer class: agent.
+- Implementation base: `4582b8e84e84469fcba03ea407353d4eb6f7d7e1`.
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/prospective-study-runner`; no worktree lease is
+- Integration branch: `codex/runtime-profile-v030`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -19,28 +19,33 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   was generated; no actual protocol has been frozen.
 - Implemented: [exact-commit protocol/reference/component verification](./freeze-verification-20260830.md)
   (`46dcf31`), with agent review and expanded 30-test/100%-coverage fixtures
-  (`a302486`). Full integration evidence must be checked against PR #84's
-  exact head before merging; resume from master after a verified merge.
+  (`a302486`). PR #84 passed all seven checks at head `8e70082`, merged as
+  `4582b8e` with exact tree parity, and passed both post-merge workflows.
+  Its obsolete local branch was removed after verification.
   The fresh runtime precheck failed before launch: the old executable, libomp
   and ggml backends are missing. Earlier successful observations remain valid
   only for their recorded time and bytes; do not infer current availability.
   [Recovery inspection](./runtime-drift-20260830.md) recommends a separately
   versioned installed-runtime candidate; exact component rights and pins must
   be reconciled before admission. Never overwrite the historical profile.
+- Current slice: [explicit runtime 0.3.0 profile](./runtime-v030-20260830.md).
+  Agent panel checked installed component/licence bytes and preserved metadata
+  contradictions. Legacy defaults remain unchanged. All 739 tests passed
+  (93.19% coverage); live version/help diagnostics passed all 16 loaded-image
+  pins. No model inference, study admission or freeze. Inspect the linked
+  receipt and exact hosted head before integrating this branch.
 - Next implementation: a study-specific runner with deterministic output
   extraction, reusing the pinned runtime profile. Verify the pinned CLI's
   output-only mode or an exact wrapper parser on non-study fixtures, then bind
   actual adapter/input/rubric identities into a reviewed, committed protocol
   freeze. Implement affirmative admission separately; do not use READY probe
   output or candidate consistency as primary study evidence.
-- Prior checkpoint: 683 local tests, 93.02% coverage; 116 focused tests at 100%.
-  All seven hosted checks passed PR #83 head `2cc31da`; merged as `b10abeb`
-  with exact tree parity. Both post-merge workflows passed. Its local branch
-  was removed; GitHub had already removed the remote branch. These results do
-  not validate later freeze-verifier changes.
-- Scope ownership: the new freeze verifier/tests and linked records belong to
-  this slice; the [context pack](../../context-packs/prospective-execution-20260830.md)
-  records the runtime check and exclusions. Preserve overlapping active work.
+- Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
+  30 focused tests at 100%. These results do not validate this runtime slice.
+- Scope ownership: the explicit profile, shared verifier, their tests and
+  linked records belong to this slice; the
+  [context pack](../../context-packs/runtime-v030-20260830.md) records its
+  checks and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
 
