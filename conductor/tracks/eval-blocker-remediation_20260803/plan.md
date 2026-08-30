@@ -197,6 +197,11 @@ incomplete. No further reviewer or routine phase approval is required.
               post-read identity/link checks, durable START and directory writes,
               first-capture validation before the next attempt, one-shot witness
               semantics, locked failure outcomes and portable test flag references.
+            - [x] Hosted review fixes (`1c33af4`): sync each raw receipt directory entry
+              before completion or the next slot; add rejection-path coverage
+              without reducing the 90% patch target. Agent re-review and 125
+              focused tests pass; full 1,532 tests at 94.56%. New hosted checks
+              remain pending; do not infer delivery from this local result.
           - [ ] Prepare the actual synthetic protocol/inputs/rubric and complete
             execution S/R freeze under the
             [next context](../../context-packs/prospective-execution-freeze-20260831.md).

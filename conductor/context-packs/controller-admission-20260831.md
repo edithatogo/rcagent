@@ -103,6 +103,13 @@ types, full validation and final agent acceptance; fix bounded findings.
 
 ## Remaining authority and handoff
 
+Hosted PR #101 repair supersedes the initial local review: the hosted agent
+found a per-receipt directory-sync P1, and patch coverage was below target.
+The narrow durability fix and 25 rejection cases passed agent re-review and
+125 focused tests. Repair `1c33af4` passed full validation (1,532 tests, 94.56%);
+new exact-head hosted delivery is pending. Identities and the missed finding are retained in the
+track receipt. All implementation lanes released ownership to main.
+
 Add the controller/admission source identities to the reviewed execution
 closure before freezing anything. Next only after implementation passes:
 prepare actual synthetic protocol/inputs/rubric, establish reviewed S/R with

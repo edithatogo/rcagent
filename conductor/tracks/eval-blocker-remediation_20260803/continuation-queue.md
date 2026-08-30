@@ -203,7 +203,12 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   Implementation `a1e4399` and final agent-panel review passed: full 1,507 tests
   at 94.18%. [Current receipt](./controller-admission-20260831.md) retains all
   findings, fixes and exact source/test hashes. All agent file ownership is
-  released; main owns hosted delivery, which remains pending. Do not duplicate
+  released; main owns hosted delivery, which remains pending. PR #101 at
+  `0f5d562` passed Actions but failed patch coverage and received a valid
+  per-receipt directory-durability P1. The repair passed agent re-review and
+  125 focused tests; repair `1c33af4` passed full validation (1,532 tests,
+  94.56%). Next: push the repair and verify all new exact-head checks before
+  merge. Do not duplicate
   completed implementation. Existing hourly continuation remains active.
 - After verified delivery, prepare the actual synthetic protocol and complete
   execution freeze using the [next context](../../context-packs/prospective-execution-freeze-20260831.md).

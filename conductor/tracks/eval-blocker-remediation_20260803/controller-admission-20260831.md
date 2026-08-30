@@ -141,6 +141,39 @@ coverage, plus lint, types, governance and benchmark regression checks. Log:
 `/tmp/rcagent-controller-final.log`. No actual model/cache scan or study operation
 occurred. Hosted delivery remains pending.
 
+## Hosted review repair
+
+PR #101 at `0f5d562` passed all six hosted Actions checks but failed patch
+coverage (88.95%, target 90%). Hosted agent comment 3890431238 also found a
+valid P1 missed by the initial local panel: a raw receipt file was synced, but
+its directory entry could remain unsynced until after the second capture.
+The controller now syncs the run directory immediately after each raw receipt
+readback, before validation, success/failure completion events or another launch.
+Both successful and failed first-receipt sync faults are regression-tested.
+No separate pre-fix RED run was performed for this repair.
+
+The author added 11 controller cases; a separate agent added 14 admission
+rejection cases. Acceptance re-review passed the narrow production change and
+direct tests. All 125 focused tests passed in 3.56 seconds. The first main
+focused invocation named a nonexistent test file and collected nothing; the
+corrected invocation used `test_prospective_admission_adversarial.py`.
+Native/Windows type checks and Ruff passed in the respective agent lanes.
+Coverage targets and authority boundaries are unchanged. Full validation and
+new exact-head hosted checks remained pending at that checkpoint.
+
+Repair commit `1c33af4` passed final agent acceptance on all three changed
+source/test files and the documentation delta. Fresh full validation passed
+1,532 tests in 235.79 seconds at 94.56% coverage, plus lint, types, governance
+and benchmark checks; log `/tmp/rcagent-controller-repair-full.log`. Both new
+production modules have complete local statement/branch coverage. This does
+not substitute for hosted patch coverage or observed study evidence.
+
+Repair identities:
+
+- Controller: `05e6d0e7ef4cff578479d4588bb51924e2faf346e7b2eded7529f01ab0e7c62a`
+- Direct tests: `c23e949bb20ec89aefe296e5c511d709af1739416a650d68bf98ec68dba36940`
+- Admission coverage tests: `c71852c13019663feac4be8864121d7ed7bf839f13abe218ddc17f7b6ed2774b`
+
 ## Remaining boundary and rollback
 
 Do not close the owning track or root issue from this implementation. Actual
