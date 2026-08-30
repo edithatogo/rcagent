@@ -62,8 +62,14 @@ incomplete. No further reviewer or routine phase approval is required.
     before implementing normalisation (`a82acb1`).
     [Evidence](./output-mode-probe-20260830.md): 776 tests and one complete live
     probe; stdout remains wrapped, so response-only normalisation is unverified.
-  - [ ] Establish a strict, implementation-supported output grammar or separately
+  - [~] Establish a strict, implementation-supported output grammar or separately
     admitted response-only entrypoint, then implement deterministic normalisation.
+    - [x] Reject lossy CLI wrapper recovery and implement a read-only native JSON
+      contract (`9038d51`): [source/panel/test evidence](./structured-completion-20260830.md).
+      Both agent reviews passed; 871 full tests, 93.38% coverage, 95 decoder tests
+      at 100%. Server entrypoint, runner, transport, protocol mode integration
+      and actual study admission remain pending under the
+      [bounded context](../../context-packs/structured-completion-20260830.md).
 
 ## Historical design and current execution choice
 
