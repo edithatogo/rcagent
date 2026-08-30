@@ -25,7 +25,9 @@ incomplete. No further reviewer or routine phase approval is required.
   scoring-start checks.
   - [x] Remove permissive legacy passes and separate fixture integrity from
     live transitions: [hardening boundary](./preflight-hardening-20260830.md).
-  - [ ] Implement protocol-bound semantic validation before enabling live passes.
+  - [~] Implement protocol-bound semantic validation before enabling live passes.
+    Controller-owned immediate admission is implemented (`a1e4399`); offline
+    custody and scoring/analysis transitions remain separate and unavailable.
   - [x] Capture a bounded local non-study execution probe using existing
     comparator admission, with raw output and invocation provenance (`852c8d8`):
     [receipt and boundaries](./local-execution-provenance-20260830.md).
@@ -176,16 +178,35 @@ incomplete. No further reviewer or routine phase approval is required.
               Resolve complete closure and trusted agent-review binding before
               exposing lifecycle; synthetic fixtures cannot confer permission.
               Code `1d01242`, [receipt](./primary-session-gate-20260831.md): final agent
-              review passed; full 1,407 tests at 94.29%. Actual S/R freeze and
+              review passed; full 1,407 tests at 94.29%. PR #100 merged as
+              `135881d` with exact tree parity and all PR/post-merge checks passed.
+              Actual S/R freeze and
               study execution/admission remain separate and incomplete.
               - [x] Review fixes (`1d01242`): bound identity reads/walks and whole-environment
                 budgets, bind imported project origins to the reviewed checkout,
                 and respect supported Python-dependent validator dependencies.
-          - [ ] Implement the exact two-slot controller and affirmative observation
+          - [x] Implement the exact two-slot controller and affirmative observation
             admission together before actual freeze, following the
             [controller context](../../context-packs/controller-admission-20260831.md).
             Include their real dependencies in the execution closure; preserve
             exclusive journals, failures and admission-before-blinding.
+            Code `a1e4399`, [receipt](./controller-admission-20260831.md): final
+            agent-panel review passed; full 1,507 tests at 94.18%. This is
+            immediate controller-owned admission, not offline custody or scoring.
+            - [x] Review fixes (`a1e4399`): enforce bounded nonblocking file reads,
+              post-read identity/link checks, durable START and directory writes,
+              first-capture validation before the next attempt, one-shot witness
+              semantics, locked failure outcomes and portable test flag references.
+            - [x] Hosted review fixes (`1c33af4`): sync each raw receipt directory entry
+              before completion or the next slot; add rejection-path coverage
+              without reducing the 90% patch target. Agent re-review and 125
+              focused tests pass; full 1,532 tests at 94.56%. New hosted checks
+              remain pending; do not infer delivery from this local result.
+          - [ ] Prepare the actual synthetic protocol/inputs/rubric and complete
+            execution S/R freeze under the
+            [next context](../../context-packs/prospective-execution-freeze-20260831.md).
+            Only passing fresh gates permit controller capture; later offline
+            custody/scoring needs separately reviewed evidence and source closure.
 
 ## Historical design and current execution choice
 

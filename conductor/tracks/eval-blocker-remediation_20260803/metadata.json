@@ -3,21 +3,21 @@
   "name": "Evaluation Blocker Remediation and Admission",
   "status": "blocked",
   "created": "2026-08-03",
-  "updated_at": "2026-08-30T19:11:02Z",
+  "updated_at": "2026-08-30T20:26:55Z",
   "gates": [
     {
       "id": "prospective-runtime-availability",
       "kind": "execution_dependency",
       "status": "pending",
-      "description": "Separate 0.3.0 server session passed one actual structured non-study probe with 15 loader images and verified cleanup. Exact READY equality failed and is retained. Guarded primary capture code now passes synthetic validation; actual complete study freeze and two-slot admission remain pending. The historical profile remains unavailable.",
+      "description": "Separate 0.3.0 server session passed one actual structured non-study probe with 15 loader images and verified cleanup. Exact READY equality failed and is retained. Guarded primary capture and two-slot controller/admission code pass synthetic validation; actual study freeze and observed admission remain pending. The historical profile remains unavailable.",
       "evidence": "./structured-server-probe-20260830.md"
     },
     {
       "id": "prospective-semantic-admission",
       "kind": "implementation",
       "status": "pending",
-      "description": "Guarded primary session and committed agent-review gate are implemented; two-slot controller, affirmative observation admission and actual source/review freeze remain pending. Synthetic tests are not primary observations.",
-      "evidence": "./primary-session-gate-20260831.md"
+      "description": "Two-slot controller and immediate observation admission are implemented and agent-reviewed with full validation. Actual source/review freeze, observed study admission and offline custody/scoring remain pending. Synthetic tests are not primary observations.",
+      "evidence": "./controller-admission-20260831.md"
     },
     {
       "id": "legacy-repository-agent-review",

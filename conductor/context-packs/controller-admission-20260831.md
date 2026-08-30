@@ -5,6 +5,39 @@ bounded implementation after the guarded primary adapter and execution gate.
 Reconcile its delivery receipt, branch ownership and hosted checks before
 activation. Preparation is not an actual study freeze, capture or admission.
 
+Delivery reconciled: PR #100 merged as
+`135881d42b50a710744ff353c317af80316c8935`, with reviewed/merged tree
+`0eee20b1eda6d1596bb74082ae70ecbc8058f5e3`. All seven PR checks and post-merge
+conformance `33330379127` and Quality `33330379125` passed. Completed branch
+cleanup was verified; clean successor `codex/prospective-controller-admission`
+starts at that merge. Prior agent file ownership is released; assign fresh
+bounded ownership before source edits. Root issue #1 remains open.
+
+Heartbeat 2026-08-30T19:46:17Z resumed clean checkpoint `3ae9a3f` on the
+same branch. Parent merge and both hosted checks were reverified; no overlapping
+writer or enabled lease was found. Main owns integration/docs and evidence;
+`runtime_profile_tests` owns both proposed modules, their direct tests and the
+gate source-closure update. `root_acceptance_map` reviews acceptance;
+`runtime_security_review` reviews safety/privacy and evidence integrity.
+Exact agent model revisions are unavailable; correlated errors remain possible.
+Unrelated Renovate PRs #93/#94 remain untouched.
+
+The panel selected immediate admission through a private, one-shot,
+non-serialisable controller-owned capability, consumed internally only after
+both direct captures and verified journal persistence. Supplied JSON, paths or
+hashes cannot mint that capability. The durable result records immediate
+admission but cannot recreate it in another process: trusted offline custody
+and scoring transitions remain separate future work. Persist attempt-start
+before calling the primary entry; an exception may occur after execution and
+must consume the attempt. No automatic retry or inferred resume is permitted.
+This is a stricter execution subset of the protocol's retry allowance, not a
+change to historical protocols. Implementation `a1e4399` and final agent review
+passed: full validation 1,507 tests, 94.18% coverage. See the
+[implementation receipt](../tracks/eval-blocker-remediation_20260803/controller-admission-20260831.md).
+Hosted delivery is pending. Next use the
+[execution-freeze context](./prospective-execution-freeze-20260831.md), after
+delivery is verified. No actual model/cache scan, freeze or study operation occurred.
+
 ## Panel recommendation and sequencing repair
 
 Implement the exact two-slot controller and affirmative admission together
@@ -69,6 +102,13 @@ individual mocked helpers pass. Require meaningful coverage, native/Windows
 types, full validation and final agent acceptance; fix bounded findings.
 
 ## Remaining authority and handoff
+
+Hosted PR #101 repair supersedes the initial local review: the hosted agent
+found a per-receipt directory-sync P1, and patch coverage was below target.
+The narrow durability fix and 25 rejection cases passed agent re-review and
+125 focused tests. Repair `1c33af4` passed full validation (1,532 tests, 94.56%);
+new exact-head hosted delivery is pending. Identities and the missed finding are retained in the
+track receipt. All implementation lanes released ownership to main.
 
 Add the controller/admission source identities to the reviewed execution
 closure before freezing anything. Next only after implementation passes:
