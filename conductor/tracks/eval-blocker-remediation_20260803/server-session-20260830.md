@@ -117,7 +117,14 @@ Both agent reviews passed the tests-only delta; production source is unchanged.
 Full validation then passed 1,106 tests in 84.17 seconds at 93.91% coverage;
 Ruff and native/Windows type checks passed. Fresh hosted coverage is pending.
 
-Deliver only the exact reviewed green head after that follow-up. A
-distinct structured non-study probe comes
+PR #92 passed all seven checks at exact head
+`2176465af024b167e6274693d2941004c0818a22` and merged at
+2026-08-30T15:13:57Z as `64810aa3a7a42f7b3f6f18c36d1e6c55fcea4b47`.
+Reviewed and merged trees both equal
+`b128fd7ac5912c29b27ce690122f2cd8beff7ba3`. Local master was fast-forwarded;
+completed local and remote branches are absent. Post-merge Quality
+`33319059110` and conformance `33319059107` both passed.
+
+A distinct structured non-study probe comes
 after fresh eligibility checks; runner, source freeze and affirmative admission
 remain separate unfinished work. Rollback only this session/deadline delta.
