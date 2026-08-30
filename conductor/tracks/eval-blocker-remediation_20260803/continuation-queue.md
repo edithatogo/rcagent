@@ -64,7 +64,9 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   Code `d14c81b` passed 940 tests (93.53% coverage); both new modules have full
   statement/branch coverage. Version/help diagnostics then passed with all 15
   image pins and unchanged pre/post identity. Local receipts are linked in the
-  evidence record. Reconcile this branch's exact PR/merge state on resume;
+  evidence record. CI portability/timing repair `348eca9` subsequently passed
+  941 tests at 93.54% coverage and both Windows-targeted type checkers; agent
+  re-review passed. Reconcile PR #88's exact hosted/merge state on resume;
   do not repeat diagnostics without a distinct new purpose.
 - Next implementation: implement bounded child-process lifecycle and the
   server-specific model/runtime overlay, then a structured non-study probe and

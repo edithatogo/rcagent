@@ -61,13 +61,22 @@ launch, permits only version/help and refuses unsafe or existing destinations.
 No independent human review or clinical/organisational validation is claimed;
 agent model revisions were not exposed and correlated errors remain possible.
 
-Fixture-first imports failed before the corresponding modules existed. Final
+Fixture-first imports failed before the corresponding modules existed. Pre-CI
 profile/diagnostic tests (29) and transport tests (40) pass with full statement
 and branch coverage. `uv run python -m tools.full_validation` passed 940 tests
 at 93.53% coverage, Ruff, both type checkers, governance, gremlin scan and the
-seven-case deterministic regression. Final code was committed as `d14c81b`
+seven-case deterministic regression. Diagnostic code was committed as `d14c81b`
 before diagnostics. Markdown style and thin-adapter strategy pass; no selected
 client/platform guide applies. Baseline was 871 tests at 93.38%.
+
+Initial PR #88 CI passed Linux but found Windows-only type-stub errors for Unix
+APIs and a scheduling-sensitive partial-body fixture on macOS. Fix `348eca9`
+uses explicit fail-closed capability checks, never a TCP default, and a
+deterministic post-chunk timeout fixture. The real slow-header deadline test
+remains. Both Windows-targeted type checkers and 41 transport tests pass; agent
+re-review found no weakening of the transport boundary. Final full validation
+passed 941 tests at 93.54% coverage, including all repository checks. Hosted
+validation of this repair is pending at this checkpoint.
 
 ## Actual non-study diagnostics
 

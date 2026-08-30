@@ -79,6 +79,9 @@ incomplete. No further reviewer or routine phase approval is required.
       - [x] Review fixes (`d14c81b`): reject parent traversal before platform path
         normalisation and handle arbitrarily large deadlines before connection;
         retain explicit malformed-header rejection and regression fixtures.
+      - [x] Hosted review fixes (`348eca9`): make Unix-only capability references portable
+        to Windows type checking and remove timing dependence from the
+        partial-body retention fixture, preserving the live trickle deadline test.
 
 ## Historical design and current execution choice
 
