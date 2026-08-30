@@ -47,6 +47,9 @@ incomplete. No further reviewer or routine phase approval is required.
   - [x] Add a strict read-only prospective protocol-candidate contract and
     adversarial fixtures (`3114c01`): [evidence](./protocol-contract-20260830.md).
     Candidate consistency does not assert freeze or admission.
+  - [~] Verify exact committed protocol, referenced input and execution component
+    bytes before allowing prospective execution; preserve current runtime drift
+    as a separate blocked execution condition.
 
 ## Historical design and current execution choice
 
