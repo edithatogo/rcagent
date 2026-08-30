@@ -81,8 +81,15 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   `02eef75`, merged as `1e6b9bc` at 2026-08-30T11:48:22Z, and exact tree parity
   was verified. Local master was fast-forwarded and completed branch cleanup
   verified. Post-merge Quality `33309842839` and conformance `33309842815` passed.
-  Next branch contains the lifecycle context/plan only; implementation has not begun.
-- Next implementation: implement bounded child-process lifecycle, then a structured non-study probe and
+  The lifecycle successor preserves these completed results.
+- Implemented slice: [bounded POSIX child-capture primitive](./server-process-lifecycle-20260830.md)
+  (`b995ecc`), with 50 focused synthetic tests, 98.89% module coverage and final
+  agent-panel review passed. Full validation: 1,022 tests, 93.71% coverage;
+  native and Windows-targeted type checks passed. Hosted delivery is pending.
+  Only the direct child is supervised; no descendant containment, real server
+  launch, socket/session lifecycle or runtime/study admission is claimed.
+- Next implementation: integrate fixed admitted server launch, private socket
+  ownership and concurrent request supervision, then a structured non-study probe and
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
   identities into a reviewed full-component freeze. Implement affirmative

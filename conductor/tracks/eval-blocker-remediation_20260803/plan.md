@@ -97,8 +97,10 @@ incomplete. No further reviewer or routine phase approval is required.
       the [process context](../../context-packs/server-process-lifecycle-20260830.md).
       PR #89 is merged with exact tree parity; real server probing remains a
       separate step after implementation, validation and agent review.
-      - [~] Build the low-level bounded dual-pipe child-capture primitive; it does
-        not select/admit real server arguments or implement socket/session probing.
+      - [x] Build the low-level bounded dual-pipe child-capture primitive (`b995ecc`);
+        [evidence](./server-process-lifecycle-20260830.md): 1,022 tests, 93.71%
+        coverage and agent-panel review passed. It does not select/admit real
+        server arguments or implement socket/session probing.
       - [ ] Integrate fixed admitted server launch, private socket ownership and
         concurrent request supervision before claiming server lifecycle complete.
 

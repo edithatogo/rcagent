@@ -7,8 +7,8 @@ Branch `codex/server-process-lifecycle`; no worktree lease enabled.
 ## Scope and ownership
 
 Implement the small lifecycle gap around the installed server, not a service
-manager or replacement inference stack. Main owns integration, task records and
-the supervisor; agent panels review acceptance/evidence and runtime safety.
+manager or replacement inference stack. Main owns integration and task records;
+agent panels review acceptance/evidence and runtime safety.
 Agent `runtime_profile_tests` owns the primitive and tests; main owns integration
 and scope, and `root_acceptance_map` reviews acceptance and safety. Owned paths:
 `tools/server_process.py`, `tests/test_server_process.py` and linked track records.
