@@ -39,13 +39,20 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   No model inference, study admission or freeze was claimed by that slice.
 - Current slice: fixed synthetic output-mode probe and explicit model/runtime
   eligibility overlay. Preserve original registry and model-rights controls;
-  capture new output-grammar evidence before implementing normalisation.
+  [live output-grammar evidence](./output-mode-probe-20260830.md) now records
+  one successful complete non-study probe with all 16 loader pins verified.
+  Stdout remains wrapped despite suppression flags. Local full validation:
+  776 tests, 93.33% coverage. Check this branch's exact PR/merge state before
+  resuming; do not repeat the probe without a distinct new evidentiary purpose.
 - Next implementation: a study-specific runner with deterministic output
   extraction, reusing the pinned runtime profile. Verify the pinned CLI's
   output-only mode or an exact wrapper parser on non-study fixtures, then bind
   actual adapter/input/rubric identities into a reviewed, committed protocol
   freeze. Implement affirmative admission separately; do not use READY probe
   output or candidate consistency as primary study evidence.
+  Inspect pinned local implementation evidence for an exact wrapper grammar,
+  or separately admit a response-only entrypoint. Do not generic-strip banners,
+  choose the first JSON object, or infer a universal grammar from one READY run.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
 - Scope ownership: the model eligibility overlay, fixed probe, their tests and

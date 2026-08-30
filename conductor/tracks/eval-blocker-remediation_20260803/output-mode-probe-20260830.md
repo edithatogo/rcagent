@@ -46,7 +46,37 @@ and branch coverage. Tests cover other-model/selected-licence drift, original
 registry preservation, post-validation changes, source/profile drift, unsafe
 destinations, timeout/nonzero/empty/oversized output and loader rejection.
 The real read-only cache admission check passed without launching a model.
-Full validation and live diagnostic results are pending below.
+`uv run python -m tools.full_validation` passed: 776 tests, 93.33% coverage,
+scoped lint/types, governance, gremlin scan and seven-case regression. The
+implementation was committed as `a82acb1` before live execution.
+
+## Live observation and negative grammar finding
+
+One probe ran from 08:16:22 to 08:16:27 UTC on 2026-08-30, exiting zero in
+5.70 seconds. All 16 reported non-system loader images matched the profile;
+model, registry, profile and source pins agreed before/after. Complete stdout
+was 1,028 bytes and stderr 100,500 bytes. The generated response was READY,
+but stdout also contained a startup banner, model metadata, available commands,
+the echoed prompt and an exit message. Therefore **response-only stdout was
+not established**. Suppression flags did not remove that wrapper.
+
+The complete local-only receipt is
+`/Volumes/PortableSSD/rcagent-model-cache/probe-evidence/output-mode-v030-20260830.json`.
+Its SHA-256 is `4fdbb667764b48852a3e5e41b7b0685646220bfb136f29bc9f17c3fba085dcd6`.
+The raw stdout SHA-256 is
+`1d604f100030ccf3d92fa38739e3fe60f8014e75bb393fe5ad1bf7aae67d95a7`;
+stderr is `d246be438be1c6bc719814c80ad8266332e210255fed0ddeb470d39c25d40294`.
+The admission-envelope digest is
+`641c2ab2476e953d0c9eb33faa08ccd04701b1884ee660d38e2045e42b09197d`;
+both original and effective runtime identities are retained there. The source
+pins bind the committed probe/helper and existing profile/comparator sources.
+This public summary deliberately omits raw streams and is not complete raw
+evidence. It makes no model-quality, clinical or comparative claim.
+
+Retain the wrapped-output finding rather than generic banner stripping or
+searching for READY/JSON. Next normalisation must use a strictly validated
+wrapper grammar with pinned implementation evidence, or a separately admitted
+response-only entrypoint. One observed output is not proof of general grammar.
 
 ## Remaining implementation and rollback
 
