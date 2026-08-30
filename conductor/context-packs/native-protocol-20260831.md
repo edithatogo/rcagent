@@ -1,8 +1,9 @@
 # Context Pack: Native protocol candidate declaration
 
-Track `eval-blocker-remediation_20260803`, issue #1. Prepared after the pure
-runner contract on `codex/prospective-runner-contract`; reconcile its merged
-revision before activation. This is a ready successor, not executed work.
+Track `eval-blocker-remediation_20260803`, issue #1. Activated on
+`codex/prospective-native-protocol` at parent PR #96 head `427ce4d` while its
+hosted checks run. Reconcile the merged parent before successor delivery.
+No model or study execution is scoped.
 
 ## Purpose and bounded inputs
 
@@ -17,11 +18,16 @@ schema or widen the legacy normalization enum in place.
 
 ## Ownership and acceptance
 
-Main owns integration and records. Assign a bounded implementation agent and
-read-only acceptance agent before activation. Expected owned paths are new
+Main owns integration and records. `runtime_profile_tests` owns implementation
+and fixtures; `root_acceptance_map` owns read-only acceptance review. Owned paths are new
 `tools/prospective_native_protocol.py`, matching tests, a narrow shared-validation
 extraction in `prospective_protocol.py`, legacy compatibility tests and these
 linked records. Confirm the final file scope during activation.
+
+Extract one shared candidate validator returning the legacy result, parsed
+declaration and validated reference bytes. Native construction uses those retained
+bytes, with no second reads. The legacy module must not import the runner.
+The native schema is separately copied/versioned; no global schema mutation.
 
 Require a distinct protocol version, exact `llama-native-json-v1` normalization
 and an explicit runner-contract version. Validate prompt construction through

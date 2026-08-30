@@ -142,7 +142,7 @@ incomplete. No further reviewer or routine phase approval is required.
           - [x] Review fix (`ec2b63e`): reject malformed/oversized request-package fields
             without serializing arbitrary incoming structures; retain exact
             type checks and reject an empty final prompt.
-        - [ ] Add a separately versioned native protocol candidate, reusing
+        - [~] Add a separately versioned native protocol candidate, reusing
           reference and denominator validation while preserving legacy behavior.
           Follow the [native context](../../context-packs/native-protocol-20260831.md).
 
