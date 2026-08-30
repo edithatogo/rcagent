@@ -115,7 +115,16 @@ then passed 69 independent identity tests and the actual-repository static
 closure check. The authoritative full `uv run python -m tools.full_validation`
 passed against stable sources: 1,407 tests in 230.14 seconds, 94.29% coverage,
 plus lint, types, governance and regression checks. Code commit `1d01242`.
-Hosted delivery remains pending.
+PR #100 passed all seven checks at reviewed head
+`82b578732ae597fc4fa52b7d300749502f0b6c1f` and merged at
+2026-08-30T19:15:50Z as `135881d42b50a710744ff353c317af80316c8935`.
+Reviewed and merged trees both equal
+`0eee20b1eda6d1596bb74082ae70ecbc8058f5e3`.
+Post-merge conformance `33330379127` and Quality `33330379125` succeeded
+at that merge. Clean local master was fast-forwarded; the completed remote
+branch was absent and its exact reviewed local branch was removed. The next
+checkpoint uses `codex/prospective-controller-admission`. Root issue #1 remains
+open; this delivery does not establish actual study freeze or admission.
 Ruff and native/Windows basedpyright and ty passed.
 
 Final acceptance review passed with all reported findings resolved. Main

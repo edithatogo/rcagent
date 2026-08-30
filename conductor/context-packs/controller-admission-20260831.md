@@ -5,6 +5,14 @@ bounded implementation after the guarded primary adapter and execution gate.
 Reconcile its delivery receipt, branch ownership and hosted checks before
 activation. Preparation is not an actual study freeze, capture or admission.
 
+Delivery reconciled: PR #100 merged as
+`135881d42b50a710744ff353c317af80316c8935`, with reviewed/merged tree
+`0eee20b1eda6d1596bb74082ae70ecbc8058f5e3`. All seven PR checks and post-merge
+conformance `33330379127` and Quality `33330379125` passed. Completed branch
+cleanup was verified; clean successor `codex/prospective-controller-admission`
+starts at that merge. Prior agent file ownership is released; assign fresh
+bounded ownership before source edits. Root issue #1 remains open.
+
 ## Panel recommendation and sequencing repair
 
 Implement the exact two-slot controller and affirmative admission together

@@ -20,7 +20,9 @@ implementation checkpoint. Existing bounded study authority remains unchanged.
 Implementation `1d01242` and final agent acceptance now pass, including full
 1,407-test validation at 94.29%; see the
 [implementation receipt](../tracks/eval-blocker-remediation_20260803/primary-session-gate-20260831.md).
-Hosted delivery is pending. No actual model or study operation occurred. Next,
+PR #100 merged as `135881d` with exact reviewed-tree parity; all seven PR checks
+and both post-merge workflows passed. Completed branch cleanup was verified.
+No actual model or study operation occurred. Next,
 implement the [controller/admission slice](./controller-admission-20260831.md)
 before actual freeze so the reviewed dependency closure includes that path.
 

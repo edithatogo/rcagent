@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `primary-session-gate-20260831`; reviewer class: agent.
-- Implementation base: `acd251d19c4814f9f1b93a1cf3acf3718443e3dd` (PR #99).
+- Run ID: `controller-admission-20260831`; reviewer class: agent.
+- Implementation base: `135881d42b50a710744ff353c317af80316c8935` (PR #100).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/primary-session-gate`; no worktree lease is
+- Integration branch: `codex/prospective-controller-admission`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -181,7 +181,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   full 1,407 tests at 94.29%. Review commit R binds source S, protocol,
   supported dependency identities and actual recorded panel scope. The fixed
   READY wrapper is preserved; no actual model/cache eligibility, freeze,
-  study capture or observation admission occurred. Hosted delivery is pending.
+  study capture or observation admission occurred. PR #100 passed all seven
+  checks at `82b5787`, merged as `135881d` with exact tree parity, and passed
+  post-merge conformance `33330379127` and Quality `33330379125`. Clean local
+  master was fast-forwarded and completed branch cleanup verified.
 - Subsequent implementation: the two-slot controller and affirmative observation
   admission. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
@@ -195,8 +198,9 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   together under the [next context](../../context-packs/controller-admission-20260831.md).
   The panel moved actual freeze after that implementation so the complete
   execution dependencies are included. No new signing infrastructure or owner
-  approval is needed. Finish current hosted delivery before activating successor
-  source edits. Existing hourly continuation remains active.
+  approval is needed. Parent hosted delivery is verified; successor source
+  edits are ready for fresh bounded ownership. Existing hourly continuation
+  remains active.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
 
