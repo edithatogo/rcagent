@@ -101,11 +101,11 @@ incomplete. No further reviewer or routine phase approval is required.
         [evidence](./server-process-lifecycle-20260830.md): 1,022 tests, 93.71%
         coverage and agent-panel review passed. It does not select/admit real
         server arguments or implement socket/session probing.
-      - [ ] Integrate fixed admitted server launch, private socket ownership and
-        concurrent request supervision before claiming server lifecycle complete.
-        First add distinct graceful-stop/final-drain semantics under the
+      - [~] Add distinct graceful-stop/final-drain semantics under the
         [next context](../../context-packs/server-graceful-stop-20260830.md);
         cancellation does not preserve complete shutdown logs.
+      - [ ] Integrate fixed admitted server launch, private socket ownership and
+        concurrent request supervision before claiming server lifecycle complete.
 
 ## Historical design and current execution choice
 
