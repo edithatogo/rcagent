@@ -18,7 +18,7 @@ SCHEMA["properties"].update(
 SCHEMA["required"].append("runner_contract_version")
 
 
-def validate_protocol(path: Path, expected_sha256: str) -> dict:
+def _validated_candidate(path: Path, expected_sha256: str) -> tuple[dict, dict]:
     """Construct two candidate requests using only pinned bytes read by shared checks."""
     result, value, artifacts = legacy._validate_candidate(path, expected_sha256, SCHEMA)
     template = artifacts[value["prompt_template"]["path"]]
@@ -26,7 +26,7 @@ def validate_protocol(path: Path, expected_sha256: str) -> dict:
     for case in value["cases"]:
         slot = f"{case['id']}__{value['condition']['id']}__r1"
         requests[slot] = runner.build_request(template, artifacts[case["input"]["path"]])
-    return {
+    candidate = {
         **result,
         "status": "native_protocol_candidate_valid",
         "protocol_version": PROTOCOL_VERSION,
@@ -46,3 +46,9 @@ def validate_protocol(path: Path, expected_sha256: str) -> dict:
             "not-study-admission",
         ],
     }
+    return value, candidate
+
+
+def validate_protocol(path: Path, expected_sha256: str) -> dict:
+    """Return the unchanged public candidate without rereading its references."""
+    return _validated_candidate(path, expected_sha256)[1]
