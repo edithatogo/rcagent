@@ -1,17 +1,14 @@
 [CmdletBinding()]
-param([string]$AuditPath)
-
+param(
+    [Alias('AuditPath')][string]$Receipt,
+    [string]$ExpectedSha256,
+    [string]$PythonExecutable = 'python'
+)
 $ErrorActionPreference = 'Stop'
-$scriptRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
-if (-not $AuditPath) { $AuditPath = Join-Path $scriptRoot '..\evaluation\analysis\phase4-manifest-audit-receipt.md' }
-$audit = Get-Content -LiteralPath $AuditPath -Raw
-$blockers=@()
-if ($audit -match 'Slots eligible for blinding\s*\|\s*0\b') { $blockers += 'zero eligible slots' }
-if ($audit -match 'manifest is \*\*not complete\*\*') { $blockers += 'manifest incomplete' }
-if ($audit -match 'sealed blinding map must remain unpopulated') { $blockers += 'blinding map must remain sealed/unpopulated' }
-if ($blockers.Count) {
-    $blockers | ForEach-Object { Write-Output "BLOCKED: $_" }
-    Write-Output 'Phase 4 admission has not passed; Track 5 and Track 6 remain locked.'
-    exit 1
-}
-Write-Output 'PASS: Phase 4 admission preflight passed; Track 5 may be considered for start.'
+# No fixture mode is exposed by a study-transition entry point.
+$arguments = @((Join-Path $PSScriptRoot 'evaluation_preflight.py'), '--stage', 'admission')
+if ($Receipt) { $arguments += @('--receipt', $Receipt) }
+if ($ExpectedSha256) { $arguments += @('--expected-sha256', $ExpectedSha256) }
+& $PythonExecutable @arguments
+# Live admission is disabled even if an interpreter shim returns success.
+exit 1

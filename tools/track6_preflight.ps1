@@ -1,18 +1,14 @@
 [CmdletBinding()]
-param([string]$ClaimsBoundary)
-
+param(
+    [Alias('ClaimsBoundary')][string]$Receipt,
+    [string]$ExpectedSha256,
+    [string]$PythonExecutable = 'python'
+)
 $ErrorActionPreference = 'Stop'
-$scriptRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
-if (-not $ClaimsBoundary) { $ClaimsBoundary = Join-Path $scriptRoot '..\evaluation\analysis\track6-claims-boundary.md' }
-$failures = @()
-if (-not (Test-Path -LiteralPath $ClaimsBoundary -PathType Leaf)) { $failures += 'Track 6 claims-boundary file is missing' }
-else {
-    $text = Get-Content -LiteralPath $ClaimsBoundary -Raw
-    if ($text -match '(?i)blocked|pending|wait') { $failures += 'Track 5 closure is not evidenced; Track 6 remains gated' }
-}
-if ($failures.Count) {
-    $failures | ForEach-Object { Write-Output "BLOCKED: $_" }
-    Write-Output 'Track 6 must not unblind, calculate final statistics, publish visualisations, or make final claims.'
-    exit 1
-}
-Write-Output 'PASS: Track 5 closure preflight permits Track 6 start'
+# No fixture mode is exposed by a study-transition entry point.
+$arguments = @((Join-Path $PSScriptRoot 'evaluation_preflight.py'), '--stage', 'analysis')
+if ($Receipt) { $arguments += @('--receipt', $Receipt) }
+if ($ExpectedSha256) { $arguments += @('--expected-sha256', $ExpectedSha256) }
+& $PythonExecutable @arguments
+# Live admission is disabled even if an interpreter shim returns success.
+exit 1

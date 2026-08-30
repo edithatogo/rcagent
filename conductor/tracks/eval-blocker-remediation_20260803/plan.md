@@ -20,10 +20,13 @@ incomplete. No further reviewer or routine phase approval is required.
 
 - [x] Replace external-human repository review requirements with the standing
   agent-panel protocol; preserve H8 and historical evidence identity.
-- [ ] Replace prose-regex preflights with affirmative, revision/hash-bound
+- [~] Replace prose-regex preflights with affirmative, revision/hash-bound
   admission and scoring-completion receipts; distinguish before-blinding and
   scoring-start checks.
-- [ ] Add synthetic positive and adversarial fixtures, including empty prose,
+  - [x] Remove permissive legacy passes and separate fixture integrity from
+    live transitions: [hardening boundary](./preflight-hardening-20260830.md).
+  - [ ] Implement protocol-bound semantic validation before enabling live passes.
+- [~] Add synthetic positive and adversarial fixtures, including empty prose,
   header-only CSV, stale hashes and fixture-as-study-evidence rejection.
 - [ ] Produce a fresh eligibility inventory; historical zero eligibility is
   not evidence of a current full inventory audit.
