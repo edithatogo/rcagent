@@ -148,10 +148,13 @@ incomplete. No further reviewer or routine phase approval is required.
           [Receipt](./native-protocol-20260831.md), code `29fce7c`: agent review passed, 63 focused
           tests at 100%, full 1,218 tests at 94.00%; PR #97 passed all seven
           checks and merged as `09a9058` with exact tree parity.
-        - [ ] Bind a single slot's native request and condition identity before
+        - [~] Bind a single slot's native request and condition identity before
           orchestration, preserving fixed READY behavior and keeping primary
           execution unavailable until complete freeze/admission controls exist.
           Follow the [slot context](../../context-packs/slot-session-20260831.md).
+          - [~] Implement read-only binding with internally refreshed filesystem
+            eligibility; keep the absent primary adapter explicitly unverified.
+            Do not extract a callable primary session before freeze/admission.
 
 ## Historical design and current execution choice
 
