@@ -79,6 +79,56 @@ def test_valid_candidate_never_unlocks(tmp_path: Path) -> None:
     assert result["expected_slots"] == 2
 
 
+@pytest.mark.parametrize("mode", ["identity-utf8-v1", "strict-runtime-wrapper-v1"])
+def test_legacy_api_and_cli_result_shape_remain_unchanged(tmp_path, capsys, mode):
+    path, value = fixture(tmp_path)
+    value["normalization"] = mode
+    path.write_text(json.dumps(value), encoding="utf-8")
+    expected = {
+        "status": "protocol_candidate_valid",
+        "protocol_sha256": pin(path),
+        "study_id": "prospective-test-only",
+        "expected_slots": 2,
+        "study_unlocked": False,
+        "admitted": False,
+        "limitations": [
+            "consistency-only",
+            "git-freeze-not-verified",
+            "runtime-and-adapter-not-verified",
+            "normalization-not-verified",
+            "privacy-not-verified",
+            "no-primary-observations",
+        ],
+    }
+    assert validate_protocol(path, pin(path)) == expected
+    assert main(["--protocol", str(path), "--expected-sha256", pin(path)]) == 0
+    assert json.loads(capsys.readouterr().out) == expected
+
+
+@pytest.mark.parametrize("legacy_version", [False, True])
+def test_legacy_api_and_cli_reject_native_declaration(tmp_path, capsys, legacy_version):
+    from tools.prospective_runner_contract import VERSION
+
+    path, value = fixture(tmp_path)
+    value.update(
+        protocol_version="2.0.0",
+        normalization="llama-native-json-v1",
+        runner_contract_version=VERSION,
+    )
+    if legacy_version:
+        value["protocol_version"] = "1.0.0"
+        del value["runner_contract_version"]
+    path.write_text(json.dumps(value), encoding="utf-8")
+    with pytest.raises(ValueError):
+        validate_protocol(path, pin(path))
+    assert main(["--protocol", str(path), "--expected-sha256", pin(path)]) == 1
+    assert json.loads(capsys.readouterr().out) == {
+        "status": "protocol_candidate_invalid",
+        "admitted": False,
+        "study_unlocked": False,
+    }
+
+
 @pytest.mark.parametrize(
     "field,value",
     [

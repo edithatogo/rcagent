@@ -142,9 +142,15 @@ incomplete. No further reviewer or routine phase approval is required.
           - [x] Review fix (`ec2b63e`): reject malformed/oversized request-package fields
             without serializing arbitrary incoming structures; retain exact
             type checks and reject an empty final prompt.
-        - [ ] Add a separately versioned native protocol candidate, reusing
+        - [x] Add a separately versioned native protocol candidate, reusing
           reference and denominator validation while preserving legacy behavior.
           Follow the [native context](../../context-packs/native-protocol-20260831.md).
+          [Receipt](./native-protocol-20260831.md), code `29fce7c`: agent review passed, 63 focused
+          tests at 100%, full 1,218 tests at 94.00%; hosted delivery pending.
+        - [ ] Bind a single slot's native request and condition identity before
+          orchestration, preserving fixed READY behavior and keeping primary
+          execution unavailable until complete freeze/admission controls exist.
+          Follow the [slot context](../../context-packs/slot-session-20260831.md).
 
 ## Historical design and current execution choice
 
