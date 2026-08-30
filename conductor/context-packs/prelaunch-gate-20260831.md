@@ -7,6 +7,34 @@ Post-merge conformance `33323914284` and Quality `33323914292` passed.
 Reconcile fresh ownership before activation. No primary adapter or
 usable execution permit exists merely because this context is prepared.
 
+## Activated prerequisite slice
+
+Activated from clean checkpoint `c6b23db` after fresh parent workflow checks;
+no overlapping writer or worktree lease. Main owns integration/safety/evidence,
+`runtime_profile_tests` owns source/tests, and `root_acceptance_map` acceptance.
+The panel selected independently testable committed native prerequisites, not
+the adapter-dependent full gate. Add `tools/prospective_native_prerequisites.py`
+and matching tests; narrowly extract reusable private repository/file checks in
+`prospective_freeze.py`, preserving its legacy public behavior and tests.
+
+API: `verify_native_prerequisites(protocol_path, expected_protocol_sha256,
+slot_id, commit, root)`. Accept no model root, caller receipt, source list or
+bypass. Validate native protocol once; select exact slot; compare its original
+hash and five reference hashes against working and committed bytes. Bind an
+explicit fixed subset of known checker/native-validator source dependencies,
+not a purported complete primary execution closure. Include package initialiser
+and the checker, shared freeze, native/prospective protocol, runner, decoder,
+inventory and preflight sources; no dynamic import scanner.
+
+Return enumerated committed-byte consistency with execution permission,
+execution observation, admission and study-unlock flags false. Primary adapter,
+full transitive closure, agent-review evidence, fresh model eligibility and
+loaded-code attestation remain explicitly pending. No actual study freeze or
+eligibility operation occurs in this slice; positive fixtures use temporary Git
+repositories and cannot grant production permission. Preserve session/transport,
+model/profile helpers, registry and historical evidence. The parent gate remains
+in progress after this useful prerequisite is delivered.
+
 ## Gap, reuse and bounded inputs
 
 The binder connects a selected native request to point-in-time filesystem
