@@ -30,8 +30,9 @@ incomplete. No further reviewer or routine phase approval is required.
   header-only CSV, stale hashes and fixture-as-study-evidence rejection.
 - [~] Produce a fresh eligibility inventory; historical zero eligibility is
   not evidence of a current full inventory audit.
-  - [~] Establish a separate prospective planning manifest and scoped inventory;
-    no historical audit, executable-condition admission or study freeze implied.
+  - [x] Establish a separate prospective planning manifest and scoped inventory
+    (`b0bbcc6`): [evidence](./prospective-inventory-20260830.md). No historical
+    audit, executable-condition admission or study freeze implied.
 - [ ] Produce a root #1 acceptance map without closing it from child counts.
 - [x] Record owner approval of prospective Option B with Option C fallback.
 - [ ] Implement the approved versioned protocol and admission gates; approval
