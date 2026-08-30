@@ -132,6 +132,8 @@ incomplete. No further reviewer or routine phase approval is required.
       - [ ] Implement the fixture-only primary runner and explicit prompt/
         normalization contract, then full-component freeze and affirmative
         admission-before-blinding. Do not repeat the non-study observation.
+        Start with the bounded
+        [pure contract context](../../context-packs/runner-contract-20260830.md).
 
 ## Historical design and current execution choice
 

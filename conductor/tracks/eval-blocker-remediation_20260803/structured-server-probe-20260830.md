@@ -80,7 +80,15 @@ plan wording was identified and reconciled; the negative READY finding remains.
 After the observation and record updates, `uv run python -m tools.full_validation`
 passed 1,106 tests in 85.03 seconds at 93.91% coverage, including all preceding
 lint, native types, governance and deterministic benchmark gates. This test run
-did not repeat the model observation. Hosted evidence delivery is pending.
+did not repeat the model observation. PR #95 passed all seven checks at
+`4973f9b676d10f32d610c84d46043d5597edc381`, merged at 2026-08-30T15:23:55Z as
+`5b194a8f1bb8e90546f094496966400216c6eb21`, with exact reviewed/merged tree
+`e5996b18b35d7e279d7f4872971cdc1248d6c61c`. Local master was fast-forwarded;
+completed local and remote branch cleanup was verified.
+Post-merge Quality `33319523276` and conformance `33319523348` passed. Quality
+retained an advisory warning about a transitive `actions/github-script` Node 20
+target being forced to Node 24; it did not fail validation and no hosted setting
+was changed for it.
 Exact agent model revisions are not exposed; correlated errors remain possible.
 This is agent engineering review, not human agreement or clinical, legal,
 policy, regulatory, employment, cultural-safety, organisational or deployment
