@@ -147,19 +147,29 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   tree parity. Local master was fast-forwarded; post-merge conformance
   `33321812017` and Quality `33321812059` passed. Completed parent local and
   remote-tracking branch cleanup was verified.
-- Immediate next prepared slice: the
+- Active slice: the
   [single-slot session adapter](../../context-packs/slot-session-20260831.md).
   Its agent-reviewed context preserves READY behavior and prevents a callable
   primary-execution path before full-component freeze and admission controls.
-  No adapter code or tests have been started. Parent post-merge checks passed;
-  reconcile the clean tree, then assign bounded implementation/acceptance ownership.
+  Activated as `744f850` from clean checkpoint `1c1f86f`; parent checks were
+  reverified and no overlapping writer found. The panel selected read-only
+  binding with internal fresh eligibility, not lifecycle extraction. Adapter
+  identity remains explicitly unverified. Fixture-first missing-module RED is
+  recorded in the [binding receipt](./slot-binding-20260831.md).
+  Implementation and agent review passed: 56 focused tests at 100%, full 1,251
+  tests at 94.02%. Hosted delivery remains pending.
   The existing hourly continuation is active; no new owner decision is required.
+- Prepared successor after verified delivery: a
+  [fail-closed pre-launch gate](../../context-packs/prelaunch-gate-20260831.md),
+  rejecting absent primary adapter and incomplete component closure. Do not
+  claim gate completion from placeholders or synthetic production permits.
 - Subsequent implementation: the
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
   identities into a reviewed full-component freeze. Implement affirmative
-  admission separately. The existing protocol enum does not yet enable the new
-  decoder. Do not use READY output or candidate consistency as primary evidence.
+  admission separately. Legacy protocol modes remain unchanged; native protocol
+  2.0 candidates do not enable execution or the legacy freeze. Do not use READY
+  output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
 - Scope ownership: the prepared single-slot adapter, matching synthetic fixtures and
