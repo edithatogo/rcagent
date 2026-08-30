@@ -1,5 +1,17 @@
 # Evaluation Scoring
 
+## Current execution boundary (2026-08-30)
+
+The specification below preserves the historical study design, not permission
+to execute it. The owner has replaced external-human repository review with
+[agent panels](../../decisions/20260830-001-legacy-agent-review.md). Human–AI
+kappa and the fixed Claude Opus second-rater design below must not be claimed
+for an agent panel. A prospective scoring protocol and condition manifest await
+[decision 20260830-002](../../decisions/20260830-002-prospective-agent-study.md).
+No scoring or blinding is unlocked by review substitution. Preserve original
+scores; any rubric revision is prospective, with a new blinded run and an
+unsupported outcome allowed. Do not optimise historical scores to pass kappa.
+
 ## Overview
 
 Score all blinded normalized outputs using the 8-dimension evaluation rubric. Conduct inter-rater reliability assessment using Claude Opus as AI second rater on a 9-output subset. Refine rubric anchors if any dimension shows insufficient agreement.

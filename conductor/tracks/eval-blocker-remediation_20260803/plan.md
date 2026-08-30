@@ -5,6 +5,29 @@ Dispatch ledger: [dispatch-ledger.md](./dispatch-ledger.md)
 Option A execution control: [option-a-execution-control.md](./option-a-execution-control.md)
 External handoff: `evaluation/analysis/external-execution-request.md`
 
+## Current review authority (2026-08-30)
+
+[Approved agent-review substitution](../../decisions/20260830-001-legacy-agent-review.md)
+governs repository reviews, overriding human-review appointments in the older
+runbooks. Human comparator data, operator provenance and accountable authority
+are not review duties. The historical Option A remains incomplete/unadmitted; the
+[recommended prospective Option B](../../decisions/20260830-002-prospective-agent-study.md)
+is pending owner protocol approval, not silently activated.
+
+## Next repository-owned slice
+
+- [x] Replace external-human repository review requirements with the standing
+  agent-panel protocol; preserve H8 and historical evidence identity.
+- [ ] Replace prose-regex preflights with affirmative, revision/hash-bound
+  admission and scoring-completion receipts; distinguish before-blinding and
+  scoring-start checks.
+- [ ] Add synthetic positive and adversarial fixtures, including empty prose,
+  header-only CSV, stale hashes and fixture-as-study-evidence rejection.
+- [ ] Produce a fresh eligibility inventory; historical zero eligibility is
+  not evidence of a current full inventory audit.
+- [ ] Produce a root #1 acceptance map without closing it from child counts.
+- [ ] Apply the prospective protocol decision only after owner approval.
+
 ## Blocker strategy and trade-offs
 
 The active execution runbook is
@@ -36,9 +59,11 @@ protocol decisions by assumption.
 
 ### Phase 2A: Make Option A operational
 
-- [ ] Appoint the study owner, admission custodian, condition operators,
-  H8 evaluator coordinator, scoring custodian, IRR analyst, and reviewers.
-- [ ] Record appointment, independence, authority, and conflict receipts.
+- [ ] Record accountable study/protocol owner and condition execution roles;
+  H8 coordinator applies only if the historical human condition is retained.
+- [ ] Assign repository review/scoring-custody roles to agents and record
+  revisions, isolation, conflicts, evidence hashes and correlated-error limits;
+  retain separate accountable-authority and operator provenance receipts.
 - [ ] Complete harness-specific credential, trust, version, model, endpoint,
   parameter, retry, cost, and smoke-run preflights for H2-H7.
 - [ ] Complete the H8 evaluator authority, confidentiality, conflict, and
@@ -67,16 +92,18 @@ protocol decisions by assumption.
 - [ ] Run `tools/track5_preflight.ps1` and require pass.
 - [ ] Freeze provisional scores and create sealed blinding IDs.
 - [ ] Score admitted outputs blind with D1-D8 rationales.
-- [ ] Run independent IRR scoring and weighted Cohen kappa.
-- [ ] Remediate any dimension below kappa 0.60.
-- [ ] Complete independent Track 5 closure review.
+- [ ] Run blind agent research scoring under the approved versioned study
+  protocol; report agent agreement, not human reliability.
+- [ ] Retain low agreement and original scores; version rubric revisions
+  prospectively and record unsupported outcomes rather than tuning to pass.
+- [ ] Complete fresh-context agent-panel Track 5 closure review.
 
 ## Phase 4: Track 6 unlock
 
 - [ ] Run `tools/track6_preflight.ps1` and require pass.
 - [ ] Unblind the sealed dataset and record exclusions/missingness.
 - [ ] Compute reproducible descriptive statistics and visualisations.
-- [ ] Complete failure-mode analysis and claims audit.
+- [ ] Complete deterministic failure-mode analysis and agent-panel claims audit.
 - [ ] Keep H8P separately labelled.
 
 ## Phase 5: Independent Agent Skills workstream
@@ -88,7 +115,8 @@ protocol decisions by assumption.
 - [x] Run Codex smoke and held-out fixture trials.
 - [x] Run drift and privacy sentinels.
 - [ ] Complete Gemini trials after trust/authentication approval.
-- [ ] Complete client compatibility and final conformance review.
+- [ ] Complete agent-panel client compatibility and conformance review using
+  actual client trial receipts; no panel vote replaces missing execution.
 
 ## Stop conditions
 
