@@ -5,6 +5,11 @@ Do not activate until the controller/admission implementation has final agent
 review, full validation and verified hosted delivery. Preparation is not freeze,
 execution, custody, scoring or completion evidence.
 
+Readiness checkpoint: PR #101 merged as `4d621e6` with reviewed tree parity,
+all seven checks and both post-merge workflows passed. Local master and parent
+branch cleanup were verified. Branch `codex/prospective-execution-freeze` is
+prepared; activate the plan task before creating final protocol artefacts.
+
 ## Ready scope and inputs
 
 Start at AGENTS and `conductor/index.md`, then the owning plan/metadata/cursor,
@@ -23,6 +28,24 @@ No private clinical or employee data, human-comparator labels or operational
 approval claims may enter the new protocol.
 
 ## Freeze and execution boundary
+
+Read-only successor review found no demonstrated need for more execution-code
+engineering before S/R. Add `protocol.json`, `prompt-template.md`, `rubric-v1.md`
+and `scoring-instructions.md` beside the existing prospective planning files.
+Preserve `manifest.json`, `rubric-plan.md` and inventory as planning snapshots.
+The prompt has exactly one `{{INPUT}}` placeholder. Panel-review the existing
+two synthetic case files for reuse without silently changing their bytes.
+The protocol-pinned rubric and scoring-instructions files must contain every
+operative scoring rule. Links or hashes embedded inside them are not
+transitively validated; the planning link does not freeze its target.
+Specify metadata blinding, three sealed agent submissions, adjudication,
+agreement/undefined-result handling and the controller's stricter no-retry rule.
+
+There is no circular S/R hash requirement: the protocol pins the adapter file,
+not S/R. S contains the protocol, references and complete execution closure;
+later R adds actual three-role review records while preserving those files.
+Use the gate's exact path ordering for closure hashes. This readiness review
+did not inspect model/cache eligibility or establish a freeze.
 
 Reconcile the existing approved local model/runtime artefacts and bounded
 clean-interpreter identity against their exact rights and hash requirements.

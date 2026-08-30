@@ -200,8 +200,8 @@ incomplete. No further reviewer or routine phase approval is required.
             - [x] Hosted review fixes (`1c33af4`): sync each raw receipt directory entry
               before completion or the next slot; add rejection-path coverage
               without reducing the 90% patch target. Agent re-review and 125
-              focused tests pass; full 1,532 tests at 94.56%. New hosted checks
-              remain pending; do not infer delivery from this local result.
+              focused tests pass; full 1,532 tests at 94.56%. PR #101 passed all
+              seven checks at `1618d91`, merged as `4d621e6` with exact tree parity.
           - [ ] Prepare the actual synthetic protocol/inputs/rubric and complete
             execution S/R freeze under the
             [next context](../../context-packs/prospective-execution-freeze-20260831.md).

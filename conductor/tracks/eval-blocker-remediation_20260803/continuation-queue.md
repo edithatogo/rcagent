@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `controller-admission-20260831`; reviewer class: agent.
-- Implementation base: `135881d42b50a710744ff353c317af80316c8935` (PR #100).
+- Run ID: `prospective-execution-freeze-20260831`; reviewer class: agent.
+- Implementation base: `4d621e6427b7024012f631a77f197ac117690f26` (PR #101).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/prospective-controller-admission`; no worktree lease is
+- Integration branch: `codex/prospective-execution-freeze`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -207,9 +207,11 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   `0f5d562` passed Actions but failed patch coverage and received a valid
   per-receipt directory-durability P1. The repair passed agent re-review and
   125 focused tests; repair `1c33af4` passed full validation (1,532 tests,
-  94.56%). Next: push the repair and verify all new exact-head checks before
-  merge. Do not duplicate
-  completed implementation. Existing hourly continuation remains active.
+  94.56%). All seven checks passed at `1618d91`; PR #101 merged as `4d621e6`
+  with exact tree parity. Post-merge conformance `33333964501` and Quality
+  `33333964444` passed; local master and completed-branch cleanup were verified.
+  The successor is ready for activation. Do not duplicate completed
+  implementation. Existing hourly continuation was read back as active.
 - After verified delivery, prepare the actual synthetic protocol and complete
   execution freeze using the [next context](../../context-packs/prospective-execution-freeze-20260831.md).
   Offline custody/scoring is a separate later source/evidence boundary, not a
