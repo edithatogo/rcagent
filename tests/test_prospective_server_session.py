@@ -17,6 +17,56 @@ REAL_CAPTURE_CHILD = session.process.capture_child
 REAL_HTTP_CAPTURE = session.transport.capture
 
 
+def test_missing_imported_source_cannot_produce_pin_inventory(monkeypatch):
+    monkeypatch.setattr(session.core, "__file__", None)
+    with pytest.raises(ValueError, match="source_unavailable"):
+        session.source_pins()
+
+
+@pytest.mark.parametrize("field", ["body_bytes", "body_sha256"])
+def test_transport_body_integrity_mismatch_rejected(field):
+    raw = b"synthetic"
+    receipt = {
+        "body_base64": base64.b64encode(raw).decode(),
+        "body_bytes": len(raw),
+        "body_sha256": hashlib.sha256(raw).hexdigest(),
+    }
+    receipt[field] = 0 if field == "body_bytes" else "0" * 64
+    with pytest.raises(ValueError, match="transport_body_mismatch"):
+        session._body(receipt)
+
+
+def test_concurrent_session_rejected_before_receipt_creation(tmp_path):
+    receipt = tmp_path / "receipt.json"
+    assert session._LOCK.acquire(blocking=False)
+    try:
+        with pytest.raises(ValueError, match="session_already_running"):
+            session.capture_session(tmp_path, receipt)
+    finally:
+        session._LOCK.release()
+    assert not receipt.exists()
+
+
+def test_private_directory_and_cleanup_identity_guards(tmp_path):
+    if os.name != "posix":
+        pytest.skip("POSIX ownership and mode guards")
+    directory = tmp_path.resolve() / "private"
+    directory.mkdir(mode=0o700)
+    identity = session._directory(directory)
+    alias = tmp_path / "alias"
+    alias.symlink_to(directory, target_is_directory=True)
+    with pytest.raises(ValueError, match="unsafe_session_directory"):
+        session._directory(alias)
+    directory.chmod(0o755)
+    with pytest.raises(ValueError, match="unsafe_session_directory"):
+        session._directory(directory)
+    directory.chmod(0o700)
+    with pytest.raises(ValueError, match="session_directory_changed"):
+        session._remove_owned(directory / "server.sock", (identity[0], identity[1] + 1), None)
+    assert directory.is_dir()
+    assert alias.is_symlink()
+
+
 def unix_socket():
     family = getattr(socket, "AF_UNIX", None)
     if family is None:
@@ -164,6 +214,51 @@ def test_unsupported_platform_does_not_launch(synthetic, monkeypatch):
     monkeypatch.setattr(session.platform, "system", lambda: "Linux")
     assert session.capture_session(root, receipt)["error"] == "unsupported_platform"
     assert not processes
+
+
+def test_preflight_profile_disagreement_never_launches(synthetic):
+    root, receipt, calls, processes, admission = synthetic
+    admission["profile_sha256"] = "d" * 64
+    result = session.capture_session(root, receipt)
+    assert result["error"] == "profile_identity_mismatch"
+    assert result["status"] == "session_failed"
+    assert result["admitted"] is result["study_unlocked"] is False
+    assert not calls and not processes
+
+
+def test_health_attempt_budget_stops_without_completion(synthetic, monkeypatch):
+    root, receipt, calls, _, _ = synthetic
+    original = session.transport.capture
+
+    def loading(*args, **kwargs):
+        value = original(*args, **kwargs)
+        value.update(status="transport_failed", http_status=503)
+        return value
+
+    monkeypatch.setattr(session, "HEALTH_ATTEMPTS", 1)
+    monkeypatch.setattr(session.transport, "capture", loading)
+    result = session.capture_session(root, receipt)
+    assert result["error"] == "health_attempts_exhausted"
+    assert result["status"] == "session_failed"
+    assert [call[2] for call in calls] == ["/health"]
+    assert result["worker_joined"] and result["process"]["reaped"]
+    assert result["resources_removed"]
+
+
+def test_interrupted_health_keeps_failure_after_worker_cleanup(synthetic, monkeypatch):
+    root, receipt, _, _, _ = synthetic
+
+    def interrupted(*args, **kwargs):
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(session.transport, "capture", interrupted)
+    result = session.capture_session(root, receipt)
+    assert result["error"] == "session_interrupted"
+    assert result["failure_stage"] == "readiness_failed"
+    assert result["status"] == "session_failed"
+    assert result["worker_joined"] and result["process"]["reaped"]
+    assert result["resources_removed"]
+    assert result["admitted"] is result["study_unlocked"] is False
 
 
 @pytest.mark.parametrize("damage", ["duplicate", "malformed", "status", "oversize", "http"])
