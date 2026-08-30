@@ -6,6 +6,13 @@ delivery and post-merge checks are verified. Start at AGENTS and the Conductor
 index, then the owning plan/cursor, standing decisions 20260830-001/002 and
 the [freeze receipt](../tracks/eval-blocker-remediation_20260803/prospective-execution-freeze-20260831.md).
 
+Ready checkpoint: PR #102 merged normally as `cecf385`, matching reviewed tree
+`16a12305dacbc8a0d4677d22513cab35d9c322ed`; all seven checks and both post-merge
+workflows passed. Fresh fetch verified S/R ancestry. Parent branch cleanup and
+local master were verified; `codex/prospective-two-slot-capture` is prepared.
+Activate the capture plan task before invoking the controller. No study-evidence
+root, capture journal, primary observation or score exists from this slice.
+
 ## Exact bounded scope
 
 Use protocol `evaluation/prospective/prospective-agent-text-20260830/protocol.json`

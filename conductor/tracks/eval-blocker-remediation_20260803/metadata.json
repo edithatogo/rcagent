@@ -3,13 +3,13 @@
   "name": "Evaluation Blocker Remediation and Admission",
   "status": "blocked",
   "created": "2026-08-03",
-  "updated_at": "2026-08-30T21:05:30Z",
+  "updated_at": "2026-08-30T21:15:17Z",
   "gates": [
     {
       "id": "prospective-runtime-availability",
       "kind": "execution_dependency",
       "status": "pending",
-      "description": "Separate 0.3.0 server profile and model passed fresh eligibility; exact source/review freeze and both execution preflights passed without model launch. Hosted freeze delivery and actual study capture/admission remain pending. Negative READY evidence and the unavailable historical profile are preserved.",
+      "description": "Separate 0.3.0 server profile and model passed fresh eligibility; exact source/review freeze and both execution preflights passed without model launch. PR #102 freeze delivery and post-merge checks passed with S/R ancestry preserved. Actual study capture/admission remain pending. Negative READY evidence and the unavailable historical profile are preserved.",
       "evidence": "./prospective-execution-freeze-20260831.md"
     },
     {

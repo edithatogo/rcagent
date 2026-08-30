@@ -1,37 +1,42 @@
 # Context Pack: Actual synthetic protocol and execution freeze
 
-Prepared successor for track `eval-blocker-remediation_20260803`, root issue #1.
-Do not activate until the controller/admission implementation has final agent
-review, full validation and verified hosted delivery. Preparation is not freeze,
+Completed preparation slice for track `eval-blocker-remediation_20260803`, root issue #1.
+Activation required controller/admission final agent review, full validation
+and verified hosted delivery, now recorded below. Preparation alone is not freeze,
 execution, custody, scoring or completion evidence.
 
 Readiness checkpoint: PR #101 merged as `4d621e6` with reviewed tree parity,
 all seven checks and both post-merge workflows passed. Local master and parent
 branch cleanup were verified. Branch `codex/prospective-execution-freeze` is
-prepared; activate the plan task before creating final protocol artefacts.
+prepared at that checkpoint; activation preceded final protocol artefacts.
 
 Activated from clean checkpoint `95b418f` on the prepared branch after fresh
 verification of PR #101 and both post-merge workflows. Main owns protocol,
 prompt, exact-condition verification and integration records. Agent lanes
 review acceptance and safety/privacy read-only; a bounded rubric/instructions
 lane may own only those two new files. No overlapping writer or worktree lease
-is present. Full baseline validation is running before finalisation.
-Preparation is active; S/R freeze and any actual capture remain unestablished.
+was present. Full baseline validation was running at activation.
+At activation, S/R freeze and any actual capture were unestablished.
 
 Preparation committed as S `e6c1453`; all three exact-source panel roles passed
 with no unresolved findings, and full validation passed 1,536 tests at 94.56%.
 Actual read-only local eligibility and clean-interpreter identity passed; no
-model launched. Review records are ready for R, then a real gate preflight
+model launched. Review records were ready for R, then a real gate preflight
 without capture. Use a normal merge to preserve S/R ancestry. The
 [current receipt](../tracks/eval-blocker-remediation_20260803/prospective-execution-freeze-20260831.md)
 records exact identities, limits and final validation. Offline custody/scoring
 and actual observations are not established by these checks.
 
 R committed as `cd09dba`; both actual execution preflights passed against the
-exact S/R and environment without model launch. Freeze delivery remains pending.
-After hosted checks and a normal merge preserve S/R, use the reviewed
+exact S/R and environment without model launch. Delivery was pending at that checkpoint.
+After the verified hosted delivery below, use the reviewed
 [capture context](./prospective-capture-20260831.md). Do not repeat completed
 preparation or treat execution permission as an observation.
+
+Delivery verified: PR #102 passed all seven checks at `f114bfa`, merged normally
+as `cecf385` with exact tree parity. A fresh fetch retains both S/R ancestors.
+Post-merge conformance `33335734417` and Quality `33335734411` passed; local
+master and completed-branch cleanup were verified. This preparation is complete.
 
 ## Ready scope and inputs
 

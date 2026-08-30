@@ -202,7 +202,7 @@ incomplete. No further reviewer or routine phase approval is required.
               without reducing the 90% patch target. Agent re-review and 125
               focused tests pass; full 1,532 tests at 94.56%. PR #101 passed all
               seven checks at `1618d91`, merged as `4d621e6` with exact tree parity.
-          - [~] Prepare the actual synthetic protocol/inputs/rubric and complete
+          - [x] Prepare the actual synthetic protocol/inputs/rubric and complete
             execution S/R freeze under the
             [next context](../../context-packs/prospective-execution-freeze-20260831.md).
             Only passing fresh gates permit controller capture; later offline
@@ -214,7 +214,10 @@ incomplete. No further reviewer or routine phase approval is required.
             - [x] Bind exact three-role source review R `cd09dba` after S
               `e6c1453`; both real execution preflights passed without capture.
               Full validation: 1,536 tests, 94.56%; actual admission remains false.
-            - [~] Verify hosted delivery with a normal merge retaining S/R.
+            - [x] Verify hosted delivery: PR #102 passed all seven checks at
+              `f114bfa`, merged normally as `cecf385` with tree parity and S/R
+              ancestry verified in a fresh fetch. Both post-merge workflows
+              passed; local master and completed-branch cleanup verified.
           - [ ] Execute the frozen two-slot capture under the
             [capture context](../../context-packs/prospective-capture-20260831.md)
             only after verified freeze delivery; preserve consumed attempts.
