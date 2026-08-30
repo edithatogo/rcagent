@@ -229,8 +229,8 @@ def main(argv: list[str] | None = None) -> int:
     data = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.receipt:
         try:
-            with args.receipt.open("x", encoding="utf-8") as stream:
-                stream.write(data)
+            with args.receipt.open("xb") as stream:
+                stream.write(data.encode("utf-8"))
         except OSError:
             print(json.dumps({"status": "receipt_write_failed", "study_unlocked": False}))
             return 1

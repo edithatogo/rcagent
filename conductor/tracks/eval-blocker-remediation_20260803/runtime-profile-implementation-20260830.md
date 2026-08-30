@@ -96,6 +96,14 @@ coverage, including two explicit malformed Windows-path loader records.
 Agent security review confirms that native file checks and the real parser
 remain exercised; the repair does not relax production admission boundaries.
 
+The next hosted run exposed a separate Windows newline-conversion defect in
+receipt output: a text writer could change the bytes after the summary digest
+was calculated. Both CLIs now use exclusive binary UTF-8 writes; tests compare
+the reported digest with the actual file bytes. This serialization-only fix
+changes the helper/probe source hashes. The live observations above remain
+evidence for their recorded `478f799` implementation, not a fresh execution of
+the corrected revision. No retained receipt is rewritten or re-admitted.
+
 `runtime_profile_tests` implemented adversarial tests; `runtime_security_review`
 independently reproduced the delayed-image defect, reviewed the fixes and
 replayed the retained trace, verifying all 16 local pins and aliases. The main

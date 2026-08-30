@@ -410,7 +410,9 @@ def test_cli_exclusive_receipt_and_safe_summary(pinned, monkeypatch, tmp_path, c
     assert profile.main(["--receipt", str(destination)]) == 0
     original = destination.read_bytes()
     assert json.loads(original)["status"] == "runtime_profile_observed"
-    assert str(tmp_path) not in capsys.readouterr().out
+    summary_text = capsys.readouterr().out
+    assert str(tmp_path) not in summary_text
+    assert json.loads(summary_text)["receipt_sha256"] == hashlib.sha256(original).hexdigest()
     assert profile.main(["--receipt", str(destination)]) != 0
     assert destination.read_bytes() == original
 
