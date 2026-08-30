@@ -9,6 +9,14 @@ have begun the design checkpoint only; no successor code or model operation
 has started. Post-merge conformance `33326897765` and Quality `33326897749`
 passed; local master and completed branch cleanup were verified.
 
+Activated on the 2026-08-30T18:46Z heartbeat from clean checkpoint `0c68b95`.
+Parent post-merge workflows were rechecked successful; no overlapping writer
+or enabled worktree lease was found. Main owns integration, evidence and
+safety; `runtime_profile_tests` owns gate/session code and fixtures, with
+`root_acceptance_map` providing read-only acceptance review. No actual model
+eligibility operation, study freeze or execution is authorised by this fixture
+implementation checkpoint. Existing bounded study authority remains unchanged.
+
 ## Selected next implementation
 
 The agent panel recommends implementing the guarded single-slot primary adapter

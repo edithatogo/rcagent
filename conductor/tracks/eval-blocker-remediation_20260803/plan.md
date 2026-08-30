@@ -170,7 +170,7 @@ incomplete. No further reviewer or routine phase approval is required.
               tree parity; both post-merge workflows passed.
               - [x] Review fix (`f2f76d0`): reject outside-root and parent-traversal protocol
                 paths before parsing, with no-read regression fixtures.
-            - [ ] Implement guarded single-slot primary adapter and full prelaunch
+            - [~] Implement guarded single-slot primary adapter and full prelaunch
               verifier together, following the
               [primary gate context](../../context-packs/primary-session-gate-20260831.md).
               Resolve complete closure and trusted agent-review binding before
