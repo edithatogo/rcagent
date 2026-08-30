@@ -8,6 +8,7 @@ import tempfile
 import threading
 import time
 from pathlib import Path
+from typing import Any, cast
 
 import pytest
 
@@ -20,6 +21,7 @@ pytestmark = pytest.mark.skipif(os.name != "posix", reason="Unix-only transport"
 def server():
     listeners = []
     threads = []
+    requests = []
     with tempfile.TemporaryDirectory(prefix="rca-", dir="/tmp") as name:
         directory = Path(name).resolve()
 
@@ -42,6 +44,18 @@ def server():
                             if not data:
                                 return
                             request += data
+                        header, payload = request.split(b"\r\n\r\n", 1)
+                        length = next(
+                            int(line.split(b":", 1)[1])
+                            for line in header.split(b"\r\n")
+                            if line.lower().startswith(b"content-length:")
+                        )
+                        while len(payload) < length:
+                            data = conn.recv(length - len(payload))
+                            if not data:
+                                return
+                            payload += data
+                        requests.append((header, payload))
                         chunks = [response] if isinstance(response, bytes) else response
                         for chunk in chunks:
                             if delay:
@@ -55,6 +69,7 @@ def server():
             threads.append(thread)
             return path
 
+        cast(Any, start).requests = requests
         yield start
         for listener in listeners:
             listener.close()
@@ -95,6 +110,10 @@ def test_post_request_bound_by_digest(server):
     )
     assert result["request_body_sha256"] == hashlib.sha256(body).hexdigest()
     assert result["status"] == "http_response_captured"
+    header, received = server.requests[0]
+    assert header.startswith(b"POST /completion HTTP/1.1\r\n")
+    assert b"Host: localhost" in header
+    assert received == body
 
 
 @pytest.mark.parametrize("status", [301, 400, 500])
