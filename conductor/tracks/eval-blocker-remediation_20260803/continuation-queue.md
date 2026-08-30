@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `runner-contract-20260830`; reviewer class: agent.
-- Implementation base: `5b194a8f1bb8e90546f094496966400216c6eb21` (PR #95).
+- Run ID: `native-protocol-20260831`; reviewer class: agent.
+- Implementation base: `3305c4be6416b65c4820b29aaaa653c17564bd6a` (PR #96).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/prospective-runner-contract`; no worktree lease is
+- Integration branch: `codex/prospective-native-protocol`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -130,11 +130,22 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   no launch, freeze or admission. Activated as `104cc1a`; fixture-first missing
   module failure is recorded in the [implementation receipt](./runner-contract-20260830.md).
   Code `ec2b63e` passed agent review, 85 focused tests at 100% and 1,191 full
-  tests at 93.98%. Hosted delivery remains pending. No existing probe was repeated.
-- Immediate next slice after delivery: the separately versioned
+  tests at 93.98%. PR #96 passed all seven checks at `427ce4d`, merged as
+  `3305c4b` with exact tree parity. Post-merge conformance `33321374528` and
+  Quality `33321374538` passed; local master and parent branch cleanup verified.
+  No existing probe was repeated.
+- Active slice: the separately versioned
   [native protocol candidate](../../context-packs/native-protocol-20260831.md).
   Reuse reference/denominator validation without widening legacy acceptance;
   preserve false execution/admission flags and leave the legacy freeze unchanged.
+  Activated as `73c6778`; fixture-first missing-module RED was observed before
+  implementation. Agent review passed; 63 focused tests at 100%, full 1,218
+  tests at 94.00%. See [receipt](./native-protocol-20260831.md).
+  Reconcile successor ancestry onto the verified merged parent before delivery.
+- Prepared successor after delivery: the
+  [single-slot session adapter](../../context-packs/slot-session-20260831.md).
+  Its agent-reviewed context preserves READY behavior and prevents a callable
+  primary-execution path before full-component freeze and admission controls.
 - Subsequent implementation: the
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
@@ -143,9 +154,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   decoder. Do not use READY output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Scope ownership: the pure runner contract, matching synthetic fixtures and
+- Scope ownership: the native protocol candidate, narrow shared-validator extraction,
+  matching synthetic fixtures and
   records belong to the successor; the
-  [context pack](../../context-packs/runner-contract-20260830.md) records its
+  [context pack](../../context-packs/native-protocol-20260831.md) records its
   checks and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
