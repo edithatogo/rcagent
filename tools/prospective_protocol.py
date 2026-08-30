@@ -94,13 +94,15 @@ SCHEMA = obj(
 )
 
 
-def validate_protocol(path: Path, expected_sha256: str) -> dict:
-    """Validate candidate declarations and referenced text, not primary evidence."""
+def _validate_candidate(
+    path: Path, expected_sha256: str, schema: dict
+) -> tuple[dict, dict, dict[str, bytes]]:
+    """Share existing checks and retain the exact reference bytes already validated."""
     path = path.absolute()
     value, pin = read_json(path)
     if not _digest(expected_sha256) or pin != expected_sha256:
         raise ValueError("protocol_pin_mismatch")
-    validate(value, SCHEMA)
+    validate(value, schema)
     assert isinstance(value, dict)
     integers = [value["repeats"], value["technical_retries"], *value["generation"].values()]
     if any(type(item) is not int for item in integers):
@@ -125,15 +127,18 @@ def validate_protocol(path: Path, expected_sha256: str) -> dict:
     refs = [case["input"] for case in value["cases"]]
     refs.extend(value[key] for key in ("rubric", "scoring_instructions", "prompt_template"))
     paths: set[str] = set()
+    artifacts: dict[str, bytes] = {}
     for ref in refs:
         if ref["path"].casefold() in paths:
             raise ValueError("duplicate_artifact_path")
         paths.add(ref["path"].casefold())
         try:
-            artifact(path.parent, ref).decode("utf-8")
+            data = artifact(path.parent, ref)
+            data.decode("utf-8")
+            artifacts[ref["path"]] = data
         except UnicodeError as exc:
             raise ValueError("invalid_artifact_utf8") from exc
-    return {
+    result = {
         "status": "protocol_candidate_valid",
         "protocol_sha256": pin,
         "study_id": value["study_id"],
@@ -149,6 +154,12 @@ def validate_protocol(path: Path, expected_sha256: str) -> dict:
             "no-primary-observations",
         ],
     }
+    return result, value, artifacts
+
+
+def validate_protocol(path: Path, expected_sha256: str) -> dict:
+    """Validate candidate declarations and referenced text, not primary evidence."""
+    return _validate_candidate(path, expected_sha256, SCHEMA)[0]
 
 
 def main(argv: list[str] | None = None) -> int:
