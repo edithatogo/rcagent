@@ -8,22 +8,29 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `prospective-continuation-20260830`; reviewer class: agent.
-- Reviewed base: `dec4728b12d408939d1e695d626252d789a0eea9`.
+- Run ID: `runtime-profile-20260830`; reviewer class: agent.
+- Reviewed implementation base: `370d0689aebc0d440da723a21e9a044d20b3f860`.
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
 - Integration branch: `codex/prospective-continuation`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
-- Current slice: root acceptance mapping, dependency-route diagnosis and
-  scheduled continuation. No study observation or score was generated.
-- Next implementation: add the bounded Darwin runtime profile described in
-  [dependency findings](./runtime-dependency-route-20260830.md), with fixtures
-  proving pin, loader-selection and failure behaviour before study use.
-- Local checks: baseline `uv run python -m tools.full_validation` passed 587
-  tests with 92.71% coverage. Integration evidence belongs to the enclosing PR;
-  refresh exact-head checks rather than treating the baseline as new-code proof.
-- Scope ownership: this track's continuation/acceptance/context records only
-  for the current slice. Reserve adapter/test/profile paths before the next
-  implementation; preserve any overlapping active work.
+- Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
+  plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
+  The original failed diagnostic is preserved. No study observation or score
+  was generated; no actual protocol has been frozen.
+- Next implementation: a study-specific runner with deterministic output
+  extraction, reusing the pinned runtime profile. Verify the pinned CLI's
+  output-only mode or an exact wrapper parser on non-study fixtures, then bind
+  actual adapter/input/rubric identities into a reviewed, committed protocol
+  freeze. Implement affirmative admission separately; do not use READY probe
+  output or candidate consistency as primary study evidence.
+- Local checks: `uv run python -m tools.full_validation` passed 681 tests with
+  93.02% coverage; 114 focused tests cover all three affected modules at 100%.
+  Earlier seven hosted checks passed the documentation head only. Refresh the
+  enclosing PR #83's exact head before claiming hosted implementation success.
+- Scope ownership: current slice owns runtime helper/probe integration,
+  protocol-candidate validator, their tests and linked receipts. Reserve the
+  new study runner/normaliser and protocol paths before the next implementation;
+  preserve any overlapping active work. Resume this branch/PR, not a duplicate.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
 
@@ -32,7 +39,7 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 | Step | Deliverable and completion evidence | Failure or contingency |
 | --- | --- | --- |
 | 1. Runtime profile | Exact cached executable and non-system dependency pins, process-local selection, observed loader verification, bounded diagnostics and adversarial tests. Reuse the comparator adapter; no general dependency resolver or global Homebrew edits. | Missing or changed artefacts fail closed. Diagnose up to two evidence-led fixes; do not silently accept newer libraries. Record a concrete blocked condition, then continue protocol/fixture work. |
-| 2. Freeze protocol | Separate versioned synthetic study ID/condition, exact input and rubric bytes, denominator, generation/normalisation settings, blinding method, three-agent scoring roles, adjudication and conservative non-operational thresholds. Agent-panel review and immutable hash-bound freeze precede study execution. | Retain public-case exposure and correlated-agent limits. Do not promise held-out validity, full identity blinding, human reliability or statistical power. |
+| 2. Implement study runner and freeze protocol | Implement and fixture-test deterministic raw capture/normalisation; then bind the actual adapter to a separate versioned synthetic study ID/condition, exact input/rubric bytes, denominator, generation settings, blinding method, three-agent scoring roles, adjudication and conservative non-operational thresholds. Agent-panel review and immutable hash-bound freeze precede study execution. | Candidate validation alone verifies none of the executable identities or Git freeze. Retain public-case exposure and correlated-agent limits; no held-out validity, full identity blinding, human reliability or statistical-power claim. |
 | 3. Implement transitions | Positive/adversarial fixtures and affirmative protocol-bound admission-before-blinding, scoring-start and analysis validators; reject fixtures, stale hashes, omitted slots, incomplete raw joins and premature transitions. | Existing live preflights stay locked until their respective real receipts pass. Do not infer execution truth from schema/hash consistency alone. |
 | 4. Execute and admit | Fresh synthetic slots under the frozen condition with complete raw/provenance packages, inspected public projections, exact scoped inventory and owned dispositions for every expected slot. | Preserve failures and denominators. No condition admissible after bounded recovery permits approved Option C readiness-only evidence, not invented results or fallback because code is unfinished. |
 | 5. Score and analyse | Admission, blinded evidence packages, three independent-context agent submissions sealed before adjudication, preserved original scores/dissent, closure review, then gated unblinding and reproducible descriptive analysis. | Report agent agreement and unsupported/low-agreement results; do not tune scores/thresholds retrospectively to pass. Keep raw identity/custody separate from scorer context. |
