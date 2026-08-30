@@ -34,8 +34,16 @@ pytest -q tests/test_prospective_native_protocol.py tests/test_prospective_proto
 --cov=tools.prospective_native_protocol --cov=tools.prospective_protocol
 --cov-report=term-missing`. Ruff and native/Windows `ty` and `basedpyright` passed.
 Implementation commit `29fce7c`. Full repository validation passed with exit 0: 1,218 tests in 81.37 seconds at
-94.00% coverage, plus lint, types, governance and regression gates. Hosted
-delivery remains pending.
+94.00% coverage, plus lint, types, governance and regression gates.
+PR #97 passed all seven hosted checks at
+`a36dcef5fb660278f6403690fe6fc2eaf498a326`, merged as
+`09a9058c1d69031d2d00de18d8356903f3962d92` at 2026-08-30T16:12:39Z.
+The reviewed head and merge trees both equal
+`76c7d6da6bf44d5be675bb8ae3acdfb099c785e3`. Local master was fast-forwarded;
+completed local and remote-tracking branch cleanup was verified after exact-head
+merge checks. Post-merge conformance `33321812017` and Quality `33321812059`
+both passed. The prepared successor contains only context/cursor updates, not
+adapter implementation. Existing hourly continuation remains active.
 
 Fixtures change protocol and reference files immediately after their validated
 reads, then prove that request construction uses only retained original bytes.

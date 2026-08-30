@@ -1,8 +1,10 @@
 # Context Pack: Protocol-bound single-slot session adapter
 
-Track `eval-blocker-remediation_20260803`, issue #1. Prepared after native
-protocol candidate validation on `codex/prospective-native-protocol`. Reconcile
-its reviewed merged head, tree and hosted checks before activation. This is a
+Track `eval-blocker-remediation_20260803`, issue #1. Prepared on
+`codex/prospective-slot-session` after native protocol PR #97 merged as
+`09a9058`, tree `76c7d6da6bf44d5be675bb8ae3acdfb099c785e3` matching reviewed
+head `a36dcef`. Post-merge conformance `33321812017` and Quality `33321812059`
+passed. Reconcile fresh workspace/ownership before activation. This is a
 prepared recommendation, not implementation or primary execution evidence.
 
 ## Smallest next gap and inputs
