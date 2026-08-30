@@ -225,6 +225,11 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   local master and completed-branch cleanup were verified. Next activate the reviewed
   [capture context](../../context-packs/prospective-capture-20260831.md).
   No new owner decision is required.
+  Capture activation started from clean checkpoint `cf9e71d`; main owns the
+  sole invocation after baseline validation. S/R and all frozen files were
+  rechecked unchanged; the canonical study-evidence root was absent. Agent
+  lanes review operational evidence read-only. If invocation is in progress,
+  do not start another, retry or select another root. No observation is yet claimed.
   Offline custody/scoring is a separate later source/evidence boundary, not a
   reason to defer a complete unchanged execution freeze indefinitely. No actual
   model/cache eligibility, study freeze, capture, admission or scoring occurred

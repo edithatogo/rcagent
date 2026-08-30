@@ -13,6 +13,13 @@ local master were verified; `codex/prospective-two-slot-capture` is prepared.
 Activate the capture plan task before invoking the controller. No study-evidence
 root, capture journal, primary observation or score exists from this slice.
 
+Activated from clean checkpoint `cf9e71d` on the prepared branch after fresh
+PR #102/post-merge verification and S/R ancestry/source parity checks. The
+canonical evidence root was absent. Main owns the sole controller invocation;
+agent lanes are read-only operational-evidence reviewers, not scorers. Baseline
+full validation is running before invocation. Preserve an in-progress invocation
+across client/session boundaries; never restart it or infer failure from silence.
+
 ## Exact bounded scope
 
 Use protocol `evaluation/prospective/prospective-agent-text-20260830/protocol.json`
