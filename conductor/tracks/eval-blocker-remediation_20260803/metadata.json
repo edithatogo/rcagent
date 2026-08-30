@@ -3,14 +3,14 @@
   "name": "Evaluation Blocker Remediation and Admission",
   "status": "blocked",
   "created": "2026-08-03",
-  "updated_at": "2026-08-30T08:43:57Z",
+  "updated_at": "2026-08-30T09:14:10Z",
   "gates": [
     {
       "id": "prospective-runtime-availability",
       "kind": "execution_dependency",
       "status": "pending",
-      "description": "Separate 0.3.0 CLI profile passed a bounded synthetic probe; exact upstream source shows lossy rendering and insufficient termination evidence. Native JSON decoder work does not admit the server entrypoint, transport or study. Old profile files remain missing.",
-      "evidence": "./structured-completion-20260830.md"
+      "description": "Separate 0.3.0 server profile passed bounded version/help diagnostics with 15 loaded-image pins. Unix-socket transport is fixture-tested only; model-serving lifecycle, structured probe, runner and study admission remain pending. Old profile files remain missing.",
+      "evidence": "./server-capture-20260830.md"
     },
     {
       "id": "prospective-semantic-admission",
