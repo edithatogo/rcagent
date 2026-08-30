@@ -1,0 +1,108 @@
+{
+  "adapter_sha256": "fbdc804461d068cd58684292ef834502b85f0257a13bc5b55032beb69aaf56c2",
+  "admitted": false,
+  "arguments_without_local_paths": [
+    "<pinned-runtime>",
+    "-m",
+    "<pinned-model>",
+    "-p",
+    "This is a synthetic software capability probe. Reply with the word READY.",
+    "-n",
+    "16",
+    "--seed",
+    "42",
+    "--temp",
+    "0",
+    "--no-display-prompt",
+    "--log-disable",
+    "--single-turn"
+  ],
+  "dependency_profile": {
+    "adapter_sha256": "30efb5cc14f5e914b1ea95256a98d11c484ec2d528702da9422e5841bbabe1b9",
+    "environment": {
+      "DYLD_LIBRARY_PATH": "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib:/opt/homebrew/Cellar/ggml/0.21.0/lib:/opt/homebrew/Cellar/libomp/22.1.8/lib:/opt/homebrew/Cellar/openssl@3/3.6.3/lib",
+      "DYLD_PRINT_LIBRARIES": "1",
+      "LANG": "C",
+      "PATH": "/usr/bin:/bin"
+    },
+    "limitations": [
+      "trusted process loader reports, not tamper-proof attestation",
+      "OS/driver bytes and unreported dynamic loads are outside this profile",
+      "no atomic protection against concurrent filesystem replacement"
+    ],
+    "loaded_non_system_images": [
+      "/opt/homebrew/Cellar/ggml/0.21.0/lib/libggml-base.0.21.0.dylib",
+      "/opt/homebrew/Cellar/ggml/0.21.0/lib/libggml.0.21.0.dylib",
+      "/opt/homebrew/Cellar/ggml/0.21.0/libexec/libggml-blas.so",
+      "/opt/homebrew/Cellar/ggml/0.21.0/libexec/libggml-cpu-apple_m1.so",
+      "/opt/homebrew/Cellar/ggml/0.21.0/libexec/libggml-cpu-apple_m2_m3.so",
+      "/opt/homebrew/Cellar/ggml/0.21.0/libexec/libggml-cpu-apple_m4.so",
+      "/opt/homebrew/Cellar/ggml/0.21.0/libexec/libggml-metal.so",
+      "/opt/homebrew/Cellar/libomp/22.1.8/lib/libomp.dylib",
+      "/opt/homebrew/Cellar/llama.cpp/0.2.0/bin/llama-cli",
+      "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib/libllama-cli-impl.dylib",
+      "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib/libllama-common.0.2.0.dylib",
+      "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib/libllama-server-impl.dylib",
+      "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib/libllama.0.2.0.dylib",
+      "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib/libmtmd.0.2.0.dylib",
+      "/opt/homebrew/Cellar/openssl@3/3.6.3/lib/libcrypto.3.dylib",
+      "/opt/homebrew/Cellar/openssl@3/3.6.3/lib/libssl.3.dylib"
+    ],
+    "profile_sha256": "e2663ba51baf5f63434ed1644f9388452b9ef26ecad838ba0702d68b0bf4587b",
+    "status": "observed"
+  },
+  "device": {
+    "machine": "arm64",
+    "python": "3.14.5",
+    "release": "25.6.0",
+    "system": "Darwin"
+  },
+  "elapsed_ns": 13197196250,
+  "environment_keys": [
+    "DYLD_LIBRARY_PATH",
+    "DYLD_PRINT_LIBRARIES",
+    "LANG",
+    "PATH"
+  ],
+  "execution_observed": true,
+  "exit_state": 0,
+  "finished_at": "2026-08-30T06:51:16.966138+00:00",
+  "limitations": [
+    "not a study observation",
+    "no semantic correctness or model suitability claim",
+    "not tamper-proof provenance",
+    "temporary output storage is not a disk quota",
+    "observed non-system libraries checked; OS and drivers not hash-attested",
+    "raw loader diagnostics retained locally; inspect before any publication"
+  ],
+  "model_id": "qwen2.5-0.5b-instruct-q4_k_m",
+  "model_revision": "9217f5db79a29953eb74d5343926648285ec7e67",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "network": "local-file arguments; egress not independently monitored or sandboxed",
+  "output_complete": true,
+  "pins_unchanged_after": true,
+  "prompt": "This is a synthetic software capability probe. Reply with the word READY.",
+  "prompt_sha256": "ec9098d13bc036cd49e0902c970157faa654ec91c4649da9e5f01ea8590ed1ec",
+  "purpose": "capability-probe-only",
+  "quantisation": "Q4_K_M",
+  "registry_sha256": "6921d6ff0df9e41c28c59ca077c5c2ae0b84835822cb0d5d7e12eeca1d4485a5",
+  "runtime_sha256": "456af2d481095b6a953b6ad21e9caa0411e5508955eb841f37574235da10a44e",
+  "runtime_version": "0.2.0 build 10566 commit bb4caa754",
+  "schema_version": "1.0",
+  "started_at": "2026-08-30T06:51:03.766645+00:00",
+  "status": "process_completed",
+  "stderr_bytes": 100500,
+  "stderr_sha256": "b8343425f83d85f1c262d3703f5280e883f6dae0986d75df77e601bb72192332",
+  "stdout_bytes": 1291,
+  "stdout_sha256": "29ca85fc13fff1b41567242b7e899d3f24ce67fdaf5aa19eddba7617ae0a2b52",
+  "study_unlocked": false,
+  "timeout_seconds": 60,
+  "receipt_form": "public-projection",
+  "raw_receipt_local_filename": "profiled-probe-20260830.json",
+  "raw_receipt_sha256": "591036271ffa803c27d64803c5484f34b3393a13750613d91523dffcee39969d",
+  "omitted_fields": [
+    "stdout_base64",
+    "dependency_profile.raw_stderr_base64"
+  ],
+  "raw_stream_publication": "withheld; complete streams retained locally"
+}

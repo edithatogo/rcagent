@@ -1,0 +1,71 @@
+{
+  "adapter_sha256": "30efb5cc14f5e914b1ea95256a98d11c484ec2d528702da9422e5841bbabe1b9",
+  "admitted": false,
+  "arguments": [
+    "/opt/homebrew/Cellar/llama.cpp/0.2.0/bin/llama-cli",
+    "--version"
+  ],
+  "device": {
+    "machine": "arm64",
+    "release": "25.6.0",
+    "system": "Darwin"
+  },
+  "elapsed_ns": 704553709,
+  "environment": {
+    "DYLD_LIBRARY_PATH": "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib:/opt/homebrew/Cellar/ggml/0.21.0/lib:/opt/homebrew/Cellar/libomp/22.1.8/lib:/opt/homebrew/Cellar/openssl@3/3.6.3/lib",
+    "DYLD_PRINT_LIBRARIES": "1",
+    "LANG": "C",
+    "PATH": "/usr/bin:/bin"
+  },
+  "execution_observed": true,
+  "exit_state": 0,
+  "finished_at": "2026-08-30T06:50:16.446639+00:00",
+  "limitations": [
+    "not a study observation or model-inference compatibility test",
+    "OS shared cache and driver bytes are not hash-attested",
+    "loader reports are trusted process diagnostics, not tamper-proof attestation",
+    "no protection against concurrent replacement or unreported dynamic loads",
+    "network egress not independently monitored or sandboxed",
+    "temporary output storage is not a disk quota",
+    "OpenSSL package 3.6.3 revision 0 bottle rebuild 1; historical label differs"
+  ],
+  "loaded_non_system_images": [
+    "/opt/homebrew/Cellar/ggml/0.21.0/lib/libggml-base.0.21.0.dylib",
+    "/opt/homebrew/Cellar/ggml/0.21.0/lib/libggml.0.21.0.dylib",
+    "/opt/homebrew/Cellar/ggml/0.21.0/libexec/libggml-blas.so",
+    "/opt/homebrew/Cellar/ggml/0.21.0/libexec/libggml-cpu-apple_m1.so",
+    "/opt/homebrew/Cellar/ggml/0.21.0/libexec/libggml-cpu-apple_m2_m3.so",
+    "/opt/homebrew/Cellar/ggml/0.21.0/libexec/libggml-cpu-apple_m4.so",
+    "/opt/homebrew/Cellar/ggml/0.21.0/libexec/libggml-metal.so",
+    "/opt/homebrew/Cellar/libomp/22.1.8/lib/libomp.dylib",
+    "/opt/homebrew/Cellar/llama.cpp/0.2.0/bin/llama-cli",
+    "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib/libllama-cli-impl.dylib",
+    "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib/libllama-common.0.2.0.dylib",
+    "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib/libllama-server-impl.dylib",
+    "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib/libllama.0.2.0.dylib",
+    "/opt/homebrew/Cellar/llama.cpp/0.2.0/lib/libmtmd.0.2.0.dylib",
+    "/opt/homebrew/Cellar/openssl@3/3.6.3/lib/libcrypto.3.dylib",
+    "/opt/homebrew/Cellar/openssl@3/3.6.3/lib/libssl.3.dylib"
+  ],
+  "output_complete": true,
+  "pins_unchanged_after": true,
+  "profile_sha256": "e2663ba51baf5f63434ed1644f9388452b9ef26ecad838ba0702d68b0bf4587b",
+  "purpose": "runtime-profile-observation-only",
+  "reason": "none",
+  "schema_version": "1.0",
+  "started_at": "2026-08-30T06:50:15.741037+00:00",
+  "status": "runtime_profile_observed",
+  "stderr_bytes": 100602,
+  "stderr_sha256": "ef1e7aa3afa5ccad5992eece1e4f3691f5821a05cfab3c9c96db6a83a7459717",
+  "stdout_bytes": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "study_unlocked": false,
+  "receipt_form": "public-projection",
+  "raw_receipt_local_filename": "runtime-profile-20260830-retry1.json",
+  "raw_receipt_sha256": "a112a78cadb10fb8b401048a87ecf47fc700fd585ccbacbccd7774ecdfe413a0",
+  "omitted_fields": [
+    "raw_stdout_base64",
+    "raw_stderr_base64"
+  ],
+  "raw_stream_publication": "withheld; complete streams retained locally"
+}

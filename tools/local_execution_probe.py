@@ -15,6 +15,7 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path
 
+from tools import darwin_runtime_profile as profile
 from tools.local_model_comparator import MANIFEST_PATH, _sha256, validate_admission
 
 REGISTRY_PIN = "6921d6ff0df9e41c28c59ca077c5c2ae0b84835822cb0d5d7e12eeca1d4485a5"
@@ -39,7 +40,9 @@ def _admission(model_root: Path, runtime_path: Path | None) -> tuple[dict, dict,
     return manifest, model, model_path
 
 
-def run_probe(model_root: Path, runtime_path: Path | None = None) -> dict:
+def run_probe(
+    model_root: Path, runtime_path: Path | None = None, *, dependency_profile: bool = False
+) -> dict:
     receipt = {
         "schema_version": "1.0",
         "purpose": "capability-probe-only",
@@ -47,8 +50,21 @@ def run_probe(model_root: Path, runtime_path: Path | None = None) -> dict:
         "admitted": False,
         "execution_observed": False,
     }
+    profile_pin = profile_adapter_pin = ""
+    environment = {"PATH": os.defpath, "LANG": "C"}
+    output_limit = MAX_OUTPUT
     try:
         manifest, model, model_path = _admission(model_root, runtime_path)
+        if dependency_profile:
+            if (platform.system(), platform.machine()) != ("Darwin", "arm64"):
+                raise ValueError("unsupported_profile_platform")
+            if Path(manifest["runtime"]["executable"]).resolve() != Path(profile.EXECUTABLE):
+                raise ValueError("profile_executable_mismatch")
+            profile.verify_files()
+            profile_pin = profile.profile_digest()
+            profile_adapter_pin = _sha256(Path(profile.__file__))
+            environment = profile.profile_environment()
+            output_limit = profile.MAX_OUTPUT
     except (ValueError, OSError):
         return {**receipt, "status": "admission_failed"}
     executable = Path(manifest["runtime"]["executable"])
@@ -79,7 +95,7 @@ def run_probe(model_root: Path, runtime_path: Path | None = None) -> dict:
                 stdin=subprocess.DEVNULL,
                 stdout=stdout,
                 stderr=stderr,
-                env={"PATH": os.defpath, "LANG": "C"},
+                env=environment,
                 timeout=TIMEOUT,
                 check=False,
             )
@@ -95,8 +111,9 @@ def run_probe(model_root: Path, runtime_path: Path | None = None) -> dict:
         sizes = [stream.seek(0, os.SEEK_END) for stream in (stdout, stderr)]
         stdout.seek(0)
         stderr.seek(0)
-        out, err = stdout.read(MAX_OUTPUT + 1), stderr.read(MAX_OUTPUT + 1)
-    oversized = any(size > MAX_OUTPUT for size in sizes)
+        out, err = stdout.read(output_limit + 1), stderr.read(output_limit + 1)
+    oversized = any(size > output_limit for size in sizes)
+    loaded: list[str] = []
     try:
         unchanged = (
             _sha256(executable) == manifest["runtime"]["executable_sha256"]
@@ -104,7 +121,16 @@ def run_probe(model_root: Path, runtime_path: Path | None = None) -> dict:
             and _sha256(MANIFEST_PATH) == REGISTRY_PIN
             and _sha256(Path(__file__)) == adapter_pin
         )
-    except OSError:
+        if dependency_profile:
+            profile.verify_files()
+            unchanged = (
+                unchanged
+                and profile.profile_digest() == profile_pin
+                and _sha256(Path(profile.__file__)) == profile_adapter_pin
+            )
+            if not oversized:
+                loaded = profile.verify_loaded_images(err)
+    except (OSError, ValueError):
         unchanged = False
     status = (
         "process_completed"
@@ -143,7 +169,7 @@ def run_probe(model_root: Path, runtime_path: Path | None = None) -> dict:
                 *args[3:],
             ],
             "timeout_seconds": TIMEOUT,
-            "environment_keys": ["LANG", "PATH"],
+            "environment_keys": sorted(environment),
             "stdout_bytes": sizes[0],
             "stderr_bytes": sizes[1],
             "output_complete": not oversized,
@@ -161,6 +187,29 @@ def run_probe(model_root: Path, runtime_path: Path | None = None) -> dict:
             ],
         }
     )
+    if dependency_profile:
+        receipt["dependency_profile"] = {
+            "status": "observed" if status == "process_completed" else "failed",
+            "profile_sha256": profile_pin,
+            "adapter_sha256": profile_adapter_pin,
+            "loaded_non_system_images": loaded,
+            "environment": environment,
+            "raw_stderr_base64": None if oversized else base64.b64encode(err).decode("ascii"),
+            "limitations": [
+                "trusted process loader reports, not tamper-proof attestation",
+                "OS/driver bytes and unreported dynamic loads are outside this profile",
+                "no atomic protection against concurrent filesystem replacement",
+            ],
+        }
+        receipt["limitations"] = [
+            item
+            for item in receipt["limitations"]
+            if item
+            not in {"shared libraries and OS not hash-attested", "stderr bytes not published"}
+        ] + [
+            "observed non-system libraries checked; OS and drivers not hash-attested",
+            "raw loader diagnostics retained locally; inspect before any publication",
+        ]
     return receipt
 
 
@@ -168,9 +217,34 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model-root", type=Path, required=True)
     parser.add_argument("--runtime-path", type=Path)
+    parser.add_argument("--dependency-profile", action="store_true")
+    parser.add_argument("--receipt", type=Path)
     args = parser.parse_args(argv)
-    result = run_probe(args.model_root, args.runtime_path)
-    print(json.dumps(result, indent=2, sort_keys=True))
+    if args.receipt and (args.receipt.exists() or args.receipt.is_symlink()):
+        print(json.dumps({"status": "receipt_exists", "study_unlocked": False}))
+        return 1
+    result = run_probe(
+        args.model_root, args.runtime_path, dependency_profile=args.dependency_profile
+    )
+    data = json.dumps(result, indent=2, sort_keys=True) + "\n"
+    if args.receipt:
+        try:
+            with args.receipt.open("xb") as stream:
+                stream.write(data.encode("utf-8"))
+        except OSError:
+            print(json.dumps({"status": "receipt_write_failed", "study_unlocked": False}))
+            return 1
+        print(
+            json.dumps(
+                {
+                    "status": result["status"],
+                    "receipt_sha256": hashlib.sha256(data.encode()).hexdigest(),
+                    "study_unlocked": False,
+                }
+            )
+        )
+    else:
+        print(data, end="")
     return 0 if result["status"] == "process_completed" else 1
 
 

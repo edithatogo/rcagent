@@ -99,6 +99,129 @@ def install_process(monkeypatch, out=b"READY", err=b"", code=0, failure=None, mu
     return calls
 
 
+@pytest.fixture
+def profiled(admitted, monkeypatch):
+    from tools import darwin_runtime_profile as profile
+
+    _, runtime, _ = admitted
+    name = str(runtime.resolve())
+    monkeypatch.setattr(profile, "EXECUTABLE", name)
+    monkeypatch.setattr(profile, "PINNED_FILES", {name: probe._sha256(runtime)})
+    monkeypatch.setattr(profile, "REQUIRED_IMAGES", {name})
+    monkeypatch.setattr(profile, "LOAD_ALIASES", {})
+    monkeypatch.setattr(profile.platform, "system", lambda: "Darwin")
+    monkeypatch.setattr(profile.platform, "machine", lambda: "arm64")
+    # The real temporary file verifies host filesystem behaviour; the loader
+    # wire format remains Darwin/POSIX even when this test runs on Windows.
+    wire_name = "/synthetic-darwin/private-runtime"
+    verify_loaded_images = profile.verify_loaded_images
+
+    def verify_trace(stderr):
+        with monkeypatch.context() as patch:
+            patch.setattr(profile, "PINNED_FILES", {wire_name: probe._sha256(runtime)})
+            patch.setattr(profile, "REQUIRED_IMAGES", {wire_name})
+            return verify_loaded_images(stderr)
+
+    monkeypatch.setattr(profile, "verify_loaded_images", verify_trace)
+    return f"dyld[123]: <12345678-1234-1234-1234-123456789ABC> {wire_name}\n".encode()
+
+
+def test_profiled_probe_captures_verified_loader(admitted, profiled, monkeypatch):
+    from tools import darwin_runtime_profile as profile
+
+    root, runtime, _ = admitted
+    calls = install_process(monkeypatch, b"READY", profiled)
+    result = run_probe(root, runtime, dependency_profile=True)
+    assert result["status"] == "process_completed"
+    assert result["dependency_profile"]["status"] == "observed"
+    assert result["dependency_profile"]["profile_sha256"] == profile.profile_digest()
+    assert base64.b64decode(result["dependency_profile"]["raw_stderr_base64"]) == profiled
+    assert calls[0][1]["env"] == profile.profile_environment()
+    assert result["study_unlocked"] is result["admitted"] is False
+
+
+@pytest.mark.parametrize("damage", ["missing-trace", "new-image", "drift", "oversized"])
+def test_profiled_probe_fails_closed(admitted, profiled, monkeypatch, damage):
+    from tools import darwin_runtime_profile as profile
+
+    root, runtime, _ = admitted
+    err = b"" if damage == "missing-trace" else profiled
+    if damage == "new-image":
+        err += b"dyld[123]: <12345678-1234-1234-1234-123456789ABC> /private/evil.so\n"
+    if damage == "oversized":
+        err = b"x" * (profile.MAX_OUTPUT + 1)
+    mutate = (
+        (lambda: profile.PINNED_FILES.update({str(runtime.resolve()): "0" * 64}))
+        if damage == "drift"
+        else None
+    )
+    install_process(monkeypatch, b"READY", err, mutate=mutate)
+    result = run_probe(root, runtime, dependency_profile=True)
+    assert result["status"] == "probe_failed"
+    assert result["study_unlocked"] is False
+
+
+def test_profiled_probe_checks_before_execution(admitted, profiled, monkeypatch):
+    from tools import darwin_runtime_profile as profile
+
+    root, runtime, _ = admitted
+    monkeypatch.setattr(profile, "EXECUTABLE", "/wrong-runtime")
+    result = run_probe(root, runtime, dependency_profile=True)
+    assert result["status"] == "admission_failed"
+    assert result["execution_observed"] is False
+
+
+def test_profiled_probe_unsupported_host(admitted, profiled, monkeypatch):
+    root, runtime, _ = admitted
+    monkeypatch.setattr(probe.platform, "system", lambda: "Linux")
+    assert run_probe(root, runtime, dependency_profile=True)["status"] == "admission_failed"
+
+
+def test_profiled_probe_profile_digest_drift(admitted, profiled, monkeypatch):
+    from tools import darwin_runtime_profile as profile
+
+    root, runtime, _ = admitted
+    install_process(
+        monkeypatch,
+        err=profiled,
+        mutate=lambda: monkeypatch.setattr(profile, "LIBRARY_DIRS", ("/changed",)),
+    )
+    assert run_probe(root, runtime, dependency_profile=True)["status"] == "probe_failed"
+
+
+def test_profiled_cli_local_receipt_only(admitted, profiled, monkeypatch, tmp_path, capsys):
+    root, runtime, _ = admitted
+    install_process(monkeypatch, err=profiled)
+    path = tmp_path / "receipt.json"
+    args = [
+        "--model-root",
+        str(root),
+        "--runtime-path",
+        str(runtime),
+        "--dependency-profile",
+        "--receipt",
+        str(path),
+    ]
+    assert probe.main(args) == 0
+    data = path.read_bytes()
+    summary = json.loads(capsys.readouterr().out)
+    assert summary["receipt_sha256"] == hashlib.sha256(data).hexdigest()
+    assert "raw_stderr_base64" not in summary
+    monkeypatch.setattr(probe, "run_probe", lambda *args, **kwargs: pytest.fail("no rerun"))
+    assert probe.main(args) == 1
+    assert path.read_bytes() == data
+
+
+def test_cli_unwritable_receipt_fails(admitted, monkeypatch, tmp_path, capsys):
+    root, _, _ = admitted
+    install_process(monkeypatch)
+    assert (
+        probe.main(["--model-root", str(root), "--receipt", str(tmp_path / "missing/out.json")])
+        == 1
+    )
+    assert json.loads(capsys.readouterr().out)["status"] == "receipt_write_failed"
+
+
 def test_admission_failure_never_executes(tmp_path, monkeypatch):
     monkeypatch.setattr(
         "tools.local_execution_probe._admission",
