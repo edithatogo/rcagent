@@ -183,7 +183,7 @@ incomplete. No further reviewer or routine phase approval is required.
               - [x] Review fixes (`1d01242`): bound identity reads/walks and whole-environment
                 budgets, bind imported project origins to the reviewed checkout,
                 and respect supported Python-dependent validator dependencies.
-          - [ ] Implement the exact two-slot controller and affirmative observation
+          - [~] Implement the exact two-slot controller and affirmative observation
             admission together before actual freeze, following the
             [controller context](../../context-packs/controller-admission-20260831.md).
             Include their real dependencies in the execution closure; preserve

@@ -13,6 +13,26 @@ cleanup was verified; clean successor `codex/prospective-controller-admission`
 starts at that merge. Prior agent file ownership is released; assign fresh
 bounded ownership before source edits. Root issue #1 remains open.
 
+Heartbeat 2026-08-30T19:46:17Z resumed clean checkpoint `3ae9a3f` on the
+same branch. Parent merge and both hosted checks were reverified; no overlapping
+writer or enabled lease was found. Main owns integration/docs and evidence;
+`runtime_profile_tests` owns both proposed modules, their direct tests and the
+gate source-closure update. `root_acceptance_map` reviews acceptance;
+`runtime_security_review` reviews safety/privacy and evidence integrity.
+Exact agent model revisions are unavailable; correlated errors remain possible.
+Unrelated Renovate PRs #93/#94 remain untouched.
+
+The panel selected immediate admission through a private, one-shot,
+non-serialisable controller-owned capability, consumed internally only after
+both direct captures and verified journal persistence. Supplied JSON, paths or
+hashes cannot mint that capability. The durable result records immediate
+admission but cannot recreate it in another process: trusted offline custody
+and scoring transitions remain separate future work. Persist attempt-start
+before calling the primary entry; an exception may occur after execution and
+must consume the attempt. No automatic retry or inferred resume is permitted.
+This is a stricter execution subset of the protocol's retry allowance, not a
+change to historical protocols. Implementation and validation remain pending.
+
 ## Panel recommendation and sequencing repair
 
 Implement the exact two-slot controller and affirmative admission together
