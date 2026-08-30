@@ -8,10 +8,10 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
-- Run ID: `structured-server-probe-20260830`; reviewer class: agent.
-- Implementation base: `64810aa3a7a42f7b3f6f18c36d1e6c55fcea4b47` (PR #92).
+- Run ID: `runner-contract-20260830`; reviewer class: agent.
+- Implementation base: `5b194a8f1bb8e90546f094496966400216c6eb21` (PR #95).
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
-- Integration branch: `codex/structured-server-probe`; no worktree lease is
+- Integration branch: `codex/prospective-runner-contract`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
@@ -121,8 +121,21 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   finding separately from structured capability. Raw evidence remains private,
   admission false. Receipt and public-projection reviews passed (`ba832ef`);
   full validation passed 1,106 tests in 85.03 seconds at 93.91% coverage.
-  Hosted evidence delivery remains pending. Do not rerun the probe.
-- Next implementation: the
+  PR #95 passed all seven checks at `4973f9b`, merged as `5b194a8` at
+  2026-08-30T15:23:55Z with exact tree parity; local master and completed
+  local/remote branch cleanup were verified. Post-merge Quality `33319523276`
+  and conformance `33319523348` passed. Do not rerun the probe.
+- Implemented slice: [fixture-only runner contract](../../context-packs/runner-contract-20260830.md),
+  with deterministic prompt/request bytes, native normalization and slot identity;
+  no launch, freeze or admission. Activated as `104cc1a`; fixture-first missing
+  module failure is recorded in the [implementation receipt](./runner-contract-20260830.md).
+  Code `ec2b63e` passed agent review, 85 focused tests at 100% and 1,191 full
+  tests at 93.98%. Hosted delivery remains pending. No existing probe was repeated.
+- Immediate next slice after delivery: the separately versioned
+  [native protocol candidate](../../context-packs/native-protocol-20260831.md).
+  Reuse reference/denominator validation without widening legacy acceptance;
+  preserve false execution/admission flags and leave the legacy freeze unchanged.
+- Subsequent implementation: the
   primary study runner. Use the reviewed Unix-socket route, no TCP fallback.
   Bind actual adapter/normaliser/profile/model-helper/registry and input/rubric
   identities into a reviewed full-component freeze. Implement affirmative
@@ -130,9 +143,9 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
   decoder. Do not use READY output or candidate consistency as primary evidence.
 - Prior checkpoint: 713 local tests, 93.10% coverage for PR #84; freeze helper
   30 focused tests at 100%. These results do not validate this runtime slice.
-- Scope ownership: the bounded structured observation and reviewed evidence
+- Scope ownership: the pure runner contract, matching synthetic fixtures and
   records belong to the successor; the
-  [context pack](../../context-packs/structured-server-probe-20260830.md) records its
+  [context pack](../../context-packs/runner-contract-20260830.md) records its
   checks and exclusions. Preserve overlapping active work.
 - No unresolved owner decision for local implementation of this queue. The study execution gate is
   unfinished implementation and evidence, not missing reviewer approval.
