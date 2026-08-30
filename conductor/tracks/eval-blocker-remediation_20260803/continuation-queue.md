@@ -8,6 +8,13 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Current slice: client/mode evidence reconciliation, activated from clean
+`4cd3790` after both PR #103 post-merge workflows passed. Main owns new
+documentation and integration; two read-only agent lanes check client evidence
+and safety/distribution claims. No overlapping writer or open implementation
+PR was observed; unrelated Renovate PRs #93/#94 are preserved. Historical
+queued/in-progress statements below are superseded by this update.
+
 **Current terminal capture state:** sole invocation/session 14492 completed;
 do not restart it. [Negative receipt](./prospective-capture-20260831.md) records
 first-slot fixed-cap `incomplete_generation`, second not-attempted, 0/2 admitted.

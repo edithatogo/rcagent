@@ -90,8 +90,8 @@ and merged normally as `25f7f3ae0ac349b8dfd336ce3dff399c5e11a9d1` at
 2026-08-30T21:49:51Z. Exact tree parity
 `7610d691358c450c05ff8931157c7eba9a27d4e1` and S/R ancestry were verified.
 Final local full validation passed 1,536 tests in 413.96 seconds at 94.56%.
-Post-merge Quality `33337488195` and conformance `33337488240` are queued;
-verify them before activating the successor. Local master was fast-forwarded;
+Post-merge Quality `33337488195` and conformance `33337488240` both passed,
+freshly verified on the 23:00 UTC continuation. Local master was fast-forwarded;
 completed local/remote-tracking branch cleanup followed verified remote absence.
 
 Use Branch B of the [post-capture context](../../context-packs/prospective-postcapture-20260831.md):

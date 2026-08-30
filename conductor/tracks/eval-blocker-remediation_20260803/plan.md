@@ -226,12 +226,16 @@ incomplete. No further reviewer or routine phase approval is required.
             review verified retained evidence and cleanup, not study success.
             [Negative receipt](./prospective-capture-20260831.md): 0/2 admitted;
             no retry, blinding or scoring. Frozen source remains unchanged.
-            - [~] Deliver reviewed negative evidence, then reconcile scoped
+            - [x] Deliver reviewed negative evidence, then reconcile scoped
               readiness-only fallback and the broader root acceptance map using
               [post-capture Branch B](../../context-packs/prospective-postcapture-20260831.md).
               [Scoped fallback addendum](./readiness-addendum-20260831.md)
               preserves historical inventories and names supported-mode and
               distribution acceptance reconciliation as the successor.
+              PR #103 merged `25f7f3a`; both post-merge workflows passed.
+            - [~] Reconcile client/mode and distribution evidence under
+              [the bounded context](../../context-packs/client-mode-evidence-reconciliation-20260831.md),
+              activated from clean `4cd3790`. No new execution or submission.
 
 ## Historical design and current execution choice
 
