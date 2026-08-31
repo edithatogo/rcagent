@@ -8,6 +8,22 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Validation correction: isolated session 64613 stopped at workspace-discovered
+missing type dependencies; it is complete, not resumable. The original Python
+3.14.5 `.venv` has been restored offline from the lock with all extras. Sole
+final gate is direct `.venv/bin/python -m tools.full_validation`, session
+88263, log `/tmp/rcagent-route-restored-validation.log`. Do not invoke uv or
+change environments while it runs. This supersedes the validation cursor below.
+
+PR #107 is open. Commits `1ccb3b6`, `6d12d1d`, `212f11f` and `7778d4b`
+deliver safety fixes, acceptance reconciliation and current-route/synthetic
+reviewer packet preparation. All three agent lanes passed bounded reviews;
+final validation remains pending. Session 49956 ended with one environment
+failure (pytest absent after a concurrent uv environment recreation), 1,535
+passes. Do not rerun that session. The isolated locked-environment gate is
+session 64613, log `/tmp/rcagent-route-isolated-validation.log`; resume it.
+No merge before its successful outcome and exact-head hosted checks.
+
 Current slice: route verification and acceptance/safety reconciliation on
 `codex/submission-route-verification`, base `35d1fdf`. Both PR #106 post-merge
 checks passed. Baseline validation session 52162 is complete: 1,536 tests,

@@ -89,5 +89,21 @@ sources remain unchanged; only historical guidance changed under `evaluation/`.
 Validation environment incident: during session 49956, a separate `uv run`
 structural check reported interpreter-cache warnings and recreated `.venv`
 using CPython 3.14.6. Its fixture assertions passed, but the concurrent full
-run is not final clean-environment evidence. Preserve its outcome and run one
-isolated locked-environment gate before delivery. Final validation is pending.
+run is not final clean-environment evidence. It finished with 1,535 passes and
+one failed subprocess collection test: the recreated `.venv` lacked pytest
+(`test_transport_node_ids_are_bounded`), 414.08 seconds, 94.56% coverage.
+No product fix or threshold change is warranted for that environment failure.
+An offline locked all-extras environment was created separately at
+`/tmp/rcagent-route-validation.PZEpQN/venv` using CPython 3.14.6; its direct
+Python invocation of `-m tools.full_validation` is session 64613, log
+`/tmp/rcagent-route-isolated-validation.log`. It stopped at basedpyright with
+62 errors and 15 warnings while workspace dependency resolution still saw the
+incomplete `.venv`; it never reached tests. A separate environment alone does
+not isolate the type checker's workspace discovery.
+
+The second bounded recovery restored the original CPython 3.14.5 workspace
+environment with `uv sync --offline --locked --all-extras --python 3.14.5`.
+The final gate now uses `.venv/bin/python -m tools.full_validation` directly,
+session 88263, log `/tmp/rcagent-route-restored-validation.log`. No concurrent
+uv/environment mutations are permitted during it. Final validation is pending;
+another unchanged retry is not the recovery strategy if this fails.
