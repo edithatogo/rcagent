@@ -493,8 +493,10 @@ Code repair commit: `036137295959674a45e4a49356702d0ad03c7cb9`.
   - [x] Reject symlinked package roots/resources and Windows-style escape paths.
   - [x] Reject malformed, divergent or capped upstream comparisons and inspect
     both paths of renamed files.
-  - [ ] Record final regression, official-validator and repository-wide results
+  - [x] Record final regression, official-validator and repository-wide results
     for the integrated repair revision in the review receipt.
+  - [!] Resolve the broad-gate server-process reap failures; 1622 tests passed
+    and 2 failed. Focused success does not supersede this failure receipt.
 - [x] Task: Reconcile the acceptance gap without rewriting historical receipts.
   - [x] Expose Claude actual-client acceptance as `RCA-ADAPTER-001` and retain
     the historical Codex results within their tested revision/case limits.
