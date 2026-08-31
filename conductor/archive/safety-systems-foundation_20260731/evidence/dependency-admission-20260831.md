@@ -36,6 +36,13 @@ attributing the exact cause. Refresh did not clear the pending check.
 
 Keep PR 93 open until the bot's admission evidence is resolved. Do not make
 timestamps optional, manufacture success, or promise a future unblock date.
-The dependency dashboard and bot logs are the next diagnostic inputs.
+Dashboard #74 lists the PR as open but supplies no per-dependency timestamp
+diagnostic. The Mend log page returns an unauthenticated application shell
+(`success:false`, `userSession:null`) through the current read-only session.
+The next diagnostic input is the authenticated Mend job log for the refresh
+that generated the pending status at 2026-08-31T13:00:24Z. It must establish
+which dependency and release timestamp Renovate actually used; the cause and
+an eventual expiry date are not established. GitHub credentials were not sent
+to the separate service.
 This admission check does not change Track 01's engineering scope or require
 independent human review.

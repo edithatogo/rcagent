@@ -9,7 +9,7 @@
 
 ## Hard Start Dependencies
 
-- [safety-systems-foundation_20260731](../../tracks/safety-systems-foundation_20260731/index.md)
+- [safety-systems-foundation_20260731](../safety-systems-foundation_20260731/index.md)
 
 ## Later Phase Dependencies
 

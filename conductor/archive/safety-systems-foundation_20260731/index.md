@@ -1,6 +1,6 @@
 # Track 01: Safety Systems Foundation and Solo-Developer Harness
 
-- **Status:** Review and remediation in progress; not yet archive-eligible
+- **Status:** Completed and archived after agent review; delivery tracked in PR #111
 - **Workstream:** foundation-governance
 - **GitHub issue:** [#6](https://github.com/edithatogo/rcagent/issues/6)
 - **Parent workstream:** [#2](https://github.com/edithatogo/rcagent/issues/2)
@@ -12,7 +12,7 @@
 
 ## Later Phase Dependencies
 
-- [agent-skills-living-conformance_20260731](../agent-skills-living-conformance_20260731/index.md)
+- [agent-skills-living-conformance_20260731](../../tracks/agent-skills-living-conformance_20260731/index.md)
   for licence, redistribution, release, and clinical-validity claims only.
 
 Track 00 has technical admission for downstream, non-release foundation work
@@ -30,12 +30,14 @@ compatibility or permission for a new external action.
 - A read-only GitHub check on 2026-08-31 found the active branch ruleset
   `master-stable-automated-checks`. Re-query its requirements and exact-head
   hosted checks before integration; configuration alone does not prove a pass.
-- Review is reconciling all **eleven** specification acceptance criteria.
+- Review reconciled all **eleven** specification acceptance criteria.
   The historical completion receipt's count of ten and no-archive limitation
   are retained as dated evidence, not current acceptance conclusions.
-- A durable local coordinator is being implemented and reviewed. Existing
-  deterministic contracts do not prove persistence or operational coordination;
-  final targeted, repository-wide and hosted validation remain required.
+- The durable local coordinator passed agent review, 1655 local tests and
+  hosted Linux, macOS and Windows validation at `c0aede4`.
+  Dispatch selects instructions; it does not execute clients. Recovery is
+  evidence-bound and POSIX-only. See the [current review receipt](./evidence/review-20260831.md)
+  for limits, negative evidence and the separate integration gate.
 - No paid service, credential, public release, or model download is required.
 
 ## Track Artefacts

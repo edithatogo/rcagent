@@ -7,11 +7,12 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Continuous Execution Contract
 
-Current review state (2026-08-31): **in progress, not archive-eligible yet**.
+Current review state (2026-08-31): **accepted and archived**. Delivery is tracked
+separately in PR #111; archive eligibility is not a claim of merged delivery.
 The specification has eleven acceptance criteria. Earlier checkmarks and the
 retained completion receipt document prior contract-level evidence, not proof
-that the durable coordination work now under review has passed. Preserve that
-receipt and distinguish new implementation from its pending validation.
+that the durable coordination work passed. Preserve that receipt; the dated
+review receipt below records the new implementation and passing validation.
 
 - Continue automatically through tasks, phase checkpoints, fresh-context
   review, bounded rework, documentation synchronization, and the next ready
@@ -239,20 +240,20 @@ receipt and distinguish new implementation from its pending validation.
 Code fixes: `b39f5632c6f7dabc03be48c12958bd29af62355a`.
 Current evidence: [review receipt](./evidence/review-20260831.md).
 
-- [~] Task: Reconcile all eleven acceptance criteria against direct evidence.
+- [x] Task: Reconcile all eleven acceptance criteria against direct evidence.
   - [x] Correct the current index's obsolete protection/licence claims and
     contradictory duplicate phase-dependency section.
   - [x] Record the eleven-criterion evidence map and supersede outdated
     completion conclusions without rewriting the historical receipt.
   - [x] Reconcile GitHub #6's stale hard dependency on #5 with the specified
     phase-only dependency; retain Track 00's own unresolved acceptance scope.
-- [~] Task: Implement and review durable local coordination.
+- [x] Task: Implement and review durable local coordination.
   - [x] Establish evidence for persisted state, ownership, recovery and bounded
     next-step coordination; do not infer it from side-effect-free contracts.
   - [x] Record positive and negative tests for the integrated implementation.
-  - [ ] Pass targeted, full repository and exact-head hosted validation, or
+  - [x] Pass targeted, full repository and exact-head hosted validation, or
     explicitly retain any unavailable or failed gate.
-- [ ] Task: Complete fresh agent-panel review and current status reconciliation.
-  - [ ] Record exact revisions, commands, findings, limitations and rollback.
-  - [ ] Archive only after complete acceptance and applicable validation pass;
+- [x] Task: Complete fresh agent-panel review and current status reconciliation.
+  - [x] Record exact revisions, commands, findings, limitations and rollback.
+  - [x] Archive only after complete acceptance and applicable validation pass;
     update current locators together and preserve hash-bound historical receipts.
