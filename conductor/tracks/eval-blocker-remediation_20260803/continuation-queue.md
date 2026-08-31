@@ -8,6 +8,52 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Local slice complete: final direct Python 3.14.5 gate/session 88263 passed
+1,536 tests in 697.27 seconds at 94.56%. Route checks, eight-case synthetic
+reviewer packet, stale-plan reconciliation and historical safety fixes passed
+agent-panel review. PR #107 awaits final exact-head hosted checks and normal
+merge; do not rerun completed tests or the consumed study. Browser discovery
+could not reach publisher portals; account access remains unobserved, not
+denied. After delivery, only concrete eligible preparation/access work may
+continue; no new terms, availability or legal readiness may be invented.
+Historical validation-active cursors below are superseded by this result.
+
+Validation correction: isolated session 64613 stopped at workspace-discovered
+missing type dependencies; it is complete, not resumable. The original Python
+3.14.5 `.venv` has been restored offline from the lock with all extras. Sole
+final gate is direct `.venv/bin/python -m tools.full_validation`, session
+88263, log `/tmp/rcagent-route-restored-validation.log`. Do not invoke uv or
+change environments while it runs. This supersedes the validation cursor below.
+
+PR #107 is open. Commits `1ccb3b6`, `6d12d1d`, `212f11f` and `7778d4b`
+deliver safety fixes, acceptance reconciliation and current-route/synthetic
+reviewer packet preparation. All three agent lanes passed bounded reviews;
+final validation remains pending. Session 49956 ended with one environment
+failure (pytest absent after a concurrent uv environment recreation), 1,535
+passes. Do not rerun that session. The isolated locked-environment gate is
+session 64613, log `/tmp/rcagent-route-isolated-validation.log`; resume it.
+No merge before its successful outcome and exact-head hosted checks.
+
+Current slice: route verification and acceptance/safety reconciliation on
+`codex/submission-route-verification`, base `35d1fdf`. Both PR #106 post-merge
+checks passed. Baseline validation session 52162 is complete: 1,536 tests,
+94.56%, 399.56 seconds; do not resume or duplicate it. Three agent lanes
+verify Claude requirements, reconcile stale engineering parents and correct
+unsupported historical dataset rights/ethics assurances. Main integrates.
+No model run, submission or account change is authorised by this cursor.
+The app heartbeat was observed paused; this user-requested turn does not
+change its configuration. Historical active scheduling statements below are
+dated observations, not current scheduling evidence.
+
+Latest delivery: PR #106 merged `75895ae`, exact tree parity and seven PR
+checks passed; full local validation passed 1,536 tests/94.56%. Local master
+and completed-branch cleanup verified. Prepared branch:
+`codex/submission-route-verification`. First check post-merge Quality
+`33357634694` and conformance `33357634697` both passed; next
+activate [read-only route verification](../../context-packs/submission-route-verification-20260831.md).
+Validation session 94348 is complete. Do not duplicate tests or study attempts;
+historical active/pending statements below are superseded.
+
 Active test-only fixture hardening from clean `e7f2dac`, after fresh PR #105
 post-merge success verification. Main owns the named signal-error test and
 integration; agent lanes review acceptance and cleanup safety. No overlapping

@@ -2,13 +2,22 @@
 
 **Version**: 1.2
 **Date**: 2026-02-25
-**Status**: 7 NZ cases collected (HDC NZ)
+**Status**: 7 historical NZ case files retained (HDC NZ); current study admission not established
+
+**Readiness qualification (2026-08-31):** The historical inventory below is not
+proof of source rights, anonymity, ethics status, coverage or study admission.
+See the [bounded readiness audit](../../conductor/tracks/eval-blocker-remediation_20260803/historical-readiness-20260831.md).
+Case bytes and historical classifications are preserved; unresolved category
+mappings must not count as verified coverage.
 
 ---
 
 ## Overview
 
-This dataset contains publicly available Australian and New Zealand adverse event cases used to evaluate the rcagent skill suite. Each case is extracted from official government or statutory body publications and formatted in a standardized structure.
+This directory retains seven NZ case files attributed to public HDC publications
+and formatted for a historical evaluation. Australian cases remain absent.
+File presence and formatting do not establish permission for reuse or admission
+to a new study. These are historical real-case derivatives, not synthetic data.
 
 ---
 
@@ -96,26 +105,33 @@ This dataset contains publicly available Australian and New Zealand adverse even
 
 ### Data Provenance
 
-All cases are sourced from publicly available documents published by official government or statutory bodies:
-
-- **HDC NZ decisions**: Published under the Health and Disability Commissioner Act 1994. Decisions are published on the HDC website for public access as part of the Commissioner's transparency mandate.
-- **ACSQHC reports**: Published by the Australian Commission on Safety and Quality in Health Care as part of national patient safety reporting. Available under Australian Government copyright (Creative Commons Attribution-NonCommercial-ShareAlike where specified, otherwise standard Crown copyright).
-- **Coroner findings**: Published by state/territory Coroners Courts as a matter of public record. Coroner findings are public documents.
-- **CEC/CCOPMM reports**: Published by state health agencies for public information and quality improvement.
+Existing case metadata attributes seven files to HDC NZ decisions and records
+source URLs. Other source families above are candidates, not acquired cases.
+The current bounded audit did not verify source availability, extraction parity
+or per-artefact terms. No licence is inferred from a publisher's government or
+statutory status.
 
 ### Licensing
 
-- Source documents are published by government agencies for public access
-- This dataset extracts and standardizes narratives from these public documents for research purposes
-- Extracted narratives maintain the de-identification present in source documents
-- No additional patient data is created, inferred, or supplemented
-- Citation of source documents is provided for each case
+- Public access and citation do not establish permission to copy, adapt,
+  redistribute or submit source-derived material to a provider.
+- Repository Apache-2.0 licensing does not grant rights in third-party material.
+- Before further use, record the exact source, applicable terms and permitted
+  action for each artefact; preserve unresolved rights as an admission blocker.
+- Source de-identification is not a guarantee of anonymity. Privacy assessment,
+  minimum-necessary content and any required authority remain separate gates.
+- No further acquisition, redistribution or study use is authorised by this
+  inventory. Historical files remain unchanged pending evidence reconciliation.
 
 ### How Cases Were Extracted
 
+The retained historical record describes the following extraction method;
+the current audit has not verified its fidelity or privacy assurances:
+
 1. Source document identified and URL recorded
 2. Clinical narrative extracted verbatim or with minimal paraphrasing for clarity
-3. De-identification from source document maintained (no names, MRN, or identifying details)
+3. Source de-identification reportedly maintained; absence of identifying or
+   re-identifying detail is not established by that report
 4. Source investigation findings (contributing factors, root causes, recommendations) extracted separately for use as gold standard
 5. SAC-equivalent severity and difficulty rating assigned by the research team
 6. Case formatted in standardized template (see `evaluation/protocol/case-selection-criteria.md`)
@@ -124,11 +140,17 @@ All cases are sourced from publicly available documents published by official go
 
 ## Ethics Statement
 
-- All case data is sourced from **publicly available** documents published by official government or statutory bodies
-- No patient contact occurs during this study
-- No ethics committee approval is required (secondary analysis of published, de-identified documents)
-- All case narratives used in this study maintain the de-identification present in the source documents
-- This study does not involve human subjects research
+- Public availability does not determine ethics-review requirements, human
+  research status, privacy acceptability or organisational permission.
+- The earlier blanket statements that no ethics approval was required and that
+  the study did not involve human subjects research are not established and
+  must not be relied upon. Applicable authority must determine any such status
+  for a proposed use; this repository does not make that determination.
+- Repository engineering and research-method reviews use agent panels under
+  the [standing decision](../../conductor/decisions/20260830-001-legacy-agent-review.md),
+  not independent human reviewer recruitment. Agent agreement cannot replace
+  missing rights, private-data admission, historical human observations or
+  clinical, legal, regulatory, cultural-safety or organisational authority.
 - AI-generated investigation outputs are for **evaluation purposes only** — they are NOT clinical investigation reports and must NOT be used for clinical governance decisions
 
 ---
@@ -150,6 +172,10 @@ Full criteria in `evaluation/protocol/case-selection-criteria.md`.
 ---
 
 ## Directory Structure
+
+Historical illustrative layout, not an inventory: only the README and seven
+`hdc-nz/` files currently exist. Australian and coroner paths below are planned.
+The repository prefix is `evaluation/datasets/`.
 
 ```
 datasets/

@@ -37,7 +37,16 @@ deadline change, source/review repin or service/deployment action occurred.
   preserved, deterministic exit observation, explicit final cleanup.
 - Agent safety `runtime_security_review`: passed; owned handles/original
   methods, bounded waits, visible cleanup failures, frozen-source parity.
-- Full repository validation is running; hosted checks/delivery are pending.
+- Full repository validation passed: 1,536 tests in 295.61 seconds, 94.56%
+  coverage, plus lint/types/governance/benchmark checks.
+
+PR #106 passed all seven checks at `0f4745a4cb369d63e5da21bc84c4be47bed0a6c6`
+and merged `75895ae4d900898724ee639155d48775d1782934` at
+2026-08-31T04:35:39Z. Reviewed tree parity
+`02432110e639f0a74c8955b6e7eed7d298ad494c` was verified. One TLS merge failure
+was followed by an OPEN/exact-head check before the bounded retry. Post-merge
+Quality `33357634694` and conformance `33357634697` both passed. Local
+master and completed-branch cleanup were verified after remote branch absence.
 
 Agents reviewed read-only and did not run tests. A cleanup exception can become
 the primary traceback while Python retains the original exception context;
