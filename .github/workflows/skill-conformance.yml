@@ -44,9 +44,11 @@ jobs:
         run: python -m tools.run_skill_conformance --output skill-conformance-receipt.json
 
       - uses: actions/upload-artifact@v7
+        if: always()
         with:
           name: skill-conformance-receipt
           path: skill-conformance-receipt.json
 
       - name: Run contract tests
+        if: always()
         run: python -m pytest

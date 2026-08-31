@@ -229,3 +229,58 @@ def test_extension_entries_are_validated(matrix_profile: Path, field, value) -> 
     extensions["extensions"][0][field] = value
     path.write_text(json.dumps(extensions))
     assert any("RCA-PROFILE-005" in error for error in validate_profile(matrix_profile))
+
+
+@pytest.mark.parametrize(
+    "document", ["evidence/compliance-matrix.json", "extensions.json", "upstream-baseline.json"]
+)
+def test_unreadable_profile_document_fails_closed(matrix_profile, document):
+    (matrix_profile / TRACK / document).write_text("{")
+    assert any("RCA-PROFILE-001" in error for error in validate_profile(matrix_profile))
+
+
+@pytest.mark.parametrize("value", [None, [], {"items": None}])
+def test_invalid_matrix_shape_fails_closed(matrix_profile, value):
+    (matrix_profile / TRACK / "evidence/compliance-matrix.json").write_text(json.dumps(value))
+    assert any("items array" in error for error in validate_profile(matrix_profile))
+
+
+@pytest.mark.parametrize(
+    "item,expected", [(None, "item must be an object"), ({}, "missing fields")]
+)
+def test_invalid_matrix_item_fails_closed(matrix_profile, item, expected):
+    _change_matrix(matrix_profile, lambda matrix: matrix["items"].append(item))
+    assert any(expected in error for error in validate_profile(matrix_profile))
+
+
+@pytest.mark.parametrize("sources", [None, [], [None], [" "]])
+def test_invalid_baseline_sources_rejected(matrix_profile, sources):
+    path = matrix_profile / TRACK / "upstream-baseline.json"
+    baseline = json.loads(path.read_text())
+    baseline["sources"] = sources
+    path.write_text(json.dumps(baseline))
+    assert any("non-empty source URLs" in error for error in validate_profile(matrix_profile))
+
+
+@pytest.mark.parametrize(
+    "changes,expected",
+    [
+        ({"result": "success"}, "invalid result"),
+        ({"applicability": "adapter_only", "omission_rationale": " "}, "omission rationale"),
+    ],
+)
+def test_invalid_claims_require_correction(matrix_profile, changes, expected):
+    _change_matrix(matrix_profile, lambda matrix: matrix["items"][0].update(changes))
+    assert any(expected in error for error in validate_profile(matrix_profile))
+
+
+def test_evidence_resolution_error_is_reported(matrix_profile, monkeypatch):
+    original = Path.resolve
+
+    def resolve(path, *args, **kwargs):
+        if path.name == "evidence.md":
+            raise OSError("Cannot resolve evidence")
+        return original(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "resolve", resolve)
+    assert any("RCA-PROFILE-003" in error for error in validate_profile(matrix_profile))

@@ -191,3 +191,22 @@ def test_invalid_baseline_has_failed_receipt(tmp_path, payload):
     code, receipt = check_drift(path, offline=True)
     assert code == 2
     assert receipt["current_conformance"] is False
+
+
+@pytest.mark.parametrize("revision", [None, [], 0, ""])
+def test_malformed_upstream_revision_fails_closed(tmp_path, revision):
+    code, receipt = check_drift(
+        _baseline(tmp_path / "baseline.json"),
+        opener=lambda *args, **kwargs: _Response({"sha": revision}),
+    )
+    assert code == 2
+    assert receipt["status"] == "upstream_unavailable"
+    assert receipt["current_conformance"] is False
+
+
+def test_cli_prints_failed_receipt(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(
+        "sys.argv", ["check_skill_drift", "--baseline", str(tmp_path / "missing.json"), "--offline"]
+    )
+    assert main() == 2
+    assert json.loads(capsys.readouterr().out)["status"] == "baseline_invalid"

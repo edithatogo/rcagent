@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from tools.validate_skill import validate_skill
+from tools.validate_skill import main, validate_skill
 
 
 def _skill(root: Path, name: str = "example-skill", extra: str = "") -> Path:
@@ -169,3 +169,57 @@ def test_platform_specific_reference_paths_fail(tmp_path: Path, reference: str) 
         item.requirement == "AS-SPEC-008" and "not portable" in item.message
         for item in validate_skill(skill)
     )
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "# No metadata",
+        "---\nname: example-skill",
+        "---\n- item\n---\nBody",
+        "---\nname: [\n---\nBody",
+    ],
+)
+def test_invalid_frontmatter_has_diagnostic(tmp_path, text):
+    skill = _skill(tmp_path)
+    (skill / "SKILL.md").write_text(text)
+    assert "AS-SPEC-001" in _requirements(skill)
+
+
+@pytest.mark.parametrize(
+    "extra,requirement",
+    [("unknown-field: value\n", "RCA-EXT-001"), ("compatibility: 42\n", "AS-SPEC-005")],
+)
+def test_invalid_optional_fields_fail(tmp_path, extra, requirement):
+    assert requirement in _requirements(_skill(tmp_path, extra=extra))
+
+
+def test_missing_required_skill_file_fails(tmp_path):
+    assert "AS-SPEC-001" in _requirements(tmp_path)
+
+
+def test_routed_binary_asset_is_not_decoded_as_text(tmp_path):
+    skill = _skill(tmp_path)
+    (skill / "assets").mkdir()
+    (skill / "assets/image.bin").write_bytes(b"\xff\xfe")
+    path = skill / "SKILL.md"
+    path.write_text(path.read_text() + "\nRead `assets/image.bin`.\n")
+    assert validate_skill(skill) == []
+
+
+@pytest.mark.parametrize("body,requirement", [("\n" * 500, "AS-GUIDE-001"), ("", "AS-SPEC-001")])
+def test_body_limits_are_enforced(tmp_path, body, requirement):
+    skill = _skill(tmp_path)
+    path = skill / "SKILL.md"
+    path.write_text("---\nname: example-skill\ndescription: Example\n---\n" + body)
+    assert requirement in _requirements(skill)
+
+
+@pytest.mark.parametrize("adapter", [True, False])
+def test_cli_enforces_core_adapter_boundary(tmp_path, monkeypatch, capsys, adapter):
+    skill = _skill(tmp_path, extra="allowed-tools: Read\n")
+    monkeypatch.setattr(
+        "sys.argv", ["validate_skill", str(skill)] + (["--adapter"] if adapter else [])
+    )
+    assert main() == (0 if adapter else 1)
+    assert ("validation passed" if adapter else "AS-SPEC-007") in capsys.readouterr().out
