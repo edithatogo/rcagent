@@ -66,6 +66,13 @@ single focused rerun (2 tests, 0.84 seconds). No source or timeout was changed.
 All seven PR #105 checks passed at `be3ae0d`, but that does not erase the local
 failure. One bounded full recheck is running before merge; do not start another
 or confuse these synthetic fixture runs with the consumed study attempt.
+Read-only diagnosis by `runtime_profile_tests` found the result consistent
+with the fixture's 0.1-second kill/reap observation budget, not a demonstrated
+production defect. It also found no independent final reap in that test after
+an assertion failure. Retain a bounded test-hardening follow-up: deterministic
+signal-error injection and explicit fixture cleanup, without extending
+production deadlines or changing frozen execution sources. A passing recheck
+does not remove that known fixture limitation.
 The README is documentation, not a new runtime guarantee or completed study.
 Public delivery through the normal PR workflow remains distinct from a new
 release or directory submission. Root #1 and owning-track acceptance stay open.

@@ -249,6 +249,9 @@ incomplete. No further reviewer or routine phase approval is required.
               [Packet delta](./listing-packet-delta-20260831.md) and root README
               passed agent acceptance/safety review; full validation and hosted
               delivery remain pending. Existing source materials are unchanged.
+            - [ ] Harden the synthetic signal-error fixture's deterministic
+              error injection and final cleanup after the retained local
+              timing failure; preserve production deadlines and frozen sources.
 
 ## Historical design and current execution choice
 
