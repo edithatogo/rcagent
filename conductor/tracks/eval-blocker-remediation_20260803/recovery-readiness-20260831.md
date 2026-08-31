@@ -13,6 +13,8 @@ Track 04's archived Phase 0 parent is reconciled with its retained implementatio
 the still-live foundation track, and the integration map reaches the archived
 fit-gap receipt. This does not refresh policy sources or confer external
 authority. The continuation cursor no longer requires a pruned handoff branch.
+The unavailable custody and historical-inventory parents are marked blocked,
+not actively running; their incomplete scope and wake conditions are retained.
 
 PR #94 merged normally as `cefac9f9210ac95f1436eccfe4aefbeea964b2f7` after exact-head
 checks and agent review. Official PyPI version metadata established that every
@@ -58,7 +60,15 @@ publisher access and form state remain unobserved, not denied.
 Three agent lanes reviewed acceptance/implementation, archive evidence and
 dependency/recovery boundaries. Exact model revisions are unavailable; shared
 context and correlated errors limit independence. Their findings informed the
-bounded changes, not human validation or a positive study result. Final
-validation and exact-head delivery results must be recorded before closeout.
+bounded changes, not human validation or a positive study result.
+
+The fresh Python 3.14.5 baseline passed 1,536 tests in 293.79 seconds at 94.56%
+coverage. After integrating merged PR #94, the full `tools.full_validation`
+gate passed 1,540 tests in 393.28 seconds at 94.56%. The final blocked-status
+wording also passed three-agent review. A bounded scan found no missing local
+links in the 29 registry tracks' 58 index/specification documents. PR #94's
+post-merge Quality `33386788150` and conformance `33386788225` both passed.
+Exact-head hosted checks and delivery of this reconciliation remain separate;
+consult its linked pull request and merge commit before pruning its branch.
 Rollback affects only these coordination records and archive navigation;
 original receipts, runtime code and frozen study bytes remain unchanged.
