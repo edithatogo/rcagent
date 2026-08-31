@@ -16,6 +16,12 @@
   "rangeStrategy": "pin",
   "packageRules": [
     {
+      "description": "Preserve the Python compatibility floor; changes require coordinated review",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["requires-python"],
+      "enabled": false
+    },
+    {
       "description": "Group low-risk GitHub Actions maintenance",
       "matchManagers": [
         "github-actions"

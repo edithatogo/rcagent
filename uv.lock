@@ -469,12 +469,12 @@ validate = [
 
 [package.metadata]
 requires-dist = [
-    { name = "basedpyright", marker = "extra == 'lint'", specifier = ">=1.18" },
-    { name = "jsonschema", marker = "extra == 'validate'", specifier = ">=4.25,<5" },
-    { name = "pytest", marker = "extra == 'test'", specifier = ">=8.4,<10" },
-    { name = "pytest-cov", marker = "extra == 'test'", specifier = ">=6.2,<8" },
-    { name = "pyyaml", marker = "extra == 'validate'", specifier = ">=6.0.2,<7" },
-    { name = "ruff", marker = "extra == 'lint'", specifier = ">=0.6" },
+    { name = "basedpyright", marker = "extra == 'lint'", specifier = "==1.39.10" },
+    { name = "jsonschema", marker = "extra == 'validate'", specifier = "==4.26.0" },
+    { name = "pytest", marker = "extra == 'test'", specifier = "==9.1.1" },
+    { name = "pytest-cov", marker = "extra == 'test'", specifier = "==7.1.0" },
+    { name = "pyyaml", marker = "extra == 'validate'", specifier = "==6.0.3" },
+    { name = "ruff", marker = "extra == 'lint'", specifier = "==0.16.4" },
     { name = "ty", marker = "extra == 'lint'" },
 ]
 provides-extras = ["validate", "lint", "test"]
