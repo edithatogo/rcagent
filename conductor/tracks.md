@@ -16,7 +16,7 @@ Parent: [GitHub #2](https://github.com/edithatogo/rcagent/issues/2)
 | Status | Track | GitHub | Hard start blockers |
 |---|---|---:|---|
 | [x] | [00 Agent Skills Living Conformance and Portable Architecture](./tracks/agent-skills-living-conformance_20260731/index.md) | [#5](https://github.com/edithatogo/rcagent/issues/5) | None |
-| [x] | [01 Safety Systems Foundation and Solo-Developer Harness](./tracks/safety-systems-foundation_20260731/index.md) | [#6](https://github.com/edithatogo/rcagent/issues/6) | None; 00 remains a phase gate for licence/release scope |
+| [~] | [01 Safety Systems Foundation and Solo-Developer Harness](./tracks/safety-systems-foundation_20260731/index.md) | [#6](https://github.com/edithatogo/rcagent/issues/6) | Review fixes in progress; 00 is phase-only for licence/release scope |
 | [x] | [02 Evidence Workflow Core](./archive/evidence-workflow-core_20260731/index.md) | [#7](https://github.com/edithatogo/rcagent/issues/7) | 01 |
 | [x] | [03 Privacy, Security, and Assurance](./archive/privacy-security-assurance_20260731/index.md) | [#8](https://github.com/edithatogo/rcagent/issues/8) | 01 |
 | [x] | [04 Jurisdiction Packs — National Baseline, NSW and Queensland](./archive/nsw-health-jurisdiction-pack_20260731/index.md) | [#9](https://github.com/edithatogo/rcagent/issues/9) | Completed; under-review NSW rules remain conditional |
