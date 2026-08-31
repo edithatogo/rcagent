@@ -57,8 +57,15 @@ passed the drafts. Acceptance verified all six source hashes against
 rights, professional authority and best-effort support boundaries. Reviewed
 README SHA-256: `723cecd07ab6b2b8af695195e499a01e523b7342476d809d0ea39bb0a3be6968`.
 Repository governance and whole-tree gremlin scan passed; full validation is
-running before delivery. A file-path gremlin invocation was rejected because
+required before delivery. A file-path gremlin invocation was rejected because
 that tool expects a directory; the corrected whole-tree invocation passed.
+The first full local run retained one failure and 1,535 passes (606.52 seconds,
+94.56% coverage): the existing synthetic process-stop kill-error test observed
+`reaped=false` with cleanup grace 0.1 seconds. Both parameter cases passed a
+single focused rerun (2 tests, 0.84 seconds). No source or timeout was changed.
+All seven PR #105 checks passed at `be3ae0d`, but that does not erase the local
+failure. One bounded full recheck is running before merge; do not start another
+or confuse these synthetic fixture runs with the consumed study attempt.
 The README is documentation, not a new runtime guarantee or completed study.
 Public delivery through the normal PR workflow remains distinct from a new
 release or directory submission. Root #1 and owning-track acceptance stay open.

@@ -13,6 +13,12 @@ post-merge checks were freshly confirmed passing. Main owns README and dated
 packet delta; agent review checks package scope and safety. No root README or
 overlapping implementation PR existed at activation. Preserve unrelated
 Renovate PRs #93/#94 and all frozen study bytes.
+PR #105 at `be3ae0d` has seven passing hosted checks but merge is paused:
+first local full validation had one synthetic kill/reap timing assertion
+failure (1,535 passed). The unchanged focused two-case test passed. One full
+recheck is active, terminal session 3514, log
+`/tmp/rcagent-listing-validation-recheck.log`. Resume that invocation; do not
+duplicate tests or retry the actual study. Source bytes and deadlines unchanged.
 
 Delivery checkpoint: PR #104 merged `8b9d34b`, exact reviewed tree verified,
 all seven PR checks passed; local master and branch cleanup verified. Prepared
