@@ -8,6 +8,17 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Current slice: route verification and acceptance/safety reconciliation on
+`codex/submission-route-verification`, base `35d1fdf`. Both PR #106 post-merge
+checks passed. Baseline validation session 52162 is complete: 1,536 tests,
+94.56%, 399.56 seconds; do not resume or duplicate it. Three agent lanes
+verify Claude requirements, reconcile stale engineering parents and correct
+unsupported historical dataset rights/ethics assurances. Main integrates.
+No model run, submission or account change is authorised by this cursor.
+The app heartbeat was observed paused; this user-requested turn does not
+change its configuration. Historical active scheduling statements below are
+dated observations, not current scheduling evidence.
+
 Latest delivery: PR #106 merged `75895ae`, exact tree parity and seven PR
 checks passed; full local validation passed 1,536 tests/94.56%. Local master
 and completed-branch cleanup verified. Prepared branch:
