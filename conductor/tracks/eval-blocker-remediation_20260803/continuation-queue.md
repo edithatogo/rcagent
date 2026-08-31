@@ -8,6 +8,13 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Delivery checkpoint: PR #104 merged `8b9d34b`, exact reviewed tree verified,
+all seven PR checks passed; local master and branch cleanup verified. Prepared
+branch is `codex/local-listing-materials`. Post-merge Quality
+`33351110293` and conformance `33351110302` both passed. Next activate
+[local listing materials](../../context-packs/local-listing-materials-20260831.md).
+No repeated client audit, capture, scoring or submission is needed.
+
 Current slice: client/mode evidence reconciliation, activated from clean
 `4cd3790` after both PR #103 post-merge workflows passed. Main owns new
 documentation and integration; two read-only agent lanes check client evidence
