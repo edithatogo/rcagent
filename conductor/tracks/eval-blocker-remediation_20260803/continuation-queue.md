@@ -8,6 +8,15 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Latest delivery: PR #106 merged `75895ae`, exact tree parity and seven PR
+checks passed; full local validation passed 1,536 tests/94.56%. Local master
+and completed-branch cleanup verified. Prepared branch:
+`codex/submission-route-verification`. First check post-merge Quality
+`33357634694` and conformance `33357634697` both passed; next
+activate [read-only route verification](../../context-packs/submission-route-verification-20260831.md).
+Validation session 94348 is complete. Do not duplicate tests or study attempts;
+historical active/pending statements below are superseded.
+
 Active test-only fixture hardening from clean `e7f2dac`, after fresh PR #105
 post-merge success verification. Main owns the named signal-error test and
 integration; agent lanes review acceptance and cleanup safety. No overlapping

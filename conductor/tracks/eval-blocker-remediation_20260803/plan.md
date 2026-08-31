@@ -252,13 +252,17 @@ incomplete. No further reviewer or routine phase approval is required.
               1,536 tests at 94.56%. PR #105 merged `de8c67a`, seven PR checks
               and both post-merge workflows passed with exact-tree parity.
               Existing source materials and frozen execution bytes are unchanged.
-            - [~] Harden the synthetic signal-error fixture's deterministic
+            - [x] Harden the synthetic signal-error fixture's deterministic
               error injection and final cleanup after the retained local
               timing failure; preserve production deadlines and frozen sources.
               Activated from clean `e7f2dac`; only the named test is in scope.
               Repair `ef565ce` passed focused 2-case and 28-test stop suites,
               Ruff/ty and both agent reviews. [Receipt](./signal-error-fixture-hardening-20260831.md)
-              preserves limits; full validation and hosted delivery are pending.
+              preserves limits. Full 1,536 tests passed at 94.56%; PR #106 merged
+              `75895ae` with exact-tree parity, seven passing PR checks and both
+              post-merge workflows passed. Production sources remain unchanged.
+            - [ ] Verify current first-party listing-route requirements read-only
+              under [the prepared context](../../context-packs/submission-route-verification-20260831.md).
 
 ## Historical design and current execution choice
 
