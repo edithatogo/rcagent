@@ -26,7 +26,7 @@ a production-runtime fix or a claim of real-time scheduling guarantees.
 passed before/after the scoped work: complete frozen execution files and pins
 remain unchanged. Only the intended test differs under `tools/` and `tests/`
 relative to the base. No model/cache access, actual study attempt, production
-deadline change, source/review repin or external action occurred.
+deadline change, source/review repin or service/deployment action occurred.
 
 ## Review and validation
 

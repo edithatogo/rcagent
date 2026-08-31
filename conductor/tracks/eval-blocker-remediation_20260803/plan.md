@@ -256,6 +256,9 @@ incomplete. No further reviewer or routine phase approval is required.
               error injection and final cleanup after the retained local
               timing failure; preserve production deadlines and frozen sources.
               Activated from clean `e7f2dac`; only the named test is in scope.
+              Repair `ef565ce` passed focused 2-case and 28-test stop suites,
+              Ruff/ty and both agent reviews. [Receipt](./signal-error-fixture-hardening-20260831.md)
+              preserves limits; full validation and hosted delivery are pending.
 
 ## Historical design and current execution choice
 

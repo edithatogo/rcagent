@@ -13,6 +13,10 @@ post-merge success verification. Main owns the named signal-error test and
 integration; agent lanes review acceptance and cleanup safety. No overlapping
 implementation PR or dirty files observed. Frozen source parity passed before
 editing. Historical completed validation sessions below must not be resumed.
+Repair `ef565ce` and both agent reviews passed; focused 2 cases and all 28 stop
+tests passed. Sole full validation is active in session 94348, log
+`/tmp/rcagent-fixture-hardening-validation.log`. Resume it rather than starting
+another. Frozen source parity remains unchanged; hosted delivery is pending.
 
 Latest delivery: PR #105 merged `de8c67a`, exact-tree parity, seven PR checks,
 and unchanged full recheck (1,536 tests/94.56%) passed. Preserve the first local
