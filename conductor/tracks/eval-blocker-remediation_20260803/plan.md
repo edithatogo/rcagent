@@ -21,14 +21,22 @@ No further reviewer or routine phase approval is required.
 
 ## Next repository-owned slice
 
+- [x] Reconcile archive navigation and the stale continuation cursor; verify
+  remote recovery, dependency delivery and remaining implementation boundaries
+  without claiming original local-only preservation or study completion.
+  Implementation `bea0820`; three-agent review passed. The fresh baseline
+  passed 1,536 tests; the combined branch passed 1,540 tests at 94.56% coverage.
+  See [recovery assessment](./recovery-readiness-20260831.md) for limitations;
+  exact-head hosted delivery remains a separate final check.
 - [x] Replace external-human repository review requirements with the standing
   agent-panel protocol; preserve H8 and historical evidence identity.
-- [~] Replace prose-regex preflights with affirmative, revision/hash-bound
+- [!] Replace prose-regex preflights with affirmative, revision/hash-bound
   admission and scoring-completion receipts; distinguish before-blinding and
-  scoring-start checks.
+  scoring-start checks. Blocked pending a viable admitted cohort and trusted
+  custody path; the consumed cohort does not justify a positive scaffold.
   - [x] Remove permissive legacy passes and separate fixture integrity from
     live transitions: [hardening boundary](./preflight-hardening-20260830.md).
-  - [~] Implement protocol-bound semantic validation before enabling live passes.
+  - [!] Implement protocol-bound semantic validation before enabling live passes.
     Controller-owned immediate admission is implemented (`a1e4399`); offline
     custody and scoring/analysis transitions remain separate and unavailable.
   - [x] Capture a bounded local non-study execution probe using existing
@@ -42,8 +50,9 @@ No further reviewer or routine phase approval is required.
   [Fixture receipt](./preflight-hardening-20260830.md) and
   [controller/admission receipt](./controller-admission-20260831.md) establish
   implementation coverage, not passing live scoring or historical admission.
-- [~] Produce a fresh eligibility inventory; historical zero eligibility is
-  not evidence of a current full inventory audit.
+- [!] Produce a fresh eligibility inventory; historical zero eligibility is
+  not evidence of a current full inventory audit. Resume on new eligible
+  historical evidence; no active inventory audit is claimed by this closeout.
   - [x] Establish a separate prospective planning manifest and scoped inventory
     (`b0bbcc6`): [evidence](./prospective-inventory-20260830.md). No historical
     audit, executable-condition admission or study freeze implied.

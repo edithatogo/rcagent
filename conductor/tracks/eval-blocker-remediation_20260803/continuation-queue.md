@@ -8,6 +8,17 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Current continuation: reconcile against the remote default branch and open PRs
+before selecting work. PR #108 delivered the handoff below as `02c440d`; both
+post-merge workflows passed. Its local and remote handoff branches were pruned.
+The original checkout subsequently became unavailable; a separate remote-only
+clone supports this bounded reconciliation. This is not evidence that private,
+ignored or local-only material from the original checkout was preserved.
+See [recovery and remaining-work assessment](./recovery-readiness-20260831.md).
+Do not recreate a handoff branch merely to update this cursor. Historical
+branch names and active-session statements below are dated evidence, not
+instructions to resume them. Resolve current delivery state from GitHub.
+
 Delivery complete: PR #107 merged `4db1da5eea4bf101a0ece372779b9a548307ade4`
 at `2026-08-31T10:23:26Z`. Reviewed head `cea9b91`, tree
 `8513e458a80852d584ea33bc1d8a5fb20df2ce69`, seven PR checks and both
