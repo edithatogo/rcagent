@@ -8,6 +8,25 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Active local listing-material preparation from clean `6f00e55`; PR #104's
+post-merge checks were freshly confirmed passing. Main owns README and dated
+packet delta; agent review checks package scope and safety. No root README or
+overlapping implementation PR existed at activation. Preserve unrelated
+Renovate PRs #93/#94 and all frozen study bytes.
+PR #105 at `be3ae0d` has seven passing hosted checks but merge is paused:
+first local full validation had one synthetic kill/reap timing assertion
+failure (1,535 passed). The unchanged focused two-case test passed. One full
+recheck is active, terminal session 3514, log
+`/tmp/rcagent-listing-validation-recheck.log`. Resume that invocation; do not
+duplicate tests or retry the actual study. Source bytes and deadlines unchanged.
+
+Delivery checkpoint: PR #104 merged `8b9d34b`, exact reviewed tree verified,
+all seven PR checks passed; local master and branch cleanup verified. Prepared
+branch is `codex/local-listing-materials`. Post-merge Quality
+`33351110293` and conformance `33351110302` both passed. Next activate
+[local listing materials](../../context-packs/local-listing-materials-20260831.md).
+No repeated client audit, capture, scoring or submission is needed.
+
 Current slice: client/mode evidence reconciliation, activated from clean
 `4cd3790` after both PR #103 post-merge workflows passed. Main owns new
 documentation and integration; two read-only agent lanes check client evidence

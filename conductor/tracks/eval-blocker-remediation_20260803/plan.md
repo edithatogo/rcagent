@@ -233,13 +233,25 @@ incomplete. No further reviewer or routine phase approval is required.
               preserves historical inventories and names supported-mode and
               distribution acceptance reconciliation as the successor.
               PR #103 merged `25f7f3a`; both post-merge workflows passed.
-            - [~] Reconcile client/mode and distribution evidence under
+            - [x] Reconcile client/mode and distribution evidence under
               [the bounded context](../../context-packs/client-mode-evidence-reconciliation-20260831.md),
               activated from clean `4cd3790`. No new execution or submission.
               [Matrix](./client-mode-evidence-20260831.md) distinguishes static
               adapter/installer, archive lifecycle, actual trials, declared-mode
               checks and external enforcement. Agent review corrections applied;
-              full validation passed (1,536 tests, 94.56%); hosted delivery pending.
+              full validation passed (1,536 tests, 94.56%). Implementation
+              `86c4858`, PR #104 merged `8b9d34b` with exact-tree parity,
+              seven green PR checks and both post-merge workflows passed.
+            - [~] Prepare local landing text and packet delta under
+              [local listing materials](../../context-packs/local-listing-materials-20260831.md);
+              no hosting, terms adoption or submission.
+              Activated from clean `6f00e55`; main owns drafts and integration.
+              [Packet delta](./listing-packet-delta-20260831.md) and root README
+              passed agent acceptance/safety review; full validation and hosted
+              delivery remain pending. Existing source materials are unchanged.
+            - [ ] Harden the synthetic signal-error fixture's deterministic
+              error injection and final cleanup after the retained local
+              timing failure; preserve production deadlines and frozen sources.
 
 ## Historical design and current execution choice
 
