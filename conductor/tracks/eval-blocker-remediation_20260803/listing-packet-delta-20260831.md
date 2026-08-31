@@ -77,6 +77,23 @@ The README is documentation, not a new runtime guarantee or completed study.
 Public delivery through the normal PR workflow remains distinct from a new
 release or directory submission. Root #1 and owning-track acceptance stay open.
 
+## Delivery checkpoint
+
+The sole full recheck passed unchanged: 1,536 tests in 562.64 seconds, 94.56%
+coverage and all full-validation stages passed. This does not erase the first
+failure or the known fixture limitation. Agent acceptance re-review passed.
+PR #105 passed all seven checks at `b5c44a81b3dc2e77e6f31df1e1acfa3fa17c8fc4`
+and merged `de8c67ad07bbcfdc33df79f88c093de1d8bdc483` at
+2026-08-31T03:07:44Z, with exact tree parity
+`029863dcfe6b155f3976acdac264ed73257b335d` verified. The
+[delivered README candidate URL](https://github.com/edithatogo/rcagent/blob/de8c67ad07bbcfdc33df79f88c093de1d8bdc483/README.md)
+is now bound to a reviewed merge; it is still not a standalone website or
+directory-accepted field. Post-merge Quality `33352822749` and conformance
+`33352822798` both passed. Local master and completed-branch cleanup were
+verified after remote branch absence; frozen source parity remains unchanged.
+Next resolve the [synthetic fixture follow-up](../../context-packs/signal-error-fixture-hardening-20260831.md)
+before read-only external route verification.
+
 After delivery, select the smallest concrete read-only route check under
 existing authority: refresh first-party requirements, distinguish existing
 material from new access/authority needs, and present only genuinely new

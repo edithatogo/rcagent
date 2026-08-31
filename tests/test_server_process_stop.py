@@ -277,30 +277,44 @@ def test_read_failure_after_stop_still_reaps(ready_child, monkeypatch):
 def test_signal_error_is_preserved_without_leaking_child(ready_child, monkeypatch, signal_name):
     original = subject.subprocess.Popen
     calls = []
+    children = []
 
     def popen(*args, **kwargs):
         process = original(*args, **kwargs)
         send = getattr(process, signal_name)
+        kill, wait = process.kill, process.wait
+        children.append((process, kill, wait))
 
         def fail():
             calls.append(True)
-            send()  # Make the real fixture safe before injecting the reported failure.
+            send()
+            # Test error preservation, not scheduler latency within the stop budget.
+            wait(timeout=5)
             raise OSError("private failure")
 
         monkeypatch.setattr(process, signal_name, fail)
         return process
 
     monkeypatch.setattr(subject.subprocess, "Popen", popen)
-    result = ready_child(
-        "signal.signal(signal.SIGTERM,signal.SIG_IGN)" if signal_name == "kill" else "pass",
-        cleanup_grace=0.1,
-    )
-    assert result["error"] == (
-        "stop_signal_failed" if signal_name == "terminate" else "stop_grace_exceeded"
-    )
-    assert f"{signal_name}_failed" in result["cleanup_errors"]
-    assert result["reaped"] is True
-    assert calls == [True]
+    try:
+        result = ready_child(
+            "signal.signal(signal.SIGTERM,signal.SIG_IGN)" if signal_name == "kill" else "pass",
+            cleanup_grace=0.1,
+        )
+        assert result["error"] == (
+            "stop_signal_failed" if signal_name == "terminate" else "stop_grace_exceeded"
+        )
+        assert f"{signal_name}_failed" in result["cleanup_errors"]
+        assert result["reaped"] is True
+        assert calls == [True]
+    finally:
+        # Original methods bypass injected failures; cleanup errors must stay visible.
+        for process, kill, wait in children:
+            try:
+                if process.poll() is None:
+                    kill()
+            finally:
+                wait(timeout=5)
 
 
 def test_cleanup_error_cannot_become_successful_stop(ready_child, monkeypatch):
