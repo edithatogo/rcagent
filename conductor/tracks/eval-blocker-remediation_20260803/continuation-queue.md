@@ -8,6 +8,19 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Current slice: client/mode evidence reconciliation, activated from clean
+`4cd3790` after both PR #103 post-merge workflows passed. Main owns new
+documentation and integration; two read-only agent lanes check client evidence
+and safety/distribution claims. No overlapping writer or open implementation
+PR was observed; unrelated Renovate PRs #93/#94 are preserved. Historical
+queued/in-progress statements below are superseded by this update.
+The [new evidence matrix](./client-mode-evidence-20260831.md) has passed bounded
+agent acceptance review; safety wording corrections distinguish declared
+hybrid checks from runbook authority. Final validation passed 1,536 tests at
+94.56%; hosted delivery remains pending. Next local route is a public-information landing draft and
+packet-delta preparation reusing existing privacy/support/security/licence
+materials, with no hosting, legal terms adoption or submission.
+
 **Current terminal capture state:** sole invocation/session 14492 completed;
 do not restart it. [Negative receipt](./prospective-capture-20260831.md) records
 first-slot fixed-cap `incomplete_generation`, second not-attempted, 0/2 admitted.
@@ -27,6 +40,13 @@ prerequisites. Do not add a new inventory verifier or positive custody scaffold.
 - Owning track: `eval-blocker-remediation_20260803`; issue #1 remains open.
 - Integration branch: `codex/prospective-two-slot-capture`; no worktree lease is
   enabled. This record is not a lock and does not authorise concurrent writes.
+  Superseded by delivered PR #103: merged `25f7f3a` with reviewed tree parity,
+  seven green checks and final 1,536-test/94.56% local validation. Completed
+  branch cleanup is verified. Prepared branch is now
+  `codex/client-mode-evidence-reconciliation`; first wait for post-merge Quality
+  `33337488195` and conformance `33337488240` (last observed queued), then
+  activate the [bounded successor](../../context-packs/client-mode-evidence-reconciliation-20260831.md).
+  Do not redo capture, preparation or completed PR delivery.
 - Completed slice: [bounded runtime profile and live non-study observations](./runtime-profile-implementation-20260830.md)
   plus [read-only protocol-candidate validation](./protocol-contract-20260830.md).
   The original failed diagnostic is preserved. Those earlier slices generated
