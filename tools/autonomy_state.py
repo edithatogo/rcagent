@@ -36,7 +36,7 @@ def _relative_file(root: Path, name: Any) -> Path:
     if not _text(name):
         raise ValueError("evidence path must be a non-empty relative path")
     path = Path(name)
-    if path.is_absolute() or ".." in path.parts or "\\" in name or ":" in name:
+    if path.anchor or ".." in path.parts or "\\" in name or ":" in name:
         raise ValueError("evidence path must be relative and non-escaping")
     candidate = root
     for component in path.parts:

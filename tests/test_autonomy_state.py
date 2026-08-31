@@ -4,7 +4,7 @@ import hashlib
 import json
 import os
 from datetime import UTC, datetime, timedelta
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 import pytest
 
@@ -266,6 +266,15 @@ def test_unsafe_receipt_path_rejected(store: StateStore, name: str) -> None:
     assert store.path.read_bytes() == before
 
 
+def test_windows_rooted_receipt_path_is_rejected_on_any_host(tmp_path: Path, monkeypatch) -> None:
+    from tools import autonomy_state
+
+    assert not PureWindowsPath("/outside.json").is_absolute()
+    monkeypatch.setattr(autonomy_state, "Path", PureWindowsPath)
+    with pytest.raises(ValueError, match="relative and non-escaping"):
+        autonomy_state._relative_file(tmp_path, "/outside.json")
+
+
 def test_symlinked_receipt_rejected(store: StateStore) -> None:
     path = receipt(store.path.parent, next_action(store.load()), "pass")
     link = store.path.parent / "linked.json"
@@ -412,7 +421,11 @@ def test_lease_records_owner_run_worktree_and_heartbeat(store: StateStore) -> No
 
 
 @pytest.mark.skipif(os.name != "posix", reason="POSIX advisory recovery contract")
-@pytest.mark.parametrize("raw", ["x" * 65537, "[]", "{}", "not-json"])
+@pytest.mark.parametrize(
+    "raw",
+    ["x" * 65537, "[]", "{}", "not-json"],
+    ids=["oversized", "array", "empty-object", "invalid-json"],
+)
 def test_recovery_rejects_malformed_lock_metadata(store: StateStore, raw: str) -> None:
     store.lock.write_text(raw)
     with pytest.raises(ValueError):
@@ -473,11 +486,17 @@ def test_writer_cleanup_does_not_remove_changed_lock(
 ) -> None:
     with store._locked():
         if contents is None:
-            store.lock.unlink()
+            if os.name == "nt":
+                with pytest.raises(PermissionError):
+                    store.lock.unlink()
+            else:
+                store.lock.unlink()
         else:
             store.lock.write_text(contents)
     if contents is not None:
         assert store.lock.read_text() == contents
+    else:
+        assert not store.lock.exists()
 
 
 @pytest.mark.parametrize(
