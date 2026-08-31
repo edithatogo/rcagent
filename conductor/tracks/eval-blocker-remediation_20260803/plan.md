@@ -293,7 +293,8 @@ No further reviewer or routine phase approval is required.
               and [historical readiness audit](./historical-readiness-20260831.md).
               Preserve source case bytes and all unresolved admissions.
               Implemented `1ccb3b6` and `6d12d1d`; agent panel and final full
-              validation passed. PR #107 delivery remains separately pending.
+              validation passed. PR #107 merged `4db1da5`, exact tree parity,
+              seven PR checks and both post-merge workflows passed.
 
 ## Historical design and current execution choice
 

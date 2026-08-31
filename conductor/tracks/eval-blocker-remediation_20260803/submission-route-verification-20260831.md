@@ -115,5 +115,9 @@ The final gate used `.venv/bin/python -m tools.full_validation` directly,
 session 88263, log `/tmp/rcagent-route-restored-validation.log`, without
 concurrent environment mutation. It passed: 1,536 tests in 697.27 seconds,
 94.56% coverage, with lint, types, governance and benchmark checks successful.
-Earlier failures remain visible. PR #107 exact-head hosted delivery is pending;
-local acceptance completion is not a merged or submitted claim.
+Earlier failures remain visible. PR #107 merged `4db1da5` at
+`2026-08-31T10:23:26Z`, matching reviewed tree
+`8513e458a80852d584ea33bc1d8a5fb20df2ce69` at head `cea9b91`.
+All seven PR checks and post-merge Quality `33382185943` and conformance
+`33382186029` passed. Local master and completed-branch cleanup were verified.
+This proves repository delivery, not a marketplace submission or study result.
