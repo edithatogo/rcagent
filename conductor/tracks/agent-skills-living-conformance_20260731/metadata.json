@@ -3,9 +3,18 @@
   "track_number": 0,
   "title": "Agent Skills Living Conformance and Portable Architecture",
   "type": "refactor",
-  "status": "completed",
+  "status": "blocked",
   "created_at": "2026-07-31T03:26:21Z",
-  "updated_at": "2026-08-29T00:30:00Z",
+  "updated_at": "2026-08-31T12:30:39Z",
+  "gates": [
+    {
+      "id": "claude-activation-execution-evidence",
+      "kind": "external",
+      "status": "pending",
+      "evidence": "./evidence/review-20260831.md",
+      "description": "Specification criterion 9 requires actual Claude activation and representative execution evidence; contract tests alone are insufficient."
+    }
+  ],
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/5",

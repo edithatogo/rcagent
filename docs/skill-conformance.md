@@ -32,6 +32,19 @@ uv run --python 3.13 --extra validate python -m tools.check_skill_drift --offlin
 Offline success proves only that the recorded local contracts pass. It cannot
 establish that the upstream specification or validator is current.
 
+For the complete conformance receipt, install the official validator from the
+exact VCS revision in the track's `upstream-baseline.json` into the same Python
+environment, then run `python -m tools.run_skill_conformance`. The pinned
+installation command is maintained in `.github/workflows/skill-conformance.yml`.
+The runner uses Python's isolated module invocation and checks the installed
+distribution's recorded repository, subdirectory and commit. A custom
+`--validator` is diagnostic only and cannot certify current conformance.
+Installation metadata is not a signed attestation against local tampering.
+
+Full conformance requires every applicable matrix requirement to pass. Track
+00 currently remains blocked on actual Claude activation and representative
+execution evidence (`RCA-ADAPTER-001`); installer tests cannot satisfy it.
+
 ## Optional client installation
 
 Install into an isolated destination first:
@@ -49,8 +62,8 @@ rejects absolute and escaping manifest targets.
 `conductor/tracks/agent-skills-living-conformance_20260731/extensions.json`
 records stable, experimental, unsupported, inapplicable, and decision-pending
 fields. Promote an experimental field only after exact client-version tests,
-safe fallback verification, and a receipt. Never weaken privacy or human
-review because a client supports broader tool permissions.
+safe fallback verification, and a receipt. Never weaken privacy or reserved
+authority boundaries because a client supports broader tool permissions.
 
 ## Drift response
 
@@ -71,4 +84,7 @@ Network failure is `upstream_unavailable`; revision change is
 
 Structural and deterministic validation do not prove clinical correctness,
 trigger performance, output quality, legal applicability, or universal client
-support. Those require their separate evaluation and human-review evidence.
+support. Repository engineering and research evaluations use agent panels,
+recording agent agreement rather than human agreement. Clinical, legal,
+policy and organisational validation remain outside repository completion
+unless separately authorised by the applicable authority.

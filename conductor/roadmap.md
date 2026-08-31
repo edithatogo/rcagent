@@ -96,7 +96,7 @@ Later phase gates not drawn as hard-start arrows:
 
 | Track | GitHub | Workstream | Hard start blockers | Primary outcome |
 |---|---:|---|---|---|
-| [00 Agent Skills living conformance](./tracks/agent-skills-living-conformance_20260731/index.md) | [#5](https://github.com/edithatogo/rcagent/issues/5) | A | None | Portable core, governed extensions, adapters, validators, evals, and drift checks |
+| [00 Agent Skills living conformance](./tracks/agent-skills-living-conformance_20260731/index.md) | [#5](https://github.com/edithatogo/rcagent/issues/5) | A | None | Portable core and contract tooling implemented; blocked on Claude actual activation/execution evidence and final review; not archive-eligible |
 | [01 Safety systems foundation](./tracks/safety-systems-foundation_20260731/index.md) | [#6](https://github.com/edithatogo/rcagent/issues/6) | A | None; 00 gates licence/release-dependent phases | Product architecture, maximal harness, context system, and autonomous queue |
 | [02 Evidence workflow core](./archive/evidence-workflow-core_20260731/index.md) | [#7](https://github.com/edithatogo/rcagent/issues/7) | A | 01 | Canonical evidence, claim, workflow, provenance, audit, and interchange contracts |
 | [03 Privacy, security and assurance](./archive/privacy-security-assurance_20260731/index.md) | [#8](https://github.com/edithatogo/rcagent/issues/8) | A | 01 | Remote, hybrid, local, and air-gapped safeguards and assurance |
@@ -114,6 +114,15 @@ Cross-cutting repository hardening is coordinated by
 [#17](https://github.com/edithatogo/rcagent/issues/17) incorporated into
 Tracks 01 and 03. These issues refine existing acceptance criteria rather than
 creating parallel tracks.
+
+Track 00's [2026-08-31 review](./tracks/agent-skills-living-conformance_20260731/evidence/review-20260831.md)
+supersedes its earlier blanket completion claim. Agent panels can review the
+engineering repairs, but installer contracts and agent agreement cannot supply
+missing actual-client observations. Existing downstream implementation and
+dated release evidence remain retained; this correction neither revokes their
+recorded events nor certifies unobserved client compatibility. Resume the
+affected acceptance and archival work when the required Claude evidence and
+applicable validation pass, without another routine review-approval request.
 
 ## Delivery Waves
 

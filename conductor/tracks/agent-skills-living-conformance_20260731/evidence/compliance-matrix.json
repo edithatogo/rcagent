@@ -135,6 +135,16 @@
       "evidence": "evaluations/skills/rca-investigation/output-quality-result.md"
     },
     {
+      "id": "RCA-ADAPTER-001",
+      "source": "conductor/tracks/agent-skills-living-conformance_20260731/spec.md",
+      "requirement": "Both Claude Code and Codex adapters have passing path, activation and representative execution evidence.",
+      "applicability": "applicable_project_policy",
+      "implementation": "adapters/",
+      "validation": "deterministic contract suites and retained actual-client observations",
+      "result": "pending",
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/review-20260831.md"
+    },
+    {
       "id": "RCA-DRIFT-001",
       "source": "conductor/tracks/agent-skills-living-conformance_20260731/spec.md",
       "requirement": "Current conformance requires successful live upstream resolution; offline results cannot claim currency.",

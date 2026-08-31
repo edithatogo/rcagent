@@ -7,6 +7,13 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Continuous Execution Contract
 
+Current status (2026-08-31): **blocked; not archive-eligible**. The
+[review receipt](./evidence/review-20260831.md) supersedes the earlier blanket
+completion claim: Claude actual activation and representative execution
+evidence is missing. Retained historical checkmarks describe the dated work,
+not proof that this unresolved acceptance condition passed. Agent review
+does not replace client observations or confer clinical authority.
+
 > Reconciled 2026-08-11 against merged implementation, deterministic tests,
 > current upstream baseline `69ef37e9424c0a7ea9dd2293b559e43ec8176379`,
 > and hosted PR #21. `[!]` denotes a real owner or clinical-governance gate;
@@ -247,12 +254,14 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 5: Implement Portable Client Adapters
 
-- [x] Task: Implement the Claude Code adapter
+- [!] Task: Implement the Claude Code adapter — contract implementation retained;
+  actual-client acceptance remains blocked by missing observations.
   - [x] Map Claude Code activation and agent behaviour to the canonical core
   - [x] Replace divergent root-level agent content with adapter shims or generated references
   - [x] Declare supported stable and experimental capabilities
   - [x] Implement unsupported-feature fallbacks
-  - [x] Add representative activation and execution tests
+  - [!] Add representative activation and execution tests — retained installer
+    and contract tests do not establish actual Claude activation or execution.
 
 - [x] Task: Implement the Codex adapter
   - [x] Map Codex skill discovery and execution to the canonical core
@@ -441,7 +450,8 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Verify compatibility statements against test evidence
   - [x] Block release claims if licence approval remains unresolved
 
-- [x] Task: Execute the final conformance audit
+- [!] Task: Execute the final conformance audit — prior completion superseded
+  by the 2026-08-31 review; actual-client acceptance remains incomplete.
   - [x] Run the official validator against the current upstream revision
   - [x] Run deterministic validation
   - [x] Run isolated portability validation
@@ -450,7 +460,8 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Run output-quality validation
   - [x] Run privacy and evidence-integrity checks
   - [x] Run the upstream-drift check
-  - [x] Require every applicable compliance item to pass
+  - [!] Require every applicable compliance item to pass — `RCA-ADAPTER-001`
+    now exposes the missing Claude actual-client evidence.
 
 - [x] Task: Produce the final evidence pack
   - [x] Generate the final compliance matrix
@@ -460,10 +471,38 @@ Execution follows [workflow.md](../../workflow.md) and the
   - [x] Link every conformance claim to evidence
   - [x] Update the changelog
 
-- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [x] Verify all approved specification acceptance criteria
-  - [x] Confirm no checklist-only claim lacks evidence
+- [!] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [!] Verify all approved specification acceptance criteria — Claude actual
+    activation/execution evidence remains missing.
+  - [!] Confirm no checklist-only claim lacks evidence — final reconciliation
+    depends on closing the actual-client gap, not a green fixture suite.
   - [x] Confirm no external publication occurred
   - [x] Confirm the working tree contains only intended changes
   - [x] Obtain owner approval for the licence; retain external release as a separate gate
-  - [x] Otherwise declare the track complete from the reconciled evidence without an additional approval pause
+  - [!] Otherwise declare the track complete from the reconciled evidence without an additional approval pause — blocked until the review findings and actual-client acceptance pass.
+
+## Review Fixes — 2026-08-31
+
+Code repair commit: `036137295959674a45e4a49356702d0ad03c7cb9`.
+
+- [~] Task: Verify the implemented fail-closed conformance repairs.
+  - [x] Add required matrix identifiers, typed fields and readable evidence checks.
+  - [x] Prevent incomplete profiles from producing positive current-conformance receipts.
+  - [x] Bind official-validator execution to the reviewed installed VCS provenance;
+    retain custom commands as unverified diagnostics.
+  - [x] Reject symlinked package roots/resources and Windows-style escape paths.
+  - [x] Reject malformed, divergent or capped upstream comparisons and inspect
+    both paths of renamed files.
+  - [ ] Record final regression, official-validator and repository-wide results
+    for the integrated repair revision in the review receipt.
+- [x] Task: Reconcile the acceptance gap without rewriting historical receipts.
+  - [x] Expose Claude actual-client acceptance as `RCA-ADAPTER-001` and retain
+    the historical Codex results within their tested revision/case limits.
+  - [x] Retain failed observations and distinguish agent engineering review
+    from clinical, legal, organisational or deployment validation.
+- [!] Task: Obtain the missing Claude activation and representative execution
+  evidence under applicable client/account execution authority and synthetic-only
+  inputs. Do not infer new credentials, private-data access or spending authority.
+- [!] Task: Re-review complete acceptance and archive only after all applicable
+  gates pass. Update current locators together when eligible; preserve the
+  hash-bound historical dependency manifest and original evidence bytes.
