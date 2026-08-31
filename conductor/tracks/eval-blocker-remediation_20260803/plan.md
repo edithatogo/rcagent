@@ -246,6 +246,9 @@ incomplete. No further reviewer or routine phase approval is required.
               [local listing materials](../../context-packs/local-listing-materials-20260831.md);
               no hosting, terms adoption or submission.
               Activated from clean `6f00e55`; main owns drafts and integration.
+              [Packet delta](./listing-packet-delta-20260831.md) and root README
+              passed agent acceptance/safety review; full validation and hosted
+              delivery remain pending. Existing source materials are unchanged.
 
 ## Historical design and current execution choice
 
