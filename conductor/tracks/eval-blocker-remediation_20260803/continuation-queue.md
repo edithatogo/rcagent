@@ -8,6 +8,16 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Local slice complete: final direct Python 3.14.5 gate/session 88263 passed
+1,536 tests in 697.27 seconds at 94.56%. Route checks, eight-case synthetic
+reviewer packet, stale-plan reconciliation and historical safety fixes passed
+agent-panel review. PR #107 awaits final exact-head hosted checks and normal
+merge; do not rerun completed tests or the consumed study. Browser discovery
+could not reach publisher portals; account access remains unobserved, not
+denied. After delivery, only concrete eligible preparation/access work may
+continue; no new terms, availability or legal readiness may be invented.
+Historical validation-active cursors below are superseded by this result.
+
 Validation correction: isolated session 64613 stopped at workspace-discovered
 missing type dependencies; it is complete, not resumable. The original Python
 3.14.5 `.venv` has been restored offline from the lock with all extras. Sole

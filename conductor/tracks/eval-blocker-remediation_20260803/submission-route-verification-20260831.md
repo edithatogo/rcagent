@@ -30,6 +30,14 @@ not evidence of denied access, verification failure or an existing submission.
 The documentation Markdown endpoints were unavailable to the browsing tool;
 the HTML pages above were read instead.
 
+Scoped authenticated-page follow-up by `claude_routes` found no applicable
+publisher connector. After the required browser setup/recovery checks,
+URL-based selection returned `No browser is available` before navigation.
+Neither publisher account was inspected. This is a browser-runtime limitation,
+not an account-access denial; no login, session-store read or draft mutation
+occurred. The wake condition is an available authenticated browser/connector,
+not renewed blanket submission approval.
+
 ## Current fit and remaining prerequisites
 
 | Item | Evidence and next action |
@@ -103,7 +111,9 @@ not isolate the type checker's workspace discovery.
 
 The second bounded recovery restored the original CPython 3.14.5 workspace
 environment with `uv sync --offline --locked --all-extras --python 3.14.5`.
-The final gate now uses `.venv/bin/python -m tools.full_validation` directly,
-session 88263, log `/tmp/rcagent-route-restored-validation.log`. No concurrent
-uv/environment mutations are permitted during it. Final validation is pending;
-another unchanged retry is not the recovery strategy if this fails.
+The final gate used `.venv/bin/python -m tools.full_validation` directly,
+session 88263, log `/tmp/rcagent-route-restored-validation.log`, without
+concurrent environment mutation. It passed: 1,536 tests in 697.27 seconds,
+94.56% coverage, with lint, types, governance and benchmark checks successful.
+Earlier failures remain visible. PR #107 exact-head hosted delivery is pending;
+local acceptance completion is not a merged or submitted claim.

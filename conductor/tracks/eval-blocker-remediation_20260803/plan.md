@@ -278,17 +278,22 @@ No further reviewer or routine phase approval is required.
               preserves limits. Full 1,536 tests passed at 94.56%; PR #106 merged
               `75895ae` with exact-tree parity, seven passing PR checks and both
               post-merge workflows passed. Production sources remain unchanged.
-            - [~] Verify current first-party listing-route requirements read-only
+            - [x] Verify current first-party listing-route requirements read-only
               under [the prepared context](../../context-packs/submission-route-verification-20260831.md).
               [Current route evidence](./submission-route-verification-20260831.md)
               records inaccessible portal state and actual local client limits.
-            - [~] Complete self-contained synthetic reviewer inputs under
+              Implemented `212f11f`; final validation passed 1,536 tests/94.56%.
+            - [x] Complete self-contained synthetic reviewer inputs under
               [the bounded context](../../context-packs/reviewer-fixtures-20260831.md),
               preserving existing scenario IDs and no observed-execution claim.
-            - [~] Reconcile stale acceptance state and historical dataset safety
+              Implemented `212f11f`; both non-author agents passed content and
+              acceptance review; structural parity checks passed.
+            - [x] Reconcile stale acceptance state and historical dataset safety
               assurances using the [acceptance audit](./acceptance-reconciliation-20260831.md)
               and [historical readiness audit](./historical-readiness-20260831.md).
               Preserve source case bytes and all unresolved admissions.
+              Implemented `1ccb3b6` and `6d12d1d`; agent panel and final full
+              validation passed. PR #107 delivery remains separately pending.
 
 ## Historical design and current execution choice
 
