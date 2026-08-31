@@ -21,6 +21,10 @@ No further reviewer or routine phase approval is required.
 
 ## Next repository-owned slice
 
+- [~] Reconcile archive navigation and the stale continuation cursor; verify
+  remote recovery, dependency delivery and remaining implementation boundaries
+  without claiming original local-only preservation or study completion.
+  See [recovery assessment](./recovery-readiness-20260831.md).
 - [x] Replace external-human repository review requirements with the standing
   agent-panel protocol; preserve H8 and historical evidence identity.
 - [~] Replace prose-regex preflights with affirmative, revision/hash-bound

@@ -102,7 +102,7 @@
       "compatibility_window": "jurisdiction registry schema 1.0; NSQHS second edition updated May 2021; National Model for Clinical Governance 2026; Australian Open Disclosure Framework June 2026; exact state-source versions recorded in the registry",
       "safe_fallback": "retain the last verified snapshot, mark upstream unavailable or material drift review-required, invalidate affected receipts, and never silently change workflow behaviour or infer authority",
       "replacement_path": "replace data-only mappings when authoritative issuers provide equivalent machine-readable versioned profiles; replace enterprise connectors without changing the generic core",
-      "evidence": "conductor/tracks/nsw-health-jurisdiction-pack_20260731/evidence/fit-gap-and-source-verification-20260829.md",
+      "evidence": "conductor/archive/nsw-health-jurisdiction-pack_20260731/evidence/fit-gap-and-source-verification-20260829.md",
       "project_owned_gap": "versioned authority mapping, rights-safe workflow rules, policy drift, and portable jurisdiction adapters"
     },
     {

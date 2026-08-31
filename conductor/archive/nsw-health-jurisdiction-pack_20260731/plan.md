@@ -20,11 +20,19 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Phase 0: Existing-System Fit and Gap Closure
 
-- [~] Task: Establish the system and dependency context — `dfaa8de`; review `6449410`
+- [x] Task: Establish the system and dependency context — `dfaa8de`; review `6449410`
   - [x] Read `integration-strategy.md` and this track's entry in `integration-map.json`
   - [x] Identify the current organisational system, standard, framework, runtime, or platform that already owns each capability
   - [x] Record exact versions, extension points, licences, maintenance, privacy, telemetry, offline, device, and security constraints
   - [x] Test existing configuration, profiles, APIs, exports, imports, plugins, and adapters against representative fixtures
+
+Reconciled on 2026-08-31 against the
+[fit-gap and source receipt](./evidence/fit-gap-and-source-verification-20260829.md),
+implementation `dfaa8de`, review fixtures `6449410`, and
+[completion receipt](./evidence/completion-receipt-20260829.md) (`1e32fa4`).
+The stale parent marker did not reflect the retained system-of-record,
+dependency lifecycle and synthetic contract-test evidence. This correction
+does not refresh source verification or grant policy or organisational approval.
 
 - [x] Task: Select the smallest adequate intervention — `dfaa8de`; review `6449410`
   - [x] Prefer existing-system configuration or a standards profile
