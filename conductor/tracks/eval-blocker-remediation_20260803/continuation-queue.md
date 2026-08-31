@@ -8,6 +8,12 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Active test-only fixture hardening from clean `e7f2dac`, after fresh PR #105
+post-merge success verification. Main owns the named signal-error test and
+integration; agent lanes review acceptance and cleanup safety. No overlapping
+implementation PR or dirty files observed. Frozen source parity passed before
+editing. Historical completed validation sessions below must not be resumed.
+
 Latest delivery: PR #105 merged `de8c67a`, exact-tree parity, seven PR checks,
 and unchanged full recheck (1,536 tests/94.56%) passed. Preserve the first local
 failure and two-case diagnostic pass. Local master/branch cleanup verified.

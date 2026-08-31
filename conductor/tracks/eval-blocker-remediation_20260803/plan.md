@@ -252,9 +252,10 @@ incomplete. No further reviewer or routine phase approval is required.
               1,536 tests at 94.56%. PR #105 merged `de8c67a`, seven PR checks
               and both post-merge workflows passed with exact-tree parity.
               Existing source materials and frozen execution bytes are unchanged.
-            - [ ] Harden the synthetic signal-error fixture's deterministic
+            - [~] Harden the synthetic signal-error fixture's deterministic
               error injection and final cleanup after the retained local
               timing failure; preserve production deadlines and frozen sources.
+              Activated from clean `e7f2dac`; only the named test is in scope.
 
 ## Historical design and current execution choice
 
