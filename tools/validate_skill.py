@@ -47,9 +47,25 @@ def _frontmatter(skill_md: Path) -> tuple[dict[str, object], str]:
 
 
 def validate_skill(skill_root: Path, *, portable_core: bool = True) -> list[Diagnostic]:
+    # Reject links before resolving or reading any package bytes. Copy/archive
+    # behaviour differs across clients, and following a resource link can read
+    # material outside the supposedly self-contained package.
+    if skill_root.is_symlink():
+        return [Diagnostic("RCA-PORT-001", ".", "symbolic links are not portable package resources")]
     root = skill_root.resolve()
     skill_md = root / "SKILL.md"
     diagnostics: list[Diagnostic] = []
+    for path in sorted(root.rglob("*")):
+        if path.is_symlink():
+            diagnostics.append(
+                Diagnostic(
+                    "RCA-PORT-001",
+                    path.relative_to(root).as_posix(),
+                    "symbolic links are not portable package resources",
+                )
+            )
+    if diagnostics:
+        return diagnostics
     if not skill_md.is_file():
         return [Diagnostic("AS-SPEC-001", "SKILL.md", "required file is missing")]
 
@@ -127,9 +143,9 @@ def validate_skill(skill_root: Path, *, portable_core: bool = True) -> list[Diag
     references = {match.group(1) for match in REFERENCE_PATTERN.finditer(text)}
     for reference in sorted(references):
         pure = PurePosixPath(reference)
-        if ".." in pure.parts or pure.is_absolute():
+        if ".." in pure.parts or pure.is_absolute() or "\\" in reference or ":" in reference:
             diagnostics.append(
-                Diagnostic("AS-SPEC-008", reference, "reference escapes the skill root")
+                Diagnostic("AS-SPEC-008", reference, "reference escapes the skill root or is not portable")
             )
             continue
         if not (root / Path(*pure.parts)).exists():

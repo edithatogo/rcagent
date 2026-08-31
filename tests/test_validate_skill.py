@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from tools.validate_skill import validate_skill
 
 
@@ -102,3 +104,68 @@ def test_explicit_directory_route_covers_nested_resources(tmp_path: Path) -> Non
     nested.mkdir(parents=True)
     (nested / "report.md").write_text("# Report\n", encoding="utf-8")
     assert validate_skill(skill) == []
+
+
+def _symlink(link: Path, target: Path, *, directory: bool = False) -> None:
+    try:
+        link.symlink_to(target, target_is_directory=directory)
+    except (NotImplementedError, OSError) as exc:
+        pytest.skip(f"symlink creation is unavailable: {exc}")
+
+
+@pytest.mark.parametrize("target_kind", ["external", "internal", "missing"])
+def test_linked_resources_fail_before_reading_package_bytes(
+    tmp_path: Path, monkeypatch, target_kind: str
+) -> None:
+    skill = _skill(tmp_path)
+    target = tmp_path / "outside.md"
+    if target_kind == "external":
+        target.write_text("Synthetic external resource", encoding="utf-8")
+    elif target_kind == "internal":
+        target = skill / "SKILL.md"
+    guide = skill / "references/guide.md"
+    guide.unlink()
+    _symlink(guide, target)
+
+    def unexpected_read(*args, **kwargs):
+        pytest.fail("linked package must be rejected before reading any contents")
+
+    monkeypatch.setattr(Path, "read_text", unexpected_read)
+    assert "RCA-PORT-001" in _requirements(skill)
+
+
+def test_linked_resource_directory_fails(tmp_path: Path) -> None:
+    skill = _skill(tmp_path)
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "guide.md").write_text("Synthetic external resource", encoding="utf-8")
+    _symlink(skill / "assets", outside, directory=True)
+    assert "RCA-PORT-001" in _requirements(skill)
+
+
+def test_linked_skill_file_fails(tmp_path: Path) -> None:
+    skill = _skill(tmp_path)
+    source = tmp_path / "outside.md"
+    (skill / "SKILL.md").rename(source)
+    _symlink(skill / "SKILL.md", source)
+    assert "RCA-PORT-001" in _requirements(skill)
+
+
+def test_linked_skill_root_fails(tmp_path: Path) -> None:
+    skill = _skill(tmp_path)
+    links = tmp_path / "links"
+    links.mkdir()
+    linked = links / skill.name
+    _symlink(linked, skill, directory=True)
+    assert "RCA-PORT-001" in _requirements(linked)
+
+
+@pytest.mark.parametrize("reference", [r"references/..\outside.md", "references/file:stream"])
+def test_platform_specific_reference_paths_fail(tmp_path: Path, reference: str) -> None:
+    skill = _skill(tmp_path)
+    path = skill / "SKILL.md"
+    path.write_text(path.read_text(encoding="utf-8") + f"\nRead `{reference}`.\n", encoding="utf-8")
+    assert any(
+        item.requirement == "AS-SPEC-008" and "not portable" in item.message
+        for item in validate_skill(skill)
+    )
