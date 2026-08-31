@@ -242,9 +242,10 @@ incomplete. No further reviewer or routine phase approval is required.
               full validation passed (1,536 tests, 94.56%). Implementation
               `86c4858`, PR #104 merged `8b9d34b` with exact-tree parity,
               seven green PR checks and both post-merge workflows passed.
-            - [ ] Prepare local landing text and packet delta under
+            - [~] Prepare local landing text and packet delta under
               [local listing materials](../../context-packs/local-listing-materials-20260831.md);
               no hosting, terms adoption or submission.
+              Activated from clean `6f00e55`; main owns drafts and integration.
 
 ## Historical design and current execution choice
 
