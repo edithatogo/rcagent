@@ -242,13 +242,16 @@ incomplete. No further reviewer or routine phase approval is required.
               full validation passed (1,536 tests, 94.56%). Implementation
               `86c4858`, PR #104 merged `8b9d34b` with exact-tree parity,
               seven green PR checks and both post-merge workflows passed.
-            - [~] Prepare local landing text and packet delta under
+            - [x] Prepare local landing text and packet delta under
               [local listing materials](../../context-packs/local-listing-materials-20260831.md);
               no hosting, terms adoption or submission.
               Activated from clean `6f00e55`; main owns drafts and integration.
               [Packet delta](./listing-packet-delta-20260831.md) and root README
-              passed agent acceptance/safety review; full validation and hosted
-              delivery remain pending. Existing source materials are unchanged.
+              passed agent acceptance/safety review. First full validation failed
+              one synthetic timing test; retained unchanged recheck passed all
+              1,536 tests at 94.56%. PR #105 merged `de8c67a`, seven PR checks
+              and both post-merge workflows passed with exact-tree parity.
+              Existing source materials and frozen execution bytes are unchanged.
             - [ ] Harden the synthetic signal-error fixture's deterministic
               error injection and final cleanup after the retained local
               timing failure; preserve production deadlines and frozen sources.

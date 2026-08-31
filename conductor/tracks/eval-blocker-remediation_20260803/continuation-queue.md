@@ -8,6 +8,15 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Latest delivery: PR #105 merged `de8c67a`, exact-tree parity, seven PR checks,
+and unchanged full recheck (1,536 tests/94.56%) passed. Preserve the first local
+failure and two-case diagnostic pass. Local master/branch cleanup verified.
+Prepared branch is `codex/signal-error-fixture-hardening`. Check post-merge
+Quality `33352822749` and conformance `33352822798` both passed; next
+activate [the test-only follow-up](../../context-packs/signal-error-fixture-hardening-20260831.md).
+Session 3514 is complete; do not restart it or repeat the study. Historical
+in-progress/pending statements below are superseded by this checkpoint.
+
 Active local listing-material preparation from clean `6f00e55`; PR #104's
 post-merge checks were freshly confirmed passing. Main owns README and dated
 packet delta; agent review checks package scope and safety. No root README or
