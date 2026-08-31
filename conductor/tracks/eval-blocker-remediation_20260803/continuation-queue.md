@@ -8,6 +8,25 @@ checks, decisions and the [root acceptance map](./root-acceptance-map-20260830.m
 
 ## Resume cursor
 
+Delivery complete: PR #107 merged `4db1da5eea4bf101a0ece372779b9a548307ade4`
+at `2026-08-31T10:23:26Z`. Reviewed head `cea9b91`, tree
+`8513e458a80852d584ea33bc1d8a5fb20df2ce69`, seven PR checks and both
+post-merge workflows passed (Quality `33382185943`, conformance `33382186029`).
+Local master fast-forward and completed local/remote branch cleanup verified.
+The handoff-only branch is `codex/submission-delivery-handoff`; no active test
+or study session remains. Earlier pending-delivery cursors below are historical.
+
+Next useful action: when a browser/connector is available, inspect scoped
+publisher status and actual form requirements without creating a draft or
+accepting terms. Public route facts and self-contained reviewer inputs are
+already prepared; do not repeat them or re-request submission/panel approval.
+Remaining material decisions concern logo, country readiness and suitable
+terms/public URLs; assess the exact form before inventing requirements or
+adopting terms. Claude source-update controls also require resolution.
+Historical source rights, missing evidence, AU coverage and QA remain separate;
+no study retry or scoring is unlocked. The existing heartbeat remains paused;
+this checkpoint does not schedule further work.
+
 Local slice complete: final direct Python 3.14.5 gate/session 88263 passed
 1,536 tests in 697.27 seconds at 94.56%. Route checks, eight-case synthetic
 reviewer packet, stale-plan reconciliation and historical safety fixes passed
