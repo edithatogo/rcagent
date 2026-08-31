@@ -13,8 +13,11 @@ runbooks. Human comparator data, operator provenance and accountable authority
 are not review duties. The historical Option A remains incomplete/unadmitted; the
 [recommended prospective Option B](../../decisions/20260830-002-prospective-agent-study.md)
 was explicitly approved on 2026-08-30 with readiness-only Option C fallback.
-Implement the new synthetic study separately; historical Option A remains
-incomplete. No further reviewer or routine phase approval is required.
+The new synthetic study's implementation and freeze are delivered; its sole
+capture failed with zero admitted observations and the approved scoped Option C
+fallback applies. Historical Option A remains incomplete. See the
+[current acceptance reconciliation](./acceptance-reconciliation-20260831.md).
+No further reviewer or routine phase approval is required.
 
 ## Next repository-owned slice
 
@@ -34,8 +37,11 @@ incomplete. No further reviewer or routine phase approval is required.
   - [x] Implement and verify a bounded pinned Darwin runtime dependency profile
     (`478f799`): [evidence](./runtime-profile-implementation-20260830.md).
     Retain OS/loader limitations; non-study success does not admit a study.
-- [~] Add synthetic positive and adversarial fixtures, including empty prose,
+- [x] Add synthetic positive and adversarial fixtures, including empty prose,
   header-only CSV, stale hashes and fixture-as-study-evidence rejection.
+  [Fixture receipt](./preflight-hardening-20260830.md) and
+  [controller/admission receipt](./controller-admission-20260831.md) establish
+  implementation coverage, not passing live scoring or historical admission.
 - [~] Produce a fresh eligibility inventory; historical zero eligibility is
   not evidence of a current full inventory audit.
   - [x] Establish a separate prospective planning manifest and scoped inventory
@@ -44,8 +50,11 @@ incomplete. No further reviewer or routine phase approval is required.
 - [x] Produce a root #1 acceptance map without closing it from child counts,
   and record the [durable continuation queue](./continuation-queue.md) (`3b2142f`).
 - [x] Record owner approval of prospective Option B with Option C fallback.
-- [~] Implement the approved versioned protocol and admission gates; approval
-  is not evidence of completed implementation or an admitted study cohort.
+- [x] Implement the approved prospective versioned protocol and immediate
+  controller-owned admission gates, with the reviewed execution freeze.
+  [Freeze evidence](./prospective-execution-freeze-20260831.md) establishes
+  implementation and freeze, not an admitted cohort; the later capture failed.
+  Offline custody and scoring/analysis transitions remain incomplete above.
   - [x] Add a strict read-only prospective protocol-candidate contract and
     adversarial fixtures (`3114c01`): [evidence](./protocol-contract-20260830.md).
     Candidate consistency does not assert freeze or admission.
@@ -64,8 +73,10 @@ incomplete. No further reviewer or routine phase approval is required.
     before implementing normalisation (`a82acb1`).
     [Evidence](./output-mode-probe-20260830.md): 776 tests and one complete live
     probe; stdout remains wrapped, so response-only normalisation is unverified.
-  - [~] Establish a strict, implementation-supported output grammar or separately
+  - [x] Establish a strict, implementation-supported output grammar or separately
     admitted response-only entrypoint, then implement deterministic normalisation.
+    Native JSON decoding and deterministic normalisation are delivered in the
+    [runner contract](./runner-contract-20260830.md); non-EOS output is rejected.
     - [x] Reject lossy CLI wrapper recovery and implement a read-only native JSON
       contract (`9038d51`): [source/panel/test evidence](./structured-completion-20260830.md).
       Both agent reviews passed; 871 full tests, 93.38% coverage, 95 decoder tests
@@ -95,10 +106,11 @@ incomplete. No further reviewer or routine phase approval is required.
       30 focused tests at 100%, and final agent-panel review pass.
       Prepared while PR #88 waited; parent now merged as `8918936` and integrated;
       no model execution, protocol freeze or study admission is enabled.
-    - [~] Implement bounded child-process lifecycle with synthetic children under
+    - [x] Implement bounded child-process lifecycle with synthetic children under
       the [process context](../../context-packs/server-process-lifecycle-20260830.md).
-      PR #89 is merged with exact tree parity; real server probing remains a
-      separate step after implementation, validation and agent review.
+      The lifecycle, graceful-stop and session receipts below establish the
+      bounded direct-child implementation. Later probing does not establish
+      descendant containment or general operating-system isolation.
       - [x] Build the low-level bounded dual-pipe child-capture primitive (`b995ecc`);
         [evidence](./server-process-lifecycle-20260830.md): 1,022 tests, 93.71%
         coverage and agent-panel review passed. It does not select/admit real
@@ -131,9 +143,11 @@ incomplete. No further reviewer or routine phase approval is required.
         complete structured capture, fifteen loader images, verified cleanup;
         exact READY equality failed and is retained. Agent receipt/projection
         reviews and 1,106 full tests passed. No study admission.
-      - [~] Implement the fixture-only primary runner and explicit prompt/
-        normalization contract, then full-component freeze and affirmative
-        admission-before-blinding. Do not repeat the non-study observation.
+      - [x] Implement the fixture-tested primary runner and explicit prompt/
+        normalisation contract, then full-component freeze and the affirmative
+        admission-before-blinding gate. Implementation receipts and the actual
+        S/R freeze below establish these controls, not successful admission.
+        Do not repeat the non-study observation or consumed study capture.
         Start with the bounded
         [pure contract context](../../context-packs/runner-contract-20260830.md).
         - [x] Build the pure deterministic request and normalization candidate
@@ -150,9 +164,10 @@ incomplete. No further reviewer or routine phase approval is required.
           [Receipt](./native-protocol-20260831.md), code `29fce7c`: agent review passed, 63 focused
           tests at 100%, full 1,218 tests at 94.00%; PR #97 passed all seven
           checks and merged as `09a9058` with exact tree parity.
-        - [~] Bind a single slot's native request and condition identity before
-          orchestration, preserving fixed READY behavior and keeping primary
-          execution unavailable until complete freeze/admission controls exist.
+        - [x] Bind a single slot's native request and condition identity before
+          orchestration, preserving fixed READY behaviour. The guarded adapter,
+          controller and complete freeze below subsequently supplied the
+          execution controls absent at the original read-only binding checkpoint.
           Follow the [slot context](../../context-packs/slot-session-20260831.md).
           - [x] Implement read-only binding with internally refreshed filesystem
             eligibility; keep the absent primary adapter explicitly unverified.
@@ -160,8 +175,10 @@ incomplete. No further reviewer or routine phase approval is required.
             Code `0ca2a2f`, [receipt](./slot-binding-20260831.md): 56 focused tests at 100%,
             full 1,251 tests at 94.02%, final agent review passed. PR #98 passed
             all seven checks and merged as `234360d` with exact tree parity.
-          - [~] Add fail-closed pre-launch prerequisites before primary lifecycle
+          - [x] Add fail-closed pre-launch prerequisites before primary lifecycle
             integration; reject missing adapter and incomplete component closure.
+            The [primary gate receipt](./primary-session-gate-20260831.md)
+            establishes the completed implementation, not actual study success.
             Follow the [gate context](../../context-packs/prelaunch-gate-20260831.md).
             - [x] Verify native protocol, exact slot, references and a fixed known
               source subset against an explicit commit; keep complete adapter
@@ -261,8 +278,17 @@ incomplete. No further reviewer or routine phase approval is required.
               preserves limits. Full 1,536 tests passed at 94.56%; PR #106 merged
               `75895ae` with exact-tree parity, seven passing PR checks and both
               post-merge workflows passed. Production sources remain unchanged.
-            - [ ] Verify current first-party listing-route requirements read-only
+            - [~] Verify current first-party listing-route requirements read-only
               under [the prepared context](../../context-packs/submission-route-verification-20260831.md).
+              [Current route evidence](./submission-route-verification-20260831.md)
+              records inaccessible portal state and actual local client limits.
+            - [~] Complete self-contained synthetic reviewer inputs under
+              [the bounded context](../../context-packs/reviewer-fixtures-20260831.md),
+              preserving existing scenario IDs and no observed-execution claim.
+            - [~] Reconcile stale acceptance state and historical dataset safety
+              assurances using the [acceptance audit](./acceptance-reconciliation-20260831.md)
+              and [historical readiness audit](./historical-readiness-20260831.md).
+              Preserve source case bytes and all unresolved admissions.
 
 ## Historical design and current execution choice
 
@@ -370,5 +396,9 @@ uncertainty, or any attempt to score/unblind before the relevant preflight.
   study does not retrospectively complete or relabel its observations.
 - [x] Obtain an authorised protocol decision — decision 20260830-002 approves
   a new synthetic Option B study with Option C fallback; no repeat request.
-- [ ] Implement the new study manifest, acceptance criteria and claims boundary
+- [x] Implement the new study manifest, acceptance criteria and claims boundary
   under approved Option B, with an evidence-backed Option C fallback.
+  The [execution freeze](./prospective-execution-freeze-20260831.md),
+  [negative capture receipt](./prospective-capture-20260831.md) and
+  [scoped fallback](./readiness-addendum-20260831.md) establish this bounded
+  outcome. They do not complete historical remediation or unlock scoring.
