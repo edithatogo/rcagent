@@ -1,6 +1,6 @@
 # Context: Read-only submission-route verification
 
-Prepared successor, not activated. Base `75895ae4d900898724ee639155d48775d1782934`
+Activated 2026-08-31 after both named post-merge checks passed. Base `75895ae4d900898724ee639155d48775d1782934`
 (PR #106), branch `codex/submission-route-verification`. Verify post-merge
 Quality `33357634694` and conformance `33357634697` before activation. Start
 at AGENTS/index, owning remediation spec/plan/cursor, standing decisions 001/002,
