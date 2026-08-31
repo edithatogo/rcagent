@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling>=1.27"]
+requires = ["hatchling==1.32.0"]
 build-backend = "hatchling.build"
 
 [project]
@@ -7,22 +7,22 @@ name = "safety-systems-workbench"
 version = "0.0.0"
 description = "Validation and orchestration harness for the Safety Systems Workbench"
 license = "Apache-2.0"
-requires-python = ">=3.11"
+requires-python = "==3.14.7"
 dependencies = []
 
 [project.optional-dependencies]
 validate = [
-  "jsonschema>=4.25,<5",
-  "PyYAML>=6.0.2,<7",
+  "jsonschema==4.26.0",
+  "PyYAML==6.0.3",
 ]
 lint = [
-  "ruff>=0.6",
+  "ruff==0.16.4",
   "ty",
-  "basedpyright>=1.18",
+  "basedpyright==1.39.10",
 ]
 test = [
-  "pytest>=8.4,<10",
-  "pytest-cov>=6.2,<8",
+  "pytest==9.1.1",
+  "pytest-cov==7.1.0",
 ]
 
 [tool.hatch.build.targets.wheel]
