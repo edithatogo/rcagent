@@ -3,6 +3,14 @@
 **Version**: 1.0
 **Date**: 2026-02-25
 
+**Safety qualification (2026-08-31):** These historical selection criteria do
+not establish source rights, anonymity, ethics status or permission for study
+use. Each artefact and proposed action still needs applicable rights/privacy
+admission evidence. Public access or source de-identification alone is
+insufficient. Repository reviews use agent panels; applicable external
+authority is not delegated to those panels. See the
+[current dataset qualification](../datasets/README.md#provenance-and-licensing).
+
 ---
 
 ## 1. Overview
@@ -15,7 +23,9 @@ This document defines the inclusion/exclusion criteria, difficulty rating system
 
 ## 2. Inclusion Criteria
 
-A case is eligible if ALL of the following are met:
+A case meets historical selection eligibility if ALL of the following are met.
+This does not establish study admission; rights, privacy and applicable
+authority must also be established for the proposed use.
 
 | # | Criterion | Rationale |
 |---|---|---|
@@ -25,7 +35,7 @@ A case is eligible if ALL of the following are met:
 | I4 | Occurred in AU or NZ healthcare setting | Jurisdictional relevance to rcagent skill suite |
 | I5 | Involves a patient safety event (harm or near-miss) | Core scope of RCA investigation |
 | I6 | Source includes identified contributing factors or findings | Enables gold-standard comparison |
-| I7 | Already de-identified in source document | Ethics — no additional de-identification required |
+| I7 | Already de-identified in source document | Historical selection condition only; further privacy assessment and any necessary transformations or authority remain required before admission |
 
 ---
 
@@ -228,6 +238,8 @@ Each selected case is documented in a standardized markdown file with the follow
 
 Before including a case in the evaluation dataset:
 
+- [ ] Per-artefact rights, privacy and applicable authority evidence supports
+  the proposed use; public access and source de-identification alone do not pass
 - [ ] Meets ALL inclusion criteria (I1–I7)
 - [ ] Does not meet ANY exclusion criteria (E1–E6)
 - [ ] Narrative is ≥500 words
