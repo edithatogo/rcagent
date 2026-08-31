@@ -14,6 +14,12 @@ documentation and integration; two read-only agent lanes check client evidence
 and safety/distribution claims. No overlapping writer or open implementation
 PR was observed; unrelated Renovate PRs #93/#94 are preserved. Historical
 queued/in-progress statements below are superseded by this update.
+The [new evidence matrix](./client-mode-evidence-20260831.md) has passed bounded
+agent acceptance review; safety wording corrections distinguish declared
+hybrid checks from runbook authority. Final validation passed 1,536 tests at
+94.56%; hosted delivery remains pending. Next local route is a public-information landing draft and
+packet-delta preparation reusing existing privacy/support/security/licence
+materials, with no hosting, legal terms adoption or submission.
 
 **Current terminal capture state:** sole invocation/session 14492 completed;
 do not restart it. [Negative receipt](./prospective-capture-20260831.md) records

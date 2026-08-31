@@ -236,6 +236,10 @@ incomplete. No further reviewer or routine phase approval is required.
             - [~] Reconcile client/mode and distribution evidence under
               [the bounded context](../../context-packs/client-mode-evidence-reconciliation-20260831.md),
               activated from clean `4cd3790`. No new execution or submission.
+              [Matrix](./client-mode-evidence-20260831.md) distinguishes static
+              adapter/installer, archive lifecycle, actual trials, declared-mode
+              checks and external enforcement. Agent review corrections applied;
+              full validation passed (1,536 tests, 94.56%); hosted delivery pending.
 
 ## Historical design and current execution choice
 
