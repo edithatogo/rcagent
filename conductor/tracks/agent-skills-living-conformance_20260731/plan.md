@@ -461,7 +461,7 @@ does not replace client observations or confer clinical authority.
   - [x] Run privacy and evidence-integrity checks
   - [x] Run the upstream-drift check
   - [!] Require every applicable compliance item to pass — `RCA-ADAPTER-001`
-    now exposes the missing Claude actual-client evidence.
+    now exposes the missing passing Codex representative execution evidence.
 
 - [x] Task: Produce the final evidence pack
   - [x] Generate the final compliance matrix
@@ -472,8 +472,8 @@ does not replace client observations or confer clinical authority.
   - [x] Update the changelog
 
 - [!] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [!] Verify all approved specification acceptance criteria — Claude actual
-    activation/execution evidence remains missing.
+  - [!] Verify all approved specification acceptance criteria — the bounded
+    2026-09-01 trial passed on AGY but not on Codex.
   - [!] Confirm no checklist-only claim lacks evidence — final reconciliation
     depends on closing the actual-client gap, not a green fixture suite.
   - [x] Confirm no external publication occurred
@@ -506,6 +506,15 @@ Code repair commit: `036137295959674a45e4a49356702d0ad03c7cb9`.
   Codex plus at least one other authenticated supported client, using
   synthetic-only inputs. Record unavailable clients as unverified; do not infer
   credentials, private-data access, universal compatibility or deployment approval.
+  - [x] Record a passing bounded AGY execution and explicit client/version/mode scope.
+  - [x] Record Cursor as installed but unauthenticated; retain Cline and Claude as
+    unverified rather than inferring authentication.
+  - [x] Record the single OpenCode provider-auth failure and Kilo credit failure
+    without retries or compatibility claims.
+  - [!] Obtain a passing Codex representative execution. The single bounded run
+    discovered the skill but the prompt's blanket shell prohibition prevented
+    read-only loading of `SKILL.md`; see
+    `evidence/available-client-trials-20260901.md`.
 - [!] Task: Re-review complete acceptance and archive only after all applicable
   gates pass. Update current locators together when eligible; preserve the
   hash-bound historical dependency manifest and original evidence bytes.

@@ -142,7 +142,7 @@
       "implementation": "adapters/",
       "validation": "deterministic contract suites and retained actual-client observations",
       "result": "pending",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/review-20260831.md"
+      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/available-client-trials-20260901.md"
     },
     {
       "id": "RCA-DRIFT-001",
