@@ -45,14 +45,27 @@ def check_drift(
     offline: bool = False,
     opener=urllib.request.urlopen,
 ) -> tuple[int, dict[str, object]]:
-    baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
     receipt: dict[str, object] = {
         "checked_at": datetime.now(UTC).isoformat(),
-        "baseline_revision": baseline["upstream_revision"],
         "current_conformance": False,
         "mode": "offline" if offline else "live",
-        "sources": baseline["sources"],
     }
+    try:
+        baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+        if (
+            not isinstance(baseline, dict)
+            or not isinstance(baseline.get("upstream_revision"), str)
+            or not baseline["upstream_revision"]
+        ):
+            raise ValueError("Missing baseline revision")
+        if not isinstance(baseline.get("sources"), list) or not baseline["sources"]:
+            raise ValueError("Missing baseline sources")
+        receipt["baseline_revision"] = baseline["upstream_revision"]
+        receipt["sources"] = baseline["sources"]
+    except (OSError, ValueError, TypeError):
+        receipt["status"] = "baseline_invalid"
+        receipt["message"] = "A valid readable upstream baseline is required."
+        return 2, receipt
     if offline:
         receipt["status"] = "offline_not_current"
         receipt["message"] = "Offline validation cannot establish current upstream conformance."
@@ -60,7 +73,9 @@ def check_drift(
 
     try:
         current = _read_json(UPSTREAM_API, opener)["sha"]
-    except (OSError, KeyError, TypeError, UnicodeError, json.JSONDecodeError, urllib.error.URLError) as exc:
+        if not isinstance(current, str) or not current:
+            raise ValueError("Invalid upstream revision")
+    except (OSError, KeyError, TypeError, UnicodeError, ValueError, urllib.error.URLError) as exc:
         receipt["status"] = "upstream_unavailable"
         receipt["message"] = str(exc)
         return 2, receipt
@@ -77,12 +92,28 @@ def check_drift(
             COMPARE_API.format(base=baseline["upstream_revision"], head=current),
             opener,
         )
-        changed_paths = [
-            item["filename"]
-            for item in comparison["files"]
-            if isinstance(item, dict) and isinstance(item.get("filename"), str)
-        ]
-    except (OSError, KeyError, TypeError, UnicodeError, json.JSONDecodeError, urllib.error.URLError) as exc:
+        if not isinstance(comparison, dict) or comparison.get("status") != "ahead":
+            raise ValueError("Upstream comparison must establish forward ancestry")
+        files = comparison.get("files")
+        # GitHub compare responses include at most 300 files, even with paging.
+        # Do not infer absence of normative changes from a possibly capped list.
+        if not isinstance(files, list) or len(files) >= 300:
+            raise ValueError("Upstream changed-file list is invalid or potentially truncated")
+        changed_paths: list[str] = []
+        for item in files:
+            if (
+                not isinstance(item, dict)
+                or not isinstance(item.get("filename"), str)
+                or not item["filename"]
+            ):
+                raise ValueError("Malformed changed-file entry")
+            changed_paths.append(item["filename"])
+            if "previous_filename" in item:
+                previous = item["previous_filename"]
+                if not isinstance(previous, str) or not previous:
+                    raise ValueError("Malformed renamed-file entry")
+                changed_paths.append(previous)
+    except (OSError, KeyError, TypeError, UnicodeError, ValueError, urllib.error.URLError) as exc:
         receipt["status"] = "upstream_unavailable"
         receipt["message"] = f"Unable to classify upstream changes: {exc}"
         return 2, receipt
@@ -99,12 +130,16 @@ def check_drift(
     if guidance:
         receipt["status"] = "guidance_review_advised"
         receipt["current_conformance"] = True
-        receipt["message"] = "Creator guidance changed without a normative specification or validator change."
+        receipt["message"] = (
+            "Creator guidance changed without a normative specification or validator change."
+        )
         return 0, receipt
 
     receipt["status"] = "upstream_change_irrelevant"
     receipt["current_conformance"] = True
-    receipt["message"] = "Upstream changed only outside monitored specification, validator, and guidance paths."
+    receipt["message"] = (
+        "Upstream changed only outside monitored specification, validator, and guidance paths."
+    )
     return 0, receipt
 
 
@@ -114,8 +149,7 @@ def main() -> int:
         "--baseline",
         type=Path,
         default=Path(
-            "conductor/tracks/agent-skills-living-conformance_20260731/"
-            "upstream-baseline.json"
+            "conductor/archive/agent-skills-living-conformance_20260731/upstream-baseline.json"
         ),
     )
     parser.add_argument("--offline", action="store_true")

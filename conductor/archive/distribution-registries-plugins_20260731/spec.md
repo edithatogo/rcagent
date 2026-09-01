@@ -54,7 +54,7 @@ requires a fit-gap record and an approved Architecture Decision Record.
 
 ## Hard Start Dependencies
 
-- [agent-skills-living-conformance_20260731](../../tracks/agent-skills-living-conformance_20260731/index.md)
+- [agent-skills-living-conformance_20260731](../agent-skills-living-conformance_20260731/index.md)
 
 The track cannot start until each hard dependency has a passing completion receipt, not merely a closed issue.
 

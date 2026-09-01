@@ -12,7 +12,7 @@
 
 ## Later Phase Dependencies
 
-- [agent-skills-living-conformance_20260731](../../tracks/agent-skills-living-conformance_20260731/index.md)
+- [agent-skills-living-conformance_20260731](../agent-skills-living-conformance_20260731/index.md)
   for licence, redistribution, release, and clinical-validity claims only.
 
 Track 00 has technical admission for downstream, non-release foundation work

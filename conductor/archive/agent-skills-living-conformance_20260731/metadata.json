@@ -5,7 +5,16 @@
   "type": "refactor",
   "status": "completed",
   "created_at": "2026-07-31T03:26:21Z",
-  "updated_at": "2026-08-29T00:30:00Z",
+  "updated_at": "2026-09-01T10:23:00Z",
+  "gates": [
+    {
+      "id": "available-client-activation-execution-evidence",
+      "kind": "validation",
+      "status": "passed",
+      "evidence": "./evidence/available-client-trials-20260901.md",
+      "description": "The amended criterion requires passing Codex and at least one other authenticated supported-client observation; bounded Codex and AGY trials pass, while unavailable clients remain explicitly unverified."
+    }
+  ],
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/5",

@@ -28,7 +28,7 @@
       "compatibility_window": "current upstream main revision recorded in each receipt",
       "safe_fallback": "offline project validation may run but cannot claim current upstream conformance",
       "replacement_path": "remove project checks when an official production-grade validator covers equivalent portability, extension, privacy, and drift guarantees",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/fit-gap.md",
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/evidence/fit-gap.md",
       "project_owned_gap": "portable healthcare safety content, stricter portability and privacy checks, governed extensions, compatibility evidence, and thin client adapter shims"
     },
     {
