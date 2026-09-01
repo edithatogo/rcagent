@@ -11,7 +11,9 @@ from tools.validate_skill import validate_skill
 ROOT = Path(__file__).parents[1]
 
 
-@pytest.mark.parametrize("client", ["codex", "claude-code", "opencode", "cline", "cursor"])
+@pytest.mark.parametrize(
+    "client", ["agy", "codex", "claude-code", "opencode", "cline", "cursor", "kilo"]
+)
 def test_adapter_installs_unmodified_valid_core(tmp_path: Path, client: str) -> None:
     installed = install_adapter(ROOT, client, tmp_path)
     assert validate_skill(installed) == []
@@ -30,7 +32,7 @@ def test_adapter_refuses_overwrite_without_explicit_replace(tmp_path: Path) -> N
 
 
 def test_adapter_manifests_do_not_preapprove_experimental_tools() -> None:
-    for client in ("codex", "claude-code"):
+    for client in ("agy", "codex", "claude-code", "opencode", "cline", "cursor", "kilo"):
         manifest = json.loads(
             (ROOT / "adapters" / client / "adapter.json").read_text(encoding="utf-8")
         )

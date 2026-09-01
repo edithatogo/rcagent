@@ -42,8 +42,10 @@ distribution's recorded repository, subdirectory and commit. A custom
 Installation metadata is not a signed attestation against local tampering.
 
 Full conformance requires every applicable matrix requirement to pass. Track
-00 currently remains blocked on actual Claude activation and representative
-execution evidence (`RCA-ADAPTER-001`); installer tests cannot satisfy it.
+Track 00 requires actual activation and representative execution evidence from
+Codex plus at least one other authenticated supported client
+(`RCA-ADAPTER-001`). Installer tests cannot satisfy it. Contract-only clients
+remain explicitly unverified and must not be advertised as compatible.
 
 ## Optional client installation
 

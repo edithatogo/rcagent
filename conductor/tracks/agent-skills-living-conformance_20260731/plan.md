@@ -502,9 +502,10 @@ Code repair commit: `036137295959674a45e4a49356702d0ad03c7cb9`.
     the historical Codex results within their tested revision/case limits.
   - [x] Retain failed observations and distinguish agent engineering review
     from clinical, legal, organisational or deployment validation.
-- [!] Task: Obtain the missing Claude activation and representative execution
-  evidence under applicable client/account execution authority and synthetic-only
-  inputs. Do not infer new credentials, private-data access or spending authority.
+- [~] Task: Obtain actual activation and representative execution evidence for
+  Codex plus at least one other authenticated supported client, using
+  synthetic-only inputs. Record unavailable clients as unverified; do not infer
+  credentials, private-data access, universal compatibility or deployment approval.
 - [!] Task: Re-review complete acceptance and archive only after all applicable
   gates pass. Update current locators together when eligible; preserve the
   hash-bound historical dependency manifest and original evidence bytes.

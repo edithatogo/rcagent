@@ -137,7 +137,7 @@
     {
       "id": "RCA-ADAPTER-001",
       "source": "conductor/tracks/agent-skills-living-conformance_20260731/spec.md",
-      "requirement": "Both Claude Code and Codex adapters have passing path, activation and representative execution evidence.",
+      "requirement": "Codex and at least one other authenticated supported client have passing path, actual activation and representative execution evidence; unavailable clients remain explicitly unverified.",
       "applicability": "applicable_project_policy",
       "implementation": "adapters/",
       "validation": "deterministic contract suites and retained actual-client observations",

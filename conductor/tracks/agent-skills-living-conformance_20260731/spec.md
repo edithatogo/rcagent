@@ -162,10 +162,9 @@ Requirements:
 
 ### 5. Client-Adapter Architecture
 
-Create an adapter layer for at least:
-
-- Claude Code
-- Codex
+Create an adapter layer for Codex and available supported clients. Retain
+contract-only adapters for unavailable clients without claiming actual-client
+compatibility.
 
 Also provide a documented adapter contract for other clients.
 
@@ -302,7 +301,10 @@ The track is complete only when:
 6. Stable optional fields are implemented wherever applicable.
 7. Applicable experimental options pass documented compatibility tests.
 8. Unsupported experimental options have safe fallbacks and explicit evidence.
-9. Claude Code and Codex adapters pass their compatibility suites.
+9. Codex and at least one other authenticated supported-client adapter pass
+   path, actual activation, and representative execution checks. Every
+   unavailable client is explicitly unverified; deterministic adapter tests do
+   not establish actual compatibility.
 10. Trigger training and held-out validation suites meet all declared thresholds.
 11. Output-quality assertions pass without privacy or evidence-integrity failures.
 12. Existing evaluation artefacts remain preserved and traceable.
