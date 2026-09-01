@@ -14,12 +14,14 @@ jobs:
       contents: read
     steps:
       - name: Check out repository with vendored plugins
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           submodules: recursive
 
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
+      - name: Install exact Rust toolchain
+        run: |
+          rustup toolchain install 1.94.0 --profile minimal --no-self-update
+          rustup default 1.94.0
 
       - name: Build SourceRight (locked)
         working-directory: .agents/plugins/sourceright
@@ -30,7 +32,7 @@ jobs:
         run: ./target/debug/sourceright bench --json | tee sourceright-bench.json
 
       - name: Upload bench receipt
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: sourceright-bench
           path: .agents/plugins/sourceright/sourceright-bench.json
