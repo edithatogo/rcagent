@@ -11,7 +11,7 @@
       "implementation": "skills/rca-investigation/SKILL.md",
       "validation": "official validator and local file check",
       "result": "pass",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
     },
     {
       "id": "AS-SPEC-002",
@@ -21,7 +21,7 @@
       "implementation": "skills/rca-investigation/SKILL.md",
       "validation": "official validator and negative fixtures",
       "result": "pass",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "AS-SPEC-003",
@@ -41,7 +41,7 @@
       "implementation": "skills/rca-investigation/SKILL.md and LICENSE",
       "validation": "frontmatter and bundled-file check",
       "result": "pass",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/licence-decision-20260829.md"
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/evidence/licence-decision-20260829.md"
     },
     {
       "id": "AS-SPEC-005",
@@ -51,7 +51,7 @@
       "implementation": "skills/rca-investigation/SKILL.md",
       "validation": "frontmatter and isolated portability tests",
       "result": "pass",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "AS-SPEC-006",
@@ -61,7 +61,7 @@
       "implementation": "skills/rca-investigation/SKILL.md",
       "validation": "schema validation",
       "result": "pass",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "AS-SPEC-007",
@@ -71,7 +71,7 @@
       "implementation": "adapters/",
       "validation": "adapter compatibility tests",
       "result": "pass",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/adapters.md",
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/evidence/adapters.md",
       "omission_rationale": "Cross-client support is not established, so the portable core omits the field."
     },
     {
@@ -82,7 +82,7 @@
       "implementation": "skills/rca-investigation/",
       "validation": "reference and isolated-copy tests",
       "result": "pass",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "AS-GUIDE-001",
@@ -92,7 +92,7 @@
       "implementation": "skills/rca-investigation/SKILL.md",
       "validation": "line and token-budget checks",
       "result": "pass",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/evidence/standards-baseline.md"
     },
     {
       "id": "AS-GUIDE-002",
@@ -116,17 +116,17 @@
     },
     {
       "id": "RCA-PORT-001",
-      "source": "conductor/tracks/agent-skills-living-conformance_20260731/spec.md",
+      "source": "conductor/archive/agent-skills-living-conformance_20260731/spec.md",
       "requirement": "The canonical skill operates from an isolated copy without repository-root dependencies.",
       "applicability": "applicable_project_policy",
       "implementation": "skills/rca-investigation/",
       "validation": "isolated-copy and archive-extraction tests",
       "result": "pass",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/portable-core.md"
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/evidence/portable-core.md"
     },
     {
       "id": "RCA-SAFE-001",
-      "source": "conductor/tracks/agent-skills-living-conformance_20260731/spec.md",
+      "source": "conductor/archive/agent-skills-living-conformance_20260731/spec.md",
       "requirement": "The skill enforces de-identification, evidence uncertainty, human review, and no automatic legal-privilege claim.",
       "applicability": "applicable_project_policy",
       "implementation": "skills/rca-investigation/SKILL.md and references/workflows/",
@@ -136,23 +136,23 @@
     },
     {
       "id": "RCA-ADAPTER-001",
-      "source": "conductor/tracks/agent-skills-living-conformance_20260731/spec.md",
+      "source": "conductor/archive/agent-skills-living-conformance_20260731/spec.md",
       "requirement": "Codex and at least one other authenticated supported client have passing path, actual activation and representative execution evidence; unavailable clients remain explicitly unverified.",
       "applicability": "applicable_project_policy",
       "implementation": "adapters/",
       "validation": "deterministic contract suites and retained actual-client observations",
-      "result": "pending",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/evidence/available-client-trials-20260901.md"
+      "result": "pass",
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/evidence/available-client-trials-20260901.md"
     },
     {
       "id": "RCA-DRIFT-001",
-      "source": "conductor/tracks/agent-skills-living-conformance_20260731/spec.md",
+      "source": "conductor/archive/agent-skills-living-conformance_20260731/spec.md",
       "requirement": "Current conformance requires successful live upstream resolution; offline results cannot claim currency.",
       "applicability": "applicable_project_policy",
       "implementation": "tools/",
       "validation": "online, offline, and changed-baseline fixtures",
       "result": "pass",
-      "evidence": "conductor/tracks/agent-skills-living-conformance_20260731/upstream-baseline.json"
+      "evidence": "conductor/archive/agent-skills-living-conformance_20260731/upstream-baseline.json"
     }
   ]
 }

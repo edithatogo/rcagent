@@ -34,11 +34,8 @@ def test_current_profile_is_structurally_valid() -> None:
     assert validate_profile(ROOT) == []
 
 
-def test_completion_gate_preserves_pending_actual_client_evidence() -> None:
-    assert any(
-        "RCA-PROFILE-004: RCA-ADAPTER-001" in error
-        for error in validate_profile(ROOT, require_complete=True)
-    )
+def test_completion_gate_passes_with_current_actual_client_evidence() -> None:
+    assert validate_profile(ROOT, require_complete=True) == []
 
 
 def test_missing_evidence_is_reported(tmp_path: Path) -> None:
@@ -59,7 +56,7 @@ def test_evaluation_contract_is_fail_closed(tmp_path: Path) -> None:
     assert any("RCA-EVAL-002" in error for error in validate_profile(root))
 
 
-def test_cli_structural_success_and_completion_blocked(monkeypatch, capsys) -> None:
+def test_cli_structural_and_completion_success(monkeypatch, capsys) -> None:
     monkeypatch.setattr("sys.argv", ["validate_skill_profile", "--root", str(ROOT)])
     assert main() == 0
     assert "validation passed" in capsys.readouterr().out
@@ -68,8 +65,8 @@ def test_cli_structural_success_and_completion_blocked(monkeypatch, capsys) -> N
         "sys.argv",
         ["validate_skill_profile", "--root", str(ROOT), "--require-complete"],
     )
-    assert main() == 1
-    assert "RCA-ADAPTER-001" in capsys.readouterr().out
+    assert main() == 0
+    assert "validation passed" in capsys.readouterr().out
 
 
 @pytest.fixture

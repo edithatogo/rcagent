@@ -1,7 +1,7 @@
 # Agent Skills Living Conformance and Portable Architecture
 
 - **Track:** 00
-- **Status:** Blocked after bounded trials — passing Codex execution evidence missing
+- **Status:** Completed and archived after bounded Codex and AGY validation
 - **Workstream:** foundation-governance
 - **GitHub issue:** [#5](https://github.com/edithatogo/rcagent/issues/5)
 - **Parent workstream:** [#2](https://github.com/edithatogo/rcagent/issues/2)
@@ -11,11 +11,12 @@
 
 The [fresh review](./evidence/review-20260831.md) identified validator false-pass
 gaps and a missing actual-client acceptance requirement. Repairs are being
-validated. The 2026-09-01 bounded trials produced a passing AGY observation but
-not a passing Codex representative execution, so completion and archival remain
-blocked. Cursor is installed but unauthenticated; unavailable clients remain
-explicitly unverified. Historical completion and review receipts remain dated
-records, superseded by this current acceptance state.
+validated. The 2026-09-01 bounded trials produced passing Codex and AGY
+representative execution observations. Cursor is installed but unauthenticated;
+other unavailable clients remain explicitly unverified. Completion and archive
+eligibility was confirmed by current conformance and the full deterministic
+gate. Historical completion and review receipts remain dated records; the final
+2026-09-01 closeout supersedes their earlier blocked state.
 Apache-2.0 remains approved; no clinical approval or release is claimed here.
 
 ## Dependencies

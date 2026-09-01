@@ -8,7 +8,7 @@
 
 ## Hard Start Dependencies
 
-- [agent-skills-living-conformance_20260731](../../tracks/agent-skills-living-conformance_20260731/index.md)
+- [agent-skills-living-conformance_20260731](../agent-skills-living-conformance_20260731/index.md)
 
 ## Later Phase Dependencies
 

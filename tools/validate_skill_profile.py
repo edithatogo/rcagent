@@ -10,7 +10,7 @@ from typing import Any
 
 from tools.validate_skill import validate_skill
 
-TRACK = Path("conductor/tracks/agent-skills-living-conformance_20260731")
+TRACK = Path("conductor/archive/agent-skills-living-conformance_20260731")
 REQUIRED_MATRIX_FIELDS = {
     "id",
     "source",

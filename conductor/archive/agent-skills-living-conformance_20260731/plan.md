@@ -7,12 +7,13 @@ Execution follows [workflow.md](../../workflow.md) and the
 
 ## Continuous Execution Contract
 
-Current status (2026-08-31): **blocked; not archive-eligible**. The
-[review receipt](./evidence/review-20260831.md) supersedes the earlier blanket
-completion claim: Claude actual activation and representative execution
-evidence is missing. Retained historical checkmarks describe the dated work,
-not proof that this unresolved acceptance condition passed. Agent review
-does not replace client observations or confer clinical authority.
+Current status (2026-09-01): **final validation in progress**. The
+[review receipt](./evidence/review-20260831.md) superseded the earlier blanket
+completion claim. The subsequently approved acceptance amendment and
+[bounded trials](./evidence/available-client-trials-20260901.md) now provide
+passing Codex and AGY observations; unavailable clients remain explicitly
+unverified. Agent review does not replace client observations or confer
+clinical authority.
 
 > Reconciled 2026-08-11 against merged implementation, deterministic tests,
 > current upstream baseline `69ef37e9424c0a7ea9dd2293b559e43ec8176379`,
@@ -254,14 +255,15 @@ does not replace client observations or confer clinical authority.
 
 ## Phase 5: Implement Portable Client Adapters
 
-- [!] Task: Implement the Claude Code adapter — contract implementation retained;
-  actual-client acceptance remains blocked by missing observations.
+- [x] Task: Implement the Claude Code adapter — contract implementation retained;
+  actual execution is explicitly unverified and is not required by the amended
+  available-client acceptance criterion.
   - [x] Map Claude Code activation and agent behaviour to the canonical core
   - [x] Replace divergent root-level agent content with adapter shims or generated references
   - [x] Declare supported stable and experimental capabilities
   - [x] Implement unsupported-feature fallbacks
-  - [!] Add representative activation and execution tests — retained installer
-    and contract tests do not establish actual Claude activation or execution.
+  - [x] Add representative deterministic activation and execution contract tests;
+    retain the explicit boundary that they do not establish actual Claude execution.
 
 - [x] Task: Implement the Codex adapter
   - [x] Map Codex skill discovery and execution to the canonical core
@@ -450,8 +452,8 @@ does not replace client observations or confer clinical authority.
   - [x] Verify compatibility statements against test evidence
   - [x] Block release claims if licence approval remains unresolved
 
-- [!] Task: Execute the final conformance audit — prior completion superseded
-  by the 2026-08-31 review; actual-client acceptance remains incomplete.
+- [x] Task: Execute the final conformance audit — actual-client acceptance and
+  the current integrated gate pass.
   - [x] Run the official validator against the current upstream revision
   - [x] Run deterministic validation
   - [x] Run isolated portability validation
@@ -460,8 +462,8 @@ does not replace client observations or confer clinical authority.
   - [x] Run output-quality validation
   - [x] Run privacy and evidence-integrity checks
   - [x] Run the upstream-drift check
-  - [!] Require every applicable compliance item to pass — `RCA-ADAPTER-001`
-    now exposes the missing passing Codex representative execution evidence.
+  - [x] Require every applicable compliance item to pass — `RCA-ADAPTER-001`
+    passed with bounded Codex and AGY observations on 2026-09-01.
 
 - [x] Task: Produce the final evidence pack
   - [x] Generate the final compliance matrix
@@ -471,21 +473,22 @@ does not replace client observations or confer clinical authority.
   - [x] Link every conformance claim to evidence
   - [x] Update the changelog
 
-- [!] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-  - [!] Verify all approved specification acceptance criteria — the bounded
-    2026-09-01 trial passed on AGY but not on Codex.
-  - [!] Confirm no checklist-only claim lacks evidence — final reconciliation
-    depends on closing the actual-client gap, not a green fixture suite.
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [x] Verify all approved specification acceptance criteria — the bounded
+    2026-09-01 observations passed on Codex and AGY.
+  - [x] Confirm no checklist-only claim lacks evidence — actual-client evidence
+    is retained separately from deterministic fixture evidence.
   - [x] Confirm no external publication occurred
   - [x] Confirm the working tree contains only intended changes
   - [x] Obtain owner approval for the licence; retain external release as a separate gate
-  - [!] Otherwise declare the track complete from the reconciled evidence without an additional approval pause — blocked until the review findings and actual-client acceptance pass.
+  - [x] Declare the track complete from the reconciled evidence without an
+    additional approval pause after the current integrated validation passed.
 
 ## Review Fixes — 2026-08-31
 
 Code repair commit: `036137295959674a45e4a49356702d0ad03c7cb9`.
 
-- [~] Task: Verify the implemented fail-closed conformance repairs.
+- [x] Task: Verify the implemented fail-closed conformance repairs.
   - [x] Add required matrix identifiers, typed fields and readable evidence checks.
   - [x] Prevent incomplete profiles from producing positive current-conformance receipts.
   - [x] Bind official-validator execution to the reviewed installed VCS provenance;
@@ -495,14 +498,15 @@ Code repair commit: `036137295959674a45e4a49356702d0ad03c7cb9`.
     both paths of renamed files.
   - [x] Record final regression, official-validator and repository-wide results
     for the integrated repair revision in the review receipt.
-  - [!] Resolve the broad-gate server-process reap failures; 1622 tests passed
-    and 2 failed. Focused success does not supersede this failure receipt.
+  - [x] Resolve the broad-gate server-process reap failures — the integrated
+    2026-09-01 gate passed all 1786 tests, including all server-process suites;
+    the earlier failure receipt remains retained as historical evidence.
 - [x] Task: Reconcile the acceptance gap without rewriting historical receipts.
   - [x] Expose Claude actual-client acceptance as `RCA-ADAPTER-001` and retain
     the historical Codex results within their tested revision/case limits.
   - [x] Retain failed observations and distinguish agent engineering review
     from clinical, legal, organisational or deployment validation.
-- [~] Task: Obtain actual activation and representative execution evidence for
+- [x] Task: Obtain actual activation and representative execution evidence for
   Codex plus at least one other authenticated supported client, using
   synthetic-only inputs. Record unavailable clients as unverified; do not infer
   credentials, private-data access, universal compatibility or deployment approval.
@@ -511,10 +515,9 @@ Code repair commit: `036137295959674a45e4a49356702d0ad03c7cb9`.
     unverified rather than inferring authentication.
   - [x] Record the single OpenCode provider-auth failure and Kilo credit failure
     without retries or compatibility claims.
-  - [!] Obtain a passing Codex representative execution. The single bounded run
-    discovered the skill but the prompt's blanket shell prohibition prevented
-    read-only loading of `SKILL.md`; see
-    `evidence/available-client-trials-20260901.md`.
-- [!] Task: Re-review complete acceptance and archive only after all applicable
+  - [x] Obtain a passing Codex representative execution after separate owner
+    approval for a fresh corrected-prompt run; retain the initial failed
+    observation in `evidence/available-client-trials-20260901.md`.
+- [x] Task: Re-review complete acceptance and archive only after all applicable
   gates pass. Update current locators together when eligible; preserve the
   hash-bound historical dependency manifest and original evidence bytes.

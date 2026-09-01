@@ -149,7 +149,7 @@ def main() -> int:
         "--baseline",
         type=Path,
         default=Path(
-            "conductor/tracks/agent-skills-living-conformance_20260731/upstream-baseline.json"
+            "conductor/archive/agent-skills-living-conformance_20260731/upstream-baseline.json"
         ),
     )
     parser.add_argument("--offline", action="store_true")

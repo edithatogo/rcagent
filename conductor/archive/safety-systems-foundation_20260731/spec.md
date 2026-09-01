@@ -59,7 +59,7 @@ The track cannot start until each hard dependency has a passing completion recei
 
 ## Later Phase Dependencies
 
-- [agent-skills-living-conformance_20260731](../../tracks/agent-skills-living-conformance_20260731/index.md)
+- [agent-skills-living-conformance_20260731](../agent-skills-living-conformance_20260731/index.md)
   gates only licence declarations, redistribution, public release, registry or
   marketplace actions, and clinical-validity claims. Reversible local
   foundation work is admitted by the Track 00 technical-baseline receipt at

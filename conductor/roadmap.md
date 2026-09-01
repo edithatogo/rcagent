@@ -96,7 +96,7 @@ Later phase gates not drawn as hard-start arrows:
 
 | Track | GitHub | Workstream | Hard start blockers | Primary outcome |
 |---|---:|---|---|---|
-| [00 Agent Skills living conformance](./tracks/agent-skills-living-conformance_20260731/index.md) | [#5](https://github.com/edithatogo/rcagent/issues/5) | A | None | Portable core and contract tooling implemented; blocked on Claude actual activation/execution evidence and final review; not archive-eligible |
+| [00 Agent Skills living conformance](./archive/agent-skills-living-conformance_20260731/index.md) | [#5](https://github.com/edithatogo/rcagent/issues/5) | A | None | Archived portable core and contract tooling; bounded Codex and AGY observations pass, with unavailable clients explicitly unverified |
 | [01 Safety systems foundation](./archive/safety-systems-foundation_20260731/index.md) | [#6](https://github.com/edithatogo/rcagent/issues/6) | A | None; 00 gates licence/release-dependent phases | Product architecture, maximal harness, context system, and autonomous queue |
 | [02 Evidence workflow core](./archive/evidence-workflow-core_20260731/index.md) | [#7](https://github.com/edithatogo/rcagent/issues/7) | A | 01 | Canonical evidence, claim, workflow, provenance, audit, and interchange contracts |
 | [03 Privacy, security and assurance](./archive/privacy-security-assurance_20260731/index.md) | [#8](https://github.com/edithatogo/rcagent/issues/8) | A | 01 | Remote, hybrid, local, and air-gapped safeguards and assurance |
@@ -115,14 +115,13 @@ Cross-cutting repository hardening is coordinated by
 Tracks 01 and 03. These issues refine existing acceptance criteria rather than
 creating parallel tracks.
 
-Track 00's [2026-08-31 review](./tracks/agent-skills-living-conformance_20260731/evidence/review-20260831.md)
-supersedes its earlier blanket completion claim. Agent panels can review the
-engineering repairs, but installer contracts and agent agreement cannot supply
-missing actual-client observations. Existing downstream implementation and
-dated release evidence remain retained; this correction neither revokes their
-recorded events nor certifies unobserved client compatibility. Resume the
-affected acceptance and archival work when the required Claude evidence and
-applicable validation pass, without another routine review-approval request.
+Track 00's [2026-09-01 final review](./archive/agent-skills-living-conformance_20260731/evidence/final-review-20260901.md)
+records passing bounded Codex and AGY actual-client observations plus the full
+integrated gate. Installer contracts and agent agreement still cannot certify
+unobserved clients: OpenCode, Kilo, Cursor, Cline and Claude remain explicitly
+unverified for actual execution. Existing downstream implementation and dated
+release evidence remain retained; archival neither revokes their recorded
+events nor expands compatibility or external-authority claims.
 
 ## Delivery Waves
 

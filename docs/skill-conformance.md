@@ -61,7 +61,7 @@ rejects absolute and escaping manifest targets.
 
 ## Extension governance
 
-`conductor/tracks/agent-skills-living-conformance_20260731/extensions.json`
+`conductor/archive/agent-skills-living-conformance_20260731/extensions.json`
 records stable, experimental, unsupported, inapplicable, and decision-pending
 fields. Promote an experimental field only after exact client-version tests,
 safe fallback verification, and a receipt. Never weaken privacy or reserved

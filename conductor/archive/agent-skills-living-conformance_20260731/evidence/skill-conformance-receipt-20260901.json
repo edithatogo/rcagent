@@ -1,0 +1,49 @@
+{
+  "checked_at": "2026-09-01T10:19:13.943460+00:00",
+  "current_conformance": true,
+  "local_validation_passed": true,
+  "official_validator": {
+    "command": [
+      "python",
+      "-I",
+      "-m",
+      "skills_ref.cli",
+      "validate",
+      "skills/rca-investigation"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "provenance": {
+      "revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+      "source": "https://github.com/agentskills/agentskills.git",
+      "verified": true
+    }
+  },
+  "project_profile": {
+    "complete": true,
+    "completion_diagnostics": [],
+    "diagnostics": [],
+    "passed": true
+  },
+  "runtime": {
+    "platform": "Darwin",
+    "python": "3.14.5"
+  },
+  "schema_version": "1.0",
+  "upstream_drift": {
+    "baseline_revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+    "checked_at": "2026-09-01T10:19:13.367282+00:00",
+    "current_conformance": true,
+    "message": "Upstream revision matches the reviewed baseline.",
+    "mode": "live",
+    "resolved_revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+    "sources": [
+      "https://agentskills.io/specification",
+      "https://agentskills.io/skill-creation/best-practices",
+      "https://agentskills.io/skill-creation/optimizing-descriptions",
+      "https://agentskills.io/skill-creation/evaluating-skills",
+      "https://github.com/agentskills/agentskills"
+    ],
+    "status": "current"
+  }
+}
