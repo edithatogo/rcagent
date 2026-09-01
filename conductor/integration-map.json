@@ -47,7 +47,7 @@
       "compatibility_window": "repository validators and hosted required checks on each merged master revision",
       "safe_fallback": "continue local deterministic validation while representing unavailable hosted state as unavailable, never passed",
       "replacement_path": "replace project-local queue and receipt shims when maintained Conductor or GitHub contracts provide equivalent safety, recovery, and evidence semantics",
-      "evidence": "conductor/tracks/safety-systems-foundation_20260731/evidence/fit-gap-20260811.md",
+      "evidence": "conductor/archive/safety-systems-foundation_20260731/evidence/fit-gap-20260811.md",
       "project_owned_gap": "portfolio contracts, bounded context packs, dependency and evidence reconciliation, and safety-specific autonomy gates"
     },
     {

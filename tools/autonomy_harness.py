@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import unicodedata
 from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
@@ -12,6 +13,8 @@ from typing import Any
 
 READY = "ready"
 TERMINAL = {"complete"}
+LANE_CAPS = {"integration": 1, "independent": 2}
+RELEASED_STATUSES = {"waiting_external", "decision_needed", "blocked_safe", "complete"}
 DECISION_REQUIRED_FIELDS = {
     "decision_id",
     "question",
@@ -66,10 +69,17 @@ def deterministic_run_id(track_id: str, task_id: str, base_revision: str) -> str
 
 
 def _normalise_path(value: str) -> PurePosixPath:
-    path = PurePosixPath(value)
-    if path.is_absolute() or ".." in path.parts:
+    if (
+        not isinstance(value, str)
+        or not value
+        or "\\" in value
+        or ":" in value
+        or any(ord(character) < 32 for character in value)
+        or any(part in {"", ".", ".."} or part.endswith((".", " ")) for part in value.split("/"))
+    ):
         raise ValueError("owned paths must be relative and non-escaping")
-    return path
+    # Conservatively share ownership across case-sensitive and insensitive clients.
+    return PurePosixPath(unicodedata.normalize("NFC", value).casefold())
 
 
 def paths_conflict(left: Iterable[str], right: Iterable[str]) -> bool:
@@ -91,15 +101,28 @@ def select_next_ready(
     lane_limits: dict[str, int] | None = None,
 ) -> WorkItem | None:
     """Select the highest-value ready item without exceeding lanes or paths."""
-    limits = lane_limits or {"integration": 1, "independent": 2}
+    limits = LANE_CAPS if lane_limits is None else lane_limits
+    if any(
+        lane not in LANE_CAPS or type(limit) is not int or not 0 <= limit <= LANE_CAPS[lane]
+        for lane, limit in limits.items()
+    ):
+        raise ValueError("lane limits must respect the integration and independent caps")
+    queued_items = tuple(items)
     active_items = tuple(active)
+    # Validate ownership even when there are no active peers to compare with.
+    for item in (*queued_items, *active_items):
+        for path in item.owned_paths:
+            _normalise_path(path)
+    active_ids = {item.id for item in active_items}
     lane_use: dict[str, int] = {}
     for item in active_items:
+        if item.status in RELEASED_STATUSES or item.blocker:
+            continue
         lane_use[item.lane] = lane_use.get(item.lane, 0) + 1
 
     candidates: list[WorkItem] = []
-    for item in items:
-        if item.status != READY or item.blocker:
+    for item in queued_items:
+        if item.status != READY or item.blocker or item.id in completed or item.id in active_ids:
             continue
         if not set(item.dependencies).issubset(completed):
             continue
@@ -124,8 +147,19 @@ def classify_lease(
     if lease is None:
         return "off"
     observed = now or datetime.now(UTC)
-    if observed.tzinfo is None:
-        raise ValueError("now must be timezone-aware")
+    if any(
+        not isinstance(value, datetime) or value.tzinfo is None or value.utcoffset() is None
+        for value in (observed, lease.expires_at, lease.heartbeat_at)
+    ):
+        raise ValueError("lease timestamps and now must be timezone-aware")
+    if (
+        not lease.owner
+        or not lease.run_id
+        or not lease.worktree
+        or lease.heartbeat_at > observed
+        or lease.heartbeat_at > lease.expires_at
+    ):
+        return "inconsistent"
     if expected_owner and lease.owner != expected_owner:
         return "inconsistent"
     if expected_worktree and lease.worktree != expected_worktree:
@@ -157,7 +191,9 @@ def validate_decision_packet(packet: dict[str, Any]) -> list[str]:
     return sorted(
         field
         for field in DECISION_REQUIRED_FIELDS
-        if field not in packet or packet[field] in (None, "", [], {})
+        if field not in packet
+        or packet[field] in (None, "", [], {})
+        or (isinstance(packet[field], str) and not packet[field].strip())
     )
 
 
@@ -176,8 +212,13 @@ def select_decision(packets: Iterable[dict[str, Any]]) -> dict[str, Any] | None:
 
 def freshness_status(retrieved_at: datetime, max_age: timedelta, *, now: datetime) -> str:
     """Classify authoritative context without silently accepting stale state."""
-    if retrieved_at.tzinfo is None or now.tzinfo is None:
+    if any(
+        not isinstance(value, datetime) or value.tzinfo is None or value.utcoffset() is None
+        for value in (retrieved_at, now)
+    ):
         raise ValueError("timestamps must be timezone-aware")
     if max_age.total_seconds() < 0:
         raise ValueError("max_age cannot be negative")
+    if retrieved_at > now:
+        raise ValueError("retrieved_at cannot be in the future")
     return "stale" if now - retrieved_at > max_age else "current"
