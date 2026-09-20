@@ -18,7 +18,7 @@ validate = [
 lint = [
   "ruff==0.16.4",
   "ty",
-  "basedpyright==1.39.10",
+  "basedpyright==1.40.1",
 ]
 test = [
   "pytest==9.1.1",
