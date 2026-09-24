@@ -16,7 +16,7 @@ validate = [
   "PyYAML==6.0.3",
 ]
 lint = [
-  "ruff==0.16.4",
+  "ruff==0.16.8",
   "ty",
   "basedpyright==1.39.10",
 ]
