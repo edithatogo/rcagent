@@ -8,6 +8,10 @@ Continue automatically through ready tasks, agent review and bounded rework. Do 
 
 - [x] Incorporate small component studies, conventional NLP comparators, controlled behavioural experiments, process mining, dataset citations and verification/dependency reuse; validate the documentation and obtain bounded agent repository review. This item concerns the plan only, not a completed empirical study. [Evidence](./refinement-evidence.md).
 
+## Owner incorporation — 2026-11-08
+
+- [x] Reconcile capture/extraction/distribution ownership, add bounded generic owner plans, resolve the four planning ambiguities, and verify the planning handoff. [Coverage and handoffs](./incorporation-map.md); [verification and delivery limits](./incorporation-evidence.md). Existing implementation leaves remain pending; hosted integration is recorded by the exact-head PR checks.
+
 ## Phase 1: Snapshot, contracts and frozen design — target days 1–2
 
 - [ ] Resolve the exact HDC source/Hugging Face revision through the corpus subtrack; inventory actual case payloads, duplicates, completeness and source spans.

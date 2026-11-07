@@ -230,11 +230,12 @@
     {
       "track_id": "cognitive-autopsy_20261107",
       "status": "assess",
+      "selected_system": "existing rcagent evidence, benchmark, retrieval, privacy, runtime and adaptation contracts; external candidates remain unselected and unqualified",
       "candidate_systems": [
         "existing rcagent evidence, benchmark, retrieval, privacy, runtime and adaptation contracts",
         "learningfromharm research protocol and analysis",
-        "corpus-cases-medilegal-nz source snapshots and Hugging Face manifests",
-        "nlp-policy-nz extraction and archive-govt-nz provenance",
+        "corpus-cases-medilegal-nz GitHub source/distribution contracts and snapshot/release lineage; existing Hugging Face corpus identity",
+        "nlp-policy-nz neutral extraction and archive-govt-nz authoritative public-source capture/fixity",
         "Inspect AI optional local evaluation adapter",
         "spaCy/medspaCy and scikit-learn conventional baselines",
         "upstream Rust4PM/process_mining and optional Propel inspection components",

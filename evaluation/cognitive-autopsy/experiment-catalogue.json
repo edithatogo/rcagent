@@ -190,7 +190,7 @@
     {
       "id": "CS08",
       "priority": 3,
-      "question": "Which missing evidence most improves an investigation per unit burden?",
+      "question": "Which missing evidence most improves supported accuracy or reduces material error at a fixed evidence budget?",
       "components": [
         "CA05",
         "CA07",
@@ -238,7 +238,7 @@
         "CAW02"
       ],
       "inputs": "Source family IDs and duplicate/version relationships",
-      "planned_deliverable": "Frozen development/calibration/test grouping manifest",
+      "planned_deliverable": "Frozen training/development/calibration/test grouping manifest",
       "acceptance": "All linked reports, variants and renders stay in one family; fit vocabulary only on training",
       "status": "planned"
     },
@@ -306,7 +306,7 @@
         "CAW03",
         "CAW08"
       ],
-      "inputs": "Admitted NLI/error datasets and local model",
+      "inputs": "Source-linked HDC or synthetic support labels, optional admitted NLI/error datasets, and a local model",
       "planned_deliverable": "Calibrated supported/contradicted/insufficient assessor",
       "acceptance": "Hypothesis-only/shuffled-evidence controls; original and corrected items; no proof-of-truth claim",
       "status": "planned"

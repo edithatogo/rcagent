@@ -7,7 +7,8 @@
   "coordinator_track": "cognitive-autopsy_20261107",
   "data_authority": {
     "hdc_ethics": "existing_approval_confirmed_by_owner",
-    "approval_reference": "protected_study_register_to_link",
+    "approval_reference": null,
+    "approval_reference_status": "pending_link_to_protected_study_register",
     "scope_extension_implied": false
   },
   "primary_source": {

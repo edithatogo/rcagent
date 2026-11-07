@@ -32,3 +32,5 @@ Status: planned research and implementation; no model or clinical capability is 
 - [Bounded coding-agent work packages](./work-packages.md)
 - [Unexecuted experiment catalogue](../../../evaluation/cognitive-autopsy/experiment-catalogue.json)
 - [Component-refinement evidence and agent reviews](./refinement-evidence.md)
+- [Recommendation incorporation and owner handoffs](./incorporation-map.md)
+- [Owner-incorporation verification and review receipt](./incorporation-evidence.md)

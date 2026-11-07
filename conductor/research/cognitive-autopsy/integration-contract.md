@@ -6,14 +6,16 @@
 | --- | --- | --- |
 | rcagent | Component contracts, local inference/evaluation adapters, qualification and privacy evidence | Cognitive decision records, temporal packet controls, component scorer/admission adapter and optional scheduling broker |
 | learningfromharm | HDC research protocol, sampling, analytic methods, interpretation and manuscripts | Cognitive-autopsy protocol addendum, patient-centred outcomes, grouped splits, analysis/reproducibility |
-| corpus-cases-medilegal-nz | Canonical source documents, source metadata and publication receipts | Exact HDC snapshot inventory, source/appraisal span contracts and downstream lineage manifest |
-| nlp-policy-nz | Shared extraction/normalisation library | Reusable preservation of spans, event/document times and document sections when a generic gap is demonstrated |
-| archive-govt-nz | Source preservation and capture receipts | Reuse authoritative capture provenance; do not build a second archive |
+| corpus-cases-medilegal-nz on GitHub | Source/distribution contracts, snapshot/release metadata and source-to-research lineage | Exact HDC snapshot inventory and downstream handoff; no second capture or extraction pipeline |
+| nlp-policy-nz | Neutral extraction, source spans/offset mappings, extraction uncertainty and reusable record export | Preserve source-supported time/section statements without interpreting cognition or recipient knowledge |
+| archive-govt-nz | Authoritative public-source capture, fixity, source-version relations and replay receipts | Consume existing capture provenance; do not build a second archive |
 | atlas-health-policy-anz / SourceRight | Policy/source provenance candidates | Time- and jurisdiction-bound reference lookup; applicability remains explicit |
-| Hugging Face source corpus | Versioned distribution surface for permitted source artefacts | Pin commit/config/split/files and checksums; no mutable-main benchmark |
+| edithatogo/corpus-cases-medilegal-nz on Hugging Face | Canonical public normalised dataset identity and versioned distribution surface | Pin commit/config/split/files and checksums; no mutable-main benchmark |
 | Proposed Hugging Face derived dataset | Research annotations and split/packet metadata, if released | Candidate name edithatogo/hdc-cognitive-autopsy; creation and payload release are not performed by this plan |
 
 Reuse existing maintained runtimes, JSON Schema, lexical retrieval, provenance and benchmark machinery. Assess Inspect AI as a thin local evaluation adapter; keep canonical receipts independent of it. No new framework, trainer or cloud service is installed by the planning change. A replacement must preserve receipts and exact input/output semantics.
+
+The 2026-11-08 owner reconciliation distinguishes repository activity from processing authority. The corpus GitHub repository is active; older nlp-policy-nz design wording calling it archived is stale. That correction does not relocate capture from archive-govt-nz or extraction from nlp-policy-nz. Existing legacy corpus pipeline code and historic receipts remain unchanged; any future migration consumes the owning contracts rather than creating a competing implementation. Research labels/splits remain with learningfromharm and clinical decision-time interpretation/qualification with rcagent.
 
 ## Source and derived records
 
@@ -55,3 +57,5 @@ The [verification/reuse map](./verification-and-reuse.md) records inspected sibl
 Derived event logs preserve source spans, object relationships and temporal uncertainty; XES/OCEL2 exports declare any representational loss. Mutation and synthetic-case ledgers record parent family/hash, allowed edits, invariants, oracle access and generator identity. The canonical corpus never overwrites original reports with a variant. External dataset cards retain source-specific citation, access, licence, version and redistribution state.
 
 No new shared library is needed for the initial programme. Generic gaps should be implemented in their existing owner after a demonstrated consumer fixture; clinical-specific invariants remain in rcagent. An archived careops-process repository or a process-mappings scaffold is not a production dependency.
+
+The [incorporation and owner-handoff map](../../tracks/cognitive-autopsy_20261107/incorporation-map.md) reconciles these boundaries with the owner-local plans and parallel optional programmes. It references existing CAW/CS tasks rather than introducing duplicate completion counters.
