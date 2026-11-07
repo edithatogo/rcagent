@@ -226,6 +226,20 @@
         "SPDX, CycloneDX, OpenSSF, and current signing or provenance standards"
       ],
       "project_owned_gap": "portable safety-skill packages, compatibility profiles, client adapters, submission evidence, and governed release decisions"
+    },
+    {
+      "track_id": "cognitive-autopsy_20261107",
+      "status": "assess",
+      "candidate_systems": [
+        "existing rcagent evidence, benchmark, retrieval, privacy, runtime and adaptation contracts",
+        "learningfromharm research protocol and analysis",
+        "corpus-cases-medilegal-nz source snapshots and Hugging Face manifests",
+        "nlp-policy-nz extraction and archive-govt-nz provenance",
+        "Inspect AI optional local evaluation adapter"
+      ],
+      "project_owned_gap": "decision-time information states, isolated outcome packets, patient-centred component rubrics and bounded local orchestration",
+      "evidence": "conductor/research/cognitive-autopsy/integration-contract.md",
+      "safe_fallback": "fully local deterministic evidence workflow; no model qualification inferred"
     }
   ],
   "vendored_plugins": [

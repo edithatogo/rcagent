@@ -39,7 +39,8 @@
         "multimodal-capability-fabric_20260731",
         "retrieval-knowledge-system_20260731",
         "local-runtime-model-lab_20260731",
-        "domain-adaptation-finetuning_20260731"
+        "domain-adaptation-finetuning_20260731",
+        "cognitive-autopsy_20261107"
       ]
     },
     {
@@ -192,6 +193,20 @@
         "benchmark-evaluation-harness_20260731",
         "interfaces-templates-action-loop_20260731"
       ]
+    },
+    {
+      "number": 12,
+      "id": "cognitive-autopsy_20261107",
+      "issue": 116,
+      "hard_dependencies": [],
+      "phase_dependencies": [
+        "evidence-workflow-core_20260731",
+        "privacy-security-assurance_20260731",
+        "benchmark-evaluation-harness_20260731",
+        "retrieval-knowledge-system_20260731",
+        "local-runtime-model-lab_20260731",
+        "domain-adaptation-finetuning_20260731"
+      ]
     }
   ],
   "owner_decision_gates": [
@@ -206,21 +221,34 @@
     {
       "issue": 19,
       "title": "Clinical governance system-of-systems roadmap",
-      "owner_tracks": [1, 2, 3, 4, 5, 7, 9],
+      "owner_tracks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        9
+      ],
       "parent_issue": 1,
       "architecture": "conductor/clinical-governance-architecture.json"
     },
     {
       "issue": 17,
       "title": "Maximise security and solo-maintainer context",
-      "owner_tracks": [1, 3],
+      "owner_tracks": [
+        1,
+        3
+      ],
       "parent_issue": 18
     },
     {
       "issue": 18,
       "title": "Complete evidence-based repository hardening",
       "owner": "portfolio-closeout",
-      "subissues": [17]
+      "subissues": [
+        17
+      ]
     }
   ],
   "registry_stages": [

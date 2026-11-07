@@ -194,3 +194,7 @@ The legacy H0-H8 evaluation estate remains historical evidence and will be recon
 - Other clients: the same adapter contract and compatibility profile
 
 Every public release or registry submission is an owner decision. No credentials, publisher verification, legal policies, production services, or public claims are created merely because packaging tests pass.
+
+## Cognitive autopsy experiment profile — 2026-11-07
+
+[Track 12](./tracks/cognitive-autopsy_20261107/index.md) reuses the existing contracts with thin decision-record, packet-isolation and scoring adapters. [Candidate models](./research/cognitive-autopsy/model-selection.md) are experiment priorities, not supported device recommendations. The [evaluation](./research/cognitive-autopsy/evaluation-design.md) tests untuned and local-retrieval baselines before conditional PEFT. The stronger [cloud-control/local-data profile](./research/cognitive-autopsy/hybrid-privacy.md) is unimplemented and requires actual boundary tests; current hybrid routing does not establish it. No dependency or runtime is installed by this plan.

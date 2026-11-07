@@ -104,3 +104,7 @@ Additional jurisdictions can implement the same contracts without copying any st
 - Supported device profiles meet declared quality, safety, privacy, latency, memory, and maintenance gates.
 - Portable skills and client adapters pass current conformance and compatibility tests.
 - Public releases and registry submissions occur only after an explicit owner decision.
+
+## Cognitive autopsy research priority — 2026-11-07
+
+Add decision-level reconstruction of information, options, constraints, uncertainty and patient/family concerns within the existing systems workbench. [Track 12](./tracks/cognitive-autopsy_20261107/index.md) qualifies components before integrated RCA, using the existing HDC corpus approval. Patient-relevant errors and quality of learning lead the evaluation; time and cost are secondary. Model-generated cognitive hypotheses never become facts about a clinician's mind or culpability.

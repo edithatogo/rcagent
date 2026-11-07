@@ -1,0 +1,188 @@
+{
+  "schema_version": "0.1.0",
+  "study_id": "hdc-cognitive-autopsy-v1",
+  "status": "planning_only",
+  "executable": false,
+  "design_date": "2026-11-07",
+  "coordinator_track": "cognitive-autopsy_20261107",
+  "data_authority": {
+    "hdc_ethics": "existing_approval_confirmed_by_owner",
+    "approval_reference": "protected_study_register_to_link",
+    "scope_extension_implied": false
+  },
+  "primary_source": {
+    "repository": "edithatogo/corpus-cases-medilegal-nz",
+    "hub_dataset": "edithatogo/corpus-cases-medilegal-nz",
+    "revision": null,
+    "eligible_case_count": null,
+    "status": "exact_snapshot_inventory_required"
+  },
+  "unit_of_analysis": "case_family_with_nested_decisions_and_repeats",
+  "packet_tiers": [
+    "A_decision_time",
+    "B_later_outcome",
+    "C_retrospective_appraisal"
+  ],
+  "components": [
+    {
+      "id": "CA01",
+      "name": "source_fidelity",
+      "status": "planned",
+      "qualification_receipts": []
+    },
+    {
+      "id": "CA02",
+      "name": "claims_provenance",
+      "status": "planned",
+      "qualification_receipts": []
+    },
+    {
+      "id": "CA03",
+      "name": "temporal_epistemic_state",
+      "status": "planned",
+      "qualification_receipts": []
+    },
+    {
+      "id": "CA04",
+      "name": "decision_opportunities",
+      "status": "planned",
+      "qualification_receipts": []
+    },
+    {
+      "id": "CA05",
+      "name": "decision_context_options",
+      "status": "planned",
+      "qualification_receipts": []
+    },
+    {
+      "id": "CA06",
+      "name": "scoped_retrieval",
+      "status": "planned",
+      "qualification_receipts": []
+    },
+    {
+      "id": "CA07",
+      "name": "cognitive_hypotheses_uncertainty",
+      "status": "planned",
+      "qualification_receipts": []
+    },
+    {
+      "id": "CA08",
+      "name": "systems_contributors",
+      "status": "planned",
+      "qualification_receipts": []
+    },
+    {
+      "id": "CA09",
+      "name": "patient_family_perspective",
+      "status": "planned",
+      "qualification_receipts": []
+    },
+    {
+      "id": "CA10",
+      "name": "recommendations_learning",
+      "status": "planned",
+      "qualification_receipts": []
+    },
+    {
+      "id": "CA11",
+      "name": "report_verification",
+      "status": "planned",
+      "qualification_receipts": []
+    },
+    {
+      "id": "CA12",
+      "name": "action_effectiveness",
+      "status": "planned",
+      "qualification_receipts": []
+    }
+  ],
+  "arms": [
+    "D0_deterministic",
+    "L0_untuned_structured",
+    "L1_local_retrieval",
+    "L2_staged_local",
+    "F0_conditional_adapted",
+    "F1_conditional_adapted_retrieval"
+  ],
+  "model_candidates": [
+    {
+      "repo_id": "Qwen/Qwen3.5-9B",
+      "licence_declared_by_publisher": "apache-2.0",
+      "role": "general_baseline",
+      "revision": null,
+      "admission_status": "not_admitted",
+      "performance_status": "not_run"
+    },
+    {
+      "repo_id": "google/medgemma-1.5-4b-it",
+      "licence_declared_by_publisher": "health-ai-developer-foundations",
+      "role": "medical_comparator",
+      "revision": null,
+      "admission_status": "not_admitted",
+      "performance_status": "not_run"
+    },
+    {
+      "repo_id": "google/gemma-3-4b-it",
+      "licence_declared_by_publisher": "gemma",
+      "role": "medical_parent_family_control",
+      "revision": null,
+      "admission_status": "not_admitted",
+      "performance_status": "not_run"
+    },
+    {
+      "repo_id": "openai/gpt-oss-20b",
+      "licence_declared_by_publisher": "apache-2.0",
+      "role": "local_reasoning_challenger",
+      "revision": null,
+      "admission_status": "not_admitted",
+      "performance_status": "not_run"
+    },
+    {
+      "repo_id": "LiquidAI/LFM2.5-1.2B-Instruct",
+      "licence_declared_by_publisher": "lfm1.0",
+      "role": "optional_small_extractor",
+      "revision": null,
+      "admission_status": "not_admitted",
+      "performance_status": "not_run"
+    },
+    {
+      "repo_id": "Qwen/Qwen3.5-27B",
+      "licence_declared_by_publisher": "apache-2.0",
+      "role": "optional_scale_challenger",
+      "revision": null,
+      "admission_status": "not_admitted",
+      "performance_status": "not_run"
+    }
+  ],
+  "qualified_profiles": [],
+  "fine_tuning": {
+    "default": "disabled",
+    "trigger": "documented_residual_error_after_best_untuned_comparator",
+    "decision_rule": "conductor/research/cognitive-autopsy/evaluation-design.md",
+    "numerical_margins": "freeze_from_pilot_before_test_unblinding",
+    "training_authorised_by_this_manifest": false
+  },
+  "primary_endpoint": "case_has_material_omission_unsupported_attribution_or_misleading_learning",
+  "secondary_endpoints": [
+    "evidence_coverage",
+    "patient_family_concern_coverage",
+    "useful_coverage_and_abstention",
+    "review_and_correction_time",
+    "cost_consequence",
+    "peak_memory",
+    "latency"
+  ],
+  "execution_mode": "fully_local",
+  "cloud_control_plane": {
+    "status": "optional_unimplemented",
+    "sensitive_payload_return_permitted": false
+  },
+  "split_manifest": null,
+  "run_receipts": [],
+  "limitations": [
+    "No model or study execution by this planning change",
+    "Patient benefit and human validity unmeasured",
+    "No public dataset or weight release"
+  ]
+}
