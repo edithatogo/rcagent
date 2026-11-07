@@ -31,6 +31,8 @@ Test two different behaviours: stability when only irrelevant outcome valence ch
 | Arm | Purpose |
 | --- | --- |
 | D0 deterministic extraction/template | Establish the value of rules, chronology and evidence links without generation |
+| C0 TF-IDF + regularised linear classifier | Strong classical supervised comparator on the same labelled split |
+| C1 compact encoder (optional) | Separate non-generative neural comparator with matched annotation access |
 | L0 untuned model + fixed structured prompt | Establish each candidate's baseline with schema-constrained output |
 | L1 same model + local scoped retrieval | Test whether evidence access fixes errors before changing weights |
 | L2 local extractor + reasoner + bounded critic | Test task routing/composition against the best single model; critic disagreement triggers review, never a vote that proves truth |
@@ -77,3 +79,15 @@ Use PEFT/LoRA first; any preference optimisation or distillation is later, separ
 A passed component receipt applies only to its declared context. Test the composed system for error propagation and correlated failures before a whole-RCA research claim. Actual workflow evaluation and organisational deployment are later evidence levels.
 
 If judges disagree, improve the rubric on development data, retain original scores, and rerun a versioned blinded comparison. If all models fail, preserve the negative study and deterministic tools. If corpus coverage is limited, publish bounded feasibility rather than fabricate power. If fine-tuning fails, the study still completes. The research programme is designed to produce an informative result under each outcome.
+
+## Component studies and controlled extensions
+
+The [component studies](./component-studies.md) add C0 classical TF-IDF/linear and C1 optional compact encoder baselines between rules and generative LLMs. Encoders are non-generative neural comparators, not traditional rule-based NLP. Match labelled data, task units, evidence access, grouped splits and declared development budgets; report learning curves and training/inference costs. Do not make a weak prompt or under-tuned classical method the sole comparator.
+
+The [controlled experiments](./controlled-experiments.md) define availability, outcome and risk-framing estimands. Paired consistency and gold-label accuracy are distinct; implement the corrected NLI4CT-P definition with direct property checks. Retain unmodified controls, predeclare one primary contrast, and keep all variants/renderings of a source family in one split. Split by scenario template/generator where needed to test transfer.
+
+The [verification design](./verification-and-reuse.md) evaluates exact source checks, semantic support, omissions and report admission separately and together. Include hypothesis-only, shuffled-evidence and correct-citation/wrong-claim controls. Errors in injected challenges do not estimate natural hallucination prevalence. Each verifier result is paired with false rejection, useful coverage and downstream material-error outcomes.
+
+The [process-mining extension](./process-mining.md) compares source/reference traces with extracted traces. Missing narrative evidence is not proof of missing care. Process conformance, simulated mechanism recovery and clinical causality are different endpoints. No uncertain timestamp is silently converted to an exact event time.
+
+Candidate supplemental datasets are registered separately; access, label validity and clinical transfer are separate checks. Store citations and manifests in GitHub/Hugging Face as permitted, not controlled payloads. The experiment catalogue remains non-executable until a study adapter and run receipts exist.

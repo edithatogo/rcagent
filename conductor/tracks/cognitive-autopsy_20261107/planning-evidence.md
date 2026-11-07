@@ -20,3 +20,7 @@ Delegated agents were attempted for research preparation and acceptance review. 
 ## Evidence boundary
 
 These checks establish structural consistency of a planning change. They do not establish source admission, model suitability, privacy-boundary enforcement, clinical correctness, patient benefit or publication acceptance. The study and model run manifests remain unexecuted and the qualified capability set is empty.
+
+## Subsequent refinement
+
+The later component-study refinement and completed context-aware cross-reviews are recorded in [refinement evidence](./refinement-evidence.md). The failed earlier review attempts remain part of the history; no fresh-context or clinical review is implied.

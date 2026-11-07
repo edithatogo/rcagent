@@ -61,3 +61,20 @@ Prepare one coherent initial paper rather than several thin model comparisons. P
 - Journal scope: [BMC Medical Informatics and Decision Making](https://link.springer.com/journal/12911/aims-and-scope), [JAMIA Open](https://academic.oup.com/jamiaopen/pages/about), [BMJ Health & Care Informatics](https://informatics.bmj.com/pages/authors), [The Clinical Teacher](https://onlinelibrary.wiley.com/page/journal/1743498x/homepage/productinformation.html).
 
 Sources reviewed for planning on 2026-11-07. Full dataset references are maintained separately. Verify publication metadata and journal requirements again at manuscript submission.
+
+## Refined positioning and first experiments
+
+The closest literature now includes explicit LLM RCA on public radiation-oncology reports ([Wang et al., 2026](https://doi.org/10.1371/journal.pdig.0001740)), local clinical agents ([Nature Medicine, 2026](https://doi.org/10.1038/s41591-026-04609-x)), paired diagnostic counterfactuals ([MedEinst, ACL 2026](https://doi.org/10.18653/v1/2026.acl-long.1847)), and NLP/generative extraction of object-centric logs ([Buss et al., 2026](https://doi.org/10.1016/j.is.2026.102713)). Temporal masking and uncertainty-aware conformance also have direct precedents. Do not claim the first AI cognitive autopsy, first temporal masking, first text-to-log method, or first controlled model-bias experiment.
+
+Prioritise three small linked studies:
+1. Source-supported assertion and account attribution: rules/medspaCy, classical TF-IDF/linear, optional encoder and local LLM.
+2. Exact and semantic claim verification: measure generator-plus-verifier errors, false rejection, critical omissions and useful coverage.
+3. Information availability and hindsight: outcome-by-availability controlled tests with source-linked three-clock reconstruction.
+
+A fourth bounded extension tests how event-extraction/ordering errors change the downstream investigation; reuse existing process algorithms. Behavioural economics supplies experimentally controlled frames, defaults, base rates and information-acquisition models, not retrospective estimates of individual clinicians' psychological parameters.
+
+These are plausible task-specific gaps; a targeted search on 2026-11-07 did not establish an exhaustive absence of previous applications. Search strings included dataset names MedNLI/NLI4CT/THYME with root cause analysis or cognitive autopsy, clinical bias titles, patient-safety NLP classifiers and text-to-event-log literature. Maintain a reproducible search through Searchright when preparing the paper. Novelty depends on comparison with close prior work and actual held-out results.
+
+The [component plan](./component-studies.md), [controlled experiments](./controlled-experiments.md), [process plan](./process-mining.md) and [verification/reuse plan](./verification-and-reuse.md) define the methods. The [25 bounded work packages](../../tracks/cognitive-autopsy_20261107/work-packages.md) place simple reusable components first. Code/fixture preparation can take days; source audit, necessary annotation and actual study evidence determine elapsed publication time.
+
+Prefer one coherent methods paper on faithful decision reconstruction and verification. A process-methods paper is justified only by a distinct uncertainty/error-propagation result; an education paper needs transfer observations. Existing datasets in a new domain are not by themselves a frontier claim. Journal fit remains an assessment, not an acceptance probability.

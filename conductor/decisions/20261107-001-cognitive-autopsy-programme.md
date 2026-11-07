@@ -14,3 +14,7 @@ This instruction authorises preparation and incorporation of the coordinated rep
 Routine coding, data-contract preparation, repository review and bounded rework should be agent-led. Existing agent-panel review authority remains in force. Human observations required to support a claim about clinical validity, learning or patients remain actual study observations; they cannot be substituted by naming an agent a human reviewer.
 
 The new track preserves historical studies and negative results. This scope record does not amend the synthetic-only authority of an earlier study; the HDC programme has a distinct study identity and applies the owner's current corpus authority.
+
+## Follow-up instruction incorporated
+
+The owner additionally requested literature gaps and small components, conventional NLP comparisons, high-quality external datasets, behavioural-economic modelling, controlled real/synthetic case experiments, process mining, dependency reuse and verification using sibling libraries. This refines the existing programme and is authority for reversible planning updates. It does not imply that any model run, optional controlled dataset access, clinical interpretation, release or operational use has occurred.

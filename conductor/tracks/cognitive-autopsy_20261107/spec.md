@@ -47,3 +47,11 @@ Use maintained runtimes and thin adapters. Do not alter old results, lower gates
 Main risks are hindsight, outcome-shaped source narratives, memorised public cases, invented rationale, selection bias, correlated model errors, small subgroup samples, and hidden data egress. Mitigations and failure contingencies are specified in the evaluation and privacy documents.
 
 Still to measure: exact eligible HDC snapshot and case count; hardware and run throughput; model compatibility; uncertainty and error prevalence; whether adaptation helps. These are executable tasks, not reasons to request the same research permission again.
+
+## Owner-requested refinement: small studies, controls and reuse
+
+The follow-up request on 2026-11-07 adds conventional NLP/encoder comparators, component-level external datasets, controlled behavioural case variants, process reconstruction, verification and dependency reuse. The initial priorities are assertion/account attribution, claim-support verification, and information availability with outcome controls. Use the linked research documents and bounded work packages; avoid starting with an entire autonomous RCA.
+
+Acceptance of future implementation requires: faithful source/offset and uncertainty records; fair grouped comparisons against rules and classical ML; verified dataset citations and source-specific access terms; controlled mutation manifests with originals preserved; an oracle outside any narrative generator; separation of process deviation from clinical error; measured generator-plus-verifier error and useful coverage; and reuse of qualified upstream libraries through thin adapters. No numerical study success threshold, clinical qualification or licence clearance is asserted by these planning changes.
+
+All derived variants, synthetic renders and linked source reports remain in the same case-family split. Public test artefacts contain wholly synthetic material or specifically authorised releases. Existing HDC ethics remains confirmed; optional external DUA-controlled data are not a prerequisite for the first study.

@@ -99,6 +99,8 @@
   ],
   "arms": [
     "D0_deterministic",
+    "C0_classical_tfidf_linear",
+    "C1_compact_encoder_optional",
     "L0_untuned_structured",
     "L1_local_retrieval",
     "L2_staged_local",
@@ -184,5 +186,15 @@
     "No model or study execution by this planning change",
     "Patient benefit and human validity unmeasured",
     "No public dataset or weight release"
-  ]
+  ],
+  "component_experiment_catalogue": "evaluation/cognitive-autopsy/experiment-catalogue.json",
+  "supplemental_dataset_register": "conductor/research/cognitive-autopsy/component-datasets.json",
+  "controlled_conditions": [
+    "outcome_only",
+    "cue_available_before_after_unknown",
+    "equivalent_risk_frames",
+    "missing_visible_evidence_vs_actual_omission",
+    "verified_synthetic_observable_projection"
+  ],
+  "verification_policy": "conductor/research/cognitive-autopsy/verification-and-reuse.md"
 }

@@ -4,6 +4,10 @@ The owner requested these repository and research updates on 2026-11-07 and conf
 
 Continue automatically through ready tasks, agent review and bounded rework. Do not ask for routine approval. Record each recommendation with evidence; the safe default is a local research-only result with unsupported capabilities withheld. Escalate only a genuinely new reserved action, not an already authorised corpus study or reversible repository change.
 
+## Planning refinement — 2026-11-07
+
+- [x] Incorporate small component studies, conventional NLP comparators, controlled behavioural experiments, process mining, dataset citations and verification/dependency reuse; validate the documentation and obtain bounded agent repository review. This item concerns the plan only, not a completed empirical study. [Evidence](./refinement-evidence.md).
+
 ## Phase 1: Snapshot, contracts and frozen design — target days 1–2
 
 - [ ] Resolve the exact HDC source/Hugging Face revision through the corpus subtrack; inventory actual case payloads, duplicates, completeness and source spans.

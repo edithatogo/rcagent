@@ -6,7 +6,7 @@
   "evidence_schema": "1.0",
   "status": "new",
   "created_at": "2026-11-07T09:39:37Z",
-  "updated_at": "2026-11-07T09:39:37Z",
+  "updated_at": "2026-11-07T14:28:49Z",
   "workstream": "data-models-evaluation",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/116",
@@ -35,15 +35,18 @@
   "verification": {
     "status": "planning_checks_passed",
     "scope": "planning_documents_only",
-    "receipt": "./planning-evidence.md",
-    "agent_panel": "unavailable_platform_errors",
+    "receipt": "./refinement-evidence.md",
+    "agent_panel": "three_role_existing_context_cross_review",
     "model_runs": 0,
-    "qualified_capabilities": 0
+    "qualified_capabilities": 0,
+    "fresh_context_review": "attempted_platform_max_output_tokens_failure"
   },
   "decision_gates": [
     "Only new scope beyond existing HDC approval",
     "Exact artefact access/licence or spend not already authorised",
     "Dataset/weight publication beyond existing scope",
     "Operational deployment and residual-risk acceptance"
-  ]
+  ],
+  "component_studies": 8,
+  "bounded_work_packages": 25
 }

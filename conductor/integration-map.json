@@ -235,11 +235,17 @@
         "learningfromharm research protocol and analysis",
         "corpus-cases-medilegal-nz source snapshots and Hugging Face manifests",
         "nlp-policy-nz extraction and archive-govt-nz provenance",
-        "Inspect AI optional local evaluation adapter"
+        "Inspect AI optional local evaluation adapter",
+        "spaCy/medspaCy and scikit-learn conventional baselines",
+        "upstream Rust4PM/process_mining and optional Propel inspection components",
+        "SourceRight citation identity and Searchright public literature receipts",
+        "optional PM4Py/PROVED replication profiles with exact licence/compatibility review",
+        "Voiage optional explicit value-of-evidence study model"
       ],
-      "project_owned_gap": "decision-time information states, isolated outcome packets, patient-centred component rubrics and bounded local orchestration",
+      "project_owned_gap": "source-grounded assertions and decision-time information states, controlled case mutations, patient-centred evaluation, clinical verification invariants and evidence-to-process mapping",
       "evidence": "conductor/research/cognitive-autopsy/integration-contract.md",
-      "safe_fallback": "fully local deterministic evidence workflow; no model qualification inferred"
+      "safe_fallback": "fully local deterministic evidence workflow; no model qualification inferred",
+      "replacement_path": "reuse generic algorithms behind consumer fixtures; remove duplicate generic code after parity; keep source/clinical semantics in existing owners"
     }
   ],
   "vendored_plugins": [

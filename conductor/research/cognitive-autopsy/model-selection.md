@@ -50,3 +50,9 @@ Pin acquisition outside the sensitive execution environment. [Hugging Face offli
 Start untuned. Fix source preparation, retrieval, prompts, output constraints and decoding first. Trigger one bounded adaptation only for a reproducible residual error with adequate authorised labels. Use the paired, case-family-held-out decision rule in the [evaluation design](./evaluation-design.md). Compare against the strongest untuned system, not an intentionally weak prompt.
 
 If fine-tuning produces no reliable patient-relevant quality improvement, worsens abstention/grounding, memorises source text or adds unjustified maintenance cost, retain the untuned model. This negative result is part of the research contribution.
+
+## Non-generative comparators and verification
+
+Before choosing or adapting an LLM, run the rules/medspaCy and scikit-learn classical baselines in [component studies](./component-studies.md). A compact local encoder is a separate optional category. Use comparable annotation access, held-out families and measured resources. A general medical benchmark is not evidence for HDC account attribution or information availability.
+
+A verifier is an independently evaluated component with its own false rejection, missed-error and coverage results. Distinct model names or agent consensus do not establish error independence. Compare a bounded critic with deterministic checks and the best single model before adding another model to the local system.

@@ -47,3 +47,11 @@ Restricted PhysioNet records cannot be copied to a public Hugging Face dataset. 
 Contracts start at cognitive-autopsy study schema 0.1.0, explicitly planning-only. An implementation must validate a declared supported version; unknown versions fail closed. A missing source span, unavailable packet, unsupported runtime or stale qualification yields a typed unavailable/abstain result, never a fabricated value.
 
 Integration order is source snapshot contract, research sampling/packet contract, local component execution, then composition. The three repository tracks can prepare independently against these contracts; none may claim end-to-end validation before consuming actual receipts from the others.
+
+## Additional consumer boundaries
+
+The [verification/reuse map](./verification-and-reuse.md) records inspected sibling repositories and their current limits. Prefer upstream Rust4PM with an optional Propel inspection surface, existing spaCy/medspaCy and scikit-learn baselines, existing JSON Schema/SQLite contracts, and SourceRight/Searchright through their published boundaries. Keep policy interchange, evidence acquisition, simulation and clinical decision interpretation separate.
+
+Derived event logs preserve source spans, object relationships and temporal uncertainty; XES/OCEL2 exports declare any representational loss. Mutation and synthetic-case ledgers record parent family/hash, allowed edits, invariants, oracle access and generator identity. The canonical corpus never overwrites original reports with a variant. External dataset cards retain source-specific citation, access, licence, version and redistribution state.
+
+No new shared library is needed for the initial programme. Generic gaps should be implemented in their existing owner after a demonstrated consumer fixture; clinical-specific invariants remain in rcagent. An archived careops-process repository or a process-mappings scaffold is not a production dependency.

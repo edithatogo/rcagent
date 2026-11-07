@@ -44,3 +44,9 @@ The promotion key is the tuple of component, task, source/domain, jurisdiction, 
 ## Advanced additions with a purpose
 
 Use a provenance-linked decision graph with three clocks; calibrated abstention and risk/coverage curves; contradictory-evidence retrieval; controlled changes to outcomes versus genuinely available cues; contamination probes and recent-case holdouts; an error-driven local model cascade; and composition testing. Add counterfactual simulations only after a validated mechanism exists. More agents, longer reasoning or a larger context window are experimental conditions, not evidence of better clinical reasoning.
+
+## Small-study entry points
+
+CS01 tests CA01/CA02/CA09 assertion, account and concern fidelity; CS02 tests CA01/CA02/CA06/CA11 verification; CS03 tests CA03–CA05 availability and outcome sensitivity. CS04 risk framing and CS05 synthetic mechanism recovery are controlled research conditions. CS06 tests CA03/CA08/CA11 process reconstruction and propagated errors. CS07 adaptation and CS08 value-of-evidence are conditional extensions. See the [unexecuted catalogue](../../../evaluation/cognitive-autopsy/experiment-catalogue.json).
+
+Rule-based NLP, classical supervised ML and compact encoders are independently measured comparators. A semantic verifier or process engine is never a blanket admission of clinical causality or complete RCA.

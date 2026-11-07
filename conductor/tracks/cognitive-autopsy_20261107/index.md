@@ -20,3 +20,15 @@ Status: planned research and implementation; no model or clinical capability is 
 - [GitHub issue 116](https://github.com/edithatogo/rcagent/issues/116)
 
 - [Planning verification receipt](./planning-evidence.md)
+
+## Component research refinement
+
+- [Small studies and conventional NLP comparators](../../research/cognitive-autopsy/component-studies.md)
+- [Candidate component datasets and access status](../../research/cognitive-autopsy/component-datasets.json)
+- [Component literature bibliography](../../research/cognitive-autopsy/component-references.bib)
+- [Controlled cases and behavioural experiments](../../research/cognitive-autopsy/controlled-experiments.md)
+- [Process reconstruction and conformance](../../research/cognitive-autopsy/process-mining.md)
+- [Verification and dependency reuse](../../research/cognitive-autopsy/verification-and-reuse.md)
+- [Bounded coding-agent work packages](./work-packages.md)
+- [Unexecuted experiment catalogue](../../../evaluation/cognitive-autopsy/experiment-catalogue.json)
+- [Component-refinement evidence and agent reviews](./refinement-evidence.md)

@@ -11,3 +11,7 @@
 - Validation for this planning change: repository governance validator, JSON parsing, changed-document links, diff/whitespace and source checks. Future implementation adds behaviour-based tests for the actual risk.
 - Resume point: Phase 1 exact HDC snapshot and three-clock decision contract; preserve unresolved approval identifiers in the protected register without re-requesting existing ethics.
 - Rollback: revert the planning commit; future component versions must be independently disableable.
+
+## Small-component refinement
+
+Load only the relevant leaf from [work packages](../tracks/cognitive-autopsy_20261107/work-packages.md) and its linked component/controlled/process/verification document. First priorities are source/account attribution, verification and availability sensitivity. The [experiment catalogue](../../evaluation/cognitive-autopsy/experiment-catalogue.json) is planning-only; no run or clinical qualification exists. Use admitted HDC/synthetic/public inputs while optional external agreements remain unresolved.

@@ -42,3 +42,9 @@ MIMIC/PhysioNet authority is separate from HDC ethics. Follow the relevant agree
 Record citation key, authoritative URL, dataset ID/version/commit, retrieval date, file checksums, parent sources, licence/access state, permitted purpose, transformations, annotation provenance, patient/case-family split group, train/development/test role, leakage risks, exclusions and release restrictions. Unknown fields remain unknown until verified.
 
 Keep benchmark answers and expert appraisals separate from model-visible evidence. Never count duplicated source reports, synthetic variants or repeated inference as additional independent patients.
+
+## Component validation supplements
+
+The [candidate component dataset register](./component-datasets.json) and [component bibliography](./component-references.bib) extend this source list. See [component studies](./component-studies.md) for assertion, temporal, entailment and error-detection datasets, and [process mining](./process-mining.md) for Sepsis and Hospital Billing logs.
+
+These sources test specified components, not real clinician cognition or the causes of harm. Some are controlled-access; others have unresolved redistribution terms. Do not copy third-party Hugging Face licence tags into the canonical register without the original source terms. The approved HDC study proceeds independently of these optional data-access arrangements. No supplemental payload was downloaded or admitted by this planning update.
