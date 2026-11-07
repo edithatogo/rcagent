@@ -50,6 +50,10 @@ These are existing-context agent cross-reviews. The receipts identify authorship
 
 ## Delivery evidence
 
+At published head `8ad5d12ce30837f33027fa3f409bdbe2821fadaa`, [hosted Quality run 42423244614](https://github.com/edithatogo/rcagent/actions/runs/42423244614) passed its Ubuntu (1,786 tests; 95.29% total coverage) and macOS jobs. Dependency Review, Vale and the Codecov patch check also passed. Windows stopped at ty before its full suite: the dynamically indexed executable-name list selected a deprecated `shutil.which` overload under the Python 3.11 target. The follow-on repair gives the already-validated list an explicit `list[str]` local binding and retains the existing lookup calls. Windows-target ty, all 37 existing runtime-lab tests, Ruff and basedpyright passed locally; the integrator inspected the validation path and exact diff. Hosted results for the follow-on head remain a separate delivery gate.
+
+The initial incorporation payloads were verified against all 58 published file blobs across the six repositories. Final navigation follow-ups replace temporary coordinated-branch links with immutable reviewed revisions so automatic branch deletion cannot break the references. This mechanical link change does not expand the earlier review receipts' byte scope. Reference pins identify planning evidence, not qualified releases; implementation still selects compatible release revisions.
+
 Use the linked PRs for exact final heads, hosted checks, review-thread dispositions and merge state. Remote file/tree comparisons must match the reviewed local payloads before completion is reported. This receipt records local work and limitations; it does not predict a future CI result or a merge. No default branch is force-updated and no safety, privacy, review or required hosted check is bypassed.
 
 No patient-bearing payload, model weights or research results were uploaded. No dataset release, participant observation, training run or operational capability was created by incorporating these plans.
