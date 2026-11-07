@@ -29,3 +29,7 @@
 Track specifications define accepted scope. Track plans coordinate tasks. Metadata and GitHub express dependencies and operational state. Tests, authoritative sources, Git history, receipts, and verified external state prove claims.
 
 When these disagree, preserve the conflict and reconcile it before claiming completion.
+
+## Cognitive Autopsy Research
+
+[Track 12](./tracks/cognitive-autopsy_20261107/index.md) coordinates the HDC programme, local-model component evaluation, conditional adaptation and source-corpus integration. This is planned work, with no qualified model implied.

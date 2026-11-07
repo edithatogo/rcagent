@@ -1,0 +1,624 @@
+{
+  "schema_version": "0.1.0",
+  "status": "planning_only",
+  "executable": false,
+  "date": "2026-11-07",
+  "coordinator": "cognitive-autopsy_20261107",
+  "baseline_classes": [
+    "deterministic_rules",
+    "classical_tfidf_linear",
+    "compact_encoder_optional",
+    "untuned_local_llm",
+    "verified_hybrid",
+    "conditional_adapted"
+  ],
+  "unit": "case_family",
+  "studies": [
+    {
+      "id": "CS01",
+      "priority": 1,
+      "question": "Does a local LLM improve assertion and account attribution over rules/classical NLP?",
+      "components": [
+        "CA01",
+        "CA02",
+        "CA09"
+      ],
+      "tasks": [
+        "CAW01",
+        "CAW02",
+        "CAW03",
+        "CAW04",
+        "CAW05",
+        "CAW06",
+        "CAW07",
+        "CAW20"
+      ],
+      "primary": "critical_assertion_or_attribution_error",
+      "datasets": [
+        "approved_hdc",
+        "i2b2_2010_optional"
+      ],
+      "claim_boundary": "documented assertions/accounts, not actual clinician cognition",
+      "status": "planned",
+      "executed": false,
+      "qualification_receipts": []
+    },
+    {
+      "id": "CS02",
+      "priority": 1,
+      "question": "Does verification reduce material unsupported content while retaining useful coverage?",
+      "components": [
+        "CA01",
+        "CA02",
+        "CA06",
+        "CA11"
+      ],
+      "tasks": [
+        "CAW08",
+        "CAW09",
+        "CAW20",
+        "CAW21"
+      ],
+      "primary": "generator_plus_verifier_material_error_with_minimum_coverage",
+      "datasets": [
+        "approved_hdc",
+        "medec_ms",
+        "mednli_optional",
+        "nli4ct_p_optional"
+      ],
+      "claim_boundary": "measured error detection and support, not guaranteed truth",
+      "status": "planned",
+      "executed": false,
+      "qualification_receipts": []
+    },
+    {
+      "id": "CS03",
+      "priority": 1,
+      "question": "Can the system distinguish before, after and unknown cue availability?",
+      "components": [
+        "CA03",
+        "CA04",
+        "CA05"
+      ],
+      "tasks": [
+        "CAW10",
+        "CAW11",
+        "CAW12"
+      ],
+      "primary": "availability_error_and_outcome_conditioned_judgment_shift",
+      "datasets": [
+        "approved_hdc",
+        "synthetic_availability_fixtures",
+        "i2b2_2012_optional",
+        "thyme_optional"
+      ],
+      "claim_boundary": "reviewer-model response to controlled evidence, not historical mental states",
+      "status": "planned",
+      "executed": false,
+      "qualification_receipts": []
+    },
+    {
+      "id": "CS04",
+      "priority": 2,
+      "question": "Are judgments invariant to equivalent risk representations with fixed risks, options and utilities?",
+      "components": [
+        "CA05",
+        "CA07"
+      ],
+      "tasks": [
+        "CAW13",
+        "CAW22"
+      ],
+      "primary": "equivalent_frame_inconsistency_and_numerical_error",
+      "datasets": [
+        "synthetic_risk_fixtures"
+      ],
+      "claim_boundary": "representation/choice behaviour under specified utilities, not human loss-aversion estimates",
+      "status": "planned",
+      "executed": false,
+      "qualification_receipts": []
+    },
+    {
+      "id": "CS05",
+      "priority": 2,
+      "question": "Can a method recover stipulated mechanisms from verified generated narratives?",
+      "components": [
+        "CA02",
+        "CA03",
+        "CA08"
+      ],
+      "tasks": [
+        "CAW14",
+        "CAW15"
+      ],
+      "primary": "recoverable_mechanism_and_evidence_accuracy",
+      "datasets": [
+        "synthetic_worlds"
+      ],
+      "claim_boundary": "within-world recovery; no real clinical causal validity",
+      "status": "planned",
+      "executed": false,
+      "qualification_receipts": []
+    },
+    {
+      "id": "CS06",
+      "priority": 2,
+      "question": "How do trace extraction and uncertainty affect investigation conclusions?",
+      "components": [
+        "CA03",
+        "CA08",
+        "CA11"
+      ],
+      "tasks": [
+        "CAW16",
+        "CAW17",
+        "CAW18",
+        "CAW19"
+      ],
+      "primary": "false_deviation_and_downstream_material_judgment_change",
+      "datasets": [
+        "approved_hdc",
+        "sepsis_cases_optional",
+        "hospital_billing_engineering_only"
+      ],
+      "claim_boundary": "reconstruction/conformance effects, not automatic error or negligence",
+      "status": "planned",
+      "executed": false,
+      "qualification_receipts": []
+    },
+    {
+      "id": "CS07",
+      "priority": 3,
+      "question": "Does component fine-tuning add incremental value?",
+      "components": [
+        "CA02",
+        "CA03",
+        "CA11"
+      ],
+      "tasks": [
+        "CAW23"
+      ],
+      "primary": "predeclared_gain_over_best_untuned_with_safety_noninferiority",
+      "datasets": [
+        "admitted_training_only"
+      ],
+      "claim_boundary": "bounded exact model/task/runtime context",
+      "status": "planned",
+      "executed": false,
+      "qualification_receipts": []
+    },
+    {
+      "id": "CS08",
+      "priority": 3,
+      "question": "Which missing evidence most improves supported accuracy or reduces material error at a fixed evidence budget?",
+      "components": [
+        "CA05",
+        "CA07",
+        "CA10"
+      ],
+      "tasks": [
+        "CAW24"
+      ],
+      "primary": "supported_accuracy_or_material_error_reduction_at_fixed_evidence_budget_with_burden_reported_separately",
+      "datasets": [
+        "synthetic_worlds",
+        "approved_hdc_documented_answers_only"
+      ],
+      "claim_boundary": "formal VOI requires explicit calibrated study model; otherwise empirical ranking",
+      "status": "planned",
+      "executed": false,
+      "qualification_receipts": []
+    }
+  ],
+  "work_packages": [
+    {
+      "id": "CAW01",
+      "title": "Source and dependency admission",
+      "depends_on": [],
+      "inputs": "Existing corpus/rights register and component datasets",
+      "planned_deliverable": "Immutable candidate manifest, no implicit downloads/releases",
+      "acceptance": "Unknown revision/licence remains explicit; public and controlled subsets separate",
+      "status": "planned"
+    },
+    {
+      "id": "CAW02",
+      "title": "Minimal source-linked record",
+      "depends_on": [
+        "CAW01"
+      ],
+      "inputs": "Existing evidence schema and CA01\u2013CA05",
+      "planned_deliverable": "Versioned assertion/account/time/span record and synthetic fixtures",
+      "acceptance": "Unknown availability and competing accounts survive round-trip; no duplicate generic validator",
+      "status": "planned"
+    },
+    {
+      "id": "CAW03",
+      "title": "Grouped split and mutation lineage",
+      "depends_on": [
+        "CAW02"
+      ],
+      "inputs": "Source family IDs and duplicate/version relationships",
+      "planned_deliverable": "Frozen training/development/calibration/test grouping manifest",
+      "acceptance": "All linked reports, variants and renders stay in one family; fit vocabulary only on training",
+      "status": "planned"
+    },
+    {
+      "id": "CAW04",
+      "title": "Rules baseline",
+      "depends_on": [
+        "CAW02",
+        "CAW03"
+      ],
+      "inputs": "Admitted spaCy/medspaCy and documented labels",
+      "planned_deliverable": "Thin rules/ConText/section adapter",
+      "acceptance": "Polarity, attribution and offset fixtures; measured per-label errors; raw text untouched",
+      "status": "planned"
+    },
+    {
+      "id": "CAW05",
+      "title": "Classical statistical baseline",
+      "depends_on": [
+        "CAW03"
+      ],
+      "inputs": "Same labelled examples and units",
+      "planned_deliverable": "scikit-learn TF-IDF + regularised linear pipeline",
+      "acceptance": "Grouped validation, class/rare-label metrics and label-budget learning curves",
+      "status": "planned"
+    },
+    {
+      "id": "CAW06",
+      "title": "Optional compact encoder baseline",
+      "depends_on": [
+        "CAW03"
+      ],
+      "inputs": "Admitted local encoder and same labels",
+      "planned_deliverable": "Non-generative encoder adapter",
+      "acceptance": "Separate category from classical NLP; same splits and documented compute/training budget",
+      "status": "planned"
+    },
+    {
+      "id": "CAW07",
+      "title": "Untuned local LLM baseline",
+      "depends_on": [
+        "CAW02",
+        "CAW03"
+      ],
+      "inputs": "Existing runtime/harness and admitted model tuple",
+      "planned_deliverable": "Structured output adapter without weight changes",
+      "acceptance": "Exact prompt/template/context recorded; all failures counted; no cloud data flow",
+      "status": "planned"
+    },
+    {
+      "id": "CAW08",
+      "title": "Exact source verifier",
+      "depends_on": [
+        "CAW02"
+      ],
+      "inputs": "Immutable source bytes, quotes, IDs and offsets",
+      "planned_deliverable": "Deterministic source/span/version/number checker",
+      "acceptance": "Reject injected wrong-ID/span/version/polarity fixtures where detectable; false rejection reported",
+      "status": "planned"
+    },
+    {
+      "id": "CAW09",
+      "title": "Semantic support verifier",
+      "depends_on": [
+        "CAW03",
+        "CAW08"
+      ],
+      "inputs": "Source-linked HDC or synthetic support labels, optional admitted NLI/error datasets, and a local model",
+      "planned_deliverable": "Calibrated supported/contradicted/insufficient assessor",
+      "acceptance": "Hypothesis-only/shuffled-evidence controls; original and corrected items; no proof-of-truth claim",
+      "status": "planned"
+    },
+    {
+      "id": "CAW10",
+      "title": "Availability and order verifier",
+      "depends_on": [
+        "CAW02",
+        "CAW08"
+      ],
+      "inputs": "Event/document/recipient-availability intervals",
+      "planned_deliverable": "Cutoff entitlement and graph consistency checks",
+      "acceptance": "Before/after/unknown cases distinguished; contradiction preserved; no invented point timestamps",
+      "status": "planned"
+    },
+    {
+      "id": "CAW11",
+      "title": "Mutation manifest and operators",
+      "depends_on": [
+        "CAW03",
+        "CAW10"
+      ],
+      "inputs": "Controlled-experiment definitions",
+      "planned_deliverable": "One-factor edits, invariants and expected affected outputs",
+      "acceptance": "Every change traced; immutable originals; absence of evidence distinct from actual omission",
+      "status": "planned"
+    },
+    {
+      "id": "CAW12",
+      "title": "Outcome \u00d7 availability experiment",
+      "depends_on": [
+        "CAW07",
+        "CAW11"
+      ],
+      "inputs": "Frozen development-selected method and paired families",
+      "planned_deliverable": "Independent-session 2\u00d73 outcome/availability run ledger",
+      "acceptance": "Outcome invariance and relevant-cue sensitivity scored separately, clustered by family",
+      "status": "planned"
+    },
+    {
+      "id": "CAW13",
+      "title": "Equivalent risk-framing experiment",
+      "depends_on": [
+        "CAW07",
+        "CAW11"
+      ],
+      "inputs": "Fixed risks/denominators/horizons/options/utilities",
+      "planned_deliverable": "Equivalent percentages/frequencies/survival-mortality variants",
+      "acceptance": "Exact arithmetic oracle; representation invariance distinct from action optimality",
+      "status": "planned"
+    },
+    {
+      "id": "CAW14",
+      "title": "Synthetic world and evidence projection",
+      "depends_on": [
+        "CAW02",
+        "CAW11"
+      ],
+      "inputs": "Explicit events, actors, causal assumptions and seeded mechanism",
+      "planned_deliverable": "Hidden world/oracle plus permitted observable packet",
+      "acceptance": "Oracle unavailable to RCA system; alternative compatible explanations accepted where non-identifiable",
+      "status": "planned"
+    },
+    {
+      "id": "CAW15",
+      "title": "Renderer and round-trip controls",
+      "depends_on": [
+        "CAW14"
+      ],
+      "inputs": "Observable packet, template renderer and optional local generator",
+      "planned_deliverable": "Verified narrative variants and renderer metadata",
+      "acceptance": "No mechanism labels; render-to-world audit; held-out generator/style and template-only controls",
+      "status": "planned"
+    },
+    {
+      "id": "CAW16",
+      "title": "Source-to-trace adapter",
+      "depends_on": [
+        "CAW02",
+        "CAW04",
+        "CAW07",
+        "CAW10"
+      ],
+      "inputs": "Rules/LLM records and audited reference traces",
+      "planned_deliverable": "Canonical uncertain trace and optional XES/OCEL2 export",
+      "acceptance": "Source spans and interval/partial-order information preserved; export loss explicit",
+      "status": "planned"
+    },
+    {
+      "id": "CAW17",
+      "title": "Upstream process-engine fixture",
+      "depends_on": [
+        "CAW16"
+      ],
+      "inputs": "Qualified upstream Rust4PM revision",
+      "planned_deliverable": "Thin replay/conformance adapter and consumer fixtures",
+      "acceptance": "Use existing algorithms; reference-model provenance; deviation not labelled clinical error",
+      "status": "planned"
+    },
+    {
+      "id": "CAW18",
+      "title": "Uncertain-conformance comparator spike",
+      "depends_on": [
+        "CAW17"
+      ],
+      "inputs": "Published uncertainty method; optional qualified PROVED/PM4Py",
+      "planned_deliverable": "Replication or explicit unsupported-capability report",
+      "acceptance": "Compatibility/licence recorded; no claim of uncertainty support from ordinary alignments",
+      "status": "planned"
+    },
+    {
+      "id": "CAW19",
+      "title": "Extraction-to-judgment propagation",
+      "depends_on": [
+        "CAW07",
+        "CAW16",
+        "CAW17"
+      ],
+      "inputs": "Reference, rules-derived and LLM-derived traces",
+      "planned_deliverable": "Paired assessment comparison with fixed downstream model",
+      "acceptance": "Attribute changed judgments to trace differences; include matching-context raw-text comparator",
+      "status": "planned"
+    },
+    {
+      "id": "CAW20",
+      "title": "Patient-concern and omission audit",
+      "depends_on": [
+        "CAW02",
+        "CAW04",
+        "CAW07"
+      ],
+      "inputs": "Documented concern inventory and permitted context",
+      "planned_deliverable": "Concern-to-response trace and material omission score",
+      "acceptance": "Missing voice stated; no inferred preferences; precision and useful coverage reported jointly",
+      "status": "planned"
+    },
+    {
+      "id": "CAW21",
+      "title": "Generator-plus-verifier evaluation",
+      "depends_on": [
+        "CAW08",
+        "CAW09",
+        "CAW10",
+        "CAW20"
+      ],
+      "inputs": "Natural model errors and separate injected-error set",
+      "planned_deliverable": "End-to-end quality/coverage/resource report",
+      "acceptance": "Verifier gains, misses and false blocking measured; no all-abstain winner",
+      "status": "planned"
+    },
+    {
+      "id": "CAW22",
+      "title": "Paired analysis and pilot precision",
+      "depends_on": [
+        "CAW03",
+        "CAW12",
+        "CAW21"
+      ],
+      "inputs": "Frozen contrast, case-family run ledger and rubric",
+      "planned_deliverable": "Cluster-aware estimates, uncertainty and cost-consequence table",
+      "acceptance": "Variants/repeats not independent cases; numerical margins set before test unblinding",
+      "status": "planned",
+      "optional_evidence": [
+        "CAW13",
+        "CAW19"
+      ]
+    },
+    {
+      "id": "CAW23",
+      "title": "Conditional adaptation decision",
+      "depends_on": [
+        "CAW05",
+        "CAW07",
+        "CAW21"
+      ],
+      "inputs": "Repeated residual errors and authorised training labels",
+      "planned_deliverable": "One bounded train/no-train decision and optional PEFT contrast",
+      "acceptance": "Beats strongest untuned comparator under predeclared gates or retains untuned model",
+      "status": "planned",
+      "optional_evidence": [
+        "CAW06"
+      ]
+    },
+    {
+      "id": "CAW24",
+      "title": "Optional value-of-evidence model",
+      "depends_on": [
+        "CAW14",
+        "CAW22"
+      ],
+      "inputs": "Explicit states, priors, likelihoods, utilities and acquisition cost",
+      "planned_deliverable": "Voiage consumer experiment or empirical question-ranking study",
+      "acceptance": "Compare supported accuracy or material-error/decision-loss reduction at a fixed evidence budget; report burden separately; formal VOI requires an admitted explicit study model",
+      "status": "planned"
+    },
+    {
+      "id": "CAW25",
+      "title": "Coherent paper and handoff",
+      "depends_on": [
+        "CAW22"
+      ],
+      "inputs": "Verified results, primary citations and negative findings",
+      "planned_deliverable": "Research report in learningfromharm and reproducibility bundle",
+      "acceptance": "Claims match source/task/hardware evidence; clinical/education benefit unclaimed without observations",
+      "status": "planned"
+    }
+  ],
+  "qualified_profiles": [],
+  "run_receipts": [],
+  "data_payloads_included": false,
+  "dataset_profile_map": {
+    "approved_hdc": {
+      "source": "evaluation/cognitive-autopsy/study-design.json#/primary_source",
+      "optional": false
+    },
+    "synthetic_worlds": {
+      "source": "CAW14_explicit_worlds",
+      "status": "not_generated",
+      "optional": false
+    },
+    "admitted_training_only": {
+      "source": "future_adaptation_manifest",
+      "status": "not_admitted",
+      "optional": true
+    },
+    "i2b2_2010_optional": {
+      "dataset_id": "i2b2_2010",
+      "subset": null,
+      "optional": true,
+      "source_register": "conductor/research/cognitive-autopsy/component-datasets.json"
+    },
+    "i2b2_2012_optional": {
+      "dataset_id": "i2b2_2012",
+      "subset": null,
+      "optional": true,
+      "source_register": "conductor/research/cognitive-autopsy/component-datasets.json"
+    },
+    "thyme_optional": {
+      "dataset_id": "thyme",
+      "subset": null,
+      "optional": true,
+      "source_register": "conductor/research/cognitive-autopsy/component-datasets.json"
+    },
+    "mednli_optional": {
+      "dataset_id": "mednli",
+      "subset": null,
+      "optional": true,
+      "source_register": "conductor/research/cognitive-autopsy/component-datasets.json"
+    },
+    "nli4ct_p_optional": {
+      "dataset_id": "nli4ct_family",
+      "subset": "NLI4CT-P",
+      "optional": true,
+      "source_register": "conductor/research/cognitive-autopsy/component-datasets.json"
+    },
+    "medec_ms": {
+      "dataset_id": "medec",
+      "subset": "MS",
+      "optional": true,
+      "source_register": "conductor/research/cognitive-autopsy/component-datasets.json"
+    },
+    "sepsis_cases_optional": {
+      "dataset_id": "sepsis_cases",
+      "subset": null,
+      "optional": true,
+      "source_register": "conductor/research/cognitive-autopsy/component-datasets.json"
+    },
+    "hospital_billing_engineering_only": {
+      "dataset_id": "hospital_billing",
+      "subset": null,
+      "optional": true,
+      "source_register": "conductor/research/cognitive-autopsy/component-datasets.json"
+    },
+    "approved_hdc_documented_answers_only": {
+      "dataset_id": null,
+      "subset": "documented_answers_only",
+      "optional": true,
+      "source_register": "evaluation/cognitive-autopsy/study-design.json#/primary_source"
+    },
+    "synthetic_availability_fixtures": {
+      "source_work_package": "CAW02",
+      "status": "not_generated",
+      "optional": false,
+      "scope": "simple specified interval/cutoff fixtures; no mechanistic world or LLM renderer required"
+    },
+    "synthetic_risk_fixtures": {
+      "source_work_package": "CAW13",
+      "status": "not_generated",
+      "optional": false,
+      "scope": "fixed numerical risk/utility fixtures; no mechanistic world or LLM renderer required"
+    }
+  },
+  "path_base": "repository_root",
+  "packet_binding": {
+    "required_fields": [
+      "packet_id",
+      "packet_hash",
+      "permitted_source_spans",
+      "decision_cutoff",
+      "recipient_scope"
+    ],
+    "applies_to": [
+      "generation",
+      "exact_verification",
+      "semantic_verification",
+      "contradictory_retrieval",
+      "critical_inventory",
+      "rendering",
+      "post_render_verification"
+    ],
+    "cross_view_lookup": "reject",
+    "reference_inventory": "frozen_independent_source_linked_not_candidate_output_alone"
+  }
+}

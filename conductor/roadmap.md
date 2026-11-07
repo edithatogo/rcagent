@@ -100,7 +100,7 @@ Later phase gates not drawn as hard-start arrows:
 | [01 Safety systems foundation](./archive/safety-systems-foundation_20260731/index.md) | [#6](https://github.com/edithatogo/rcagent/issues/6) | A | None; 00 gates licence/release-dependent phases | Product architecture, maximal harness, context system, and autonomous queue |
 | [02 Evidence workflow core](./archive/evidence-workflow-core_20260731/index.md) | [#7](https://github.com/edithatogo/rcagent/issues/7) | A | 01 | Canonical evidence, claim, workflow, provenance, audit, and interchange contracts |
 | [03 Privacy, security and assurance](./archive/privacy-security-assurance_20260731/index.md) | [#8](https://github.com/edithatogo/rcagent/issues/8) | A | 01 | Remote, hybrid, local, and air-gapped safeguards and assurance |
-| [04 NSW Health jurisdiction pack](./tracks/nsw-health-jurisdiction-pack_20260731/index.md) | [#9](https://github.com/edithatogo/rcagent/issues/9) | A | 01 | Authoritative policy registry, workflow mapping, templates, and drift |
+| [04 NSW Health jurisdiction pack](./archive/nsw-health-jurisdiction-pack_20260731/index.md) | [#9](https://github.com/edithatogo/rcagent/issues/9) | A | 01 | Authoritative policy registry, workflow mapping, templates, and drift |
 | [05 Benchmark and evaluation harness](./archive/benchmark-evaluation-harness_20260731/index.md) | [#10](https://github.com/edithatogo/rcagent/issues/10) | B | 02, 03 | Benchmark-first quality, safety, privacy, retrieval, and device assurance |
 | [06 Multimodal capability fabric](./archive/multimodal-capability-fabric_20260731/index.md) | [#11](https://github.com/edithatogo/rcagent/issues/11) | B | 02, 03 | Completed contract fabric; unsupported runtime combinations remain disabled |
 | [07 Retrieval and knowledge system](./archive/retrieval-knowledge-system_20260731/index.md) | [#12](https://github.com/edithatogo/rcagent/issues/12) | B | 02, 03, 04 | Archived deterministic lexical retrieval; vector, hybrid, reranking and external-provider profiles explicitly unsupported |
@@ -269,3 +269,7 @@ its evidence gates pass. A decision request presents a recommended option
 first, its rationale and evidence, viable alternatives, trade-offs,
 reversibility, safe default, paused scope, continuing work, and dependency or
 schedule impact.
+
+## Track 12: Cognitive autopsy research
+
+[Track 12](./tracks/cognitive-autopsy_20261107/index.md), [issue #116](https://github.com/edithatogo/rcagent/issues/116), is the next prospective component-evaluation programme. Planning is ready; execution consumes exact source, runtime and benchmark receipts rather than relying on archived-track checkboxes. [Delivery estimates and publication options](./research/cognitive-autopsy/programme.md) use coding-agent work packages, with human observations only where the intended scientific claim requires them.

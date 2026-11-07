@@ -101,3 +101,7 @@ These tracks remain preserved historical work. Track 05 will reconcile their sch
 ### Superseded
 
 - **Superseded, not completed:** [Evaluation Data Collection](./tracks/eval-data-collection_20260225/index.md) — replaced by the per-condition historical run tracks; preserve its incomplete original artefacts.
+
+## [ ] Track 12: Cognitive Autopsy — HDC Research and Component Qualification
+
+[Track index](./tracks/cognitive-autopsy_20261107/index.md) · [GitHub #116](https://github.com/edithatogo/rcagent/issues/116). New prospective programme; existing HDC ethics confirmed by the owner. Exact snapshot, component implementation and model evaluation remain future work. Historical studies and negative evidence remain unchanged.

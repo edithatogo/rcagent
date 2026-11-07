@@ -13,7 +13,7 @@ import os
 import re
 import tempfile
 import uuid
-from collections.abc import Iterator
+from collections.abc import Generator
 from contextlib import contextmanager
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -108,7 +108,7 @@ class StateStore:
         self.lock = self.path.with_name(self.path.name + ".lock")
 
     @contextmanager
-    def _locked(self) -> Iterator[None]:
+    def _locked(self) -> Generator[None, None, None]:
         token = uuid.uuid4().hex
         fd = os.open(self.lock, os.O_RDWR | os.O_CREAT | os.O_EXCL, 0o600)
         try:
