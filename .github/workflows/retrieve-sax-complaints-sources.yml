@@ -6,6 +6,10 @@ on:
       - research/sax-download-documents-2026
     paths:
       - .github/workflows/retrieve-sax-complaints-sources.yml
+  pull_request:
+    paths:
+      - .github/workflows/retrieve-sax-complaints-sources.yml
+      - research/evidence/sax-patient-complaints/**
   workflow_dispatch:
 
 permissions:
