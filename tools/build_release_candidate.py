@@ -35,11 +35,20 @@ def _build_claude_marketplace(plugin_archive: Path, output: Path, version: str) 
         "description": "Skills-only RCA investigation plugins with an Apache-2.0 portable core.",
         "owner": {"name": "edithatogo"},
         "plugins": [
-            {"name": "rca-investigation", "source": "./plugins/rca-investigation", "version": version}
+            {
+                "name": "rca-investigation",
+                "source": "./plugins/rca-investigation",
+                "version": version,
+            }
         ],
     }
     with zipfile.ZipFile(output, "w") as target, zipfile.ZipFile(plugin_archive) as plugin:
-        members = [(".claude-plugin/marketplace.json", (json.dumps(catalog, indent=2, sort_keys=True) + "\n").encode())]
+        members = [
+            (
+                ".claude-plugin/marketplace.json",
+                (json.dumps(catalog, indent=2, sort_keys=True) + "\n").encode(),
+            )
+        ]
         members.extend(
             (f"plugins/rca-investigation/{member.filename}", plugin.read(member))
             for member in plugin.infolist()
@@ -73,14 +82,29 @@ def build_release_candidate(
             repository, work / "core", version=version, source_revision=source_revision
         )
         codex = build_client_plugin(
-            repository, work / "codex", client="codex", version=version, source_revision=source_revision
+            repository,
+            work / "codex",
+            client="codex",
+            version=version,
+            source_revision=source_revision,
         )
         claude = build_client_plugin(
-            repository, work / "claude", client="claude-code", version=version, source_revision=source_revision
+            repository,
+            work / "claude",
+            client="claude-code",
+            version=version,
+            source_revision=source_revision,
         )
         claude_marketplace = work / f"rca-investigation-claude-marketplace-{version}.zip"
         _build_claude_marketplace(claude.archive, claude_marketplace, version)
-        sources = [core.archive, core.manifest_path, core.sbom_path, codex.archive, claude.archive, claude_marketplace]
+        sources = [
+            core.archive,
+            core.manifest_path,
+            core.sbom_path,
+            codex.archive,
+            claude.archive,
+            claude_marketplace,
+        ]
         outputs: list[Path] = []
         for source in sources:
             target = destination / source.name
@@ -112,4 +136,4 @@ def build_release_candidate(
     checksum_path.write_text(
         "".join(f"{_hash(path)}  {path.name}\n" for path in sorted([*outputs, manifest_path]))
     )
-    return ReleaseCandidate(destination, tuple([*outputs, manifest_path, checksum_path]), manifest)
+    return ReleaseCandidate(destination, (*outputs, manifest_path, checksum_path), manifest)

@@ -36,7 +36,13 @@ def _write_valid_repository(root: Path) -> None:
                     "planned_is_not_installable": True,
                 },
                 "profiles": [
-                    {"id": "core", "class": "core", "status": "implemented", "default": True, "owner_track": 0}
+                    {
+                        "id": "core",
+                        "class": "core",
+                        "status": "implemented",
+                        "default": True,
+                        "owner_track": 0,
+                    }
                 ],
             }
         ),
@@ -54,19 +60,11 @@ def _write_valid_repository(root: Path) -> None:
         encoding="utf-8",
     )
     (track / "metadata.json").write_text(
-        json.dumps(
-            {
-                "github": {
-                    "issue": "https://github.com/edithatogo/rcagent/issues/5"
-                }
-            }
-        ),
+        json.dumps({"github": {"issue": "https://github.com/edithatogo/rcagent/issues/5"}}),
         encoding="utf-8",
     )
     (root / "conductor/roadmap.json").write_text(
-        json.dumps(
-            {"tracks": [{"number": 0, "id": "example_20260731", "issue": 5}]}
-        ),
+        json.dumps({"tracks": [{"number": 0, "id": "example_20260731", "issue": 5}]}),
         encoding="utf-8",
     )
     (root / "conductor/integration-map.json").write_text(
@@ -87,13 +85,7 @@ def _write_valid_repository(root: Path) -> None:
         json.dumps(
             {
                 "layers": [{"id": "lifecycle", "owner_tracks": [0]}],
-                "integrations": [
-                    {
-                        "id": "citations",
-                        "owner_track": 0,
-                        "validation_track": 0
-                    }
-                ]
+                "integrations": [{"id": "citations", "owner_track": 0, "validation_track": 0}],
             }
         ),
         encoding="utf-8",
@@ -110,9 +102,7 @@ def test_capability_registry_matches_published_schema() -> None:
     schema = json.loads(
         (root / "conductor/schemas/capability-profiles.schema.json").read_text(encoding="utf-8")
     )
-    registry = json.loads(
-        (root / "conductor/capability-profiles.json").read_text(encoding="utf-8")
-    )
+    registry = json.loads((root / "conductor/capability-profiles.json").read_text(encoding="utf-8"))
     Draft202012Validator.check_schema(schema)
     Draft202012Validator(schema).validate(registry)
 
@@ -137,20 +127,12 @@ def test_duplicate_issue_and_missing_contract_are_reported(tmp_path: Path) -> No
         (second / name).write_text("# Example\n", encoding="utf-8")
     (second / "plan.md").write_text("# Plan\n", encoding="utf-8")
     (second / "metadata.json").write_text(
-        json.dumps(
-            {
-                "github": {
-                    "issue": "https://github.com/edithatogo/rcagent/issues/5"
-                }
-            }
-        ),
+        json.dumps({"github": {"issue": "https://github.com/edithatogo/rcagent/issues/5"}}),
         encoding="utf-8",
     )
     roadmap_path = tmp_path / "conductor/roadmap.json"
     roadmap = json.loads(roadmap_path.read_text(encoding="utf-8"))
-    roadmap["tracks"].append(
-        {"number": 1, "id": "second_20260731", "issue": 5}
-    )
+    roadmap["tracks"].append({"number": 1, "id": "second_20260731", "issue": 5})
     roadmap_path.write_text(json.dumps(roadmap), encoding="utf-8")
 
     errors = validate(tmp_path)
@@ -258,15 +240,9 @@ def test_unknown_clinical_governance_owners_are_reported(tmp_path: Path) -> None
             {
                 "layers": [
                     {"id": "lifecycle", "owner_tracks": [999]},
-                    {"id": "lifecycle", "owner_tracks": []}
+                    {"id": "lifecycle", "owner_tracks": []},
                 ],
-                "integrations": [
-                    {
-                        "id": "sourceright",
-                        "owner_track": 999,
-                        "validation_track": 0
-                    }
-                ]
+                "integrations": [{"id": "sourceright", "owner_track": 999, "validation_track": 0}],
             }
         ),
         encoding="utf-8",
@@ -280,9 +256,7 @@ def test_unknown_clinical_governance_owners_are_reported(tmp_path: Path) -> None
 def test_clinical_governance_first_vertical_slice_and_split_contract_are_mapped() -> None:
     root = Path(__file__).parents[1]
     architecture = json.loads(
-        (root / "conductor/clinical-governance-architecture.json").read_text(
-            encoding="utf-8"
-        )
+        (root / "conductor/clinical-governance-architecture.json").read_text(encoding="utf-8")
     )
     layers = {layer["id"]: layer for layer in architecture["layers"]}
     assert {2, 4, 9} <= set(layers["incident-lifecycle"]["owner_tracks"])
@@ -317,7 +291,8 @@ def test_issue_19_acceptance_map_resolves_completed_vertical_slice_evidence() ->
         assert item["repository_status"] == "pass"
         for relative in item["evidence"]:
             evidence_path = root / relative
-            assert evidence_path.is_file() and evidence_path.read_text(encoding="utf-8").strip()
+            assert evidence_path.is_file()
+            assert evidence_path.read_text(encoding="utf-8").strip()
     for track in acceptance["vertical_slice_tracks"]:
         track_root = root / track["root"]
         metadata = json.loads((track_root / "metadata.json").read_text(encoding="utf-8"))
@@ -335,13 +310,7 @@ def test_invalid_metadata_and_wrong_issue_mapping_are_reported(tmp_path: Path) -
     assert any("invalid metadata.json" in error for error in validate(tmp_path))
 
     metadata.write_text(
-        json.dumps(
-            {
-                "github": {
-                    "issue": "https://github.com/edithatogo/rcagent/issues/999"
-                }
-            }
-        ),
+        json.dumps({"github": {"issue": "https://github.com/edithatogo/rcagent/issues/999"}}),
         encoding="utf-8",
     )
     assert any("issue mapping does not match #5" in error for error in validate(tmp_path))
@@ -410,7 +379,13 @@ def test_implemented_optional_profile_requires_contract(tmp_path: Path) -> None:
     path = tmp_path / "conductor/capability-profiles.json"
     registry = json.loads(path.read_text(encoding="utf-8"))
     registry["profiles"].append(
-        {"id": "validate", "class": "optional", "status": "implemented", "default": False, "owner_track": 0}
+        {
+            "id": "validate",
+            "class": "optional",
+            "status": "implemented",
+            "default": False,
+            "owner_track": 0,
+        }
     )
     path.write_text(json.dumps(registry), encoding="utf-8")
     assert "validate: implemented profile requires implementation contract" in validate(tmp_path)
@@ -433,9 +408,7 @@ def test_missing_roadmap_returns_context_diagnostics(tmp_path: Path) -> None:
     assert "missing required context: conductor/roadmap.json" in errors
 
 
-def test_main_reports_success_and_failure(
-    tmp_path: Path, monkeypatch, capsys
-) -> None:
+def test_main_reports_success_and_failure(tmp_path: Path, monkeypatch, capsys) -> None:
     _write_valid_repository(tmp_path)
     monkeypatch.setattr(sys, "argv", ["validate_repository", "--root", str(tmp_path)])
     assert main() == 0

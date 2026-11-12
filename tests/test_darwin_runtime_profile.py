@@ -151,6 +151,7 @@ def test_backend_discovery_directory_rejects_extra_or_missing(monkeypatch):
             return iter(DarwinPath(name) for name in entries)
 
         def resolve(self, strict=False):
+            del strict
             return self
 
         def is_file(self):
@@ -214,8 +215,8 @@ def test_verify_files_rejects_damage(pinned, damage):
 def test_loader_accepts_system_and_optional_backend(loader_pinned):
     pinned = loader_pinned
     stderr = trace(
-        pinned
-        + [
+        [
+            *pinned,
             pinned[0],
             "/usr/lib/libSystem.B.dylib",
             "/System/Library/Frameworks/Security.framework/Security",
@@ -275,8 +276,8 @@ def test_loader_requires_attested_images(loader_pinned, kind):
     paths = {
         "none": [],
         "missing": pinned[1:],
-        "unknown-backend": pinned + ["/private/libggml-metal.dylib"],
-        "fake-system": pinned + ["/usr/library/evil.dylib"],
+        "unknown-backend": [*pinned, "/private/libggml-metal.dylib"],
+        "fake-system": [*pinned, "/usr/library/evil.dylib"],
     }[kind]
     with pytest.raises(ValueError):
         profile.verify_loaded_images(trace(paths))
@@ -293,7 +294,7 @@ def test_loader_rejects_mixed_process_evidence(loader_pinned):
 def test_loader_rejects_noncanonical_system_paths(loader_pinned, suffix):
     pinned = loader_pinned
     with pytest.raises(ValueError):
-        profile.verify_loaded_images(trace(pinned + ["/usr/lib" + suffix]))
+        profile.verify_loaded_images(trace([*pinned, "/usr/lib" + suffix]))
 
 
 def test_capture_success_fixed_invocation(pinned, monkeypatch):
@@ -317,7 +318,7 @@ def test_capture_success_fixed_invocation(pinned, monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "system,machine", [("Linux", "arm64"), ("Darwin", "x86_64"), ("Windows", "AMD64")]
+    ("system", "machine"), [("Linux", "arm64"), ("Darwin", "x86_64"), ("Windows", "AMD64")]
 )
 def test_capture_unsupported_never_executes(pinned, monkeypatch, system, machine):
     monkeypatch.setattr(profile.platform, "system", lambda: system)
@@ -340,7 +341,7 @@ def test_capture_fail_closed(pinned, monkeypatch, damage):
     elif damage == "nonzero":
         options["code"] = 2
     elif damage == "loader":
-        options["err"] = trace(pinned + ["/private/unknown.dylib"])
+        options["err"] = trace([*pinned, "/private/unknown.dylib"])
     elif damage == "timeout":
         options["failure"] = subprocess.TimeoutExpired("private-launch", 60)
     elif damage == "launch":

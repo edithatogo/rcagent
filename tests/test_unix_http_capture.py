@@ -186,7 +186,7 @@ def test_body_deadline_retains_partial_bytes(server, monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "method,route,body",
+    ("method", "route", "body"),
     [
         ("GET", "/completion", b""),
         ("POST", "/health", b"{}"),

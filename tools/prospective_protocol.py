@@ -51,16 +51,16 @@ SCHEMA = obj(
                 "id": identifier("condition"),
                 "model_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,99}$"},
                 "model_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-                **{
-                    name: DIGEST
-                    for name in (
+                **dict.fromkeys(
+                    (
                         "model_sha256",
                         "runtime_sha256",
                         "profile_sha256",
                         "adapter_sha256",
                         "registry_sha256",
-                    )
-                },
+                    ),
+                    DIGEST,
+                ),
             }
         ),
         "expected_slots": {
@@ -103,7 +103,8 @@ def _validate_candidate(
     if not _digest(expected_sha256) or pin != expected_sha256:
         raise ValueError("protocol_pin_mismatch")
     validate(value, schema)
-    assert isinstance(value, dict)
+    if not isinstance(value, dict):
+        raise ValueError("invalid_validated_object_type")
     integers = [value["repeats"], value["technical_retries"], *value["generation"].values()]
     if any(type(item) is not int for item in integers):
         raise ValueError("invalid_integer_type")

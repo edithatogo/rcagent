@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
+from typing import Self
 
 import pytest
 
@@ -60,7 +61,7 @@ def test_source_verifier_cli_writes_receipt_and_reports_failure(
 
 def test_default_fetcher_returns_final_url_and_bytes(monkeypatch: pytest.MonkeyPatch) -> None:
     class Response:
-        def __enter__(self) -> Response:
+        def __enter__(self) -> Self:
             return self
 
         def __exit__(self, *_args: object) -> None:
@@ -72,7 +73,9 @@ def test_default_fetcher_returns_final_url_and_bytes(monkeypatch: pytest.MonkeyP
         def read(self) -> bytes:
             return b"payload"
 
-    monkeypatch.setattr(source_module.urllib.request, "urlopen", lambda *_args, **_kwargs: Response())
+    monkeypatch.setattr(
+        source_module.urllib.request, "urlopen", lambda *_args, **_kwargs: Response()
+    )
     assert source_module._fetch("https://example.invalid") == (
         "https://example.invalid/final",
         b"payload",

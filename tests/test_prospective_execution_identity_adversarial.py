@@ -143,7 +143,7 @@ def test_environment_budget_includes_packages_executable_and_stdlib(
 
 def test_environment_global_file_count(synthetic_environment, monkeypatch):
     monkeypatch.setattr(identity, "MAX_FILES", len(identity.DISTRIBUTIONS) + 1)
-    with pytest.raises(ValueError, match="identity_byte_limit|identity_file_limit"):
+    with pytest.raises(ValueError, match=r"identity_byte_limit|identity_file_limit"):
         identity.environment_identity()
 
 
@@ -195,7 +195,7 @@ def test_incomplete_empty_stdlib_walk_rejected(synthetic_environment, monkeypatc
 
 
 @pytest.mark.parametrize(
-    "version,loaded,passes",
+    ("version", "loaded", "passes"),
     [((3, 11), False, False), ((3, 14), False, True), ((3, 14), True, False)],
 )
 def test_typing_extensions_conditional_identity(synthetic_environment, version, loaded, passes):
@@ -328,7 +328,7 @@ def test_oversized_file_rejected_before_read(tmp_path, monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "requirement,passes",
+    ("requirement", "passes"),
     [
         ("typing-extensions>=4", False),
         ('typing-extensions>=4; python_version < "3.13"', True),
@@ -475,7 +475,7 @@ def test_loaded_known_alias_or_submodule_foreign_origin_rejected(
 
 
 @pytest.mark.parametrize(
-    "distribution,module_name,relative",
+    ("distribution", "module_name", "relative"),
     [
         ("attrs", "attr", "attr.py"),
         ("jsonschema", "jsonschema.submodule", "jsonschema/submodule.py"),

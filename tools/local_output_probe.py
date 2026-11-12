@@ -84,7 +84,7 @@ def run_probe(model_root: Path) -> dict:
     exit_state: int | str
     with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
         try:
-            process = subprocess.run(
+            process = subprocess.run(  # nosec B603 # admitted executable/model and fixed synthetic argv; no shell
                 args,
                 stdin=subprocess.DEVNULL,
                 stdout=stdout,

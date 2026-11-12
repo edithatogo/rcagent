@@ -17,7 +17,20 @@ CONNECTION_STATES = {"off", "on", "unknown"}
 ASSURANCE_DOMAINS = {"security", "privacy", "cultural_safety", "clinical_safety"}
 ASSURANCE_CONTROL_STATUSES = {"inherited", "implemented", "supplemented"}
 SAFE_ARTIFACT_TYPES = {"application/json", "text/csv", "text/markdown", "text/plain"}
-UNSAFE_ARTIFACT_SUFFIXES = {".app", ".bat", ".cmd", ".com", ".dll", ".exe", ".jar", ".js", ".msi", ".ps1", ".scr", ".vbs"}
+UNSAFE_ARTIFACT_SUFFIXES = {
+    ".app",
+    ".bat",
+    ".cmd",
+    ".com",
+    ".dll",
+    ".exe",
+    ".jar",
+    ".js",
+    ".msi",
+    ".ps1",
+    ".scr",
+    ".vbs",
+}
 SENSITIVE_PATTERNS = {
     "nsw_mrn": re.compile(r"\b(?:MRN|URN)\s*[:#-]?\s*\d{6,10}\b", re.IGNORECASE),
     "qld_ur": re.compile(r"\b(?:UR|URN)\s*[:#-]?\s*\d{6,10}\b", re.IGNORECASE),
@@ -70,9 +83,17 @@ def route(request: RouteRequest) -> RouteDecision:
     if request.mode in {"fully_local", "air_gapped"} and request.destination != "local":
         return RouteDecision(False, "local-only mode forbids remote destination", "privacy review")
     if request.classification != "public" and request.mode == "public_remote":
-        return RouteDecision(False, "non-public content cannot use public remote mode", "privacy review")
-    if request.classification == "sensitive" and request.mode == "governed_hybrid" and not request.deidentified:
-        return RouteDecision(False, "sensitive hybrid content requires approved de-identification", "privacy review")
+        return RouteDecision(
+            False, "non-public content cannot use public remote mode", "privacy review"
+        )
+    if (
+        request.classification == "sensitive"
+        and request.mode == "governed_hybrid"
+        and not request.deidentified
+    ):
+        return RouteDecision(
+            False, "sensitive hybrid content requires approved de-identification", "privacy review"
+        )
     return RouteDecision(True, "declared route satisfies the core policy")
 
 
@@ -115,20 +136,35 @@ def validate_execution_disclosure(disclosure: dict[str, Any]) -> list[str]:
     if disclosure.get("classification") not in CLASSIFICATIONS:
         errors.append("invalid disclosure classification")
     for key in ("task", "tool", "revision", "storage"):
-        if key in disclosure and (not isinstance(disclosure[key], str) or not disclosure[key].strip()):
+        if key in disclosure and (
+            not isinstance(disclosure[key], str) or not disclosure[key].strip()
+        ):
             errors.append(f"disclosure field must be a non-empty string: {key}")
     if disclosure.get("network") not in CONNECTION_STATES or disclosure.get("network") == "unknown":
         errors.append("network status must be known")
-    if disclosure.get("telemetry") not in CONNECTION_STATES or disclosure.get("telemetry") == "unknown":
+    if (
+        disclosure.get("telemetry") not in CONNECTION_STATES
+        or disclosure.get("telemetry") == "unknown"
+    ):
         errors.append("telemetry status must be known")
-    if disclosure.get("mode") in {"fully_local", "air_gapped"} and disclosure.get("network") != "off":
+    if (
+        disclosure.get("mode") in {"fully_local", "air_gapped"}
+        and disclosure.get("network") != "off"
+    ):
         errors.append("local-only disclosure requires network off")
-    if disclosure.get("mode") in {"fully_local", "air_gapped"} and disclosure.get("telemetry") != "off":
+    if (
+        disclosure.get("mode") in {"fully_local", "air_gapped"}
+        and disclosure.get("telemetry") != "off"
+    ):
         errors.append("local-only disclosure requires telemetry off")
     if disclosure.get("mode") == "public_remote" and disclosure.get("classification") != "public":
         errors.append("public remote disclosure requires public classification")
     limitations = disclosure.get("limitations")
-    if not isinstance(limitations, list) or not limitations or not all(isinstance(item, str) and item.strip() for item in limitations):
+    if (
+        not isinstance(limitations, list)
+        or not limitations
+        or not all(isinstance(item, str) and item.strip() for item in limitations)
+    ):
         errors.append("limitations must contain at least one explicit limitation")
     if disclosure.get("human_review") in {None, "", False}:
         errors.append("human review must be explicit")
@@ -146,14 +182,22 @@ def validate_model_result(result: dict[str, Any]) -> list[str]:
     if not isinstance(disclosure, dict):
         errors.append("model result disclosure missing")
     else:
-        errors.extend(f"model result {error}" for error in validate_execution_disclosure(disclosure))
+        errors.extend(
+            f"model result {error}" for error in validate_execution_disclosure(disclosure)
+        )
     return sorted(errors)
 
 
 def quarantine_output(*, output_id: str, reasons: list[str], actor: str, at: str) -> dict[str, Any]:
     if not reasons:
         raise ValueError("quarantine requires at least one reason")
-    receipt = {"output_id": output_id, "status": "quarantined", "reasons": sorted(set(reasons)), "actor": actor, "at": at}
+    receipt = {
+        "output_id": output_id,
+        "status": "quarantined",
+        "reasons": sorted(set(reasons)),
+        "actor": actor,
+        "at": at,
+    }
     return {**receipt, "receipt_hash": fingerprint(receipt)}
 
 
@@ -168,8 +212,7 @@ def sanitise_diagnostic(text: str) -> str:
         sanitised,
         flags=re.IGNORECASE,
     )
-    sanitised = re.sub(r"(?<!\w)/(?:Users|home|Volumes|private|var)/\S+", "[LOCAL_PATH]", sanitised)
-    return sanitised
+    return re.sub(r"(?<!\w)/(?:Users|home|Volumes|private|var)/\S+", "[LOCAL_PATH]", sanitised)
 
 
 def deletion_receipt(
@@ -191,7 +234,11 @@ def deletion_receipt(
         "status": "deletion_verified",
         "actor": actor,
         "at": at,
-        "verification": {"method": method, "evidence_hash": evidence_hash, "verified_by": verified_by},
+        "verification": {
+            "method": method,
+            "evidence_hash": evidence_hash,
+            "verified_by": verified_by,
+        },
     }
     return {**receipt, "receipt_hash": fingerprint(receipt)}
 
@@ -252,7 +299,9 @@ def recovery_action(failure: str, *, mode: str) -> RouteDecision:
     actions = {
         "model_unavailable": "abstain and request human review",
         "index_corrupt": "isolate index and rebuild from verified sources",
-        "network_loss": "continue local-only without remote fallback" if mode != "public_remote" else "abstain until route is restored",
+        "network_loss": "continue local-only without remote fallback"
+        if mode != "public_remote"
+        else "abstain until route is restored",
         "power_loss": "halt and verify receipts before resume",
     }
     reason = actions.get(failure, "halt and escalate unknown recovery state")
@@ -302,17 +351,26 @@ def evaluate_assurance(case: dict[str, Any], *, now: datetime | None = None) -> 
             errors.append(f"risk has no valid control: {risk.get('risk_id')}")
     domains = case.get("domains")
     if not isinstance(domains, dict) or set(domains) != ASSURANCE_DOMAINS:
-        errors.append("assurance domains must cover security, privacy, cultural safety, and clinical safety")
+        errors.append(
+            "assurance domains must cover security, privacy, cultural safety, and clinical safety"
+        )
     else:
         for domain, result in domains.items():
-            if not isinstance(result, dict) or result.get("status") not in {"tested_bounded", "owner_required"}:
+            if not isinstance(result, dict) or result.get("status") not in {
+                "tested_bounded",
+                "owner_required",
+            }:
                 errors.append(f"assurance domain status invalid: {domain}")
-            if not isinstance(result, dict) or not isinstance(result.get("evidence"), list) or not result["evidence"]:
+            if (
+                not isinstance(result, dict)
+                or not isinstance(result.get("evidence"), list)
+                or not result["evidence"]
+            ):
                 errors.append(f"assurance domain evidence missing: {domain}")
     if case.get("dependency_status") != "current":
         errors.append("assurance invalidated by dependency drift")
     try:
-        review_due = datetime.fromisoformat(str(case.get("review_due", "")).replace("Z", "+00:00"))
+        review_due = datetime.fromisoformat(str(case.get("review_due", "")))
         if review_due.tzinfo is None:
             errors.append("assurance review date must include timezone")
         elif review_due < now:

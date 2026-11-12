@@ -58,7 +58,7 @@ organisational availability during its fit-gap assessment.
 | Area | Primary source |
 |---|---|
 | NSW Health incident management and ims+ | [Clinical Excellence Commission incident management](https://cec.health.nsw.gov.au/Review-incidents/incident-management) |
-| NSW Health incident policy | [PD2020_047 Incident Management](https://www1.health.nsw.gov.au/pds/ActivePDSDocuments/PD2020_047.pdf) |
+| NSW Health incident policy | [PD2026_036 transition guidance](https://cec.health.nsw.gov.au/incident-management/policy); full policy text pending verification, see [source map](./research/death-review/source-map.md) |
 | Adaptive case work | [OMG Case Management Model and Notation](https://www.omg.org/cmmn/) |
 | Workflow and decision standards | [OMG specification catalogue](https://www.omg.org/spec) |
 | Standards-based workflow engine candidate | [Flowable Open Source](https://www.flowable.com/open-source) |

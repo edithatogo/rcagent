@@ -74,7 +74,7 @@ def synthetic(tmp_path, monkeypatch):
         )
     calls = []
 
-    def git(root_arg, *args):
+    def git(_root_arg, *args):
         calls.append(args)
         if args == ("rev-parse", "--show-toplevel"):
             return str(root).encode()
@@ -304,7 +304,7 @@ def test_wrong_loaded_checkout_rejected_before_eligibility(synthetic, monkeypatc
 
 
 def commit_review(synthetic, damage="none"):
-    root, path, value, record, blobs, *_ = synthetic
+    root, _path, _value, record, blobs, *_ = synthetic
     real_git(root, "init", "-q")
     for key, val in (
         ("user.name", "Synthetic Fixture"),

@@ -34,15 +34,15 @@ def receipt_for(plan, socket_path):
         expected_slot_id=expected["evidence"]["slot_id"],
         expected_model=native["model"],
     )
-    child = dict(
-        status="process_stopped",
-        error="none",
-        execution_observed=True,
-        reaped=True,
-        cleanup_errors=[],
-        pid=123,
-        returncode=0,
-    )
+    child = {
+        "status": "process_stopped",
+        "error": "none",
+        "execution_observed": True,
+        "reaped": True,
+        "cleanup_errors": [],
+        "pid": 123,
+        "returncode": 0,
+    }
     for name, data in [
         ("stdout", b""),
         ("stderr", b"dyld[123]: <AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE> /synthetic/server\n"),
@@ -60,60 +60,60 @@ def receipt_for(plan, socket_path):
         )
     environment = session.profile.profile_environment()
     health_body = b'{"status":"ok"}'
-    return dict(
-        status="primary_session_captured",
-        error="none",
-        admitted=False,
-        study_unlocked=False,
-        worker_joined=True,
-        resources_removed=True,
-        cleanup_errors=[],
-        health=[
-            dict(
-                status="http_response_captured",
-                error="none",
-                http_status=200,
-                body_complete=True,
-                body_bytes=len(health_body),
-                body_sha256=admission._sha(health_body),
-                body_base64=base64.b64encode(health_body).decode(),
-            )
+    return {
+        "status": "primary_session_captured",
+        "error": "none",
+        "admitted": False,
+        "study_unlocked": False,
+        "worker_joined": True,
+        "resources_removed": True,
+        "cleanup_errors": [],
+        "health": [
+            {
+                "status": "http_response_captured",
+                "error": "none",
+                "http_status": 200,
+                "body_complete": True,
+                "body_bytes": len(health_body),
+                "body_sha256": admission._sha(health_body),
+                "body_base64": base64.b64encode(health_body).decode(),
+            }
         ],
-        primary_gate=expected["evidence"],
-        admission=expected["admission"],
-        request_base64=base64.b64encode(request).decode(),
-        request_sha256=admission._sha(request),
-        completion=dict(
-            status="http_response_captured",
-            error="none",
-            body_complete=True,
-            http_status=200,
-            method="POST",
-            route="/completion",
-            transport="unix-domain-socket",
-            request_body_sha256=admission._sha(request),
-            body_base64=base64.b64encode(body).decode(),
-            body_bytes=len(body),
-            body_sha256=admission._sha(body),
-        ),
-        candidate=candidate,
-        decoded=candidate["decoded"],
-        process=child,
-        loaded_non_system_images=["/synthetic/server"],
-        source_sha256=session.source_pins(),
-        profile_sha256=session.profile.profile_digest(),
-        socket_path=str(socket_path),
-        arguments=session._fixed_arguments(expected["admission"], socket_path),
-        environment_sha256=admission._sha(json.dumps(environment, sort_keys=True).encode()),
-        environment_keys=sorted(environment),
-    )
+        "primary_gate": expected["evidence"],
+        "admission": expected["admission"],
+        "request_base64": base64.b64encode(request).decode(),
+        "request_sha256": admission._sha(request),
+        "completion": {
+            "status": "http_response_captured",
+            "error": "none",
+            "body_complete": True,
+            "http_status": 200,
+            "method": "POST",
+            "route": "/completion",
+            "transport": "unix-domain-socket",
+            "request_body_sha256": admission._sha(request),
+            "body_base64": base64.b64encode(body).decode(),
+            "body_bytes": len(body),
+            "body_sha256": admission._sha(body),
+        },
+        "candidate": candidate,
+        "decoded": candidate["decoded"],
+        "process": child,
+        "loaded_non_system_images": ["/synthetic/server"],
+        "source_sha256": session.source_pins(),
+        "profile_sha256": session.profile.profile_digest(),
+        "socket_path": str(socket_path),
+        "arguments": session._fixed_arguments(expected["admission"], socket_path),
+        "environment_sha256": admission._sha(json.dumps(environment, sort_keys=True).encode()),
+        "environment_keys": sorted(environment),
+    }
 
 
 @pytest.fixture
 def capture_fixture(synthetic, monkeypatch):
     if os.name != "posix":
         pytest.skip("owned POSIX mode/uid/directory fsync contract")
-    root, path, value, *_ = synthetic
+    root, path, _value, *_ = synthetic
     synthetic[-1].update(model_path="/synthetic/model", profile_sha256="e" * 64)
     monkeypatch.setattr(session.profile, "profile_environment", lambda: {"PATH": "/usr/bin:/bin"})
     monkeypatch.setattr(session.profile, "profile_digest", lambda: "e" * 64)

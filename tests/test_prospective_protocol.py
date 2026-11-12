@@ -130,7 +130,7 @@ def test_legacy_api_and_cli_reject_native_declaration(tmp_path, capsys, legacy_v
 
 
 @pytest.mark.parametrize(
-    "field,value",
+    ("field", "value"),
     [
         ("extra", True),
         ("held_out", True),

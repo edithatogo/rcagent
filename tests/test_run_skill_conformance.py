@@ -200,7 +200,7 @@ def test_absent_distribution_cannot_verify(monkeypatch, tmp_path):
 
 
 @pytest.mark.parametrize(
-    "offline,verified,drift_flag,expected_code",
+    ("offline", "verified", "drift_flag", "expected_code"),
     [(False, False, True, 1), (False, True, 1, 1), (True, True, True, 0)],
 )
 def test_current_claim_requires_literal_evidence(

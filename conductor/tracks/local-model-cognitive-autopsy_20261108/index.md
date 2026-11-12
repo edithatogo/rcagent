@@ -1,5 +1,9 @@
 # Local model qualification for cognitive autopsy — 8 November 2026
 
+## Reconciled ownership — 13 November 2026
+
+This retained planning note feeds [Track 12](../cognitive-autopsy_20261107/index.md), the canonical scientific programme, and [Track 13](../frontier-assurance_20261113/index.md), its assurance/demonstration track. L1–L4 below map into existing CAW work packages; they are not additional owners or acceptance counters. Exact model names below are unverified candidates until the current model/runtime/rights admission passes. The [canonical integration contract](../../research/cognitive-autopsy/integration-contract.md) controls cross-repository ownership if an older name or scope below differs. No new model, corpus or runtime support is created by this note.
+
 **Status: planned follow-on.** Preserve historical Track 05–10 acceptance and the explicit *empty supported local-runtime set* in archived Track 08. This is not a claim that an investigation engine, clinical model or endpoint has been validated. Model/runtime discovery lives in [models_lang](https://github.com/edithatogo/models_lang); this repository owns the domain tasks, evidence integrity, professional judgement and escalation thresholds.
 
 ## Component-level evaluation, not a single 'RCA accuracy' number

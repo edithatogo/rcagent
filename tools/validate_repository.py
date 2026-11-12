@@ -95,9 +95,7 @@ def _validate_track_directories(root: Path) -> list[str]:
             try:
                 event = json.loads(line)
             except json.JSONDecodeError as exc:
-                errors.append(
-                    f"{track_id}: invalid evidence.jsonl line {line_number}: {exc.msg}"
-                )
+                errors.append(f"{track_id}: invalid evidence.jsonl line {line_number}: {exc.msg}")
                 continue
             if not isinstance(event, dict):
                 errors.append(
@@ -107,8 +105,7 @@ def _validate_track_directories(root: Path) -> list[str]:
             for field, expected_type in EVIDENCE_REQUIRED_FIELDS.items():
                 if not isinstance(event.get(field), expected_type) or not event[field].strip():
                     errors.append(
-                        f"{track_id}: invalid evidence.jsonl line {line_number}: "
-                        f"missing {field}"
+                        f"{track_id}: invalid evidence.jsonl line {line_number}: missing {field}"
                     )
             if event.get("schema_version") != "1.0":
                 errors.append(
@@ -134,9 +131,15 @@ def _validate_capability_profiles(registry: object, track_numbers: set[int]) -> 
         errors.append("capability registry policy weakens core safeguards")
     contract = registry.get("installation_contract")
     required_true = (
-        "agent_assisted", "scripted", "idempotent", "preflight_required",
-        "verification_required", "receipt_required", "rollback_required",
-        "uninstall_required", "network_egress_requires_disclosure",
+        "agent_assisted",
+        "scripted",
+        "idempotent",
+        "preflight_required",
+        "verification_required",
+        "receipt_required",
+        "rollback_required",
+        "uninstall_required",
+        "network_egress_requires_disclosure",
         "planned_is_not_installable",
     )
     if not isinstance(contract, dict):
@@ -149,7 +152,7 @@ def _validate_capability_profiles(registry: object, track_numbers: set[int]) -> 
             errors.append("capability installation_contract requires telemetry_default=off")
     profiles = registry.get("profiles")
     if not isinstance(profiles, list) or not profiles:
-        return errors + ["capability profiles must be a non-empty array"]
+        return [*errors, "capability profiles must be a non-empty array"]
     ids: set[str] = set()
     defaults: list[str] = []
     by_id: dict[str, dict] = {}
@@ -258,9 +261,7 @@ def validate(root: Path) -> list[str]:
             normalized_plan = " ".join(plan.split()).lower()
             for marker in CONTINUOUS_CONTRACT_MARKERS:
                 if marker not in normalized_plan:
-                    errors.append(
-                        f"{track_id}: continuous execution contract missing {marker!r}"
-                    )
+                    errors.append(f"{track_id}: continuous execution contract missing {marker!r}")
 
         metadata_path = track_root / "metadata.json"
         if metadata_path.is_file():
@@ -278,9 +279,7 @@ def validate(root: Path) -> list[str]:
         try:
             architecture = json.loads(architecture_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
-            errors.append(
-                f"invalid conductor/clinical-governance-architecture.json: {exc}"
-            )
+            errors.append(f"invalid conductor/clinical-governance-architecture.json: {exc}")
         else:
             layer_ids: set[str] = set()
             for layer in architecture.get("layers", []):
@@ -293,9 +292,7 @@ def validate(root: Path) -> list[str]:
                 layer_ids.add(layer_id)
                 for owner in layer.get("owner_tracks", []):
                     if owner not in track_numbers:
-                        errors.append(
-                            f"{layer_id}: unknown owner track number: {owner}"
-                        )
+                        errors.append(f"{layer_id}: unknown owner track number: {owner}")
 
             integration_ids: set[str] = set()
             for integration in architecture.get("integrations", []):
@@ -304,23 +301,17 @@ def validate(root: Path) -> list[str]:
                     errors.append("clinical governance integration has no valid id")
                     continue
                 if integration_id in integration_ids:
-                    errors.append(
-                        f"duplicate clinical governance integration id: {integration_id}"
-                    )
+                    errors.append(f"duplicate clinical governance integration id: {integration_id}")
                 integration_ids.add(integration_id)
                 for field in ("owner_track", "validation_track"):
                     value = integration.get(field)
                     if value not in track_numbers:
-                        errors.append(
-                            f"{integration_id}: unknown {field} number: {value}"
-                        )
+                        errors.append(f"{integration_id}: unknown {field} number: {value}")
 
     integration_map_path = root / "conductor/integration-map.json"
     if integration_map_path.is_file():
         try:
-            integration_map = json.loads(
-                integration_map_path.read_text(encoding="utf-8")
-            )
+            integration_map = json.loads(integration_map_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
             errors.append(f"invalid conductor/integration-map.json: {exc}")
         else:
@@ -342,9 +333,7 @@ def validate(root: Path) -> list[str]:
                     for field in ADOPTED_INTEGRATION_FIELDS:
                         value = integration.get(field)
                         if not isinstance(value, str) or not value.strip():
-                            errors.append(
-                                f"{track_id}: adopted integration missing {field}"
-                            )
+                            errors.append(f"{track_id}: adopted integration missing {field}")
 
     capability_path = root / "conductor/capability-profiles.json"
     if capability_path.is_file():

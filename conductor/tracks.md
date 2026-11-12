@@ -9,9 +9,15 @@
 - **Capability policy:** [portable core plus optional profiles](./capability-profiles.md)
   installed through verified scripts or an agent calling those same scripts
 
-### Follow-on local-model / cognitive-autopsy evaluation — planned
+### Current implementation and research
 
-- [ ] [Local-model cognitive-autopsy qualification](./tracks/local-model-cognitive-autopsy_20261108/index.md) — new **domain evaluation increment**, not a reopening of archived Track 08 or a claim of local-runtime support. Imports model qualification evidence from `models_lang` and owns evidence/temporal/hindsight evaluation.
+| Status | Track | GitHub | Scope |
+|---|---|---:|---|
+| [ ] | [12 Cognitive autopsy](./tracks/cognitive-autopsy_20261107/index.md) | [#116](https://github.com/edithatogo/rcagent/issues/116) | Canonical CA01–CA12 / CAW01–CAW25 scientific component programme; models remain unqualified |
+| [~] | [13 Frontier assurance](./tracks/frontier-assurance_20261113/index.md) | [#125](https://github.com/edithatogo/rcagent/issues/125) | Defect repairs and strict engineering; D0–D8 demonstration and comparison ladder |
+| [ ] | [14 Death reviews](./tracks/death-review_20261113/index.md) | [#126](https://github.com/edithatogo/rcagent/issues/126) | NSW/Queensland mortality learning and death-review application profile |
+
+The [8 November local-model planning note](./tracks/local-model-cognitive-autopsy_20261108/index.md) is an input to Tracks 12/13, not a second implementation owner. It does not reopen archived Track 08 or expand its empty supported set.
 
 ### Workstream A: Foundation and Governance
 
@@ -23,7 +29,7 @@ Parent: [GitHub #2](https://github.com/edithatogo/rcagent/issues/2)
 | [x] | [01 Safety Systems Foundation and Solo-Developer Harness](./archive/safety-systems-foundation_20260731/index.md) | [#6](https://github.com/edithatogo/rcagent/issues/6) | Reviewed and archived; 00 remains phase-only for licence/release scope |
 | [x] | [02 Evidence Workflow Core](./archive/evidence-workflow-core_20260731/index.md) | [#7](https://github.com/edithatogo/rcagent/issues/7) | 01 |
 | [x] | [03 Privacy, Security, and Assurance](./archive/privacy-security-assurance_20260731/index.md) | [#8](https://github.com/edithatogo/rcagent/issues/8) | 01 |
-| [x] | [04 Jurisdiction Packs — National Baseline, NSW and Queensland](./archive/nsw-health-jurisdiction-pack_20260731/index.md) | [#9](https://github.com/edithatogo/rcagent/issues/9) | Completed; under-review NSW rules remain conditional |
+| [x] | [04 Jurisdiction Packs — National Baseline, NSW and Queensland](./archive/nsw-health-jurisdiction-pack_20260731/index.md) | [#9](https://github.com/edithatogo/rcagent/issues/9) | Historical completion preserved; Track 14 records the November NSW policy transition and current source-verification limits |
 
 ### Workstream B: Data, Models, and Evaluation
 

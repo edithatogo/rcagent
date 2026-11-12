@@ -164,7 +164,7 @@ def test_bad_options_never_launch(monkeypatch, kwargs):
 
 
 @pytest.mark.parametrize(
-    "argv,env",
+    ("argv", "env"),
     [
         ([], {}),
         (["relative"], {}),
@@ -354,7 +354,7 @@ def test_cleanup_system_errors_are_safe(failure):
         def poll(self):
             if failure == "poll":
                 raise OSError("private")
-            return None
+            return
 
         def terminate(self):
             pass

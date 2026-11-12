@@ -209,7 +209,7 @@ def test_extension_document_requires_known_coverage(matrix_profile: Path, value)
 
 
 @pytest.mark.parametrize(
-    "field,value",
+    ("field", "value"),
     [
         ("field", []),
         ("fallback", ""),
@@ -243,7 +243,7 @@ def test_invalid_matrix_shape_fails_closed(matrix_profile, value):
 
 
 @pytest.mark.parametrize(
-    "item,expected", [(None, "item must be an object"), ({}, "missing fields")]
+    ("item", "expected"), [(None, "item must be an object"), ({}, "missing fields")]
 )
 def test_invalid_matrix_item_fails_closed(matrix_profile, item, expected):
     _change_matrix(matrix_profile, lambda matrix: matrix["items"].append(item))
@@ -260,7 +260,7 @@ def test_invalid_baseline_sources_rejected(matrix_profile, sources):
 
 
 @pytest.mark.parametrize(
-    "changes,expected",
+    ("changes", "expected"),
     [
         ({"result": "success"}, "invalid result"),
         ({"applicability": "adapter_only", "omission_rationale": " "}, "omission rationale"),

@@ -22,17 +22,27 @@ class SourceRightAdapter:
 
     def capabilities(self) -> tuple[Capability, ...]:
         available = self.executable.is_file() and os.access(self.executable, os.X_OK)
-        return (Capability("citation-verification", "sourceright-0.1", available, ("fully_local", "air_gapped")),)
+        return (
+            Capability(
+                "citation-verification", "sourceright-0.1", available, ("fully_local", "air_gapped")
+            ),
+        )
 
     def run_json(self, operation: Operation, arguments: Sequence[str]) -> OperationResult:
         if operation.privacy_mode not in {"fully_local", "air_gapped"}:
             return OperationResult("rejected", {}, diagnostic="unsupported privacy mode")
         if not math.isfinite(operation.timeout_seconds) or operation.timeout_seconds <= 0:
-            return OperationResult("rejected", {}, diagnostic="timeout must be finite and greater than zero")
+            return OperationResult(
+                "rejected", {}, diagnostic="timeout must be finite and greater than zero"
+            )
         if not arguments or arguments[0] not in READ_ONLY_COMMANDS or "--apply" in arguments:
-            return OperationResult("rejected", {}, diagnostic="command is not in the read-only adapter profile")
+            return OperationResult(
+                "rejected", {}, diagnostic="command is not in the read-only adapter profile"
+            )
         if not self.capabilities()[0].available:
-            return OperationResult("unavailable", {}, retryable=False, diagnostic="SourceRight executable unavailable")
+            return OperationResult(
+                "unavailable", {}, retryable=False, diagnostic="SourceRight executable unavailable"
+            )
         try:
             completed = self._runner(
                 [str(self.executable), *arguments],
@@ -42,7 +52,9 @@ class SourceRightAdapter:
                 timeout=operation.timeout_seconds,
             )
         except subprocess.TimeoutExpired:
-            return OperationResult("timeout", {}, retryable=True, diagnostic="bounded SourceRight timeout")
+            return OperationResult(
+                "timeout", {}, retryable=True, diagnostic="bounded SourceRight timeout"
+            )
         except OSError as error:
             return OperationResult(
                 "unavailable",
@@ -51,11 +63,17 @@ class SourceRightAdapter:
                 diagnostic=f"SourceRight execution unavailable: {error}",
             )
         if completed.returncode != 0:
-            return OperationResult("failed", {}, retryable=False, diagnostic=completed.stderr.strip()[:500])
+            return OperationResult(
+                "failed", {}, retryable=False, diagnostic=completed.stderr.strip()[:500]
+            )
         try:
             payload = json.loads(completed.stdout)
         except json.JSONDecodeError:
-            return OperationResult("failed", {}, retryable=False, diagnostic="invalid SourceRight JSON")
+            return OperationResult(
+                "failed", {}, retryable=False, diagnostic="invalid SourceRight JSON"
+            )
         if not isinstance(payload, dict):
-            return OperationResult("failed", {}, retryable=False, diagnostic="unexpected SourceRight payload")
+            return OperationResult(
+                "failed", {}, retryable=False, diagnostic="unexpected SourceRight payload"
+            )
         return OperationResult("succeeded", payload)

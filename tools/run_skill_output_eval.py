@@ -67,7 +67,7 @@ def run_outputs(
             ]
             raw_path = output_dir / f"{case['id']}.jsonl"
             try:
-                completed_process = subprocess.run(
+                completed_process = subprocess.run(  # nosec B603 # explicit local executable and synthetic argv in read-only sandbox; no shell
                     command,
                     cwd=repository,
                     capture_output=True,
@@ -85,7 +85,11 @@ def run_outputs(
                     else "failed"
                 )
             except subprocess.TimeoutExpired as exc:
-                raw = exc.stdout.decode("utf-8", "replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+                raw = (
+                    exc.stdout.decode("utf-8", "replace")
+                    if isinstance(exc.stdout, bytes)
+                    else (exc.stdout or "")
+                )
                 raw = redact_workspace(raw, workspace)
                 response, usage, _ = parse_response(raw)
                 status = "timeout"
@@ -142,8 +146,7 @@ def main() -> int:
             {
                 "generation_complete": summary["generation_complete"],
                 "cases": [
-                    {"id": case["id"], "status": case["status"]}
-                    for case in summary["cases"]
+                    {"id": case["id"], "status": case["status"]} for case in summary["cases"]
                 ],
             }
         )

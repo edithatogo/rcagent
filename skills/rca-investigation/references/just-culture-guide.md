@@ -1,59 +1,58 @@
-# Just Culture Guide
+# Just Culture: Evidence and Work Context Review
 
-Just Culture is a framework for making fair, consistent decisions about individual accountability in healthcare adverse events. It distinguishes between:
-- **Human error**: Unintentional mistakes
-- **At-risk behaviour**: Choices that increase risk, often without recognition
-- **Reckless behaviour**: Conscious disregard for substantial and unjustifiable risk
+Use this guide to organise evidence and questions about work as performed. It
+does not implement a culpability algorithm or determine an employment,
+disciplinary, clinical, regulatory or legal outcome. Record the applicable
+framework or policy, exact source/version, jurisdiction, scope and accountable
+review role before using it in a case.
 
-Just Culture does NOT mean no accountability — it means the right type of accountability for the right type of behaviour.
+The [template use contract](../assets/template-use-contract.md) governs the
+data boundary, uncertainty, review status and any document marking. The
+[working record](../assets/templates/markdown/14-just-culture-assessment.md)
+provides an evidence table and action record.
 
-## The Just Culture Decision Tree
+## Establish the Question
 
-### Step 1: Was the act intentional?
+Describe the action or decision neutrally and attach the source and location.
+Separate an observed event, a reported account, a proposed explanation and an
+authorised finding. Identify missing or conflicting accounts. Do not infer a
+person's intent, health, competence or beliefs from the outcome or from an
+absent record.
 
-- **No** → Go to Step 2
-- **Yes** → This may be reckless behaviour or a violation. Go to Step 4.
+## Reconstruct the Context Available at the Time
 
-### Step 2: Were there any substance issues or medical conditions?
-
-- **Yes** → Manage through human resources and occupational health processes
-- **No** → Go to Step 3
-
-### Step 3: Would a competent, equally trained peer act the same way given the same circumstances?
-
-- **Yes** → Likely **human error** → Console and support; examine system factors
-- **No** → Go to Step 4
-
-### Step 4: Was the risk of the behaviour recognised?
-
-- **No** → Likely **at-risk behaviour** → Coach; manage through system and incentives
-- **Yes** → Go to Step 5
-
-### Step 5: Did the person have an expectation that this was acceptable?
-
-- **Yes, created by management action/inaction** → At-risk behaviour created by organisational culture → Address at organisational level
-- **No** → **Reckless behaviour** → May require disciplinary process
-
-## Responses by Category
-
-| Category | Response | Purpose |
+| Review question | Evidence to seek | Limitation to preserve |
 |---|---|---|
-| **Human Error** | Console; support; investigate system factors | Reduce future error opportunity; support the staff member |
-| **At-Risk Behaviour** | Coach; remove incentives for at-risk choices; redesign system | Change behaviour pattern; address why risk-taking seemed reasonable |
-| **Reckless Behaviour** | Consider disciplinary action | Deter intentional unsafe acts |
+| What information, options and constraints were present? | Contemporaneous records, accounts, tool interfaces and process requirements | Later knowledge may not have been available to the person |
+| What competing goals or pressures shaped the task? | Staffing, workload, resources, interruptions, supervision and escalation context | A plausible pressure is a hypothesis until supported |
+| How does the work usually succeed? | Work-as-done accounts, normal adaptations and relevant observations | A comparison is informative only within its stated context |
+| Which protections functioned, failed, were absent or remain uncertain? | Control design, implementation evidence, logs and accounts | The presence of a written policy does not establish how work occurred |
+| What explanations compete with the current account? | Contradictory evidence, alternative sequences and source independence | Model agreement or repeated wording does not create corroboration |
+| What support or participation needs are identified? | Consented accounts and requests within the authorised purpose | Avoid collecting unnecessary personal, medical or employment details |
 
-## Key Principle for RCA
+## Preserve Fairness and Participation
 
-**Human error is a symptom, not a cause.** When the Just Culture analysis identifies human error, the RCA must go deeper: what were the system conditions that made the error likely or inevitable?
+Record the opportunity to provide an account, respond to relevant evidence,
+correct factual errors and raise concerns. Record investigator involvement,
+conflicts of interest, mitigation and unresolved fairness issues. Use suitable
+language, accessibility support and culturally appropriate participation as
+determined with the relevant people and authority; a checked field does not
+prove those needs were met.
 
-Common system conditions enabling human error:
-- Poorly designed equipment or interfaces
-- Inadequate training or competency verification
-- Excessive workload or fatigue
-- Ambiguous policies or procedures
-- Absent or ineffective checking systems
-- Organisational culture that discourages speaking up
+## Propose System and Support Actions
 
-## For SAC 1 Investigations
+Link each proposed action to a supported condition or identified need, its
+intended mechanism and possible adverse effects. Record ownership, feasibility,
+implementation evidence, process/outcome/balancing measures and a justified
+review date. Preserve unresolved explanations. Do not use a behavioural label
+as evidence or automatically map a label to a sanction.
 
-The Just Culture assessment should be completed **before** any consideration of disciplinary action. Individual clinicians should not be disciplined for human error in a broken system. All Just Culture findings should be documented in the investigation report.
+## Record Any Separate Authorised Decision
+
+An accountable human with the applicable authority determines whether a
+separate process is needed, using its own evidence and procedural requirements.
+Record that decision's scope, policy/source, authority, date and reference, or
+leave it unresolved. This guide cannot decide whether conduct was reckless,
+whether a referral is mandatory, whether a legal threshold is met, or what
+disciplinary response is appropriate. Keep the safety learning record and any
+separate process within their verified purposes and access boundaries.

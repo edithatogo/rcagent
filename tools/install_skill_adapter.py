@@ -44,11 +44,7 @@ def available_clients(repository: Path) -> list[str]:
     adapters = repository / "adapters"
     if not adapters.is_dir():
         return []
-    return sorted(
-        path.parent.name
-        for path in adapters.glob("*/adapter.json")
-        if path.is_file()
-    )
+    return sorted(path.parent.name for path in adapters.glob("*/adapter.json") if path.is_file())
 
 
 def main() -> int:

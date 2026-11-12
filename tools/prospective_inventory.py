@@ -116,7 +116,8 @@ def submission_reason(path: Path, plan: dict, pin: str, slot: str, input_pin: st
     if isinstance(value, dict) and value.get("purpose") == "contract-fixture":
         return "fixture_not_observation"
     validate(value, SUBMISSION)
-    assert isinstance(value, dict)
+    if not isinstance(value, dict):
+        raise ValueError("invalid_validated_object_type")
     if (value["study_id"], value["manifest_sha256"], value["slot_id"], value["input_sha256"]) != (
         plan["study_id"],
         pin,
@@ -148,7 +149,8 @@ def inventory(manifest: Path, expected_sha256: str) -> dict:
     if not _digest(expected_sha256) or pin != expected_sha256:
         raise ValueError("manifest_pin_mismatch")
     validate(plan, SCHEMA)
-    assert isinstance(plan, dict)
+    if not isinstance(plan, dict):
+        raise ValueError("invalid_validated_object_type")
     if type(plan["repeats"]) is not int:
         raise ValueError("invalid_repeat_type")
     for prefix, values in (

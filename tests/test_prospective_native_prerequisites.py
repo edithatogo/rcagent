@@ -50,7 +50,8 @@ def test_enumerated_consistency_never_permits_execution(synthetic):
     result = verify(synthetic)
     root, path, value, commit = synthetic
     assert result["status"] == "native_prerequisites_consistent"
-    assert result["commit"] == commit and result["protocol_sha256"] == pin(path)
+    assert result["commit"] == commit
+    assert result["protocol_sha256"] == pin(path)
     assert result["slot_id"] == value["expected_slots"][0]
     assert all(
         result[key] is False

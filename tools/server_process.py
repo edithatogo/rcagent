@@ -167,9 +167,9 @@ def capture_child(
     if not callable(set_blocking):
         raise ValueError("unsupported_nonblocking_pipes")
     buffers = {"stdout": bytearray(), "stderr": bytearray()}
-    observed = {name: 0 for name in buffers}
-    eof = {name: False for name in buffers}
-    truncated = {name: False for name in buffers}
+    observed = dict.fromkeys(buffers, 0)
+    eof = dict.fromkeys(buffers, False)
+    truncated = dict.fromkeys(buffers, False)
     started = time.monotonic()
     if deadline is not None and (
         type(deadline) not in (int, float) or not 0 < deadline <= started + 120
@@ -205,7 +205,7 @@ def capture_child(
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     env=dict(environment),
-                    shell=False,
+                    shell=False,  # nosec B603 # explicit argv capability, shell=False, bounded process lifetime
                     start_new_session=True,
                 )
             except OSError:

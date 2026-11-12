@@ -1,6 +1,8 @@
 # PPTX Generation: Governance Committee Brief
 
-Use the document-skills:pptx skill to generate this presentation.
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
+
+Use an available presentation-generation adapter within the approved data boundary, or return the slide outline.
 Apply styles from: assets/styles/pptx-style-guide.md
 Source content from completed investigation report and working templates.
 
@@ -50,8 +52,8 @@ Source content from completed investigation report and working templates.
 - Annotate failed/absent barriers clearly
 
 ### Slide 11: Just Culture
-- Table: Role | Classification | System Response
-- Note: individual accountability assessed fairly
+- Table: Role | Evidence and work context | Support and system actions
+- Record unresolved fairness and participation issues; no automated culpability classification
 
 ### Slide 12: Recommendations
 - Numbered list with Action Strength badge per recommendation

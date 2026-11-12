@@ -65,7 +65,7 @@ def test_explicit_profile_does_not_mutate_legacy(tmp_path, monkeypatch):
     assert shared.profile_environment(cfg)["DYLD_LIBRARY_PATH"] == str(tmp_path.resolve())
 
 
-@pytest.mark.parametrize("diagnostic,out", [("version", None), ("help", b"synthetic help")])
+@pytest.mark.parametrize(("diagnostic", "out"), [("version", None), ("help", b"synthetic help")])
 def test_explicit_capture_binds_both_sources(tmp_path, monkeypatch, diagnostic, out):
     cfg = fixture(tmp_path, monkeypatch)
     calls = process(cfg, monkeypatch, out)
@@ -101,7 +101,7 @@ def test_source_drift_fails(tmp_path, monkeypatch, source):
 
 
 @pytest.mark.parametrize(
-    "diagnostic,out",
+    ("diagnostic", "out"),
     [("help", b""), ("version", b"wrong version"), ("help", b"x" * (1024 * 1024 + 1))],
     ids=["emptyhelp", "wrongversion", "oversize"],
 )

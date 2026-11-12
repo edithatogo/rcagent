@@ -88,9 +88,7 @@ def _iter_scannable_files(root: Path, excluded_roots: set[str]) -> list[Path]:
 def scan(root: Path) -> list[str]:
     """Return one human-readable finding line per offending character."""
     findings: list[str] = []
-    excluded_roots = {
-        str(root / rel) for rel in _gitlink_paths(root)
-    }
+    excluded_roots = {str(root / rel) for rel in _gitlink_paths(root)}
     for path in _iter_scannable_files(root, excluded_roots):
         try:
             text = path.read_text(encoding="utf-8")

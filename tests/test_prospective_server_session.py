@@ -192,7 +192,9 @@ def test_fixed_session_reserved_and_locked(synthetic):
     assert receipt.stat().st_mode & 0o777 == 0o600
     assert [call[2] for call in calls] == ["/health", "/completion"]
     argv, env, deadline = processes[0]
-    assert "--offline" in argv and "--no-agent" in argv and "--no-ui-mcp-proxy" in argv
+    assert "--offline" in argv
+    assert "--no-agent" in argv
+    assert "--no-ui-mcp-proxy" in argv
     assert argv[argv.index("--ctx-size") + 1] == "2048"
     assert argv[argv.index("--parallel") + 1] == "1"
     assert calls[-1][-1] == deadline
@@ -223,7 +225,8 @@ def test_preflight_profile_disagreement_never_launches(synthetic):
     assert result["error"] == "profile_identity_mismatch"
     assert result["status"] == "session_failed"
     assert result["admitted"] is result["study_unlocked"] is False
-    assert not calls and not processes
+    assert not calls
+    assert not processes
 
 
 def test_health_attempt_budget_stops_without_completion(synthetic, monkeypatch):
@@ -241,7 +244,8 @@ def test_health_attempt_budget_stops_without_completion(synthetic, monkeypatch):
     assert result["error"] == "health_attempts_exhausted"
     assert result["status"] == "session_failed"
     assert [call[2] for call in calls] == ["/health"]
-    assert result["worker_joined"] and result["process"]["reaped"]
+    assert result["worker_joined"]
+    assert result["process"]["reaped"]
     assert result["resources_removed"]
 
 
@@ -256,7 +260,8 @@ def test_interrupted_health_keeps_failure_after_worker_cleanup(synthetic, monkey
     assert result["error"] == "session_interrupted"
     assert result["failure_stage"] == "readiness_failed"
     assert result["status"] == "session_failed"
-    assert result["worker_joined"] and result["process"]["reaped"]
+    assert result["worker_joined"]
+    assert result["process"]["reaped"]
     assert result["resources_removed"]
     assert result["admitted"] is result["study_unlocked"] is False
 
@@ -584,7 +589,7 @@ def test_receipt_persistence_failure_never_returns_success(synthetic, monkeypatc
     monkeypatch.setattr(
         session.os, "fdopen", lambda *args, **kwargs: Stream(original(*args, **kwargs))
     )
-    with pytest.raises(ValueError, match="^receipt_persistence_failed$"):
+    with pytest.raises(ValueError, match=r"^receipt_persistence_failed$"):
         session.capture_session(root, receipt)
 
 

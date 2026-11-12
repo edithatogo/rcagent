@@ -11,32 +11,18 @@ ROOT = Path(__file__).parents[1]
 
 
 def test_parse_events_detects_actual_skill_read_and_usage() -> None:
-    raw = "\n".join(
-        [
-            '{"type":"item.completed","item":{"type":"agent_message","text":"using skill"}}',
-            '{"type":"item.completed","item":{"type":"command_execution","command":"Get-Content C:\\\\\\\\tmp\\\\\\\\rca-investigation\\\\\\\\SKILL.md"}}',
-            '{"type":"turn.completed","usage":{"input_tokens":10,"output_tokens":2}}',
-        ]
-    )
+    raw = '{"type":"item.completed","item":{"type":"agent_message","text":"using skill"}}\n{"type":"item.completed","item":{"type":"command_execution","command":"Get-Content C:\\\\\\\\tmp\\\\\\\\rca-investigation\\\\\\\\SKILL.md"}}\n{"type":"turn.completed","usage":{"input_tokens":10,"output_tokens":2}}'
     assert parse_events(raw) == (True, 10, 2, True)
 
 
 def test_parse_events_does_not_trust_self_report_or_malformed_lines() -> None:
-    raw = "\n".join(
-        [
-            "not json",
-            '{"type":"item.completed","item":{"type":"agent_message","text":"I used rca-investigation"}}',
-            '{"type":"turn.completed","usage":{"input_tokens":3,"output_tokens":1}}',
-        ]
-    )
+    raw = 'not json\n{"type":"item.completed","item":{"type":"agent_message","text":"I used rca-investigation"}}\n{"type":"turn.completed","usage":{"input_tokens":3,"output_tokens":1}}'
     assert parse_events(raw) == (False, 3, 1, True)
 
 
 def test_workspace_redaction_handles_json_escaped_windows_path() -> None:
     workspace = Path(r"C:\Users\Example\AppData\Temp\run")
-    raw = (
-        r'{"command":"Get-Content C:\\Users\\Example\\AppData\\Temp\\run\\SKILL.md"}'
-    )
+    raw = r'{"command":"Get-Content C:\\Users\\Example\\AppData\\Temp\\run\\SKILL.md"}'
     redacted = redact_workspace(raw, workspace)
     assert "Users" not in redacted
     assert "<EVAL_WORKSPACE>" in redacted
@@ -102,9 +88,7 @@ def test_run_evaluation_is_fail_closed_and_preserves_raw(
     assert summary["passed"] is True
     assert all(case["passed"] for case in summary["cases"])
     assert (output / "positive-trial-1.jsonl").is_file()
-    assert json.loads((output / "summary.json").read_text(encoding="utf-8"))[
-        "passed"
-    ] is True
+    assert json.loads((output / "summary.json").read_text(encoding="utf-8"))["passed"] is True
 
 
 def test_timeout_cannot_pass(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

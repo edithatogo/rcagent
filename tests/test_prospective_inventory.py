@@ -89,7 +89,7 @@ def test_missing_and_structurally_consistent_never_admitted(tmp_path: Path) -> N
 
 
 @pytest.mark.parametrize(
-    "field,value",
+    ("field", "value"),
     [
         ("study_id", "prospective-other"),
         ("manifest_sha256", "0" * 64),
@@ -106,7 +106,7 @@ def test_cross_identity_quarantined(tmp_path: Path, field: str, value: str) -> N
 
 
 @pytest.mark.parametrize(
-    "content,reason",
+    ("content", "reason"),
     [
         (b'{"purpose":"contract-fixture"}', "fixture_not_observation"),
         (b"{}", "invalid_schema"),
@@ -145,7 +145,7 @@ def test_artifact_path_restrictions(tmp_path: Path, path: str) -> None:
 
 
 @pytest.mark.parametrize(
-    "change,reason",
+    ("change", "reason"),
     [
         ("hash", "artifact_hash_mismatch"),
         ("utf8", "invalid_utf8"),
@@ -174,7 +174,7 @@ def test_artifact_and_normalization_failures(tmp_path: Path, change: str, reason
 
 
 @pytest.mark.parametrize(
-    "change,reason",
+    ("change", "reason"),
     [
         ("cases", "duplicate_identity"),
         ("conditions", "duplicate_identity"),

@@ -14,6 +14,8 @@ Continue automatically through ready tasks, agent review and bounded rework. Do 
 
 ## Phase 1: Snapshot, contracts and frozen design — target days 1–2
 
+Execution now uses the [Track 13 capability ladder](../../research/frontier-assurance/capability-ladder.md): repaired integrity/privacy boundaries first, then D0 evidence binding, D1 explicit extraction, D2 uncertain timelines and D3 decision-time packets. Existing CAW identifiers remain canonical. Death-review composition is [Track 14](../death-review_20261113/index.md); additional models/modalities require measured complementary error reduction.
+
 - [ ] Resolve the exact HDC source/Hugging Face revision through the corpus subtrack; inventory actual case payloads, duplicates, completeness and source spans.
 - [ ] Link the existing ethics record in the protected study register; carry the already confirmed approval forward without inventing its identifier or extending its scope.
 - [ ] Map existing contracts to CA01–CA12; implement versioned decision records and A/B/C packet manifests as small extensions.

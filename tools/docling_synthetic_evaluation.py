@@ -47,7 +47,7 @@ def validate_evaluation(value: dict[str, Any]) -> list[str]:
             errors.append(f"execution_boundary.{key} must be {expected!r}")
     cases = value.get("cases", [])
     if not isinstance(cases, list):
-        return errors + ["cases must be an array"]
+        return [*errors, "cases must be an array"]
     classes = {case.get("class") for case in cases if isinstance(case, dict)}
     if classes != REQUIRED_CLASSES:
         errors.append("cases must cover every required challenge class exactly")

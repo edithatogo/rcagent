@@ -1,20 +1,23 @@
 # Contributing Factor Analysis — Yorkshire Framework
-**CONFIDENTIAL: QUALITY IMPROVEMENT**
+
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
 
 ---
 
-**Incident ID**: [INC-2026-XXX]
+**Incident ID**: [Case ID]
 **Analysis Date**: [DD/MM/YYYY]
-**Investigation Team**: [Team leader name/role]
+**Investigation Team**: [Team leader role]
 
 ---
 
 ## Instructions
 
-For each factor category, document whether it was a contributing factor. Use evidence from the chronology and interviews. Classify as:
-- **Confirmed**: Supported by documentary evidence
-- **Possible**: Indicated by interview but not confirmed by documentation
-- **Not a factor**: Assessed and ruled out — briefly explain why
+For each candidate factor, preserve the distinction between fact, account and inference. Assess source quality, independence, timing and contradictory evidence; documentary form alone does not confirm a claim. Record:
+- **Supported finding**: Evidence and reasoning checked by the accountable reviewer, with limitations
+- **Hypothesis/unresolved**: Plausible explanation requiring further evidence
+- **Not supported**: Rationale and evidence against the proposed factor
+
+The headings are method prompts, not an assertion that a failure occurred. Record the selected framework source/version and applicability.
 
 ---
 
@@ -24,7 +27,7 @@ For each factor category, document whether it was a contributing factor. Use evi
 
 | Finding | Evidence Source | Classification | Significance |
 |---|---|---|---|
-| [Specific verification failure description] | [Medical record, interview] | Confirmed/Possible | [High/Medium/Low] |
+| [Specific verification failure description] | [Medical record, interview] | Supported/Hypothesis/Unresolved | [High/Medium/Low] |
 
 ### Monitoring Failures
 
@@ -130,9 +133,9 @@ For each factor category, document whether it was a contributing factor. Use evi
 
 ---
 
-## Summary of Confirmed Contributing Factors
+## Summary of Reviewed Contributing Factors
 
-List confirmed contributing factors ranked by significance:
+List reviewed factors with evidence, confidence limits, alternatives and rationale for priority:
 
 1. [Most significant factor — brief description]
 2. [Second factor]
@@ -148,6 +151,6 @@ The most immediate factor(s) that directly led to the adverse event:
 
 ## Root Cause(s)
 
-The underlying system failure(s) that, if eliminated, would prevent recurrence:
+Candidate underlying system conditions and mechanisms; assess alternatives and whether proposed changes could reduce recurrence without assuming guaranteed prevention:
 
 > [State clearly — e.g. "No process exists to review medication storage when new drug concentrations are added to formulary, allowing lookalike ampoules to be stored together."]

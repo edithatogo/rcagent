@@ -56,6 +56,10 @@ Python is the initial portable harness language because the relevant document, m
 
 Exact command names and packaging are Track 01 decisions. Scripts must work locally and in CI, return non-zero on applicable failures, and distinguish offline, unavailable-upstream, unsupported, advisory, and failed states.
 
+The current [Track 13 engineering contract](./research/frontier-assurance/engineering.md) adds strict basedpyright with an explicit non-growing legacy baseline, broad Ruff plus formatting, Hypothesis, pytest-gremlins with result admission, Bandit, Vulture and synthetic Scalene profiling. New components must not acquire baseline exceptions. Hardware-specific profiling is not a cross-machine performance guarantee. See [CONSTRAINTS.md](../CONSTRAINTS.md) for executable commands and scope.
+
+The [Rust assessment](./architecture/0013-selective-rust-evidence-core.md) recommends a bounded core/worker spike after measurement, while preserving Python interfaces and scientific tooling. Ownership and memory safety can reduce certain implementation faults; they do not establish correct evidence, privacy, causality or truthful model output.
+
 The harness implements [autonomy.md](./autonomy.md) and
 [autonomy.json](./autonomy.json): deterministic next-ready dispatch,
 cross-phase and cross-track continuation, idempotent run IDs, leases and stale

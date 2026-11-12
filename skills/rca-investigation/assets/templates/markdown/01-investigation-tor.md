@@ -1,5 +1,6 @@
 # Investigation Terms of Reference
-**CONFIDENTIAL: QUALITY IMPROVEMENT**
+
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
 
 ---
 
@@ -7,8 +8,8 @@
 
 | Field | Value |
 |---|---|
-| Incident ID | [e.g. INC-2026-001] |
-| SAC Classification | [SAC 1 / SAC 2 / SAC 3] |
+| Incident ID | [Case ID] |
+| SAC Classification | [Verified classification or unresolved; policy/version and criteria] |
 | Date of Incident | [DD/MM/YYYY] |
 | Date Investigation Commenced | [DD/MM/YYYY] |
 | Service/Ward | [De-identified: Ward X, Unit Y] |
@@ -32,16 +33,16 @@ This Terms of Reference establishes the scope, methodology, team composition, an
 
 ## 3. Investigation Team
 
-| Role | Name/Position | Rationale |
+| Role | Role identifier/position | Rationale |
 |---|---|---|
-| Team Leader (independent) | [Name / Position] | Not directly involved in event |
-| Clinical Lead | [Name / Specialty] | Relevant clinical expertise |
-| Quality/Safety Professional | [Name / Position] | Methodology expertise |
-| Frontline Staff Representative | [Role — no name if preferred] | Operational knowledge |
+| Team Leader (independent) | [Role / Position] | Not directly involved in event |
+| Clinical Lead | [Role / Specialty] | Relevant clinical expertise |
+| Quality/Safety Professional | [Role / Position] | Methodology expertise |
+| Frontline Staff Representative | [Role identifier] | Operational knowledge |
 | Patient/Family Representative | [Offered — Y/N / Accepted — Y/N] | Patient perspective |
 | Other | [If applicable] | [Rationale] |
 
-**Conflict of Interest Declaration**: All team members confirm no direct involvement in the incident and no personal conflict of interest.
+**Conflict and involvement record**: [Record each role’s involvement, declared interests, review of those interests and any mitigation. Do not imply declarations or independence have been verified before that review.]
 
 ## 4. Methodology
 
@@ -79,13 +80,15 @@ Primary methods to be used:
 | Governance authority | [e.g. Clinical Governance Committee] |
 | Report due to committee | [Date] |
 | External notification assessed | [Y/N — ACSQHC/State Health Dept] |
-| Mandatory coroner notification | [Y/N — with rationale] |
+| Coroner referral assessment | [Unresolved/required/not required; authorised determination, jurisdiction, source and deadline] |
 | Open disclosure initiated | [Y/N — date and responsible person] |
 
 ## 7. Confidentiality
 
-This investigation and all documents produced are confidential and protected as Quality Improvement documents. All team members are bound by confidentiality obligations. Documents must be stored in [specified clinical governance system].
+Confidentiality and privilege status: [Unverified until determined through the applicable authorised process]. Record the jurisdiction, investigation authority, purpose, document class, policy or legal source, and authorised reviewer’s direction. Add only the exact approved marking, if any; a label does not establish protection.
+
+Storage and access: [Approved system, permitted roles, retention source, and accountable decision reference].
 
 ---
 
-*Endorsed by:* [Name, Position, Date]
+*Endorsed by:* [Accountable role, decision reference, date]

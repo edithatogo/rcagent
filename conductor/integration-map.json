@@ -247,6 +247,35 @@
       "evidence": "conductor/research/cognitive-autopsy/integration-contract.md",
       "safe_fallback": "fully local deterministic evidence workflow; no model qualification inferred",
       "replacement_path": "reuse generic algorithms behind consumer fixtures; remove duplicate generic code after parity; keep source/clinical semantics in existing owners"
+    },
+    {
+      "track_id": "frontier-assurance_20261113",
+      "status": "adapt",
+      "candidate_systems": [
+        "existing rcagent evidence, privacy, benchmark and Conductor contracts",
+        "uv, Ruff, basedpyright, pytest, Hypothesis, pytest-gremlins, Bandit, Vulture and Scalene",
+        "Inspect AI and spaCy/medspaCy conventional comparators",
+        "Rust with PyO3/maturin or an isolated worker only after a bounded benchmark"
+      ],
+      "selected_system": "Maintained Python quality tools and existing rcagent contracts for immediate repairs; scientific and Rust adapters remain prospective",
+      "dependency_class": "locked development assurance; optional research adapters do not enter the portable core",
+      "compatibility_window": "Exact versions in uv.lock; Python versions and platforms in CI; strict legacy baseline explicitly measured",
+      "safe_fallback": "Run local deterministic checks, reject unadmitted output, retain unsupported or unavailable status and historical evidence",
+      "replacement_path": "Remove project-specific tool shims when upstream provides equivalent fail-closed result admission; migrate a measured boundary only after parity and rollback proof",
+      "evidence": "conductor/tracks/frontier-assurance_20261113/delivery-evidence.md",
+      "project_owned_gap": "Typed evidence and disclosure invariants, bounded healthcare capability demos, source/decision-time claim admission and qualification evidence"
+    },
+    {
+      "track_id": "death-review_20261113",
+      "status": "assess",
+      "candidate_systems": [
+        "NSW CEC mortality, incident and specialty guidance",
+        "Queensland Health patient-safety directives and mortality committee guidance",
+        "Existing incident, mortality, records and coronial systems",
+        "Track12/13 evidence, timeline, verification and evaluation components"
+      ],
+      "evidence": "conductor/research/death-review/source-map.md",
+      "project_owned_gap": "Source-versioned, uncertainty-preserving death-review packets and component evaluation; no replacement of statutory or organisational authority"
     }
   ],
   "vendored_plugins": [

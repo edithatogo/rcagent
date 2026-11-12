@@ -1,9 +1,11 @@
 # DOCX Style Guide — Healthcare RCA Documents
 
+Use the [template use contract](../template-use-contract.md). Styling must preserve draft status, uncertainty, evidence references and the authorised audience.
+
 ## Document Identity
-- Replace [Health Service Name] with actual organisation name throughout
+- Use [Organisation] in examples; real branding requires the recorded authority and permitted audience
 - Logo: Insert at top-right of cover page
-- Confidentiality: Mark all documents "CONFIDENTIAL: QUALITY IMPROVEMENT" in header/footer
+- Protective marking: none by default; use only exact wording directed by the recorded authorised process for the verified jurisdiction, purpose and document class
 - Version control: Version number and date in footer
 
 ## Typography
@@ -19,7 +21,7 @@
 - Page size: A4 (210mm × 297mm)
 - Margins: 2.5cm all sides
 - Header: Document title (left) | Organisation name (right)
-- Footer: "CONFIDENTIAL: QUALITY IMPROVEMENT" (left) | Date (centre) | Page X of Y (right)
+- Footer: Draft/review status and version (left) | Date (centre) | Page X of Y (right)
 - Line spacing: 1.15
 
 ## Tables
@@ -36,7 +38,9 @@
 - Overdue: Light Red (#FCE4D6)
 - Verified effective: Medium Green (#C6EFCE)
 
-## Risk Level Colour Coding
+## Illustrative Risk Level Colour Coding
+
+Use only the classification scheme, criteria and colours verified for the applicable jurisdiction and organisation. Show unresolved classification explicitly; colours do not establish risk or authority.
 - LOW: Green (#70AD47) — white text
 - MEDIUM: Yellow (#FFD966) — dark text
 - HIGH: Orange (#ED7D31) — white text
@@ -49,7 +53,7 @@
 ## Special Elements
 - SAC Classification Badge: Coloured rounded rectangle with SAC level, bold, prominent on cover
 - Mermaid diagrams: Insert as PNG images from .mmd template renders, centred, with caption
-- Confidential watermark: Light grey diagonal "CONFIDENTIAL" behind content on each page
+- Watermark: DRAFT until authorised; a protective watermark requires the same verified direction as any protective marking
 
 ## Cover Page Structure
 1. Organisation logo (top right)
@@ -58,4 +62,4 @@
 4. Document subtitle: Calibri 16pt, Medium Blue
 5. SAC badge (if applicable)
 6. Key metadata box (Incident ID, Date, Version)
-7. "CONFIDENTIAL: QUALITY IMPROVEMENT" footer
+7. Draft/review status and version footer; any protective wording comes only from the authority record

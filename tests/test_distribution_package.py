@@ -65,12 +65,8 @@ def test_distribution_rejects_nonempty_destination(tmp_path: Path) -> None:
     destination.mkdir()
     (destination / "unrelated.txt").write_text("preserve", encoding="utf-8")
 
-    try:
+    with pytest.raises(FileExistsError, match="destination must be empty"):
         build_distribution(ROOT, destination, version="0.0.0-test")
-    except FileExistsError as error:
-        assert "destination must be empty" in str(error)
-    else:
-        raise AssertionError("non-empty destination was overwritten")
 
 
 @pytest.mark.parametrize("version", ["../escape", "a/b", "a\\b", "", ".", ".."])
@@ -116,8 +112,12 @@ def test_distribution_rejects_missing_inputs_and_symlinks(tmp_path: Path) -> Non
 def test_distribution_binds_exact_release_revision(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(distribution_module, "verify_release_source", lambda *_args, **_kwargs: None)
-    monkeypatch.setattr(distribution_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(
+        distribution_module, "verify_release_source", lambda *_args, **_kwargs: None
+    )
+    monkeypatch.setattr(
+        distribution_module, "verify_release_payloads", lambda *_args, **_kwargs: None
+    )
     result = build_distribution(ROOT, tmp_path / "valid", version="0.1.1", source_revision="a" * 40)
     assert result.manifest["source_revision"] == "a" * 40
     assert result.manifest["source"] == "https://github.com/edithatogo/rcagent"

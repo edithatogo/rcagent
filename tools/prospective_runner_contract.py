@@ -96,7 +96,8 @@ def _same(value: object, expected: object) -> bool:
     if type(value) is not type(expected):
         return False
     if isinstance(expected, dict):
-        assert isinstance(value, dict)
+        if not isinstance(value, dict):
+            raise ValueError("invalid_validated_object_type")
         return (
             len(value) == len(expected)
             and all(type(key) is str for key in value)
@@ -104,7 +105,8 @@ def _same(value: object, expected: object) -> bool:
             and all(_same(value[key], item) for key, item in expected.items())
         )
     if isinstance(expected, list):
-        assert isinstance(value, list)
+        if not isinstance(value, list):
+            raise ValueError("invalid_validated_object_type")
         return len(value) == len(expected) and all(
             _same(actual, item) for actual, item in zip(value, expected, strict=True)
         )

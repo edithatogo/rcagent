@@ -2,6 +2,8 @@
 
 Status: planned research and implementation; no model or clinical capability is qualified by this track's creation.
 
+[Track 13](../frontier-assurance_20261113/index.md) supplies defect remediation, strict engineering and D0–D8 demonstrations; [Track 14](../death-review_20261113/index.md) composes death reviews. This track retains CA01–CA12 / CAW01–CAW25 ownership. The [8 November model note](../local-model-cognitive-autopsy_20261108/index.md) is a candidate input, not a duplicate programme or admitted model list.
+
 - [Specification](./spec.md)
 - [Implementation plan](./plan.md)
 - [Metadata](./metadata.json)

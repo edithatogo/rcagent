@@ -88,7 +88,7 @@ def test_receipt_and_evaluation_fail_closed(capsys: pytest.CaptureFixture[str]) 
 
 
 @pytest.mark.parametrize(
-    "field,value",
+    ("field", "value"),
     [
         ("fresh_until", "2000-01-01T00:00:00Z"),
         ("created_at", "2999-01-01T00:00:00Z"),
@@ -112,9 +112,8 @@ def test_invalid_context_fails_closed(field, value):
 
 def test_malformed_receipt_rejected():
     assert validate_receipt(
-        {
-            key: True
-            for key in (
+        dict.fromkeys(
+            (
                 "task_id",
                 "revision",
                 "timestamp",
@@ -123,8 +122,9 @@ def test_malformed_receipt_rejected():
                 "results",
                 "limitations",
                 "rollback",
-            )
-        }
+            ),
+            True,
+        )
     )
 
 

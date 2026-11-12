@@ -33,3 +33,11 @@ When these disagree, preserve the conflict and reconcile it before claiming comp
 ## Cognitive Autopsy Research
 
 [Track 12](./tracks/cognitive-autopsy_20261107/index.md) coordinates the HDC programme, local-model component evaluation, conditional adaptation and source-corpus integration. This is planned work, with no qualified model implied.
+
+## Current assurance and demonstration programme
+
+- [Track 13 — frontier assurance](./tracks/frontier-assurance_20261113/index.md), [#125](https://github.com/edithatogo/rcagent/issues/125): repair evidence/export/template defects, strengthen CI, then demonstrate source-linked extraction, timelines and decision-time packets before comparative model research.
+- [Track 14 — death reviews](./tracks/death-review_20261113/index.md), [#126](https://github.com/edithatogo/rcagent/issues/126): NSW/Queensland mortality-learning profiles and source transitions, composed from the same qualified components.
+- [Capability ladder](./research/frontier-assurance/capability-ladder.md), [triangulation](./research/frontier-assurance/triangulation.md), [claim admission](./research/frontier-assurance/claim-admission.md), [engineering](./research/frontier-assurance/engineering.md) and [selective Rust assessment](./architecture/0013-selective-rust-evidence-core.md).
+
+Use the [bounded context pack](./context-packs/frontier-assurance.md) and [repository constraints](../CONSTRAINTS.md). Track 12 retains scientific implementation ownership; Tracks 13 and 14 add assurance and an application profile. A plan, a passing software check and an empirically qualified component are separate states.

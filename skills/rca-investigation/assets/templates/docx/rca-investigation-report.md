@@ -1,12 +1,14 @@
 # DOCX Generation: Full RCA Investigation Report
 
-Use the document-skills:docx skill to generate this document.
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
+
+Use an available document-generation adapter within the approved data boundary, or return populated Markdown.
 Apply styles from: assets/styles/docx-style-guide.md
 Source content from: assets/templates/markdown/08-rca-investigation-report.md (populated)
 
 ## Document Properties
 - Title: Root Cause Analysis — Investigation Report
-- Confidentiality: CONFIDENTIAL: QUALITY IMPROVEMENT
+- Marking: [Exact wording only if directed through the verified authority record; otherwise no protective marking]
 - Template version: 1.0
 
 ## Cover Page
@@ -15,13 +17,13 @@ Generate a cover page with:
 - Document title: "Root Cause Analysis — Investigation Report" (Heading 1 style, 28pt)
 - SAC badge: coloured badge showing SAC level (red for SAC 1, orange for SAC 2)
 - Metadata box:
-  - Incident ID: [INC-YYYY-XXX]
+  - Incident ID: [Case ID]
   - Service: [De-identified]
   - Investigation Period: [Start date] to [End date]
   - Report Date: [DD/MM/YYYY]
   - Version: [X.X]
   - Approved by: [Governance committee name and date]
-- "CONFIDENTIAL: QUALITY IMPROVEMENT" footer
+- Draft/review status and version footer; add a protective marking only from the recorded authorised direction
 
 ## Section Structure (Heading 1 for each)
 
@@ -55,7 +57,7 @@ Generate a cover page with:
 - Bow-Tie diagram: insert PNG from bow-tie-analysis.mmd
 
 ### 7. Just Culture Assessment
-- Table: Individual (role) | Classification | Rationale | Response
+- Table: Role | Evidence and work context | Support or system action | Separate authorised referral reference
 
 ### 8. Findings and Recommendations
 - Numbered findings table with recommendation strength indicator

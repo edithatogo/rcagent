@@ -122,7 +122,7 @@ def run_evaluation(
                 raw_name = f"{case['id']}-trial-{trial_number}.jsonl"
                 raw_path = output_dir / raw_name
                 try:
-                    result = subprocess.run(
+                    result = subprocess.run(  # nosec B603 # explicit local executable and synthetic argv in read-only sandbox; no shell
                         command,
                         cwd=repository,
                         capture_output=True,
@@ -135,13 +135,13 @@ def run_evaluation(
                     raw = redact_workspace(result.stdout, workspace)
                     raw_path.write_text(raw, encoding="utf-8")
                     activated, input_tokens, output_tokens, completed = parse_events(raw)
-                    status = (
-                        "completed"
-                        if result.returncode == 0 and completed
-                        else "failed"
-                    )
+                    status = "completed" if result.returncode == 0 and completed else "failed"
                 except subprocess.TimeoutExpired as exc:
-                    raw = exc.stdout.decode("utf-8", "replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+                    raw = (
+                        exc.stdout.decode("utf-8", "replace")
+                        if isinstance(exc.stdout, bytes)
+                        else (exc.stdout or "")
+                    )
                     raw = redact_workspace(raw, workspace)
                     raw_path.write_text(raw, encoding="utf-8")
                     activated, input_tokens, output_tokens, _ = parse_events(raw)

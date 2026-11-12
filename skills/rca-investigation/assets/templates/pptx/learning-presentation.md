@@ -1,10 +1,12 @@
 # PPTX Generation: Learning Presentation
 
-Use the document-skills:pptx skill to generate this presentation.
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
+
+Use an available presentation-generation adapter within the approved data boundary, or return the slide outline.
 Apply styles from: assets/styles/pptx-style-guide.md
 
 ## Purpose
-De-identified staff learning presentation. Maximum de-identification. No patient identifiers. No staff names. Shared at team level for learning — not for governance records.
+Staff learning presentation for the verified audience and purpose. Use synthetic content for demonstrations. Case content requires an authorised disclosure review, minimum necessary detail and assessment of residual identification risk; removing names does not establish anonymity.
 
 ## Slide Structure (8–10 slides)
 
@@ -24,7 +26,7 @@ De-identified staff learning presentation. Maximum de-identification. No patient
 ### Slide 4: What We Found — The System Picture
 - Insert simplified fishbone or Yorkshire factors diagram
 - Focus on system factors — not individual actions
-- Language: "The system allowed this to happen" not "Person X failed"
+- Language: describe supported system conditions, uncertainties and competing explanations without assuming causation or blaming a person
 
 ### Slide 5: What Usually Goes Right
 - Safety-II lens: "How does this process usually work well?"

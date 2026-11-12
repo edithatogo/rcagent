@@ -172,9 +172,7 @@ def test_cli_prints_successful_receipt(monkeypatch, capsys) -> None:
 def test_cli_writes_failed_receipt_and_returns_one(monkeypatch, tmp_path: Path) -> None:
     output = tmp_path / "nested" / "receipt.json"
     monkeypatch.setattr(probe, "_wfdb_probe", lambda: {"passed": False, "profile": "fake"})
-    monkeypatch.setattr(
-        sys, "argv", ["optional_adapter_probe", "wfdb", "--output", str(output)]
-    )
+    monkeypatch.setattr(sys, "argv", ["optional_adapter_probe", "wfdb", "--output", str(output)])
 
     assert probe.main() == 1
     assert json.loads(output.read_text(encoding="utf-8")) == {

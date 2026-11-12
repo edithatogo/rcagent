@@ -101,10 +101,7 @@ def capture(path: Path, method: str, route: str, body: bytes, *, deadline: float
     ):
         raise ValueError("unsupported_request")
     now = time.monotonic()
-    if (
-        type(deadline) not in (int, float)
-        or not now < deadline <= now + MAX_SECONDS
-    ):
+    if type(deadline) not in (int, float) or not now < deadline <= now + MAX_SECONDS:
         raise ValueError("invalid_deadline")
     identity = _path_identity(path)
     result: dict = {

@@ -54,7 +54,7 @@ def run(fixture):
 
 
 def test_primary_uses_exact_selected_request_and_persists_candidate(synthetic):
-    root, receipt, calls, processes, plan, checks = synthetic
+    _root, receipt, calls, processes, plan, checks = synthetic
     result = run(synthetic)
     assert result["status"] == "primary_session_captured"
     assert len(checks) == 3
@@ -64,13 +64,14 @@ def test_primary_uses_exact_selected_request_and_persists_candidate(synthetic):
     assert result["request_sha256"] == request["request"]["sha256"]
     assert result["candidate"]["request"] == request
     assert result["admitted"] is result["study_unlocked"] is False
-    assert result["worker_joined"] and result["resources_removed"]
+    assert result["worker_joined"]
+    assert result["resources_removed"]
     assert json.loads(receipt.read_bytes()) == result
 
 
 @pytest.mark.parametrize("stage", [1, 2])
 def test_gate_failure_prevents_all_session_resources(synthetic, monkeypatch, stage):
-    root, receipt, _, processes, plan, _ = synthetic
+    _root, receipt, _, processes, plan, _ = synthetic
     count = 0
 
     def verify(*args):
@@ -90,7 +91,8 @@ def test_gate_failure_prevents_all_session_resources(synthetic, monkeypatch, sta
     monkeypatch.setattr(primary.session.threading, "Thread", forbidden)
     with pytest.raises(ValueError, match="synthetic_gate_failure"):
         run(synthetic)
-    assert not receipt.exists() and not processes
+    assert not receipt.exists()
+    assert not processes
 
 
 def test_changed_plan_prevents_reservation(synthetic, monkeypatch):
@@ -101,7 +103,8 @@ def test_changed_plan_prevents_reservation(synthetic, monkeypatch):
     monkeypatch.setattr(primary.gate, "_verify", lambda *args: next(results))
     with pytest.raises(ValueError, match="primary_gate_changed"):
         run(synthetic)
-    assert not receipt.exists() and not processes
+    assert not receipt.exists()
+    assert not processes
 
 
 @pytest.mark.parametrize(
@@ -124,7 +127,8 @@ def test_postflight_failure_retains_raw_capture(synthetic, monkeypatch, failure)
     result = run(synthetic)
     assert result["error"] == "primary_postflight_failed"
     assert result["status"] == "session_failed"
-    assert result["process"]["reaped"] and result["worker_joined"]
+    assert result["process"]["reaped"]
+    assert result["worker_joined"]
     assert result["completion"]["body_base64"]
     assert json.loads(receipt.read_bytes()) == result
 
@@ -165,7 +169,8 @@ def test_primary_and_ready_share_lock(synthetic):
             run(synthetic)
     finally:
         primary.session._LOCK.release()
-    assert not receipt.exists() and not processes
+    assert not receipt.exists()
+    assert not processes
 
 
 def test_http_failure_with_successful_gate_stays_failed(synthetic, monkeypatch):
@@ -180,7 +185,8 @@ def test_http_failure_with_successful_gate_stays_failed(synthetic, monkeypatch):
     monkeypatch.setattr(primary.session.transport, "capture", failed)
     result = run(synthetic)
     assert result["error"] == "completion_transport_failed"
-    assert "candidate" not in result and "primary_postflight_error" not in result
+    assert "candidate" not in result
+    assert "primary_postflight_error" not in result
     assert result["process"]["reaped"]
 
 
@@ -206,7 +212,8 @@ def test_cleanup_failure_and_postflight_failure_both_retained(synthetic, monkeyp
         assert result["error"] == "postflight_failed"
         assert result["primary_postflight_error"] == "primary_postflight_failed"
         assert "socket_resources_preserved" in result["cleanup_errors"]
-        assert result["worker_joined"] and result["process"]["reaped"]
+        assert result["worker_joined"]
+        assert result["process"]["reaped"]
         assert json.loads(receipt.read_bytes()) == result
     finally:
         from pathlib import Path
@@ -221,7 +228,8 @@ def test_primary_circuit_breaker_blocks_before_reservation(synthetic, monkeypatc
     monkeypatch.setattr(primary.session, "_BLOCKED", True)
     with pytest.raises(ValueError, match="session_circuit_breaker"):
         run(synthetic)
-    assert not receipt.exists() and not processes
+    assert not receipt.exists()
+    assert not processes
 
 
 def test_real_guarded_git_child_http_and_decoder_composition(gate_fixture, monkeypatch):
@@ -294,7 +302,9 @@ while True:
     assert result["status"] == "primary_session_captured"
     assert result["primary_gate"]["source_commit"] == source
     assert result["candidate"]["decoded"]["content"] == body["content"]
-    assert result["process"]["reaped"] and result["worker_joined"] and result["resources_removed"]
+    assert result["process"]["reaped"]
+    assert result["worker_joined"]
+    assert result["resources_removed"]
     assert result["admitted"] is result["study_unlocked"] is False
     # HTTP headers are tuples in memory and JSON arrays in retained receipts.
     assert json.loads(receipt.read_bytes()) == json.loads(json.dumps(result))

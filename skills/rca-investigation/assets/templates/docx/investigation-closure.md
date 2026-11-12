@@ -1,6 +1,8 @@
 # DOCX Generation: Investigation Closure Report
 
-Use the document-skills:docx skill to generate this document.
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
+
+Use an available document-generation adapter within the approved data boundary, or return populated Markdown.
 Apply styles from: assets/styles/docx-style-guide.md
 Source content from: assets/templates/markdown/13-investigation-closure.md (populated)
 

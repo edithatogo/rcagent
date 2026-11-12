@@ -108,6 +108,11 @@ Later phase gates not drawn as hard-start arrows:
 | [09 Interfaces, templates and action loop](./archive/interfaces-templates-action-loop_20260731/index.md) | [#14](https://github.com/edithatogo/rcagent/issues/14) | C | 02, 03, 04 | Archived generated-synthetic contract surface; operational gates retained |
 | [10 Domain adaptation and fine-tuning](./archive/domain-adaptation-finetuning_20260731/index.md) | [#15](https://github.com/edithatogo/rcagent/issues/15) | B | 05, 06, 07, 08 | Archived negative adaptation disposition; no model, data, training, artefact, or release |
 | [11 Distribution, registries and plugins](./archive/distribution-registries-plugins_20260731/index.md) | [#16](https://github.com/edithatogo/rcagent/issues/16) | C | 00 | Archived after hosted integration; supported v0.1.1 release and unsubmitted Claude/OpenAI packets |
+| [12 Cognitive autopsy](./tracks/cognitive-autopsy_20261107/index.md) | [#116](https://github.com/edithatogo/rcagent/issues/116) | B | None for planning/synthetic work | Canonical component studies, HDC evaluation and conditional adaptation; no qualified model yet |
+| [13 Frontier assurance](./tracks/frontier-assurance_20261113/index.md) | [#125](https://github.com/edithatogo/rcagent/issues/125) | A | None for repairs and planning | Strict engineering, repaired evidence/export/template boundaries, D0–D8 capability demonstrations and comparisons |
+| [14 Death reviews](./tracks/death-review_20261113/index.md) | [#126](https://github.com/edithatogo/rcagent/issues/126) | B | None for public-source/synthetic work | NSW/Queensland mortality-learning profile; clinical/model qualification remains prospective |
+
+Tracks 12–14 share [one staged programme](./research/frontier-assurance/research-programme.md). Track 12 owns scientific components, Track 13 their assurance and demonstrations, and Track 14 the death-review application. Policy-source gaps pause only the affected rule; empirical and hardware gates do not prevent deterministic development. The first useful product is a source-linked chronology with uncertainty, followed by a decision-time evidence packet.
 
 Cross-cutting repository hardening is coordinated by
 [#18](https://github.com/edithatogo/rcagent/issues/18), with

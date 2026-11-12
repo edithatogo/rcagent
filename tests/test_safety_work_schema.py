@@ -112,8 +112,18 @@ def test_invalid_state_enum_is_rejected() -> None:
 def test_schema_file_tracks_declared_sections() -> None:
     schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
     expected = {
-        "roles", "sources", "artefacts", "evidence", "statements", "factors",
-        "relationships", "events", "actions", "reviews", "outcomes", "referrals",
+        "roles",
+        "sources",
+        "artefacts",
+        "evidence",
+        "statements",
+        "factors",
+        "relationships",
+        "events",
+        "actions",
+        "reviews",
+        "outcomes",
+        "referrals",
         "system_of_record",
     }
     assert expected <= set(schema["properties"]), "canonical model lost sections"

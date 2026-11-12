@@ -1,0 +1,220 @@
+{
+  "schema_version": "1.0",
+  "revision": "2026-11-13.1",
+  "admission": "portable_draft_only",
+  "scope": "templates-and-support",
+  "review_scope": "Engineering repair of draft prompts, evidence distinctions, authority placeholders and rendering instructions; no institutional template or clinical/legal determination.",
+  "historical_quarantine": {
+    "status": "quarantined_legacy_not_supported",
+    "manifest_sha256": "745f9c51014671fc7f2c8e344949947db926c6379eead5189766d3a06d2ac8b8",
+    "unchanged": true
+  },
+  "limitations": [
+    "Admission applies only to these revised file hashes; historical quarantined revisions remain quarantined.",
+    "This inventory does not establish clinical validity, policy applicability, legal protection, rights to institutional content, or permission to disclose case data.",
+    "Named methods and synthetic diagram examples require source, applicability and evidence verification before case use.",
+    "A changed or added rendering asset requires content review and a new inventory entry; hashes alone do not prove review quality."
+  ],
+  "files": [
+    {
+      "path": "assets/styles/docx-style-guide.md",
+      "sha256": "82a76aa3c925b8bae49a79df8bbd2b8408bed5728391ce8629a27239d47f2172",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/styles/pptx-style-guide.md",
+      "sha256": "1f0fa56a60d9dd193eb04e03cde481430cef74f11507f31dbfb9e25a19c9f96f",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/template-use-contract.md",
+      "sha256": "367ad3d526fd8409e6593b8e8e32316b255231afb5a109d6a083e641b77cd3db",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/docx/capa-action-plan.md",
+      "sha256": "7d85150ed8f3a02b52532916a9b08eeb6d46090c5489730f72c08c22854a3cf0",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/docx/executive-briefing.md",
+      "sha256": "1a9318d96139b578172d7ef5e91941f0ec6ef6eda88fa7f296fe965b527d94a2",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/docx/investigation-closure.md",
+      "sha256": "c0066a9a139ca29b6bfb9758a62f71643fc0e06ca106ca176ddaca546f646864",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/docx/open-disclosure-record.md",
+      "sha256": "716669b408055dacbc5a98fcfcd03e6bdda798ca7570e78498069d2d79de09d5",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/docx/rca-investigation-report.md",
+      "sha256": "b524e819afa75989d0cdc687356072b458b38241aa2fb29eb189ce9ad493c00c",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/docx/sae-review-report.md",
+      "sha256": "89842377aa201dde80d23d1690dd4431f997b39d1de2221ee92bff9dcafdd214",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/docx/terms-of-reference.md",
+      "sha256": "0cab017f9120f06309ae7cc407648c099c61538e31540859cbdfa1ec355bfcfe",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/01-investigation-tor.md",
+      "sha256": "3ca6122c23c0374f54d9bbfdb5042df78d355ef316d409a58d52acfcf6d63154",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/02-chronology.md",
+      "sha256": "8a357dd53554fcedca6a3d1641721d3a59c9c349264abaab5faf428628d3f1d7",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/03-contributing-factors.md",
+      "sha256": "09c46190d4d1623cefdb7b7a3c24979133e25a914e09fcd048a2f229dc759a4e",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/04-fishbone-diagram.md",
+      "sha256": "0b61397ed70732be4d5263ff569ed6e48c8d5ca281b16fc172f5409167d28b1b",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/05-fmea-worksheet.md",
+      "sha256": "28c85fefb5de7b137efa0147954537578fb0a1ffe3fb06f16ec3c44d2cb9f6fb",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/06-barrier-analysis.md",
+      "sha256": "204f551429780e860d98a6fca99427c500993b570da43ab0d04c3df9a3c3b428",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/07-bow-tie-analysis.md",
+      "sha256": "f374b1d871049ed15c76e73ad4803e2745cfa2855b63a73ad5cb98da82c13864",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/08-rca-investigation-report.md",
+      "sha256": "af56d1e5837271de1df642e15bbf42dd0a9f856b7c128974a234b41caa32d2b8",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/09-sae-review-report.md",
+      "sha256": "400b7599121188b9880074454bba6ec9c8af200fa263f636b060fb35f6f29d85",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/10-executive-summary.md",
+      "sha256": "58e3ba0dbe6992fef5a494ce9a1fcf71e449c84ba51bfae3e5d408f4dbe5d5c6",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/11-capa-action-plan.md",
+      "sha256": "35ff6dfa3399abce4faa83d61e394dcc7fdb747fc494333a118d385ac9648fa2",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/12-open-disclosure-plan.md",
+      "sha256": "bacadb13dc96757ad0a50263c38dcb092e0e5b8ce5026f39e4105cbcad49a6e1",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/13-investigation-closure.md",
+      "sha256": "5e9d14db88995ee311f0bc84db2d5daa8418391082705d78f207d4ae28638348",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/14-just-culture-assessment.md",
+      "sha256": "a16ed7b5c2dc6d8175d7fa0b49ed7e1ab434bf5a1f81f3cdbdfe5ba9bd486c7a",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/accimap-levels.mmd",
+      "sha256": "fce5ec864d2797d5caf7a42c26bf48442c0051df980954d8bf9ec264e494e82b",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/bow-tie-analysis.mmd",
+      "sha256": "90d4c84f8ff9e1ba44ed5008cf6acda5799d75493174bacc07e5efb03dc8ff0d",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/fishbone-ishikawa.mmd",
+      "sha256": "0bf45614fb8bafc86a52e5e71c55563e36db94fb8b9c4402d1715321497555c4",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/five-whys-chain.mmd",
+      "sha256": "9d88033ee3909f8a9f913591f0b55667d0ea2902f2a926476ccec78e74d83f47",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/fmea-priority-quadrant.mmd",
+      "sha256": "68e7230bdb278f696ebca229fcab323ed5047d6ec9b1170d8d6cd4205aa38ac3",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/hfacs-layers.mmd",
+      "sha256": "dbc7e6b3b71ec2d9f68823dab846298094e068cf72f938e68683985bf747e19c",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/investigation-workflow.mmd",
+      "sha256": "9223b514f4f573a4297221a56f65d8035bb793aeadc7cdb6576ea578ebacd800",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/seips-work-system.mmd",
+      "sha256": "ca6c545a02cddee4cae3d9560c9fae212703a1e5bbf5323be2e1b6344348267b",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/stamp-control-structure.mmd",
+      "sha256": "43425a18ff096bca045724008995716f1510e16e11530cd9fce662833e36e045",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/swiss-cheese-model.mmd",
+      "sha256": "7941957c02130ad0bf5d13300c3beaa8515952d6e2b432d58d5bb6de35846f99",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/timeline-chronology.mmd",
+      "sha256": "b81abbd3bf78d5497ef68d704fc2b43bb21811038ca1ae0ad72e61fe1cd4086a",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/mermaid/yorkshire-factors.mmd",
+      "sha256": "3019c653903d4b92be7d6f29882f1a4f86b4ea834f107c54538ca0caf578bcd8",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/pptx/executive-summary-deck.md",
+      "sha256": "75be8e6f2fc8bf2106a97e101d52ff656e92f97f55431ef53e79c9f05d95de28",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/pptx/governance-committee-brief.md",
+      "sha256": "1570ea7ee50812e5595f11280e6331fbe106794f4be7a602f361cc2b225a87c7",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/pptx/learning-presentation.md",
+      "sha256": "e24795c419de1f64efb060cc99aaad9e3320217cf6af721ac5e3fdca94ada8a6",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "references/just-culture-guide.md",
+      "sha256": "63fe2a17496a98d52d1a98d7e836f623926662a8ba6b80d0982ff3eb106cae09",
+      "status": "admitted_portable_draft"
+    }
+  ]
+}

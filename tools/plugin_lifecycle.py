@@ -13,7 +13,9 @@ from pathlib import Path, PurePosixPath
 def install_plugin_archive(archive_path: Path, install_root: Path) -> Path:
     """Safely replace one isolated plugin install from an archive."""
     install_root.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix="rcagent-plugin-", dir=install_root.parent) as temporary:
+    with tempfile.TemporaryDirectory(
+        prefix="rcagent-plugin-", dir=install_root.parent
+    ) as temporary:
         staged = Path(temporary) / "plugin"
         staged.mkdir()
         with zipfile.ZipFile(archive_path) as archive:

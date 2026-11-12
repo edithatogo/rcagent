@@ -38,7 +38,7 @@ def _git(root: Path, *args: str) -> bytes:
     try:
         # Bound retained bytes, not temporary disk use; Git is a trusted local tool.
         with tempfile.TemporaryFile() as output:
-            result = subprocess.run(
+            result = subprocess.run(  # nosec B603, B607 # trusted local Git with fixed operations and argv, no shell
                 ["git", "--no-replace-objects", "-C", str(root), *args],
                 stdout=output,
                 stderr=subprocess.DEVNULL,
@@ -79,7 +79,7 @@ def _committed_files(
     root: Path, commit: str, paths: list[str], expected: dict[str, str]
 ) -> list[dict]:
     """Compare the enumerated working files and optional pins with exact committed bytes."""
-    if len(set(path.casefold() for path in paths)) != len(paths):
+    if len({path.casefold() for path in paths}) != len(paths):
         raise ValueError("duplicate_freeze_path")
     files = []
     for relative in paths:

@@ -17,12 +17,23 @@ validate = [
 ]
 lint = [
   "ruff==0.17.3",
-  "ty",
+  "ty==0.0.75",
   "basedpyright==1.40.2",
+  "types-jsonschema==4.26.0.20261006",
+  "types-pyyaml==6.0.12.20261111",
 ]
 test = [
+  "hypothesis==6.170.15",
   "pytest==9.1.1",
   "pytest-cov==7.1.0",
+]
+assurance = [
+  "bandit==1.9.4",
+  "pytest-gremlins==1.13.2",
+  "vulture==2.16",
+]
+profile = [
+  "scalene==2.4.0 ; python_full_version != '3.11.0' and (sys_platform == 'darwin' or sys_platform == 'linux')",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -30,6 +41,7 @@ packages = ["tools"]
 
 [tool.pytest.ini_options]
 addopts = "--strict-config --strict-markers"
+strict_xfail = true
 testpaths = ["tests"]
 
 [tool.coverage.run]
@@ -37,7 +49,7 @@ branch = true
 source = ["tools"]
 
 [tool.coverage.report]
-fail_under = 80
+fail_under = 90
 show_missing = true
 skip_covered = true
 
@@ -58,12 +70,49 @@ select = [
   "B",   # flake8-bugbear
   "UP",  # pyupgrade
   "SIM", # flake8-simplify
+  "A", "ASYNC", "BLE", "C4", "DTZ", "FA", "FLY", "FURB", "G", "ICN",
+  "INT", "ISC", "LOG", "N", "PGH", "PIE", "PT", "PYI", "Q", "RET",
+  "RSE", "RUF", "SLOT", "T10", "TID", "YTT",
 ]
 ignore = ["E501"] # long lines are governed by formatting intent, not CI failure
+
+[tool.ruff.lint.per-file-ignores]
+# Legacy rejection matrices intentionally accept multiple validation layers.
+# Exact-message checks remain required for newly added boundary regressions.
+"tests/test_*.py" = ["PT011"]
+# Probe imports retain the public names of optional upstream classes/constants.
+"tools/optional_adapter_probe.py" = ["N806"]
 
 [tool.basedpyright]
 include = ["tools", "tests"]
 pythonVersion = "3.11"
-typeCheckingMode = "standard"
+pythonPlatform = "All"
+typeCheckingMode = "strict"
 reportMissingImports = "error"
 reportAttributeAccessIssue = "error"
+
+[tool.bandit]
+exclude_dirs = [".venv", "tests"]
+# An import alone is not a vulnerability. Every process call is still checked;
+# reviewed argv-based calls have individual B603/B607 comments and rationale.
+skips = ["B404"]
+
+[tool.vulture]
+paths = ["tools", "tests"]
+min_confidence = 80
+
+[tool.pytest-gremlins]
+paths = ["tools/release_admission.py"]
+report = ["console", "json"]
+cache = false
+max_pardons = 0
+mutant_timeout = 10
+coverage_timeout = 60
+
+[tool.uv.sources]
+skills-ref = { git = "https://github.com/agentskills/agentskills.git", subdirectory = "skills-ref", rev = "69ef37e9424c0a7ea9dd2293b559e43ec8176379" }
+
+[dependency-groups]
+conformance = [
+    "skills-ref",
+]

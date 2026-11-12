@@ -93,7 +93,7 @@
         "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
         "authority_state": {"enum": ["binding", "mandatory", "advisory", "explanatory", "draft", "consultation", "local", "superseded"]},
         "requirement_level": {"enum": ["must", "should", "may", "do_not_infer"]},
-        "activation_status": {"enum": ["active", "pending_owner_decision"]},
+        "activation_status": {"enum": ["active", "pending_owner_decision", "pending_source_verification"]},
         "decision_id": {"$ref": "#/$defs/id"},
         "decision_status": {"enum": ["pending", "approved"]},
         "statement": {"type": "string", "minLength": 1},
@@ -113,7 +113,25 @@
         "human_review_required": {"type": "boolean"},
         "safeguards": {"type": "array", "minItems": 1, "items": {"enum": ["open_disclosure", "consumer_family", "staff_support", "procedural_fairness", "conflict_of_interest", "cultural_safety", "systems_analysis", "effectiveness", "privacy", "no_privilege_inference"]}},
         "uncertainty": {"type": ["string", "null"]}
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"activation_status": {"const": "pending_source_verification"}},
+            "required": ["activation_status"]
+          },
+          "then": {
+            "required": ["uncertainty"],
+            "properties": {
+              "uncertainty": {"type": "string", "pattern": "\\S"},
+              "workflow": {
+                "required": ["deadline"],
+                "properties": {"deadline": {"type": "null"}}
+              }
+            }
+          }
+        }
+      ]
     },
     "artefact": {
       "type": "object",

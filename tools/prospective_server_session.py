@@ -256,7 +256,7 @@ def _run(
             request_base64=base64.b64encode(request).decode(),
             request_sha256=hashlib.sha256(request).hexdigest(),
         )
-        path = Path(tempfile.mkdtemp(prefix="rca-session-", dir="/tmp")).resolve() / "server.sock"
+        path = Path(tempfile.mkdtemp(prefix="rca-session-", dir="/tmp")).resolve() / "server.sock"  # nosec B108 # mkdtemp is private; short fixed root avoids Unix socket path overflow
         result["socket_path"] = str(path)
         directory = _directory(path.parent)
         deadline = time.monotonic() + TIMEOUT
@@ -283,7 +283,7 @@ def _run(
                     stop_event=stop,
                     cancel=cancel,
                 )
-            except BaseException:
+            except BaseException:  # noqa: BLE001 - capture worker termination and preserve cleanup
                 handoff["error"] = "worker_exception"
             finally:
                 done.set()

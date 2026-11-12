@@ -66,7 +66,7 @@ def run_conformance(
         else [validator, "validate", str(skill)]
     )
     try:
-        completed = subprocess.run(
+        completed = subprocess.run(  # nosec B603 # pinned interpreter/module or explicit diagnostic executable; no shell
             command,
             cwd=root,
             capture_output=True,

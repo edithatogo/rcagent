@@ -1,12 +1,13 @@
 # Root Cause Analysis — Investigation Report
-**CONFIDENTIAL: QUALITY IMPROVEMENT**
+
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
 
 ---
 
-**Incident ID**: [INC-2026-XXX]
-**SAC Classification**: [SAC 1 / SAC 2]
+**Incident ID**: [Case ID]
+**Classification**: [Verified jurisdiction-specific classification or unresolved; policy/version]
 **Service**: [De-identified]
-**Report Version**: [1.0 — Final]
+**Report Version**: [Version — Draft until authorised]
 **Date of Report**: [DD/MM/YYYY]
 **Approved by**: [Clinical Governance Committee / Name and Date]
 
@@ -23,7 +24,7 @@
 2. [Second finding]
 3. [Third finding]
 
-**SAC classification rationale**: [Brief explanation of why this is SAC 1/2]
+**Classification rationale**: [Applicable criteria, evidence, uncertainty and accountable determination]
 
 **Recommendations**: [Number of recommendations and headline actions]
 
@@ -32,13 +33,13 @@
 ## 1. Background and Context
 
 ### 1.1 Incident Description
-[Factual description of what happened — de-identified. No patient names. No staff names unless essential for accountability finding.]
+[Factual description of what happened — de-identified. No patient names. Use role identifiers within the authorised data boundary.]
 
 ### 1.2 Immediate Actions Taken
 [What was done immediately after the event to manage patient safety and preserve evidence]
 
 ### 1.3 Mandatory Notification Assessment
-[Was a mandatory notification made? To whom? When? Or: Assessment that no mandatory notification was required — with rationale.]
+[Record jurisdiction, current source/criteria, authorised determination (required/not required/unresolved), timing source and any notification receipt. The template does not determine reportability.]
 
 ---
 
@@ -88,10 +89,10 @@
 ## 5. Root Cause Analysis
 
 ### 5.1 Proximate Cause(s)
-> [State the immediate cause(s) — what directly led to the adverse outcome]
+> [Record candidate mechanisms, supporting and contradicting evidence, temporal constraints, alternatives and review status. Do not turn sequence into causation.]
 
 ### 5.2 Root Cause(s)
-> [State the underlying system failure(s) — what the system must change to prevent recurrence]
+> [Record evidence-supported system conditions and remaining uncertainty. Do not imply that a single cause or intervention guarantees prevention.]
 
 ### 5.3 Systems Analysis Summary
 [Brief summary of SEIPS / Swiss Cheese / Bow-Tie findings as applicable]
@@ -100,11 +101,11 @@
 
 ## 6. Just Culture Assessment
 
-[For each individual whose actions are part of the event:]
+[Record work-as-done, information available at the time, system constraints, support needs and unresolved questions. No automated culpability classification.]
 
-| Individual (by role) | Just Culture Classification | Rationale | Recommended Response |
+| Role | Evidence and context | Support or system action | Separate authorised referral, if applicable |
 |---|---|---|---|
-| [Role] | Human error / At-risk / Reckless | [Brief rationale] | Console and support / Coach / [Other] |
+| [Role] | [Cited account/evidence and limitations] | [Proposed support or system change] | [Authority and record reference, or none/unresolved] |
 
 ---
 
@@ -132,9 +133,9 @@ Full CAPA action plan at Appendix B. Summary:
 
 | Review Point | Date | Responsibility |
 |---|---|---|
-| 3-month effectiveness review | [Date] | [Owner] |
-| 6-month effectiveness review | [Date] | [Owner] |
-| 12-month closure review | [Date] | [Owner] |
+| Initial effectiveness review | [Date and rationale] | [Owner] |
+| Follow-up review | [Date and rationale] | [Owner] |
+| Closure assessment | [Date, evidence threshold and authority] | [Owner] |
 
 ---
 

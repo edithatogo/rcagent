@@ -9,8 +9,12 @@ from pathlib import Path
 ROOT = Path(__file__).parents[1]
 CHECKS: tuple[tuple[str, ...], ...] = (
     (sys.executable, "-m", "ruff", "check", "tools", "tests"),
+    (sys.executable, "-m", "ruff", "format", "--check", "tools", "tests"),
     (sys.executable, "-m", "ty", "check", "tools", "tests"),
-    (sys.executable, "-m", "basedpyright"),
+    (sys.executable, "-m", "basedpyright", "--baselinemode=discard"),
+    (sys.executable, "-m", "tools.quality_gate", "baseline"),
+    (sys.executable, "-m", "tools.quality_gate", "security"),
+    (sys.executable, "-m", "vulture"),
     (sys.executable, "-m", "tools.check_gremlins", "."),
     (sys.executable, "-m", "tools.validate_repository"),
     (sys.executable, "-m", "tools.benchmark_harness", "validate"),
@@ -30,7 +34,7 @@ def main() -> int:
     """Run checks in hosted Quality-workflow order and fail on the first error."""
     for command in CHECKS:
         print(f"+ {' '.join(command)}", flush=True)
-        result = subprocess.run(command, cwd=ROOT, check=False)
+        result = subprocess.run(command, cwd=ROOT, check=False)  # nosec B603 # fixed local Python module commands; shell is not used
         if result.returncode:
             return result.returncode
     return 0

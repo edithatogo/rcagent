@@ -1,5 +1,11 @@
 # Development Workflow
 
+Current quality implementation is specified in [CONSTRAINTS.md](../CONSTRAINTS.md)
+and the [Track 13 engineering contract](./research/frontier-assurance/engineering.md).
+Run locked, strict checks and meaningful property/mutation tests; keep legacy
+typing debt visible and non-growing. Use the existing agent review and autonomy
+rules below. A source-verification gap is not an owner-approval request.
+
 ## Purpose
 
 This workflow is designed for one developer using agent assistance across a content, data, evaluation, and local-software repository. It maximises safe autonomous progress while reserving owner attention for decisions that genuinely require authority or preference.

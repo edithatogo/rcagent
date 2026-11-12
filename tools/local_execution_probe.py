@@ -90,7 +90,7 @@ def run_probe(
     exit_state: int | str
     with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
         try:
-            completed = subprocess.run(
+            completed = subprocess.run(  # nosec B603 # admitted executable/model and fixed synthetic argv; no shell
                 args,
                 stdin=subprocess.DEVNULL,
                 stdout=stdout,

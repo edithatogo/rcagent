@@ -1,10 +1,11 @@
 # Event Chronology
-**CONFIDENTIAL: QUALITY IMPROVEMENT**
+
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
 
 ---
 
-**Incident ID**: [INC-2026-XXX]
-**Investigation Team**: [Team leader name/role]
+**Incident ID**: [Case ID]
+**Investigation Team**: [Team leader role]
 **Chronology Version**: [1.0 — Draft]
 **Date Compiled**: [DD/MM/YYYY]
 
@@ -39,7 +40,7 @@
 
 ## Phase 2: Early Incident (Warning Signs)
 
-*First indicators that something was going wrong — often missed or unacted upon*
+*Record what was observable and known at the time; distinguish later interpretation from contemporaneous information.*
 
 | Date/Time | Event | Source | Warning Sign? | Decision Point? | Notes |
 |---|---|---|---|---|---|
@@ -63,9 +64,9 @@
 
 *Actions taken after the event was recognised*
 
-| Date/Time | Event | Source | Response Adequate? | Notes |
+| Date/Time and uncertainty | Event | Source/location | Information available then | Reviewed interpretation and limitations |
 |---|---|---|---|---|
-| [Date/Time] | [Response action] | [Source] | Y/N | [Notes] |
+| [Date/Time or interval] | [Response action] | [Source and location] | [Contemporaneous information] | [Evidence, alternatives and uncertainty] |
 | | | | | |
 
 ---

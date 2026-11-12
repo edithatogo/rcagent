@@ -20,3 +20,7 @@ Use a decision record only when owner authority or preference is genuinely requi
 9. Remove the label and update affected specifications, plans, ADRs, tests, and receipts.
 
 Decision records do not replace legal, clinical, privacy, security, policy, or cultural-safety review.
+
+## Current standing scope
+
+- [13 November 2026 — Frontier assurance](./20261113-001-frontier-assurance.md): authorised reversible repairs, strict CI, Conductor planning, source research and agent review continue without repeated approval requests.

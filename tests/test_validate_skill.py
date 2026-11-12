@@ -187,7 +187,7 @@ def test_invalid_frontmatter_has_diagnostic(tmp_path, text):
 
 
 @pytest.mark.parametrize(
-    "extra,requirement",
+    ("extra", "requirement"),
     [("unknown-field: value\n", "RCA-EXT-001"), ("compatibility: 42\n", "AS-SPEC-005")],
 )
 def test_invalid_optional_fields_fail(tmp_path, extra, requirement):
@@ -207,7 +207,9 @@ def test_routed_binary_asset_is_not_decoded_as_text(tmp_path):
     assert validate_skill(skill) == []
 
 
-@pytest.mark.parametrize("body,requirement", [("\n" * 500, "AS-GUIDE-001"), ("", "AS-SPEC-001")])
+@pytest.mark.parametrize(
+    ("body", "requirement"), [("\n" * 500, "AS-GUIDE-001"), ("", "AS-SPEC-001")]
+)
 def test_body_limits_are_enforced(tmp_path, body, requirement):
     skill = _skill(tmp_path)
     path = skill / "SKILL.md"

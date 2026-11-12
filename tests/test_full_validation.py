@@ -12,8 +12,12 @@ def test_full_validation_is_local_deterministic_and_matches_quality_gate() -> No
     assert all(command[:2] == (sys.executable, "-m") for command in CHECKS)
     assert modules == [
         "ruff",
+        "ruff",
         "ty",
         "basedpyright",
+        "tools.quality_gate",
+        "tools.quality_gate",
+        "vulture",
         "tools.check_gremlins",
         "tools.validate_repository",
         "tools.benchmark_harness",
@@ -21,7 +25,9 @@ def test_full_validation_is_local_deterministic_and_matches_quality_gate() -> No
         "pytest",
     ]
     command_text = " ".join(part for command in CHECKS for part in command).lower()
-    assert all(token not in command_text for token in ("curl", "wget", "download", "ollama", "huggingface"))
+    assert all(
+        token not in command_text for token in ("curl", "wget", "download", "ollama", "huggingface")
+    )
     assert CHECKS[-1][3:] == (
         "--cov=tools",
         "--cov-report=xml",

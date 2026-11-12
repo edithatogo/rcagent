@@ -1,9 +1,10 @@
 # Investigation Closure Report
-**CONFIDENTIAL: QUALITY IMPROVEMENT**
+
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
 
 ---
 
-**Incident ID**: [INC-2026-XXX]
+**Incident ID**: [Case ID]
 **Original SAC Classification**: [SAC 1 / SAC 2]
 **Investigation Opened**: [DD/MM/YYYY]
 **Closure Date**: [DD/MM/YYYY]
@@ -21,7 +22,7 @@
 
 | # | Action | Completion Date | Evidence of Completion | Verified By |
 |---|---|---|---|---|
-| 1 | [Action description] | [DD/MM/YYYY] | [Audit result / Policy update ref / Training records] | [Name/Role] |
+| 1 | [Action description] | [DD/MM/YYYY] | [Audit result / Policy update ref / Training records] | [Accountable role] |
 | 2 | | | | |
 | 3 | | | | |
 
@@ -75,9 +76,9 @@ Cross-reference with health-clinical-risk-assessment skill: [Risk register entry
 
 | Governance Body | Date | Outcome |
 |---|---|---|
-| Clinical Governance Committee | [Date] | Closure endorsed |
-| Executive | [Date] | Noted |
+| Applicable governing body | [Date] | [Pending or recorded decision reference] |
+| Executive, if applicable | [Date] | [Pending or recorded decision reference] |
 
 ---
 
-*Investigation formally closed. Documentation retained in accordance with [Health Service] records management policy.*
+*Closure remains pending until the authorised decision is recorded. Record the current retention policy/version, approved storage, residual risk decision and conditions for reopening.*

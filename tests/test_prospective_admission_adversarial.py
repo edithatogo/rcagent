@@ -223,7 +223,7 @@ def test_journal_binds_event_order_and_previous_hash():
 
 
 @pytest.mark.parametrize(
-    "field,value",
+    ("field", "value"),
     [
         ("admitted", 0),
         ("admitted", True),
@@ -254,7 +254,7 @@ def test_malformed_capture_flags_rejected_before_deeper_evidence(field, value):
 
 
 @pytest.mark.parametrize(
-    "field,replacement",
+    ("field", "replacement"),
     [
         (("process", "execution_observed"), 1),
         (("process", "reaped"), 1),

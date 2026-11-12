@@ -44,8 +44,12 @@ class CapabilityPort(Protocol):
 
 
 class WorkflowPort(Protocol):
-    def transition(self, operation: Operation, case_id: str, event: dict[str, Any]) -> OperationResult: ...
+    def transition(
+        self, operation: Operation, case_id: str, event: dict[str, Any]
+    ) -> OperationResult: ...
 
 
 class ExportPort(Protocol):
-    def export(self, operation: Operation, record: dict[str, Any], profile: str) -> OperationResult: ...
+    def export(
+        self, operation: Operation, record: dict[str, Any], profile: str
+    ) -> OperationResult: ...
