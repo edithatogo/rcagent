@@ -9,6 +9,10 @@
 - **Capability policy:** [portable core plus optional profiles](./capability-profiles.md)
   installed through verified scripts or an agent calling those same scripts
 
+### Follow-on local-model / cognitive-autopsy evaluation — planned
+
+- [ ] [Local-model cognitive-autopsy qualification](./tracks/local-model-cognitive-autopsy_20261108/index.md) — new **domain evaluation increment**, not a reopening of archived Track 08 or a claim of local-runtime support. Imports model qualification evidence from `models_lang` and owns evidence/temporal/hindsight evaluation.
+
 ### Workstream A: Foundation and Governance
 
 Parent: [GitHub #2](https://github.com/edithatogo/rcagent/issues/2)
