@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "origin_commit": "414b7fc9395b454e6ec39b228068605c40d0fc59",
+  "origin_commit": "d633f0a689581dcc11ff211ae0712d9ef8461194",
   "owner": "single developer; Track 13",
   "policy": "Counts may decrease. New files/rules and count growth fail. New helpers have no baseline entries.",
   "initial_diagnostics": 9801,
@@ -577,5 +577,5 @@
   },
   "measurement_origin_commit": "50c8a81d1cbffc451380dd2cb973cb33c7cc74cd",
   "initial_checker": "basedpyright==1.39.10",
-  "rollout_base_reason": "Master advanced via dependency PR114 before initial strict baseline delivery; compare first rollout against actual master base, preserve original measured caps."
+  "rollout_base_reason": "Master advanced via dependency PR114 and PR119 before initial strict baseline delivery; compare first rollout against actual master base and preserve the original measured caps."
 }

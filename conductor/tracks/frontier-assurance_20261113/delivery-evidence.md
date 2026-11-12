@@ -6,7 +6,8 @@ Status: implementation and bounded local verification complete; hosted checks an
 
 - Assessment: `a895d42a8738d2937f849b65e3b892042f64b979`.
 - Integration base: `50c8a81` from `master` on 12 November 2026 UTC (13 November in Australia/Brisbane).
-- Upstream subsequently advanced to `414b7fc9395b454e6ec39b228068605c40d0fc59` (basedpyright1.40.2); merged at `02c05d7`. The first baseline rollout is bound to that actual base while retaining the original measurement provenance and caps.
+- Upstream subsequently advanced through `414b7fc` (basedpyright 1.40.2) to `d633f0a689581dcc11ff211ae0712d9ef8461194` (pytest 9.2.0). Both dependency updates are incorporated. The first baseline rollout is bound to that actual base while retaining the original measurement provenance and caps.
+- GitHub delivery uses the verified source tree from local integration, initially `131ad6b664ca84352f1901f90b02ccd57a46a24c` at remote commit `a0aa3b9`. Local implementation commit IDs in the review describe local bookkeeping; the published tree comparison establishes identical source bytes.
 - Authorised increment: typed evidence and relationship repair; public-export privacy repair; current template/style/Just Culture admission; strict CI and quality tools; source-aware death-review planning; staged component/frontier programme and selective Rust ADR.
 - Scientific implementation remains Track 12. New tracks are [#125](https://github.com/edithatogo/rcagent/issues/125) and [#126](https://github.com/edithatogo/rcagent/issues/126).
 
@@ -38,7 +39,7 @@ This remote development environment denies AF_UNIX socket creation used by some 
 | Live Agent Skills conformance | Official pinned validator, complete project profile and monitored upstream drift passed; observed upstream83021e2 changed only unmonitored governance/style files |
 | Agent review | [Four recorded roles and resolved findings](./review.md); three substantive cross-review scopes plus integration review |
 
-The Hypothesis failure was a timing flake, not a different output: the same Unicode input took269ms and124ms against the default200ms limit under coverage. Schema-heavy properties now use a finite1,000ms correctness budget, retain the observed input as an explicit example and keep generated data/counts/health checks. The separate Scalene job measures performance; no latency target is inferred from this budget. Focused coverage rerun evidence is recorded in the delivery follow-up.
+The Hypothesis failure was a timing flake, not a different output: the same Unicode input took269ms and124ms against the default200ms limit under coverage. Schema-heavy properties now use a finite1,000ms correctness budget, retain the observed input as an explicit example and keep generated data/counts/health checks. The separate Scalene job measures performance; no latency target is inferred from this budget. The focused coverage rerun passed all four properties in 32.54 seconds; no property, generated range or health check was disabled.
 
 The fresh raw profile SHA-256 is `7f8de628cb2d4bc38477587428dec6f2ad49ea20eb55ac1cd158d87d40c0a5bb`; completion receipt SHA-256 is `b8e19213ade9904ce6ecdd4bd3c207636676dfc869e1fc014144be541389271d`. Its fixture fingerprint is `sha256:25f159bebf270234e21ba3bba6efd13a6bf522157eb323cacef4511b53345f88`. Instrumented allocation footprint is not peak RSS or a cross-machine performance claim.
 
