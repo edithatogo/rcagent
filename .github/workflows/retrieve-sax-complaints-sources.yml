@@ -1,0 +1,53 @@
+name: Retrieve Sax patient complaints source documents
+
+on:
+  push:
+    branches:
+      - research/sax-download-documents-2026
+    paths:
+      - .github/workflows/retrieve-sax-complaints-sources.yml
+  pull_request:
+    paths:
+      - .github/workflows/retrieve-sax-complaints-sources.yml
+      - research/evidence/sax-patient-complaints/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  retrieve-publisher-originals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out source register and downloader
+        uses: actions/checkout@v4
+
+      - name: Test download validation offline
+        run: python -m unittest discover -s research/evidence/sax-patient-complaints -p 'test_*.py' -v
+
+      - name: Download publisher original PDFs and supplementary DOCX
+        run: |
+          python research/evidence/sax-patient-complaints/download_originals.py \
+            --output-dir "$RUNNER_TEMP/sax-patient-complaints"
+
+      - name: Provide provenance and outcome in job summary
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/sax-patient-complaints/source_manifest.json" ]; then
+            echo '### Original-source retrieval manifest' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Artifact contains original publisher files where retrieval succeeded. Review manifest for failures and checksums.' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Original files retain publishers’ rights and are not included in the Apache-2.0 repository licence.' >> "$GITHUB_STEP_SUMMARY"
+            echo '~~~json' >> "$GITHUB_STEP_SUMMARY"
+            cat "$RUNNER_TEMP/sax-patient-complaints/source_manifest.json" >> "$GITHUB_STEP_SUMMARY"
+            echo '~~~' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Publish downloadable source documents and SHA-256 manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sax-patient-complaints-publisher-originals
+          path: ${{ runner.temp }}/sax-patient-complaints/
+          if-no-files-found: error
+          retention-days: 30
