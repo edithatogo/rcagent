@@ -1,0 +1,458 @@
+{
+  "register_version": "0.1.0",
+  "status": "planning_candidates_only",
+  "checked_on": "2026-11-07",
+  "scope": "Eight optional NLP dataset families and two optional process-log datasets; metadata only, no admitted or downloaded payloads.",
+  "raw_data_included": false,
+  "downloaded_dataset_count": 0,
+  "admitted_dataset_ids": [],
+  "qualified_capabilities": [],
+  "admission_requirements": [
+    "Exact release/commit and file hashes",
+    "Primary permitted-use/access terms",
+    "Protected access approval record where required",
+    "Parent-source citations",
+    "Annotation provenance and label mappings",
+    "Case-family train/development/test splits",
+    "Leakage and contamination assessment",
+    "Compatible local-only execution receipt"
+  ],
+  "datasets": [
+    {
+      "dataset_id": "i2b2_2010",
+      "name": "2010 i2b2/VA concepts, assertions and relations",
+      "priority": "early_if_access_available",
+      "study_ids": [
+        "CS01"
+      ],
+      "citation_keys": [
+        "uzuner2011i2b2"
+      ],
+      "source_urls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC3168320/",
+        "https://n2c2.dbmi.hms.harvard.edu/data-sets"
+      ],
+      "label_scope": [
+        "medical concept spans",
+        "assertion classes",
+        "relations between concepts"
+      ],
+      "access": {
+        "status": "controlled_not_obtained",
+        "requirements": [
+          "Individual DBMI/n2c2 approval and dataset DUA"
+        ],
+        "evidence_url": "https://n2c2.dbmi.hms.harvard.edu/data-sets"
+      },
+      "rights": {
+        "verification": "primary_access_rules_verified",
+        "summary": "Each user obtains data independently; redistribution to additional individuals or websites is prohibited.",
+        "public_mirror_permitted": false
+      },
+      "does_not_establish": [
+        "HDC account provenance",
+        "clinician knowledge or cognition",
+        "general RCA quality"
+      ],
+      "selected_release": null,
+      "selected_revision": null,
+      "sha256": null,
+      "admitted": false
+    },
+    {
+      "dataset_id": "i2b2_2012",
+      "name": "2012 i2b2 temporal relations",
+      "priority": "temporal_component_if_access_available",
+      "study_ids": [
+        "CS03"
+      ],
+      "citation_keys": [
+        "sun2013i2b2temporal"
+      ],
+      "source_urls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC3756273/",
+        "https://n2c2.dbmi.hms.harvard.edu/data-sets"
+      ],
+      "label_scope": [
+        "clinical events",
+        "time expressions",
+        "temporal relations"
+      ],
+      "access": {
+        "status": "controlled_not_obtained",
+        "requirements": [
+          "Individual DBMI/n2c2 approval and dataset DUA"
+        ],
+        "evidence_url": "https://n2c2.dbmi.hms.harvard.edu/data-sets"
+      },
+      "rights": {
+        "verification": "primary_access_rules_verified",
+        "summary": "310 discharge summaries in the published challenge; raw records cannot be publicly redistributed.",
+        "public_mirror_permitted": false
+      },
+      "does_not_establish": [
+        "information available to a particular actor",
+        "actual reading or interpretation of information",
+        "causal order from chronology"
+      ],
+      "selected_release": null,
+      "selected_revision": null,
+      "sha256": null,
+      "admitted": false
+    },
+    {
+      "dataset_id": "thyme",
+      "name": "THYME / Clinical TempEval",
+      "priority": "external_temporal_comparison",
+      "study_ids": [
+        "CS03"
+      ],
+      "citation_keys": [
+        "styler2014thyme"
+      ],
+      "source_urls": [
+        "https://aclanthology.org/Q14-1012/",
+        "https://github.com/stylerw/thymedata/blob/master/README.md"
+      ],
+      "label_scope": [
+        "THYME-TimeML event annotations",
+        "time expressions",
+        "temporal relations"
+      ],
+      "access": {
+        "status": "annotations_public_notes_controlled_not_obtained",
+        "requirements": [
+          "Mayo Clinic and hNLP data-use arrangements for clinical notes"
+        ],
+        "evidence_url": "https://github.com/stylerw/thymedata/blob/master/README.md"
+      },
+      "rights": {
+        "verification": "primary_access_rules_verified",
+        "summary": "Author README updated June 2026 separates public annotations from controlled clinical text; inspect exact agreement before use.",
+        "public_mirror_permitted": false
+      },
+      "does_not_establish": [
+        "public rights to underlying notes",
+        "decision-time availability",
+        "clinician awareness"
+      ],
+      "selected_release": null,
+      "selected_revision": null,
+      "sha256": null,
+      "admitted": false
+    },
+    {
+      "dataset_id": "mednli",
+      "name": "MedNLI",
+      "priority": "clinical_verifier_if_access_available",
+      "study_ids": [
+        "CS02"
+      ],
+      "citation_keys": [
+        "romanov2018mednli",
+        "shivade2019mednli",
+        "herlihy2021mednliartifacts"
+      ],
+      "source_urls": [
+        "https://aclanthology.org/D18-1187/",
+        "https://www.physionet.org/content/mednli/1.0.0/",
+        "https://aclanthology.org/2021.acl-short.129/"
+      ],
+      "label_scope": [
+        "entailment",
+        "contradiction",
+        "neutral"
+      ],
+      "access": {
+        "status": "credentialed_not_obtained",
+        "requirements": [
+          "PhysioNet credentialing",
+          "CITI Data or Specimens Only Research training",
+          "Project DUA"
+        ],
+        "evidence_url": "https://www.physionet.org/content/mednli/1.0.0/"
+      },
+      "rights": {
+        "verification": "primary_access_and_licence_verified",
+        "summary": "PhysioNet Credentialed Health Data License 1.5.0; MIMIC-III-derived clinical text.",
+        "public_mirror_permitted": false
+      },
+      "parent_citation_requirements": [
+        "Cite exact MIMIC-III v1.4 parent and current PhysioNet platform citation requested by the release at admission."
+      ],
+      "does_not_establish": [
+        "long-document RCA support",
+        "causal explanation",
+        "immunity from hypothesis-only annotation artefacts"
+      ],
+      "selected_release": null,
+      "candidate_release": "1.0.0",
+      "selected_revision": null,
+      "sha256": null,
+      "admitted": false
+    },
+    {
+      "dataset_id": "nli4ct_family",
+      "name": "NLI4CT and NLI4CT-P",
+      "priority": "early_support_and_perturbation_comparison",
+      "study_ids": [
+        "CS02"
+      ],
+      "citation_keys": [
+        "jullien2023nli4ct",
+        "jullien2024nli4ctp",
+        "jullien2024nli4ctperratum"
+      ],
+      "source_urls": [
+        "https://aclanthology.org/2023.emnlp-main.1041/",
+        "https://github.com/ai-systems/nli4ct",
+        "https://github.com/ai-systems/Task-2-SemEval-2024",
+        "https://aclanthology.org/2024.semeval-1.271e1.pdf"
+      ],
+      "label_scope": [
+        "entailment versus contradiction",
+        "supporting evidence sentences",
+        "paired perturbation relationships"
+      ],
+      "access": {
+        "status": "public_release_not_downloaded",
+        "requirements": [
+          "Resolve exact release and permitted local-use terms"
+        ],
+        "evidence_url": "https://github.com/ai-systems/Task-2-SemEval-2024"
+      },
+      "rights": {
+        "verification": "public_access_verified_redistribution_terms_unverified",
+        "summary": "No definitive primary redistribution licence found in inspected README/papers. Do not adopt a third-party Hugging Face licence label without primary confirmation.",
+        "public_mirror_permitted": null
+      },
+      "evaluator_requirements": [
+        "Use the official consistency erratum.",
+        "Test prediction consistency separately from gold-label accuracy.",
+        "Pin corrected evaluator code and independently verify paired fixtures."
+      ],
+      "does_not_establish": [
+        "an insufficient-evidence reference class",
+        "clinical-trial results as patient-specific truth",
+        "RCA causal ground truth"
+      ],
+      "selected_release": null,
+      "selected_revision": null,
+      "sha256": null,
+      "admitted": false
+    },
+    {
+      "dataset_id": "medec",
+      "name": "MEDEC: MS and UW collections",
+      "priority": "public_ms_verifier_first",
+      "study_ids": [
+        "CS02"
+      ],
+      "citation_keys": [
+        "benabacha2025medec"
+      ],
+      "source_urls": [
+        "https://aclanthology.org/2025.findings-acl.1159/",
+        "https://github.com/abachaa/MEDEC"
+      ],
+      "label_scope": [
+        "medical error presence",
+        "error sentence",
+        "reference correction"
+      ],
+      "access": {
+        "status": "ms_public_uw_controlled_not_obtained",
+        "requirements": [
+          "Select MS release for public-data first stage.",
+          "UW subset requires UW pre-approval and signed DUA."
+        ],
+        "evidence_url": "https://github.com/abachaa/MEDEC"
+      },
+      "rights": {
+        "verification": "primary_licence_and_split_access_verified",
+        "summary": "Official repository states CC BY 4.0. Public availability applies to MEDEC-MS; UW validation/test access restrictions remain applicable.",
+        "public_mirror_permitted": null,
+        "public_ms_licence": "CC-BY-4.0"
+      },
+      "does_not_establish": [
+        "whole-corpus public access",
+        "multiple-error or omission performance",
+        "historical decision quality or RCA causal truth"
+      ],
+      "selected_release": null,
+      "selected_revision": null,
+      "sha256": null,
+      "admitted": false
+    },
+    {
+      "dataset_id": "pubmed_rct",
+      "name": "PubMed 200k RCT / 20k subset",
+      "priority": "optional_sentence_role_transfer",
+      "study_ids": [
+        "CS01"
+      ],
+      "citation_keys": [
+        "dernoncourt2017pubmedrct"
+      ],
+      "source_urls": [
+        "https://aclanthology.org/I17-2052/",
+        "https://github.com/Franck-Dernoncourt/pubmed-rct"
+      ],
+      "label_scope": [
+        "background",
+        "objective",
+        "methods",
+        "results",
+        "conclusions"
+      ],
+      "access": {
+        "status": "public_release_not_downloaded",
+        "requirements": [
+          "Select exact subset and numeric-preserving representation.",
+          "Inspect source-text rights for intended use/distribution."
+        ],
+        "evidence_url": "https://github.com/Franck-Dernoncourt/pubmed-rct"
+      },
+      "rights": {
+        "verification": "primary_copyright_caveat_verified",
+        "summary": "Author README cites NLM's warning that individual abstracts may remain copyrighted; this is not a blanket permissive licence.",
+        "public_mirror_permitted": null
+      },
+      "does_not_establish": [
+        "HDC source/account classes",
+        "medical factual correctness",
+        "clinical decision-time knowledge"
+      ],
+      "selected_release": null,
+      "selected_revision": null,
+      "sha256": null,
+      "admitted": false
+    },
+    {
+      "dataset_id": "shac",
+      "name": "Social History Annotated Corpus",
+      "priority": "optional_context_preservation",
+      "study_ids": [
+        "CS01"
+      ],
+      "citation_keys": [
+        "lybarger2021shac"
+      ],
+      "source_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/33290878/",
+        "https://github.com/Lybarger/sdoh_extraction"
+      ],
+      "label_scope": [
+        "social determinant events",
+        "status",
+        "extent",
+        "temporality"
+      ],
+      "access": {
+        "status": "controlled_not_obtained",
+        "requirements": [
+          "Author-provided access process",
+          "Dataset DUA",
+          "PhysioNet credentialing as specified by current access process"
+        ],
+        "evidence_url": "https://github.com/Lybarger/sdoh_extraction"
+      },
+      "rights": {
+        "verification": "primary_access_route_verified_exact_data_terms_pending",
+        "summary": "Current author repository provides an access form and DUA/credentialing route. MIT code licensing does not license clinical notes.",
+        "public_mirror_permitted": false
+      },
+      "does_not_establish": [
+        "patient preferences",
+        "complete patient or family voice",
+        "fairness or causal effects of social determinants"
+      ],
+      "selected_release": null,
+      "selected_revision": null,
+      "sha256": null,
+      "admitted": false
+    },
+    {
+      "dataset_id": "sepsis_cases",
+      "name": "Sepsis Cases - event log",
+      "priority": "optional_process_engineering_control",
+      "study_ids": [
+        "CS06"
+      ],
+      "citation_keys": [
+        "mannhardt2016sepsis"
+      ],
+      "source_urls": [
+        "https://research.tue.nl/en/datasets/sepsis-cases-event-log/",
+        "https://doi.org/10.4121/uuid:915d2bfb-7e84-49ad-a286-dc35f063a460"
+      ],
+      "label_scope": [
+        "Hospital ERP event traces, activities and attributes; not RCA/decision labels"
+      ],
+      "access": {
+        "status": "original_snapshot_terms_not_verified",
+        "requirements": [
+          "Retrieve original release and terms before admitting or redistributing bytes"
+        ],
+        "evidence_url": "https://research.tue.nl/en/datasets/sepsis-cases-event-log/"
+      },
+      "rights": {
+        "verification": "metadata_only_original_terms_unresolved",
+        "summary": "Do not infer the licence from conflicting third-party mirrors.",
+        "public_mirror_permitted": false
+      },
+      "does_not_establish": [
+        "actual clinician knowledge",
+        "cognitive or RCA ground truth",
+        "clinical causality",
+        "historical policy correspondence from shifted dates"
+      ],
+      "time_caveat": "Absolute timestamps randomized; within-trace time differences preserved",
+      "selected_release": null,
+      "selected_revision": null,
+      "sha256": null,
+      "admitted": false
+    },
+    {
+      "dataset_id": "hospital_billing",
+      "name": "Hospital Billing - Event Log",
+      "priority": "optional_process_engineering_control",
+      "study_ids": [
+        "CS06"
+      ],
+      "citation_keys": [
+        "mannhardt2017billing"
+      ],
+      "source_urls": [
+        "https://research.tue.nl/en/datasets/hospital-billing-event-log/",
+        "https://doi.org/10.4121/uuid:76c46b83-c930-4798-a1c9-4be94dfeb741"
+      ],
+      "label_scope": [
+        "Billing-package event traces; creator explicitly says no actual medical-service information"
+      ],
+      "access": {
+        "status": "original_snapshot_terms_not_verified",
+        "requirements": [
+          "Retrieve original release and terms before admitting or redistributing bytes"
+        ],
+        "evidence_url": "https://research.tue.nl/en/datasets/hospital-billing-event-log/"
+      },
+      "rights": {
+        "verification": "metadata_only_original_terms_unresolved",
+        "summary": "Do not infer the licence from conflicting third-party mirrors.",
+        "public_mirror_permitted": false
+      },
+      "does_not_establish": [
+        "actual clinician knowledge",
+        "cognitive or RCA ground truth",
+        "clinical causality",
+        "historical policy correspondence from shifted dates"
+      ],
+      "time_caveat": "Absolute timestamps randomized; within-trace time differences preserved",
+      "selected_release": null,
+      "selected_revision": null,
+      "sha256": null,
+      "admitted": false
+    }
+  ]
+}

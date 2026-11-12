@@ -254,7 +254,8 @@ def discover_runtimes(registry: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("invalid runtime registry: " + "; ".join(errors))
     observations = []
     for runtime in registry["runtimes"]:
-        found = next((shutil.which(str(name)) for name in runtime["executable_names"] if shutil.which(str(name))), None)
+        executable_names: list[str] = runtime["executable_names"]
+        found = next((shutil.which(name) for name in executable_names if shutil.which(name)), None)
         observations.append(
             {
                 "runtime_id": runtime["id"],
