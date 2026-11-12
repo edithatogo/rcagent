@@ -1,6 +1,6 @@
 # Track 13: Frontier assurance and incremental capability evidence
 
-Status: implementation in progress for defect repair and strict engineering; component demonstrations and comparative research remain planned until their receipts exist.
+Status: defect repairs and strict engineering are implemented in [PR #127](https://github.com/edithatogo/rcagent/pull/127), with bounded local verification complete and hosted CI pending. Component demonstrations and comparative research remain planned until their receipts exist.
 
 - [Specification and MoSCoW requirements](./spec.md)
 - [Executable work packages and acceptance](./plan.md)

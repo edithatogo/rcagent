@@ -6,11 +6,13 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-12T20:10:44Z",
-  "updated_at": "2026-11-12T20:10:44Z",
+  "updated_at": "2026-11-12T20:52:06Z",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/125",
-    "parent_issue": "https://github.com/edithatogo/rcagent/issues/2"
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/2",
+    "pull_request": "https://github.com/edithatogo/rcagent/pull/127",
+    "implementation_commit": "d0771fc4670552a4785d2ac56666561379f44eff"
   },
   "autonomy": "continuous-autonomy-with-owner-decision-gates",
   "autonomy_contract": "../../autonomy.json",
@@ -24,12 +26,21 @@
   ],
   "description": "Repair confirmed integrity, public-export and template defects; implement strict quality tooling; coordinate staged source/timeline/decision demonstrations, triangulation, hallucination reduction and prospective frontier comparison.",
   "verification": {
-    "status": "implementation_in_progress",
+    "status": "implementation_and_bounded_local_verification_complete_hosted_pending",
     "scope": "engineering_repairs_and_prospective_plan",
     "receipt": "./delivery-evidence.md",
     "model_runs": 0,
     "qualified_capabilities": 0,
-    "clinical_validation": "not_performed"
+    "clinical_validation": "not_performed",
+    "agent_review": "./review.md",
+    "integrated_quality_receipt": "../../../quality/verification-integrated-20261113.json",
+    "hosted_ci": {
+      "status": "queued",
+      "observed_head_commit": "d0771fc4670552a4785d2ac56666561379f44eff",
+      "quality_run": 43303006221,
+      "observed_at": "2026-11-12T20:52:06Z",
+      "pass_claim": false
+    }
   },
   "decisions": [
     "../../decisions/20261113-001-frontier-assurance.md"

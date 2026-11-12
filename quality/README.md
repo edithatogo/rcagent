@@ -75,7 +75,11 @@ On the local Linux/Python 3.12.14 environment, Scalene 2.4.0 recorded 300 actual
 synthetic validation/hash round-trips, 11.955 seconds of profiler elapsed time
 and a 5.020 MB reported sampled allocation footprint. This is not process peak
 RSS, a clinical workload estimate, or a performance acceptance threshold.
-`quality/verification-20261113.json` captures the bounded measurement metadata.
+`quality/verification-20261113.json` preserves that initial quality-branch measurement.
+The [integrated verification receipt](verification-integrated-20261113.json) and
+[Conductor delivery evidence](../conductor/tracks/frontier-assurance_20261113/delivery-evidence.md)
+record subsequent repairs, reduced typing debt, the strengthened fresh profile,
+dependency integration and the exact limits of local and hosted verification.
 
 The initial full local regression reached 93.25% coverage, but this workspace
 forbids Unix-domain sockets; 52 pre-existing socket-dependent failures require
