@@ -4,11 +4,13 @@ The harness combines different failure detectors, with explicit scope and
 bounded runtime. It does not claim clinical validity, zero hallucinations,
 complete static typing, or independent model agreement.
 
-The current [typing receipt](typing-native-verification-20261113.json) and
-[Conductor explanation](../conductor/tracks/frontier-assurance_20261113/typing-native-evidence.md)
-record a further 592 diagnostics removed, 4,431 remaining, exact cap tightening,
-checked native I/O and protocol contracts, and nine repaired enum/hashability
-boundaries. The [process/session receipt](typing-contracts-verification-20261113.json)
+The current [typing receipt](typing-producers-verification-20261114.json) and
+[Conductor explanation](../conductor/tracks/frontier-assurance_20261113/typing-producers-evidence.md)
+record a further 1,233 diagnostics removed, 3,198 remaining, exact cap tightening,
+checked inventory/execution/admission contracts and twelve boundary regressions.
+The [native-contract receipt](typing-native-verification-20261113.json) retains
+the prior 592-diagnostic reduction and nine enum/hashability repairs.
+The [process/session receipt](typing-contracts-verification-20261113.json)
 retains the prior 989-diagnostic reduction and corrupt coverage reader cleanup;
 the [first receipt](typing-verification-20261113.json) preserves the initial
 reduction and Windows/combined-coverage correction.

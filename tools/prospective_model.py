@@ -13,7 +13,7 @@ REGISTRY_PIN = "6921d6ff0df9e41c28c59ca077c5c2ae0b84835822cb0d5d7e12eeca1d4485a5
 MODEL_ID = "qwen2.5-0.5b-instruct-q4_k_m"
 
 
-def digest(value: dict) -> str:
+def digest(value: object) -> str:
     return hashlib.sha256(
         json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
     ).hexdigest()

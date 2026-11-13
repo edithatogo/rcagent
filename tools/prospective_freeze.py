@@ -8,9 +8,11 @@ import re
 import subprocess
 import tempfile
 from pathlib import Path
+from typing import Literal, TypedDict
 
+from tools import json_shapes
 from tools.evaluation_preflight import MAX_BYTES, _bytes
-from tools.prospective_inventory import read_json
+from tools.prospective_inventory import ArtifactReference, is_artifact_reference, read_json
 from tools.prospective_protocol import validate_protocol
 
 COMPONENTS = (
@@ -23,6 +25,24 @@ COMPONENTS = (
     "tools/local_model_comparator.py",
     "tools/darwin_runtime_profile.py",
 )
+
+
+class CommittedFile(TypedDict):
+    """Exact historical closure shape; identity-file byte counts are separate."""
+
+    path: str
+    sha256: str
+
+
+class FreezeResult(TypedDict):
+    status: Literal["freeze_verified"]
+    commit: str
+    protocol_sha256: str
+    study_id: str
+    files: list[CommittedFile]
+    admitted: Literal[False]
+    study_unlocked: Literal[False]
+    limitations: list[str]
 
 
 def _git(root: Path, *args: str) -> bytes:
@@ -78,11 +98,11 @@ def _repository(protocol_path: Path, commit: str, root: Path) -> tuple[Path, Pat
 
 def _committed_files(
     root: Path, commit: str, paths: list[str], expected: dict[str, str]
-) -> list[dict]:
+) -> list[CommittedFile]:
     """Compare the enumerated working files and optional pins with exact committed bytes."""
     if len({path.casefold() for path in paths}) != len(paths):
         raise ValueError("duplicate_freeze_path")
-    files = []
+    files: list[CommittedFile] = []
     for relative in paths:
         if not re.fullmatch(r"[a-zA-Z0-9_.-]+(?:/[a-zA-Z0-9_.-]+)*", relative) or any(
             part in {".", ".."} for part in relative.split("/")
@@ -107,15 +127,39 @@ def _committed_files(
     return files
 
 
-def verify_freeze(protocol_path: Path, expected_sha256: str, commit: str, root: Path) -> dict:
+def _references(value: object) -> list[ArtifactReference]:
+    """Check only the references needed after the independent protocol reread."""
+    if not json_shapes.is_object(value):
+        raise ValueError("invalid_validated_object_type")
+    cases = value["cases"]
+    if not json_shapes.is_array(cases):
+        raise ValueError("invalid_validated_object_type")
+    refs: list[ArtifactReference] = []
+    for case in cases:
+        if not json_shapes.is_object(case):
+            raise ValueError("invalid_validated_object_type")
+        ref = case["input"]
+        if not is_artifact_reference(ref):
+            raise ValueError("invalid_validated_object_type")
+        refs.append(ref)
+    for key in ("rubric", "scoring_instructions", "prompt_template"):
+        ref = value[key]
+        if not is_artifact_reference(ref):
+            raise ValueError("invalid_validated_object_type")
+        refs.append(ref)
+    return refs
+
+
+def verify_freeze(
+    protocol_path: Path, expected_sha256: str, commit: str, root: Path
+) -> FreezeResult:
     """Bind working files to an explicit commit; hashes do not prove their approval."""
     root, protocol_path, relative_protocol = _repository(protocol_path, commit, root)
     candidate = validate_protocol(protocol_path, expected_sha256)
     value, second_pin = read_json(protocol_path)
     if second_pin != expected_sha256:
         raise ValueError("protocol_changed_during_verification")
-    refs = [case["input"] for case in value["cases"]]
-    refs.extend(value[key] for key in ("rubric", "scoring_instructions", "prompt_template"))
+    refs = _references(value)
     paths = [relative_protocol]
     paths.extend((protocol_path.parent / ref["path"]).relative_to(root).as_posix() for ref in refs)
     paths.extend(COMPONENTS)

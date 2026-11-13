@@ -2,17 +2,23 @@
 
 import copy
 import json
+from pathlib import Path
+from typing import TypeAlias
 
 import pytest
 
+from tests.prospective_fixture_types import mapping
 from tests.test_prospective_native_protocol import fixture as native_fixture
 from tests.test_prospective_protocol import pin
 from tools import prospective_slot_binding as subject
 from tools.json_shapes import JsonObject
+from tools.prospective_native_protocol import NativeProtocolCandidate, NativeProtocolDocument
+
+SlotFixture: TypeAlias = tuple[Path, NativeProtocolDocument, JsonObject, list[Path], Path]
 
 
 @pytest.fixture
-def synthetic(tmp_path, monkeypatch):
+def synthetic(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> SlotFixture:
     path, value = native_fixture(tmp_path)
     condition = value["condition"]
     receipt: JsonObject = {
@@ -41,9 +47,9 @@ def synthetic(tmp_path, monkeypatch):
         },
     )
     seal(receipt)
-    calls = []
+    calls: list[Path] = []
 
-    def admit(root):
+    def admit(root: Path) -> JsonObject:
         calls.append(root)
         return receipt
 
@@ -51,17 +57,19 @@ def synthetic(tmp_path, monkeypatch):
     return path, value, receipt, calls, tmp_path / "synthetic-cache"
 
 
-def seal(receipt):
+def seal(receipt: JsonObject) -> None:
     receipt.pop("admission_sha256", None)
     receipt["admission_sha256"] = subject.model.digest(receipt)
 
 
-def test_binding_entrypoint_exists():
+def test_binding_entrypoint_exists() -> None:
     assert callable(subject.bind_slot)
 
 
 @pytest.mark.parametrize("index", [0, 1])
-def test_selects_exact_slot_with_private_path_free_projection(synthetic, index):
+def test_selects_exact_slot_with_private_path_free_projection(
+    synthetic: SlotFixture, index: int
+) -> None:
     path, value, receipt, calls, root = synthetic
     slot = value["expected_slots"][index]
     result = subject.bind_slot(path, pin(path), slot, root)
@@ -93,7 +101,7 @@ def test_selects_exact_slot_with_private_path_free_projection(synthetic, index):
         "a" * 151,
     ],
 )
-def test_invalid_slots_never_reach_model_eligibility(synthetic, slot):
+def test_invalid_slots_never_reach_model_eligibility(synthetic: SlotFixture, slot: object) -> None:
     path, _, _, calls, root = synthetic
     with pytest.raises(ValueError, match="slot_not_in_protocol"):
         subject.bind_slot(path, pin(path), slot, root)
@@ -111,14 +119,14 @@ def test_invalid_slots_never_reach_model_eligibility(synthetic, slot):
         "registry_sha256",
     ],
 )
-def test_each_declared_identity_must_match(synthetic, field):
+def test_each_declared_identity_must_match(synthetic: SlotFixture, field: str) -> None:
     path, value, receipt, _, root = synthetic
     if field == "runtime_sha256":
-        receipt["runtime_overlay"]["executable_sha256"] = "0" * 64
+        mapping(receipt["runtime_overlay"])["executable_sha256"] = "0" * 64
     else:
         receipt[field] = "0" * 64
         if field == "profile_sha256":
-            receipt["runtime_overlay"][field] = receipt[field]
+            mapping(receipt["runtime_overlay"])[field] = receipt[field]
     seal(receipt)
     with pytest.raises(ValueError, match="condition_eligibility_mismatch"):
         subject.bind_slot(path, pin(path), value["expected_slots"][0], root)
@@ -141,7 +149,9 @@ def test_each_declared_identity_must_match(synthetic, field):
         "receipt-type",
     ],
 )
-def test_malformed_or_inconsistent_eligibility_rejected(synthetic, monkeypatch, damage):
+def test_malformed_or_inconsistent_eligibility_rejected(
+    synthetic: SlotFixture, monkeypatch: pytest.MonkeyPatch, damage: str
+) -> None:
     path, value, receipt, _, root = synthetic
     if damage == "purpose":
         receipt["purpose"] = "other"
@@ -158,13 +168,17 @@ def test_malformed_or_inconsistent_eligibility_rejected(synthetic, monkeypatch, 
     elif damage == "profile-id":
         receipt["profile_id"] = ""
     elif damage == "profile-drift":
-        receipt["runtime_overlay"]["profile_id"] = "other"
+        mapping(receipt["runtime_overlay"])["profile_id"] = "other"
     elif damage == "profile-pin":
-        receipt["runtime_overlay"]["profile_sha256"] = "0" * 64
+        mapping(receipt["runtime_overlay"])["profile_sha256"] = "0" * 64
     elif damage == "identity-type":
         receipt["model_id"] = None
     elif damage == "receipt-type":
-        monkeypatch.setattr(subject.model, "admit_model", lambda root: [])
+
+        def malformed(root: Path) -> list[object]:
+            return []
+
+        monkeypatch.setattr(subject.model, "admit_model", malformed)
     seal(receipt)
     if damage == "digest":
         receipt["admission_sha256"] = "0" * 64
@@ -172,7 +186,7 @@ def test_malformed_or_inconsistent_eligibility_rejected(synthetic, monkeypatch, 
         subject.bind_slot(path, pin(path), value["expected_slots"][0], root)
 
 
-def test_protocol_ref_failure_precedes_eligibility(synthetic):
+def test_protocol_ref_failure_precedes_eligibility(synthetic: SlotFixture) -> None:
     path, value, _, calls, root = synthetic
     (path.parent / value["cases"][0]["input"]["path"]).write_bytes(b"altered")
     with pytest.raises(ValueError):
@@ -180,10 +194,12 @@ def test_protocol_ref_failure_precedes_eligibility(synthetic):
     assert calls == []
 
 
-def test_model_failure_is_not_replaced_with_candidate(synthetic, monkeypatch):
+def test_model_failure_is_not_replaced_with_candidate(
+    synthetic: SlotFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     path, value, _, _, root = synthetic
 
-    def reject(root):
+    def reject(root: Path) -> None:
         raise ValueError("synthetic_eligibility_failure")
 
     monkeypatch.setattr(subject.model, "admit_model", reject)
@@ -191,14 +207,16 @@ def test_model_failure_is_not_replaced_with_candidate(synthetic, monkeypatch):
         subject.bind_slot(path, pin(path), value["expected_slots"][0], root)
 
 
-def test_protocol_changed_during_eligibility_cannot_replace_bound_snapshot(synthetic, monkeypatch):
+def test_protocol_changed_during_eligibility_cannot_replace_bound_snapshot(
+    synthetic: SlotFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     path, value, receipt, _, root = synthetic
     slot = value["expected_slots"][0]
     expected_request = subject.protocol.validate_protocol(path, pin(path))["requests"][slot]
     receipt["private_extra"] = "SYNTHETIC_PRIVATE_SENTINEL"
     seal(receipt)
 
-    def change_after_protocol(root):
+    def change_after_protocol(root: Path) -> JsonObject:
         path.write_bytes(b"changed while eligibility checked")
         return receipt
 
@@ -211,14 +229,18 @@ def test_protocol_changed_during_eligibility_cannot_replace_bound_snapshot(synth
     assert result["adapter_verified"] is False
 
 
-def test_no_reread_or_alias_after_protocol_validation(synthetic, monkeypatch):
+def test_no_reread_or_alias_after_protocol_validation(
+    synthetic: SlotFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     path, value, _, _, root = synthetic
     original = subject.protocol._validated_candidate
-    snapshots = []
+    snapshots: list[JsonObject] = []
 
-    def changed_after_validation(*args):
-        parsed, candidate = original(*args)
-        snapshots.extend((parsed, candidate))
+    def changed_after_validation(
+        protocol_path: Path, expected_protocol_sha256: str
+    ) -> tuple[NativeProtocolDocument, NativeProtocolCandidate]:
+        parsed, candidate = original(protocol_path, expected_protocol_sha256)
+        snapshots.extend((mapping(parsed), mapping(candidate)))
         path.write_bytes(b"changed protocol after validated snapshot")
         for case in parsed["cases"]:
             (path.parent / case["input"]["path"]).write_bytes(b"changed input")
@@ -229,8 +251,8 @@ def test_no_reread_or_alias_after_protocol_validation(synthetic, monkeypatch):
     slot = value["expected_slots"][0]
     result = subject.bind_slot(path, protocol_pin, slot, root)
     expected = copy.deepcopy(result)
-    snapshots[0]["condition"]["adapter_sha256"] = "changed"
-    snapshots[1]["requests"][slot]["generation"]["seed"] = 0
+    mapping(snapshots[0]["condition"])["adapter_sha256"] = "changed"
+    mapping(mapping(mapping(snapshots[1]["requests"])[slot])["generation"])["seed"] = 0
     assert result == expected
     assert result["protocol_sha256"] == protocol_pin != pin(path)
     assert "atomic-filesystem-snapshot-unverified" in result["limitations"]

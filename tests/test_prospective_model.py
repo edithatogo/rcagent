@@ -50,6 +50,7 @@ def test_overlay_preserves_registry_and_all_model_checks(admitted):
     assert result["admitted"] is result["study_unlocked"] is False
     assert result["local_artifact_eligible"] is True
     assert result == model.admit_model(root)
+    unsigned: dict[str, object]
     unsigned = {key: value for key, value in result.items() if key != "admission_sha256"}
     assert result["admission_sha256"] == model.digest(unsigned)
 

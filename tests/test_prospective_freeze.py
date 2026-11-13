@@ -6,12 +6,24 @@ import hashlib
 import json
 import subprocess
 from pathlib import Path
+from typing import IO, Never, TypedDict, Unpack
 
 import pytest
 
+from tests.prospective_fixture_types import ObjectMap, mapping, sequence
 from tools import prospective_freeze
 from tools.prospective_freeze import COMPONENTS, verify_freeze
+from tools.prospective_inventory import ArtifactReference
 from tools.prospective_protocol import CLAIMS, GENERATION, ProtocolCandidate
+
+
+class GitOptions(TypedDict):
+    stdout: IO[bytes]
+    stderr: int
+    timeout: float
+    check: bool
+    env: dict[str, str]
+    stdin: int
 
 
 def git(root: Path, *args: str) -> str:
@@ -28,7 +40,7 @@ def fixture(root: Path) -> tuple[Path, str]:
     git(root, "config", "user.name", "Synthetic Fixture")
     git(root, "config", "core.autocrlf", "false")
     git(root, "config", "core.safecrlf", "false")
-    refs = {}
+    refs: dict[str, ArtifactReference] = {}
     for name in ("case-a", "case-b", "rubric", "instructions", "prompt"):
         path = root / f"{name}.txt"
         path.write_text(f"Synthetic {name}", encoding="utf-8")
@@ -37,7 +49,7 @@ def fixture(root: Path) -> tuple[Path, str]:
         path = root / component
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("# Synthetic component only\n", encoding="utf-8")
-    value = {
+    value: ObjectMap = {
         "schema_version": "1.0",
         "kind": "prospective-study-protocol",
         "protocol_version": "1.0.0",
@@ -97,10 +109,10 @@ def test_shape_guard_change_after_freeze_is_rejected(tmp_path: Path) -> None:
         verify_freeze(protocol, pin(protocol), commit, tmp_path)
 
 
-def test_extracted_checks_preserve_legacy_result_and_order(tmp_path):
+def test_extracted_checks_preserve_legacy_result_and_order(tmp_path: Path) -> None:
     protocol, commit = fixture(tmp_path)
     result = verify_freeze(protocol, pin(protocol), commit, tmp_path)
-    value = json.loads(protocol.read_bytes())
+    value = mapping(json.loads(protocol.read_bytes()))
     assert set(result) == {
         "status",
         "commit",
@@ -113,8 +125,11 @@ def test_extracted_checks_preserve_legacy_result_and_order(tmp_path):
     }
     assert [item["path"] for item in result["files"]] == [
         "protocol.json",
-        *(case["input"]["path"] for case in value["cases"]),
-        *(value[key]["path"] for key in ("rubric", "scoring_instructions", "prompt_template")),
+        *(mapping(mapping(case)["input"])["path"] for case in sequence(value["cases"])),
+        *(
+            mapping(value[key])["path"]
+            for key in ("rubric", "scoring_instructions", "prompt_template")
+        ),
         *COMPONENTS,
     ]
     assert result["limitations"] == [
@@ -205,8 +220,8 @@ def test_repinned_working_change_is_not_frozen(tmp_path: Path) -> None:
     protocol, commit = fixture(tmp_path)
     changed = tmp_path / "rubric.txt"
     changed.write_text("Synthetic replacement", encoding="utf-8")
-    value = json.loads(protocol.read_text(encoding="utf-8"))
-    value["rubric"]["sha256"] = pin(changed)
+    value = mapping(json.loads(protocol.read_text(encoding="utf-8")))
+    mapping(value["rubric"])["sha256"] = pin(changed)
     protocol.write_text(json.dumps(value), encoding="utf-8")
     git(tmp_path, "add", ".")
     with pytest.raises(ValueError, match="freeze_bytes_mismatch"):
@@ -238,6 +253,19 @@ def test_protocol_changed_after_validation(tmp_path: Path, monkeypatch: pytest.M
         verify_freeze(protocol, expected, commit, tmp_path)
 
 
+def test_second_pin_mismatch_precedes_reference_shape_checks(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    protocol, commit = fixture(tmp_path)
+
+    def changed_read(_path: Path) -> tuple[object, str]:
+        return [], "0" * 64
+
+    monkeypatch.setattr(prospective_freeze, "read_json", changed_read)
+    with pytest.raises(ValueError, match=r"^protocol_changed_during_verification$"):
+        verify_freeze(protocol, pin(protocol), commit, tmp_path)
+
+
 def test_reference_rechecked_after_validation(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -257,10 +285,12 @@ def test_reference_rechecked_after_validation(
 def test_git_disables_lazy_fetch(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     original = subprocess.run
 
-    def inspect(*args, **kwargs):
+    def inspect(
+        args: list[str], **kwargs: Unpack[GitOptions]
+    ) -> subprocess.CompletedProcess[bytes]:
         assert kwargs["env"]["GIT_NO_LAZY_FETCH"] == "1"
         assert kwargs["env"]["GIT_NO_REPLACE_OBJECTS"] == "1"
-        return original(*args, **kwargs)
+        return original(args, **kwargs)
 
     monkeypatch.setattr(prospective_freeze.subprocess, "run", inspect)
     assert prospective_freeze._git(tmp_path, "--version").startswith(b"git version")
@@ -270,7 +300,7 @@ def test_git_disables_lazy_fetch(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 def test_git_launch_failure(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, failure: Exception
 ) -> None:
-    def fail(*args, **kwargs):
+    def fail(*_args: object, **_kwargs: object) -> Never:
         raise failure
 
     monkeypatch.setattr(prospective_freeze.subprocess, "run", fail)
@@ -279,7 +309,9 @@ def test_git_launch_failure(
 
 
 def test_git_oversized_output(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    def oversized(*args, **kwargs):
+    def oversized(
+        _args: list[str], **kwargs: Unpack[GitOptions]
+    ) -> subprocess.CompletedProcess[bytes]:
         kwargs["stdout"].write(b"x" * (prospective_freeze.MAX_BYTES + 1))
         return subprocess.CompletedProcess(args=[], returncode=0)
 

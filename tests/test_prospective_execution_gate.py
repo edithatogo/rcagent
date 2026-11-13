@@ -3,11 +3,13 @@
 import copy
 import hashlib
 import json
+from dataclasses import replace
 from pathlib import Path
-from typing import Any, cast
+from typing import TypedDict, Unpack
 
 import pytest
 
+from tests.prospective_fixture_types import GateFixture, ObjectMap, mapping, sequence, text_value
 from tests.test_prospective_freeze import git as real_git
 from tests.test_prospective_native_protocol import fixture as native_fixture
 from tests.test_prospective_protocol import pin
@@ -19,8 +21,15 @@ REAL_GIT = prospective_freeze._git
 REAL_FILES = prospective_freeze._committed_files
 
 
+class VerifyOptions(TypedDict, total=False):
+    path: Path
+    pin: str
+    slot: object
+    review: object
+
+
 @pytest.fixture
-def synthetic(tmp_path, monkeypatch):
+def synthetic(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> GateFixture:
     monkeypatch.setattr(gate.platform, "system", lambda: "Darwin")
     monkeypatch.setattr(gate.platform, "machine", lambda: "arm64")
     root = tmp_path.resolve()
@@ -35,9 +44,10 @@ def synthetic(tmp_path, monkeypatch):
     refs = [case["input"] for case in value["cases"]]
     refs.extend(value[key] for key in ("rubric", "scoring_instructions", "prompt_template"))
     paths = [path.name, *(ref["path"] for ref in refs), *gate.SOURCES, gate.REGISTRY]
-    files = [{"path": name, "sha256": pin(root / name)} for name in paths]
-    environment = {"synthetic": True}
-    record = {
+    files: list[ObjectMap] = [{"path": name, "sha256": pin(root / name)} for name in paths]
+    environment: ObjectMap = {"synthetic": True}
+    reviewers: list[ObjectMap] = []
+    record: ObjectMap = {
         "version": "primary-review-v1",
         "source_commit": S,
         "protocol_sha256": pin(path),
@@ -45,9 +55,9 @@ def synthetic(tmp_path, monkeypatch):
         "closure_sha256": gate.identity.digest(files),
         "environment_sha256": gate.identity.digest(environment),
         "unresolved_findings": [],
-        "reviewers": [],
+        "reviewers": reviewers,
     }
-    blobs = {}
+    blobs: dict[str, bytes] = {}
     for role in ("acceptance", "evidence-integrity", "safety-privacy"):
         evidence_path = f"conductor/reviews/evidence/{role}.json"
         envelope = {
@@ -63,7 +73,7 @@ def synthetic(tmp_path, monkeypatch):
         )
         raw = json.dumps(envelope).encode()
         blobs[evidence_path] = raw
-        record["reviewers"].append(
+        reviewers.append(
             {
                 "role": role,
                 "reviewer_id": "synthetic-" + role,
@@ -72,9 +82,9 @@ def synthetic(tmp_path, monkeypatch):
                 "evidence_sha256": hashlib.sha256(raw).hexdigest(),
             }
         )
-    calls = []
+    calls: list[tuple[str, ...]] = []
 
-    def git(_root_arg, *args):
+    def git(_root_arg: Path, *args: str) -> bytes:
         calls.append(args)
         if args == ("rev-parse", "--show-toplevel"):
             return str(root).encode()
@@ -91,86 +101,169 @@ def synthetic(tmp_path, monkeypatch):
             return json.dumps(record).encode() if selected == gate.REVIEW_PATH else blobs[selected]
         raise AssertionError(args)
 
+    def committed_files(*args: object) -> list[ObjectMap]:
+        return copy.deepcopy(files)
+
+    def project_closure(*args: object) -> None:
+        return None
+
     monkeypatch.setattr(gate.freeze, "_git", git)
-    monkeypatch.setattr(gate.freeze, "_committed_files", lambda *args: copy.deepcopy(files))
-    monkeypatch.setattr(gate.identity, "project_closure", lambda *args: None)
+    monkeypatch.setattr(gate.freeze, "_committed_files", committed_files)
+    monkeypatch.setattr(gate.identity, "project_closure", project_closure)
     monkeypatch.setattr(gate.identity, "environment_identity", lambda: copy.deepcopy(environment))
     _, candidate = gate.native._validated_candidate(path, pin(path))
-    admission = {"admission_sha256": "d" * 64, "model_id": value["condition"]["model_id"]}
-    monkeypatch.setattr(
-        gate.binding,
-        "bind_slot",
-        lambda protocol, pin, slot, model_root: {
+    condition = value["condition"]
+    admission: gate.model.ModelAdmission = {
+        "purpose": "local-artefact-eligibility-only",
+        "local_artifact_eligible": True,
+        "admitted": False,
+        "study_unlocked": False,
+        "registry_sha256": condition["registry_sha256"],
+        "effective_manifest_sha256": "f" * 64,
+        "original_runtime": {"name": "synthetic-historical-cli", "version": "unchanged"},
+        "runtime_overlay": {
+            "name": "synthetic-server",
+            "version": "synthetic",
+            "executable": "/synthetic/server",
+            "executable_sha256": condition["runtime_sha256"],
+            "license": "MIT",
+            "profile_id": "synthetic-profile",
+            "profile_sha256": condition["profile_sha256"],
+            "distribution": "synthetic",
+            "runtime_dependencies": [],
+        },
+        "profile_id": "synthetic-profile",
+        "profile_sha256": condition["profile_sha256"],
+        "model_id": condition["model_id"],
+        "model_revision": condition["model_revision"],
+        "model_sha256": condition["model_sha256"],
+        "model_license_sha256": "a" * 64,
+        "model_path": str(root / "synthetic-cache/model.gguf"),
+        "model_license_path": str(root / "synthetic-cache/LICENSE"),
+        "limitations": ["synthetic-fixture-not-actual-eligibility"],
+        "admission_sha256": "d" * 64,
+    }
+
+    def bind_slot(protocol: Path, pin: str, slot: str, model_root: Path) -> ObjectMap:
+        return {
             "request": copy.deepcopy(candidate["requests"][slot]),
             "eligibility": {"admission_sha256": admission["admission_sha256"]},
-        },
-    )
-    monkeypatch.setattr(gate.model, "admit_model", lambda root: copy.deepcopy(admission))
-    return root, path, value, record, blobs, files, environment, admission
+        }
+
+    def admit_model(root: Path) -> gate.model.ModelAdmission:
+        return copy.deepcopy(admission)
+
+    monkeypatch.setattr(gate.binding, "bind_slot", bind_slot)
+    monkeypatch.setattr(gate.model, "admit_model", admit_model)
+    return root, path, mapping(value), record, blobs, files, environment, mapping(admission)
 
 
-def verify(data, **kwargs):
+def verify(data: GateFixture, **kwargs: Unpack[VerifyOptions]):
     root, path, value, *_ = data
     return gate._verify(
         kwargs.get("path", path),
         kwargs.get("pin", pin(path)),
-        kwargs.get("slot", value["expected_slots"][0]),
+        kwargs.get("slot", text_value(sequence(value["expected_slots"])[0])),
         kwargs.get("review", R),
         root,
         root / "synthetic-cache",
     )
 
 
-def test_fixed_review_path():
+def test_fixed_review_path() -> None:
     assert gate.REVIEW_PATH == "conductor/reviews/primary-execution.json"
 
 
-def test_actual_repository_static_sources_are_complete_and_correctly_imported():
+def test_actual_repository_static_sources_are_complete_and_correctly_imported() -> None:
     root = Path(gate.__file__).resolve().parents[1]
     hashes = {source: pin(root / source) for source in gate.SOURCES}
     gate.identity.project_closure(root, gate.SOURCES, hashes)
 
 
 @pytest.mark.parametrize("damage", ["same-commit", "duplicate-reviewer", "invalid-digest"])
-def test_resealed_review_still_cannot_bypass_semantic_guards(synthetic, damage):
+def test_resealed_review_still_cannot_bypass_semantic_guards(
+    synthetic: GateFixture, damage: str
+) -> None:
     record, blobs = synthetic[3:5]
     if damage == "same-commit":
         record["source_commit"] = R
     elif damage == "duplicate-reviewer":
-        record["reviewers"][1]["reviewer_id"] = record["reviewers"][0]["reviewer_id"]
+        mapping(sequence(record["reviewers"])[1])["reviewer_id"] = mapping(
+            sequence(record["reviewers"])[0]
+        )["reviewer_id"]
     else:
         record["closure_sha256"] = "bad"
-    for reviewer in record["reviewers"]:
-        envelope = json.loads(blobs[reviewer["evidence_path"]])
+    for item in sequence(record["reviewers"]):
+        reviewer = mapping(item)
+        envelope = mapping(json.loads(blobs[text_value(reviewer["evidence_path"])]))
         envelope["source_commit"] = record["source_commit"]
         envelope["reviewer_id"] = reviewer["reviewer_id"]
         raw = json.dumps(envelope).encode()
-        blobs[reviewer["evidence_path"]] = raw
+        blobs[text_value(reviewer["evidence_path"])] = raw
         reviewer["evidence_sha256"] = hashlib.sha256(raw).hexdigest()
     with pytest.raises(ValueError):
         verify(synthetic)
 
 
-def test_review_blob_rejects_traversal_and_empty_content(synthetic, monkeypatch):
+def test_review_blob_rejects_traversal_and_empty_content(
+    synthetic: GateFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     with pytest.raises(ValueError, match="invalid_review_path"):
         gate._blob(synthetic[0], R, "conductor/../private.json")
     git = gate.freeze._git
-    monkeypatch.setattr(
-        gate.freeze, "_git", lambda root, *args: b"" if args[0] == "cat-file" else git(root, *args)
-    )
+
+    def empty_blob(root: Path, *args: str) -> bytes:
+        return b"" if args[0] == "cat-file" else git(root, *args)
+
+    monkeypatch.setattr(gate.freeze, "_git", empty_blob)
     with pytest.raises(ValueError, match="empty_review_evidence"):
         gate._blob(synthetic[0], R, gate.REVIEW_PATH)
 
 
-def test_reviewed_fixture_plan_is_immutable_not_admission(synthetic):
+def test_reviewed_fixture_plan_is_immutable_not_admission(synthetic: GateFixture) -> None:
     plan = verify(synthetic)
     result = plan.value()
     assert result["evidence"]["execution_permitted"] is True
     assert result["evidence"]["admitted"] is result["evidence"]["study_unlocked"] is False
-    result["admission"].clear()
+    mapping(result["admission"]).clear()
     assert plan.value()["admission"]
     with pytest.raises(AttributeError):
-        cast(Any, plan).payload = b"altered"
+        plan.__setattr__("payload", b"altered")
+
+
+@pytest.mark.parametrize(
+    ("field", "replacement"),
+    [
+        (("request", "request", "bytes"), True),
+        (("request", "generation", "seed"), "7"),
+        (("request", "limits", "context_tokens_validated"), 0),
+        (("request", "execution_observed"), True),
+        (("admission", "model_id"), 3),
+        (("admission", "original_runtime"), []),
+        (("admission", "runtime_overlay", "runtime_dependencies"), ["synthetic", 3]),
+        (("admission", "admitted"), 0),
+        (("evidence", "execution_permitted"), 1),
+        (("evidence", "limitations"), [None]),
+    ],
+)
+def test_plan_reconstruction_rejects_invalid_nested_shapes(
+    synthetic: GateFixture, field: tuple[str, ...], replacement: object
+) -> None:
+    plan = verify(synthetic)
+    value = mapping(plan.value())
+    target = value
+    for key in field[:-1]:
+        target = mapping(target[key])
+    target[field[-1]] = replacement
+    altered = replace(plan, payload=json.dumps(value).encode())
+    with pytest.raises(ValueError, match="invalid_execution_plan"):
+        altered.value()
+
+
+def test_checked_plan_rejects_incomplete_payload(synthetic: GateFixture) -> None:
+    altered = replace(verify(synthetic), payload=b"{}")
+    with pytest.raises(ValueError, match="invalid_execution_plan"):
+        altered.value()
 
 
 @pytest.mark.parametrize(
@@ -194,7 +287,9 @@ def test_reviewed_fixture_plan_is_immutable_not_admission(synthetic):
         "locator",
     ],
 )
-def test_review_failures_never_reach_eligibility(synthetic, monkeypatch, damage):
+def test_review_failures_never_reach_eligibility(
+    synthetic: GateFixture, monkeypatch: pytest.MonkeyPatch, damage: str
+) -> None:
     record, blobs = synthetic[3:5]
     if damage == "extra":
         record["extra"] = True
@@ -209,24 +304,26 @@ def test_review_failures_never_reach_eligibility(synthetic, monkeypatch, damage)
     elif damage in {"protocol", "adapter", "closure", "environment"}:
         record[damage + "_sha256"] = "0" * 64
     elif damage == "missing-role":
-        record["reviewers"].pop()
+        sequence(record["reviewers"]).pop()
     elif damage == "duplicate-id":
-        record["reviewers"][1]["reviewer_id"] = record["reviewers"][0]["reviewer_id"]
+        mapping(sequence(record["reviewers"])[1])["reviewer_id"] = mapping(
+            sequence(record["reviewers"])[0]
+        )["reviewer_id"]
     elif damage == "outcome":
-        record["reviewers"][0]["outcome"] = "fail"
+        mapping(sequence(record["reviewers"])[0])["outcome"] = "fail"
     elif damage == "path":
-        record["reviewers"][0]["evidence_path"] = "../private"
+        mapping(sequence(record["reviewers"])[0])["evidence_path"] = "../private"
     elif damage == "evidence-hash":
-        record["reviewers"][0]["evidence_sha256"] = "0" * 64
+        mapping(sequence(record["reviewers"])[0])["evidence_sha256"] = "0" * 64
     else:
-        reviewer = record["reviewers"][0]
-        envelope = json.loads(blobs[reviewer["evidence_path"]])
+        reviewer = mapping(sequence(record["reviewers"])[0])
+        envelope = mapping(json.loads(blobs[text_value(reviewer["evidence_path"])]))
         envelope["source_commit" if damage == "evidence-scope" else "evidence_locator"] = ""
         raw = json.dumps(envelope).encode()
-        blobs[reviewer["evidence_path"]] = raw
+        blobs[text_value(reviewer["evidence_path"])] = raw
         reviewer["evidence_sha256"] = hashlib.sha256(raw).hexdigest()
 
-    def forbidden(*args):
+    def forbidden(*args: object) -> None:
         raise AssertionError("Model eligibility must not be reached")
 
     monkeypatch.setattr(gate.model, "admit_model", forbidden)
@@ -238,8 +335,10 @@ def test_review_failures_never_reach_eligibility(synthetic, monkeypatch, damage)
     "damage",
     ["slot", "path", "commit-type", "source-parity", "environment", "admission", "request"],
 )
-def test_gate_identity_and_confinement_failures(synthetic, monkeypatch, damage):
-    kwargs = {}
+def test_gate_identity_and_confinement_failures(
+    synthetic: GateFixture, monkeypatch: pytest.MonkeyPatch, damage: str
+) -> None:
+    kwargs: VerifyOptions = {}
     if damage == "slot":
         kwargs["slot"] = "unknown"
     elif damage == "path":
@@ -247,21 +346,25 @@ def test_gate_identity_and_confinement_failures(synthetic, monkeypatch, damage):
     elif damage == "commit-type":
         kwargs["review"] = None
     elif damage == "source-parity":
-        monkeypatch.setattr(
-            gate.freeze,
-            "_committed_files",
-            lambda root, commit, *args: synthetic[5] if commit == S else [],
-        )
+
+        def different_files(root: Path, commit: str, *args: object) -> list[ObjectMap]:
+            return synthetic[5] if commit == S else []
+
+        monkeypatch.setattr(gate.freeze, "_committed_files", different_files)
     elif damage == "environment":
         synthetic[6]["changed"] = True
     elif damage == "admission":
-        monkeypatch.setattr(gate.model, "admit_model", lambda root: {"admission_sha256": "x"})
+
+        def changed_admission(root: Path) -> ObjectMap:
+            return {"admission_sha256": "x"}
+
+        monkeypatch.setattr(gate.model, "admit_model", changed_admission)
     else:
-        monkeypatch.setattr(
-            gate.binding,
-            "bind_slot",
-            lambda *args: {"request": {}, "eligibility": {"admission_sha256": "d" * 64}},
-        )
+
+        def changed_request(*args: object) -> ObjectMap:
+            return {"request": {}, "eligibility": {"admission_sha256": "d" * 64}}
+
+        monkeypatch.setattr(gate.binding, "bind_slot", changed_request)
     with pytest.raises(ValueError):
         verify(synthetic, **kwargs)
 
@@ -269,41 +372,53 @@ def test_gate_identity_and_confinement_failures(synthetic, monkeypatch, damage):
 @pytest.mark.parametrize(
     "entry", [b"", b"120000 blob " + b"a" * 40 + b"\t" + gate.REVIEW_PATH.encode() + b"\0"]
 )
-def test_review_record_must_be_regular_blob(synthetic, monkeypatch, entry):
-    monkeypatch.setattr(gate.freeze, "_git", lambda *args: entry)
+def test_review_record_must_be_regular_blob(
+    synthetic: GateFixture, monkeypatch: pytest.MonkeyPatch, entry: bytes
+) -> None:
+    def invalid_entry(*args: object) -> bytes:
+        return entry
+
+    monkeypatch.setattr(gate.freeze, "_git", invalid_entry)
     with pytest.raises(ValueError, match="review_not_regular_blob"):
         gate._blob(synthetic[0], R, gate.REVIEW_PATH)
 
 
-def test_review_envelopes_bind_environment_not_only_outer_record(synthetic):
+def test_review_envelopes_bind_environment_not_only_outer_record(synthetic: GateFixture) -> None:
     synthetic[6]["changed"] = True
     synthetic[3]["environment_sha256"] = gate.identity.digest(synthetic[6])
     with pytest.raises(ValueError, match="review_evidence_scope_mismatch"):
         verify(synthetic)
 
 
-def test_unsupported_platform_rejected_before_repository(synthetic, monkeypatch):
+def test_unsupported_platform_rejected_before_repository(
+    synthetic: GateFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     monkeypatch.setattr(gate.platform, "system", lambda: "Linux")
-    monkeypatch.setattr(
-        gate.freeze, "_repository", lambda *args: pytest.fail("No repository lookup")
-    )
+
+    def forbidden(*args: object) -> None:
+        pytest.fail("No repository lookup")
+
+    monkeypatch.setattr(gate.freeze, "_repository", forbidden)
     with pytest.raises(ValueError, match="unsupported_primary_platform"):
         verify(synthetic)
 
 
-def test_wrong_loaded_checkout_rejected_before_eligibility(synthetic, monkeypatch):
-    def origin_failure(*args):
+def test_wrong_loaded_checkout_rejected_before_eligibility(
+    synthetic: GateFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def origin_failure(*args: object) -> None:
         raise ValueError("project_import_origin_mismatch")
 
+    def forbidden(root: Path) -> None:
+        pytest.fail("No eligibility after origin mismatch")
+
     monkeypatch.setattr(gate.identity, "project_closure", origin_failure)
-    monkeypatch.setattr(
-        gate.model, "admit_model", lambda root: pytest.fail("No eligibility after origin mismatch")
-    )
+    monkeypatch.setattr(gate.model, "admit_model", forbidden)
     with pytest.raises(ValueError, match="project_import_origin_mismatch"):
         verify(synthetic)
 
 
-def commit_review(synthetic, damage="none"):
+def commit_review(synthetic: GateFixture, damage: str = "none") -> tuple[str, str]:
     root, _path, _value, record, blobs, *_ = synthetic
     real_git(root, "init", "-q")
     for key, val in (
@@ -317,9 +432,10 @@ def commit_review(synthetic, damage="none"):
     real_git(root, "-c", "commit.gpgsign=false", "commit", "-qm", "Synthetic source only")
     source = real_git(root, "rev-parse", "HEAD")
     record["source_commit"] = source
-    for reviewer in record["reviewers"]:
-        evidence_path = reviewer["evidence_path"]
-        envelope = json.loads(blobs[evidence_path])
+    for item in sequence(record["reviewers"]):
+        reviewer = mapping(item)
+        evidence_path = text_value(reviewer["evidence_path"])
+        envelope = mapping(json.loads(blobs[evidence_path]))
         envelope["source_commit"] = source
         raw = json.dumps(envelope).encode()
         reviewer["evidence_sha256"] = hashlib.sha256(raw).hexdigest()
@@ -346,7 +462,9 @@ def commit_review(synthetic, damage="none"):
 
 
 @pytest.mark.parametrize("damage", ["none", "source-parity", "nonancestor"])
-def test_real_git_source_review_and_evidence_integration(synthetic, monkeypatch, damage):
+def test_real_git_source_review_and_evidence_integration(
+    synthetic: GateFixture, monkeypatch: pytest.MonkeyPatch, damage: str
+) -> None:
     source, review = commit_review(synthetic, damage)
     monkeypatch.setattr(gate.freeze, "_git", REAL_GIT)
     monkeypatch.setattr(gate.freeze, "_committed_files", REAL_FILES)

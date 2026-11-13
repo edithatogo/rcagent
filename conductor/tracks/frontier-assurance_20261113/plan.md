@@ -9,7 +9,7 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
 - [x] FAW03: correct portable templates, hash-bind current admission and enforce selection/package invariants; preserve historical quarantine (FA03; accepted with PR127).
 - [x] FAW04: lock CI installation; broad Ruff plus format; strict basedpyright and measured legacy baseline with no growth (FA04; accepted with PR127, remaining debt belongs to FAW06).
 - [x] FAW05: add Hypothesis, pytest-gremlins, Scalene, Bandit and Vulture with real invocations and meaningful failure behaviour (FA05; accepted with PR127).
-- [~] FAW06: migrate legacy unknown/Any boundaries into typed schemas/modules in bounded batches, reducing rather than refreshing the baseline (FA04; each batch separate and reviewed). PR #128 merged as `4d17ace` after complete hosted acceptance. The next native I/O/protocol increment in PR #129 reduces 5,023 diagnostics to 4,431 and repairs nine recorded enum/hashability defects; see the [current receipt](./typing-native-evidence.md). Local verification and agent review are complete; exact-head hosted acceptance remains required. Inventory helpers, observation-admission and the execution gate follow with their consumers.
+- [~] FAW06: migrate legacy unknown/Any boundaries into typed schemas/modules in bounded batches, reducing rather than refreshing the baseline (FA04; each batch separate and reviewed). PR #129 merged as `388a4c6` after complete hosted acceptance. [PR #130](https://github.com/edithatogo/rcagent/pull/130) now reduces 4,431 to 3,198 diagnostics through inventory/freeze, identity/model/slot/execution-plan and owned observation-admission contracts; final-head hosted acceptance is required. Twelve boundary regressions and the final unchanged-base failure comparison are recorded in the [current receipt](./typing-producers-evidence.md). Next: distinct CLI admission/output-probe and capability-probe producers with their synthetic fixtures; then the static preflight/prerequisite tail. Preserve existing rejection order, single-use witnesses and frozen source bytes.
 - [ ] Checkpoint A: run applicable local/hosted gates, three-role agent review, merge evidence and rollback notes; mark only verified leaves complete.
 
 ## Phase B: Incremental component demonstrations
@@ -53,9 +53,12 @@ Phase A may run in parallel with public-source planning and fixture design. B co
 FAW01–05 are accepted in merged PR127 after complete hosted Quality, dependency,
 privacy/secrets and official conformance success. The user's current
 priority is FAW06: finish and verify the bounded typing batches before starting
-new capability demonstrations. Next typing work should replace remaining bare
-inventory/schema, observation-admission and execution-plan contracts with their
-consumers. The nine recorded domain enum/hashability fields now have checked
+new capability demonstrations. Next typing work should publish the distinct CLI model-admission contract,
+then the output-probe and capability-probe receipt variants with their consumers.
+The CLI receipt must not acquire server-only profile or limitations fields by
+type assertion. Preserve early rejection, oversized-stream hash withholding,
+timeout/launch-failure states and repeated post-run pin checks. These scopes use
+synthetic fixtures and do not require model or hardware execution. The nine recorded domain enum/hashability fields now have checked
 string guards and concrete/property regressions; further boundary findings need
 their own reproductions. Checked container shapes alone do not validate domain
 values. Retain

@@ -81,7 +81,7 @@ def test_dataclass_replacement_does_not_issue_a_second_live_witness(capability) 
     assert capability in admission._LIVE
 
 
-def test_failed_consumption_still_consumes_witness(capability) -> None:
+def test_failed_consumption_still_consumes_witness(capability: object) -> None:
     with pytest.raises(ValueError, match="incomplete_capture_denominator"):
         admission._consume(capability)
     with pytest.raises(ValueError, match="invalid_or_consumed_capture_capability"):
@@ -89,7 +89,7 @@ def test_failed_consumption_still_consumes_witness(capability) -> None:
 
 
 @pytest.mark.parametrize("value", [{}, {"admitted": True}, {"origin": "controller"}, None, True])
-def test_untrusted_json_cannot_rehydrate_capture_authority(value) -> None:
+def test_untrusted_json_cannot_rehydrate_capture_authority(value: object) -> None:
     with pytest.raises(ValueError, match="invalid_or_consumed_capture_capability"):
         admission._consume(value)
 
@@ -218,7 +218,7 @@ def test_owned_read_rejects_hardlink_created_during_read(
         def __exit__(
             self,
             _exc_type: type[BaseException] | None,
-            exc: BaseException | None,
+            _exc: BaseException | None,
             _traceback: TracebackType | None,
         ) -> None:
             self.stream.close()
@@ -258,7 +258,7 @@ def test_journal_binds_event_order_and_previous_hash() -> None:
     events = [{"type": "run_started"}, {"type": "slot_started"}]
     raw = admission._journal(events)
     lines = raw.splitlines(keepends=True)
-    first, second = [json.loads(line) for line in lines]
+    first, second = [mapping(json.loads(line)) for line in lines]
     assert first["sequence"] == 0
     assert first["previous_sha256"] == "0" * 64
     assert second["sequence"] == 1
@@ -367,7 +367,7 @@ def test_lost_or_replaced_journal_prevents_second_capture(
                 path.write_bytes(raw)
                 path.chmod(0o600)
         else:
-            records = [json.loads(line) for line in raw.splitlines()]
+            records = [mapping(json.loads(line)) for line in raw.splitlines()]
             records[-1]["previous_sha256"] = "f" * 64
             path.write_bytes(b"".join(admission._canonical(row) + b"\n" for row in records))
         return result
@@ -509,7 +509,7 @@ def test_admission_write_failure_preserves_sealed_journal_and_locked_failure(
     assert "directory" in retained
     assert "journal" in retained
     directory = retained["directory"]
-    durable_failure = json.loads((directory / "failure.json").read_bytes())
+    durable_failure = mapping(json.loads((directory / "failure.json").read_bytes()))
     assert len(calls) == 2
     assert result["admitted"] is False
     assert durable_failure["admitted"] is durable_failure["study_unlocked"] is False

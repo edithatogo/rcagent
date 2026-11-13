@@ -16,8 +16,8 @@ ROLES = {
 MAX_BYTES = 4 * 1024 * 1024
 
 
-def _unique(pairs: list[tuple[str, object]]) -> dict:
-    result = {}
+def _unique(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
     for key, value in pairs:
         if key in result:
             raise ValueError("duplicate_json_key")

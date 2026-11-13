@@ -35,13 +35,57 @@ gate_fixture = _gate_fixture
 
 @pytest.fixture
 def synthetic(session_fixture: SessionFixture, monkeypatch: pytest.MonkeyPatch) -> PrimaryFixture:
-    root, receipt, calls, processes, admission = session_fixture
+    root, receipt, calls, processes, session_admission = session_fixture
     request = mapping(primary.runner.build_request(b"Synthetic primary {{INPUT}}", b"case input"))
-    evidence = {
+    admission: primary.gate.model.ModelAdmission = {
+        "purpose": "local-artefact-eligibility-only",
+        "local_artifact_eligible": True,
+        "admitted": False,
+        "study_unlocked": False,
+        "registry_sha256": "c" * 64,
+        "effective_manifest_sha256": "d" * 64,
+        "original_runtime": {"name": "synthetic-historical-cli"},
+        "runtime_overlay": {
+            "name": "synthetic-server",
+            "version": "synthetic",
+            "executable": "/synthetic/server",
+            "executable_sha256": "e" * 64,
+            "license": "MIT",
+            "profile_id": "synthetic-profile",
+            "profile_sha256": session_admission["profile_sha256"],
+            "distribution": "synthetic",
+            "runtime_dependencies": [],
+        },
+        "profile_id": "synthetic-profile",
+        "profile_sha256": session_admission["profile_sha256"],
+        "model_id": session_admission["model_id"],
+        "model_revision": "synthetic-revision",
+        "model_sha256": "f" * 64,
+        "model_license_sha256": "a" * 64,
+        "model_path": session_admission["model_path"],
+        "model_license_path": str(root / "LICENSE"),
+        "limitations": ["synthetic-fixture-not-actual-eligibility"],
+        "admission_sha256": session_admission["admission_sha256"],
+    }
+
+    def admit_fixture(_root: Path) -> primary.gate.model.ModelAdmission:
+        return admission.copy()
+
+    monkeypatch.setattr(primary.session.model, "admit_model", admit_fixture)
+    evidence: primary.gate.ExecutionEvidence = {
+        "review_commit": "b" * 40,
+        "source_commit": "c" * 40,
+        "review_sha256": "d" * 64,
+        "closure_sha256": "e" * 64,
+        "environment_sha256": "f" * 64,
+        "protocol_sha256": "a" * 64,
+        "study_id": "synthetic-primary-study",
         "slot_id": "case-a__condition-local__r1",
+        "adapter_sha256": "a" * 64,
         "admitted": False,
         "study_unlocked": False,
         "execution_permitted": True,
+        "limitations": ["synthetic-fixture-not-actual-eligibility"],
     }
     plan: Plan = primary.gate._Plan(
         primary.gate._canonical({"request": request, "admission": admission, "evidence": evidence})

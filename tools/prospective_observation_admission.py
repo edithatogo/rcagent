@@ -14,19 +14,73 @@ import os
 import signal
 import stat
 import weakref
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Literal, Never, TypeAlias, TypedDict
 
 from tools import prospective_execution_gate as gate
 from tools import prospective_runner_contract as runner
 from tools import prospective_server_session as session
 from tools.evaluation_preflight import _unique
+from tools.json_shapes import JsonObject, is_array, is_object
 
 MAX_RECEIPT = 32 * 1024 * 1024
 MAX_JOURNAL = 256 * 1024
 MAX_STREAM = 1024 * 1024
 _ORIGIN = object()
-_LIVE: weakref.WeakSet = weakref.WeakSet()
+_LIVE: weakref.WeakSet[_OwnedRun] = weakref.WeakSet()
+
+IssuerContext: TypeAlias = tuple[Path, str, str, Path, Path]
+Plans: TypeAlias = tuple[gate._Plan, ...]
+
+
+class JournalHeader(TypedDict):
+    type: Literal["run_started"]
+    version: Literal["controller-journal-v1"]
+    study_id: str
+    protocol_sha256: str
+    source_commit: str
+    review_commit: str
+    slots: list[str]
+    receipt_names: list[str]
+    retry_policy: Literal["no-automatic-retry-or-resume"]
+
+
+class SlotStarted(TypedDict):
+    type: Literal["slot_started"]
+    slot_id: str
+    receipt_name: str
+
+
+class SlotCaptured(TypedDict):
+    type: Literal["slot_captured"]
+    slot_id: str
+    receipt_name: str
+    receipt_sha256: str
+    receipt_bytes: int
+
+
+class ObservationSummary(TypedDict):
+    slot_id: str
+    receipt_sha256: str
+    response_sha256: str
+    content_sha256: str
+
+
+class AdmissionResult(TypedDict):
+    status: Literal["observations_admitted_before_blinding"]
+    admitted: Literal[True]
+    admission_before_blinding: Literal[True]
+    study_unlocked: Literal[False]
+    scoring_start: Literal[False]
+    protocol_sha256: str
+    review_commit: str
+    source_commit: str
+    study_id: str
+    journal_sha256: str
+    observations: list[ObservationSummary]
+    limitations: list[str]
 
 
 def _sha(raw: bytes) -> str:
@@ -37,15 +91,22 @@ def _canonical(value: object) -> bytes:
     return gate._canonical(value)
 
 
-def _parse(raw: bytes) -> dict:
+def _parse(raw: bytes) -> JsonObject:
     try:
-        result = json.loads(raw, object_pairs_hook=_unique)
-        if type(result) is not dict:
+        result: object = json.loads(raw, object_pairs_hook=_unique)
+        if not is_object(result) or type(result) is not dict:
             raise ValueError("invalid_owned_receipt")
         _canonical(result)
         return result
     except (ValueError, UnicodeError, RecursionError):
         raise ValueError("invalid_owned_receipt") from None
+
+
+def _capture_object(value: object) -> JsonObject:
+    """Narrow persisted fields at their first use; preserve TypeError handling."""
+    if not is_object(value):
+        raise TypeError("invalid_capture_object")
+    return value
 
 
 def _read(
@@ -101,32 +162,39 @@ class _Receipt:
 @dataclass(frozen=True, eq=False, slots=True, weakref_slot=True)
 class _OwnedRun:
     origin: object
-    context: tuple[Path, str, str, Path, Path]
-    plans: tuple[gate._Plan, gate._Plan]
+    context: IssuerContext
+    plans: Plans
     directory: Path
     parent_identity: tuple[int, int]
     journal_fd: int
     journal_identity: tuple[int, int]
     journal: bytes
-    receipts: tuple[_Receipt, _Receipt]
+    receipts: tuple[_Receipt, ...]
 
     def __post_init__(self) -> None:
         if self.origin is not _ORIGIN:
             raise ValueError("invalid_capture_capability")
 
-    def __reduce__(self):
+    def __reduce__(self) -> Never:
         raise TypeError("capture_capability_not_serializable")
 
-    def __copy__(self):
+    def __copy__(self) -> Never:
         raise TypeError("capture_capability_not_copyable")
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self, memo: object) -> Never:
         del memo  # Required copy protocol argument; copying is deliberately prohibited.
         raise TypeError("capture_capability_not_copyable")
 
 
 def _issue(
-    context, plans, directory, parent_identity, journal_fd, journal_identity, journal, receipts
+    context: IssuerContext,
+    plans: Plans,
+    directory: Path,
+    parent_identity: tuple[int, int],
+    journal_fd: int,
+    journal_identity: tuple[int, int],
+    journal: bytes,
+    receipts: tuple[_Receipt, ...],
 ) -> _OwnedRun:
     result = _OwnedRun(
         _ORIGIN,
@@ -143,7 +211,7 @@ def _issue(
     return result
 
 
-def _header(plans: tuple[gate._Plan, gate._Plan]) -> dict:
+def _header(plans: Plans) -> JournalHeader:
     evidence = plans[0].value()["evidence"]
     return {
         "type": "run_started",
@@ -158,11 +226,11 @@ def _header(plans: tuple[gate._Plan, gate._Plan]) -> dict:
     }
 
 
-def _start(slot: str, name: str) -> dict:
+def _start(slot: str, name: str) -> SlotStarted:
     return {"type": "slot_started", "slot_id": slot, "receipt_name": name}
 
 
-def _complete(receipt: _Receipt) -> dict:
+def _complete(receipt: _Receipt) -> SlotCaptured:
     return {
         "type": "slot_captured",
         "slot_id": receipt.slot,
@@ -172,12 +240,13 @@ def _complete(receipt: _Receipt) -> dict:
     }
 
 
-def _line(event: dict, index: int, previous: str) -> bytes:
+def _line(event: Mapping[str, object], index: int, previous: str) -> bytes:
     return _canonical({"sequence": index, "previous_sha256": previous, "event": event}) + b"\n"
 
 
-def _journal(events: list[dict]) -> bytes:
-    previous, lines = "0" * 64, []
+def _journal(events: Sequence[Mapping[str, object]]) -> bytes:
+    previous = "0" * 64
+    lines: list[bytes] = []
     for index, event in enumerate(events):
         line = _line(event, index, previous)
         lines.append(line)
@@ -185,7 +254,7 @@ def _journal(events: list[dict]) -> bytes:
     return b"".join(lines)
 
 
-def _body(value: dict, prefix: str, maximum: int) -> bytes:
+def _body(value: Mapping[str, object], prefix: str, maximum: int) -> bytes:
     encoded = value[prefix]
     if type(encoded) is not str or len(encoded) > 4 * ((maximum + 2) // 3):
         raise ValueError("invalid_capture_bytes")
@@ -195,8 +264,8 @@ def _body(value: dict, prefix: str, maximum: int) -> bytes:
     return raw
 
 
-def _validate_receipt(raw: bytes, plan: gate._Plan) -> dict:
-    value, expected = _parse(raw), plan.value()
+def _validate_receipt(raw: bytes, plan: gate._Plan) -> ObservationSummary:
+    value = _parse(raw)
     if (
         value.get("purpose") not in (None, "primary-observation")
         or "fixture" in value
@@ -210,6 +279,7 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> dict:
         or "primary_postflight_error" in value
     ):
         raise ValueError("capture_not_admissible")
+    expected = plan.value()
     if _canonical(value["primary_gate"]) != _canonical(expected["evidence"]) or _canonical(
         value["admission"]
     ) != _canonical(expected["admission"]):
@@ -221,9 +291,13 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> dict:
         raise ValueError("capture_request_mismatch")
     completion = value["completion"]
     health = value.get("health")
-    if type(health) is not list or not 1 <= len(health) <= session.HEALTH_ATTEMPTS:
+    if (
+        not is_array(health)
+        or type(health) is not list
+        or not 1 <= len(health) <= session.HEALTH_ATTEMPTS
+    ):
         raise ValueError("capture_health_incomplete")
-    final_health = health[-1]
+    final_health = _capture_object(health[-1])
     health_body = _body(final_health, "body_base64", session.HEALTH_BYTES)
     if (
         final_health.get("status") != "http_response_captured"
@@ -237,6 +311,7 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> dict:
         or _parse(health_body) != {"status": "ok"}
     ):
         raise ValueError("capture_health_incomplete")
+    completion = _capture_object(completion)
     if (
         completion["status"] != "http_response_captured"
         or completion.get("transport") != "unix-domain-socket"
@@ -267,7 +342,7 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> dict:
         value["decoded"]
     ) != _canonical(normalized["decoded"]):
         raise ValueError("capture_normalization_mismatch")
-    child = value["process"]
+    child = _capture_object(value["process"])
     if (
         child["status"] != "process_stopped"
         or child["error"] != "none"
@@ -280,7 +355,7 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> dict:
         or child["returncode"] not in (0, -signal.SIGTERM)
     ):
         raise ValueError("capture_process_incomplete")
-    streams = {}
+    streams: dict[str, bytes] = {}
     for name in ("stdout", "stderr"):
         data = _body(child, f"raw_{name}_base64", MAX_STREAM)
         if (
@@ -308,9 +383,10 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> dict:
         or value["profile_sha256"] != session.profile.profile_digest()
     ):
         raise ValueError("capture_source_mismatch")
-    if value["arguments"] != session._fixed_arguments(
-        expected["admission"], Path(value["socket_path"])
-    ):
+    socket_path = value["socket_path"]
+    if not isinstance(socket_path, str):
+        raise TypeError("invalid_capture_socket_path")
+    if value["arguments"] != session._fixed_arguments(expected["admission"], Path(socket_path)):
         raise ValueError("capture_arguments_mismatch")
     environment = session.profile.profile_environment()
     if value["environment_sha256"] != hashlib.sha256(
@@ -325,7 +401,7 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> dict:
     }
 
 
-def _consume(owned: _OwnedRun) -> dict:
+def _consume(owned: object) -> AdmissionResult:
     if type(owned) is not _OwnedRun or owned not in _LIVE:
         raise ValueError("invalid_or_consumed_capture_capability")
     _LIVE.remove(owned)
@@ -347,8 +423,8 @@ def _consume(owned: _OwnedRun) -> dict:
         raw, _identity = _read(journal_path, directory, MAX_JOURNAL, owned.journal_identity)
         if raw != owned.journal:
             raise ValueError("owned_journal_changed")
-        events = [_header(owned.plans)]
-        rows = []
+        events: list[Mapping[str, object]] = [_header(owned.plans)]
+        rows: list[ObservationSummary] = []
         for index, (receipt, plan) in enumerate(zip(owned.receipts, owned.plans, strict=True)):
             if receipt.name != f"slot-{index + 1}.json":
                 raise ValueError("invalid_owned_receipt_name")

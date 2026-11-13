@@ -3,23 +3,28 @@
 import hashlib
 import json
 from copy import deepcopy
+from pathlib import Path
+from typing import TypeAlias
 
 import pytest
 
+from tests.prospective_fixture_types import ObjectMap
 from tools import prospective_server_model as model
 
+AdmittedFixture: TypeAlias = tuple[Path, Path, ObjectMap, Path, list[bool]]
 
-def sha(data):
+
+def sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
 @pytest.fixture
-def admitted(tmp_path, monkeypatch):
+def admitted(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> AdmittedFixture:
     root = tmp_path.resolve() / "models"
     root.mkdir()
     runtime = tmp_path.resolve() / "server"
     runtime.write_bytes(b"server")
-    entries = []
+    entries: list[ObjectMap] = []
     for size in ("small", "medium", "larger"):
         directory = root / size
         directory.mkdir()
@@ -38,7 +43,7 @@ def admitted(tmp_path, monkeypatch):
                 "files": [{"path": "model.gguf", "bytes": len(data), "sha256": sha(data)}],
             }
         )
-    manifest = {
+    manifest: ObjectMap = {
         "runtime": {"name": "historical-cli", "version": "unchanged"},
         "models": entries,
         "admission_policy": {
@@ -64,9 +69,9 @@ def admitted(tmp_path, monkeypatch):
     monkeypatch.setattr(model.profile, "EXECUTABLE", str(runtime))
     monkeypatch.setattr(model.profile, "PINNED_FILES", {str(runtime): sha(b"server")})
     monkeypatch.setattr(model.profile, "profile_digest", lambda: "b" * 64)
-    checks = []
+    checks: list[bool] = []
 
-    def verify():
+    def verify() -> None:
         checks.append(True)
         if runtime.read_bytes() != b"server":
             raise ValueError("runtime_changed")
@@ -75,10 +80,11 @@ def admitted(tmp_path, monkeypatch):
     return root, registry, manifest, runtime, checks
 
 
-def test_server_overlay_preserves_registry_and_is_deterministic(admitted):
+def test_server_overlay_preserves_registry_and_is_deterministic(admitted: AdmittedFixture) -> None:
     root, registry, original, _, checks = admitted
     before = registry.read_bytes()
     result = model.admit_model(root)
+    assert model.is_model_admission(result)
     assert registry.read_bytes() == before
     assert result["original_runtime"] == original["runtime"]
     assert result["runtime_overlay"]["name"] == "llama.cpp llama-server"
@@ -101,7 +107,9 @@ def test_server_overlay_preserves_registry_and_is_deterministic(admitted):
 @pytest.mark.parametrize(
     "damage", ["registry", "runtime", "model", "licence", "other-model", "other-licence", "profile"]
 )
-def test_preexisting_drift_rejected(admitted, monkeypatch, damage):
+def test_preexisting_drift_rejected(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch, damage: str
+) -> None:
     root, registry, _, runtime, _ = admitted
     if damage == "registry":
         registry.write_bytes(b"changed")
@@ -135,12 +143,14 @@ def test_preexisting_drift_rejected(admitted, monkeypatch, damage):
         "missing-licence",
     ],
 )
-def test_drift_during_validator_is_rejected(admitted, monkeypatch, damage):
+def test_drift_during_validator_is_rejected(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch, damage: str
+) -> None:
     root, registry, _, runtime, _ = admitted
     original = model.validate_admission
-    calls = []
+    calls: list[bool] = []
 
-    def validate(manifest, directory):
+    def validate(manifest: ObjectMap, directory: Path) -> list[str]:
         result = original(manifest, directory)
         calls.append(True)
         if len(calls) == 1:
@@ -167,7 +177,9 @@ def test_drift_during_validator_is_rejected(admitted, monkeypatch, damage):
 @pytest.mark.parametrize(
     "kind", ["missing", "regular-file", "symlink", "parent-symlink", "traversal"]
 )
-def test_unsafe_roots_fail_before_profile(admitted, monkeypatch, kind):
+def test_unsafe_roots_fail_before_profile(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch, kind: str
+) -> None:
     root, _, _, _, _ = admitted
     if kind == "missing":
         root = root.parent / "absent"
@@ -187,7 +199,7 @@ def test_unsafe_roots_fail_before_profile(admitted, monkeypatch, kind):
         nested.mkdir()
         root = nested / ".."
 
-    def forbidden():
+    def forbidden() -> None:
         raise AssertionError("profile must not be read")
 
     monkeypatch.setattr(model.profile, "verify_files", forbidden)
@@ -195,14 +207,18 @@ def test_unsafe_roots_fail_before_profile(admitted, monkeypatch, kind):
         model.admit_model(root)
 
 
-def test_selected_identity_missing(admitted, monkeypatch):
+def test_selected_identity_missing(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     monkeypatch.setattr(model, "MODEL_ID", "missing")
     with pytest.raises(ValueError):
         model.admit_model(admitted[0])
 
 
-def test_profile_changes_during_its_first_verification(admitted, monkeypatch):
-    def verify():
+def test_profile_changes_during_its_first_verification(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def verify() -> None:
         monkeypatch.setattr(model.profile, "profile_digest", lambda: "c" * 64)
 
     monkeypatch.setattr(model.profile, "verify_files", verify)
@@ -210,8 +226,10 @@ def test_profile_changes_during_its_first_verification(admitted, monkeypatch):
         model.admit_model(admitted[0])
 
 
-def test_profile_id_change_is_rejected_even_if_digest_helper_is_stale(admitted, monkeypatch):
-    def verify():
+def test_profile_id_change_is_rejected_even_if_digest_helper_is_stale(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def verify() -> None:
         monkeypatch.setattr(model.profile, "PROFILE_ID", "changed-server-profile")
 
     monkeypatch.setattr(model.profile, "verify_files", verify)
@@ -220,13 +238,15 @@ def test_profile_id_change_is_rejected_even_if_digest_helper_is_stale(admitted, 
 
 
 @pytest.mark.parametrize("kind", ["symlink", "replacement"])
-def test_root_replacement_during_final_profile_check_is_rejected(admitted, monkeypatch, kind):
+def test_root_replacement_during_final_profile_check_is_rejected(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch, kind: str
+) -> None:
     import shutil
 
     root = admitted[0]
-    calls = []
+    calls: list[bool] = []
 
-    def verify():
+    def verify() -> None:
         calls.append(True)
         if len(calls) == 2:
             saved = root.with_name("saved")
@@ -241,29 +261,38 @@ def test_root_replacement_during_final_profile_check_is_rejected(admitted, monke
         model.admit_model(root)
 
 
-def test_registry_bytes_change_between_pin_and_read_is_rejected(admitted, monkeypatch):
-    from pathlib import Path
-
+def test_registry_bytes_change_between_pin_and_read_is_rejected(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     registry = admitted[1]
     real_read = Path.read_bytes
-    monkeypatch.setattr(
-        Path, "read_bytes", lambda path: b"{}" if path == registry else real_read(path)
-    )
+
+    def read(path: Path) -> bytes:
+        return b"{}" if path == registry else real_read(path)
+
+    monkeypatch.setattr(Path, "read_bytes", read)
     with pytest.raises(ValueError, match="registry_changed"):
         model.admit_model(admitted[0])
 
 
-def test_selected_path_missing_after_validations_is_rejected(admitted, monkeypatch):
-    monkeypatch.setattr(model, "_admitted_file", lambda *args: None)
+def test_selected_path_missing_after_validations_is_rejected(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def unavailable(*args: object) -> None:
+        return None
+
+    monkeypatch.setattr(model, "_admitted_file", unavailable)
     with pytest.raises(ValueError, match="selected_model_files_unavailable"):
         model.admit_model(admitted[0])
 
 
-def test_selected_bytes_changed_after_final_validator_is_rejected(admitted, monkeypatch):
+def test_selected_bytes_changed_after_final_validator_is_rejected(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     real_validate = model.validate_admission
-    calls = []
+    calls: list[bool] = []
 
-    def validate(manifest, root):
+    def validate(manifest: ObjectMap, root: Path) -> list[str]:
         result = real_validate(manifest, root)
         calls.append(True)
         if len(calls) == 2:
