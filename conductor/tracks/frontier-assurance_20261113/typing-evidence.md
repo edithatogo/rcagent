@@ -130,3 +130,22 @@ increase the score. Real coverage CLI tests verify both failing and passing unio
 
 No new clinical/model capability, Rust migration or death-review implementation
 is claimed. Existing research plans, frozen studies and negative findings remain.
+
+## Hosted follow-up after first typing publication
+
+The typing source was published at `ac8ded4469dc0c0e0161b077489b2fd9f9103dcb`
+with tree `8294eb64309d41b86d503a22fd415bfaccadca1b`, identical to local `c9656f6`.
+Privacy/secrets, dependency review, mutation and Scalene succeeded on that head
+while the platform validation jobs were still running.
+
+The advisory Vale reporter failed on GitHub's 20,000-line PR-diff API limit, before
+it could report the lint results. The action is updated to the verified immutable
+Vale v3.0.0 commit `518a9136acc6e6668ce7c00d367051e0941e87ff`, whose
+[release notes](https://github.com/vale-cli/vale-action/releases/tag/v3.0.0)
+and maintained implementation address that exact failure. Prose scope and severity
+policy are unchanged; the workflow follow-up requires its own hosted observation.
+
+The independently merged offline-security workflow remains queued. Its pinned
+central workflow requests `[self-hosted, linux, x64, ai-security-offline]` and a
+preloaded isolated security image. Its runner infrastructure was not changed by
+the typing increment. No queued execution is presented as a successful security scan.
