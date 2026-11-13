@@ -450,5 +450,5 @@
   "measurement_origin_commit": "50c8a81d1cbffc451380dd2cb973cb33c7cc74cd",
   "initial_checker": "basedpyright==1.39.10",
   "rollout_base_reason": "Master advanced before the first strict-baseline delivery. Bind the rollout to actual master, preserve initial measurement provenance, and ratchet every current cap to the remaining verified diagnostics.",
-  "latest_reduction_receipt": "quality/typing-verification-20261113.json"
+  "latest_reduction_receipt": "quality/typing-contracts-verification-20261113.json"
 }
