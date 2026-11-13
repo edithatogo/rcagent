@@ -5,17 +5,44 @@ import dataclasses
 import json
 import os
 import pickle
+from collections.abc import Callable
+from pathlib import Path
+from types import TracebackType
+from typing import Literal, Protocol, Self, TypeAlias, TypedDict
 
 import pytest
 
+from tests.prospective_fixture_types import (
+    CaptureFixture,
+    ObjectMap,
+    PrimaryArgs,
+    mapping,
+    mapping_call,
+)
 from tests.test_prospective_execution_gate import synthetic as synthetic
 from tests.test_prospective_study_controller import capture_fixture as capture_fixture
 from tools import prospective_observation_admission as admission
 from tools import prospective_study_controller as controller
 
+OwnedFile: TypeAlias = tuple[Path, tuple[int, int]]
+FilePath: TypeAlias = str | bytes | os.PathLike[str] | os.PathLike[bytes]
+
+
+class CaptureDirectory(Protocol):
+    @property
+    def directory(self) -> Path: ...
+
+
+class RetainedEvidence(TypedDict, total=False):
+    directory: Path
+    journal: bytes
+
+
+run_study = mapping_call(controller.run_study)
+
 
 @pytest.fixture
-def capability(tmp_path):
+def capability(tmp_path: Path):
     # Deliberately incomplete witness tests ownership without reaching a gate.
     owned = admission._issue(
         (tmp_path / "protocol.json", "a" * 64, "b" * 40, tmp_path, tmp_path),
@@ -32,17 +59,19 @@ def capability(tmp_path):
 
 
 @pytest.mark.parametrize("copier", [copy.copy, copy.deepcopy, pickle.dumps])
-def test_live_witness_cannot_be_copied_or_serialized(capability, copier):
+def test_live_witness_cannot_be_copied_or_serialized(
+    capability: object, copier: Callable[[object], object]
+) -> None:
     with pytest.raises(TypeError):
         copier(capability)
 
 
-def test_live_witness_cannot_be_json_serialized(capability):
+def test_live_witness_cannot_be_json_serialized(capability: object) -> None:
     with pytest.raises(TypeError):
         json.dumps(capability)
 
 
-def test_dataclass_replacement_does_not_issue_a_second_live_witness(capability):
+def test_dataclass_replacement_does_not_issue_a_second_live_witness(capability) -> None:
     replacement = dataclasses.replace(capability)
     try:
         with pytest.raises(ValueError, match="invalid_or_consumed_capture_capability"):
@@ -52,7 +81,7 @@ def test_dataclass_replacement_does_not_issue_a_second_live_witness(capability):
     assert capability in admission._LIVE
 
 
-def test_failed_consumption_still_consumes_witness(capability):
+def test_failed_consumption_still_consumes_witness(capability) -> None:
     with pytest.raises(ValueError, match="incomplete_capture_denominator"):
         admission._consume(capability)
     with pytest.raises(ValueError, match="invalid_or_consumed_capture_capability"):
@@ -60,13 +89,13 @@ def test_failed_consumption_still_consumes_witness(capability):
 
 
 @pytest.mark.parametrize("value", [{}, {"admitted": True}, {"origin": "controller"}, None, True])
-def test_untrusted_json_cannot_rehydrate_capture_authority(value):
+def test_untrusted_json_cannot_rehydrate_capture_authority(value) -> None:
     with pytest.raises(ValueError, match="invalid_or_consumed_capture_capability"):
         admission._consume(value)
 
 
 @pytest.fixture
-def owned_file(tmp_path):
+def owned_file(tmp_path: Path) -> OwnedFile:
     if not callable(getattr(os, "getuid", None)):
         pytest.skip("real owned-file checks require POSIX UID and permission semantics")
     root = tmp_path.resolve()
@@ -77,7 +106,7 @@ def owned_file(tmp_path):
     return path, (parent.st_dev, parent.st_ino)
 
 
-def test_owned_read_exact_bound_and_identity(owned_file):
+def test_owned_read_exact_bound_and_identity(owned_file: OwnedFile) -> None:
     path, parent = owned_file
     data, observed = admission._read(path, parent, 2)
     info = path.stat()
@@ -85,25 +114,25 @@ def test_owned_read_exact_bound_and_identity(owned_file):
     assert observed == (info.st_dev, info.st_ino)
 
 
-def test_owned_read_rejects_oversize(owned_file):
+def test_owned_read_rejects_oversize(owned_file: OwnedFile) -> None:
     path, parent = owned_file
     with pytest.raises(ValueError, match="owned_receipt_byte_limit"):
         admission._read(path, parent, 1)
 
 
-def test_owned_read_rejects_replaced_identity(owned_file):
+def test_owned_read_rejects_replaced_identity(owned_file: OwnedFile) -> None:
     path, parent = owned_file
     with pytest.raises(ValueError, match="owned_receipt_replaced"):
         admission._read(path, parent, 20, (-1, -1))
 
 
-def test_owned_read_rejects_wrong_parent(owned_file):
+def test_owned_read_rejects_wrong_parent(owned_file: OwnedFile) -> None:
     path, _ = owned_file
     with pytest.raises(ValueError):
         admission._read(path, (-1, -1), 20)
 
 
-def test_owned_read_rejects_hardlink(owned_file):
+def test_owned_read_rejects_hardlink(owned_file: OwnedFile) -> None:
     path, parent = owned_file
     try:
         os.link(path, path.with_name("alias.json"))
@@ -113,7 +142,7 @@ def test_owned_read_rejects_hardlink(owned_file):
         admission._read(path, parent, 20)
 
 
-def test_owned_read_rejects_symlink(owned_file):
+def test_owned_read_rejects_symlink(owned_file: OwnedFile) -> None:
     path, parent = owned_file
     alias = path.with_name("alias.json")
     try:
@@ -124,24 +153,30 @@ def test_owned_read_rejects_symlink(owned_file):
         admission._read(alias, parent, 20)
 
 
-def test_owned_read_sets_nonblocking_nofollow_before_open(owned_file, monkeypatch):
+def test_owned_read_sets_nonblocking_nofollow_before_open(
+    owned_file: OwnedFile, monkeypatch: pytest.MonkeyPatch
+) -> None:
     path, parent = owned_file
     real_open = admission.os.open
-    observed = []
+    observed: list[int] = []
 
-    def checked_open(name, flags, *args, **kwargs):
+    def checked_open(
+        name: FilePath, flags: int, mode: int = 0o777, *, dir_fd: int | None = None
+    ) -> int:
         assert flags & getattr(os, "O_NONBLOCK", 0)
         if hasattr(os, "O_NOFOLLOW"):
             assert flags & getattr(os, "O_NOFOLLOW", 0)
         observed.append(flags)
-        return real_open(name, flags, *args, **kwargs)
+        return real_open(name, flags, mode, dir_fd=dir_fd)
 
     monkeypatch.setattr(admission.os, "open", checked_open)
     assert admission._read(path, parent, 2)[0] == b"{}"
     assert len(observed) == 1
 
 
-def test_owned_read_fifo_rejected_without_blocking(owned_file, monkeypatch):
+def test_owned_read_fifo_rejected_without_blocking(
+    owned_file: OwnedFile, monkeypatch: pytest.MonkeyPatch
+) -> None:
     path, parent = owned_file
     mkfifo = getattr(os, "mkfifo", None)
     if not callable(mkfifo):
@@ -150,16 +185,20 @@ def test_owned_read_fifo_rejected_without_blocking(owned_file, monkeypatch):
     mkfifo(path, 0o600)
     real_open = admission.os.open
 
-    def nonblocking_open(name, flags, *args, **kwargs):
+    def nonblocking_open(
+        name: FilePath, flags: int, mode: int = 0o777, *, dir_fd: int | None = None
+    ) -> int:
         assert flags & getattr(os, "O_NONBLOCK", 0)  # Fail before opening if the guard regresses.
-        return real_open(name, flags, *args, **kwargs)
+        return real_open(name, flags, mode, dir_fd=dir_fd)
 
     monkeypatch.setattr(admission.os, "open", nonblocking_open)
     with pytest.raises((ValueError, OSError)):
         admission._read(path, parent, 20)
 
 
-def test_owned_read_rejects_hardlink_created_during_read(owned_file, monkeypatch):
+def test_owned_read_rejects_hardlink_created_during_read(
+    owned_file: OwnedFile, monkeypatch: pytest.MonkeyPatch
+) -> None:
     path, parent = owned_file
     alias = path.with_name("late-alias.json")
     try:
@@ -170,19 +209,24 @@ def test_owned_read_rejects_hardlink_created_during_read(owned_file, monkeypatch
     real_fdopen = admission.os.fdopen
 
     class LinkedDuringRead:
-        def __init__(self, descriptor, mode):
+        def __init__(self, descriptor: int, mode: Literal["rb"]) -> None:
             self.stream = real_fdopen(descriptor, mode)
 
-        def __enter__(self):
+        def __enter__(self) -> Self:
             return self
 
-        def __exit__(self, *args):
+        def __exit__(
+            self,
+            _exc_type: type[BaseException] | None,
+            exc: BaseException | None,
+            _traceback: TracebackType | None,
+        ) -> None:
             self.stream.close()
 
-        def fileno(self):
+        def fileno(self) -> int:
             return self.stream.fileno()
 
-        def read(self, size):
+        def read(self, size: int) -> bytes:
             assert size == 3
             raw = self.stream.read(size)
             os.link(path, alias)
@@ -194,23 +238,23 @@ def test_owned_read_rejects_hardlink_created_during_read(owned_file, monkeypatch
 
 
 @pytest.mark.parametrize("raw", [b"[]", b"true", b'{"x":1,"x":2}', b'{"x":NaN}', b"\xff"])
-def test_receipt_json_rejects_invalid_shapes_and_numbers(raw):
+def test_receipt_json_rejects_invalid_shapes_and_numbers(raw: bytes) -> None:
     with pytest.raises(ValueError, match="invalid_owned_receipt"):
         admission._parse(raw)
 
 
 @pytest.mark.parametrize("value", [None, False, 1, [], "====", "eA==\n"])
-def test_capture_body_requires_canonical_base64_string(value):
+def test_capture_body_requires_canonical_base64_string(value: object) -> None:
     with pytest.raises(ValueError):
         admission._body({"body": value}, "body", 2)
 
 
-def test_capture_body_enforces_decoded_size():
+def test_capture_body_enforces_decoded_size() -> None:
     with pytest.raises(ValueError, match="invalid_capture_bytes"):
         admission._body({"body": "eHl6"}, "body", 2)
 
 
-def test_journal_binds_event_order_and_previous_hash():
+def test_journal_binds_event_order_and_previous_hash() -> None:
     events = [{"type": "run_started"}, {"type": "slot_started"}]
     raw = admission._journal(events)
     lines = raw.splitlines(keepends=True)
@@ -237,8 +281,8 @@ def test_journal_binds_event_order_and_previous_hash():
         ("primary_postflight_error", "none"),
     ],
 )
-def test_malformed_capture_flags_rejected_before_deeper_evidence(field, value):
-    raw = {
+def test_malformed_capture_flags_rejected_before_deeper_evidence(field: str, value: object) -> None:
+    raw: ObjectMap = {
         "status": "primary_session_captured",
         "error": "none",
         "admitted": False,
@@ -279,36 +323,41 @@ def test_malformed_capture_flags_rejected_before_deeper_evidence(field, value):
     ],
 )
 def test_forged_capture_fields_stop_before_second_slot(
-    capture_fixture, monkeypatch, field, replacement
-):
+    capture_fixture: CaptureFixture,
+    monkeypatch: pytest.MonkeyPatch,
+    field: tuple[str, ...],
+    replacement: object,
+) -> None:
     args, calls, capture = capture_fixture
 
-    def mutated(*parameters):
+    def mutated(*parameters: *PrimaryArgs) -> ObjectMap:
         result = capture(*parameters)
         parent = result
         for component in field[:-1]:
-            parent = parent[component]
+            parent = mapping(parent[component])
         parent[field[-1]] = replacement
         parameters[-1].write_bytes(admission._canonical(result) + b"\n")
         return result
 
     monkeypatch.setattr(controller.primary, "run_primary", mutated)
-    result = controller.run_study(*args)
+    result = run_study(*args)
     assert result["admitted"] is False
     assert result["admission_before_blinding"] is False
     assert result["study_unlocked"] is result["scoring_start"] is False
     assert len(calls) == 1
-    assert list(result["dispositions"].values())[-1] == "not-attempted"
+    assert list(mapping(result["dispositions"]).values())[-1] == "not-attempted"
     with pytest.raises(FileExistsError):
-        controller.run_study(*args)
+        run_study(*args)
     assert len(calls) == 1
 
 
 @pytest.mark.parametrize("mutation", ["missing", "same-bytes-new-inode", "broken-chain"])
-def test_lost_or_replaced_journal_prevents_second_capture(capture_fixture, monkeypatch, mutation):
+def test_lost_or_replaced_journal_prevents_second_capture(
+    capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch, mutation: str
+) -> None:
     args, calls, capture = capture_fixture
 
-    def damaged(*parameters):
+    def damaged(*parameters: *PrimaryArgs) -> ObjectMap:
         result = capture(*parameters)
         path = parameters[-1].parent / "journal.jsonl"
         raw = path.read_bytes()
@@ -324,51 +373,57 @@ def test_lost_or_replaced_journal_prevents_second_capture(capture_fixture, monke
         return result
 
     monkeypatch.setattr(controller.primary, "run_primary", damaged)
-    result = controller.run_study(*args)
+    result = run_study(*args)
     assert result["admitted"] is False
     assert len(calls) == 1
-    assert list(result["dispositions"].values())[-1] == "not-attempted"
+    assert list(mapping(result["dispositions"]).values())[-1] == "not-attempted"
 
 
-def test_raw_receipt_and_returned_capture_must_match(capture_fixture, monkeypatch):
+def test_raw_receipt_and_returned_capture_must_match(
+    capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     args, calls, capture = capture_fixture
 
-    def mismatched(*parameters):
+    def mismatched(*parameters: *PrimaryArgs) -> ObjectMap:
         result = capture(*parameters)
         result["unpersisted_extra"] = "synthetic-mismatch"
         return result
 
     monkeypatch.setattr(controller.primary, "run_primary", mismatched)
-    result = controller.run_study(*args)
+    result = run_study(*args)
     assert result["admitted"] is False
     assert result["failure_stage"] == "readback"
     assert len(calls) == 1
 
 
-def test_persistence_error_after_capture_never_retries(capture_fixture, monkeypatch):
+def test_persistence_error_after_capture_never_retries(
+    capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     args, calls, _ = capture_fixture
     real_sync = controller.os.fsync
 
-    def interrupted_sync(descriptor):
+    def interrupted_sync(descriptor: int) -> None:
         if calls:
             raise OSError("synthetic-persistence-failure")
         return real_sync(descriptor)
 
     monkeypatch.setattr(controller.os, "fsync", interrupted_sync)
-    result = controller.run_study(*args)
+    result = run_study(*args)
     assert result["admitted"] is False
     assert len(calls) == 1
-    assert list(result["dispositions"].values()) == [
+    assert list(mapping(result["dispositions"]).values()) == [
         "attempted-outcome-unknown",
         "not-attempted",
     ]
 
 
-def test_existing_future_slot_receipt_never_overwritten(capture_fixture, monkeypatch):
+def test_existing_future_slot_receipt_never_overwritten(
+    capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     args, calls, capture = capture_fixture
-    preserved = []
+    preserved: list[Path] = []
 
-    def preexisting(*parameters):
+    def preexisting(*parameters: *PrimaryArgs) -> ObjectMap:
         result = capture(*parameters)
         path = parameters[-1].parent / "slot-2.json"
         path.write_bytes(b"synthetic-existing-evidence")
@@ -377,40 +432,46 @@ def test_existing_future_slot_receipt_never_overwritten(capture_fixture, monkeyp
         return result
 
     monkeypatch.setattr(controller.primary, "run_primary", preexisting)
-    result = controller.run_study(*args)
+    result = run_study(*args)
     assert result["admitted"] is False
     assert len(calls) == 1
     assert preserved[0].read_bytes() == b"synthetic-existing-evidence"
 
 
-def test_directory_sync_uses_nonblocking_directory_nofollow_flags(tmp_path, monkeypatch):
+def test_directory_sync_uses_nonblocking_directory_nofollow_flags(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     if not callable(getattr(os, "getuid", None)):
         pytest.skip("real owned-directory checks require POSIX UID semantics")
     directory = tmp_path.resolve()
     directory.chmod(0o700)
     info = directory.stat()
     original = controller.os.open
-    calls = []
+    calls: list[int] = []
 
-    def checked_open(path, flags, *args, **kwargs):
+    def checked_open(
+        path: FilePath, flags: int, mode: int = 0o777, *, dir_fd: int | None = None
+    ) -> int:
         assert flags & getattr(os, "O_NONBLOCK", 0)
         if hasattr(os, "O_DIRECTORY"):
             assert flags & getattr(os, "O_DIRECTORY", 0)
         if hasattr(os, "O_NOFOLLOW"):
             assert flags & getattr(os, "O_NOFOLLOW", 0)
         calls.append(flags)
-        return original(path, flags, *args, **kwargs)
+        return original(path, flags, mode, dir_fd=dir_fd)
 
     monkeypatch.setattr(controller.os, "open", checked_open)
     controller._sync_directory(directory, (info.st_dev, info.st_ino))
     assert len(calls) == 1
 
 
-def test_postseal_failure_outcome_cannot_overwrite_existing_evidence(capture_fixture, monkeypatch):
+def test_postseal_failure_outcome_cannot_overwrite_existing_evidence(
+    capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     args, calls, _ = capture_fixture
-    retained = {}
+    retained: RetainedEvidence = {}
 
-    def fail_after_seal(owned):
+    def fail_after_seal(owned: CaptureDirectory) -> None:
         retained["journal"] = (owned.directory / "journal.jsonl").read_bytes()
         retained["directory"] = owned.directory
         failure = owned.directory / "failure.json"
@@ -419,22 +480,24 @@ def test_postseal_failure_outcome_cannot_overwrite_existing_evidence(capture_fix
         raise ValueError("synthetic-admission-failure")
 
     monkeypatch.setattr(admission, "_consume", fail_after_seal)
-    result = controller.run_study(*args)
+    result = run_study(*args)
     assert len(calls) == 2
     assert result["admitted"] is result["scoring_start"] is False
     assert result["outcome_persistence_error"] == "failure_outcome_persistence_failed"
+    assert "directory" in retained
+    assert "journal" in retained
     assert (retained["directory"] / "failure.json").read_bytes() == b"synthetic-preexisting-failure"
     assert (retained["directory"] / "journal.jsonl").read_bytes() == retained["journal"]
 
 
 def test_admission_write_failure_preserves_sealed_journal_and_locked_failure(
-    capture_fixture, monkeypatch
-):
+    capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     args, calls, _ = capture_fixture
     original = controller._write_result
-    retained = {}
+    retained: RetainedEvidence = {}
 
-    def fail_admission_write(path, parent, result):
+    def fail_admission_write(path: Path, parent: tuple[int, int], result: ObjectMap) -> None:
         if path.name == "admission.json":
             retained["directory"] = path.parent
             retained["journal"] = (path.parent / "journal.jsonl").read_bytes()
@@ -442,7 +505,9 @@ def test_admission_write_failure_preserves_sealed_journal_and_locked_failure(
         return original(path, parent, result)
 
     monkeypatch.setattr(controller, "_write_result", fail_admission_write)
-    result = controller.run_study(*args)
+    result = run_study(*args)
+    assert "directory" in retained
+    assert "journal" in retained
     directory = retained["directory"]
     durable_failure = json.loads((directory / "failure.json").read_bytes())
     assert len(calls) == 2
@@ -454,5 +519,5 @@ def test_admission_write_failure_preserves_sealed_journal_and_locked_failure(
     assert (directory / "journal.jsonl").read_bytes() == retained["journal"]
     assert not (directory / "admission.json").exists()
     with pytest.raises(FileExistsError):
-        controller.run_study(*args)
+        run_study(*args)
     assert len(calls) == 2

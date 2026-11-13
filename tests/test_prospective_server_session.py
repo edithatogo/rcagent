@@ -8,23 +8,44 @@ import socket
 import sys
 import threading
 from pathlib import Path
+from types import TracebackType
+from typing import BinaryIO, Literal, Self, Unpack
 
 import pytest
 
+from tests.prospective_fixture_types import (
+    HttpArgs,
+    HttpCall,
+    HttpCapture,
+    HttpOptions,
+    ObjectMap,
+    ProcessArgs,
+    ProcessCall,
+    ProcessCapture,
+    ProcessOptions,
+    SessionFixture,
+    mapping,
+    mapping_call,
+    sequence,
+    text_value,
+)
 from tools import prospective_server_session as session
 
-REAL_CAPTURE_CHILD = session.process.capture_child
-REAL_HTTP_CAPTURE = session.transport.capture
+REAL_CAPTURE_CHILD: ProcessCapture = session.process.capture_child
+REAL_HTTP_CAPTURE: HttpCapture = session.transport.capture
+run_session = mapping_call(session.capture_session)
 
 
-def test_missing_imported_source_cannot_produce_pin_inventory(monkeypatch):
+def test_missing_imported_source_cannot_produce_pin_inventory(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     monkeypatch.setattr(session.core, "__file__", None)
     with pytest.raises(ValueError, match="source_unavailable"):
         session.source_pins()
 
 
 @pytest.mark.parametrize("field", ["body_bytes", "body_sha256"])
-def test_transport_body_integrity_mismatch_rejected(field):
+def test_transport_body_integrity_mismatch_rejected(field: str) -> None:
     raw = b"synthetic"
     receipt = {
         "body_base64": base64.b64encode(raw).decode(),
@@ -36,18 +57,18 @@ def test_transport_body_integrity_mismatch_rejected(field):
         session._body(receipt)
 
 
-def test_concurrent_session_rejected_before_receipt_creation(tmp_path):
+def test_concurrent_session_rejected_before_receipt_creation(tmp_path: Path) -> None:
     receipt = tmp_path / "receipt.json"
     assert session._LOCK.acquire(blocking=False)
     try:
         with pytest.raises(ValueError, match="session_already_running"):
-            session.capture_session(tmp_path, receipt)
+            run_session(tmp_path, receipt)
     finally:
         session._LOCK.release()
     assert not receipt.exists()
 
 
-def test_private_directory_and_cleanup_identity_guards(tmp_path):
+def test_private_directory_and_cleanup_identity_guards(tmp_path: Path) -> None:
     if os.name != "posix":
         pytest.skip("POSIX ownership and mode guards")
     directory = tmp_path.resolve() / "private"
@@ -67,14 +88,14 @@ def test_private_directory_and_cleanup_identity_guards(tmp_path):
     assert alias.is_symlink()
 
 
-def unix_socket():
+def unix_socket() -> socket.socket:
     family = getattr(socket, "AF_UNIX", None)
     if family is None:
         raise RuntimeError("Unix sockets unavailable in this fixture")
     return socket.socket(family, socket.SOCK_STREAM)
 
 
-def test_source_pin_inventory_matches_repository_bytes():
+def test_source_pin_inventory_matches_repository_bytes() -> None:
     pins = session.source_pins()
     assert set(pins) == {
         "prospective_server_session.py",
@@ -105,7 +126,7 @@ def test_source_pin_inventory_matches_repository_bytes():
 
 
 @pytest.fixture
-def synthetic(tmp_path, monkeypatch):
+def synthetic(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> SessionFixture:
     if os.name != "posix":
         pytest.skip("Unix session composition")
     monkeypatch.setattr(session, "_BLOCKED", False)
@@ -118,27 +139,43 @@ def synthetic(tmp_path, monkeypatch):
         "model_id": "synthetic-model",
         "profile_sha256": "b" * 64,
     }
-    monkeypatch.setattr(session.model, "admit_model", lambda root: dict(admission))
+
+    def admit_fixture(root: Path) -> dict[str, str]:
+        return dict(admission)
+
+    monkeypatch.setattr(session.model, "admit_model", admit_fixture)
     monkeypatch.setattr(session, "source_pins", lambda: {"fixture.py": "c" * 64})
     monkeypatch.setattr(session.profile, "profile_digest", lambda: "b" * 64)
-    monkeypatch.setattr(session.profile, "verify_loaded_images", lambda raw: ["/synthetic/server"])
+
+    def loaded_images(raw: bytes) -> list[str]:
+        return ["/synthetic/server"]
+
+    monkeypatch.setattr(session.profile, "verify_loaded_images", loaded_images)
     monkeypatch.setattr(
         session.profile, "profile_environment", lambda: {"PATH": "/usr/bin:/bin", "LANG": "C"}
     )
     monkeypatch.setattr(session.profile, "EXECUTABLE", "/synthetic/server")
-    monkeypatch.setattr(
-        session.native,
-        "decode_completion",
-        lambda raw, expected_model: {
+
+    def decode(raw: bytes, *, expected_model: str) -> ObjectMap:
+        return {
             "status": "native_completion_consistent",
             "admitted": False,
             "study_unlocked": False,
-        },
-    )
-    calls = []
-    processes = []
+        }
 
-    def capture_child(argv, environment, *, deadline, stop_event, cancel, **kwargs):
+    monkeypatch.setattr(session.native, "decode_completion", decode)
+    calls: list[HttpCall] = []
+    processes: list[ProcessCall] = []
+
+    def capture_child(
+        argv: list[str],
+        environment: dict[str, str],
+        *,
+        deadline: float,
+        stop_event: threading.Event,
+        cancel: threading.Event,
+        **kwargs: object,
+    ) -> ObjectMap:
         processes.append((argv, environment, deadline))
         path = Path(argv[argv.index("--host") + 1])
         with unix_socket() as listener:
@@ -159,7 +196,7 @@ def synthetic(tmp_path, monkeypatch):
             "study_unlocked": False,
         }
 
-    def capture(path, method, route, body, *, deadline):
+    def capture(path: Path, method: str, route: str, body: bytes, *, deadline: float) -> ObjectMap:
         calls.append((path, method, route, body, deadline))
         raw = b'{"status":"ok"}' if route == "/health" else b'{"synthetic":"completion"}'
         return {
@@ -181,9 +218,9 @@ def synthetic(tmp_path, monkeypatch):
     return root, root / "receipt.json", calls, processes, admission
 
 
-def test_fixed_session_reserved_and_locked(synthetic):
+def test_fixed_session_reserved_and_locked(synthetic: SessionFixture) -> None:
     root, receipt, calls, processes, _ = synthetic
-    result = session.capture_session(root, receipt)
+    result = run_session(root, receipt)
     assert result["status"] == "session_captured"
     assert result["admitted"] is result["study_unlocked"] is False
     assert result["worker_joined"] is True
@@ -202,26 +239,28 @@ def test_fixed_session_reserved_and_locked(synthetic):
     assert env == {"PATH": "/usr/bin:/bin", "LANG": "C"}
 
 
-def test_receipt_exists_never_launches(synthetic):
+def test_receipt_exists_never_launches(synthetic: SessionFixture) -> None:
     root, receipt, _, processes, _ = synthetic
     receipt.write_bytes(b"preserve")
     with pytest.raises(ValueError):
-        session.capture_session(root, receipt)
+        run_session(root, receipt)
     assert receipt.read_bytes() == b"preserve"
     assert not processes
 
 
-def test_unsupported_platform_does_not_launch(synthetic, monkeypatch):
+def test_unsupported_platform_does_not_launch(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, _, processes, _ = synthetic
     monkeypatch.setattr(session.platform, "system", lambda: "Linux")
-    assert session.capture_session(root, receipt)["error"] == "unsupported_platform"
+    assert run_session(root, receipt)["error"] == "unsupported_platform"
     assert not processes
 
 
-def test_preflight_profile_disagreement_never_launches(synthetic):
+def test_preflight_profile_disagreement_never_launches(synthetic: SessionFixture) -> None:
     root, receipt, calls, processes, admission = synthetic
     admission["profile_sha256"] = "d" * 64
-    result = session.capture_session(root, receipt)
+    result = run_session(root, receipt)
     assert result["error"] == "profile_identity_mismatch"
     assert result["status"] == "session_failed"
     assert result["admitted"] is result["study_unlocked"] is False
@@ -229,50 +268,56 @@ def test_preflight_profile_disagreement_never_launches(synthetic):
     assert not processes
 
 
-def test_health_attempt_budget_stops_without_completion(synthetic, monkeypatch):
+def test_health_attempt_budget_stops_without_completion(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, calls, _, _ = synthetic
-    original = session.transport.capture
+    original: HttpCapture = session.transport.capture
 
-    def loading(*args, **kwargs):
-        value = original(*args, **kwargs)
+    def loading(*args: *HttpArgs, **kwargs: Unpack[HttpOptions]) -> ObjectMap:
+        value = mapping(original(*args, **kwargs))
         value.update(status="transport_failed", http_status=503)
         return value
 
     monkeypatch.setattr(session, "HEALTH_ATTEMPTS", 1)
     monkeypatch.setattr(session.transport, "capture", loading)
-    result = session.capture_session(root, receipt)
+    result = run_session(root, receipt)
     assert result["error"] == "health_attempts_exhausted"
     assert result["status"] == "session_failed"
     assert [call[2] for call in calls] == ["/health"]
     assert result["worker_joined"]
-    assert result["process"]["reaped"]
+    assert mapping(result["process"])["reaped"]
     assert result["resources_removed"]
 
 
-def test_interrupted_health_keeps_failure_after_worker_cleanup(synthetic, monkeypatch):
+def test_interrupted_health_keeps_failure_after_worker_cleanup(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, _, _, _ = synthetic
 
-    def interrupted(*args, **kwargs):
+    def interrupted(*args: object, **kwargs: object) -> None:
         raise KeyboardInterrupt
 
     monkeypatch.setattr(session.transport, "capture", interrupted)
-    result = session.capture_session(root, receipt)
+    result = run_session(root, receipt)
     assert result["error"] == "session_interrupted"
     assert result["failure_stage"] == "readiness_failed"
     assert result["status"] == "session_failed"
     assert result["worker_joined"]
-    assert result["process"]["reaped"]
+    assert mapping(result["process"])["reaped"]
     assert result["resources_removed"]
     assert result["admitted"] is result["study_unlocked"] is False
 
 
 @pytest.mark.parametrize("damage", ["duplicate", "malformed", "status", "oversize", "http"])
-def test_bad_health_cannot_be_replaced_by_later_success(synthetic, monkeypatch, damage):
+def test_bad_health_cannot_be_replaced_by_later_success(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch, damage: str
+) -> None:
     root, receipt, calls, _, _ = synthetic
-    original = session.transport.capture
+    original: HttpCapture = session.transport.capture
 
-    def capture(*args, **kwargs):
-        value = original(*args, **kwargs)
+    def capture(*args: *HttpArgs, **kwargs: Unpack[HttpOptions]) -> ObjectMap:
+        value = mapping(original(*args, **kwargs))
         raw = {
             "duplicate": b'{"status":"bad","status":"ok"}',
             "malformed": b"{",
@@ -290,59 +335,67 @@ def test_bad_health_cannot_be_replaced_by_later_success(synthetic, monkeypatch, 
         return value
 
     monkeypatch.setattr(session.transport, "capture", capture)
-    result = session.capture_session(root, receipt)
+    result = run_session(root, receipt)
     assert result["status"] == "session_failed"
     assert len(calls) == 1
-    assert result["process"]["status"] == "process_stopped"
+    assert mapping(result["process"])["status"] == "process_stopped"
 
 
-def test_loading_health_retries_on_same_socket(synthetic, monkeypatch):
+def test_loading_health_retries_on_same_socket(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, calls, _, _ = synthetic
-    original = session.transport.capture
+    original: HttpCapture = session.transport.capture
 
-    def capture(*args, **kwargs):
-        value = original(*args, **kwargs)
+    def capture(*args: *HttpArgs, **kwargs: Unpack[HttpOptions]) -> ObjectMap:
+        value = mapping(original(*args, **kwargs))
         if len(calls) == 1:
             value.update(status="transport_failed", http_status=503)
         return value
 
     monkeypatch.setattr(session.transport, "capture", capture)
-    assert session.capture_session(root, receipt)["status"] == "session_captured"
+    assert run_session(root, receipt)["status"] == "session_captured"
     assert [call[2] for call in calls] == ["/health", "/health", "/completion"]
 
 
-def test_completion_failure_is_not_erased_by_successful_stop(synthetic, monkeypatch):
+def test_completion_failure_is_not_erased_by_successful_stop(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, _, _, _ = synthetic
-    original = session.transport.capture
+    original: HttpCapture = session.transport.capture
 
-    def capture(path, method, route, body, **kwargs):
-        value = original(path, method, route, body, **kwargs)
+    def capture(
+        path: Path, method: str, route: str, body: bytes, **kwargs: Unpack[HttpOptions]
+    ) -> ObjectMap:
+        value = mapping(original(path, method, route, body, **kwargs))
         if route == "/completion":
             value.update(status="transport_failed", http_status=500)
         return value
 
     monkeypatch.setattr(session.transport, "capture", capture)
-    result = session.capture_session(root, receipt)
+    result = run_session(root, receipt)
     assert result["error"] == "completion_transport_failed"
-    assert result["process"]["status"] == "process_stopped"
+    assert mapping(result["process"])["status"] == "process_stopped"
 
 
 @pytest.mark.parametrize("damage", ["pid", "logs", "admission", "source", "profile", "decode"])
-def test_final_evidence_gaps_fail_closed(synthetic, monkeypatch, damage):
+def test_final_evidence_gaps_fail_closed(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch, damage: str
+) -> None:
     root, receipt, _, _, admission = synthetic
-    original = session.process.capture_child
-    original_transport = session.transport.capture
+    original: ProcessCapture = session.process.capture_child
+    original_transport: HttpCapture = session.transport.capture
 
-    def capture_child(*args, **kwargs):
-        value = original(*args, **kwargs)
+    def capture_child(*args: *ProcessArgs, **kwargs: Unpack[ProcessOptions]) -> ObjectMap:
+        value = mapping(original(*args, **kwargs))
         if damage == "pid":
             value["pid"] = 999
         elif damage == "logs":
             value["stderr_complete"] = False
         return value
 
-    def capture(*args, **kwargs):
-        value = original_transport(*args, **kwargs)
+    def capture(*args: *HttpArgs, **kwargs: Unpack[HttpOptions]) -> ObjectMap:
+        value = mapping(original_transport(*args, **kwargs))
         if args[2] == "/completion":
             if damage == "admission":
                 admission["admission_sha256"] = "changed"
@@ -356,75 +409,87 @@ def test_final_evidence_gaps_fail_closed(synthetic, monkeypatch, damage):
     monkeypatch.setattr(session.transport, "capture", capture)
     if damage == "decode":
 
-        def reject(*args, **kwargs):
+        def reject(*args: object, **kwargs: object) -> None:
             raise ValueError("incomplete_generation")
 
         monkeypatch.setattr(session.native, "decode_completion", reject)
-    result = session.capture_session(root, receipt)
+    result = run_session(root, receipt)
     assert result["status"] == "session_failed"
     assert result["admitted"] is result["study_unlocked"] is False
 
 
-def test_worker_exception_preserves_resources_and_blocks_replacement(synthetic, monkeypatch):
+def test_worker_exception_preserves_resources_and_blocks_replacement(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, _, _, _ = synthetic
 
-    def fail(*args, **kwargs):
+    def fail(*args: object, **kwargs: object) -> None:
         raise RuntimeError("private-exception")
 
     monkeypatch.setattr(session.process, "capture_child", fail)
-    result = session.capture_session(root, receipt)
+    result = run_session(root, receipt)
     assert result["worker_error"] == "worker_exception"
     assert result["resources_removed"] is False
     assert "private-exception" not in json.dumps(result)
     with pytest.raises(ValueError, match="circuit_breaker"):
-        session.capture_session(root, root / "second.json")
-    Path(result["socket_path"]).parent.rmdir()  # Empty fixture directory; no child existed.
+        run_session(root, root / "second.json")
+    Path(
+        text_value(result["socket_path"])
+    ).parent.rmdir()  # Empty fixture directory; no child existed.
 
 
-def test_start_that_launches_then_raises_is_joined_before_cleanup(synthetic, monkeypatch):
+def test_start_that_launches_then_raises_is_joined_before_cleanup(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, _, _, _ = synthetic
     original = threading.Thread.start
 
-    def start(worker):
+    def start(worker: threading.Thread) -> None:
         original(worker)
         raise RuntimeError("synthetic start error")
 
     monkeypatch.setattr(session.threading.Thread, "start", start)
-    result = session.capture_session(root, receipt)
+    result = run_session(root, receipt)
     assert result["error"] == "worker_start_failed"
     assert result["worker_joined"] is True
     # A socket created after start failed was never observed/identified: preserve it.
-    path = Path(result["socket_path"])
+    path = Path(text_value(result["socket_path"]))
     if path.exists():
         path.unlink()
     if path.parent.exists():
         path.parent.rmdir()
 
 
-def test_receipt_replacement_during_preflight_never_launches(synthetic, monkeypatch):
+def test_receipt_replacement_during_preflight_never_launches(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, _, processes, admission = synthetic
 
-    def admit(root):
+    def admit(root: Path) -> dict[str, str]:
         receipt.rename(receipt.with_name("reserved.json"))
         receipt.write_bytes(b"replacement")
         return dict(admission)
 
     monkeypatch.setattr(session.model, "admit_model", admit)
     with pytest.raises(ValueError, match="receipt_identity_changed"):
-        session.capture_session(root, receipt)
+        run_session(root, receipt)
     reserved = json.loads(receipt.with_name("reserved.json").read_bytes())
     assert reserved["error"] == "receipt_identity_changed"
     assert not processes
     assert receipt.read_bytes() == b"replacement"
 
 
-def test_socket_replacement_between_health_and_completion_is_rejected(synthetic, monkeypatch):
+def test_socket_replacement_between_health_and_completion_is_rejected(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, calls, _, _ = synthetic
-    original = session.transport.capture
+    original: HttpCapture = session.transport.capture
     replacement = unix_socket()
 
-    def capture(path, *args, **kwargs):
-        value = original(path, *args, **kwargs)
+    def capture(
+        path: Path, *args: *tuple[str, str, bytes], **kwargs: Unpack[HttpOptions]
+    ) -> ObjectMap:
+        value = mapping(original(path, *args, **kwargs))
         if args[1] == "/health":
             path.unlink()
             replacement.bind(str(path))
@@ -432,18 +497,20 @@ def test_socket_replacement_between_health_and_completion_is_rejected(synthetic,
 
     monkeypatch.setattr(session.transport, "capture", capture)
     try:
-        result = session.capture_session(root, receipt)
+        result = run_session(root, receipt)
     finally:
         replacement.close()
     assert result["error"] == "session_socket_changed"
     assert len(calls) == 1
     assert result["resources_removed"] is False
-    path = Path(result["socket_path"])
+    path = Path(text_value(result["socket_path"]))
     path.unlink()
     path.parent.rmdir()
 
 
-def test_real_synthetic_child_http_and_graceful_stop(synthetic, monkeypatch):
+def test_real_synthetic_child_http_and_graceful_stop(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     # Profile/eligibility and decoder remain labelled fixtures, while process,
     # worker, HTTP framing, Unix socket and TERM-drain composition execute for real.
     root, receipt, _, _, _ = synthetic
@@ -469,132 +536,150 @@ with socket.socket(socket.AF_UNIX,socket.SOCK_STREAM) as listener:
    body=b'{"status":"ok"}' if request.startswith(b'GET ') else b'{"synthetic":"completion"}'
    conn.sendall(b'HTTP/1.1 200 OK\\r\\nContent-Type: application/json\\r\\nContent-Length: '+str(len(body)).encode()+b'\\r\\n\\r\\n'+body)
 """
-    monkeypatch.setattr(
-        session,
-        "_fixed_arguments",
-        lambda admission, path: [str(Path(sys.executable).resolve()), "-c", script, str(path)],
-    )
-    result = session.capture_session(root, receipt)
+
+    def arguments(admission: object, path: Path) -> list[str]:
+        return [str(Path(sys.executable).resolve()), "-c", script, str(path)]
+
+    monkeypatch.setattr(session, "_fixed_arguments", arguments)
+    result = run_session(root, receipt)
     assert result["status"] == "session_captured"
-    assert result["process"]["reaped"] is True
-    assert result["process"]["stop_started"] is True
+    assert mapping(result["process"])["reaped"] is True
+    assert mapping(result["process"])["stop_started"] is True
     assert result["resources_removed"] is True
 
 
-def test_delayed_socket_creation_does_not_consume_health_attempts(synthetic, monkeypatch):
+def test_delayed_socket_creation_does_not_consume_health_attempts(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, calls, _, _ = synthetic
-    original = session.process.capture_child
+    original: ProcessCapture = session.process.capture_child
 
-    def delayed(*args, **kwargs):
+    def delayed(*args: *ProcessArgs, **kwargs: Unpack[ProcessOptions]) -> ObjectMap:
         threading.Event().wait(0.25)
-        return original(*args, **kwargs)
+        return mapping(original(*args, **kwargs))
 
     monkeypatch.setattr(session.process, "capture_child", delayed)
     monkeypatch.setattr(session, "HEALTH_ATTEMPTS", 1)
-    assert session.capture_session(root, receipt)["status"] == "session_captured"
+    assert run_session(root, receipt)["status"] == "session_captured"
     assert len(calls) == 2
 
 
-def test_completion_request_hash_mismatch_rejected(synthetic, monkeypatch):
+def test_completion_request_hash_mismatch_rejected(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, _, _, _ = synthetic
-    original = session.transport.capture
+    original: HttpCapture = session.transport.capture
 
-    def capture(*args, **kwargs):
-        value = original(*args, **kwargs)
+    def capture(*args: *HttpArgs, **kwargs: Unpack[HttpOptions]) -> ObjectMap:
+        value = mapping(original(*args, **kwargs))
         if args[2] == "/completion":
             value["request_body_sha256"] = "changed"
         return value
 
     monkeypatch.setattr(session.transport, "capture", capture)
-    assert session.capture_session(root, receipt)["error"] == "completion_request_mismatch"
+    assert run_session(root, receipt)["error"] == "completion_request_mismatch"
 
 
-def test_worker_join_failure_preserves_paths_and_blocks_next_run(synthetic, monkeypatch):
+def test_worker_join_failure_preserves_paths_and_blocks_next_run(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, _, _, _ = synthetic
-    original = session.process.capture_child
+    original: ProcessCapture = session.process.capture_child
     release = threading.Event()
-    workers = []
+    workers: list[threading.Thread] = []
 
-    def capture(*args, **kwargs):
+    def capture(*args: *ProcessArgs, **kwargs: Unpack[ProcessOptions]) -> ObjectMap:
         workers.append(threading.current_thread())
-        value = original(*args, **kwargs)
+        value = mapping(original(*args, **kwargs))
         release.wait(5)
         return value
 
     monkeypatch.setattr(session.process, "capture_child", capture)
     monkeypatch.setattr(session, "JOIN_SECONDS", 0.01)
     try:
-        result = session.capture_session(root, receipt)
+        result = run_session(root, receipt)
         assert result["worker_joined"] is False
         assert result["resources_removed"] is False
-        assert "worker_join_failed" in result["cleanup_errors"]
+        assert "worker_join_failed" in sequence(result["cleanup_errors"])
         with pytest.raises(ValueError, match="circuit_breaker"):
-            session.capture_session(root, root / "second.json")
+            run_session(root, root / "second.json")
     finally:
         release.set()
         for worker in workers:
             worker.join(5)
             assert not worker.is_alive()
-    path = Path(result["socket_path"])
+    path = Path(text_value(result["socket_path"]))
     path.unlink()
     path.parent.rmdir()
 
 
-def test_unexpected_directory_content_is_not_recursively_removed(synthetic, monkeypatch):
+def test_unexpected_directory_content_is_not_recursively_removed(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, _, _, _ = synthetic
-    original = session.transport.capture
+    original: HttpCapture = session.transport.capture
 
-    def capture(path, *args, **kwargs):
-        value = original(path, *args, **kwargs)
+    def capture(
+        path: Path, *args: *tuple[str, str, bytes], **kwargs: Unpack[HttpOptions]
+    ) -> ObjectMap:
+        value = mapping(original(path, *args, **kwargs))
         (path.parent / "unexpected.txt").write_bytes(b"preserve")
         return value
 
     monkeypatch.setattr(session.transport, "capture", capture)
-    result = session.capture_session(root, receipt)
+    result = run_session(root, receipt)
     assert result["status"] == "session_failed"
     assert result["resources_removed"] is False
-    directory = Path(result["socket_path"]).parent
+    directory = Path(text_value(result["socket_path"])).parent
     assert (directory / "unexpected.txt").read_bytes() == b"preserve"
     (directory / "unexpected.txt").unlink()
     directory.rmdir()
 
 
 @pytest.mark.parametrize("failure", ["write", "flush", "close"])
-def test_receipt_persistence_failure_never_returns_success(synthetic, monkeypatch, failure):
+def test_receipt_persistence_failure_never_returns_success(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch, failure: str
+) -> None:
     root, receipt, _, _, _ = synthetic
     original = os.fdopen
 
     class Stream:
-        def __init__(self, value):
+        def __init__(self, value: BinaryIO) -> None:
             self.value = value
 
-        def __enter__(self):
+        def __enter__(self) -> Self:
             return self
 
-        def __exit__(self, *args):
+        def __exit__(
+            self,
+            _exc_type: type[BaseException] | None,
+            exc: BaseException | None,
+            _traceback: TracebackType | None,
+        ) -> None:
             self.value.close()
             if failure == "close":
                 raise OSError("private storage failure")
 
-        def write(self, value):
+        def write(self, value: bytes) -> int:
             if failure == "write":
                 raise OSError("private storage failure")
             return self.value.write(value)
 
-        def flush(self):
+        def flush(self) -> None:
             if failure == "flush":
                 raise OSError("private storage failure")
             self.value.flush()
 
-    monkeypatch.setattr(
-        session.os, "fdopen", lambda *args, **kwargs: Stream(original(*args, **kwargs))
-    )
+    def opened(descriptor: int, mode: Literal["wb", "w+b"], *, closefd: bool = True) -> Stream:
+        return Stream(original(descriptor, mode, closefd=closefd))
+
+    monkeypatch.setattr(session.os, "fdopen", opened)
     with pytest.raises(ValueError, match=r"^receipt_persistence_failed$"):
-        session.capture_session(root, receipt)
+        run_session(root, receipt)
 
 
 @pytest.mark.parametrize("kind", ["symlink", "traversal", "missing-parent"])
-def test_unsafe_receipt_rejected_before_any_launch(synthetic, kind):
+def test_unsafe_receipt_rejected_before_any_launch(synthetic: SessionFixture, kind: str) -> None:
     root, receipt, _, processes, _ = synthetic
     if kind == "symlink":
         receipt.symlink_to(root / "absent")
@@ -604,28 +689,32 @@ def test_unsafe_receipt_rejected_before_any_launch(synthetic, kind):
     else:
         receipt = root / "absent" / "receipt.json"
     with pytest.raises((ValueError, OSError)):
-        session.capture_session(root, receipt)
+        run_session(root, receipt)
     assert not processes
 
 
-def test_shared_deadline_expiry_stops_readiness_without_completion(synthetic, monkeypatch):
+def test_shared_deadline_expiry_stops_readiness_without_completion(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, calls, _, _ = synthetic
-    original = session.transport.capture
+    original: HttpCapture = session.transport.capture
 
-    def capture(*args, **kwargs):
-        value = original(*args, **kwargs)
+    def capture(*args: *HttpArgs, **kwargs: Unpack[HttpOptions]) -> ObjectMap:
+        value = mapping(original(*args, **kwargs))
         value.update(status="transport_failed", http_status=503)
         return value
 
     monkeypatch.setattr(session.transport, "capture", capture)
     monkeypatch.setattr(session, "TIMEOUT", 0.2)
-    result = session.capture_session(root, receipt)
+    result = run_session(root, receipt)
     assert result["status"] == "session_failed"
     assert result["error"] == "session_deadline_exceeded"
     assert all(call[2] == "/health" for call in calls)
 
 
-def test_receipt_parent_replacement_during_open_never_launches(synthetic, monkeypatch):
+def test_receipt_parent_replacement_during_open_never_launches(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, _, _, processes, _ = synthetic
     parent = root / "receipt-parent"
     parent.mkdir()
@@ -633,8 +722,10 @@ def test_receipt_parent_replacement_during_open_never_launches(synthetic, monkey
     original = os.open
     preserved = root / "preserved-parent"
 
-    def open_file(path, *args, **kwargs):
-        descriptor = original(path, *args, **kwargs)
+    def open_file(
+        path: str | Path, flags: int, mode: int = 0o777, *, dir_fd: int | None = None
+    ) -> int:
+        descriptor = original(path, flags, mode, dir_fd=dir_fd)
         if Path(path) == destination:
             parent.rename(preserved)
             parent.mkdir()
@@ -642,39 +733,47 @@ def test_receipt_parent_replacement_during_open_never_launches(synthetic, monkey
 
     monkeypatch.setattr(session.os, "open", open_file)
     with pytest.raises(ValueError, match="receipt_persistence_failed"):
-        session.capture_session(root, destination)
+        run_session(root, destination)
     assert not processes
     assert (preserved / "receipt.json").read_bytes() == b""
     assert not destination.exists()
 
 
-def test_receipt_replacement_during_flush_prevents_positive_return(synthetic, monkeypatch):
+def test_receipt_replacement_during_flush_prevents_positive_return(
+    synthetic: SessionFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, receipt, _, _, _ = synthetic
     original = os.fdopen
     preserved = root / "reserved-old.json"
 
     class Stream:
-        def __init__(self, value):
+        def __init__(self, value: BinaryIO) -> None:
             self.value = value
 
-        def __enter__(self):
+        def __enter__(self) -> Self:
             return self
 
-        def __exit__(self, *args):
+        def __exit__(
+            self,
+            _exc_type: type[BaseException] | None,
+            exc: BaseException | None,
+            _traceback: TracebackType | None,
+        ) -> None:
             self.value.close()
 
-        def write(self, data):
+        def write(self, data: bytes) -> int:
             return self.value.write(data)
 
-        def flush(self):
+        def flush(self) -> None:
             self.value.flush()
             receipt.rename(preserved)
             receipt.write_bytes(b"replacement")
 
-    monkeypatch.setattr(
-        session.os, "fdopen", lambda *args, **kwargs: Stream(original(*args, **kwargs))
-    )
+    def opened(descriptor: int, mode: Literal["wb", "w+b"], *, closefd: bool = True) -> Stream:
+        return Stream(original(descriptor, mode, closefd=closefd))
+
+    monkeypatch.setattr(session.os, "fdopen", opened)
     with pytest.raises(ValueError, match="receipt_identity_changed"):
-        session.capture_session(root, receipt)
+        run_session(root, receipt)
     assert receipt.read_bytes() == b"replacement"
     assert json.loads(preserved.read_bytes())["admitted"] is False

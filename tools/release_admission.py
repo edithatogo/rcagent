@@ -7,6 +7,8 @@ import json
 import re
 from pathlib import Path
 
+from tools.json_shapes import is_array, is_object
+
 _SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 _SENSITIVE = re.compile(
     rb"(?i)(?:api[_-]?key|access[_-]?token|client[_-]?secret|password)\s*[:=]\s*[^\s<]{8,}"
@@ -34,15 +36,17 @@ def release_input_paths(repository: Path) -> list[Path]:
 def validate_release_inventory(repository: Path, inventory_path: Path) -> dict[str, object]:
     """Require every and only release input to have exact public-rights evidence."""
     repository = repository.resolve()
-    value = json.loads(inventory_path.read_text(encoding="utf-8"))
+    value: object = json.loads(inventory_path.read_text(encoding="utf-8"))
+    if not is_object(value):
+        raise ValueError("release rights inventory metadata is invalid")
     if value.get("schema_version") != "1.0" or value.get("licence") != "Apache-2.0":
         raise ValueError("release rights inventory metadata is invalid")
     records = value.get("files")
-    if not isinstance(records, list):
+    if not is_array(records):
         raise ValueError("release rights inventory files are invalid")
     by_path: dict[str, dict[str, object]] = {}
     for record in records:
-        if not isinstance(record, dict) or not isinstance(record.get("path"), str):
+        if not is_object(record) or not isinstance(record.get("path"), str):
             raise ValueError("release rights inventory record is invalid")
         name = str(record["path"])
         if name in by_path:

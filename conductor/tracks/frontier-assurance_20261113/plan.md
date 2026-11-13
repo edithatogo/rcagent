@@ -9,7 +9,7 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
 - [~] FAW03: correct portable templates, hash-bind current admission and enforce selection/package invariants; preserve historical quarantine (FA03).
 - [~] FAW04: lock CI installation; broad Ruff plus format; strict basedpyright and measured legacy baseline with no growth (FA04).
 - [~] FAW05: add Hypothesis, pytest-gremlins, Scalene, Bandit and Vulture with real invocations and meaningful failure behaviour (FA05).
-- [ ] FAW06: migrate legacy unknown/Any boundaries into typed schemas/modules in bounded batches, reducing rather than refreshing the baseline (FA04; each batch separate and reviewed).
+- [~] FAW06: migrate legacy unknown/Any boundaries into typed schemas/modules in bounded batches, reducing rather than refreshing the baseline (FA04; each batch separate and reviewed). Current owner-directed priority: checked JSON containers, evidence/admission validators, conformance tools and prospective test fixture/callback contracts; record counts in the typing receipt.
 - [ ] Checkpoint A: run applicable local/hosted gates, three-role agent review, merge evidence and rollback notes; mark only verified leaves complete.
 
 ## Phase B: Incremental component demonstrations
@@ -50,6 +50,15 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
 
 Phase A may run in parallel with public-source planning and fixture design. B consumes repaired source/provenance boundaries. C consumes qualified extraction/view contracts; D consumes its qualified components and Track 14 applicability. E experiments are conditional and never block a useful deterministic timeline product.
 
-The first ready engineering batch is FAW01–05. The next capability batch is FAW07–10, which maps into existing CAW02/04/08/10/20 rather than creating duplicate implementation counters. Model/hardware/data-dependent leaves may wait while software work continues. No elapsed research-time promise is inferred from coding-agent speed.
+FAW01–05 are implemented and await complete hosted acceptance. The user's current
+priority is FAW06: finish and verify the bounded typing batches before starting
+new capability demonstrations. Next typing work should replace remaining bare
+dictionary/process callback contracts and guard domain enum values before hashed
+membership; checked container shapes alone do not validate those values. Retain
+intentional private-access debt until its test/API design is reviewed. The next
+capability batch remains FAW07–10, which maps into existing CAW02/04/08/10/20 rather
+than creating duplicate implementation counters. Model/hardware/data-dependent
+leaves may wait while software work continues. No elapsed research-time promise
+is inferred from coding-agent speed.
 
 Revert individual implementation commits or disable an optional adapter; preserve original datasets, receipts, negative results and prior release artifacts. Tightened disclosure behaviour must never be rolled back merely to make an unauthorised export succeed.

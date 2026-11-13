@@ -74,29 +74,25 @@ def test_workflow_history_must_be_continuous() -> None:
 
 
 @pytest.mark.parametrize(
-    ("mutator", "expected"),
+    ("change", "expected"),
     [
-        (
-            lambda value: value["roles"].append(deepcopy(value["roles"][0])),
-            "identifiers: duplicate 'role-reviewer'",
-        ),
-        (
-            lambda value: value["events"][0].update(actor_role_id="missing-role"),
-            "events: unknown actor_role_id 'missing-role'",
-        ),
-        (
-            lambda value: value["events"][0].update(from_state="intake", to_state="closed"),
-            "events: invalid transition 'intake' -> 'closed'",
-        ),
-        (
-            lambda value: value.update(state="closed"),
-            "state: does not match the final event to_state",
-        ),
+        ("duplicate_role", "identifiers: duplicate 'role-reviewer'"),
+        ("unknown_actor", "events: unknown actor_role_id 'missing-role'"),
+        ("invalid_transition", "events: invalid transition 'intake' -> 'closed'"),
+        ("different_final_state", "state: does not match the final event to_state"),
     ],
 )
-def test_semantic_integrity_checks(mutator: Any, expected: str) -> None:
+def test_semantic_integrity_checks(change: str, expected: str) -> None:
     value = record()
-    mutator(value)
+    if change == "duplicate_role":
+        value["roles"].append(deepcopy(value["roles"][0]))
+    elif change == "unknown_actor":
+        value["events"][0].update(actor_role_id="missing-role")
+    elif change == "invalid_transition":
+        value["events"][0].update(from_state="intake", to_state="closed")
+    else:
+        assert change == "different_final_state"
+        value["state"] = "closed"
     assert expected in validate_record(value)
 
 

@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import sys
-from types import SimpleNamespace
+from pathlib import Path
+from subprocess import CompletedProcess
+
+import pytest
 
 from tools import full_validation
 from tools.full_validation import CHECKS
@@ -29,18 +32,18 @@ def test_full_validation_is_local_deterministic_and_matches_quality_gate() -> No
         token not in command_text for token in ("curl", "wget", "download", "ollama", "huggingface")
     )
     assert CHECKS[-1][3:] == (
-        "--cov=tools",
+        "--cov",
         "--cov-report=xml",
         "--cov-report=term-missing",
     )
 
 
-def test_full_validation_runs_every_check_on_success(monkeypatch) -> None:
+def test_full_validation_runs_every_check_on_success(monkeypatch: pytest.MonkeyPatch) -> None:
     observed: list[tuple[tuple[str, ...], object, bool]] = []
 
-    def fake_run(command, *, cwd, check):
+    def fake_run(command: tuple[str, ...], *, cwd: Path, check: bool) -> CompletedProcess[str]:
         observed.append((command, cwd, check))
-        return SimpleNamespace(returncode=0)
+        return CompletedProcess(command, 0)
 
     monkeypatch.setattr(full_validation.subprocess, "run", fake_run)
     assert full_validation.main() == 0
@@ -48,15 +51,33 @@ def test_full_validation_runs_every_check_on_success(monkeypatch) -> None:
     assert all(item[1] == full_validation.ROOT and item[2] is False for item in observed)
 
 
-def test_full_validation_stops_at_first_failure(monkeypatch) -> None:
+def test_full_validation_stops_at_first_failure(monkeypatch: pytest.MonkeyPatch) -> None:
     return_codes = iter((0, 9))
     observed: list[tuple[str, ...]] = []
 
-    def fake_run(command, *, cwd, check):
+    def fake_run(command: tuple[str, ...], *, cwd: Path, check: bool) -> CompletedProcess[str]:
         del cwd, check
         observed.append(command)
-        return SimpleNamespace(returncode=next(return_codes))
+        return CompletedProcess(command, next(return_codes))
 
     monkeypatch.setattr(full_validation.subprocess, "run", fake_run)
     assert full_validation.main() == 9
     assert observed == list(CHECKS[:2])
+
+
+@pytest.mark.parametrize("test_exit", [0, 1, 2])
+def test_deferred_coverage_keeps_checks_and_test_failure_exit(
+    monkeypatch: pytest.MonkeyPatch, test_exit: int
+) -> None:
+    observed: list[tuple[str, ...]] = []
+
+    def fake_run(command: tuple[str, ...], *, cwd: Path, check: bool) -> CompletedProcess[str]:
+        assert cwd == full_validation.ROOT
+        assert check is False
+        observed.append(command)
+        return CompletedProcess(command, test_exit if command[2] == "pytest" else 0)
+
+    monkeypatch.setattr(full_validation.subprocess, "run", fake_run)
+    assert full_validation.main(["--defer-coverage-floor"]) == test_exit
+    assert observed[:-1] == list(CHECKS[:-1])
+    assert observed[-1] == (*CHECKS[-1], "--cov-fail-under=0")

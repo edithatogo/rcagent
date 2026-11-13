@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping, Sequence
 from copy import deepcopy
 from hashlib import sha256
 from pathlib import Path
@@ -11,6 +11,8 @@ from typing import Any, Protocol, cast
 
 from jsonschema import Draft202012Validator, FormatChecker
 from jsonschema.exceptions import ValidationError
+
+from tools.json_shapes import JsonObject, is_array, is_object, object_rows
 
 SCHEMA_PATH = Path(__file__).parents[1] / "conductor/schemas/safety-work.schema.json"
 CURRENT_SCHEMA_VERSION = "1.1"
@@ -34,7 +36,7 @@ NON_STATE_EVENTS = {"correction_recorded", "evidence_withdrawn", "appeal_note_re
 class _RecordValidator(Protocol):
     """The supported non-deprecated part of jsonschema's validator interface."""
 
-    def iter_errors(self, instance: dict[str, Any]) -> Iterable[ValidationError]: ...
+    def iter_errors(self, instance: object) -> Iterable[ValidationError]: ...
 
 
 def load_schema() -> dict[str, Any]:
@@ -72,26 +74,19 @@ REFERENCE_TARGETS = {
 }
 
 
-def _objects(value: object) -> list[dict[str, Any]]:
-    if not isinstance(value, list):
-        return []
-    # The JSON/schema boundary remains dynamic; the collection shape is checked
-    # before its named fields enter the typed-reference validator.
-    return [
-        cast("dict[str, Any]", item)
-        for item in cast("list[object]", value)
-        if isinstance(item, dict)
-    ]
+def _objects(value: object) -> list[JsonObject]:
+    return object_rows(value)
 
 
 def _reference_errors(
-    item: dict[str, Any], targets: dict[str, str], indexes: dict[str, set[str]], context: str
+    item: Mapping[str, object], targets: dict[str, str], indexes: dict[str, set[str]], context: str
 ) -> list[str]:
     errors: list[str] = []
     for field, target in targets.items():
         if field not in item:
             continue  # Required fields are checked by JSON Schema.
-        values = item[field] if isinstance(item[field], list) else [item[field]]
+        raw_value = item[field]
+        values = raw_value if is_array(raw_value) else [raw_value]
         for value in values:
             if not isinstance(value, str) or value not in indexes[target]:
                 errors.append(f"{context}: unknown {field} {value!r}")
@@ -99,7 +94,7 @@ def _reference_errors(
 
 
 def _relationship_errors(
-    relationship: dict[str, Any], indexes: dict[str, set[str]], identifiers: set[str]
+    relationship: Mapping[str, object], indexes: dict[str, set[str]], identifiers: set[str]
 ) -> list[str]:
     errors: list[str] = []
     source, target, relation = (
@@ -150,7 +145,7 @@ def _relationship_errors(
     return errors
 
 
-def validate_record(record: dict[str, Any]) -> list[str]:
+def validate_record(record: Mapping[str, object]) -> list[str]:
     # Upstream's deprecated overload has an untyped instance parameter; bind
     # only the documented interface used here, without disabling diagnostics.
     validator = cast(
@@ -162,31 +157,34 @@ def validate_record(record: dict[str, Any]) -> list[str]:
     ]
     objects = {name: _objects(record.get(name)) for name in COLLECTION_IDS}
     indexes = {
-        name: {item[key] for item in objects[name] if isinstance(item.get(key), str)}
+        name: {
+            identifier for item in objects[name] if isinstance((identifier := item.get(key)), str)
+        }
         for name, key in COLLECTION_IDS.items()
     }
     all_identifiers = [
-        item[key]
+        identifier
         for name, key in COLLECTION_IDS.items()
         for item in objects[name]
-        if isinstance(item.get(key), str)
+        if isinstance((identifier := item.get(key)), str)
     ]
     identifiers = set(all_identifiers)
     for identifier in identifiers:
         if all_identifiers.count(identifier) > 1:
             errors.append(f"identifiers: duplicate {identifier!r}")
     indexes["recommendations"] = {
-        item["statement_id"]
+        identifier
         for item in objects["statements"]
-        if item.get("kind") == "recommendation" and isinstance(item.get("statement_id"), str)
+        if item.get("kind") == "recommendation"
+        and isinstance((identifier := item.get("statement_id")), str)
     }
     for name, targets in REFERENCE_TARGETS.items():
         for item in objects[name]:
             errors.extend(_reference_errors(item, targets, indexes, name))
     for statement in objects["statements"]:
         raw_provenance = statement.get("provenance")
-        if isinstance(raw_provenance, dict):
-            provenance = cast("dict[str, object]", raw_provenance)
+        if is_object(raw_provenance):
+            provenance = raw_provenance
             targets = {"author_role_id": "roles", "reviewer_role_id": "roles"}
             source_id = provenance.get("source_id")
             # Schema 1.0 may carry unresolved external source IDs for migration.
@@ -197,7 +195,7 @@ def validate_record(record: dict[str, Any]) -> list[str]:
                 targets["source_id"] = "sources"
             errors.extend(_reference_errors(provenance, targets, indexes, "statements"))
         supersedes = statement.get("supersedes", [])
-        if isinstance(supersedes, list) and statement.get("statement_id") in supersedes:
+        if is_array(supersedes) and statement.get("statement_id") in supersedes:
             errors.append("statements: a statement cannot supersede itself")
     for relationship in _objects(record.get("relationships")):
         errors.extend(_relationship_errors(relationship, indexes, identifiers))
@@ -237,12 +235,12 @@ def canonical_round_trip(record: dict[str, Any]) -> dict[str, Any]:
     return json.loads(json.dumps(record, sort_keys=True, separators=(",", ":")))
 
 
-def canonical_bytes(value: Any) -> bytes:
+def canonical_bytes(value: object) -> bytes:
     """Return deterministic UTF-8 JSON bytes for fingerprints and receipts."""
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
 
 
-def fingerprint(value: Any) -> str:
+def fingerprint(value: object) -> str:
     return f"sha256:{sha256(canonical_bytes(value)).hexdigest()}"
 
 
@@ -268,11 +266,11 @@ def append_audit_receipt(receipts: list[dict[str, Any]], event: dict[str, Any]) 
     return receipt
 
 
-def verify_audit_receipts(receipts: list[Any]) -> list[str]:
+def verify_audit_receipts(receipts: Sequence[object]) -> list[str]:
     errors: list[str] = []
-    previous: str | None = None
+    previous: object = None
     for index, receipt in enumerate(receipts):
-        if not isinstance(receipt, dict):
+        if not is_object(receipt):
             errors.append(f"receipts[{index}]: receipt must be an object")
             previous = None
             continue
@@ -313,10 +311,16 @@ def migrate_record(
         "system_of_record",
         {"kind": "unverified", "external_case_id": record["case_id"], "reconciled_at": None},
     )
-    known_sources = {item.get("source_id") for item in _objects(migrated["sources"])}
-    for statement in migrated.get("statements", []):
-        provenance = statement.get("provenance", {}) if isinstance(statement, dict) else {}
-        source_id = provenance.get("source_id") if isinstance(provenance, dict) else None
+    known_sources = {
+        source_id
+        for item in _objects(migrated["sources"])
+        if isinstance((source_id := item.get("source_id")), str)
+    }
+    for statement in _objects(migrated.get("statements")):
+        provenance = statement.get("provenance")
+        if not is_object(provenance):
+            continue
+        source_id = provenance.get("source_id")
         if isinstance(source_id, str) and source_id not in known_sources:
             migrated["sources"].append(
                 {

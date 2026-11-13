@@ -4,14 +4,19 @@ The harness combines different failure detectors, with explicit scope and
 bounded runtime. It does not claim clinical validity, zero hallucinations,
 complete static typing, or independent model agreement.
 
+The current [typing receipt](typing-verification-20261113.json) and
+[Conductor explanation](../conductor/tracks/frontier-assurance_20261113/typing-evidence.md)
+record 3,701 diagnostics removed, 6,012 remaining, exact cap tightening, reviewed
+baseline relocation and the Windows/combined-coverage correction.
+
 | Check | Enforced behavior | Remaining limitation |
 | --- | --- | --- |
 | Locked uv environment | Exact direct and transitive dependencies; Python 3.11 floor plus Linux/macOS/Windows 3.15 matrix | A lock is reproducibility, not a vulnerability or provenance guarantee |
 | Ruff + format | Broad correctness/style families, unused suppressions, debugger checks and deterministic formatting | PT011 legacy rejection-matrix exception; not all optional style rules are useful gates |
-| ty + basedpyright strict | Two static engines; no new strict debt beyond measured legacy baseline | 9,801 baselined diagnostics in 117 files remain to migrate |
+| ty + basedpyright strict | Two static engines; no new strict debt beyond measured legacy baseline; caps decrease with repairs | The initial 9,801 diagnostics are being reduced in bounded batches; see the current typing receipt |
 | Bandit | All production tools; all severities/confidence levels; narrow reviewed exceptions | Static patterns cannot prove authorization, privacy or runtime isolation |
 | Vulture | Fail findings at 80% confidence | Dynamic entry points need manual interpretation at lower confidence |
-| pytest + Hypothesis | Deterministic regressions, generated adversarial report invariants; 90% branch-enabled coverage floor | Coverage alone does not prove an assertion is useful |
+| pytest + Hypothesis | Deterministic regressions, generated adversarial report invariants; 90% branch-enabled coverage on Linux/macOS and the complete combined matrix | Windows supplies functional results and branch data to the combined gate; coverage alone does not prove assertions useful |
 | pytest-gremlins | 100% real kills for the public release admission boundary; raw verdict gate | 23 initial mutants in one module; other boundaries remain planned |
 | Scalene | Real CPU/memory profile of a synthetic validation/hash workload; validated artifacts | Platform-specific sample; performance budgets need repeated measurements |
 
@@ -30,7 +35,7 @@ uv run --no-sync python -m tools.full_validation
 
 # Before interpreting mutation scores, the unmodified suite must pass.
 uv run --no-sync python -m pytest tests/test_release_admission.py -q
-uv run --no-sync python -m pytest tests/test_release_admission.py -q --gremlins --gremlin-targets=tools/release_admission.py --gremlin-report=json --gremlin-workers=2 --gremlin-mutant-timeout=10 --gremlin-coverage-timeout=60 --strict-pardons --max-pardons=0
+uv run --no-sync python -m pytest tests/test_release_admission.py -q --gremlins --gremlin-targets=tools/release_admission.py --gremlin-no-coverage-filter --gremlin-report=json --gremlin-workers=2 --gremlin-mutant-timeout=10 --gremlin-coverage-timeout=60 --strict-pardons --max-pardons=0
 uv run --no-sync python -m tools.quality_gate mutation coverage/gremlins/gremlins.json
 
 # Scalene's native memory instrumentation is scoped to Linux/macOS. CI uses Linux.
@@ -59,10 +64,20 @@ fingerprints fail; the gate does not impose an unmeasured performance budget.
 The existing branch rule requires the check names `validate (ubuntu-latest)`,
 `validate (macos-latest)` and `validate (windows-latest)`. The latter two names
 remain on their platform jobs. The Linux name belongs to an always-running
-aggregate that requires every platform/Python matrix job, mutation job and
-profile job to succeed. Failed, cancelled or skipped dependencies fail that
+aggregate that requires every platform/Python matrix job, mutation job,
+profile job and complete-matrix coverage job to succeed. Failed, cancelled or skipped dependencies fail that
 aggregate. This preserves the existing required checks while adding the new
 Python-floor, mutation and profiling gates without repository-setting changes.
+
+Coverage uses configured `source = ["tools"]` and relative filenames. Every matrix
+member uploads its hidden `.coverage` database separately. `tools.coverage_inputs`
+requires exactly the four expected artifacts, actual executed branch data and
+only current repository source paths before `coverage combine --keep` and the
+90% report gate. Windows alone uses `tools.full_validation --defer-coverage-floor`;
+test failures still fail that job. No test or source file is omitted to increase
+coverage. Corrupt, line-only, empty, missing and out-of-scope measurements are
+covered by rejection tests, and real coverage CLI tests exercise mixed Windows/POSIX
+filenames and both passing and failing combined percentages.
 
 ## Initial observations
 

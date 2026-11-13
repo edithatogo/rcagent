@@ -2,6 +2,12 @@
 
 Status: implementation and bounded local verification complete in [PR #127](https://github.com/edithatogo/rcagent/pull/127); hosted checks and merge pending. No clinical validation, model run or qualified component is implied.
 
+Current continuation: the user prioritised FAW06 typing. The
+[typing receipt](./typing-evidence.md) supersedes the remaining-debt and pending-hosted
+observations below: 9,713 to 6,012 diagnostics, tightened caps, verified runtime
+failure parity, and a complete-matrix correction for the prior Windows coverage
+failure. The sections below preserve the original delivery observations.
+
 ## Scope and starting evidence
 
 - Assessment: `a895d42a8738d2937f849b65e3b892042f64b979`.

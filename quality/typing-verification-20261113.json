@@ -1,0 +1,717 @@
+{
+  "schema_version": "1.0",
+  "observed_at": "2026-11-13T09:15:53.257446+00:00",
+  "task": "Track13 FAW06: owner-directed typing repairs",
+  "starting_published_head": "98ce938a92047fccfed88606e2996619a8129511",
+  "master_incorporated": "718b418eba3c17f149d52124b97532240870c0b1",
+  "measured_local_source_commit": "3c6f63eb2b9798105f0d055512c8b046e3d149ed",
+  "python": "3.12.14",
+  "checker": {
+    "name": "basedpyright",
+    "version": "1.40.2",
+    "mode": "empty external baseline, discard"
+  },
+  "commands": {
+    "measurement": "basedpyright --baselinefile /tmp/typing-empty-baseline.json --baselinemode=discard --outputjson",
+    "retained_gate": "basedpyright --baselinemode=discard",
+    "regression": "python -m pytest --cov --cov-report=xml --cov-report=term-missing --junitxml=/tmp/rcagent-typing-full-tests.xml",
+    "mutation": "python -m pytest tests/test_release_admission.py -q --gremlins --gremlin-targets=tools/release_admission.py --gremlin-no-coverage-filter --gremlin-report=json --gremlin-workers=2 --gremlin-mutant-timeout=10 --gremlin-coverage-timeout=60 --strict-pardons --max-pardons=0"
+  },
+  "diagnostics": {
+    "before": {
+      "total": 9713,
+      "production": 1980,
+      "tests": 7733,
+      "files_with_debt": 117,
+      "files_analyzed": 146
+    },
+    "after": {
+      "total": 6012,
+      "production": 1196,
+      "tests": 4816,
+      "files_with_debt": 98,
+      "files_analyzed": 152
+    },
+    "removed": 3701,
+    "new_or_increased_file_rule_counts": {},
+    "per_file": {
+      "tests/test_adaptation_readiness.py": {
+        "before": 159,
+        "after": 159
+      },
+      "tests/test_agent_panel_review.py": {
+        "before": 14,
+        "after": 14
+      },
+      "tests/test_autonomy_harness.py": {
+        "before": 3,
+        "after": 3
+      },
+      "tests/test_autonomy_state.py": {
+        "before": 57,
+        "after": 57
+      },
+      "tests/test_benchmark_harness.py": {
+        "before": 2,
+        "after": 2
+      },
+      "tests/test_check_gremlins.py": {
+        "before": 3,
+        "after": 3
+      },
+      "tests/test_check_skill_drift.py": {
+        "before": 71,
+        "after": 0
+      },
+      "tests/test_client_plugin_packages.py": {
+        "before": 6,
+        "after": 6
+      },
+      "tests/test_darwin_runtime_profile.py": {
+        "before": 304,
+        "after": 304
+      },
+      "tests/test_darwin_runtime_v030.py": {
+        "before": 84,
+        "after": 84
+      },
+      "tests/test_darwin_server_v030.py": {
+        "before": 163,
+        "after": 163
+      },
+      "tests/test_dependency_maintenance.py": {
+        "before": 2,
+        "after": 2
+      },
+      "tests/test_distribution_package.py": {
+        "before": 6,
+        "after": 6
+      },
+      "tests/test_docling_synthetic_evaluation.py": {
+        "before": 19,
+        "after": 19
+      },
+      "tests/test_encoder_adapter_eval.py": {
+        "before": 9,
+        "after": 9
+      },
+      "tests/test_evaluation_preflight.py": {
+        "before": 37,
+        "after": 37
+      },
+      "tests/test_evidence_core.py": {
+        "before": 14,
+        "after": 0
+      },
+      "tests/test_full_validation.py": {
+        "before": 20,
+        "after": 0
+      },
+      "tests/test_interface_actions.py": {
+        "before": 172,
+        "after": 172
+      },
+      "tests/test_local_execution_probe.py": {
+        "before": 349,
+        "after": 349
+      },
+      "tests/test_local_model_comparator.py": {
+        "before": 80,
+        "after": 80
+      },
+      "tests/test_local_output_probe.py": {
+        "before": 156,
+        "after": 156
+      },
+      "tests/test_medical_signal_contract.py": {
+        "before": 19,
+        "after": 19
+      },
+      "tests/test_multimodal_contract_benchmark.py": {
+        "before": 26,
+        "after": 26
+      },
+      "tests/test_multimodal_fabric.py": {
+        "before": 1,
+        "after": 1
+      },
+      "tests/test_native_completion.py": {
+        "before": 64,
+        "after": 64
+      },
+      "tests/test_optional_adapter_probe.py": {
+        "before": 1,
+        "after": 1
+      },
+      "tests/test_optional_adapter_probe_full.py": {
+        "before": 82,
+        "after": 82
+      },
+      "tests/test_plugin_lifecycle.py": {
+        "before": 6,
+        "after": 6
+      },
+      "tests/test_privacy_assurance.py": {
+        "before": 9,
+        "after": 9
+      },
+      "tests/test_prospective_admission_adversarial.py": {
+        "before": 462,
+        "after": 65
+      },
+      "tests/test_prospective_admission_coverage.py": {
+        "before": 168,
+        "after": 168
+      },
+      "tests/test_prospective_execution_gate.py": {
+        "before": 233,
+        "after": 233
+      },
+      "tests/test_prospective_execution_identity_adversarial.py": {
+        "before": 457,
+        "after": 12
+      },
+      "tests/test_prospective_freeze.py": {
+        "before": 59,
+        "after": 59
+      },
+      "tests/test_prospective_inventory.py": {
+        "before": 64,
+        "after": 64
+      },
+      "tests/test_prospective_model.py": {
+        "before": 133,
+        "after": 133
+      },
+      "tests/test_prospective_native_prerequisites.py": {
+        "before": 197,
+        "after": 197
+      },
+      "tests/test_prospective_native_protocol.py": {
+        "before": 123,
+        "after": 123
+      },
+      "tests/test_prospective_primary_session.py": {
+        "before": 259,
+        "after": 23
+      },
+      "tests/test_prospective_protocol.py": {
+        "before": 36,
+        "after": 36
+      },
+      "tests/test_prospective_runner_contract.py": {
+        "before": 120,
+        "after": 120
+      },
+      "tests/test_prospective_server_model.py": {
+        "before": 215,
+        "after": 215
+      },
+      "tests/test_prospective_server_session.py": {
+        "before": 737,
+        "after": 50
+      },
+      "tests/test_prospective_slot_binding.py": {
+        "before": 189,
+        "after": 189
+      },
+      "tests/test_prospective_study_controller.py": {
+        "before": 693,
+        "after": 63
+      },
+      "tests/test_prospective_study_inputs.py": {
+        "before": 17,
+        "after": 17
+      },
+      "tests/test_release_admission.py": {
+        "before": 30,
+        "after": 0
+      },
+      "tests/test_release_candidate.py": {
+        "before": 16,
+        "after": 16
+      },
+      "tests/test_retrieval_system.py": {
+        "before": 27,
+        "after": 27
+      },
+      "tests/test_run_skill_conformance.py": {
+        "before": 207,
+        "after": 0
+      },
+      "tests/test_run_skill_output_eval.py": {
+        "before": 12,
+        "after": 12
+      },
+      "tests/test_run_skill_trigger_eval.py": {
+        "before": 19,
+        "after": 19
+      },
+      "tests/test_runtime_lab.py": {
+        "before": 86,
+        "after": 86
+      },
+      "tests/test_runtime_profile_versions.py": {
+        "before": 141,
+        "after": 141
+      },
+      "tests/test_safety_work_schema.py": {
+        "before": 11,
+        "after": 11
+      },
+      "tests/test_server_process.py": {
+        "before": 278,
+        "after": 278
+      },
+      "tests/test_server_process_deadline.py": {
+        "before": 46,
+        "after": 46
+      },
+      "tests/test_server_process_stop.py": {
+        "before": 256,
+        "after": 256
+      },
+      "tests/test_skill_evaluation_contracts.py": {
+        "before": 18,
+        "after": 18
+      },
+      "tests/test_speech_adapter_eval.py": {
+        "before": 33,
+        "after": 33
+      },
+      "tests/test_unix_http_capture.py": {
+        "before": 172,
+        "after": 172
+      },
+      "tests/test_validate_repository.py": {
+        "before": 10,
+        "after": 0
+      },
+      "tests/test_validate_skill.py": {
+        "before": 47,
+        "after": 0
+      },
+      "tests/test_validate_skill_profile.py": {
+        "before": 123,
+        "after": 0
+      },
+      "tests/test_verify_distribution_sources.py": {
+        "before": 8,
+        "after": 8
+      },
+      "tests/test_workbench.py": {
+        "before": 93,
+        "after": 93
+      },
+      "tools/adaptation_readiness.py": {
+        "before": 174,
+        "after": 0
+      },
+      "tools/agent_panel_review.py": {
+        "before": 30,
+        "after": 30
+      },
+      "tools/autonomy_harness.py": {
+        "before": 3,
+        "after": 3
+      },
+      "tools/autonomy_state.py": {
+        "before": 28,
+        "after": 28
+      },
+      "tools/benchmark_harness.py": {
+        "before": 65,
+        "after": 65
+      },
+      "tools/check_skill_drift.py": {
+        "before": 21,
+        "after": 0
+      },
+      "tools/darwin_runtime_profile.py": {
+        "before": 12,
+        "after": 12
+      },
+      "tools/darwin_runtime_v030.py": {
+        "before": 3,
+        "after": 3
+      },
+      "tools/darwin_server_v030.py": {
+        "before": 2,
+        "after": 2
+      },
+      "tools/docling_synthetic_evaluation.py": {
+        "before": 17,
+        "after": 17
+      },
+      "tools/encoder_adapter_eval.py": {
+        "before": 4,
+        "after": 4
+      },
+      "tools/evaluation_preflight.py": {
+        "before": 16,
+        "after": 16
+      },
+      "tools/evidence_core.py": {
+        "before": 12,
+        "after": 0
+      },
+      "tools/interface_actions.py": {
+        "before": 275,
+        "after": 0
+      },
+      "tools/jurisdiction_pack.py": {
+        "before": 24,
+        "after": 0
+      },
+      "tools/local_execution_probe.py": {
+        "before": 20,
+        "after": 20
+      },
+      "tools/local_model_comparator.py": {
+        "before": 2,
+        "after": 2
+      },
+      "tools/local_output_probe.py": {
+        "before": 14,
+        "after": 14
+      },
+      "tools/medical_signal_contract.py": {
+        "before": 4,
+        "after": 4
+      },
+      "tools/multimodal_contract_benchmark.py": {
+        "before": 3,
+        "after": 3
+      },
+      "tools/multimodal_fabric.py": {
+        "before": 31,
+        "after": 31
+      },
+      "tools/native_completion.py": {
+        "before": 24,
+        "after": 24
+      },
+      "tools/privacy_assurance.py": {
+        "before": 28,
+        "after": 28
+      },
+      "tools/prospective_execution_gate.py": {
+        "before": 72,
+        "after": 72
+      },
+      "tools/prospective_execution_identity.py": {
+        "before": 16,
+        "after": 16
+      },
+      "tools/prospective_freeze.py": {
+        "before": 11,
+        "after": 11
+      },
+      "tools/prospective_inventory.py": {
+        "before": 73,
+        "after": 73
+      },
+      "tools/prospective_model.py": {
+        "before": 7,
+        "after": 7
+      },
+      "tools/prospective_native_prerequisites.py": {
+        "before": 23,
+        "after": 23
+      },
+      "tools/prospective_native_protocol.py": {
+        "before": 22,
+        "after": 22
+      },
+      "tools/prospective_observation_admission.py": {
+        "before": 156,
+        "after": 156
+      },
+      "tools/prospective_primary_session.py": {
+        "before": 17,
+        "after": 17
+      },
+      "tools/prospective_protocol.py": {
+        "before": 51,
+        "after": 51
+      },
+      "tools/prospective_runner_contract.py": {
+        "before": 45,
+        "after": 45
+      },
+      "tools/prospective_server_model.py": {
+        "before": 6,
+        "after": 6
+      },
+      "tools/prospective_server_session.py": {
+        "before": 70,
+        "after": 70
+      },
+      "tools/prospective_slot_binding.py": {
+        "before": 27,
+        "after": 27
+      },
+      "tools/prospective_study_controller.py": {
+        "before": 147,
+        "after": 147
+      },
+      "tools/release_admission.py": {
+        "before": 10,
+        "after": 0
+      },
+      "tools/retrieval_system.py": {
+        "before": 73,
+        "after": 73
+      },
+      "tools/run_skill_conformance.py": {
+        "before": 8,
+        "after": 0
+      },
+      "tools/runtime_lab.py": {
+        "before": 183,
+        "after": 0
+      },
+      "tools/server_process.py": {
+        "before": 38,
+        "after": 38
+      },
+      "tools/sourceright_adapter.py": {
+        "before": 1,
+        "after": 1
+      },
+      "tools/speech_adapter_eval.py": {
+        "before": 19,
+        "after": 19
+      },
+      "tools/unix_http_capture.py": {
+        "before": 6,
+        "after": 6
+      },
+      "tools/validate_repository.py": {
+        "before": 35,
+        "after": 0
+      },
+      "tools/validate_skill.py": {
+        "before": 3,
+        "after": 0
+      },
+      "tools/validate_skill_profile.py": {
+        "before": 39,
+        "after": 0
+      },
+      "tools/workbench.py": {
+        "before": 10,
+        "after": 10
+      }
+    }
+  },
+  "baseline_maintenance": {
+    "writebaseline_used": false,
+    "relocated_files": [
+      "tests/test_prospective_admission_adversarial.py",
+      "tests/test_prospective_execution_identity_adversarial.py",
+      "tests/test_prospective_primary_session.py",
+      "tests/test_prospective_server_session.py",
+      "tests/test_prospective_study_controller.py"
+    ],
+    "relocated_files_before": 2608,
+    "relocated_files_after": 213,
+    "surfaced_retained_diagnostics": 56,
+    "exact_prior_messages": 26,
+    "changed_messages_at_checked_legacy_boundaries": 30,
+    "ordinary_shrink_elsewhere": 1306,
+    "review": "Read-only source review traced changed messages to unchanged untyped APIs/results, including four mapping_call registrations,23 mapping checks,one typed monkeypatch boundary and two renamed variables. No new incompatible type/member/operation was found.",
+    "caps_equal_observed_remaining_counts": true,
+    "new_files_or_rules": false,
+    "initial_measurement_preserved": 9801
+  },
+  "verification": {
+    "ruff": "passed",
+    "format": "passed",
+    "ty": "passed",
+    "basedpyright_with_retained_baseline": "passed",
+    "baseline_against_master_and_previous_pr_head": "passed",
+    "bandit_hash_bound_scan": "passed",
+    "vulture": "passed",
+    "unicode_scan": "passed",
+    "repository_governance": "passed",
+    "deterministic_benchmark": {
+      "passed": 7,
+      "total": 7
+    },
+    "live_skill_conformance": {
+      "local_validation_passed": true,
+      "current_conformance": true,
+      "official_validator_revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379"
+    },
+    "focused_root_boundaries_and_coverage": {
+      "passed": 154
+    },
+    "focused_core": {
+      "passed": 112
+    },
+    "focused_skill_repository": {
+      "passed": 188
+    },
+    "focused_adversarial_before_and_after": {
+      "passed": 141,
+      "same_test_matrix": true
+    },
+    "full_regression": {
+      "passed": 1958,
+      "failed": 52,
+      "skipped": 11,
+      "branch_enabled_coverage_percent": 93.4,
+      "hosted_success_claim": false,
+      "failed_node_ids": [
+        "tests/test_prospective_primary_session.py::test_cleanup_failure_and_postflight_failure_both_retained",
+        "tests/test_prospective_primary_session.py::test_http_failure_with_successful_gate_stays_failed",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[exit]",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[identity-drift]",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[interrupt]",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[missing-package]",
+        "tests/test_prospective_primary_session.py::test_primary_failure_never_masks_http_or_cleanup_failure",
+        "tests/test_prospective_primary_session.py::test_primary_uses_exact_selected_request_and_persists_candidate",
+        "tests/test_prospective_primary_session.py::test_real_guarded_git_child_http_and_decoder_composition",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[duplicate]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[http]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[malformed]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[oversize]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[status]",
+        "tests/test_prospective_server_session.py::test_completion_failure_is_not_erased_by_successful_stop",
+        "tests/test_prospective_server_session.py::test_completion_request_hash_mismatch_rejected",
+        "tests/test_prospective_server_session.py::test_delayed_socket_creation_does_not_consume_health_attempts",
+        "tests/test_prospective_server_session.py::test_fixed_session_reserved_and_locked",
+        "tests/test_prospective_server_session.py::test_health_attempt_budget_stops_without_completion",
+        "tests/test_prospective_server_session.py::test_interrupted_health_keeps_failure_after_worker_cleanup",
+        "tests/test_prospective_server_session.py::test_loading_health_retries_on_same_socket",
+        "tests/test_prospective_server_session.py::test_real_synthetic_child_http_and_graceful_stop",
+        "tests/test_prospective_server_session.py::test_shared_deadline_expiry_stops_readiness_without_completion",
+        "tests/test_prospective_server_session.py::test_socket_replacement_between_health_and_completion_is_rejected",
+        "tests/test_prospective_server_session.py::test_unexpected_directory_content_is_not_recursively_removed",
+        "tests/test_prospective_server_session.py::test_worker_join_failure_preserves_paths_and_blocks_next_run",
+        "tests/test_prospective_study_controller.py::test_two_real_synthetic_children_transport_and_admission",
+        "tests/test_unix_http_capture.py::test_absolute_deadline_stops_trickling_headers",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: -1\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Encoding: gzip\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nTransfer-Encoding: chunked\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 9999999\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Type: application/json\\r\\nContent-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: text/plain\\r\\nContent-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_bad_http",
+        "tests/test_unix_http_capture.py::test_body_deadline_retains_partial_bytes",
+        "tests/test_unix_http_capture.py::test_connect_failure_returns_receipt",
+        "tests/test_unix_http_capture.py::test_connection_setup_expiry_returns_receipt",
+        "tests/test_unix_http_capture.py::test_exact_body_and_locked_receipt",
+        "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[301]",
+        "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[400]",
+        "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[500]",
+        "tests/test_unix_http_capture.py::test_http_header_line_bound",
+        "tests/test_unix_http_capture.py::test_malformed_header_not_silently_ignored",
+        "tests/test_unix_http_capture.py::test_post_request_bound_by_digest",
+        "tests/test_unix_http_capture.py::test_shared_directory_rejected",
+        "tests/test_unix_http_capture.py::test_short_body_retained",
+        "tests/test_unix_http_capture.py::test_socket_replacement_rejected",
+        "tests/test_unix_http_capture.py::test_socket_symlink_and_foreign_owner_rejected"
+      ]
+    },
+    "unchanged_baseline_failure_comparison": {
+      "selected": 52,
+      "identical_node_ids": true,
+      "baseline_statuses": {
+        "failure": 52
+      },
+      "normalized_message_mismatches": 0,
+      "direct_permission_errors": 26,
+      "af_unix_probe": "PermissionError: errno=1: Operation not permitted"
+    },
+    "mutation": {
+      "total": 24,
+      "zapped": 24,
+      "survived": 0,
+      "timeout": 0,
+      "error": 0,
+      "pardoned": 0,
+      "percentage": 100.0
+    },
+    "required_aggregate_shell_scenarios": 13,
+    "review_differential_malformed_mutations": {
+      "examined": 2425,
+      "changed_behaviour": 0,
+      "new_crashes": 0,
+      "preexisting_crashes": 86
+    },
+    "review_method_request_valid_combinations": 542
+  },
+  "evidence_sha256": {
+    "baseline_free_before": "57303dd19aa18ce65b4fd7cfe386234d7a436247c6afcb5fddd1f97be01d0672",
+    "baseline_free_after": "3513083b649dc8f994ef1445a6dcb98acb6330dc4ea87efad71b98741dcc194a",
+    "full_regression_junit": "f02c5b95a255ac36213b11e52eb4e3e9f42a9b944bb4f5c7f052b3d0ba50c620",
+    "unchanged_failure_junit": "253ede077b24e13cd7b0beb9949d99f268cddaff3a1b8e084314af85bfa73bb8",
+    "mutation_report": "b5f1d055f8c47414f577aca30938ea4d4fb5f79ca6a7ff25f9e3415b2f9557d0",
+    "live_conformance": "7e2b34baef5313e31dc0a0da3a04ece9268765cd49dc2bc133ee052b356f8c30"
+  },
+  "source_sha256": {
+    ".github/workflows/quality.yml": "cd0b5c4936c2b29b8e2cc1647da06c6ec096b7fe187e1c07e854cd25f790ae57",
+    "pyproject.toml": "588eeea4a5c70ff752f3d9825b1251404a52b00c678e34a06b66158846e1ed80",
+    "tests/prospective_fixture_types.py": "37395515fcd22707726d0148083c9f33f4d304d4cfadb95032a1313da864d303",
+    "tests/test_check_skill_drift.py": "a7f6c08c08045cec1e1216197b8ac3cb971e69ab194b9da744cf055f1e866ee8",
+    "tests/test_coverage_inputs.py": "cbd962ff8b2505b86aa0e51bc802cb264cddb9d7d5da1de44bc0dc644b46a114",
+    "tests/test_evidence_core.py": "a0ff319015d427590772a9cf296bce2528e1d34070c0942bf44e0b71ebe62072",
+    "tests/test_full_validation.py": "85224c03540665cbd5a6278e07c843d98c649aa7454816c023b711b0b8ef489d",
+    "tests/test_json_shapes.py": "ac56dca58fbf2a9734aa1bc83863a450b4dbb9d4f24c329869c2b0486cc6ba6d",
+    "tests/test_jurisdiction_pack.py": "93612cd954c7ddb64f3d4f6a0beb78b326a236dc95fac9da34fdf0080ab14d1e",
+    "tests/test_prospective_admission_adversarial.py": "548881ccb06031cdeaeed3d9786ded75ec94c68b6e77343988b6926cbbaf6f5c",
+    "tests/test_prospective_execution_identity_adversarial.py": "01b7ef8a3a45a487381cd500d3a01414d554f4c9097231e223c7992cc4c15390",
+    "tests/test_prospective_primary_session.py": "270b201f8af9958a9718e3873423653d2b676f28847d7e9ab974243e86045776",
+    "tests/test_prospective_server_session.py": "589468f5c4611171abbe50794721f5340308d33e681002b899ecf2c34311bdfe",
+    "tests/test_prospective_study_controller.py": "936d5aaa54b3ad05500b0e46c396d067448434c463c9d2034c0dc44585966b5d",
+    "tests/test_release_admission.py": "14f7b89bce8ee33a447cf9912e125f1aeb02fe0ccdf67f2d4f67743d16bc610f",
+    "tests/test_run_skill_conformance.py": "595704077c95904c70d3dd0f08b6a0ef4134bc77c7f6d8d5799fa36b32f29053",
+    "tests/test_typed_boundaries.py": "5e8ec01df6fc2ba1d6cda8752be00320cb025c6ed8589106f3fdfce65e5483f2",
+    "tests/test_validate_repository.py": "3460ecabe4c4bb5d40c94428a379786d217642143e6e11ae2de90c4fd2d6c92c",
+    "tests/test_validate_skill.py": "fcede8dded2ffd3e1e5cc70b3da61ff8d6560aed6a49007d903830f31896bbe8",
+    "tests/test_validate_skill_profile.py": "28f30ee6f183426dbf26b8d2b9811830da9fdbaa4ddb607df2ffddfa089d88d7",
+    "tools/adaptation_readiness.py": "655bf9362fea1b425bd29e4781cfd0fd76f2f76605d6331a7ce0580e5e40b379",
+    "tools/check_skill_drift.py": "fa2b89ede8e2d3eede6e76747d96c2cb9de51079c037741c3a993247c6fb9dc2",
+    "tools/coverage_inputs.py": "580a31796b8520722870876f44bdf69f658a3ba05f3031c1b402e3e3b467d80d",
+    "tools/evidence_core.py": "23ea8899a1c1c15f8ccba60a9da4137f56e4bc85aae74439ba96f772406eca6f",
+    "tools/full_validation.py": "a1305fd0f056859548dd148273d58131e0db4bdcc13af9365d8cc6559c2b24ff",
+    "tools/interface_actions.py": "4135a834674363736f3cbadd156e3a287913abf479582a2c0d71a3616d3c5f22",
+    "tools/json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+    "tools/jurisdiction_pack.py": "f6332f1d0ed3ae897f4d4d069ada640db2fde851d4ee2b712a721d4283145597",
+    "tools/release_admission.py": "f224894340d9dba1659d50e7d702691aad580dc3f05f90c49ce07c11252392aa",
+    "tools/run_skill_conformance.py": "b487b52fd6fef03dbad7266efdebdb8028a962971f423c0c98a34177c8fe83e5",
+    "tools/runtime_lab.py": "e1410084157d0a1d0ca1067bc53035ad27ecae0da58ff15273cc75b35b3e8d71",
+    "tools/validate_repository.py": "a9e6795b1d9395b9817282a6a5ccd8ddaef3e6f700618023f16157e6837fde85",
+    "tools/validate_skill.py": "8472150b82506f79c40af66c8552317c18267f7603fd38cbe731c624139c7091",
+    "tools/validate_skill_profile.py": "0c73806986a4e9ee7169088eb025c0cfa4911c2e392e67eef47227e19205c565"
+  },
+  "previous_head_hosted": {
+    "head": "98ce938a92047fccfed88606e2996619a8129511",
+    "quality_run": 43305123214,
+    "windows_tests_passed": 1698,
+    "windows_tests_skipped": 256,
+    "windows_coverage_percent": 85.66,
+    "quality": "failed_windows_coverage_floor",
+    "linux_315": "success",
+    "linux_311": "success",
+    "macos": "success",
+    "mutation": "success",
+    "profile": "success",
+    "dependency_review": "success",
+    "privacy_secrets": "success",
+    "skill_conformance": "success"
+  },
+  "typing_increment_hosted": "Not observed at receipt creation; requires current-head hosted acceptance.",
+  "remaining_limits": [
+    "6012 strict diagnostics remain; passing the retained-baseline gate is not full typing completeness.",
+    "Legacy explicit Any interfaces remain.",
+    "Checked containers establish shape, not arbitrary domain validity; nine reviewed enum/hashability patterns still crash on malformed list/dict values.",
+    "The52 socket-dependent tests remain enabled and need successful hosted execution.",
+    "No new model run, clinical qualification, Rust migration or death-review implementation is claimed."
+  ]
+}

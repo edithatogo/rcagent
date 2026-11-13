@@ -9,6 +9,8 @@ from pathlib import Path, PurePosixPath
 
 import yaml
 
+from tools.json_shapes import is_object
+
 NAME_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 REFERENCE_PATTERN = re.compile(r"`((?:references|assets|scripts)/[^`\s]+)`")
 WINDOWS_ABSOLUTE = re.compile(r"^[A-Za-z]:[\\/]")
@@ -40,8 +42,8 @@ def _frontmatter(skill_md: Path) -> tuple[dict[str, object], str]:
         raw, body = text[4:].split("\n---\n", 1)
     except ValueError as exc:
         raise ValueError("SKILL.md frontmatter is not terminated") from exc
-    parsed = yaml.safe_load(raw)
-    if not isinstance(parsed, dict):
+    parsed: object = yaml.safe_load(raw)
+    if not is_object(parsed):
         raise ValueError("SKILL.md frontmatter must be a mapping")
     return parsed, body
 
@@ -121,10 +123,7 @@ def validate_skill(skill_root: Path, *, portable_core: bool = True) -> list[Diag
 
     custom = metadata.get("metadata")
     if custom is not None and (
-        not isinstance(custom, dict)
-        or any(
-            not isinstance(key, str) or not isinstance(value, str) for key, value in custom.items()
-        )
+        not is_object(custom) or any(not isinstance(value, str) for value in custom.values())
     ):
         diagnostics.append(
             Diagnostic(

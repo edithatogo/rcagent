@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from types import TracebackType
+from typing import NoReturn, Self
+from urllib.request import Request
 
 import pytest
 
-from tools.check_skill_drift import check_drift, main
+from tools.check_skill_drift import Opener, check_drift, main
 
 
 def _baseline(path: Path) -> Path:
@@ -25,10 +28,15 @@ class _Response:
     def __init__(self, payload: object) -> None:
         self.payload = payload
 
-    def __enter__(self):
+    def __enter__(self) -> Self:
         return self
 
-    def __exit__(self, *args):
+    def __exit__(
+        self,
+        _exc_type: type[BaseException] | None,
+        _exc_value: BaseException | None,
+        _traceback: TracebackType | None,
+    ) -> None:
         return None
 
     def read(self) -> bytes:
@@ -43,7 +51,7 @@ def test_offline_mode_cannot_claim_current(tmp_path: Path) -> None:
 
 
 def test_matching_live_revision_is_current(tmp_path: Path) -> None:
-    def opener(*args, **kwargs):
+    def opener(_request: Request, *, timeout: float) -> _Response:
         return _Response({"sha": "expected"})
 
     code, receipt = check_drift(_baseline(tmp_path / "baseline.json"), opener=opener)
@@ -52,8 +60,8 @@ def test_matching_live_revision_is_current(tmp_path: Path) -> None:
     assert receipt["current_conformance"] is True
 
 
-def _changed_opener(paths: list[str]):
-    def opener(request, **kwargs):
+def _changed_opener(paths: list[str]) -> Opener:
+    def opener(request: Request, *, timeout: float) -> _Response:
         if "/commits/main" in request.full_url:
             return _Response({"sha": "changed"})
         return _Response({"status": "ahead", "files": [{"filename": path} for path in paths]})
@@ -102,7 +110,7 @@ def test_unrelated_change_does_not_block_conformance(tmp_path: Path) -> None:
 
 
 def test_compare_failure_is_upstream_unavailable(tmp_path: Path) -> None:
-    def opener(request, **kwargs):
+    def opener(request: Request, *, timeout: float) -> _Response:
         if "/commits/main" in request.full_url:
             return _Response({"sha": "changed"})
         raise OSError("comparison unavailable")
@@ -113,7 +121,7 @@ def test_compare_failure_is_upstream_unavailable(tmp_path: Path) -> None:
 
 
 def test_upstream_failure_is_not_specification_failure(tmp_path: Path) -> None:
-    def opener(*args, **kwargs):
+    def opener(_request: Request, *, timeout: float) -> NoReturn:
         raise OSError("network unavailable")
 
     code, receipt = check_drift(_baseline(tmp_path / "baseline.json"), opener=opener)
@@ -122,7 +130,7 @@ def test_upstream_failure_is_not_specification_failure(tmp_path: Path) -> None:
     assert receipt["current_conformance"] is False
 
 
-def test_cli_writes_honest_offline_receipt(tmp_path: Path, monkeypatch) -> None:
+def test_cli_writes_honest_offline_receipt(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     baseline = _baseline(tmp_path / "baseline.json")
     output = tmp_path / "receipt.json"
     monkeypatch.setattr(
@@ -154,8 +162,8 @@ def test_cli_writes_honest_offline_receipt(tmp_path: Path, monkeypatch) -> None:
         {"status": "ahead", "files": [{"filename": "unrelated"}] * 300},
     ],
 )
-def test_incomplete_or_untrusted_comparison_never_passes(tmp_path, payload):
-    def opener(request, **kwargs):
+def test_incomplete_or_untrusted_comparison_never_passes(tmp_path: Path, payload: object) -> None:
+    def opener(request: Request, *, timeout: float) -> _Response:
         return _Response({"sha": "changed"} if "/commits/main" in request.full_url else payload)
 
     code, receipt = check_drift(_baseline(tmp_path / "baseline.json"), opener=opener)
@@ -163,8 +171,8 @@ def test_incomplete_or_untrusted_comparison_never_passes(tmp_path, payload):
     assert receipt["current_conformance"] is False
 
 
-def test_renaming_normative_file_is_not_irrelevant(tmp_path):
-    def opener(request, **kwargs):
+def test_renaming_normative_file_is_not_irrelevant(tmp_path: Path) -> None:
+    def opener(request: Request, *, timeout: float) -> _Response:
         return _Response(
             {"sha": "changed"}
             if "/commits/main" in request.full_url
@@ -185,7 +193,7 @@ def test_renaming_normative_file_is_not_irrelevant(tmp_path):
 
 
 @pytest.mark.parametrize("payload", [None, {}, {"upstream_revision": "x", "sources": []}])
-def test_invalid_baseline_has_failed_receipt(tmp_path, payload):
+def test_invalid_baseline_has_failed_receipt(tmp_path: Path, payload: object) -> None:
     path = tmp_path / "baseline.json"
     path.write_text(json.dumps(payload))
     code, receipt = check_drift(path, offline=True)
@@ -194,17 +202,22 @@ def test_invalid_baseline_has_failed_receipt(tmp_path, payload):
 
 
 @pytest.mark.parametrize("revision", [None, [], 0, ""])
-def test_malformed_upstream_revision_fails_closed(tmp_path, revision):
+def test_malformed_upstream_revision_fails_closed(tmp_path: Path, revision: object) -> None:
+    def opener(_request: Request, *, timeout: float) -> _Response:
+        return _Response({"sha": revision})
+
     code, receipt = check_drift(
         _baseline(tmp_path / "baseline.json"),
-        opener=lambda *args, **kwargs: _Response({"sha": revision}),
+        opener=opener,
     )
     assert code == 2
     assert receipt["status"] == "upstream_unavailable"
     assert receipt["current_conformance"] is False
 
 
-def test_cli_prints_failed_receipt(tmp_path, monkeypatch, capsys):
+def test_cli_prints_failed_receipt(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
     monkeypatch.setattr(
         "sys.argv", ["check_skill_drift", "--baseline", str(tmp_path / "missing.json"), "--offline"]
     )

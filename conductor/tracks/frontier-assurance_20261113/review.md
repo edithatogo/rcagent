@@ -18,3 +18,27 @@ The research cross-review checked 15 document snapshots with combined path/hash-
 The CI reviewer initially acted independently, then implemented the assigned profile/workflow corrections. Root reviewed their actual predicates, negative tests and fresh profile receipt; the verdict is not represented as independent approval of that reviewer's own fixes. The final full suite, host-specific paths, branch checks and merge state still require the delivery evidence.
 
 No review ran a clinical model, processed a real case, inferred preventability or changed a historical negative result. New empirical claims remain behind the capability ladder's frozen comparisons and useful-coverage requirements.
+
+## FAW06 typing continuation
+
+Two implementation lanes owned separate production/conformance and prospective
+test files. Root reviewed and integrated them, repaired unused typed mock parameters
+identified by Vulture, and owned interface/runtime/adaptation typing plus coverage
+aggregation. A read-only reviewer found no blockers in those root changes, checked
+542 valid method-request combinations and compared 2,425 malformed fixture mutations;
+86 pre-existing enum/hashability crashes were recorded as the next bounded task.
+
+The reviewer separately checked all 56 surfaced retained diagnostics in the five
+prospective test files. Twenty-six retained exact messages and 30 were relocated
+or consolidated at checked boundaries to unchanged untyped API results. The
+review found no new incompatible type, missing member or invalid operation and
+accepted selective re-anchoring with all 213 residuals retained, no file/rule growth,
+ordinary shrinking elsewhere and caps reduced to actual counts. This is distinct
+from declaring the residual debt fixed. Structural helper casts are checked;
+the deliberate Boolean-as-string negative-test cast preserves rejection coverage.
+
+A separate baseline comparison reran all 52 failed integrated regression cases
+on unchanged `e82fb97` with the same locked environment. Test IDs, statuses and
+normalized failure messages matched exactly. This establishes the observed
+AF_UNIX-environment failure parity, while hosted success remains required. See
+the [typing receipt](./typing-evidence.md) for commands, scope and limits.

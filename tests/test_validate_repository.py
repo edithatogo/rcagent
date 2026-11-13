@@ -4,8 +4,11 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
 from jsonschema import Draft202012Validator
+from jsonschema import validate as validate_json
 
+from tools.json_shapes import is_array, require_object
 from tools.validate_repository import REQUIRED_CONTEXT, main, validate
 
 
@@ -104,7 +107,7 @@ def test_capability_registry_matches_published_schema() -> None:
     )
     registry = json.loads((root / "conductor/capability-profiles.json").read_text(encoding="utf-8"))
     Draft202012Validator.check_schema(schema)
-    Draft202012Validator(schema).validate(registry)
+    validate_json(instance=registry, schema=schema, cls=Draft202012Validator)
 
 
 def test_missing_context_is_reported(tmp_path: Path) -> None:
@@ -408,7 +411,9 @@ def test_missing_roadmap_returns_context_diagnostics(tmp_path: Path) -> None:
     assert "missing required context: conductor/roadmap.json" in errors
 
 
-def test_main_reports_success_and_failure(tmp_path: Path, monkeypatch, capsys) -> None:
+def test_main_reports_success_and_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
     _write_valid_repository(tmp_path)
     monkeypatch.setattr(sys, "argv", ["validate_repository", "--root", str(tmp_path)])
     assert main() == 0
@@ -417,3 +422,46 @@ def test_main_reports_success_and_failure(tmp_path: Path, monkeypatch, capsys) -
     (tmp_path / "conductor/autonomy.json").unlink()
     assert main() == 1
     assert "missing required context" in capsys.readouterr().out
+
+
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "roadmap.json",
+        "clinical-governance-architecture.json",
+        "integration-map.json",
+        "capability-profiles.json",
+    ],
+)
+def test_nonobject_documents_are_diagnostics(tmp_path: Path, filename: str) -> None:
+    _write_valid_repository(tmp_path)
+    (tmp_path / "conductor" / filename).write_text("null", encoding="utf-8")
+    assert any(f"invalid conductor/{filename}" in error for error in validate(tmp_path))
+
+
+@pytest.mark.parametrize("tracks", [None, [None]])
+def test_malformed_roadmap_rows_are_diagnostics(tmp_path: Path, tracks: object) -> None:
+    _write_valid_repository(tmp_path)
+    (tmp_path / "conductor/roadmap.json").write_text(json.dumps({"tracks": tracks}))
+    assert any("roadmap: tracks" in error for error in validate(tmp_path))
+
+
+@pytest.mark.parametrize(
+    ("field", "message"),
+    [
+        ("class", "invalid capability class"),
+        ("status", "invalid capability status"),
+        ("owner_track", "unknown owner track number"),
+    ],
+)
+def test_unhashable_profile_values_are_diagnostics(
+    tmp_path: Path, field: str, message: str
+) -> None:
+    _write_valid_repository(tmp_path)
+    path = tmp_path / "conductor/capability-profiles.json"
+    registry = require_object(json.loads(path.read_text()), context="fixture registry")
+    profiles = registry["profiles"]
+    assert is_array(profiles)
+    require_object(profiles[0], context="fixture profile")[field] = {}
+    path.write_text(json.dumps(registry))
+    assert any(message in error for error in validate(tmp_path))

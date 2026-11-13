@@ -60,6 +60,26 @@ def test_registry_and_pack_inheritance_are_valid() -> None:
     assert packs["qld"]["status"] == "implemented"
 
 
+@pytest.mark.parametrize(
+    ("collection", "field", "replacement"),
+    [
+        ("sources", "source_id", {"invalid": "identifier"}),
+        ("sources", "status", {"invalid": "status"}),
+        ("packs", "inherits", ["invalid-parent"]),
+        ("rules", "source_ids", [{"invalid": "identifier"}]),
+        ("rules", "safeguards", [{"invalid": "safeguard"}]),
+        ("rules", "workflow", {"from_states": ["review"], "to_state": {}}),
+    ],
+)
+def test_malformed_nested_fields_remain_schema_diagnostics(
+    collection: str, field: str, replacement: object
+) -> None:
+    value = registry()
+    value[collection][0][field] = replacement
+    errors = validate_registry(value)
+    assert any(error.startswith(f"{collection}.0.{field}") for error in errors)
+
+
 def test_observed_source_statuses_do_not_require_a_manufactured_under_review_source() -> None:
     statuses = {source["status"] for source in registry()["sources"]}
     assert {

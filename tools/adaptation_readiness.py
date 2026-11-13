@@ -13,6 +13,8 @@ import re
 from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Any
 
+from tools.json_shapes import is_array, is_object
+
 SCHEMA_VERSION = "1.0"
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 LEVELS = {
@@ -69,7 +71,7 @@ def _secure_file(root: Path, relative: str, *, prefix: PurePosixPath | None = No
 
 
 def validate_dependency_manifest(manifest: object, root: Path) -> list[str]:
-    if not isinstance(manifest, dict):
+    if not is_object(manifest):
         return ["dependency manifest must be an object"]
     required = {"schema_version", "dependencies", "claims", "manifest_sha256"}
     errors: list[str] = []
@@ -85,11 +87,11 @@ def validate_dependency_manifest(manifest: object, root: Path) -> list[str]:
         "nsw-health-jurisdiction-pack_20260731",
     }
     seen: set[str] = set()
-    if not isinstance(dependencies, list):
+    if not is_array(dependencies):
         errors.append("dependencies must be an array")
         dependencies = []
     for index, item in enumerate(dependencies):
-        if not isinstance(item, dict) or set(item) != {
+        if not is_object(item) or set(item) != {
             "track_id",
             "receipt_path",
             "sha256",
@@ -131,7 +133,7 @@ def validate_dependency_manifest(manifest: object, root: Path) -> list[str]:
             except (OSError, UnicodeError, json.JSONDecodeError):
                 errors.append(f"dependencies[{index}] metadata is unreadable")
             else:
-                if not isinstance(metadata_content, dict):
+                if not is_object(metadata_content):
                     errors.append(f"dependencies[{index}] metadata must be an object")
                 elif (
                     metadata_content.get("track_id") != track_id
@@ -141,11 +143,11 @@ def validate_dependency_manifest(manifest: object, root: Path) -> list[str]:
     if seen != required_ids:
         errors.append("dependency track coverage is incomplete")
     claims = manifest.get("claims")
-    if not isinstance(claims, list) or len(claims) != 2:
+    if not is_array(claims) or len(claims) != 2:
         errors.append("dependency claims are incomplete")
     else:
         for index, claim in enumerate(claims):
-            if not isinstance(claim, dict) or set(claim) != {"id", "path", "sha256", "expected"}:
+            if not is_object(claim) or set(claim) != {"id", "path", "sha256", "expected"}:
                 errors.append(f"claims[{index}] fields are invalid")
                 continue
             path_value = claim.get("path")
@@ -166,20 +168,22 @@ def validate_dependency_manifest(manifest: object, root: Path) -> list[str]:
             except (OSError, UnicodeError, json.JSONDecodeError):
                 errors.append(f"claims[{index}] content is unreadable")
                 continue
-            if not isinstance(value, dict):
+            if not is_object(value):
                 errors.append(f"claims[{index}] content must be an object")
                 continue
             if claim.get("id") == "runtime_models_empty" and (
                 claim.get("expected") is not True or value.get("models") != []
             ):
                 errors.append("runtime empty-model claim failed")
+            limitations = value.get("limitations")
             if claim.get("id") == "benchmark_comparators_nonpromotion" and (
                 claim.get("expected") is not True
                 or value.get("scope") != "internal_nonpromotion_synthetic_comparator"
-                or "no model promotion" not in value.get("limitations", [])
+                or not is_array(limitations)
+                or "no model promotion" not in limitations
             ):
                 errors.append("benchmark non-promotion claim failed")
-        claim_ids = {claim.get("id") for claim in claims if isinstance(claim, dict)}
+        claim_ids = {claim.get("id") for claim in claims if is_object(claim)}
         if claim_ids != {"runtime_models_empty", "benchmark_comparators_nonpromotion"}:
             errors.append("dependency claim coverage is invalid")
     supplied = manifest.get("manifest_sha256")
@@ -190,7 +194,7 @@ def validate_dependency_manifest(manifest: object, root: Path) -> list[str]:
 
 
 def validate_registry(registry: object) -> list[str]:
-    if not isinstance(registry, dict):
+    if not is_object(registry):
         return ["registry must be an object"]
     errors: list[str] = []
     required = {"schema_version", "policy", "frameworks", "comparators", "readiness_thresholds"}
@@ -210,14 +214,14 @@ def validate_registry(registry: object) -> list[str]:
         "clinical_claims": False,
         "promotion": False,
     }
-    if not isinstance(policy, dict) or set(policy) != set(expected_policy):
+    if not is_object(policy) or set(policy) != set(expected_policy):
         errors.append("policy fields are invalid")
     else:
         for field, expected in expected_policy.items():
             if policy.get(field) is not expected:
                 errors.append(f"policy.{field} must be {expected!r}")
     frameworks = registry.get("frameworks")
-    if not isinstance(frameworks, list) or not frameworks:
+    if not is_array(frameworks) or not frameworks:
         errors.append("frameworks must be a non-empty array")
     else:
         seen: set[str] = set()
@@ -232,7 +236,7 @@ def validate_registry(registry: object) -> list[str]:
                 "remote_code",
                 "replacement_path",
             }
-            if not isinstance(framework, dict) or set(framework) != required_framework:
+            if not is_object(framework) or set(framework) != required_framework:
                 errors.append(f"frameworks[{index}] fields are invalid")
                 continue
             identifier = framework.get("id")
@@ -264,13 +268,13 @@ def validate_registry(registry: object) -> list[str]:
         "admitted_comparator_required": True,
         "accountable_release_approval_required": True,
     }
-    if not isinstance(thresholds, dict) or thresholds != expected_thresholds:
+    if not is_object(thresholds) or thresholds != expected_thresholds:
         errors.append("readiness thresholds are invalid")
     return sorted(errors)
 
 
 def validate_dataset_manifest(manifest: object) -> list[str]:
-    if not isinstance(manifest, dict):
+    if not is_object(manifest):
         return ["dataset manifest must be an object"]
     required = {
         "schema_version",
@@ -315,13 +319,13 @@ def validate_dataset_manifest(manifest: object) -> list[str]:
     splits = manifest.get("splits")
     expected_names = {"train", "validation", "held_out", "challenge", "contamination_control"}
     if (
-        not isinstance(splits, list)
-        or {item.get("name") for item in splits if isinstance(item, dict)} != expected_names
+        not is_array(splits)
+        or {item.get("name") for item in splits if is_object(item)} != expected_names
     ):
         errors.append("dataset splits are incomplete")
     else:
         for index, split in enumerate(splits):
-            if not isinstance(split, dict) or set(split) != {"name", "item_ids", "sha256"}:
+            if not is_object(split) or set(split) != {"name", "item_ids", "sha256"}:
                 errors.append(f"splits[{index}] fields are invalid")
                 continue
             item_ids = split.get("item_ids")
@@ -349,7 +353,7 @@ def assess_readiness(
         reasons.append("dataset manifest is invalid")
     if validate_dependency_manifest(dependencies, root):
         reasons.append("dependency evidence is incomplete")
-    if isinstance(registry, dict) and not registry.get("comparators"):
+    if is_object(registry) and not registry.get("comparators"):
         reasons.append("no eligible supported Track10 comparator or common baseline exists")
     reasons.extend(
         [
@@ -368,7 +372,7 @@ def assess_readiness(
         "registry_sha256": canonical_hash(registry),
         "dataset_contract_sha256": canonical_hash(dataset),
         "dependency_manifest_sha256": dependencies.get("manifest_sha256")
-        if isinstance(dependencies, dict)
+        if is_object(dependencies)
         else None,
         "model_downloaded": False,
         "training_executed": False,
@@ -384,7 +388,7 @@ def assess_readiness(
 def validate_readiness_receipt(
     receipt: object, *, registry: object, dataset: object, dependencies: object, root: Path
 ) -> list[str]:
-    if not isinstance(receipt, dict):
+    if not is_object(receipt):
         return ["readiness receipt must be an object"]
     required = {
         "schema_version",
@@ -433,7 +437,7 @@ def validate_readiness_receipt(
         "registry_sha256": canonical_hash(registry),
         "dataset_contract_sha256": canonical_hash(dataset),
         "dependency_manifest_sha256": dependencies.get("manifest_sha256")
-        if isinstance(dependencies, dict)
+        if is_object(dependencies)
         else None,
     }
     for field, expected in expected_bindings.items():
@@ -455,7 +459,7 @@ def validate_experiment_proposal(
     dependencies: object,
     root: Path,
 ) -> list[str]:
-    if not isinstance(proposal, dict):
+    if not is_object(proposal):
         return ["experiment proposal must be an object"]
     required = {
         "experiment_id",
@@ -498,7 +502,7 @@ def validate_experiment_proposal(
         validate_readiness_receipt(
             readiness, registry=registry, dataset=dataset, dependencies=dependencies, root=root
         )
-        or not isinstance(readiness, dict)
+        or not is_object(readiness)
         or proposal.get("readiness_sha256") != readiness.get("receipt_sha256")
     ):
         errors.append("proposal is not bound to the negative readiness receipt")
@@ -510,8 +514,9 @@ def validate_experiment_proposal(
         errors.append(
             "experiment stop_conditions must use the fixed readiness_remains_false condition"
         )
-    if not isinstance(proposal.get("experiment_id"), str) or not re.fullmatch(
-        r"syn-[a-z0-9-]{3,64}", proposal["experiment_id"]
+    experiment_id = proposal.get("experiment_id")
+    if not isinstance(experiment_id, str) or not re.fullmatch(
+        r"syn-[a-z0-9-]{3,64}", experiment_id
     ):
         errors.append("experiment_id must be an opaque synthetic identifier")
     seed = proposal.get("seed")
@@ -545,7 +550,7 @@ def build_rejection_card(
         "dataset_manifest_sha256": dataset["manifest_sha256"],
         "registry_sha256": canonical_hash(registry),
         "dependency_manifest_sha256": dependencies.get("manifest_sha256")
-        if isinstance(dependencies, dict)
+        if is_object(dependencies)
         else None,
         "evidence_matrix_sha256": evidence_matrix.get("receipt_sha256"),
         "licence": "Apache-2.0 repository code only; no model or weight licence attached",
@@ -563,7 +568,7 @@ def build_rejection_card(
 
 
 def validate_evidence_matrix(matrix: object, readiness: object) -> list[str]:
-    if not isinstance(matrix, dict):
+    if not is_object(matrix):
         return ["evidence matrix must be an object"]
     required = {
         "schema_version",
@@ -585,7 +590,7 @@ def validate_evidence_matrix(matrix: object, readiness: object) -> list[str]:
         or matrix.get("adaptation_hypothesis") != "not_justified"
     ):
         errors.append("evidence matrix negative state is invalid")
-    if not isinstance(readiness, dict) or matrix.get("readiness_sha256") != readiness.get(
+    if not is_object(readiness) or matrix.get("readiness_sha256") != readiness.get(
         "receipt_sha256"
     ):
         errors.append("evidence matrix readiness binding mismatched")
@@ -611,16 +616,16 @@ def validate_evidence_matrix(matrix: object, readiness: object) -> list[str]:
         "domain_model": "unavailable_no_exact_admitted_revision",
     }
     if (
-        not isinstance(approaches, list)
+        not is_array(approaches)
         or len(approaches) != len(expected)
         or any(
-            not isinstance(item, dict)
+            not is_object(item)
             or set(item) != {"approach", "state"}
-            or not isinstance(item.get("approach"), str)
-            or expected_states.get(item["approach"]) != item.get("state")
+            or not isinstance(approach := item.get("approach"), str)
+            or expected_states.get(approach) != item.get("state")
             for item in approaches
         )
-        or {item.get("approach") for item in approaches if isinstance(item, dict)} != expected
+        or {item.get("approach") for item in approaches if is_object(item)} != expected
     ):
         errors.append("evidence matrix approaches are incomplete")
     metrics = matrix.get("metrics")
@@ -635,14 +640,14 @@ def validate_evidence_matrix(matrix: object, readiness: object) -> list[str]:
         "maintenance_burden",
     }
     if (
-        not isinstance(metrics, dict)
+        not is_object(metrics)
         or set(metrics) != expected_metrics
         or any(value is not None for value in metrics.values())
     ):
         errors.append("unexecuted evidence matrix metrics must be null")
     limitations = matrix.get("limitations")
     if (
-        not isinstance(limitations, list)
+        not is_array(limitations)
         or not limitations
         or not all(isinstance(item, str) and item for item in limitations)
     ):

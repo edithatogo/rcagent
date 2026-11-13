@@ -59,7 +59,16 @@ jobs:
         run: uv run --no-sync python -m tools.quality_gate baseline --base "$BASE_REV"
 
       - name: Run deterministic strict repository gate
-        run: uv run --no-sync python -m tools.full_validation
+        run: uv run --no-sync python -m tools.full_validation ${{ runner.os == 'Windows' && '--defer-coverage-floor' || '' }}
+
+      - name: Retain branch coverage for the required combined gate
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: coverage-data-${{ matrix.os }}-py${{ matrix.python }}
+          path: .coverage
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Upload coverage to Codecov
         if: runner.os == 'Linux' && matrix.python == '3.15.2'
@@ -69,6 +78,39 @@ jobs:
           fail_ci_if_error: false
           use_oidc: true
           verbose: true
+
+  coverage:
+    name: Complete matrix branch coverage
+    needs: [validate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.15.2"
+      - name: Install locked coverage dependencies
+        run: |
+          python -m pip install --disable-pip-version-check uv==0.13.8
+          uv sync --locked --extra test
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: coverage-data-*
+          path: coverage-inputs
+          merge-multiple: false
+      - name: Require every matrix input and enforce 90 percent combined coverage
+        shell: bash
+        run: |
+          uv run --no-sync python -m tools.coverage_inputs coverage-inputs
+          uv run --no-sync python -m coverage combine --keep coverage-inputs/*/.coverage
+          uv run --no-sync python -m coverage report --fail-under=90
+          uv run --no-sync python -m coverage xml -o coverage-combined.xml
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: combined-branch-coverage
+          path: coverage-combined.xml
+          if-no-files-found: error
+          retention-days: 14
 
   mutation:
     name: Release boundary mutation gate
@@ -89,6 +131,7 @@ jobs:
         run: >-
           uv run --no-sync python -m pytest tests/test_release_admission.py -q
           --gremlins --gremlin-targets=tools/release_admission.py
+          --gremlin-no-coverage-filter
           --gremlin-report=json --gremlin-workers=2
           --gremlin-mutant-timeout=10 --gremlin-coverage-timeout=60
           --strict-pardons --max-pardons=0
@@ -132,20 +175,22 @@ jobs:
   required-quality:
     name: validate (ubuntu-latest)
     if: ${{ always() }}
-    needs: [validate, mutation, profile]
+    needs: [validate, mutation, profile, coverage]
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Require every strict validation, mutation and profile job to succeed
+      - name: Require every strict validation, mutation, profile and coverage job to succeed
         shell: bash
         env:
           VALIDATE_RESULT: ${{ needs.validate.result }}
           MUTATION_RESULT: ${{ needs.mutation.result }}
           PROFILE_RESULT: ${{ needs.profile.result }}
+          COVERAGE_RESULT: ${{ needs.coverage.result }}
         run: |
           test "$VALIDATE_RESULT" = success
           test "$MUTATION_RESULT" = success
           test "$PROFILE_RESULT" = success
+          test "$COVERAGE_RESULT" = success
 
   prose:
     name: Prose lint (Vale)

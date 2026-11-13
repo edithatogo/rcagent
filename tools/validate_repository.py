@@ -6,6 +6,8 @@ import argparse
 import json
 from pathlib import Path
 
+from tools.json_shapes import JsonObject, is_array, is_object, require_object
+
 REQUIRED_CONTEXT = (
     "AGENTS.md",
     "CONTRIBUTING.md",
@@ -59,6 +61,25 @@ EVIDENCE_REQUIRED_FIELDS = {
 }
 
 
+def _load_document(path: Path) -> JsonObject:
+    return require_object(json.loads(path.read_text(encoding="utf-8")), context=path.name)
+
+
+def _rows(document: JsonObject, field: str, *, label: str, errors: list[str]) -> list[JsonObject]:
+    """Return checked rows while recording malformed containers as failures."""
+    values = document.get(field, [])
+    if not is_array(values):
+        errors.append(f"{label}: {field} must be an array")
+        return []
+    rows: list[JsonObject] = []
+    for value in values:
+        if not is_object(value):
+            errors.append(f"{label}: {field} entry must be an object")
+        else:
+            rows.append(value)
+    return rows
+
+
 def _validate_track_directories(root: Path) -> list[str]:
     errors: list[str] = []
     track_roots: list[Path] = []
@@ -80,8 +101,8 @@ def _validate_track_directories(root: Path) -> list[str]:
         if not metadata_path.is_file():
             continue
         try:
-            metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
+            metadata = _load_document(metadata_path)
+        except (OSError, ValueError):
             continue
         if metadata.get("evidence_schema") != "1.0":
             continue
@@ -93,17 +114,18 @@ def _validate_track_directories(root: Path) -> list[str]:
             ledger_path.read_text(encoding="utf-8").splitlines(), start=1
         ):
             try:
-                event = json.loads(line)
+                event: object = json.loads(line)
             except json.JSONDecodeError as exc:
                 errors.append(f"{track_id}: invalid evidence.jsonl line {line_number}: {exc.msg}")
                 continue
-            if not isinstance(event, dict):
+            if not is_object(event):
                 errors.append(
                     f"{track_id}: invalid evidence.jsonl line {line_number}: event must be an object"
                 )
                 continue
             for field, expected_type in EVIDENCE_REQUIRED_FIELDS.items():
-                if not isinstance(event.get(field), expected_type) or not event[field].strip():
+                value = event.get(field)
+                if not isinstance(value, expected_type) or not value.strip():
                     errors.append(
                         f"{track_id}: invalid evidence.jsonl line {line_number}: missing {field}"
                     )
@@ -121,7 +143,7 @@ def _validate_track_directories(root: Path) -> list[str]:
 
 def _validate_capability_profiles(registry: object, track_numbers: set[int]) -> list[str]:
     errors: list[str] = []
-    if not isinstance(registry, dict):
+    if not is_object(registry):
         return ["capability profile registry must be an object"]
     if registry.get("schema_version") != "1.0":
         errors.append("capability registry requires schema_version=1.0")
@@ -142,7 +164,7 @@ def _validate_capability_profiles(registry: object, track_numbers: set[int]) -> 
         "network_egress_requires_disclosure",
         "planned_is_not_installable",
     )
-    if not isinstance(contract, dict):
+    if not is_object(contract):
         errors.append("capability installation_contract must be an object")
     else:
         for field in required_true:
@@ -151,13 +173,13 @@ def _validate_capability_profiles(registry: object, track_numbers: set[int]) -> 
         if contract.get("telemetry_default") != "off":
             errors.append("capability installation_contract requires telemetry_default=off")
     profiles = registry.get("profiles")
-    if not isinstance(profiles, list) or not profiles:
+    if not is_array(profiles) or not profiles:
         return [*errors, "capability profiles must be a non-empty array"]
     ids: set[str] = set()
     defaults: list[str] = []
-    by_id: dict[str, dict] = {}
+    by_id: dict[str, JsonObject] = {}
     for profile in profiles:
-        if not isinstance(profile, dict):
+        if not is_object(profile):
             errors.append("capability profile must be an object")
             continue
         profile_id = profile.get("id")
@@ -168,25 +190,27 @@ def _validate_capability_profiles(registry: object, track_numbers: set[int]) -> 
             errors.append(f"duplicate capability profile id: {profile_id}")
         ids.add(profile_id)
         by_id[profile_id] = profile
-        if profile.get("class") not in PROFILE_CLASSES:
+        profile_class = profile.get("class")
+        if not isinstance(profile_class, str) or profile_class not in PROFILE_CLASSES:
             errors.append(f"{profile_id}: invalid capability class")
         status = profile.get("status")
-        if status not in PROFILE_STATUSES:
+        if not isinstance(status, str) or status not in PROFILE_STATUSES:
             errors.append(f"{profile_id}: invalid capability status")
         if not isinstance(profile.get("default"), bool):
             errors.append(f"{profile_id}: default must be boolean")
         elif profile["default"]:
             defaults.append(profile_id)
-        if status in {"planned", "blocked", "unavailable"} and profile.get("default") is True:
+        if status in ("planned", "blocked", "unavailable") and profile.get("default") is True:
             errors.append(f"{profile_id}: non-implemented profile cannot be default")
         if status == "implemented" and profile_id != "core":
             implementation = profile.get("implementation")
-            if not isinstance(implementation, dict) or not all(
-                isinstance(implementation.get(field), str) and implementation[field].strip()
+            if not is_object(implementation) or not all(
+                isinstance((value := implementation.get(field)), str) and value.strip()
                 for field in ("entrypoint", "support_scope")
             ):
                 errors.append(f"{profile_id}: implemented profile requires implementation contract")
-        if profile.get("owner_track") not in track_numbers:
+        owner = profile.get("owner_track")
+        if not isinstance(owner, (int, float)) or owner not in track_numbers:
             errors.append(f"{profile_id}: unknown owner track number")
     if len(defaults) != 1:
         errors.append("capability registry requires exactly one default profile")
@@ -216,15 +240,15 @@ def validate(root: Path) -> list[str]:
         return errors
 
     try:
-        roadmap = json.loads(roadmap_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
+        roadmap = _load_document(roadmap_path)
+    except (OSError, ValueError) as exc:
         errors.append(f"invalid conductor/roadmap.json: {exc}")
         return errors
 
     track_ids: set[str] = set()
     track_numbers: set[int] = set()
     issue_numbers: set[int] = set()
-    for track in roadmap.get("tracks", []):
+    for track in _rows(roadmap, "tracks", label="roadmap", errors=errors):
         track_id = track.get("id")
         issue = track.get("issue")
         if not isinstance(track_id, str) or not track_id:
@@ -244,7 +268,8 @@ def validate(root: Path) -> list[str]:
             errors.append(f"{track_id}: invalid GitHub issue")
         elif issue in issue_numbers:
             errors.append(f"duplicate GitHub issue mapping: #{issue}")
-        issue_numbers.add(issue)
+        else:
+            issue_numbers.add(issue)
 
         active_root = root / "conductor/tracks" / track_id
         archive_root = root / "conductor/archive" / track_id
@@ -266,23 +291,24 @@ def validate(root: Path) -> list[str]:
         metadata_path = track_root / "metadata.json"
         if metadata_path.is_file():
             try:
-                metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError) as exc:
+                metadata = _load_document(metadata_path)
+            except (OSError, ValueError) as exc:
                 errors.append(f"{track_id}: invalid metadata.json: {exc}")
             else:
                 expected = f"https://github.com/edithatogo/rcagent/issues/{issue}"
-                if metadata.get("github", {}).get("issue") != expected:
+                github = metadata.get("github")
+                if not is_object(github) or github.get("issue") != expected:
                     errors.append(f"{track_id}: issue mapping does not match #{issue}")
 
     architecture_path = root / "conductor/clinical-governance-architecture.json"
     if architecture_path.is_file():
         try:
-            architecture = json.loads(architecture_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
+            architecture = _load_document(architecture_path)
+        except (OSError, ValueError) as exc:
             errors.append(f"invalid conductor/clinical-governance-architecture.json: {exc}")
         else:
             layer_ids: set[str] = set()
-            for layer in architecture.get("layers", []):
+            for layer in _rows(architecture, "layers", label="clinical governance", errors=errors):
                 layer_id = layer.get("id")
                 if not isinstance(layer_id, str) or not layer_id:
                     errors.append("clinical governance layer has no valid id")
@@ -290,12 +316,18 @@ def validate(root: Path) -> list[str]:
                 if layer_id in layer_ids:
                     errors.append(f"duplicate clinical governance layer id: {layer_id}")
                 layer_ids.add(layer_id)
-                for owner in layer.get("owner_tracks", []):
-                    if owner not in track_numbers:
+                owners = layer.get("owner_tracks", [])
+                if not is_array(owners):
+                    errors.append(f"{layer_id}: owner_tracks must be an array")
+                    continue
+                for owner in owners:
+                    if not isinstance(owner, (int, float)) or owner not in track_numbers:
                         errors.append(f"{layer_id}: unknown owner track number: {owner}")
 
             integration_ids: set[str] = set()
-            for integration in architecture.get("integrations", []):
+            for integration in _rows(
+                architecture, "integrations", label="clinical governance", errors=errors
+            ):
                 integration_id = integration.get("id")
                 if not isinstance(integration_id, str) or not integration_id:
                     errors.append("clinical governance integration has no valid id")
@@ -305,18 +337,20 @@ def validate(root: Path) -> list[str]:
                 integration_ids.add(integration_id)
                 for field in ("owner_track", "validation_track"):
                     value = integration.get(field)
-                    if value not in track_numbers:
+                    if not isinstance(value, (int, float)) or value not in track_numbers:
                         errors.append(f"{integration_id}: unknown {field} number: {value}")
 
     integration_map_path = root / "conductor/integration-map.json"
     if integration_map_path.is_file():
         try:
-            integration_map = json.loads(integration_map_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
+            integration_map = _load_document(integration_map_path)
+        except (OSError, ValueError) as exc:
             errors.append(f"invalid conductor/integration-map.json: {exc}")
         else:
             integration_track_ids: set[str] = set()
-            for integration in integration_map.get("tracks", []):
+            for integration in _rows(
+                integration_map, "tracks", label="integration-map", errors=errors
+            ):
                 track_id = integration.get("track_id")
                 if not isinstance(track_id, str) or not track_id:
                     errors.append("integration-map track has no valid track_id")
@@ -327,9 +361,9 @@ def validate(root: Path) -> list[str]:
                 if track_id not in track_ids:
                     errors.append(f"integration-map has unknown track id: {track_id}")
                 candidates = integration.get("candidate_systems")
-                if not isinstance(candidates, list) or not candidates:
+                if not is_array(candidates) or not candidates:
                     errors.append(f"{track_id}: candidate_systems must be non-empty")
-                if integration.get("status") in {"adopt", "adapt", "project-extension"}:
+                if integration.get("status") in ("adopt", "adapt", "project-extension"):
                     for field in ADOPTED_INTEGRATION_FIELDS:
                         value = integration.get(field)
                         if not isinstance(value, str) or not value.strip():
@@ -338,8 +372,8 @@ def validate(root: Path) -> list[str]:
     capability_path = root / "conductor/capability-profiles.json"
     if capability_path.is_file():
         try:
-            capability_registry = json.loads(capability_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
+            capability_registry = _load_document(capability_path)
+        except (OSError, ValueError) as exc:
             errors.append(f"invalid conductor/capability-profiles.json: {exc}")
         else:
             errors.extend(_validate_capability_profiles(capability_registry, track_numbers))

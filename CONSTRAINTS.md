@@ -16,6 +16,12 @@ reviewable lock diff, not a new owner approval.
 Ruff correctness rules and formatting, ty, basedpyright strict, Bandit, Vulture,
 repository contracts, seven deterministic benchmark cases, and pytest with
 branch coverage all gate the platform matrix. Coverage must remain at least 90%.
+Linux and macOS enforce that floor on their own runs. Windows runs every applicable
+test and collects branch coverage, deferring its percentage floor to a required
+combined matrix gate because Unix-only paths are not executable there. The combined
+gate requires all four nonempty branch databases, validates their source paths,
+combines executed branches and enforces 90%; missing or corrupt inputs fail. This
+is a union of executed coverage, not an average of platform percentages.
 Expected failures must be strict: an unexpected pass fails the suite. Full
 socket/process tests stay enabled on supported CI runners.
 
@@ -29,6 +35,10 @@ count. CI rejects new baseline files/rules and growth against the PR base or
 previous master commit. The new quality helpers and tests have no baseline
 allowance. Fix affected types incrementally; reduce the baseline with ordinary
 basedpyright, then commit the decrease. Do not routinely run `--writebaseline`.
+Ratchet each policy cap down to the remaining count when integrating a batch;
+do not leave permission to restore removed debt. Verify claimed reductions with
+an empty external baseline and retain unresolved private-access or upstream
+unknown contracts instead of hiding them behind `Any`, ignores or blanket casts.
 
 Basedpyright's baseline matches code positions, not semantic proofs. The retained
 ty check, tests, code review, and later typed-boundary migration remain necessary.
@@ -66,6 +76,9 @@ changes, survivors, instrumentation failures, timeouts, errors and pardons fail
 the report gate. Ordinary tests run first. This is a 23-mutant initial boundary
 measurement, not repository-wide mutation coverage. Expand next to typed
 references, public export, archive admission and deadline/process cleanup.
+Run the complete release test file for every mutant with
+`--gremlin-no-coverage-filter`; test-selection filtering is not acceptance evidence
+for this small boundary. The typing pass adds one mutant and requires all 24 kills.
 
 ## Performance claims require measurements
 
