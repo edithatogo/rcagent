@@ -1,5 +1,11 @@
 # FAW06 typing repair receipt
 
+Publication snapshot for PR #127. Subsequent acceptance: head `ce353239` passed
+[Quality 43400688051](https://github.com/edithatogo/rcagent/actions/runs/43400688051),
+dependency review, privacy/secrets and official conformance; the PR merged as
+`a38dd9c`. The historical pending statements below describe publication time.
+The [next typing increment](./typing-contracts-evidence.md) records PR #128.
+
 Date: 13 November 2026, Australia/Brisbane. The user's current priority is typing
 repair. This increment is part of [PR #127](https://github.com/edithatogo/rcagent/pull/127),
 with current-head hosted acceptance required before merge. FAW06 remains in progress.
