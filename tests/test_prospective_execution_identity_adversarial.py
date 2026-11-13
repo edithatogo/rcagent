@@ -11,7 +11,6 @@ from typing import TypeAlias
 
 import pytest
 
-from tests.prospective_fixture_types import mapping, mapping_call, sequence
 from tools import prospective_execution_identity as identity
 
 Project: TypeAlias = tuple[Path, tuple[str, ...], dict[str, str]]
@@ -56,7 +55,7 @@ class SyntheticEnvironment:
     configuration: dict[str, int | str]
 
 
-environment_identity = mapping_call(identity.environment_identity)
+environment_identity = identity.environment_identity
 
 OPTIONAL_FORMAT_MODULES = (
     "fqdn",
@@ -154,8 +153,8 @@ def project(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, bodies: dict[str, b
 def test_synthetic_environment_success(synthetic_environment: SyntheticEnvironment) -> None:
     result = environment_identity()
     assert result["platform"] == "synthetic"
-    assert mapping(sequence(result["stdlib"])[0])["path"] == "module.py"
-    assert len(mapping(result["distributions"])) == len(identity.DISTRIBUTIONS)
+    assert result["stdlib"][0]["path"] == "module.py"
+    assert len(result["distributions"]) == len(identity.DISTRIBUTIONS)
 
 
 def test_file_reader_is_bounded_even_if_file_grows(
@@ -234,9 +233,7 @@ def test_stdlib_prunes_only_non_runtime_caches(synthetic_environment: SyntheticE
         child.mkdir()
         (child / "ignored.py").write_bytes(b"excluded")
     (env.stdlib / "ignored.pyc").write_bytes(b"excluded")
-    assert [mapping(item)["path"] for item in sequence(environment_identity()["stdlib"])] == [
-        "module.py"
-    ]
+    assert [item["path"] for item in environment_identity()["stdlib"]] == ["module.py"]
 
 
 def test_unreadable_stdlib_walk_cannot_silently_pass(
@@ -288,7 +285,7 @@ def test_typing_extensions_conditional_identity(
     if loaded:
         env.runtime.modules["typing_extensions"] = SimpleNamespace(__file__="/synthetic/untrusted")
     if passes:
-        assert "typing-extensions" not in mapping(environment_identity()["distributions"])
+        assert "typing-extensions" not in environment_identity()["distributions"]
     else:
         with pytest.raises(ValueError, match="dependency_inventory_unavailable"):
             environment_identity()
@@ -445,7 +442,7 @@ def test_missing_typing_extensions_must_honour_active_requirements(
     del env.distributions["typing-extensions"]
     env.distributions["referencing"].requires = [requirement]
     if passes:
-        assert "typing-extensions" not in mapping(environment_identity()["distributions"])
+        assert "typing-extensions" not in environment_identity()["distributions"]
     else:
         with pytest.raises(ValueError):
             environment_identity()
@@ -542,13 +539,13 @@ def test_distribution_prunes_bytecode_and_console_wrapper_paths(
     env.distributions["attrs"].files.extend(
         [Path("__pycache__/attrs.pyc"), Path("attrs.pyc"), Path("../bin/console")]
     )
-    records = sequence(mapping(mapping(environment_identity()["distributions"])["attrs"])["files"])
-    assert [mapping(record)["path"] for record in records] == ["attrs.py"]
+    records = environment_identity()["distributions"]["attrs"]["files"]
+    assert [record["path"] for record in records] == ["attrs.py"]
 
 
 def test_unknown_optional_extra_not_activated(synthetic_environment: SyntheticEnvironment) -> None:
     synthetic_environment.distributions["attrs"].requires = ['synthetic-optional; extra == "test"']
-    assert "attrs" in mapping(environment_identity()["distributions"])
+    assert "attrs" in environment_identity()["distributions"]
 
 
 def test_python311_active_supported_requirement(
@@ -557,7 +554,7 @@ def test_python311_active_supported_requirement(
     env = synthetic_environment
     env.runtime.version_info = (3, 11)
     env.distributions["referencing"].requires = ['typing-extensions; python_version < "3.13"']
-    assert "typing-extensions" in mapping(environment_identity()["distributions"])
+    assert "typing-extensions" in environment_identity()["distributions"]
 
 
 def test_unknown_requirement_marker_rejected(synthetic_environment: SyntheticEnvironment) -> None:
@@ -618,7 +615,5 @@ def test_loaded_known_alias_or_submodule_in_inventory_accepted(
     module.__file__ = str(source)
     module.__spec__ = ModuleSpec(module_name, loader=None, origin=str(source))
     env.runtime.modules[module_name] = module
-    files = sequence(
-        mapping(mapping(environment_identity()["distributions"])[distribution])["files"]
-    )
-    assert relative in {mapping(item)["path"] for item in files}
+    files = environment_identity()["distributions"][distribution]["files"]
+    assert relative in {item["path"] for item in files}

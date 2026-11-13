@@ -12,6 +12,7 @@ import re
 import sys
 import sysconfig
 from pathlib import Path
+from typing import TypedDict
 
 MAX_FILE = 32 * 1024 * 1024
 MAX_TOTAL = 512 * 1024 * 1024
@@ -44,6 +45,38 @@ OPTIONAL_FORMAT_MODULES = (
     "uri_template",
     "isoduration",
 )
+
+
+class IdentityFile(TypedDict):
+    path: str
+    bytes: int
+    sha256: str
+
+
+class PathBindings(TypedDict):
+    executable_alias: str
+    executable_resolved: str
+    stdlib: str
+    library_directory: str
+    library_name: str
+
+
+class DistributionIdentity(TypedDict):
+    version: str
+    files: list[IdentityFile]
+
+
+class EnvironmentIdentity(TypedDict):
+    path_bindings: PathBindings
+    python_version: str
+    implementation: str
+    cache_tag: str | None
+    platform: str
+    executable: list[IdentityFile]
+    interpreter_library: list[IdentityFile]
+    stdlib: list[IdentityFile]
+    distributions: dict[str, DistributionIdentity]
+    limitations: list[str]
 
 
 def digest(value: object) -> str:
@@ -104,10 +137,10 @@ def project_closure(root: Path, sources: tuple[str, ...], expected: dict[str, st
                 raise ValueError("incomplete_project_closure")
 
 
-def _files(paths: list[Path], base: Path, budget: list[int] | None = None) -> list[dict]:
+def _files(paths: list[Path], base: Path, budget: list[int] | None = None) -> list[IdentityFile]:
     if len(paths) > MAX_FILES:
         raise ValueError("identity_file_limit")
-    result = []
+    result: list[IdentityFile] = []
     budget = [0, 0] if budget is None else budget
     for path in sorted(set(paths)):
         if path.is_symlink() or not path.is_file() or path.resolve() != path:
@@ -126,7 +159,7 @@ def _files(paths: list[Path], base: Path, budget: list[int] | None = None) -> li
     return result
 
 
-def environment_identity() -> dict:
+def environment_identity() -> EnvironmentIdentity:
     """Hash supported interpreter/stdlib and installed validator distributions.
 
     This enumerates disk bytes; sys.modules contents and OS libraries are not
@@ -139,7 +172,7 @@ def environment_identity() -> dict:
         raise ValueError("unsupported_optional_format_dependency")
     executable = Path(sys.executable).resolve(strict=True)
     stdlib = Path(sysconfig.get_path("stdlib")).resolve(strict=True)
-    paths = []
+    paths: list[Path] = []
     visited = 0
 
     def walk_error(error: OSError) -> None:
@@ -156,8 +189,8 @@ def environment_identity() -> dict:
     budget = [0, 0]
     if not paths:
         raise ValueError("stdlib_inventory_unavailable")
-    packages = {}
-    required = set()
+    packages: dict[str, DistributionIdentity] = {}
+    required: set[str] = set()
     for name in DISTRIBUTIONS:
         try:
             dist = importlib.metadata.distribution(name)
@@ -172,7 +205,7 @@ def environment_identity() -> dict:
         if not dist.files:
             raise ValueError("dependency_inventory_unavailable")
         base = Path(str(dist.locate_file(""))).resolve(strict=True)
-        members = []
+        members: list[Path] = []
         for member in dist.files:
             if "__pycache__" in member.parts or str(member).endswith(".pyc"):
                 continue
@@ -221,7 +254,7 @@ def environment_identity() -> dict:
         sysconfig.get_config_var("LIBDIR"),
         sysconfig.get_config_var("LDLIBRARY"),
     )
-    libraries = []
+    libraries: list[IdentityFile] = []
     if sysconfig.get_config_var("Py_ENABLE_SHARED"):
         if not library_dir or not library_name:
             raise ValueError("interpreter_library_unavailable")

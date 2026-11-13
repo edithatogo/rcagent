@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+from tests.prospective_fixture_types import ObjectMap, mapping, sequence, text_value
 from tools.prospective_inventory import inventory, main
 
 
@@ -19,11 +20,11 @@ def write_json(path: Path, value: object) -> None:
     path.write_text(json.dumps(value), encoding="utf-8")
 
 
-def fixture(root: Path) -> tuple[Path, dict]:
+def fixture(root: Path) -> tuple[Path, ObjectMap]:
     (root / "input.txt").write_text("Synthetic [Case ID]", encoding="utf-8")
     (root / "rubric.txt").write_text("Synthetic research rubric", encoding="utf-8")
     (root / "submissions").mkdir()
-    value = {
+    value: ObjectMap = {
         "schema_version": "1.0",
         "kind": "prospective-study-plan",
         "study_id": "prospective-test-only",
@@ -43,19 +44,20 @@ def fixture(root: Path) -> tuple[Path, dict]:
     return manifest, value
 
 
-def package(manifest: Path, plan: dict) -> tuple[Path, dict]:
-    slot = plan["expected_slots"][0]
+def package(manifest: Path, plan: ObjectMap) -> tuple[Path, ObjectMap]:
+    slot = text_value(sequence(plan["expected_slots"])[0])
     root = manifest.parent / "submissions" / slot
     root.mkdir()
     for name in ("raw.txt", "normalized.txt"):
         (root / name).write_text("Synthetic unverified response", encoding="utf-8")
-    value = {
+    case = mapping(sequence(plan["cases"])[0])
+    value: ObjectMap = {
         "schema_version": "1.0",
         "purpose": "primary-observation",
         "study_id": plan["study_id"],
         "manifest_sha256": pin(manifest),
         "slot_id": slot,
-        "input_sha256": plan["cases"][0]["input"]["sha256"],
+        "input_sha256": mapping(case["input"])["sha256"],
         "raw": {"path": "raw.txt", "sha256": pin(root / "raw.txt")},
         "normalized": {"path": "normalized.txt", "sha256": pin(root / "normalized.txt")},
         "normalization": {
@@ -139,7 +141,7 @@ def test_invalid_receipts_are_quarantined(tmp_path: Path, content: bytes, reason
 def test_artifact_path_restrictions(tmp_path: Path, path: str) -> None:
     manifest, plan = fixture(tmp_path)
     receipt, payload = package(manifest, plan)
-    payload["raw"]["path"] = path
+    mapping(payload["raw"])["path"] = path
     write_json(receipt, payload)
     assert inventory(manifest, pin(manifest))["slots"][0]["reason"] == "invalid_artifact_path"
 
@@ -163,10 +165,10 @@ def test_artifact_and_normalization_failures(tmp_path: Path, change: str, reason
         raw.write_bytes(b"changed")
     elif change in {"utf8", "different"}:
         raw.write_bytes(b"\xff" if change == "utf8" else b"different")
-        payload["raw"]["sha256"] = pin(raw)
-        payload["normalization"]["source_sha256"] = pin(raw)
+        mapping(payload["raw"])["sha256"] = pin(raw)
+        mapping(payload["normalization"])["source_sha256"] = pin(raw)
     elif change in {"source", "target"}:
-        payload["normalization"][f"{change}_sha256"] = "0" * 64
+        mapping(payload["normalization"])[f"{change}_sha256"] = "0" * 64
     else:
         raw.unlink()
     write_json(receipt, payload)
@@ -188,15 +190,16 @@ def test_artifact_and_normalization_failures(tmp_path: Path, change: str, reason
 def test_manifest_rejections(tmp_path: Path, change: str, reason: str) -> None:
     manifest, payload = fixture(tmp_path)
     if change in {"cases", "conditions"}:
-        payload[change].append(payload[change][0])
+        items = sequence(payload[change])
+        items.append(items[0])
     elif change == "denominator":
-        payload["expected_slots"].pop()
+        sequence(payload["expected_slots"]).pop()
     elif change == "repeats":
         payload["repeats"] = 11
     elif change == "private":
         payload["data_class"] = "private"
     elif change == "rubric":
-        payload["rubric"]["sha256"] = "0" * 64
+        mapping(payload["rubric"])["sha256"] = "0" * 64
     else:
         payload["approved"] = True
     write_json(manifest, payload)
@@ -258,13 +261,15 @@ def test_missing_root_and_entry_limit(tmp_path: Path) -> None:
         inventory(manifest, pin(manifest))
 
 
-def test_cli_success_is_not_admission_and_failure_sanitized(tmp_path: Path, capsys) -> None:
+def test_cli_success_is_not_admission_and_failure_sanitized(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     manifest, _ = fixture(tmp_path)
     assert main(["--manifest", str(manifest), "--expected-sha256", pin(manifest)]) == 0
-    result = json.loads(capsys.readouterr().out)
+    result = mapping(json.loads(capsys.readouterr().out))
     assert result["status"] == "planning_inventory"
     assert result["study_unlocked"] is False
-    assert result["counts"]["admitted"] == 0
+    assert mapping(result["counts"])["admitted"] == 0
     assert main(["--manifest", str(tmp_path / "private-missing"), "--expected-sha256", "bad"]) == 1
     assert json.loads(capsys.readouterr().out) == {
         "status": "inventory_failed",
@@ -272,7 +277,7 @@ def test_cli_success_is_not_admission_and_failure_sanitized(tmp_path: Path, caps
     }
 
 
-def test_oversized_receipt_quarantined(tmp_path: Path, monkeypatch) -> None:
+def test_oversized_receipt_quarantined(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     manifest, plan = fixture(tmp_path)
     receipt, _ = package(manifest, plan)
     monkeypatch.setattr("tools.evaluation_preflight.MAX_BYTES", 4096)
@@ -293,9 +298,10 @@ def test_repeats_require_actual_integer(tmp_path: Path, value: object) -> None:
 def test_identifiers_reject_trailing_newlines(tmp_path: Path, field: str) -> None:
     manifest, plan = fixture(tmp_path)
     if field == "study_id":
-        plan[field] += "\n"
+        plan[field] = text_value(plan[field]) + "\n"
     else:
-        plan[field][0]["id"] += "\n"
+        item = mapping(sequence(plan[field])[0])
+        item["id"] = text_value(item["id"]) + "\n"
     write_json(manifest, plan)
     with pytest.raises(ValueError):
         inventory(manifest, pin(manifest))
@@ -319,7 +325,9 @@ def test_checked_in_planning_manifest_is_pinned_and_pending() -> None:
         / "evaluation/prospective/prospective-agent-text-20260830/manifest.json"
     )
     result = inventory(manifest, "a21bf8cd1676a20f422b75275307e5be30e203ba7a9755f2ba50d78735e8f2be")
-    saved = json.loads((manifest.parent / "inventory-20260830.json").read_text(encoding="utf-8"))
+    saved: object = json.loads(
+        (manifest.parent / "inventory-20260830.json").read_text(encoding="utf-8")
+    )
     assert result == saved
     assert result["counts"] == {
         "expected": 2,

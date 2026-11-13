@@ -12,10 +12,13 @@ import platform
 import re
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Literal, TypeAlias, TypedDict, TypeGuard
 
+from tools import json_shapes
 from tools import prospective_execution_identity as identity
 from tools import prospective_freeze as freeze
 from tools import prospective_native_protocol as native
+from tools import prospective_runner_contract as runner
 from tools import prospective_server_model as model
 from tools import prospective_slot_binding as binding
 from tools.evaluation_preflight import _digest, _unique
@@ -55,12 +58,200 @@ REGISTRY = "evaluation/benchmark/comparators.json"
 ADAPTER = "tools/prospective_primary_session.py"
 
 
+ReviewRole: TypeAlias = Literal["acceptance", "evidence-integrity", "safety-privacy"]
+
+
+class ReviewerRecord(TypedDict):
+    role: ReviewRole
+    reviewer_id: str
+    outcome: Literal["pass"]
+    evidence_path: str
+    evidence_sha256: str
+
+
+class ReviewRecord(TypedDict):
+    version: Literal["primary-review-v1"]
+    source_commit: str
+    protocol_sha256: str
+    adapter_sha256: str
+    closure_sha256: str
+    environment_sha256: str
+    reviewers: list[ReviewerRecord]
+    unresolved_findings: list[object]
+
+
+class ReviewEnvelope(TypedDict):
+    role: ReviewRole
+    reviewer_id: str
+    source_commit: str
+    protocol_sha256: str
+    closure_sha256: str
+    environment_sha256: str
+    outcome: Literal["pass"]
+    evidence_locator: str
+    unresolved_findings: list[object]
+
+
+class ExecutionEvidence(TypedDict):
+    review_commit: str
+    source_commit: str
+    review_sha256: str
+    closure_sha256: str
+    environment_sha256: str
+    protocol_sha256: str
+    study_id: str
+    slot_id: str
+    adapter_sha256: str
+    execution_permitted: Literal[True]
+    admitted: Literal[False]
+    study_unlocked: Literal[False]
+    limitations: list[str]
+
+
+class ExecutionPlanValue(TypedDict):
+    request: runner.RequestPackage
+    admission: model.ModelAdmission
+    evidence: ExecutionEvidence
+
+
+def _strings(value: object) -> TypeGuard[list[str]]:
+    return json_shapes.is_array(value) and all(isinstance(item, str) for item in value)
+
+
+def _role(value: object) -> TypeGuard[ReviewRole]:
+    return isinstance(value, str) and value in {
+        "acceptance",
+        "evidence-integrity",
+        "safety-privacy",
+    }
+
+
+def _is_reviewer(value: object) -> TypeGuard[ReviewerRecord]:
+    return (
+        json_shapes.is_object(value)
+        and _role(value.get("role"))
+        and isinstance(value.get("outcome"), str)
+        and value.get("outcome") == "pass"
+        and all(
+            isinstance(value.get(key), str)
+            for key in ("reviewer_id", "evidence_path", "evidence_sha256")
+        )
+    )
+
+
+def _is_review_record(value: object) -> TypeGuard[ReviewRecord]:
+    if (
+        not json_shapes.is_object(value)
+        or not isinstance(value.get("version"), str)
+        or value.get("version") != "primary-review-v1"
+        or not all(
+            isinstance(value.get(key), str)
+            for key in (
+                "source_commit",
+                "protocol_sha256",
+                "adapter_sha256",
+                "closure_sha256",
+                "environment_sha256",
+            )
+        )
+        or not json_shapes.is_array(value.get("unresolved_findings"))
+    ):
+        return False
+    reviewers = value.get("reviewers")
+    return json_shapes.is_array(reviewers) and all(_is_reviewer(item) for item in reviewers)
+
+
+def _is_review_envelope(value: object) -> TypeGuard[ReviewEnvelope]:
+    return (
+        json_shapes.is_object(value)
+        and _role(value.get("role"))
+        and isinstance(value.get("outcome"), str)
+        and value.get("outcome") == "pass"
+        and all(
+            isinstance(value.get(key), str)
+            for key in (
+                "reviewer_id",
+                "source_commit",
+                "protocol_sha256",
+                "closure_sha256",
+                "environment_sha256",
+                "evidence_locator",
+            )
+        )
+        and json_shapes.is_array(value.get("unresolved_findings"))
+    )
+
+
+def _is_artifact(value: object) -> TypeGuard[runner.Artifact]:
+    return (
+        json_shapes.is_object(value)
+        and isinstance(value.get("base64"), str)
+        and isinstance(value.get("sha256"), str)
+        and type(value.get("bytes")) is int
+    )
+
+
+def _is_request(value: object) -> TypeGuard[runner.RequestPackage]:
+    if not json_shapes.is_object(value):
+        return False
+    generation, limits = value.get("generation"), value.get("limits")
+    return (
+        isinstance(value.get("version"), str)
+        and all(_is_artifact(value.get(key)) for key in ("template", "input", "prompt", "request"))
+        and json_shapes.is_object(generation)
+        and all(type(item) is int for item in generation.values())
+        and json_shapes.is_object(limits)
+        and type(limits.get("max_bytes_per_artifact")) is int
+        and limits.get("context_tokens_validated") is False
+        and _strings(value.get("limitations"))
+        and value.get("execution_observed") is False
+        and value.get("admitted") is False
+        and value.get("study_unlocked") is False
+    )
+
+
+def _is_execution_evidence(value: object) -> TypeGuard[ExecutionEvidence]:
+    return (
+        json_shapes.is_object(value)
+        and all(
+            isinstance(value.get(key), str)
+            for key in (
+                "review_commit",
+                "source_commit",
+                "review_sha256",
+                "closure_sha256",
+                "environment_sha256",
+                "protocol_sha256",
+                "study_id",
+                "slot_id",
+                "adapter_sha256",
+            )
+        )
+        and value.get("execution_permitted") is True
+        and value.get("admitted") is False
+        and value.get("study_unlocked") is False
+        and _strings(value.get("limitations"))
+    )
+
+
+def _is_execution_plan(value: object) -> TypeGuard[ExecutionPlanValue]:
+    return (
+        json_shapes.is_object(value)
+        and _is_request(value.get("request"))
+        and model.is_model_admission(value.get("admission"))
+        and _is_execution_evidence(value.get("evidence"))
+    )
+
+
 @dataclass(frozen=True)
 class _Plan:
     payload: bytes
 
-    def value(self) -> dict:
-        return json.loads(self.payload)
+    def value(self) -> ExecutionPlanValue:
+        value: object = json.loads(self.payload)
+        if not _is_execution_plan(value):
+            raise ValueError("invalid_execution_plan")
+        return value
 
 
 def _canonical(value: object) -> bytes:
@@ -84,17 +275,17 @@ def _blob(root: Path, commit: str, path: str) -> bytes:
     return raw
 
 
-def _keys(value: object, keys: set[str]) -> None:
-    if type(value) is not dict or set(value) != keys:
+def _keys(value: object, keys: set[str]) -> json_shapes.JsonObject:
+    if not json_shapes.is_object(value) or type(value) is not dict or set(value) != keys:
         raise ValueError("invalid_review_record")
+    return value
 
 
-def _record(root: Path, review_commit: str) -> tuple[dict, str]:
+def _record(root: Path, review_commit: str) -> tuple[ReviewRecord, str]:
     raw = _blob(root, review_commit, REVIEW_PATH)
     try:
-        value = json.loads(raw, object_pairs_hook=_unique)
-        _keys(
-            value,
+        value = _keys(
+            json.loads(raw, object_pairs_hook=_unique),
             {
                 "version",
                 "source_commit",
@@ -110,31 +301,28 @@ def _record(root: Path, review_commit: str) -> tuple[dict, str]:
             raise ValueError("invalid_review_record")
         if type(value["unresolved_findings"]) is not list:
             raise ValueError("invalid_review_record")
-        if (
-            type(value["source_commit"]) is not str
-            or re.fullmatch(r"[0-9a-f]{40}", value["source_commit"]) is None
-        ):
+        source = value["source_commit"]
+        if type(source) is not str or re.fullmatch(r"[0-9a-f]{40}", source) is None:
             raise ValueError("invalid_review_record")
         for key in ("protocol_sha256", "adapter_sha256", "closure_sha256", "environment_sha256"):
             if not _digest(value[key]):
                 raise ValueError("invalid_review_record")
         reviewers = value["reviewers"]
-        if type(reviewers) is not list or len(reviewers) != 3:
+        if not json_shapes.is_array(reviewers) or len(reviewers) != 3:
             raise ValueError("invalid_review_record")
-        roles, ids, paths = set(), set(), set()
-        for reviewer in reviewers:
-            _keys(reviewer, {"role", "reviewer_id", "outcome", "evidence_path", "evidence_sha256"})
-            if (
-                reviewer["role"] not in {"acceptance", "evidence-integrity", "safety-privacy"}
-                or reviewer["outcome"] != "pass"
-            ):
+        roles: set[ReviewRole] = set()
+        ids: set[str] = set()
+        paths: set[str] = set()
+        for item in reviewers:
+            reviewer = _keys(
+                item, {"role", "reviewer_id", "outcome", "evidence_path", "evidence_sha256"}
+            )
+            if not _is_reviewer(reviewer):
                 raise ValueError("invalid_review_record")
             name = reviewer["reviewer_id"]
             path = reviewer["evidence_path"]
             if (
-                type(name) is not str
-                or not 1 <= len(name) <= 200
-                or type(path) is not str
+                not 1 <= len(name) <= 200
                 or len(path) > 200
                 or not path.startswith("conductor/reviews/evidence/")
                 or not _digest(reviewer["evidence_sha256"])
@@ -143,9 +331,8 @@ def _record(root: Path, review_commit: str) -> tuple[dict, str]:
             evidence = _blob(root, review_commit, path)
             if hashlib.sha256(evidence).hexdigest() != reviewer["evidence_sha256"]:
                 raise ValueError("review_evidence_mismatch")
-            envelope = json.loads(evidence, object_pairs_hook=_unique)
-            _keys(
-                envelope,
+            envelope = _keys(
+                json.loads(evidence, object_pairs_hook=_unique),
                 {
                     "role",
                     "reviewer_id",
@@ -158,18 +345,15 @@ def _record(root: Path, review_commit: str) -> tuple[dict, str]:
                     "unresolved_findings",
                 },
             )
+            if not _is_review_envelope(envelope):
+                raise ValueError("review_evidence_scope_mismatch")
             for key in ("role", "reviewer_id", "outcome"):
-                if type(envelope[key]) is not str or envelope[key] != reviewer[key]:
+                if envelope[key] != reviewer[key]:
                     raise ValueError("review_evidence_scope_mismatch")
             for key in ("source_commit", "protocol_sha256", "closure_sha256", "environment_sha256"):
-                if type(envelope[key]) is not str or envelope[key] != value[key]:
+                if envelope[key] != value[key]:
                     raise ValueError("review_evidence_scope_mismatch")
-            if (
-                type(envelope["unresolved_findings"]) is not list
-                or envelope["unresolved_findings"]
-                or type(envelope["evidence_locator"]) is not str
-                or not 1 <= len(envelope["evidence_locator"]) <= 500
-            ):
+            if envelope["unresolved_findings"] or not 1 <= len(envelope["evidence_locator"]) <= 500:
                 raise ValueError("review_evidence_scope_mismatch")
             roles.add(reviewer["role"])
             ids.add(name)
@@ -177,13 +361,20 @@ def _record(root: Path, review_commit: str) -> tuple[dict, str]:
         if len(roles) != 3 or len(ids) != 3 or len(paths) != 3:
             raise ValueError("invalid_review_record")
         _canonical(value)
+        if not _is_review_record(value):
+            raise ValueError("invalid_review_record")
     except (TypeError, KeyError, UnicodeError, RecursionError):
         raise ValueError("invalid_review_record") from None
     return value, hashlib.sha256(raw).hexdigest()
 
 
 def _verify(
-    protocol_path: Path, pin: str, slot_id: str, review_commit: str, root: Path, model_root: Path
+    protocol_path: Path,
+    pin: str,
+    slot_id: object,
+    review_commit: object,
+    root: Path,
+    model_root: Path,
 ) -> _Plan:
     if (platform.system(), platform.machine()) != ("Darwin", "arm64"):
         raise ValueError("unsupported_primary_platform")
@@ -230,7 +421,7 @@ def _verify(
         or selected["eligibility"]["admission_sha256"] != admission["admission_sha256"]
     ):
         raise ValueError("gate_identity_changed")
-    evidence = {
+    evidence: ExecutionEvidence = {
         "review_commit": review_commit,
         "source_commit": source,
         "review_sha256": review_pin,
@@ -251,12 +442,9 @@ def _verify(
             "not-observation-admission",
         ],
     }
-    return _Plan(
-        _canonical(
-            {
-                "request": candidate["requests"][slot_id],
-                "admission": admission,
-                "evidence": evidence,
-            }
-        )
-    )
+    result: ExecutionPlanValue = {
+        "request": candidate["requests"][slot_id],
+        "admission": admission,
+        "evidence": evidence,
+    }
+    return _Plan(_canonical(result))

@@ -7,14 +7,170 @@ import hashlib
 import json
 import re
 from pathlib import Path
-from typing import Any
+from typing import Literal, Protocol, TypedDict, TypeGuard, cast
 
 from jsonschema import Draft202012Validator
 
+from tools import json_shapes
 from tools.evaluation_preflight import _bytes, _digest, _unique
 
 
-def obj(properties: dict) -> dict:
+class _SchemaValidator(Protocol):
+    def is_valid(self, _instance: object, /) -> bool: ...
+
+
+class ArtifactReference(TypedDict):
+    path: str
+    sha256: str
+
+
+class PlanningCase(TypedDict):
+    id: str
+    input: ArtifactReference
+
+
+class PlanningCondition(TypedDict):
+    id: str
+    execution_status: str
+
+
+class PlanningDocument(TypedDict):
+    schema_version: str
+    kind: str
+    study_id: str
+    version: str
+    state: str
+    data_class: str
+    repeats: int
+    cases: list[PlanningCase]
+    conditions: list[PlanningCondition]
+    rubric: ArtifactReference
+    expected_slots: list[str]
+
+
+class NormalizationDeclaration(TypedDict):
+    source_sha256: str
+    target_sha256: str
+    method: str
+
+
+class SubmissionDocument(TypedDict):
+    schema_version: str
+    purpose: str
+    study_id: str
+    manifest_sha256: str
+    slot_id: str
+    input_sha256: str
+    raw: ArtifactReference
+    normalized: ArtifactReference
+    normalization: NormalizationDeclaration
+
+
+class InventorySlot(TypedDict):
+    slot_id: str
+    disposition: Literal["pending", "quarantined"]
+    reason: str
+
+
+class InventoryCounts(TypedDict):
+    expected: int
+    pending: int
+    quarantined: int
+    unexpected: int
+    admitted: Literal[0]
+
+
+class InventoryResult(TypedDict):
+    schema_version: Literal["1.0"]
+    status: Literal["planning_inventory"]
+    study_id: str
+    manifest_sha256: str
+    scope: Literal["manifest-adjacent-submissions-only"]
+    study_unlocked: Literal[False]
+    slots: list[InventorySlot]
+    counts: InventoryCounts
+    blockers: list[str]
+
+
+def is_artifact_reference(value: object) -> TypeGuard[ArtifactReference]:
+    """Check reference field types without claiming path or digest admission."""
+    return (
+        json_shapes.is_object(value)
+        and isinstance(value.get("path"), str)
+        and isinstance(value.get("sha256"), str)
+    )
+
+
+def _is_strings(value: object) -> TypeGuard[list[str]]:
+    return json_shapes.is_array(value) and all(isinstance(item, str) for item in value)
+
+
+def _is_case(value: object) -> TypeGuard[PlanningCase]:
+    return (
+        json_shapes.is_object(value)
+        and isinstance(value.get("id"), str)
+        and is_artifact_reference(value.get("input"))
+    )
+
+
+def _is_cases(value: object) -> TypeGuard[list[PlanningCase]]:
+    return json_shapes.is_array(value) and all(_is_case(item) for item in value)
+
+
+def _is_condition(value: object) -> TypeGuard[PlanningCondition]:
+    return (
+        json_shapes.is_object(value)
+        and isinstance(value.get("id"), str)
+        and isinstance(value.get("execution_status"), str)
+    )
+
+
+def _is_conditions(value: object) -> TypeGuard[list[PlanningCondition]]:
+    return json_shapes.is_array(value) and all(_is_condition(item) for item in value)
+
+
+def _is_plan(value: object) -> TypeGuard[PlanningDocument]:
+    return (
+        json_shapes.is_object(value)
+        and all(
+            isinstance(value.get(key), str)
+            for key in ("schema_version", "kind", "study_id", "version", "state", "data_class")
+        )
+        and type(value.get("repeats")) is int
+        and _is_cases(value.get("cases"))
+        and _is_conditions(value.get("conditions"))
+        and is_artifact_reference(value.get("rubric"))
+        and _is_strings(value.get("expected_slots"))
+    )
+
+
+def _is_normalization(value: object) -> TypeGuard[NormalizationDeclaration]:
+    return json_shapes.is_object(value) and all(
+        isinstance(value.get(key), str) for key in ("source_sha256", "target_sha256", "method")
+    )
+
+
+def _is_submission(value: object) -> TypeGuard[SubmissionDocument]:
+    return (
+        json_shapes.is_object(value)
+        and all(
+            isinstance(value.get(key), str)
+            for key in (
+                "schema_version",
+                "purpose",
+                "study_id",
+                "manifest_sha256",
+                "slot_id",
+                "input_sha256",
+            )
+        )
+        and is_artifact_reference(value.get("raw"))
+        and is_artifact_reference(value.get("normalized"))
+        and _is_normalization(value.get("normalization"))
+    )
+
+
+def obj(properties: json_shapes.JsonObject) -> json_shapes.JsonObject:
     return {
         "type": "object",
         "properties": properties,
@@ -23,17 +179,17 @@ def obj(properties: dict) -> dict:
     }
 
 
-def identifier(prefix: str) -> dict:
+def identifier(prefix: str) -> json_shapes.JsonObject:
     return {"type": "string", "pattern": f"^{prefix}-[a-z0-9-]+$", "maxLength": 64}
 
 
-REF = obj(
+REF: json_shapes.JsonObject = obj(
     {
         "path": {"type": "string", "maxLength": 200},
         "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     }
 )
-SCHEMA = obj(
+SCHEMA: json_shapes.JsonObject = obj(
     {
         "schema_version": {"const": "1.0"},
         "kind": {"const": "prospective-study-plan"},
@@ -66,7 +222,7 @@ SCHEMA = obj(
         },
     }
 )
-SUBMISSION = obj(
+SUBMISSION: json_shapes.JsonObject = obj(
     {
         "schema_version": {"const": "1.0"},
         "purpose": {"const": "primary-observation"},
@@ -87,7 +243,7 @@ SUBMISSION = obj(
 )
 
 
-def read_json(path: Path) -> tuple[Any, str]:
+def read_json(path: Path) -> tuple[object, str]:
     data = _bytes(path.absolute())
     try:
         return json.loads(data, object_pairs_hook=_unique), hashlib.sha256(data).hexdigest()
@@ -95,28 +251,38 @@ def read_json(path: Path) -> tuple[Any, str]:
         raise ValueError("invalid_json") from exc
 
 
-def validate(value: Any, schema: dict) -> None:
-    if not Draft202012Validator(schema).is_valid(value):
+def validate(value: object, schema: json_shapes.JsonObject) -> None:
+    # Adapt jsonschema's object-validation method, whose deprecated overload has
+    # incomplete annotations, without claiming any validity for the input value.
+    validator = cast(_SchemaValidator, Draft202012Validator(schema))
+    if not validator.is_valid(value):
         raise ValueError("invalid_schema")
 
 
-def artifact(root: Path, ref: dict) -> bytes:
+def artifact(root: Path, ref: object) -> bytes:
     # Restricted relative paths; no parent components. Not a filesystem sandbox.
-    path = ref["path"]
-    if not re.fullmatch(r"[a-zA-Z0-9_-]+(?:/[a-zA-Z0-9_-]+)*(?:\.[a-zA-Z0-9_-]+)?", path):
+    if not json_shapes.is_object(ref):
+        raise ValueError("invalid_artifact_path")
+    path = ref.get("path")
+    if not isinstance(path, str) or not re.fullmatch(
+        r"[a-zA-Z0-9_-]+(?:/[a-zA-Z0-9_-]+)*(?:\.[a-zA-Z0-9_-]+)?", path
+    ):
         raise ValueError("invalid_artifact_path")
     data = _bytes(root / path)
-    if hashlib.sha256(data).hexdigest() != ref["sha256"]:
+    pin = ref.get("sha256")
+    if not isinstance(pin, str) or hashlib.sha256(data).hexdigest() != pin:
         raise ValueError("artifact_hash_mismatch")
     return data
 
 
-def submission_reason(path: Path, plan: dict, pin: str, slot: str, input_pin: str) -> str:
+def submission_reason(
+    path: Path, plan: PlanningDocument, pin: str, slot: str, input_pin: str
+) -> str:
     value, _ = read_json(path)
-    if isinstance(value, dict) and value.get("purpose") == "contract-fixture":
+    if json_shapes.is_object(value) and value.get("purpose") == "contract-fixture":
         return "fixture_not_observation"
     validate(value, SUBMISSION)
-    if not isinstance(value, dict):
+    if not _is_submission(value):
         raise ValueError("invalid_validated_object_type")
     if (value["study_id"], value["manifest_sha256"], value["slot_id"], value["input_sha256"]) != (
         plan["study_id"],
@@ -143,16 +309,18 @@ def submission_reason(path: Path, plan: dict, pin: str, slot: str, input_pin: st
     return "execution_provenance_unverified"
 
 
-def inventory(manifest: Path, expected_sha256: str) -> dict:
+def inventory(manifest: Path, expected_sha256: object) -> InventoryResult:
     manifest = manifest.absolute()
     plan, pin = read_json(manifest)
     if not _digest(expected_sha256) or pin != expected_sha256:
         raise ValueError("manifest_pin_mismatch")
     validate(plan, SCHEMA)
-    if not isinstance(plan, dict):
+    if not json_shapes.is_object(plan):
         raise ValueError("invalid_validated_object_type")
     if type(plan["repeats"]) is not int:
         raise ValueError("invalid_repeat_type")
+    if not _is_plan(plan):
+        raise ValueError("invalid_validated_object_type")
     for prefix, values in (
         ("prospective", [plan["study_id"]]),
         ("case", [item["id"] for item in plan["cases"]]),
@@ -178,7 +346,7 @@ def inventory(manifest: Path, expected_sha256: str) -> dict:
     submissions = manifest.parent / "submissions"
     if submissions.is_symlink() or not submissions.is_dir():
         raise ValueError("submissions_root_unavailable")
-    entries = {}
+    entries: dict[str, Path] = {}
     # Inspect one level only. Unknown entries are counted but never opened/named in output.
     for entry in submissions.iterdir():
         if (
@@ -191,7 +359,7 @@ def inventory(manifest: Path, expected_sha256: str) -> dict:
         if len(entries) >= 1000:
             raise ValueError("too_many_submissions")
         entries[entry.name] = entry
-    rows = []
+    rows: list[InventorySlot] = []
     for slot, case in sorted(expected.items()):
         entry = entries.get(slot)
         reason = "submission_missing"
