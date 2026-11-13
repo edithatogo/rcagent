@@ -47,12 +47,15 @@ def test_missing_imported_source_cannot_produce_pin_inventory(
 @pytest.mark.parametrize("field", ["body_bytes", "body_sha256"])
 def test_transport_body_integrity_mismatch_rejected(field: str) -> None:
     raw = b"synthetic"
-    receipt = {
+    receipt: session.BodyReceipt = {
         "body_base64": base64.b64encode(raw).decode(),
         "body_bytes": len(raw),
         "body_sha256": hashlib.sha256(raw).hexdigest(),
     }
-    receipt[field] = 0 if field == "body_bytes" else "0" * 64
+    if field == "body_bytes":
+        receipt["body_bytes"] = 0
+    else:
+        receipt["body_sha256"] = "0" * 64
     with pytest.raises(ValueError, match="transport_body_mismatch"):
         session._body(receipt)
 
@@ -111,6 +114,7 @@ def test_source_pin_inventory_matches_repository_bytes() -> None:
         "server_process.py",
         "unix_http_capture.py",
         "native_completion.py",
+        "json_shapes.py",
     }
     for digest in pins.values():
         assert len(digest) == 64
@@ -157,6 +161,7 @@ def synthetic(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> SessionFixture
     monkeypatch.setattr(session.profile, "EXECUTABLE", "/synthetic/server")
 
     def decode(raw: bytes, *, expected_model: str) -> ObjectMap:
+        del raw, expected_model  # This synthetic decoder isolates the session lifecycle.
         return {
             "status": "native_completion_consistent",
             "admitted": False,

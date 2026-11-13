@@ -36,7 +36,7 @@ gate_fixture = _gate_fixture
 @pytest.fixture
 def synthetic(session_fixture: SessionFixture, monkeypatch: pytest.MonkeyPatch) -> PrimaryFixture:
     root, receipt, calls, processes, admission = session_fixture
-    request = primary.runner.build_request(b"Synthetic primary {{INPUT}}", b"case input")
+    request = mapping(primary.runner.build_request(b"Synthetic primary {{INPUT}}", b"case input"))
     evidence = {
         "slot_id": "case-a__condition-local__r1",
         "admitted": False,

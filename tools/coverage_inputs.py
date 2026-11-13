@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import closing
 from pathlib import Path, PurePosixPath
 
 from coverage import CoverageData
@@ -41,27 +42,29 @@ def validate_inputs(directory: Path, *, repository: Path) -> list[Path]:
             raise ValueError(f"coverage artifact contents are invalid: {name}")
         if not path.is_file() or path.is_symlink():
             raise ValueError(f"coverage database is missing or invalid: {name}")
-        data = CoverageData(basename=str(path))
-        try:
-            data.read()
-        except CoverageException as error:
-            raise ValueError(f"coverage database is unreadable: {name}") from error
-        measured = data.measured_files()
-        if not measured or not data.has_arcs():
-            raise ValueError(f"coverage database lacks branch measurements: {name}")
-        if not any(data.arcs(filename) for filename in measured):
-            raise ValueError(f"coverage database lacks executed branches: {name}")
-        for filename in measured:
-            relative = PurePosixPath(filename.replace("\\", "/"))
-            if (
-                relative.is_absolute()
-                or not relative.parts
-                or relative.parts[0] != "tools"
-                or ".." in relative.parts
-                or relative.suffix != ".py"
-                or not (repository / relative).is_file()
-            ):
-                raise ValueError(f"coverage source is outside the current tools: {name}")
+        # A corrupt database can fail during coverage's connection setup, before
+        # its internal context manager can close SQLite. Own the full lifetime.
+        with closing(CoverageData(basename=str(path))) as data:
+            try:
+                data.read()
+            except CoverageException as error:
+                raise ValueError(f"coverage database is unreadable: {name}") from error
+            measured = data.measured_files()
+            if not measured or not data.has_arcs():
+                raise ValueError(f"coverage database lacks branch measurements: {name}")
+            if not any(data.arcs(filename) for filename in measured):
+                raise ValueError(f"coverage database lacks executed branches: {name}")
+            for filename in measured:
+                relative = PurePosixPath(filename.replace("\\", "/"))
+                if (
+                    relative.is_absolute()
+                    or not relative.parts
+                    or relative.parts[0] != "tools"
+                    or ".." in relative.parts
+                    or relative.suffix != ".py"
+                    or not (repository / relative).is_file()
+                ):
+                    raise ValueError(f"coverage source is outside the current tools: {name}")
         paths.append(path)
     return paths
 

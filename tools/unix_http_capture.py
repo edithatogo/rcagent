@@ -15,10 +15,36 @@ import socket
 import stat
 import time
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Literal, TypedDict
+
+if TYPE_CHECKING:
+    from _typeshed import ReadableBuffer, WriteableBuffer
 
 MAX_BYTES = 1024 * 1024
 MAX_SECONDS = 120
+
+
+class _ResponseObservation(TypedDict):
+    status: Literal["http_response_captured", "transport_failed"]
+    error: str
+    transport: Literal["unix-domain-socket"]
+    method: str
+    route: str
+    request_body_sha256: str
+    http_status: int | None
+    headers: list[tuple[str, str]]
+    body_complete: bool
+    admitted: Literal[False]
+    study_unlocked: Literal[False]
+    limitations: list[str]
+
+
+class CaptureResult(_ResponseObservation):
+    """A bounded HTTP observation, including retained partial response bytes."""
+
+    body_base64: str
+    body_sha256: str
+    body_bytes: int
 
 
 def _remaining(deadline: float) -> float:
@@ -36,12 +62,12 @@ class _DeadlineSocket(socket.socket):
         super().__init__(family, socket.SOCK_STREAM)
         self.deadline = deadline
 
-    def recv_into(self, buffer: Any, nbytes: int = 0, flags: int = 0) -> int:
+    def recv_into(self, buffer: WriteableBuffer, nbytes: int = 0, flags: int = 0) -> int:
         # socket.makefile()/SocketIO uses this method for every underlying read.
         self.settimeout(_remaining(self.deadline))
         return super().recv_into(buffer, nbytes, flags)
 
-    def sendall(self, data: Any, flags: int = 0) -> None:
+    def sendall(self, data: ReadableBuffer, flags: int = 0) -> None:
         self.settimeout(_remaining(self.deadline))
         super().sendall(data, flags)
 
@@ -84,7 +110,9 @@ def _path_identity(path: Path) -> tuple[int, int, int, int]:
         raise ValueError("socket_unavailable") from exc
 
 
-def capture(path: Path, method: str, route: str, body: bytes, *, deadline: float) -> dict:
+def capture(
+    path: Path, method: object, route: object, body: object, *, deadline: object
+) -> CaptureResult:
     """Retain a bounded HTTP body; no JSON semantics or peer identity assertion.
 
     Invalid caller inputs fail before connecting. Transport failures return an
@@ -95,16 +123,20 @@ def capture(path: Path, method: str, route: str, body: bytes, *, deadline: float
         os.name != "posix"
         or type(body) is not bytes
         or len(body) > MAX_BYTES
+        or not isinstance(method, str)
+        or not isinstance(route, str)
         or (method, route) not in {("GET", "/health"), ("POST", "/completion")}
         or (method == "GET" and body != b"")
         or (method == "POST" and not body)
     ):
         raise ValueError("unsupported_request")
     now = time.monotonic()
-    if type(deadline) not in (int, float) or not now < deadline <= now + MAX_SECONDS:
+    if (
+        type(deadline) is not int and type(deadline) is not float
+    ) or not now < deadline <= now + MAX_SECONDS:
         raise ValueError("invalid_deadline")
     identity = _path_identity(path)
-    result: dict = {
+    result: _ResponseObservation = {
         "status": "transport_failed",
         "error": "none",
         "transport": "unix-domain-socket",
@@ -182,11 +214,9 @@ def capture(path: Path, method: str, route: str, body: bytes, *, deadline: float
     finally:
         if connection is not None:
             connection.close()
-    result.update(
-        {
-            "body_base64": base64.b64encode(data).decode("ascii"),
-            "body_sha256": hashlib.sha256(data).hexdigest(),
-            "body_bytes": len(data),
-        }
-    )
-    return result
+    return {
+        **result,
+        "body_base64": base64.b64encode(data).decode("ascii"),
+        "body_sha256": hashlib.sha256(data).hexdigest(),
+        "body_bytes": len(data),
+    }

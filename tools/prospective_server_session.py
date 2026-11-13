@@ -15,13 +15,16 @@ import stat
 import tempfile
 import threading
 import time
+from collections.abc import Mapping
 from pathlib import Path
+from typing import Literal, NotRequired, Protocol, TypedDict
 
 from tools import darwin_runtime_profile as core
 from tools import darwin_runtime_v030 as cli_profile
 from tools import darwin_server_v030 as profile
 from tools import (
     evaluation_preflight,
+    json_shapes,
     local_model_comparator,
     prospective_inventory,
     prospective_model,
@@ -52,7 +55,7 @@ REQUEST = json.dumps(
     separators=(",", ":"),
 ).encode()
 _LOCK = threading.Lock()
-_BLOCKED = False
+_BLOCKED: bool = False
 SAFE_REASONS = frozenset(
     {
         "profile_identity_mismatch",
@@ -80,6 +83,76 @@ SAFE_REASONS = frozenset(
 )
 
 
+class BodyReceipt(TypedDict):
+    body_base64: str
+    body_bytes: int
+    body_sha256: str
+
+
+class HealthReceipt(TypedDict):
+    status: Literal["http_response_captured", "transport_failed"]
+    error: str
+    http_status: int | None
+    body_complete: bool
+    body_sha256: str
+    body_bytes: int
+    body_base64: NotRequired[str]
+
+
+class SessionResult(TypedDict):
+    """Captured lifecycle facts; optional fields exist only after their stage."""
+
+    status: Literal["session_failed", "session_captured", "primary_session_captured"]
+    error: str
+    admitted: Literal[False]
+    study_unlocked: Literal[False]
+    worker_joined: bool
+    resources_removed: bool
+    health: list[HealthReceipt]
+    cleanup_errors: list[str]
+    limitations: list[str]
+    admission: NotRequired[json_shapes.JsonObject]
+    source_sha256: NotRequired[dict[str, str]]
+    profile_sha256: NotRequired[str]
+    request_base64: NotRequired[str]
+    request_sha256: NotRequired[str]
+    socket_path: NotRequired[str]
+    execution_deadline_monotonic: NotRequired[float]
+    arguments: NotRequired[list[str]]
+    environment_sha256: NotRequired[str]
+    environment_keys: NotRequired[list[str]]
+    completion: NotRequired[transport.CaptureResult]
+    decoded: NotRequired[json_shapes.JsonObject]
+    failure_stage: NotRequired[str]
+    process: NotRequired[process.CaptureResult]
+    worker_error: NotRequired[str]
+    loaded_non_system_images: NotRequired[list[str]]
+    primary_gate: NotRequired[json_shapes.JsonObject]
+    candidate: NotRequired[json_shapes.JsonObject]
+    primary_postflight_error: NotRequired[Literal["primary_postflight_failed"]]
+
+
+class PrimaryPlan(Protocol):
+    @property
+    def payload(self) -> bytes: ...
+
+    def value(self) -> object: ...
+
+
+class PrimaryContext(Protocol):
+    @property
+    def plan(self) -> PrimaryPlan: ...
+
+    def verify(self) -> None: ...
+
+    def finish(self, result: SessionResult) -> None: ...
+
+
+class _WorkerHandoff(TypedDict, total=False):
+    process: process.CaptureResult
+    error: Literal["worker_exception"]
+
+
 def source_pins() -> dict[str, str]:
     paths = [Path(__file__)]
     for module in (
@@ -95,6 +168,7 @@ def source_pins() -> dict[str, str]:
         process,
         transport,
         native,
+        json_shapes,
     ):
         if not isinstance(module.__file__, str):
             raise ValueError("source_unavailable")
@@ -138,7 +212,7 @@ def _remove_owned(
     path.parent.rmdir()  # Never recursively remove unexpected contents.
 
 
-def _body(receipt: dict) -> bytes:
+def _body(receipt: BodyReceipt) -> bytes:
     raw = base64.b64decode(receipt["body_base64"], validate=True)
     if (
         len(raw) != receipt["body_bytes"]
@@ -148,10 +222,10 @@ def _body(receipt: dict) -> bytes:
     return raw
 
 
-def _healthy(receipt: dict) -> bool:
+def _healthy(receipt: transport.CaptureResult) -> bool:
     if receipt["body_bytes"] > HEALTH_BYTES:
         raise ValueError("health_body_too_large")
-    value = json.loads(
+    value: object = json.loads(
         _body(receipt), object_pairs_hook=native._pairs, parse_constant=native._constant
     )
     if receipt["status"] != "http_response_captured":
@@ -163,11 +237,14 @@ def _healthy(receipt: dict) -> bool:
     return True
 
 
-def _fixed_arguments(admission: dict, path: Path) -> list[str]:
+def _fixed_arguments(admission: Mapping[str, object], path: Path) -> list[str]:
+    model_path = admission["model_path"]
+    if not isinstance(model_path, str):
+        raise TypeError("invalid_model_path")
     return [
         profile.EXECUTABLE,
         "-m",
-        admission["model_path"],
+        model_path,
         "--host",
         str(path),
         "--ctx-size",
@@ -198,10 +275,14 @@ def _reserved(destination: Path, descriptor: int, parent: tuple[int, int]) -> No
 
 
 def _run(
-    model_root: Path, destination: Path, descriptor: int, parent: tuple[int, int], primary=None
-) -> dict:
+    model_root: Path,
+    destination: Path,
+    descriptor: int,
+    parent: tuple[int, int],
+    primary: PrimaryContext | None = None,
+) -> SessionResult:
     global _BLOCKED
-    result: dict = {
+    result: SessionResult = {
         "status": "session_failed",
         "error": "none",
         "admitted": False,
@@ -226,9 +307,15 @@ def _run(
         return {**result, "error": "unsupported_platform"}
     request = REQUEST
     if primary is not None:
-        request = base64.b64decode(
-            primary.plan.value()["request"]["request"]["base64"], validate=True
+        selected = json_shapes.require_object(primary.plan.value(), context="primary plan")
+        package = json_shapes.require_object(selected["request"], context="primary request")
+        artifact = json_shapes.require_object(
+            package["request"], context="primary request artifact"
         )
+        encoded = artifact["base64"]
+        if not isinstance(encoded, str):
+            raise TypeError("invalid_primary_request")
+        request = base64.b64decode(encoded, validate=True)
         result["limitations"][0] = "guarded-primary-observation-not-admitted"
     worker: threading.Thread | None = None
     worker_attempted = False
@@ -236,15 +323,20 @@ def _run(
     directory: tuple[int, int] | None = None
     identity: tuple[int, int, int, int] | None = None
     stop, cancel, done = threading.Event(), threading.Event(), threading.Event()
-    handoff: dict = {}
-    pins: dict = {}
-    admission: dict = {}
+    handoff: _WorkerHandoff = {}
+    pins: dict[str, str] = {}
+    admission: json_shapes.JsonObject = {}
     profile_pin = ""
     stage = "preflight_failed"
     try:
         pins = source_pins()
-        admission = (
-            model.admit_model(model_root) if primary is None else primary.plan.value()["admission"]
+        admission = json_shapes.require_object(
+            model.admit_model(model_root)
+            if primary is None
+            else json_shapes.require_object(primary.plan.value(), context="primary plan")[
+                "admission"
+            ],
+            context="model admission",
         )
         profile_pin = profile.profile_digest()
         if admission["profile_sha256"] != profile_pin:
@@ -312,15 +404,12 @@ def _run(
             _socket(path, directory, identity)
             result["health"].append(
                 {
-                    key: health[key]
-                    for key in (
-                        "status",
-                        "error",
-                        "http_status",
-                        "body_complete",
-                        "body_sha256",
-                        "body_bytes",
-                    )
+                    "status": health["status"],
+                    "error": health["error"],
+                    "http_status": health["http_status"],
+                    "body_complete": health["body_complete"],
+                    "body_sha256": health["body_sha256"],
+                    "body_bytes": health["body_bytes"],
                 }
             )
             if health["body_bytes"] <= HEALTH_BYTES:
@@ -341,8 +430,9 @@ def _run(
             raise ValueError("completion_transport_failed")
         if completion["request_body_sha256"] != hashlib.sha256(request).hexdigest():
             raise ValueError("completion_request_mismatch")
-        result["decoded"] = native.decode_completion(
-            _body(completion), expected_model=model.MODEL_ID
+        result["decoded"] = json_shapes.require_object(
+            native.decode_completion(_body(completion), expected_model=model.MODEL_ID),
+            context="decoded completion",
         )
         stage = "postflight_failed"
     except (ValueError, OSError, RuntimeError, KeyError, TypeError) as exc:
@@ -385,10 +475,12 @@ def _run(
                 result["worker_error"] = handoff["error"]
         elif worker is None or not worker_attempted:
             result["worker_joined"] = True
-        child = result.get("process", {})
+        child = result.get("process")
         safe = result["worker_joined"] and (
-            child.get("reaped") is True
-            or child.get("execution_observed") is False
+            (
+                child is not None
+                and (child.get("reaped") is True or child.get("execution_observed") is False)
+            )
             or not worker_attempted
         )
         if worker_attempted and not safe:
@@ -402,7 +494,9 @@ def _run(
                 result["cleanup_errors"].append("socket_resources_preserved")
     if result["error"] == "none":
         try:
-            child = result["process"]
+            child = result.get("process")
+            if child is None:
+                raise KeyError("process")
             if (
                 result["cleanup_errors"]
                 or child["status"] != "process_stopped"
@@ -434,12 +528,14 @@ def _run(
     return result
 
 
-def capture_session(model_root: Path, receipt: Path) -> dict:
+def capture_session(model_root: Path, receipt: Path) -> SessionResult:
     """Reserve a private receipt before the fixed non-study session; never overwrite."""
     return _capture_session(model_root, receipt)
 
 
-def _capture_session(model_root: Path, receipt: Path, primary=None) -> dict:
+def _capture_session(
+    model_root: Path, receipt: Path, primary: PrimaryContext | None = None
+) -> SessionResult:
     """Private shared lifecycle; primary context is created only by its guarded entry."""
     if not _LOCK.acquire(blocking=False):
         raise ValueError("session_already_running")
