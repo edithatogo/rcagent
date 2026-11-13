@@ -34,8 +34,10 @@ def test_isolated_install_update_discovery_reference_parity_and_remove(
     assert json.loads((install / manifest).read_text())["version"] == "0.1.1"
     for source in (ROOT / "skills/rca-investigation").rglob("*"):
         if source.is_file():
-            target = install / "skills/rca-investigation" / source.relative_to(
-                ROOT / "skills/rca-investigation"
+            target = (
+                install
+                / "skills/rca-investigation"
+                / source.relative_to(ROOT / "skills/rca-investigation")
             )
             assert target.read_bytes() == source.read_bytes()
     (install / "stale.txt").write_text("must disappear")
@@ -49,7 +51,7 @@ def test_isolated_installer_rejects_archive_traversal(tmp_path: Path) -> None:
     archive = tmp_path / "unsafe.zip"
     with zipfile.ZipFile(archive, "w") as output:
         output.writestr("../escape", b"no")
-    with pytest.raises(ValueError, match="unsafe|special"):
+    with pytest.raises(ValueError, match=r"unsafe|special"):
         install_plugin_archive(archive, tmp_path / "installed")
     assert not (tmp_path / "escape").exists()
 

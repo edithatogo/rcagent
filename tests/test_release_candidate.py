@@ -20,14 +20,24 @@ REVISION = "2" * 40
 def _unit_release_source(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(plugin_module, "verify_release_source", lambda *_args, **_kwargs: None)
     monkeypatch.setattr(plugin_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
-    monkeypatch.setattr(distribution_module, "verify_release_source", lambda *_args, **_kwargs: None)
-    monkeypatch.setattr(distribution_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
-    monkeypatch.setattr(candidate_module, "validate_release_inventory", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(
+        distribution_module, "verify_release_source", lambda *_args, **_kwargs: None
+    )
+    monkeypatch.setattr(
+        distribution_module, "verify_release_payloads", lambda *_args, **_kwargs: None
+    )
+    monkeypatch.setattr(
+        candidate_module, "validate_release_inventory", lambda *_args, **_kwargs: {}
+    )
 
 
 def test_release_candidate_is_deterministic_hash_bound_and_public_only(tmp_path: Path) -> None:
-    first = build_release_candidate(ROOT, tmp_path / "first", version="0.1.1", source_revision=REVISION)
-    second = build_release_candidate(ROOT, tmp_path / "second", version="0.1.1", source_revision=REVISION)
+    first = build_release_candidate(
+        ROOT, tmp_path / "first", version="0.1.1", source_revision=REVISION
+    )
+    second = build_release_candidate(
+        ROOT, tmp_path / "second", version="0.1.1", source_revision=REVISION
+    )
     assert [path.name for path in first.files] == [path.name for path in second.files]
     for left, right in zip(first.files, second.files, strict=True):
         assert left.read_bytes() == right.read_bytes()
@@ -60,4 +70,6 @@ def test_release_candidate_refuses_nonempty_destination(tmp_path: Path) -> None:
 @pytest.mark.parametrize("version", ["../inventory", "v0.1.1", "0.1"])
 def test_release_candidate_rejects_unsafe_version(tmp_path: Path, version: str) -> None:
     with pytest.raises(ValueError, match="strict semantic"):
-        build_release_candidate(ROOT, tmp_path / "candidate", version=version, source_revision=REVISION)
+        build_release_candidate(
+            ROOT, tmp_path / "candidate", version=version, source_revision=REVISION
+        )

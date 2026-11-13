@@ -1,20 +1,22 @@
+%% Draft illustrative schematic: apply assets/template-use-contract.md.
+%% Every example node, score, time and edge requires evidence and review before case use.
 flowchart TD
   E["PROBLEM
     State the adverse event or problem clearly"]:::problem
 
   W1["WHY 1
-    Answer: immediate cause"]
+    Hypothesis and evidence 1"]
   W2["WHY 2
-    Answer: cause of that cause"]
+    Hypothesis and alternatives 2"]
   W3["WHY 3
-    Answer: deeper systemic cause"]
+    Hypothesis and alternatives 3"]
   W4["WHY 4
-    Answer: organisational or process factor"]
+    Candidate system condition 4"]
   W5["WHY 5
-    Answer: root cause"]
+    Candidate condition 5; stop if unsupported"]
 
-  RC(["ROOT CAUSE
-    System gap or failure identified"]):::root
+  RC(["UNRESOLVED OR REVIEWED EXPLANATION
+    Preserve alternatives and evidence limits"]):::root
 
   E -->|"Why did this happen?"| W1
   W1 -->|Why?| W2

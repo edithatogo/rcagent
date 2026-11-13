@@ -107,7 +107,7 @@ def evaluate(path: Path = FIXTURE_PATH) -> dict[str, Any]:
                 "model_executed": False,
                 "remote_code": "prohibited",
                 "network": "disabled",
-                "tasks": {task: "unsupported_no_cleared_model_asset" for task in MODEL_TASKS},
+                "tasks": dict.fromkeys(MODEL_TASKS, "unsupported_no_cleared_model_asset"),
             }
         )
 

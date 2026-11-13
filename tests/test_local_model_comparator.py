@@ -191,7 +191,9 @@ def test_admission_rejects_absolute_traversal_and_symlinked_model_files(tmp_path
     for declared in (str(outside), "../../outside.gguf"):
         changed = json.loads(json.dumps(manifest))
         changed["models"][0]["files"][0]["path"] = declared
-        assert any("missing or unsafe" in error for error in validate_admission(changed, model_root))
+        assert any(
+            "missing or unsafe" in error for error in validate_admission(changed, model_root)
+        )
 
     (small / "model.gguf").unlink()
     (small / "model.gguf").symlink_to(outside)
@@ -305,9 +307,10 @@ def test_run_records_timeout_output(
     )
     assert observation["exit_code"] == "timeout"
     assert observation["response"] is None
-    assert observation["raw_output_sha256"] == local_model_comparator.hashlib.sha256(
-        expected_output.encode()
-    ).hexdigest()
+    assert (
+        observation["raw_output_sha256"]
+        == local_model_comparator.hashlib.sha256(expected_output.encode()).hexdigest()
+    )
 
 
 @pytest.mark.parametrize("failure", ["nonzero", "timeout"])
@@ -342,6 +345,7 @@ def test_failed_execution_cannot_pass_with_valid_json_output(
             lambda *args, **kwargs: SimpleNamespace(stdout=output, returncode=1),
         )
     else:
+
         def timeout(*args: object, **kwargs: object) -> None:
             raise subprocess.TimeoutExpired("llama-cli", 1, output=output)
 

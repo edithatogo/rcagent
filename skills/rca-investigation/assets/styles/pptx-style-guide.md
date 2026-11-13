@@ -1,5 +1,7 @@
 # PPTX Style Guide — Healthcare RCA Presentations
 
+Use the [template use contract](../template-use-contract.md). Styling must preserve draft status, uncertainty, evidence references and the authorised audience.
+
 ## Colour Palette
 - Background: White (#FFFFFF)
 - Primary / Dark: Dark Blue (#1F3864)
@@ -26,7 +28,7 @@
 - Title: Calibri Bold 40pt, White, centred in blue bar
 - Subtitle: Calibri 24pt, White, below title
 - Date and classification: bottom left, Calibri 14pt, dark grey
-- "CONFIDENTIAL: QUALITY IMPROVEMENT" badge: red rounded rectangle, bottom right
+- Draft/review status badge: bottom right; add a protective marking only from the verified authorised direction
 
 ### Section Divider Slide
 - Full Dark Blue background
@@ -38,7 +40,7 @@
 - Dark Blue left border bar (1cm width)
 - Title: Calibri Bold 28pt, Dark Blue, top
 - Content area: Calibri 20pt, left-aligned bullets
-- Slide number and "CONFIDENTIAL" footer
+- Slide number and draft/review status footer
 
 ### Key Finding / Card Slide
 - 2–3 cards across the slide
@@ -65,7 +67,7 @@
 ## Footer (all slides)
 - Left: Organisation name, Calibri 12pt, grey
 - Centre: Date, Calibri 12pt, grey
-- Right: "CONFIDENTIAL: QUALITY IMPROVEMENT" | Slide number
+- Right: Draft/review status | Slide number; any protective marking requires recorded authority
 
 ## Accessibility
 - All colour coding must also use shape or text label (not colour alone)

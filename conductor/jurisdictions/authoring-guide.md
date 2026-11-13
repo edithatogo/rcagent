@@ -1,5 +1,16 @@
 # Jurisdiction Pack Authoring Guide
 
+## Source-verification gaps
+
+Use `pending_source_verification` when required current source text or
+applicability cannot yet be established. This is an evidence gap, not an owner
+permission request. The rule must disclose the gap, have no executable deadline
+and keep its jurisdiction pack blocked. An unavailable source may be referenced
+only by such a suspended rule; it cannot support an active rule. Historical
+source bytes, retrieval dates and decisions remain intact. Restore a rule only
+after the new source and affected obligations have been verified and the
+regression checks pass. Continue independent synthetic/component work.
+
 This guide defines the rights-safe process for adding or updating a jurisdiction profile without changing the jurisdiction-neutral core.
 
 ## Authority boundary

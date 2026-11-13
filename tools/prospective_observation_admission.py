@@ -121,6 +121,7 @@ class _OwnedRun:
         raise TypeError("capture_capability_not_copyable")
 
     def __deepcopy__(self, memo):
+        del memo  # Required copy protocol argument; copying is deliberately prohibited.
         raise TypeError("capture_capability_not_copyable")
 
 
@@ -343,7 +344,7 @@ def _consume(owned: _OwnedRun) -> dict:
             raise ValueError("owned_directory_changed")
         journal_path = owned.directory / "journal.jsonl"
         session._reserved(journal_path, owned.journal_fd, directory)
-        raw, identity = _read(journal_path, directory, MAX_JOURNAL, owned.journal_identity)
+        raw, _identity = _read(journal_path, directory, MAX_JOURNAL, owned.journal_identity)
         if raw != owned.journal:
             raise ValueError("owned_journal_changed")
         events = [_header(owned.plans)]
@@ -357,7 +358,7 @@ def _consume(owned: _OwnedRun) -> dict:
             rows.append(_validate_receipt(raw, plan))
             events.extend((_start(receipt.slot, receipt.name), _complete(receipt)))
         events.append(
-            {"type": "capture_complete", "dispositions": {slot: "captured" for slot in slots}}
+            {"type": "capture_complete", "dispositions": dict.fromkeys(slots, "captured")}
         )
         if _journal(events) != owned.journal:
             raise ValueError("owned_journal_chain_mismatch")

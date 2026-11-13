@@ -203,7 +203,7 @@ def test_observed_exit_is_not_relabelled_by_stop(monkeypatch, code):
 
 
 @pytest.mark.parametrize(
-    "timeout,error",
+    ("timeout", "error"),
     [(5, "stop_grace_exceeded"), (0.05, "deadline_exceeded")],
     ids=["stop-budget", "execution-deadline"],
 )
@@ -345,7 +345,7 @@ def test_finish_stop_errors_and_budget_are_bounded(failure):
         def poll(self):
             if failure == "poll":
                 raise OSError("private")
-            return None
+            return
 
         def kill(self):
             kills.append(True)
@@ -373,7 +373,8 @@ def test_finish_stop_errors_and_budget_are_bounded(failure):
     if failure in expected:
         assert expected[failure] in result["cleanup_errors"]
     assert kills == ([] if failure == "already-attempted" else [True])
-    assert len(waits) == 1 and 0 <= waits[0] <= 0.1
+    assert len(waits) == 1
+    assert 0 <= waits[0] <= 0.1
     assert "private" not in str(result)
 
 

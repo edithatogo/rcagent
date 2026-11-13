@@ -11,13 +11,7 @@ ROOT = Path(__file__).parents[1]
 
 
 def test_parse_response_uses_final_message() -> None:
-    raw = "\n".join(
-        [
-            '{"type":"item.completed","item":{"type":"agent_message","text":"draft"}}',
-            '{"type":"item.completed","item":{"type":"agent_message","text":"final"}}',
-            '{"type":"turn.completed","usage":{"input_tokens":5,"output_tokens":2}}',
-        ]
-    )
+    raw = '{"type":"item.completed","item":{"type":"agent_message","text":"draft"}}\n{"type":"item.completed","item":{"type":"agent_message","text":"final"}}\n{"type":"turn.completed","usage":{"input_tokens":5,"output_tokens":2}}'
     assert parse_response(raw) == (
         "final",
         {"input_tokens": 5, "output_tokens": 2},

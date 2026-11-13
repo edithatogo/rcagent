@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "scope": "local synthetic tooling measurements; not hosted CI or clinical validation",
+  "python": "3.12.14",
+  "mutation": {
+    "package": "pytest-gremlins==1.13.2",
+    "target": "tools/release_admission.py",
+    "summary": {
+      "total": 23,
+      "zapped": 23,
+      "survived": 0,
+      "timeout": 0,
+      "error": 0,
+      "pardoned": 0,
+      "percentage": 100.0
+    },
+    "raw_report_sha256": "797da69233e4e7cda5d12a720fd09f466d437a60952a44f0850ee971586efae6"
+  },
+  "scalene": {
+    "package": "scalene==2.4.0",
+    "workload": "tools/profile_workload.py",
+    "iterations": 300,
+    "elapsed_time_sec": 11.955319166183472,
+    "sampled_max_footprint_mb": 5.020357131958008,
+    "allocation_samples": 20,
+    "memory_enabled": true,
+    "raw_report_sha256": "89c685b4aa04120031dc1fe4a54231e1fed0340e2e75ebf3b4bbd082307b9b88",
+    "limitations": [
+      "instrumented single Linux run",
+      "sampled allocation footprint is not peak RSS",
+      "no regression budget established"
+    ]
+  },
+  "typing": {
+    "mode": "strict",
+    "legacy_diagnostics": 9801,
+    "legacy_files": 117,
+    "new_quality_code_baselined": false
+  },
+  "limitations": [
+    "full hosted CI not observed",
+    "52 pre-existing Unix-domain socket failures in restricted local environment",
+    "three concurrently-owned production files require final formatter pass on integration"
+  ],
+  "frozen_source_bandit_review": {
+    "baseline_sha256": "550bd037fc3580d1081f294bf50f06ecb36fd83859c4ec68e55717a32b78e647",
+    "source_commit": "50c8a81d1cbffc451380dd2cb973cb33c7cc74cd",
+    "sources": {
+      "tools/darwin_runtime_profile.py": {
+        "sha256": "c910b867fa1bb71c397fd466fe0f57931cfe1894f2b49a5752befb4d3b854998",
+        "line_number": 192
+      },
+      "tools/local_model_comparator.py": {
+        "sha256": "429ae531533c5a90f618c3eb2f4d8f04c745c06ebf993159603710cefd25b090",
+        "line_number": 203
+      }
+    },
+    "frozen_protocol_sha256": "650186fd54dd832532ea995c954862026203b848bb520e8e0cae7a4af8c80628",
+    "historical_protocol_modified": false,
+    "new_study_declared": false,
+    "execution_observed": false,
+    "review_class": "agent engineering review; shared context"
+  }
+}

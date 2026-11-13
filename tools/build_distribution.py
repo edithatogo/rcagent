@@ -17,6 +17,7 @@ from tools.release_source import (
     verify_release_payloads,
     verify_release_source,
 )
+from tools.template_admission import validate_template_admission
 
 _ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 _SAFE_VERSION = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9._+-]{0,127})\Z")
@@ -63,7 +64,7 @@ def build_distribution(
     skill_root = repository / "skills" / "rca-investigation"
     if skill_root.is_symlink() or not skill_root.resolve().is_relative_to(repository):
         raise ValueError("portable skill root must be a contained non-symlink directory")
-    if destination == skill_root or skill_root in destination.parents:
+    if destination.is_relative_to(skill_root.resolve()):
         raise ValueError("destination must be outside the portable source")
     if destination.exists() and any(destination.iterdir()):
         raise FileExistsError("destination must be empty")
@@ -71,22 +72,36 @@ def build_distribution(
 
     documents = [
         repository / name
-        for name in ("LICENSE", "DISCLAIMER.md", "PRIVACY.md", "SUPPORT.md", "CHANGELOG.md", "VERSION")
+        for name in (
+            "LICENSE",
+            "DISCLAIMER.md",
+            "PRIVACY.md",
+            "SUPPORT.md",
+            "CHANGELOG.md",
+            "VERSION",
+        )
     ]
-    if (
-        not (skill_root / "SKILL.md").is_file()
-        or not all(path.is_file() and not path.is_symlink() for path in documents)
+    if not (skill_root / "SKILL.md").is_file() or not all(
+        path.is_file() and not path.is_symlink() for path in documents
     ):
         raise FileNotFoundError("portable skill, repository licence, or disclaimer is missing")
 
+    reserved_names = {path.name.casefold() for path in documents} | {
+        "distribution-manifest.json",
+        "sbom.cdx.json",
+    }
     files: list[tuple[str, bytes]] = []
     for path in sorted(skill_root.rglob("*")):
+        relative = path.relative_to(skill_root)
+        if relative.parts[0].casefold() in reserved_names:
+            raise ValueError(f"distribution refuses reserved package path: {relative}")
         if path.is_symlink():
             raise ValueError(f"distribution refuses symlink: {path.relative_to(repository)}")
         if not path.is_file() and not path.is_dir():
             raise ValueError(f"distribution refuses special file: {path.relative_to(repository)}")
         if path.is_file():
-            files.append((path.relative_to(skill_root).as_posix(), path.read_bytes()))
+            files.append((relative.as_posix(), path.read_bytes()))
+    template_admission_sha256 = validate_template_admission(dict(files))
     files.extend((path.name, path.read_bytes()) for path in documents)
     if source_revision is not None:
         require_release_version(repository, version)
@@ -96,20 +111,24 @@ def build_distribution(
             for name, payload in files[: len(files) - len(documents)]
         }
         captured.update(
-            {path.relative_to(repository).as_posix(): payload for path, (_, payload) in zip(documents, files[-len(documents):], strict=True)}
+            {
+                path.relative_to(repository).as_posix(): payload
+                for path, (_, payload) in zip(documents, files[-len(documents) :], strict=True)
+            }
         )
         verify_release_payloads(repository, source_revision, captured)
 
     file_records = [
-        {"path": name, "sha256": _sha256(payload), "size": len(payload)}
-        for name, payload in files
+        {"path": name, "sha256": _sha256(payload), "size": len(payload)} for name, payload in files
     ]
     internal_manifest: dict[str, Any] = {
         "schema_version": "1.0",
         "name": "rca-investigation",
         "version": version,
         "licence": "Apache-2.0",
-        "source": "local-review-build" if source_revision is None else "https://github.com/edithatogo/rcagent",
+        "source": "local-review-build"
+        if source_revision is None
+        else "https://github.com/edithatogo/rcagent",
         "source_revision": source_revision or "uncommitted-test-build",
         "build_state": "release_candidate_at_build_time",
         "distribution_intent": "public_release",
@@ -119,13 +138,17 @@ def build_distribution(
         "data_classification": "public-only-no-clinical-or-employee-data",
         "third_party_content": "prohibited-unless-release-cleared",
         "approval_boundaries": ["clinical", "policy", "legal", "organisational"],
+        "template_admission_sha256": template_admission_sha256,
+        "template_admission_scope": "portable_draft_only",
         "files": file_records,
     }
     sbom = {
         "bomFormat": "CycloneDX",
         "specVersion": "1.6",
         "version": 1,
-        "metadata": {"component": {"type": "data", "name": "rca-investigation", "version": version}},
+        "metadata": {
+            "component": {"type": "data", "name": "rca-investigation", "version": version}
+        },
         "components": [
             {
                 "type": "file",

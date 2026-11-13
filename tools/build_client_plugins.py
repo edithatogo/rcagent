@@ -16,6 +16,7 @@ from tools.release_source import (
     verify_release_payloads,
     verify_release_source,
 )
+from tools.template_admission import validate_template_admission
 
 _TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 _SEMVER = re.compile(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\Z")
@@ -87,13 +88,18 @@ def build_client_plugin(
         raise ValueError("version must be strict semantic versioning")
     if _REVISION.fullmatch(source_revision) is None:
         raise ValueError("source revision must be a full Git commit hash")
-    if destination.exists() and any(destination.iterdir()):
-        raise FileExistsError("destination must be empty")
-    destination.mkdir(parents=True, exist_ok=True)
     skill = repository / "skills/rca-investigation"
     if skill.is_symlink() or not skill.resolve().is_relative_to(repository):
         raise ValueError("plugin skill root must be a contained non-symlink directory")
-    documents = [repository / name for name in ("LICENSE", "DISCLAIMER.md", "PRIVACY.md", "SUPPORT.md", "VERSION")]
+    if destination.is_relative_to(skill.resolve()):
+        raise ValueError("destination must be outside the portable source")
+    if destination.exists() and any(destination.iterdir()):
+        raise FileExistsError("destination must be empty")
+    destination.mkdir(parents=True, exist_ok=True)
+    documents = [
+        repository / name
+        for name in ("LICENSE", "DISCLAIMER.md", "PRIVACY.md", "SUPPORT.md", "VERSION")
+    ]
     if not (skill / "SKILL.md").is_file() or not all(
         path.is_file() and not path.is_symlink() for path in documents
     ):
@@ -104,7 +110,9 @@ def build_client_plugin(
     if any(not path.is_file() and not path.is_dir() for path in paths):
         raise ValueError("plugin release refuses special files")
     require_release_version(repository, version)
-    verify_release_source(repository, source_revision, [skill, *documents, repository / "CHANGELOG.md"])
+    verify_release_source(
+        repository, source_revision, [skill, *documents, repository / "CHANGELOG.md"]
+    )
     manifest_path, manifest = _manifest(client, version)
     provenance = {
         "schema_version": "1.0",
@@ -121,12 +129,19 @@ def build_client_plugin(
         for path in paths
         if path.is_file()
     ]
+    template_admission_sha256 = validate_template_admission(
+        {name.removeprefix("skills/rca-investigation/"): payload for name, payload in packaged}
+    )
+    provenance["template_admission_sha256"] = template_admission_sha256
+    provenance["template_admission_scope"] = "portable_draft_only"
     packaged.extend((path.name, path.read_bytes()) for path in documents)
     verify_release_payloads(
         repository,
         source_revision,
         {
-            (skill / name.removeprefix("skills/rca-investigation/")).relative_to(repository).as_posix()
+            (skill / name.removeprefix("skills/rca-investigation/"))
+            .relative_to(repository)
+            .as_posix()
             if name.startswith("skills/rca-investigation/")
             else (repository / name).relative_to(repository).as_posix(): payload
             for name, payload in packaged
@@ -140,7 +155,11 @@ def build_client_plugin(
         "client": client,
         "files": [
             {"path": name, "sha256": _hash(payload), "size": len(payload)}
-            for name, payload in [(manifest_path, manifest_payload), ("PROVENANCE.json", provenance_payload), *packaged]
+            for name, payload in [
+                (manifest_path, manifest_payload),
+                ("PROVENANCE.json", provenance_payload),
+                *packaged,
+            ]
         ],
     }
     archive_path = destination / f"rca-investigation-{client}-{version}.zip"

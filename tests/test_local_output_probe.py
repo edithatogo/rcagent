@@ -71,7 +71,8 @@ def test_fixed_invocation_preserves_raw_and_locks(ready, monkeypatch):
     assert args[:5] == ["/synthetic/runtime", "-m", "/synthetic/model", "-p", probe.PROMPT]
     assert args[args.index("-n") + 1] == "16"
     assert args[args.index("-c") + 1] == "512"
-    assert "--offline" in args and "--no-escape" in args
+    assert "--offline" in args
+    assert "--no-escape" in args
     assert options["stdin"] == subprocess.DEVNULL
     assert options["timeout"] == 60
     assert options["env"] == probe.profile.profile_environment()

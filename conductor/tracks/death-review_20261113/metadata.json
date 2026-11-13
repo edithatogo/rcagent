@@ -1,0 +1,75 @@
+{
+  "track_id": "death-review_20261113",
+  "track_number": 14,
+  "title": "Death Review and Mortality Learning: NSW and Queensland",
+  "type": "research",
+  "evidence_schema": "1.0",
+  "status": "in_progress",
+  "created_at": "2026-11-12T20:03:13Z",
+  "updated_at": "2026-11-12T20:50:04Z",
+  "workstream": "data-models-evaluation",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/126",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/3",
+    "status": "pull_request_open_hosted_ci_queued",
+    "pull_request": "https://github.com/edithatogo/rcagent/pull/127",
+    "head_commit": "d0771fc4670552a4785d2ac56666561379f44eff"
+  },
+  "autonomy": "continuous-autonomy-with-owner-decision-gates",
+  "autonomy_contract": "../../autonomy.json",
+  "hard_dependencies": [],
+  "phase_dependencies": [
+    "cognitive-autopsy_20261107",
+    "frontier-assurance_20261113"
+  ],
+  "description": "Plan and incrementally qualify evidence-grounded mortality screening, M&M and death-review packets with NSW/QLD source mapping, human statutory/clinical authority and honest uncertainty.",
+  "verification": {
+    "status": "planning_and_source_integration_complete",
+    "scope": "planning_guidance_and_jurisdiction_source_transition_guards",
+    "model_runs": 0,
+    "qualified_capabilities": 0,
+    "clinical_validation": "not_performed",
+    "real_cases_processed": 0,
+    "receipt": "./planning-evidence.md",
+    "checked_files": 10,
+    "source_entries": 19,
+    "synthetic_design_cases": 8,
+    "local_link_errors": 0,
+    "agent_review": "completed_shared_context_agent_panel_and_root_integration_review",
+    "jurisdiction_tests_passed": 28,
+    "registry_validation": "passed",
+    "scoped_ruff": "passed",
+    "local_mypy": "unavailable_module_not_installed",
+    "integration_delivery_receipt": "../frontier-assurance_20261113/delivery-evidence.md",
+    "integration_review_receipt": "../frontier-assurance_20261113/review.md",
+    "integrated_local_checks": {
+      "strict_basedpyright": "1.40.2 passed with non-growth baseline",
+      "ty": "passed",
+      "ruff_and_format": "passed",
+      "repository_and_benchmark_contracts": "passed; seven deterministic benchmark cases",
+      "full_validation": "1890 passed, 11 skipped, 53 failed; 52 AF_UNIX environment restrictions and one timing flake subsequently resolved by focused rerun",
+      "property_followup": "four properties passed under coverage after finite deadline adjustment; no disabled health checks or reduced generated ranges",
+      "scope": "root-recorded integrated engineering verification; not clinical validation"
+    },
+    "hosted_ci": {
+      "status": "queued",
+      "head_commit": "d0771fc4670552a4785d2ac56666561379f44eff",
+      "pull_request": "https://github.com/edithatogo/rcagent/pull/127",
+      "source": "integration_owner_delivery_state",
+      "pass_claim": false
+    },
+    "scientific_track_status": "open; design cases and component studies remain unexecuted"
+  },
+  "decision_gates": [
+    "Only genuinely new data-use or disclosure scope beyond existing authority",
+    "Case-specific clinical, legal, coronial and organisational decisions remain with authorised humans",
+    "Operational deployment or new residual-risk acceptance beyond existing authority"
+  ],
+  "source_register": "../../research/death-review/sources.json",
+  "open_source_questions": [
+    "Complete PD2026_036 text and implementation/effective arrangements",
+    "QH-HSDGDL-032-2 effective-date conflict",
+    "Current local HHS M&M/mortality instrument and NSW screening-tool version",
+    "Current specialty destinations during NSW programme/committee transitions"
+  ]
+}

@@ -10,29 +10,69 @@ import subprocess
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Literal, NotRequired, TypedDict
 
 from tools.check_skill_drift import check_drift
+from tools.json_shapes import is_object, require_object
 from tools.validate_skill_profile import TRACK, validate_profile
 
 
-def validator_provenance(root: Path) -> dict[str, object]:
+class ValidatorProvenance(TypedDict):
+    verified: bool
+    source: NotRequired[str]
+    revision: NotRequired[str | None]
+
+
+class RuntimeDetails(TypedDict):
+    python: str
+    platform: str
+
+
+class OfficialValidatorResult(TypedDict):
+    command: list[str]
+    provenance: ValidatorProvenance
+    exit_code: int
+    passed: bool
+
+
+class ProjectProfileResult(TypedDict):
+    passed: bool
+    diagnostics: list[str]
+    complete: bool
+    completion_diagnostics: list[str]
+
+
+class ConformanceReceipt(TypedDict):
+    schema_version: Literal["1.0"]
+    checked_at: str
+    runtime: RuntimeDetails
+    official_validator: OfficialValidatorResult
+    project_profile: ProjectProfileResult
+    upstream_drift: dict[str, object]
+    local_validation_passed: bool
+    current_conformance: bool
+
+
+def validator_provenance(root: Path) -> ValidatorProvenance:
     """Check the installed official distribution's recorded VCS provenance.
 
     This is installation provenance, not an attestation against local tampering.
     The validator is invoked through this interpreter, never an unrelated PATH.
     """
     source = "https://github.com/agentskills/agentskills.git"
-    result: dict[str, object] = {"verified": False, "source": source}
+    result: ValidatorProvenance = {"verified": False, "source": source}
     try:
-        baseline = json.loads((root / TRACK / "upstream-baseline.json").read_text())
+        baseline = require_object(
+            json.loads((root / TRACK / "upstream-baseline.json").read_text()),
+            context="upstream baseline",
+        )
         expected = baseline["upstream_revision"]
         distribution = importlib.metadata.distribution("skills-ref")
-        direct = json.loads(distribution.read_text("direct_url.json") or "null")
-        if not isinstance(direct, dict):
+        direct: object = json.loads(distribution.read_text("direct_url.json") or "null")
+        if not is_object(direct):
             return result
         vcs = direct.get("vcs_info")
-        if not isinstance(vcs, dict):
+        if not is_object(vcs):
             return result
         revision = vcs.get("commit_id")
         result["revision"] = revision if isinstance(revision, str) else None
@@ -56,17 +96,19 @@ def run_conformance(
     validator: str | None = None,
     offline: bool = False,
     require_complete: bool = True,
-) -> tuple[int, dict[str, Any]]:
+) -> tuple[int, ConformanceReceipt]:
     root = root.resolve()
     skill = root / "skills/rca-investigation"
-    provenance = validator_provenance(root) if validator is None else {"verified": False}
+    provenance: ValidatorProvenance = (
+        validator_provenance(root) if validator is None else {"verified": False}
+    )
     command = (
         [sys.executable, "-I", "-m", "skills_ref.cli", "validate", str(skill)]
         if validator is None
         else [validator, "validate", str(skill)]
     )
     try:
-        completed = subprocess.run(
+        completed = subprocess.run(  # nosec B603 # pinned interpreter/module or explicit diagnostic executable; no shell
             command,
             cwd=root,
             capture_output=True,
@@ -91,7 +133,7 @@ def run_conformance(
         and drift_code == 0
         and drift.get("current_conformance") is True
     )
-    receipt: dict[str, object] = {
+    receipt: ConformanceReceipt = {
         "schema_version": "1.0",
         "checked_at": datetime.now(UTC).isoformat(),
         "runtime": {"python": platform.python_version(), "platform": platform.system()},

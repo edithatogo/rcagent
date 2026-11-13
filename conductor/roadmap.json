@@ -28,7 +28,8 @@
         "safety-systems-foundation_20260731",
         "evidence-workflow-core_20260731",
         "privacy-security-assurance_20260731",
-        "nsw-health-jurisdiction-pack_20260731"
+        "nsw-health-jurisdiction-pack_20260731",
+        "frontier-assurance_20261113"
       ]
     },
     {
@@ -40,7 +41,8 @@
         "retrieval-knowledge-system_20260731",
         "local-runtime-model-lab_20260731",
         "domain-adaptation-finetuning_20260731",
-        "cognitive-autopsy_20261107"
+        "cognitive-autopsy_20261107",
+        "death-review_20261113"
       ]
     },
     {
@@ -206,6 +208,29 @@
         "retrieval-knowledge-system_20260731",
         "local-runtime-model-lab_20260731",
         "domain-adaptation-finetuning_20260731"
+      ]
+    },
+    {
+      "number": 13,
+      "id": "frontier-assurance_20261113",
+      "issue": 125,
+      "hard_dependencies": [],
+      "phase_dependencies": [
+        "cognitive-autopsy_20261107",
+        "evidence-workflow-core_20260731",
+        "privacy-security-assurance_20260731",
+        "benchmark-evaluation-harness_20260731",
+        "death-review_20261113"
+      ]
+    },
+    {
+      "number": 14,
+      "id": "death-review_20261113",
+      "issue": 126,
+      "hard_dependencies": [],
+      "phase_dependencies": [
+        "cognitive-autopsy_20261107",
+        "frontier-assurance_20261113"
       ]
     }
   ],

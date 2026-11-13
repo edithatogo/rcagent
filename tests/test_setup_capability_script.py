@@ -73,7 +73,9 @@ def test_uninstall_refuses_unowned_target() -> None:
     target = ROOT / ".capability-unowned-test"
     target.mkdir()
     try:
-        result = _run("-Action", "Uninstall", "-EnvironmentPath", target.name, "-DryRun", check=False)
+        result = _run(
+            "-Action", "Uninstall", "-EnvironmentPath", target.name, "-DryRun", check=False
+        )
         assert result.returncode == 2
         assert json.loads(result.stdout)["result"] == "refused-unowned"
         assert target.exists()

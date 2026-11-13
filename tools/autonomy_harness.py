@@ -62,9 +62,7 @@ class Lease:
 
 def deterministic_run_id(track_id: str, task_id: str, base_revision: str) -> str:
     """Return a stable non-secret run identifier for an execution attempt."""
-    value = json.dumps(
-        [track_id, task_id, base_revision], separators=(",", ":"), ensure_ascii=True
-    )
+    value = json.dumps([track_id, task_id, base_revision], separators=(",", ":"), ensure_ascii=True)
     return hashlib.sha256(value.encode()).hexdigest()[:20]
 
 

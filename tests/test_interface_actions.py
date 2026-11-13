@@ -35,37 +35,73 @@ def registry() -> dict:
 
 def recommendation() -> dict:
     return {
-        "recommendation_id": "rec-1", "evidence_ids": ["e-1"], "hazard": "handoff gap",
-        "intended_mechanism": "reduce ambiguity", "strength": "system_control",
-        "unintended_consequences": ["review burden"], "owner_role_id": "role-1",
-        "dependencies": ["training"], "resources": ["time"], "due_date": "[Date]",
-        "assurance_evidence": ["implementation receipt"], "process_measure": "completion rate",
-        "outcome_measure": "handoff defects", "balancing_measure": "staff burden",
-        "effectiveness_review_date": "[Date]", "residual_risk": "unknown",
-        "status": "proposed", "effectiveness_state": "not_due",
-        "effectiveness_evidence": "not_yet_assessed", "effectiveness_authority": "not_applicable",
+        "recommendation_id": "rec-1",
+        "evidence_ids": ["e-1"],
+        "hazard": "handoff gap",
+        "intended_mechanism": "reduce ambiguity",
+        "strength": "system_control",
+        "unintended_consequences": ["review burden"],
+        "owner_role_id": "role-1",
+        "dependencies": ["training"],
+        "resources": ["time"],
+        "due_date": "[Date]",
+        "assurance_evidence": ["implementation receipt"],
+        "process_measure": "completion rate",
+        "outcome_measure": "handoff defects",
+        "balancing_measure": "staff burden",
+        "effectiveness_review_date": "[Date]",
+        "residual_risk": "unknown",
+        "status": "proposed",
+        "effectiveness_state": "not_due",
+        "effectiveness_evidence": "not_yet_assessed",
+        "effectiveness_authority": "not_applicable",
     }
 
 
 def view_context() -> dict:
-    return {"citations": [], "model_involvement": {"used": False}, "limitations": ["synthetic"], "approval_receipt_ids": [], "outstanding_review_ids": ["r1"]}
+    return {
+        "citations": [],
+        "model_involvement": {"used": False},
+        "limitations": ["synthetic"],
+        "approval_receipt_ids": [],
+        "outstanding_review_ids": ["r1"],
+    }
 
 
 def action_approval(action: dict) -> dict:
     return {
-        "artefact_sha256": canonical_hash(action), "scope": "action", "authority_class": "human_organisational",
-        "decision": "approved", "actor_class": "accountable_human", "conflict_declared": True,
-        "actor_role_id": "reviewer", "author_role_id": "author",
-        "issued_at": "2026-08-28T00:00:00Z", "expires_at": "2027-08-29T00:00:00Z",
+        "artefact_sha256": canonical_hash(action),
+        "scope": "action",
+        "authority_class": "human_organisational",
+        "decision": "approved",
+        "actor_class": "accountable_human",
+        "conflict_declared": True,
+        "actor_role_id": "reviewer",
+        "author_role_id": "author",
+        "issued_at": "2026-08-28T00:00:00Z",
+        "expires_at": "2027-08-29T00:00:00Z",
     }
 
 
 def canonical_record() -> dict:
     payload = {
-        "schema_version": "1.1", "version": 1, "case_id": "syn-case-1", "state": "investigation",
-        "jurisdiction": "synthetic", "privacy_mode": "fully_local", "authority": "synthetic-none",
-        "statements": [], "events": [],
-        "reviews": [{"review_id": "syn-review-1", "review_type": "other", "reviewer_role_ids": ["syn-role-1"], "status": "planned"}],
+        "schema_version": "1.1",
+        "version": 1,
+        "case_id": "syn-case-1",
+        "state": "investigation",
+        "jurisdiction": "synthetic",
+        "privacy_mode": "fully_local",
+        "authority": "synthetic-none",
+        "statements": [],
+        "events": [],
+        "reviews": [
+            {
+                "review_id": "syn-review-1",
+                "review_type": "other",
+                "reviewer_role_ids": ["syn-role-1"],
+                "status": "planned",
+            }
+        ],
     }
     return {**payload, "source_sha256": canonical_hash(payload)}
 
@@ -87,9 +123,26 @@ def test_unsafe_legacy_templates_are_quarantined_from_supported_registry() -> No
     assert not any("legacy" in identifier for identifier in supported_ids)
     lines = (ROOT / audit["manifest"]).read_text().splitlines()
     entries = {path: digest for digest, path in (line.split("  ", 1) for line in lines)}
-    actual = {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in (ROOT / audit["scope"]).rglob("*") if path.is_file()}
-    assert entries == actual
+    # This receipt describes the quarantined historical bytes, not later fixes.
+    # Pin its inventory rather than silently relabelling old content as admitted.
+    assert (
+        hashlib.sha256((ROOT / audit["manifest"]).read_bytes()).hexdigest()
+        == "745f9c51014671fc7f2c8e344949947db926c6379eead5189766d3a06d2ac8b8"
+    )
     assert len(entries) == audit["manifest_entries"]
+    for path, old_digest in entries.items():
+        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() != old_digest
+    # Current portable draft admission has its own exact-revision checks.
+    from tools.template_admission import validate_template_admission
+
+    skill = ROOT / "skills/rca-investigation"
+    validate_template_admission(
+        {
+            path.relative_to(skill).as_posix(): path.read_bytes()
+            for path in skill.rglob("*")
+            if path.is_file()
+        }
+    )
 
 
 def test_registered_canonical_paths_resolve_against_safety_schema() -> None:
@@ -150,7 +203,9 @@ def test_registry_rejects_each_structural_boundary() -> None:
         lambda v: v["workflows"][1].update(id=v["workflows"][0]["id"], methods=[], steps=[]),
         lambda v: v.update(templates=[]),
         lambda v: v.update(templates=[{}]),
-        lambda v: v["templates"][1].update(id=v["templates"][0]["id"], rights="unknown", fields=[], audiences=[]),
+        lambda v: v["templates"][1].update(
+            id=v["templates"][0]["id"], rights="unknown", fields=[], audiences=[]
+        ),
         lambda v: v["templates"][0]["fields"][0].update(canonical_path="$.unknown"),
         lambda v: v["templates"][0].update(fields=["bad"], disclaimers=[{}]),
         lambda v: v.update(interfaces=[]),
@@ -166,8 +221,11 @@ def test_registry_rejects_each_structural_boundary() -> None:
 
 def test_method_guidance_never_forces_a_method() -> None:
     result = method_guidance(
-        purpose="retrospective_incident", evidence_state="conflicting", capability=["SEIPS"],
-        open_questions=["How did work conditions interact?"], evidence_signals=["human_factors"],
+        purpose="retrospective_incident",
+        evidence_state="conflicting",
+        capability=["SEIPS"],
+        open_questions=["How did work conditions interact?"],
+        evidence_signals=["human_factors"],
     )
     assert result["selected"] == ["SEIPS"]
     assert result["forced_method"] is False
@@ -179,7 +237,12 @@ def test_method_guidance_never_forces_a_method() -> None:
 @pytest.mark.parametrize("operation", ["send", "lodge", "approve", "publish", "delete"])
 def test_adapter_rejects_external_or_mutating_operations(operation: str) -> None:
     result = dry_run_adapter(
-        {"operation": operation, "data_class": "synthetic", "dry_run": True, "approved_endpoint": None},
+        {
+            "operation": operation,
+            "data_class": "synthetic",
+            "dry_run": True,
+            "approved_endpoint": None,
+        },
         registry(),
     )
     assert result["status"] == "rejected"
@@ -188,9 +251,17 @@ def test_adapter_rejects_external_or_mutating_operations(operation: str) -> None
 
 
 def test_adapter_accepts_only_synthetic_dry_run_and_rejects_private_endpoint() -> None:
-    request = {"operation": "export", "data_class": "synthetic", "dry_run": True, "approved_endpoint": None, "source_revision": HASH}
+    request = {
+        "operation": "export",
+        "data_class": "synthetic",
+        "dry_run": True,
+        "approved_endpoint": None,
+        "source_revision": HASH,
+    }
     assert dry_run_adapter(request, registry())["status"] == "dry_run_validated"
-    request.update(data_class="governed_private", dry_run=False, approved_endpoint="https://internal")
+    request.update(
+        data_class="governed_private", dry_run=False, approved_endpoint="https://internal"
+    )
     reasons = dry_run_adapter(request, registry())["reasons"]
     assert "data class is not admitted" in reasons
     assert "dry_run must be true" in reasons
@@ -198,7 +269,13 @@ def test_adapter_accepts_only_synthetic_dry_run_and_rejects_private_endpoint() -
 
 
 def test_adapter_receipt_is_bound_to_request_and_registry() -> None:
-    request = {"operation": "read", "data_class": "public", "dry_run": True, "approved_endpoint": None, "source_revision": HASH}
+    request = {
+        "operation": "read",
+        "data_class": "public",
+        "dry_run": True,
+        "approved_endpoint": None,
+        "source_revision": HASH,
+    }
     first = dry_run_adapter(request, registry())
     changed = {**request, "operation": "export"}
     second = dry_run_adapter(changed, registry())
@@ -209,8 +286,12 @@ def test_adapter_receipt_is_bound_to_request_and_registry() -> None:
 
 def test_adapter_rejects_credentials_and_unknown_fields() -> None:
     request = {
-        "operation": "read", "data_class": "public", "dry_run": True,
-        "approved_endpoint": None, "source_revision": HASH, "api_key": "not-a-real-key",
+        "operation": "read",
+        "data_class": "public",
+        "dry_run": True,
+        "approved_endpoint": None,
+        "source_revision": HASH,
+        "api_key": "not-a-real-key",
     }
     result = dry_run_adapter(request, registry())
     assert result["status"] == "rejected"
@@ -223,14 +304,28 @@ def test_adapter_fails_closed_for_non_object_invalid_registry_and_active_request
     bad_registry["policy"]["external_actions"] = True
     result = dry_run_adapter([], bad_registry)
     assert "registry is invalid" in result["reasons"]
-    result = dry_run_adapter({"operation": "read", "data_class": "public", "dry_run": True, "approved_endpoint": None, "source_revision": HASH, "note": "https://example.test"}, registry())
+    result = dry_run_adapter(
+        {
+            "operation": "read",
+            "data_class": "public",
+            "dry_run": True,
+            "approved_endpoint": None,
+            "source_revision": HASH,
+            "note": "https://example.test",
+        },
+        registry(),
+    )
     assert "request contains unsafe content" in result["reasons"]
 
 
 def test_communication_is_preparation_only_and_synthetic() -> None:
     draft = {
-        "purpose": "questions", "status": "preparation_only", "recipient": "[Consumer B]",
-        "delivery_channel": "none", "questions": ["What matters?"], "disagreement": [],
+        "purpose": "questions",
+        "status": "preparation_only",
+        "recipient": "[Consumer B]",
+        "delivery_channel": "none",
+        "questions": ["What matters?"],
+        "disagreement": [],
         "human_owner_role": "open_disclosure_lead",
     }
     assert validate_communication_draft(draft) == []
@@ -245,7 +340,14 @@ def test_communication_is_preparation_only_and_synthetic() -> None:
 
 @pytest.mark.parametrize(
     "unsafe",
-    ["=WEBSERVICE('x')", "+cmd", "@SUM(A1)", "<script>alert(1)</script>", "https://example.test", "/Users/name/private"],
+    [
+        "=WEBSERVICE('x')",
+        "+cmd",
+        "@SUM(A1)",
+        "<script>alert(1)</script>",
+        "https://example.test",
+        "/Users/name/private",
+    ],
 )
 def test_export_quarantines_active_content_and_paths(unsafe: str) -> None:
     with pytest.raises(ValueError, match="unsafe active export content"):
@@ -261,10 +363,16 @@ def test_export_rejects_unsafe_keys_nonfinite_and_objects() -> None:
 
 def test_approval_is_hash_bound_and_agents_cannot_approve() -> None:
     approval = {
-        "artefact_sha256": "b" * 64, "scope": "closure", "authority_class": "human_organisational",
-        "decision": "approve", "actor_class": "agent_panel", "conflict_declared": True,
-        "actor_role_id": "reviewer", "author_role_id": "author",
-        "issued_at": "2026-08-29T00:00:00Z", "expires_at": "2027-08-29T00:00:00Z",
+        "artefact_sha256": "b" * 64,
+        "scope": "closure",
+        "authority_class": "human_organisational",
+        "decision": "approve",
+        "actor_class": "agent_panel",
+        "conflict_declared": True,
+        "actor_role_id": "reviewer",
+        "author_role_id": "author",
+        "issued_at": "2026-08-29T00:00:00Z",
+        "expires_at": "2027-08-29T00:00:00Z",
     }
     errors = validate_approval(approval, artefact_sha256=HASH, evaluated_at="2026-08-29T00:00:00Z")
     assert "approval is not bound to the exact artefact" in errors
@@ -275,29 +383,48 @@ def test_approval_is_hash_bound_and_agents_cannot_approve() -> None:
 def test_approval_rejects_impossible_or_expired_timestamps() -> None:
     value = action_approval(recommendation())
     value["issued_at"] = "2026-99-99T00:00:00Z"
-    assert "approval timestamps must be UTC ISO timestamps" in validate_approval(value, artefact_sha256=value["artefact_sha256"], evaluated_at="2026-08-29T00:00:00Z")
+    assert "approval timestamps must be UTC ISO timestamps" in validate_approval(
+        value, artefact_sha256=value["artefact_sha256"], evaluated_at="2026-08-29T00:00:00Z"
+    )
     value = action_approval(recommendation())
-    assert "approval is not current at evaluation time" in validate_approval(value, artefact_sha256=value["artefact_sha256"], evaluated_at="2028-08-29T00:00:00Z")
+    assert "approval is not current at evaluation time" in validate_approval(
+        value, artefact_sha256=value["artefact_sha256"], evaluated_at="2028-08-29T00:00:00Z"
+    )
 
 
 def test_approval_rejects_all_authority_shape_failures() -> None:
-    assert validate_approval([], artefact_sha256=HASH, evaluated_at="2026-08-29T00:00:00Z") == ["approval must be an object"]
+    assert validate_approval([], artefact_sha256=HASH, evaluated_at="2026-08-29T00:00:00Z") == [
+        "approval must be an object"
+    ]
     value = action_approval(recommendation())
-    value.update(artefact_sha256="bad", scope="unknown", authority_class="human_policy", actor_role_id="same", author_role_id="same", conflict_declared=False)
+    value.update(
+        artefact_sha256="bad",
+        scope="unknown",
+        authority_class="human_policy",
+        actor_role_id="same",
+        author_role_id="same",
+        conflict_declared=False,
+    )
     value["extra"] = True
     errors = validate_approval(value, artefact_sha256="bad", evaluated_at="bad")
     assert len(errors) >= 6
 
 
 def test_audit_event_is_hash_chained_but_does_not_claim_persistence() -> None:
-    first = build_audit_event(event={"kind": "draft_saved", "case": "[Case ID]"}, previous_sha256=None)
-    second = build_audit_event(event={"kind": "review_returned"}, previous_sha256=first["event_sha256"])
+    first = build_audit_event(
+        event={"kind": "draft_saved", "case": "[Case ID]"}, previous_sha256=None
+    )
+    second = build_audit_event(
+        event={"kind": "review_returned"}, previous_sha256=first["event_sha256"]
+    )
     assert second["previous_sha256"] == first["event_sha256"]
     assert second["append_only_contract"] is True
     assert second["persisted"] is False
     assert verify_audit_chain([first, second]) == []
     second["previous_sha256"] = "b" * 64
-    assert any("continuity" in error or "hash" in error for error in verify_audit_chain([first, second]))
+    assert any(
+        "continuity" in error or "hash" in error for error in verify_audit_chain([first, second])
+    )
     assert verify_audit_chain([]) == ["audit chain must be a non-empty array"]
     assert verify_audit_chain([{}])
     with pytest.raises(ValueError):
@@ -308,13 +435,24 @@ def test_audit_event_is_hash_chained_but_does_not_claim_persistence() -> None:
 
 def test_participation_preserves_withdrawal_and_cultural_authority_boundary() -> None:
     record = {
-        "account_id": "syn-account-1", "account_sha256": "", "attribution": "generated_synthetic",
-        "access": "local_restricted", "uncertainty": [], "disagreement": [], "correction_history": [],
-        "contact_preference": "none", "consent_state": "withdrawn", "interpreter_need": "unknown",
-        "accessibility_need": "unknown", "cultural_need": "expressed_synthetic",
-        "cultural_authority_status": "complete", "export_allowed": True,
+        "account_id": "syn-account-1",
+        "account_sha256": "",
+        "attribution": "generated_synthetic",
+        "access": "local_restricted",
+        "uncertainty": [],
+        "disagreement": [],
+        "correction_history": [],
+        "contact_preference": "none",
+        "consent_state": "withdrawn",
+        "interpreter_need": "unknown",
+        "accessibility_need": "unknown",
+        "cultural_need": "expressed_synthetic",
+        "cultural_authority_status": "complete",
+        "export_allowed": True,
     }
-    record["account_sha256"] = canonical_hash({key: value for key, value in record.items() if key != "account_sha256"})
+    record["account_sha256"] = canonical_hash(
+        {key: value for key, value in record.items() if key != "account_sha256"}
+    )
     errors = validate_participation(record)
     assert "withdrawn or absent consent forbids contact export" in errors
     assert "cultural authority cannot be inferred or completed here" in errors
@@ -322,11 +460,20 @@ def test_participation_preserves_withdrawal_and_cultural_authority_boundary() ->
 
 def test_participation_rejects_sensitive_nested_content_and_hash_drift() -> None:
     record = {
-        "account_id": "syn-account-1", "account_sha256": HASH, "attribution": "generated_synthetic",
-        "access": "local_restricted", "uncertainty": ["HF_TOKEN=secret"], "disagreement": [],
-        "correction_history": [], "contact_preference": "none", "consent_state": "not_provided",
-        "interpreter_need": "unknown", "accessibility_need": "unknown", "cultural_need": "not_expressed",
-        "cultural_authority_status": "not_requested", "export_allowed": False,
+        "account_id": "syn-account-1",
+        "account_sha256": HASH,
+        "attribution": "generated_synthetic",
+        "access": "local_restricted",
+        "uncertainty": ["HF_TOKEN=secret"],
+        "disagreement": [],
+        "correction_history": [],
+        "contact_preference": "none",
+        "consent_state": "not_provided",
+        "interpreter_need": "unknown",
+        "accessibility_need": "unknown",
+        "cultural_need": "not_expressed",
+        "cultural_authority_status": "not_requested",
+        "export_allowed": False,
     }
     errors = validate_participation(record)
     assert "participation contains unsafe or sensitive content" in errors
@@ -337,12 +484,24 @@ def test_participation_rejects_sensitive_nested_content_and_hash_drift() -> None
 
 def test_participation_hash_covers_disagreement_and_consent() -> None:
     record = {
-        "account_id": "syn-account-1", "account_sha256": "", "attribution": "generated_synthetic",
-        "access": "local_restricted", "uncertainty": [], "disagreement": [], "correction_history": [],
-        "contact_preference": "none", "consent_state": "not_provided", "interpreter_need": "unknown",
-        "accessibility_need": "unknown", "cultural_need": "not_expressed", "cultural_authority_status": "not_requested", "export_allowed": False,
+        "account_id": "syn-account-1",
+        "account_sha256": "",
+        "attribution": "generated_synthetic",
+        "access": "local_restricted",
+        "uncertainty": [],
+        "disagreement": [],
+        "correction_history": [],
+        "contact_preference": "none",
+        "consent_state": "not_provided",
+        "interpreter_need": "unknown",
+        "accessibility_need": "unknown",
+        "cultural_need": "not_expressed",
+        "cultural_authority_status": "not_requested",
+        "export_allowed": False,
     }
-    record["account_sha256"] = canonical_hash({key: value for key, value in record.items() if key != "account_sha256"})
+    record["account_sha256"] = canonical_hash(
+        {key: value for key, value in record.items() if key != "account_sha256"}
+    )
     assert validate_participation(record) == []
     record["disagreement"] = ["changed"]
     assert "account hash is not bound to account and corrections" in validate_participation(record)
@@ -375,7 +534,12 @@ def test_recommendation_rejects_missing_and_invalid_states() -> None:
 
 def test_effectiveness_requires_distinct_evidence_and_human_authority() -> None:
     value = recommendation()
-    value.update(status="implemented", effectiveness_state="effective", effectiveness_evidence="", effectiveness_authority="agent_panel")
+    value.update(
+        status="implemented",
+        effectiveness_state="effective",
+        effectiveness_evidence="",
+        effectiveness_authority="agent_panel",
+    )
     errors = validate_recommendation(value)
     assert "effectiveness state requires outcome and balancing evidence" in errors
     assert "effectiveness state requires accountable human authority" in errors
@@ -384,23 +548,81 @@ def test_effectiveness_requires_distinct_evidence_and_human_authority() -> None:
 def test_effectiveness_requires_exact_review_and_current_scoped_approval() -> None:
     value = recommendation()
     value["effectiveness_review_date"] = "2026-08-27T00:00:00Z"
-    base_hash = canonical_hash({k: v for k, v in value.items() if k not in {"effectiveness_state", "effectiveness_evidence", "effectiveness_authority"}})
-    records = [{"evidence_id": "ev-outcome", "kind": "outcome", "value": "improved"}, {"evidence_id": "ev-balancing", "kind": "balancing", "value": "no harm observed"}]
-    review = {"recommendation_sha256": base_hash, "outcome_evidence_id": "ev-outcome", "outcome_evidence_sha256": canonical_hash(records[0]), "balancing_evidence_id": "ev-balancing", "balancing_evidence_sha256": canonical_hash(records[1]), "reviewed_at": "2026-08-28T00:00:00Z", "decision": "effective"}
-    approval = {
-        "artefact_sha256": canonical_hash(review), "scope": "effectiveness", "authority_class": "human_organisational",
-        "decision": "approved", "actor_class": "accountable_human", "actor_role_id": "effectiveness-reviewer",
-        "author_role_id": "action-owner", "conflict_declared": True,
-        "issued_at": "2026-08-28T00:00:00Z", "expires_at": "2027-08-29T00:00:00Z",
+    base_hash = canonical_hash(
+        {
+            k: v
+            for k, v in value.items()
+            if k not in {"effectiveness_state", "effectiveness_evidence", "effectiveness_authority"}
+        }
+    )
+    records = [
+        {"evidence_id": "ev-outcome", "kind": "outcome", "value": "improved"},
+        {"evidence_id": "ev-balancing", "kind": "balancing", "value": "no harm observed"},
+    ]
+    review = {
+        "recommendation_sha256": base_hash,
+        "outcome_evidence_id": "ev-outcome",
+        "outcome_evidence_sha256": canonical_hash(records[0]),
+        "balancing_evidence_id": "ev-balancing",
+        "balancing_evidence_sha256": canonical_hash(records[1]),
+        "reviewed_at": "2026-08-28T00:00:00Z",
+        "decision": "effective",
     }
-    value.update(effectiveness_state="effective", effectiveness_authority="human_organisational", effectiveness_evidence={"outcome_evidence_id": "ev-outcome", "balancing_evidence_id": "ev-balancing", "review_record_sha256": canonical_hash(review), "approval_sha256": canonical_hash(approval)})
-    assert validate_recommendation(value, effectiveness_review=review, effectiveness_approval=approval, effectiveness_records=records) == []
+    approval = {
+        "artefact_sha256": canonical_hash(review),
+        "scope": "effectiveness",
+        "authority_class": "human_organisational",
+        "decision": "approved",
+        "actor_class": "accountable_human",
+        "actor_role_id": "effectiveness-reviewer",
+        "author_role_id": "action-owner",
+        "conflict_declared": True,
+        "issued_at": "2026-08-28T00:00:00Z",
+        "expires_at": "2027-08-29T00:00:00Z",
+    }
+    value.update(
+        effectiveness_state="effective",
+        effectiveness_authority="human_organisational",
+        effectiveness_evidence={
+            "outcome_evidence_id": "ev-outcome",
+            "balancing_evidence_id": "ev-balancing",
+            "review_record_sha256": canonical_hash(review),
+            "approval_sha256": canonical_hash(approval),
+        },
+    )
+    assert (
+        validate_recommendation(
+            value,
+            effectiveness_review=review,
+            effectiveness_approval=approval,
+            effectiveness_records=records,
+        )
+        == []
+    )
     approval["scope"] = "action"
-    assert "valid exact effectiveness approval is required" in validate_recommendation(value, effectiveness_review=review, effectiveness_approval=approval, effectiveness_records=records)
+    assert "valid exact effectiveness approval is required" in validate_recommendation(
+        value,
+        effectiveness_review=review,
+        effectiveness_approval=approval,
+        effectiveness_records=records,
+    )
     review["reviewed_at"] = "2099-01-01T00:00:00Z"
-    assert "effectiveness review cannot be future dated" in validate_recommendation(value, effectiveness_review=review, effectiveness_approval=approval, effectiveness_records=records)
+    assert "effectiveness review cannot be future dated" in validate_recommendation(
+        value,
+        effectiveness_review=review,
+        effectiveness_approval=approval,
+        effectiveness_records=records,
+    )
     records[1]["kind"] = "outcome"
-    assert "effectiveness evidence records are missing, mistyped or unbound" in validate_recommendation(value, effectiveness_review=review, effectiveness_approval=approval, effectiveness_records=records)
+    assert (
+        "effectiveness evidence records are missing, mistyped or unbound"
+        in validate_recommendation(
+            value,
+            effectiveness_review=review,
+            effectiveness_approval=approval,
+            effectiveness_records=records,
+        )
+    )
 
 
 def test_closed_status_and_invalid_implementation_evidence_are_rejected() -> None:
@@ -418,8 +640,10 @@ def test_closed_status_and_invalid_implementation_evidence_are_rejected() -> Non
 
 def test_specialist_pathways_remain_separate_and_external() -> None:
     referral = {
-        "pathway": "cultural_review", "merged_with_incident_finding": False,
-        "status": "requested", "external_authority_verified": False,
+        "pathway": "cultural_review",
+        "merged_with_incident_finding": False,
+        "status": "requested",
+        "external_authority_verified": False,
     }
     assert validate_specialist_referral(referral) == []
     referral.update(merged_with_incident_finding=True, external_authority_verified=True)
@@ -432,7 +656,12 @@ def test_specialist_pathways_remain_separate_and_external() -> None:
 
 def test_audience_views_expose_limits_and_never_send() -> None:
     record = canonical_record()
-    view = render_view(record, audience="consumer_family", data_class="generated_synthetic", view_context=view_context())
+    view = render_view(
+        record,
+        audience="consumer_family",
+        data_class="generated_synthetic",
+        view_context=view_context(),
+    )
     assert "private_note" not in view
     assert "reviews" not in view
     assert view["external_action"] is False
@@ -441,20 +670,47 @@ def test_audience_views_expose_limits_and_never_send() -> None:
 
 def test_view_minimises_by_audience_and_rejects_nested_active_content() -> None:
     record = canonical_record()
-    consumer = render_view(record, audience="consumer_family", data_class="generated_synthetic", view_context=view_context())
-    assert "evidence" not in consumer and "reviews" not in consumer
-    record["statements"] = [{"statement_id": "syn-statement-1", "kind": "reported_account", "text": "=WEBSERVICE('x')", "provenance": {"source_id": "syn-source-1", "author_role_id": "syn-role-1", "recorded_at": "2026-08-29T00:00:00Z", "review_state": "unreviewed"}}]
+    consumer = render_view(
+        record,
+        audience="consumer_family",
+        data_class="generated_synthetic",
+        view_context=view_context(),
+    )
+    assert "evidence" not in consumer
+    assert "reviews" not in consumer
+    record["statements"] = [
+        {
+            "statement_id": "syn-statement-1",
+            "kind": "reported_account",
+            "text": "=WEBSERVICE('x')",
+            "provenance": {
+                "source_id": "syn-source-1",
+                "author_role_id": "syn-role-1",
+                "recorded_at": "2026-08-29T00:00:00Z",
+                "review_state": "unreviewed",
+            },
+        }
+    ]
     payload = {key: value for key, value in record.items() if key != "source_sha256"}
     record["source_sha256"] = canonical_hash(payload)
     with pytest.raises(ValueError, match="unsafe active export content"):
-        render_view(record, audience="consumer_family", data_class="generated_synthetic", view_context=view_context())
+        render_view(
+            record,
+            audience="consumer_family",
+            data_class="generated_synthetic",
+            view_context=view_context(),
+        )
 
 
 def test_view_rejects_malformed_record_and_audience() -> None:
     with pytest.raises(ValueError, match="record must be an object"):
-        render_view([], audience="auditor", data_class="generated_synthetic", view_context=view_context())
+        render_view(
+            [], audience="auditor", data_class="generated_synthetic", view_context=view_context()
+        )
     with pytest.raises(ValueError, match="audience is invalid"):
-        render_view({}, audience="public", data_class="generated_synthetic", view_context=view_context())
+        render_view(
+            {}, audience="public", data_class="generated_synthetic", view_context=view_context()
+        )
     value = canonical_record()
     with pytest.raises(ValueError, match="only generated_synthetic"):
         render_view(value, audience="auditor", data_class="private", view_context=view_context())
@@ -463,11 +719,21 @@ def test_view_rejects_malformed_record_and_audience() -> None:
     malformed = canonical_record()
     malformed["source_sha256"] = "bad"
     with pytest.raises(ValueError, match="hash is invalid"):
-        render_view(malformed, audience="auditor", data_class="generated_synthetic", view_context=view_context())
+        render_view(
+            malformed,
+            audience="auditor",
+            data_class="generated_synthetic",
+            view_context=view_context(),
+        )
     drifted = canonical_record()
     drifted["state"] = "closed"
     with pytest.raises(ValueError, match="hash does not match"):
-        render_view(drifted, audience="auditor", data_class="generated_synthetic", view_context=view_context())
+        render_view(
+            drifted,
+            audience="auditor",
+            data_class="generated_synthetic",
+            view_context=view_context(),
+        )
 
 
 def test_synthetic_journey_evaluation_is_non_operational() -> None:
@@ -477,7 +743,12 @@ def test_synthetic_journey_evaluation_is_non_operational() -> None:
     assert all(item["passed"] for item in result["cases"])
     assert result["metrics"]["external_actions"] == 0
     assert "not human usability research" in result["limitations"][0]
-    checked = json.loads((ROOT / "conductor/archive/interfaces-templates-action-loop_20260731/evidence/synthetic-evaluation-20260829.json").read_text())
+    checked = json.loads(
+        (
+            ROOT
+            / "conductor/archive/interfaces-templates-action-loop_20260731/evidence/synthetic-evaluation-20260829.json"
+        ).read_text()
+    )
     assert result == checked
 
 

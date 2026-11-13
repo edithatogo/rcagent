@@ -1,13 +1,15 @@
 # DOCX Generation: Investigation Terms of Reference
 
-Use the document-skills:docx skill to generate this document.
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
+
+Use an available document-generation adapter within the approved data boundary, or return populated Markdown.
 Apply styles from: assets/styles/docx-style-guide.md
 Source content from: assets/templates/markdown/01-investigation-tor.md (populated)
 
 ## Document Properties
 - Title: Investigation Terms of Reference
 - Purpose: Establish and authorise the investigation before data collection begins
-- Requires endorsement signature before investigation proceeds
+- Record the required authority and endorsement process from applicable policy; this template grants no authority
 
 ## Sections
 1. Incident Identification (metadata table)
@@ -21,6 +23,6 @@ Source content from: assets/templates/markdown/01-investigation-tor.md (populate
 
 ## Endorsement Block
 Include a formal endorsement block at the end:
-- Endorsed by: [Name, Position, Date]
+- Endorsed by: [Accountable role, decision reference, date]
 - Signature line
 - Clinical Governance Committee authorisation reference

@@ -140,7 +140,7 @@ def run_study(
     descriptor = os.open(journal_path, os.O_CREAT | os.O_EXCL | os.O_RDWR, 0o600)
     events, receipts = [], []
     slots = header["slots"]
-    dispositions = {slot: "not-attempted" for slot in slots}
+    dispositions = dict.fromkeys(slots, "not-attempted")
     result = {
         "status": "controller_failed",
         "error": "none",

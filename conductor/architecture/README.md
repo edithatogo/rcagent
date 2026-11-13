@@ -14,3 +14,7 @@ Architecture Decision Records explain durable technical choices that affect mult
 `NNNN-short-title.md`
 
 Use [template.md](./template.md). Accepted ADRs must link validation and rollback evidence.
+
+## Current research decisions
+
+- [0013 — Selective Rust evidence core](./0013-selective-rust-evidence-core.md): retain Python while measuring a bounded Rust core/worker spike. A whole-repository migration is not selected.

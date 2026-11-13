@@ -1,9 +1,10 @@
 # Bow-Tie Analysis
-**CONFIDENTIAL: QUALITY IMPROVEMENT**
+
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
 
 ---
 
-**Incident ID**: [INC-2026-XXX]
+**Incident ID**: [Case ID]
 **Top Event (Central Hazardous Event)**: [e.g. Patient received incorrect medication]
 **Date**: [DD/MM/YYYY]
 

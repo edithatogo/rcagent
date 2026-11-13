@@ -1,12 +1,13 @@
 # Failure Mode and Effects Analysis (FMEA) Worksheet
-**CONFIDENTIAL: QUALITY IMPROVEMENT**
+
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
 
 ---
 
 **Process Being Analysed**: [e.g. Administration of high-alert medication / New service design]
 **FMEA Type**: Proactive (new process) / Reactive (post-incident process review)
 **Date**: [DD/MM/YYYY]
-**Team**: [Names/roles]
+**Team**: [Role identifiers]
 
 ---
 
@@ -35,22 +36,19 @@ List all steps in the process being analysed:
 
 ---
 
-## Priority Thresholds
+## Risk Evaluation Method
 
-| RPN | Priority | Required Action |
+The displayed S/O/D scale and RPN formula are illustrative. Record the locally selected method, exact source/version, criteria, uncertainties and accountable reviewer before scoring. A product of ordinal scores does not establish safety or determine whether a process may proceed.
+
+| Criterion | Applicable source and rationale | Human decision and action |
 |---|---|---|
-| > 200 | Critical | Immediate action — do not proceed with process |
-| 100–200 | High | Urgent action required before or immediately after implementation |
-| 50–99 | Medium | Action plan required |
-| < 50 | Low | Monitor — review at next scheduled review |
-
-**Note**: Any failure mode with Severity ≥ 9 requires action regardless of RPN.
+| [Severity, exposure, detectability and uncertainty] | [Verified method/version and limitations] | [Decision, owner and review date] |
 
 ---
 
-## High and Critical Failure Modes — Action Detail
+## Prioritised Failure Modes — Action Detail
 
-For each RPN > 100 or Severity ≥ 9:
+For each failure mode selected through the recorded risk evaluation:
 
 ### Failure Mode [#]:
 **Description**: [Step and failure mode]
@@ -58,6 +56,6 @@ For each RPN > 100 or Severity ≥ 9:
 **Proposed action to reduce Occurrence**: [Specific action]
 **Proposed action to improve Detectability**: [Specific action]
 **Can the process step be eliminated or redesigned?**: Y/N — [If yes, describe]
-**Owner**: [Name/Role]
+**Owner**: [Accountable role]
 **Target date**: [DD/MM/YYYY]
 **Post-action RPN estimate**: S[ ] × O[ ] × D[ ] = [ ]

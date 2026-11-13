@@ -1,6 +1,8 @@
 # PPTX Generation: Executive Summary Deck
 
-Use the document-skills:pptx skill to generate this presentation.
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
+
+Use an available presentation-generation adapter within the approved data boundary, or return the slide outline.
 Apply styles from: assets/styles/pptx-style-guide.md
 
 ## Purpose

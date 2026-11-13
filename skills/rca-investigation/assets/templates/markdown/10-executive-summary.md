@@ -1,11 +1,12 @@
 # Executive Summary — RCA Investigation
-**CONFIDENTIAL: QUALITY IMPROVEMENT**
+
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
 
 **Maximum 2 pages**
 
 ---
 
-**Incident ID**: [INC-2026-XXX]
+**Incident ID**: [Case ID]
 **SAC Level**: [SAC 1 / SAC 2]
 **Date**: [DD/MM/YYYY]
 
@@ -53,9 +54,9 @@
 
 [Effectiveness measures and review dates]
 
-- 3-month review: [What will be measured]
-- 6-month review: [What will be measured]
-- 12-month closure: [What will confirm success]
+- Initial review: [Date, rationale, measures and limitations]
+- Follow-up review: [Date, rationale and durability/balancing measures]
+- Closure assessment: [Evidence threshold, residual risk and decision authority]
 
 ---
 

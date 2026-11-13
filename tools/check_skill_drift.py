@@ -6,9 +6,12 @@ import argparse
 import json
 import urllib.error
 import urllib.request
+from contextlib import AbstractContextManager
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Protocol
+
+from tools.json_shapes import is_array, is_object, require_object
 
 UPSTREAM_API = "https://api.github.com/repos/agentskills/agentskills/commits/main"
 COMPARE_API = "https://api.github.com/repos/agentskills/agentskills/compare/{base}...{head}"
@@ -26,7 +29,17 @@ GUIDANCE_PATHS = (
 )
 
 
-def _read_json(url: str, opener) -> Any:
+class ReadableResponse(Protocol):
+    def read(self) -> bytes: ...
+
+
+class Opener(Protocol):
+    def __call__(
+        self, request: urllib.request.Request, /, *, timeout: float
+    ) -> AbstractContextManager[ReadableResponse]: ...
+
+
+def _read_json(url: str, opener: Opener) -> object:
     request = urllib.request.Request(
         url,
         headers={"Accept": "application/vnd.github+json", "User-Agent": "rca-workbench"},
@@ -43,7 +56,7 @@ def check_drift(
     baseline_path: Path,
     *,
     offline: bool = False,
-    opener=urllib.request.urlopen,
+    opener: Opener = urllib.request.urlopen,
 ) -> tuple[int, dict[str, object]]:
     receipt: dict[str, object] = {
         "checked_at": datetime.now(UTC).isoformat(),
@@ -51,17 +64,17 @@ def check_drift(
         "mode": "offline" if offline else "live",
     }
     try:
-        baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
-        if (
-            not isinstance(baseline, dict)
-            or not isinstance(baseline.get("upstream_revision"), str)
-            or not baseline["upstream_revision"]
-        ):
+        baseline = require_object(
+            json.loads(baseline_path.read_text(encoding="utf-8")), context="upstream baseline"
+        )
+        revision = baseline.get("upstream_revision")
+        if not isinstance(revision, str) or not revision:
             raise ValueError("Missing baseline revision")
-        if not isinstance(baseline.get("sources"), list) or not baseline["sources"]:
+        sources = baseline.get("sources")
+        if not is_array(sources) or not sources:
             raise ValueError("Missing baseline sources")
-        receipt["baseline_revision"] = baseline["upstream_revision"]
-        receipt["sources"] = baseline["sources"]
+        receipt["baseline_revision"] = revision
+        receipt["sources"] = sources
     except (OSError, ValueError, TypeError):
         receipt["status"] = "baseline_invalid"
         receipt["message"] = "A valid readable upstream baseline is required."
@@ -72,7 +85,9 @@ def check_drift(
         return 0, receipt
 
     try:
-        current = _read_json(UPSTREAM_API, opener)["sha"]
+        current = require_object(_read_json(UPSTREAM_API, opener), context="upstream revision")[
+            "sha"
+        ]
         if not isinstance(current, str) or not current:
             raise ValueError("Invalid upstream revision")
     except (OSError, KeyError, TypeError, UnicodeError, ValueError, urllib.error.URLError) as exc:
@@ -81,7 +96,7 @@ def check_drift(
         return 2, receipt
 
     receipt["resolved_revision"] = current
-    if current == baseline["upstream_revision"]:
+    if current == revision:
         receipt["status"] = "current"
         receipt["current_conformance"] = True
         receipt["message"] = "Upstream revision matches the reviewed baseline."
@@ -89,25 +104,24 @@ def check_drift(
 
     try:
         comparison = _read_json(
-            COMPARE_API.format(base=baseline["upstream_revision"], head=current),
+            COMPARE_API.format(base=revision, head=current),
             opener,
         )
-        if not isinstance(comparison, dict) or comparison.get("status") != "ahead":
+        if not is_object(comparison) or comparison.get("status") != "ahead":
             raise ValueError("Upstream comparison must establish forward ancestry")
         files = comparison.get("files")
         # GitHub compare responses include at most 300 files, even with paging.
         # Do not infer absence of normative changes from a possibly capped list.
-        if not isinstance(files, list) or len(files) >= 300:
+        if not is_array(files) or len(files) >= 300:
             raise ValueError("Upstream changed-file list is invalid or potentially truncated")
         changed_paths: list[str] = []
         for item in files:
-            if (
-                not isinstance(item, dict)
-                or not isinstance(item.get("filename"), str)
-                or not item["filename"]
-            ):
+            if not is_object(item):
                 raise ValueError("Malformed changed-file entry")
-            changed_paths.append(item["filename"])
+            filename = item.get("filename")
+            if not isinstance(filename, str) or not filename:
+                raise ValueError("Malformed changed-file entry")
+            changed_paths.append(filename)
             if "previous_filename" in item:
                 previous = item["previous_filename"]
                 if not isinstance(previous, str) or not previous:

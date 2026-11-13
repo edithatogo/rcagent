@@ -149,7 +149,7 @@ def test_panel_validators_reject_tampered_evidence(tmp_path: Path) -> None:
 
     submission = _submission("tampered")
     submission["ratings"][1]["model_id"] = submission["ratings"][0]["model_id"]
-    submission["input_hashes"] = {key: "0" * 64 for key in submission["input_hashes"]}
+    submission["input_hashes"] = dict.fromkeys(submission["input_hashes"], "0" * 64)
     submission["ratings"][0]["criteria"].pop("uncertainty")
     submission["ratings"][0]["criteria"]["privacy"]["evidence"] = ["missing-case"]
     errors = validate_submission(submission)

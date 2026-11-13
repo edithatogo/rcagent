@@ -42,12 +42,16 @@ def test_adapter_classifies_timeout_failure_and_invalid_json(tmp_path: Path) -> 
     def timeout(*args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
         raise subprocess.TimeoutExpired("sourceright", 2)
 
-    assert SourceRightAdapter(executable, timeout).run_json(operation(), ["bench"]).status == "timeout"
+    assert (
+        SourceRightAdapter(executable, timeout).run_json(operation(), ["bench"]).status == "timeout"
+    )
 
     def failure(*args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
         return subprocess.CompletedProcess([], 2, "", "fixture failure")
 
-    assert SourceRightAdapter(executable, failure).run_json(operation(), ["bench"]).status == "failed"
+    assert (
+        SourceRightAdapter(executable, failure).run_json(operation(), ["bench"]).status == "failed"
+    )
 
     def invalid(*args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
         return subprocess.CompletedProcess([], 0, "[]", "")

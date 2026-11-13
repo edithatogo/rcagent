@@ -1,103 +1,37 @@
-# Just Culture Assessment
-**CONFIDENTIAL: QUALITY IMPROVEMENT**
+# Just Culture and Work Context Review
 
----
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
 
-**Incident ID**: [INC-2026-XXX]
-**Date of Assessment**: [DD/MM/YYYY]
-**Assessors**: [Team leader + Clinical lead — minimum two people]
+**Case ID**: [Case ID]
+**Review date**: [Date]
+**Accountable review role and scope**: [Role, authority and decision reference]
+**Applicable framework/policy**: [Issuing body, title, version/date, source and applicability]
 
----
+## Purpose and Boundary
 
-## Purpose
+Understand work as performed, system conditions, information available at the time, and support needs. This record does not classify a person as reckless, determine culpability, infer intent or illness, or recommend discipline. Any employment, professional or legal determination belongs to the separately authorised process with procedural fairness and relevant expertise.
 
-This assessment applies the Just Culture framework to each individual whose actions are part of this adverse event. Its purpose is to:
-1. Ensure fair, consistent, and blame-free accountability
-2. Distinguish between human error, at-risk behaviour, and reckless conduct
-3. Inform appropriate organisational responses
-4. Prevent inappropriate disciplinary action for system-driven errors
+## Evidence and Context
 
-This assessment does NOT replace or prejudge any formal HR or regulatory process.
-
----
-
-## Just Culture Decision Tree
-
-```
-Step 1: Was the act intentional?
-  NO → Go to Step 2
-  YES → Go to Step 4
-
-Step 2: Were there substance issues or medical conditions?
-  YES → HR/occupational health pathway
-  NO → Go to Step 3
-
-Step 3: Would a competent, equally trained peer act the same way?
-  YES → HUMAN ERROR → Console and support; examine system factors
-  NO → Go to Step 4
-
-Step 4: Was the risk recognised?
-  NO → AT-RISK BEHAVIOUR → Coach; manage system and incentives
-  YES → Go to Step 5
-
-Step 5: Was there an expectation it was acceptable (created by org)?
-  YES → AT-RISK BEHAVIOUR (organisational) → Address at org level
-  NO → RECKLESS BEHAVIOUR → Consider disciplinary process
-```
-
----
-
-## Individual Assessments
-
-### Individual 1: [Role — do not include name in most investigations]
-
-**Action in question**: [Specific action or inaction being assessed]
-
-**Decision tree outcome**:
-- Step 1 (Intentional?): [No]
-- Step 2 (Substance/medical?): [No]
-- Step 3 (Peer would act same?): [Yes/No — with rationale]
-- Classification: **[HUMAN ERROR / AT-RISK BEHAVIOUR / RECKLESS BEHAVIOUR]**
-
-**System factors that enabled this action**:
-1. [System factor — e.g. "Policy did not specify verification requirement for this drug class"]
-2. [System factor]
-
-**Recommended organisational response**:
-[Console and support / Coach and system redesign / Consider disciplinary process]
-
----
-
-### Individual 2: [Role]
-
-**Action in question**: [Description]
-
-**Decision tree outcome**:
-- Step 1 (Intentional?): [Answer]
-- Step 3 (Peer would act same?): [Answer with rationale]
-- Classification: **[Classification]**
-
-**System factors**:
-1. [Factor]
-
-**Recommended response**: [Response]
-
----
-
-## Overall Assessment Summary
-
-| Individual (by role) | Classification | System Factors Identified | Recommended Response |
+| Question | Evidence or account | Uncertainty and alternatives | Review state |
 |---|---|---|---|
-| [Role 1] | Human Error | Y — [brief description] | Console and support; address system |
-| [Role 2] | At-Risk Behaviour | Y — [brief description] | Coach; remove system incentives for risk-taking |
+| What action or decision is being examined? | [Neutral description and source/location] | [Disputed or missing information] | [Pending/reviewed] |
+| What information and options were available at that time? | [Contemporaneous evidence] | [Avoid hindsight assumptions] | |
+| What goals, demands and constraints shaped the work? | [Tasks, resources, workload, tools, interfaces and supervision] | [Conflicting accounts] | |
+| How is this work normally adapted in practice? | [Work-as-done evidence and relevant comparison] | [Limits of the comparison] | |
+| Which system protections worked or did not work? | [Evidence and mechanism] | [Alternative explanations] | |
+| What participation, support and accessibility needs were identified? | [Consented account and authorised minimum detail] | [Outstanding requests] | |
 
----
+## Participation and Fairness
 
-## System Actions Arising from This Assessment
+Record the opportunity to provide an account, respond to evidence, correct errors and raise concerns. Record conflicts of interest and their management. Do not collect medical, employment or personal details without a relevant authorised purpose and data boundary.
 
-For each instance of human error or at-risk behaviour, document the system action required:
+## System and Support Actions
 
-| Individual Classification | System Action Required | Owner | Deadline |
-|---|---|---|---|
-| Human Error — [Role] | [What system change prevents this error opportunity] | [Owner] | [Date] |
-| At-Risk Behaviour — [Role] | [What system or incentive change removes the reason for risk-taking] | [Owner] | [Date] |
+| Supported condition or need | Proposed action | Evidence and intended mechanism | Owner | Review measure/date |
+|---|---|---|---|---|
+| [Condition or need] | [Support or system improvement] | [Source, uncertainty and potential adverse effects] | [Role] | [Measure and rationale] |
+
+## Separate Referral, If Applicable
+
+[Record an authorised referral decision, scope, responsible role, applicable policy and reference, or “none/unresolved”. Do not populate a culpability classification or prejudge the separate process.]

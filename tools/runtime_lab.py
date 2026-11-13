@@ -14,6 +14,8 @@ import shutil
 from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Any
 
+from tools.json_shapes import is_array, is_object
+
 SCHEMA_VERSION = "1.0"
 SUPPORT_STATES = {
     "interface_contract",
@@ -54,7 +56,9 @@ def privacy_safe_device_profile(*, memory_bytes: int | None = None) -> dict[str,
     memory_gib = None if memory_bytes is None else max(0, memory_bytes // (1024**3))
     if memory_gib is not None:
         memory_gib = (memory_gib // 4) * 4
-    accelerator = "apple_silicon" if system == "darwin" and machine in {"arm64", "aarch64"} else "unobserved"
+    accelerator = (
+        "apple_silicon" if system == "darwin" and machine in {"arm64", "aarch64"} else "unobserved"
+    )
     profile = {
         "schema_version": SCHEMA_VERSION,
         "os_family": system,
@@ -77,14 +81,25 @@ def privacy_safe_device_profile(*, memory_bytes: int | None = None) -> dict[str,
 
 
 def validate_device_profile(profile: object) -> list[str]:
-    if not isinstance(profile, dict):
+    if not is_object(profile):
         return ["device profile must be an object"]
     required = {
-        "schema_version", "os_family", "architecture", "logical_cpu_count",
-        "memory_gib_floor", "memory_probe_state", "storage_gib_floor",
-        "storage_probe_state", "accelerator_class", "driver_state",
-        "instruction_set_state", "power_proxy_state", "identifiers_redacted",
-        "network_observation", "telemetry_observation", "receipt_sha256",
+        "schema_version",
+        "os_family",
+        "architecture",
+        "logical_cpu_count",
+        "memory_gib_floor",
+        "memory_probe_state",
+        "storage_gib_floor",
+        "storage_probe_state",
+        "accelerator_class",
+        "driver_state",
+        "instruction_set_state",
+        "power_proxy_state",
+        "identifiers_redacted",
+        "network_observation",
+        "telemetry_observation",
+        "receipt_sha256",
     }
     errors: list[str] = []
     if set(profile) != required:
@@ -98,11 +113,19 @@ def validate_device_profile(profile: object) -> list[str]:
     if profile.get("architecture") not in {"arm64", "aarch64", "x86_64", "amd64", "unknown"}:
         errors.append("device architecture is not a coarse allowed value")
     cpu_count = profile.get("logical_cpu_count")
-    if cpu_count is not None and (isinstance(cpu_count, bool) or not isinstance(cpu_count, int) or not 1 <= cpu_count <= 4096):
+    if cpu_count is not None and (
+        isinstance(cpu_count, bool) or not isinstance(cpu_count, int) or not 1 <= cpu_count <= 4096
+    ):
         errors.append("device logical_cpu_count is invalid")
     for field in ("memory_gib_floor", "storage_gib_floor"):
         value = profile.get(field)
-        if value is not None and (isinstance(value, bool) or not isinstance(value, int) or value < 0 or value > 1048576 or value % 4):
+        if value is not None and (
+            isinstance(value, bool)
+            or not isinstance(value, int)
+            or value < 0
+            or value > 1048576
+            or value % 4
+        ):
             errors.append(f"device {field} must be a coarse four-GiB floor")
     categorical = {
         "memory_probe_state": {"provided_coarse", "unobserved"},
@@ -125,7 +148,7 @@ def validate_device_profile(profile: object) -> list[str]:
 
 
 def validate_runtime_registry(registry: object) -> list[str]:
-    if not isinstance(registry, dict):
+    if not is_object(registry):
         return ["registry must be an object"]
     allowed_top = {"schema_version", "runtimes", "models", "hypotheses", "policy"}
     errors = [f"registry: unknown field {key}" for key in registry if key not in allowed_top]
@@ -139,31 +162,43 @@ def validate_runtime_registry(registry: object) -> list[str]:
         "promotion": False,
         "redistribution": False,
     }
-    if not isinstance(policy, dict):
+    if not is_object(policy):
         errors.append("registry.policy must be an object")
     else:
         for key, expected in required_policy.items():
             if policy.get(key) is not expected:
                 errors.append(f"registry.policy.{key} must be false")
     runtimes = registry.get("runtimes")
-    if not isinstance(runtimes, list):
+    if not is_array(runtimes):
         errors.append("registry.runtimes must be an array")
         runtimes = []
     seen: set[str] = set()
     required_runtime = {
-        "id", "dependency_class", "support_state", "interface", "executable_names",
-        "licence", "network", "telemetry", "remote_code", "applicability",
-        "failure_modes", "replacement_path", "freshness_date",
+        "id",
+        "dependency_class",
+        "support_state",
+        "interface",
+        "executable_names",
+        "licence",
+        "network",
+        "telemetry",
+        "remote_code",
+        "applicability",
+        "failure_modes",
+        "replacement_path",
+        "freshness_date",
     }
     allowed_runtime = required_runtime
     for index, runtime in enumerate(runtimes):
         prefix = f"runtimes[{index}]"
-        if not isinstance(runtime, dict):
+        if not is_object(runtime):
             errors.append(f"{prefix} must be an object")
             continue
         missing = sorted(required_runtime - runtime.keys())
         errors.extend(f"{prefix}.{field} is required" for field in missing)
-        errors.extend(f"{prefix}.{field} is unknown" for field in sorted(runtime.keys() - allowed_runtime))
+        errors.extend(
+            f"{prefix}.{field} is unknown" for field in sorted(runtime.keys() - allowed_runtime)
+        )
         runtime_id = runtime.get("id")
         if not isinstance(runtime_id, str) or not runtime_id:
             errors.append(f"{prefix}.id must be a non-empty string")
@@ -181,32 +216,48 @@ def validate_runtime_registry(registry: object) -> list[str]:
             errors.append(f"{prefix}.network must be none or unknown")
         if runtime.get("telemetry") not in {"disabled", "unknown"}:
             errors.append(f"{prefix}.telemetry must be disabled or unknown")
-        if not isinstance(runtime.get("failure_modes"), list) or not runtime.get("failure_modes"):
+        failure_modes = runtime.get("failure_modes")
+        if not is_array(failure_modes) or not failure_modes:
             errors.append(f"{prefix}.failure_modes must be a non-empty array")
-        elif not all(isinstance(item, str) and item for item in runtime["failure_modes"]):
+        elif not all(isinstance(item, str) and item for item in failure_modes):
             errors.append(f"{prefix}.failure_modes entries must be non-empty strings")
-        if not isinstance(runtime.get("executable_names"), list) or not all(
-            isinstance(item, str) and item for item in runtime.get("executable_names", [])
+        executable_names = runtime.get("executable_names")
+        if not is_array(executable_names) or not all(
+            isinstance(item, str) and item for item in executable_names
         ):
             errors.append(f"{prefix}.executable_names must be a string array")
     models = registry.get("models")
-    if not isinstance(models, list):
+    if not is_array(models):
         errors.append("registry.models must be an array")
         models = []
     model_ids: set[str] = set()
     required_model = {
-        "id", "repository", "revision", "licence", "provenance_sha256", "task_fit",
-        "input_limits", "context_limit", "quantisation", "device_evidence",
-        "failure_modes", "admission_status", "remote_code",
+        "id",
+        "repository",
+        "revision",
+        "licence",
+        "provenance_sha256",
+        "task_fit",
+        "input_limits",
+        "context_limit",
+        "quantisation",
+        "device_evidence",
+        "failure_modes",
+        "admission_status",
+        "remote_code",
     }
     allowed_model = required_model
     for index, model in enumerate(models):
         prefix = f"models[{index}]"
-        if not isinstance(model, dict):
+        if not is_object(model):
             errors.append(f"{prefix} must be an object")
             continue
-        errors.extend(f"{prefix}.{field} is required" for field in sorted(required_model - model.keys()))
-        errors.extend(f"{prefix}.{field} is unknown" for field in sorted(model.keys() - allowed_model))
+        errors.extend(
+            f"{prefix}.{field} is required" for field in sorted(required_model - model.keys())
+        )
+        errors.extend(
+            f"{prefix}.{field} is unknown" for field in sorted(model.keys() - allowed_model)
+        )
         model_id = model.get("id")
         if not isinstance(model_id, str) or not model_id:
             errors.append(f"{prefix}.id must be a non-empty string")
@@ -228,22 +279,36 @@ def validate_runtime_registry(registry: object) -> list[str]:
         if model.get("admission_status") not in {"measured_research", "supported"}:
             errors.append(f"{prefix}.admission_status is invalid")
         for field in ("task_fit", "failure_modes"):
-            if not isinstance(model.get(field), list) or not model.get(field) or not all(
-                isinstance(item, str) and item for item in model.get(field, [])
+            values = model.get(field)
+            if (
+                not is_array(values)
+                or not values
+                or not all(isinstance(item, str) and item for item in values)
             ):
                 errors.append(f"{prefix}.{field} must be a non-empty string array")
         limits = model.get("input_limits")
-        if not isinstance(limits, dict) or set(limits) != {"modalities"} or not isinstance(limits.get("modalities"), list) or not limits["modalities"] or not all(isinstance(item, str) and item for item in limits["modalities"]):
+        modalities = limits.get("modalities") if is_object(limits) else None
+        if (
+            not is_object(limits)
+            or set(limits) != {"modalities"}
+            or not is_array(modalities)
+            or not modalities
+            or not all(isinstance(item, str) and item for item in modalities)
+        ):
             errors.append(f"{prefix}.input_limits must contain a non-empty modalities string array")
         context_limit = model.get("context_limit")
-        if isinstance(context_limit, bool) or not isinstance(context_limit, int) or context_limit < 1:
+        if (
+            isinstance(context_limit, bool)
+            or not isinstance(context_limit, int)
+            or context_limit < 1
+        ):
             errors.append(f"{prefix}.context_limit must be a positive integer")
     hypotheses = registry.get("hypotheses")
-    if not isinstance(hypotheses, list):
+    if not is_array(hypotheses):
         errors.append("registry.hypotheses must be an array")
     else:
         for index, hypothesis in enumerate(hypotheses):
-            if not isinstance(hypothesis, dict) or hypothesis.get("status") != "unverified_hypothesis":
+            if not is_object(hypothesis) or hypothesis.get("status") != "unverified_hypothesis":
                 errors.append(f"hypotheses[{index}] must remain unverified_hypothesis")
     return sorted(errors)
 
@@ -252,7 +317,7 @@ def discover_runtimes(registry: dict[str, Any]) -> dict[str, Any]:
     errors = validate_runtime_registry(registry)
     if errors:
         raise ValueError("invalid runtime registry: " + "; ".join(errors))
-    observations = []
+    observations: list[dict[str, object]] = []
     for runtime in registry["runtimes"]:
         executable_names: list[str] = runtime["executable_names"]
         found = next((shutil.which(name) for name in executable_names if shutil.which(name)), None)
@@ -266,7 +331,7 @@ def discover_runtimes(registry: dict[str, Any]) -> dict[str, Any]:
                 "support_state": "unsupported_without_execution_receipt",
             }
         )
-    receipt = {
+    receipt: dict[str, object] = {
         "schema_version": SCHEMA_VERSION,
         "scope": "read_only_runtime_discovery_no_execution",
         "observations": observations,
@@ -279,12 +344,17 @@ def discover_runtimes(registry: dict[str, Any]) -> dict[str, Any]:
 
 
 def validate_discovery_receipt(discovery: object, registry: object) -> list[str]:
-    if not isinstance(discovery, dict):
+    if not is_object(discovery):
         return ["discovery must be an object"]
     errors: list[str] = []
     expected_fields = {
-        "schema_version", "scope", "observations", "network", "telemetry",
-        "model_executed", "receipt_sha256",
+        "schema_version",
+        "scope",
+        "observations",
+        "network",
+        "telemetry",
+        "model_executed",
+        "receipt_sha256",
     }
     if set(discovery) != expected_fields:
         errors.append("discovery fields are invalid")
@@ -301,27 +371,37 @@ def validate_discovery_receipt(discovery: object, registry: object) -> list[str]
     if discovery.get("model_executed") is not False:
         errors.append("discovery cannot claim model execution")
     observations = discovery.get("observations")
-    if not isinstance(observations, list):
+    if not is_array(observations):
         errors.append("discovery.observations must be an array")
         return sorted(errors)
-    safe_registry = registry if isinstance(registry, dict) else {}
+    safe_registry = registry if is_object(registry) else {}
     runtimes = safe_registry.get("runtimes", [])
-    if not isinstance(runtimes, list):
+    if not is_array(runtimes):
         runtimes = []
-    runtime_ids = {item.get("id") for item in runtimes if isinstance(item, dict)}
-    observed_ids = [item.get("runtime_id") for item in observations if isinstance(item, dict)]
-    if len(observed_ids) != len(observations) or set(observed_ids) != runtime_ids or len(set(observed_ids)) != len(observed_ids):
+    runtime_ids = {item.get("id") for item in runtimes if is_object(item)}
+    observed_ids = [item.get("runtime_id") for item in observations if is_object(item)]
+    if (
+        len(observed_ids) != len(observations)
+        or set(observed_ids) != runtime_ids
+        or len(set(observed_ids)) != len(observed_ids)
+    ):
         errors.append("discovery observations must bind every registered runtime exactly once")
     for index, observation in enumerate(observations):
-        if not isinstance(observation, dict):
+        if not is_object(observation):
             continue
         if observation.get("observed_state") not in {"installed_unmeasured", "unavailable"}:
-            errors.append(f"discovery.observations[{index}] cannot contain measured support evidence")
+            errors.append(
+                f"discovery.observations[{index}] cannot contain measured support evidence"
+            )
         if observation.get("support_state") != "unsupported_without_execution_receipt":
             errors.append(f"discovery.observations[{index}] must remain unsupported")
         observation_fields = {
-            "runtime_id", "observed_state", "executable_observed", "executable_path",
-            "version", "support_state",
+            "runtime_id",
+            "observed_state",
+            "executable_observed",
+            "executable_path",
+            "version",
+            "support_state",
         }
         if set(observation) != observation_fields:
             errors.append(f"discovery.observations[{index}] fields are invalid")
@@ -332,13 +412,16 @@ def validate_discovery_receipt(discovery: object, registry: object) -> list[str]
             errors.append(f"discovery.observations[{index}] executable_observed must be boolean")
         expected_version = "unmeasured" if executable_observed else "unavailable"
         expected_state = "installed_unmeasured" if executable_observed else "unavailable"
-        if observation.get("version") != expected_version or observation.get("observed_state") != expected_state:
+        if (
+            observation.get("version") != expected_version
+            or observation.get("observed_state") != expected_state
+        ):
             errors.append(f"discovery.observations[{index}] state is inconsistent")
     return sorted(errors)
 
 
 def validate_bundle_manifest(manifest: object, root: Path) -> list[str]:
-    if not isinstance(manifest, dict):
+    if not is_object(manifest):
         return ["bundle manifest must be an object"]
     errors: list[str] = []
     if manifest.get("schema_version") != SCHEMA_VERSION:
@@ -346,13 +429,13 @@ def validate_bundle_manifest(manifest: object, root: Path) -> list[str]:
     if manifest.get("network") != "offline" or manifest.get("redistribution") is not False:
         errors.append("bundle must be offline and non-redistributable")
     entries = manifest.get("files")
-    if not isinstance(entries, list) or not entries:
+    if not is_array(entries) or not entries:
         return sorted([*errors, "bundle.files must be a non-empty array"])
     root = root.resolve()
     seen: set[str] = set()
     for index, entry in enumerate(entries):
         prefix = f"files[{index}]"
-        if not isinstance(entry, dict):
+        if not is_object(entry):
             errors.append(f"{prefix} must be an object")
             continue
         relative = entry.get("path")
@@ -401,12 +484,12 @@ def validate_bundle_manifest(manifest: object, root: Path) -> list[str]:
             errors.append(f"{prefix}.sha256 mismatched")
         if resolved.stat().st_size != entry.get("bytes"):
             errors.append(f"{prefix}.bytes mismatched")
-    declared = {str(entry.get("path")).casefold() for entry in entries if isinstance(entry, dict)}
+    declared = {str(entry.get("path")).casefold() for entry in entries if is_object(entry)}
     allowed_directories = {
         str(parent).casefold()
         for entry in entries
-        if isinstance(entry, dict) and isinstance(entry.get("path"), str)
-        for parent in Path(entry["path"]).parents
+        if is_object(entry) and isinstance(entry_path := entry.get("path"), str)
+        for parent in Path(entry_path).parents
         if str(parent) != "."
     }
     for path in root.rglob("*"):
@@ -437,7 +520,7 @@ def route_request(
     reasons.extend(f"registry invalid: {error}" for error in registry_errors)
     discovery_errors = validate_discovery_receipt(discovery, registry)
     reasons.extend(f"discovery invalid: {error}" for error in discovery_errors)
-    if not isinstance(request, dict):
+    if not is_object(request):
         reasons.append("request must be an object")
         request = {}
     required = {"task", "modality", "data_class", "runtime_id", "model_id", "context_tokens"}
@@ -445,28 +528,52 @@ def route_request(
     if request.get("data_class") not in DATA_CLASSES:
         reasons.append("request.data_class is invalid")
     context_tokens = request.get("context_tokens")
-    if isinstance(context_tokens, bool) or not isinstance(context_tokens, int) or context_tokens < 1:
+    if (
+        isinstance(context_tokens, bool)
+        or not isinstance(context_tokens, int)
+        or context_tokens < 1
+    ):
         reasons.append("request.context_tokens must be a positive integer")
     if request.get("allow_external") is not False:
         reasons.append("external routing is forbidden")
     if request.get("allow_remote_code") is not False:
         reasons.append("remote code is forbidden")
-    safe_registry = registry if isinstance(registry, dict) else {}
-    safe_discovery = discovery if isinstance(discovery, dict) else {}
+    safe_registry = registry if is_object(registry) else {}
+    safe_discovery = discovery if is_object(discovery) else {}
     runtimes = safe_registry.get("runtimes", [])
     models = safe_registry.get("models", [])
     observations = safe_discovery.get("observations", [])
-    runtimes = runtimes if isinstance(runtimes, list) else []
-    models = models if isinstance(models, list) else []
-    observations = observations if isinstance(observations, list) else []
-    runtime = next((item for item in runtimes if isinstance(item, dict) and item.get("id") == request.get("runtime_id")), None)
-    model = next((item for item in models if isinstance(item, dict) and item.get("id") == request.get("model_id")), None)
-    observation = next((item for item in observations if isinstance(item, dict) and item.get("runtime_id") == request.get("runtime_id")), None)
+    runtimes = runtimes if is_array(runtimes) else []
+    models = models if is_array(models) else []
+    observations = observations if is_array(observations) else []
+    runtime = next(
+        (
+            item
+            for item in runtimes
+            if is_object(item) and item.get("id") == request.get("runtime_id")
+        ),
+        None,
+    )
+    model = next(
+        (item for item in models if is_object(item) and item.get("id") == request.get("model_id")),
+        None,
+    )
+    observation = next(
+        (
+            item
+            for item in observations
+            if is_object(item) and item.get("runtime_id") == request.get("runtime_id")
+        ),
+        None,
+    )
     if runtime is None:
         reasons.append("runtime is not registered")
     elif runtime.get("network") != "none" or runtime.get("telemetry") != "disabled":
         reasons.append("runtime isolation is not established")
-    if observation is None or observation.get("observed_state") not in {"measured_research", "supported"}:
+    if observation is None or observation.get("observed_state") not in {
+        "measured_research",
+        "supported",
+    }:
         reasons.append("runtime lacks a measured execution receipt")
     if model is None:
         reasons.append("model is not admitted")
@@ -474,12 +581,20 @@ def route_request(
         if model.get("admission_status") not in {"measured_research", "supported"}:
             reasons.append("model lacks measured admission")
         model_limit = model.get("context_limit")
-        if isinstance(context_tokens, int) and not isinstance(context_tokens, bool) and isinstance(model_limit, int) and not isinstance(model_limit, bool) and context_tokens > model_limit:
+        if (
+            isinstance(context_tokens, int)
+            and not isinstance(context_tokens, bool)
+            and isinstance(model_limit, int)
+            and not isinstance(model_limit, bool)
+            and context_tokens > model_limit
+        ):
             reasons.append("requested context exceeds measured limit")
-        if request.get("task") not in model.get("task_fit", []):
+        task_fit = model.get("task_fit")
+        if not is_array(task_fit) or request.get("task") not in task_fit:
             reasons.append("task is unsupported")
-        modalities = model.get("input_limits", {}).get("modalities", []) if isinstance(model.get("input_limits"), dict) else []
-        if request.get("modality") not in modalities:
+        input_limits = model.get("input_limits")
+        modalities = input_limits.get("modalities") if is_object(input_limits) else None
+        if not is_array(modalities) or request.get("modality") not in modalities:
             reasons.append("modality is unsupported")
     if request.get("data_class") == "governed_private":
         reasons.append("governed-private routing requires separately verified local isolation")
@@ -493,14 +608,16 @@ def route_request(
     return result
 
 
-def recommendation_matrix(registry: dict[str, Any], discovery: dict[str, Any], *, date: str) -> dict[str, Any]:
+def recommendation_matrix(
+    registry: dict[str, Any], discovery: dict[str, Any], *, date: str
+) -> dict[str, Any]:
     validation_errors = [
         *validate_runtime_registry(registry),
         *validate_discovery_receipt(discovery, registry),
     ]
     if validation_errors:
         raise ValueError("invalid recommendation evidence: " + "; ".join(validation_errors))
-    rows = []
+    rows: list[dict[str, object]] = []
     observed = {item["runtime_id"]: item for item in discovery.get("observations", [])}
     for runtime in registry.get("runtimes", []):
         state = observed.get(runtime["id"], {}).get("observed_state", "unavailable")

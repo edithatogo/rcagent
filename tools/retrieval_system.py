@@ -14,7 +14,7 @@ import tracemalloc
 import unicodedata
 from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Any, Self
 
 from jsonschema import Draft202012Validator, FormatChecker
 
@@ -165,7 +165,7 @@ class LexicalIndex:
     def close(self) -> None:
         self.connection.close()
 
-    def __enter__(self) -> LexicalIndex:
+    def __enter__(self) -> Self:
         return self
 
     def __exit__(self, *_: object) -> None:
@@ -250,7 +250,7 @@ class LexicalIndex:
         parameters.append(limit)
         try:
             rows = self.connection.execute(
-                f"SELECT id, source, authority, jurisdiction, rights, rights_basis, version, timestamp, location, transformation, status, checksum, retention, safety_flags, bm25(units) AS rank FROM units WHERE {' AND '.join(where)} ORDER BY rank, id LIMIT ?",  # noqa: S608 -- fields are allowlisted
+                f"SELECT id, source, authority, jurisdiction, rights, rights_basis, version, timestamp, location, transformation, status, checksum, retention, safety_flags, bm25(units) AS rank FROM units WHERE {' AND '.join(where)} ORDER BY rank, id LIMIT ?",  # nosec B608 # identifiers are allowlisted; all values use SQL parameters
                 parameters,
             ).fetchall()
         except sqlite3.OperationalError as exc:

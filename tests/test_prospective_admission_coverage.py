@@ -40,7 +40,7 @@ def test_untrusted_origin_cannot_construct_capture_witness(tmp_path):
 
 
 @pytest.mark.parametrize(
-    "field,value,reason",
+    ("field", "value", "reason"),
     [
         ("request_sha256", "0" * 64, "capture_request_mismatch"),
         ("source_sha256", {"synthetic": "0" * 64}, "capture_source_mismatch"),
@@ -76,7 +76,7 @@ def test_request_source_and_arguments_bound_before_next_capture(
 
 
 @pytest.mark.parametrize(
-    "damage,reason",
+    ("damage", "reason"),
     [
         ("duplicate-slot", "incomplete_capture_denominator"),
         ("parent-identity", "owned_directory_changed"),

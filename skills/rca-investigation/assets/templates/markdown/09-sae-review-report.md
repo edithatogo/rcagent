@@ -1,24 +1,25 @@
 # Serious Adverse Event Review Report
-**CONFIDENTIAL: QUALITY IMPROVEMENT**
+
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
 
 ---
 
-**Event ID**: [SAE-2026-XXX]
-**SAC Classification**: [SAC 1]
+**Event ID**: [Case ID]
+**Classification**: [Verified jurisdiction-specific classification or unresolved; policy/version]
 **Event Category**: [e.g. Medication error / Surgical complication / Falls / Sepsis / Suicide]
 **Service**: [De-identified]
-**Report Version**: [1.0 — Final]
+**Report Version**: [Version — Draft until authorised]
 **Date**: [DD/MM/YYYY]
 
 ---
 
-## 1. SAC Classification Rationale
+## 1. Classification and Applicability
 
 **Outcome**: [Death / Permanent serious disability / Serious temporary harm / Near miss]
 
-**SAC 1 criteria met**: [State which criterion — e.g. "Death directly attributable to healthcare delivery"]
+**Applicable criteria and determination**: [Exact source/version, evidence, unresolved causation or classification questions, accountable role and decision reference. An outcome alone does not establish attribution or reportability.]
 
-**Sentinel Event Category** (if applicable): [Matches ACSQHC sentinel event list — Yes/No — Category]
+**Sentinel event assessment**, if relevant: [Applicable list/version and criteria, authorised determination or unresolved status]
 
 ---
 
@@ -78,13 +79,13 @@
 
 ## 6. Mandatory Notification and Regulatory Obligations
 
-| Requirement | Required? | Completed? | Date | Reference |
+| Potential pathway | Authorised determination or unresolved | Notification status | Date/deadline source | Jurisdiction, source and decision reference |
 |---|---|---|---|---|
-| Coroner notification | Y/N | Y/N | | |
-| State health department notification | Y/N | Y/N | | |
-| ACSQHC sentinel event report | Y/N | Y/N | | |
-| AHPRA notification | Y/N | Y/N | | |
-| Insurer notification | Y/N | Y/N | | |
+| Coroner referral | [Unresolved] | [Not established] | | |
+| Health department notification | [Unresolved] | [Not established] | | |
+| Sentinel event reporting | [Unresolved] | [Not established] | | |
+| Professional regulator referral | [Unresolved] | [Not established] | | |
+| Insurer notification | [Unresolved] | [Not established] | | |
 
 ---
 
@@ -93,5 +94,5 @@
 | Governance Body | Date | Outcome |
 |---|---|---|
 | Clinical Governance Committee | [Date] | Endorsed / Further information required |
-| Executive | [Date] | Endorsed |
-| Board Risk Sub-committee | [Date — SAC 1 mandatory] | Noted |
+| Executive, if applicable | [Date] | [Pending or recorded decision] |
+| Applicable governing body | [Verified due date and policy source, if applicable] | [Decision/status reference] |

@@ -1,6 +1,6 @@
 ---
 name: rca-investigation
-description: Conduct evidence-grounded systems analysis for a healthcare safety investigation. Use only when a request explicitly asks to perform AU/NZ RCA or SAE work on a past event by scoping the review, building its chronology, analysing system contributors or barriers, developing evidence-backed findings and actions, or verifying action effectiveness. Activation requires investigation-workflow intent, not merely a healthcare topic or review document.
+description: Conduct evidence-grounded systems analysis for a healthcare safety investigation. Use only when a request explicitly asks to perform AU/NZ RCA, SAE or healthcare death/mortality review of past care by scoping the review, building its chronology, analysing system contributors or barriers, developing evidence-backed findings and actions, or verifying action effectiveness. Activation requires investigation-workflow intent, not merely a healthcare topic or review document.
 license: Apache-2.0
 compatibility: Requires an Agent Skills client that can read bundled Markdown files.
 metadata:
@@ -28,6 +28,12 @@ Choose the first mode matching the user's current outcome:
 
 If the request spans modes, complete them in that order. Never infer that a
 later mode's human approvals have occurred.
+
+For death or mortality review, also read `references/workflows/death-review.md`.
+Use it as an application profile across the four modes. Separate mortality
+screening and learning from incident, certification and coronial pathways;
+these may proceed in parallel under different authorities. A death alone
+does not establish preventability, unsafe care or reportability.
 
 ## Apply gates before analysis
 
@@ -87,8 +93,14 @@ placeholders until an authorised local workflow replaces them. Clearly label:
 When producing a DOCX or presentation, also apply the relevant guidance under
 `assets/styles/`.
 
+Apply `assets/template-use-contract.md` and select only the current reviewed
+assets listed in `assets/template-admission.json`. Admission binds the source
+bytes for a portable draft; it does not establish clinical, legal or local
+policy approval. A missing, changed or unlisted asset requires review before
+packaging or use as an admitted template.
+
 Read `references/just-culture-guide.md` only when authorised reviewers need a
-behavioural decision aid. Do not convert it into an automated blame or
+review aid for evidence and work context. Do not convert it into an automated blame or
 disciplinary determination. Read `references/safety-ii-principles.md` when
 ordinary work, adaptations, or resilience are material.
 

@@ -321,7 +321,7 @@ def test_relocation_preserves_hash_and_registry(admitted, monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "out,code,failure,exit_state,observed",
+    ("out", "code", "failure", "exit_state", "observed"),
     [
         (b"", 0, None, 0, True),
         (b"READY", 3, None, 3, True),

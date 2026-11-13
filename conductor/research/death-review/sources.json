@@ -1,0 +1,600 @@
+{
+  "schema_version": "1.0",
+  "purpose": "death_review_planning_source_register",
+  "as_of_local_date": "2026-11-13",
+  "timezone": "Australia/Brisbane",
+  "retrieved_at": "2026-11-12T20:03:13Z",
+  "sources": [
+    {
+      "source_id": "NSW-DS",
+      "title": "Death Screening and Database Project",
+      "issuer": "Clinical Excellence Commission",
+      "jurisdiction": "AU-NSW",
+      "document_type": "programme_overview",
+      "urls": [
+        "https://cec.health.nsw.gov.au/improving-practice-and-culture/end-of-life/death-screening-and-database-project"
+      ],
+      "observed_status": "current_public_overview_tool_version_unverified",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": null,
+      "publication_date": null,
+      "authority": "descriptive_programme_guidance",
+      "access_limit": "Current screening instrument and completion-guideline version not retrieved.",
+      "uncertainty": [
+        "No public tool version established; local instrument required."
+      ]
+    },
+    {
+      "source_id": "NSW-MM",
+      "title": "Guidelines for Conducting and Reporting Morbidity and Mortality/Clinical Review Meetings",
+      "issuer": "Clinical Excellence Commission",
+      "jurisdiction": "AU-NSW",
+      "document_type": "guideline",
+      "urls": [
+        "https://cec.health.nsw.gov.au/improving-practice-and-culture/evaluate/morbidity-mortality-meetings",
+        "https://cec.health.nsw.gov.au/__data/assets/pdf_file/0003/602697/Guidelines-for-Conducting-and-Reporting-Morbidity-and-Mortality.pdf"
+      ],
+      "observed_status": "currently_linked_2020_guideline",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "SHPN (CEC) 200272",
+      "publication_date": "2020-09",
+      "date_precision": "month",
+      "authority": "guidance_not_policy_directive",
+      "uncertainty": [
+        "Current landing links a September 2020 PDF; older policy/legal citations require separate verification.",
+        "Copyright CEC 2020; branded appendices not copied."
+      ]
+    },
+    {
+      "source_id": "NSW-IM",
+      "title": "Incident Management",
+      "issuer": "NSW Health / Clinical Excellence Commission",
+      "jurisdiction": "AU-NSW",
+      "document_type": "policy_directive_with_current_implementation_guidance",
+      "urls": [
+        "https://www1.health.nsw.gov.au/pds/Pages/doc.aspx?dn=PD2026_036",
+        "https://cec.health.nsw.gov.au/incident-management/policy",
+        "https://cec.health.nsw.gov.au/incident-management/policy/key-changes",
+        "https://cec.health.nsw.gov.au/incident-management/policy/responding-to-a-clinical-incident"
+      ],
+      "observed_status": "current_policy_identified_by_issuer_full_text_unretrieved",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "PD2026_036",
+      "publication_date": "2026-11-09",
+      "authority": "NSW_Health_policy_currentness_confirmed_by_CEC",
+      "publication_date_basis": "CEC key changes and implementation updates",
+      "full_policy_text_verified": false,
+      "access_limit": "PDS detail dynamically loaded; direct ActivePDSDocuments PDF inaccessible during this review.",
+      "uncertainty": [
+        "Exact effective arrangements, replacement statement, changed definitions and deadlines require full directive verification.",
+        "Older CEC biannual report pages still cite PD2020_047."
+      ]
+    },
+    {
+      "source_id": "NSW-IM-LEGACY",
+      "title": "Incident Management (prior directive)",
+      "issuer": "NSW Health",
+      "jurisdiction": "AU-NSW",
+      "document_type": "historical_policy_reference",
+      "urls": [
+        "https://www1.health.nsw.gov.au/pds/ActivePDSDocuments/PD2020_047.pdf",
+        "https://cec.health.nsw.gov.au/incident-management/biannual-report/about"
+      ],
+      "observed_status": "prior_policy_not_current_default",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "PD2020_047",
+      "publication_date": "2020-12-14",
+      "review_date": "2026-06-14",
+      "authority": "historical_or_event_time_only_subject_to_applicability",
+      "access_limit": "Direct PDF returned 404; search cache showed Status Review.",
+      "uncertainty": [
+        "Formal replacement/effective statement not retrieved; current CEC guidance points to PD2026_036.",
+        "Do not reuse legacy deadlines as current rules."
+      ]
+    },
+    {
+      "source_id": "NSW-VD",
+      "title": "Verification of death and medical certificate of cause of death",
+      "issuer": "NSW Health",
+      "jurisdiction": "AU-NSW",
+      "document_type": "policy_directive",
+      "urls": [
+        "https://www1.health.nsw.gov.au/pds/ActivePDSDocuments/PD2023_014.pdf"
+      ],
+      "observed_status": "Active",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "PD2023_014",
+      "publication_date": "2023-07-06",
+      "review_date": "2028-07-06",
+      "authority": "NSW_Health_policy_directive",
+      "status_basis": "retrieved_PDF_front_matter",
+      "uncertainty": [
+        "Applicability and current status still require verification at operational use."
+      ]
+    },
+    {
+      "source_id": "NSW-COR",
+      "title": "Coroners Cases and Coroners Act 2009",
+      "issuer": "NSW Health",
+      "jurisdiction": "AU-NSW",
+      "document_type": "policy_directive",
+      "urls": [
+        "https://www1.health.nsw.gov.au/pds/ActivePDSDocuments/PD2024_036.pdf"
+      ],
+      "observed_status": "Active",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "PD2024_036",
+      "publication_date": "2024-12-19",
+      "review_date": "2029-12-19",
+      "replaces": [
+        "PD2010_054",
+        "IB2010_058"
+      ],
+      "authority": "NSW_Health_policy_directive_legal_process_guidance",
+      "status_basis": "retrieved_PDF_front_matter",
+      "uncertainty": [
+        "Not a substitute for current legislation and authorised case-specific judgement."
+      ]
+    },
+    {
+      "source_id": "NSW-MAT",
+      "title": "Identifying and Reporting of Maternal Deaths in New South Wales",
+      "issuer": "NSW Health / Clinical Excellence Commission",
+      "jurisdiction": "AU-NSW",
+      "document_type": "policy_directive",
+      "urls": [
+        "https://www1.health.nsw.gov.au/pds/ActivePDSDocuments/PD2026_019.pdf"
+      ],
+      "observed_status": "Active",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "PD2026_019",
+      "publication_date": "2026-04-09",
+      "review_date": "2031-04-09",
+      "replaces": [
+        "PD2021_006"
+      ],
+      "authority": "NSW_Health_policy_directive",
+      "status_basis": "retrieved_PDF_front_matter",
+      "uncertainty": [
+        "Current specialty destination and parallel processes must be confirmed for use; incident reference transition is separate."
+      ]
+    },
+    {
+      "source_id": "NSW-MAT-LEGACY",
+      "title": "Identifying and Reporting of Maternal Deaths in NSW (prior directive)",
+      "issuer": "NSW Health",
+      "jurisdiction": "AU-NSW",
+      "document_type": "superseded_policy_reference",
+      "urls": [
+        "https://www1.health.nsw.gov.au/pds/Pages/doc.aspx?dn=PD2021_006",
+        "https://www1.health.nsw.gov.au/pds/ActivePDSDocuments/PD2026_019.pdf"
+      ],
+      "observed_status": "superseded",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "PD2021_006",
+      "superseded_by": "PD2026_019",
+      "status_basis": "replacement_statement_in_PD2026_019",
+      "authority": "historical_only",
+      "uncertainty": [
+        "Preserved to detect stale index/policy retrieval; no current-rule use."
+      ]
+    },
+    {
+      "source_id": "NSW-PERI",
+      "title": "Investigation, Review and Reporting of Perinatal Deaths",
+      "issuer": "NSW Health / Clinical Excellence Commission",
+      "jurisdiction": "AU-NSW",
+      "document_type": "policy_directive",
+      "urls": [
+        "https://www1.health.nsw.gov.au/pds/ActivePDSDocuments/PD2022_046.pdf"
+      ],
+      "observed_status": "Active_with_cross_reference_currency_questions",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "PD2022_046",
+      "publication_date": "2022-09-26",
+      "review_date": "2027-09-26",
+      "replaces": [
+        "PD2022_026"
+      ],
+      "authority": "NSW_Health_policy_directive",
+      "status_basis": "retrieved_PDF_front_matter",
+      "uncertainty": [
+        "MPMRC references require reconciliation with dissolution described in PD2026_019.",
+        "PD2020_047 references require reconciliation with PD2026_036; do not infer current notification destination."
+      ]
+    },
+    {
+      "source_id": "NSW-CHASM",
+      "title": "Collaborating Hospitals' Audit of Surgical Mortality",
+      "issuer": "Clinical Excellence Commission",
+      "jurisdiction": "AU-NSW",
+      "document_type": "programme_update",
+      "urls": [
+        "https://cec.health.nsw.gov.au/incident-management/committees/chasm"
+      ],
+      "observed_status": "programme_transition",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "CHASM",
+      "publication_date": null,
+      "authority": "official_programme_status",
+      "observed_transition": {
+        "old_method_discontinued": "2025",
+        "redesign_commenced": "2026"
+      },
+      "uncertainty": [
+        "Current notification workflow/destination not established by historical process description."
+      ]
+    },
+    {
+      "source_id": "NSW-INDEX",
+      "title": "End of life issues",
+      "issuer": "NSW Health",
+      "jurisdiction": "AU-NSW",
+      "document_type": "legal_compendium_index",
+      "urls": [
+        "https://www.health.nsw.gov.au/legislation/Pages/end-of-life-issues.aspx"
+      ],
+      "observed_status": "stale_for_maternal_policy",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": null,
+      "page_current_as_at": "2025-04-30",
+      "authority": "discovery_index_not_primary_currentness_evidence",
+      "uncertainty": [
+        "Lists PD2021_006 despite verified replacement by PD2026_019."
+      ]
+    },
+    {
+      "source_id": "QLD-PS",
+      "title": "Patient Safety",
+      "issuer": "Queensland Health",
+      "jurisdiction": "AU-QLD",
+      "document_type": "health_service_directive",
+      "urls": [
+        "https://www.health.qld.gov.au/system-governance/policies-standards/health-service-directives/patient-safety"
+      ],
+      "observed_status": "current_public_directive",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "QH-HSD-032",
+      "effective_date": "2024-10-09",
+      "review_date": "2027-10-09",
+      "supersedes": "Version 5.0",
+      "authority": "mandatory_for_in_scope_HHSs",
+      "uncertainty": [
+        "SAC1 and other obligations require correct applicability and trigger; not all deaths meet the same class."
+      ]
+    },
+    {
+      "source_id": "QLD-CIM",
+      "title": "Clinical Incident Management Guideline",
+      "issuer": "Queensland Health",
+      "jurisdiction": "AU-QLD",
+      "document_type": "health_service_directive_guideline",
+      "urls": [
+        "https://www.health.qld.gov.au/system-governance/policies-standards/health-service-directives/patient-safety/clinical-incident-management"
+      ],
+      "observed_status": "current_public_page_metadata_conflict",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "QH-HSDGDL-032-2",
+      "version": "4.0",
+      "version_history_date": "2026-03-13",
+      "header_effective_date": "2024-07-01",
+      "approval_block_effective_date": "2027-07-01",
+      "review_date": "2027-07-01",
+      "supersedes": "Version 3.0",
+      "authority": "guideline_supporting_patient_safety_directive",
+      "uncertainty": [
+        "Conflicting effective dates unresolved; do not silently repair metadata.",
+        "RCA statutory protection depends on specified conditions; ordinary review is not automatically protected."
+      ]
+    },
+    {
+      "source_id": "QLD-MM-INDEX",
+      "title": "Guides: HEAPS and morbidity/mortality resources",
+      "issuer": "Queensland Health SQEP / CSDS",
+      "jurisdiction": "AU-QLD",
+      "document_type": "resource_index",
+      "urls": [
+        "https://sqep.csds.qld.edu.au/category/guides/"
+      ],
+      "observed_status": "public_index_underlying_local_tool_unverified",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": null,
+      "resource_listing_date": "2024-06-06",
+      "authority": "resource_discovery",
+      "access_limit": "Index available; exact current HHS general mortality/M&M instrument and rights not retrieved.",
+      "uncertainty": [
+        "Search did not establish a freely public current statewide generic death-screening tool.",
+        "Absence from this search is not proof none exists."
+      ]
+    },
+    {
+      "source_id": "QLD-MP",
+      "title": "Queensland Maternal and Perinatal Quality Council",
+      "issuer": "Clinical Excellence Queensland",
+      "jurisdiction": "AU-QLD",
+      "document_type": "specialty_programme_guidance",
+      "urls": [
+        "https://www.clinicalexcellence.qld.gov.au/committees-and-networks/quality-assurance-committees/queensland-maternal-and-perinatal-quality-council"
+      ],
+      "observed_status": "current_public_programme_page",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "QMPQC",
+      "last_updated": "2026-08",
+      "date_precision": "month",
+      "authority": "official_specialty_review_and_reporting_guidance",
+      "uncertainty": [
+        "Committee protection is not inherited by assistant outputs.",
+        "Local process/current form must be checked at use."
+      ]
+    },
+    {
+      "source_id": "QLD-ANA",
+      "title": "Queensland Perioperative and Periprocedural Anaesthetic Mortality Review Committee",
+      "issuer": "Clinical Excellence Queensland",
+      "jurisdiction": "AU-QLD",
+      "document_type": "specialty_programme_guidance",
+      "urls": [
+        "https://www.clinicalexcellence.qld.gov.au/committees-and-networks/quality-assurance-committees/queensland-perioperative-and-periprocedural-anaesthetic-mortality-review-committee"
+      ],
+      "observed_status": "current_public_programme_page",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "QPPAMRC",
+      "publication_date": null,
+      "authority": "official_specialty_review_and_reporting_guidance",
+      "uncertainty": [
+        "Specialty time-window eligibility does not establish causation or coronial reportability."
+      ]
+    },
+    {
+      "source_id": "QLD-COR",
+      "title": "For health professionals",
+      "issuer": "Coroners Court of Queensland",
+      "jurisdiction": "AU-QLD",
+      "document_type": "official_legal_process_guidance",
+      "urls": [
+        "https://www.coronerscourt.qld.gov.au/for-health-professionals"
+      ],
+      "observed_status": "current_public_guidance",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": null,
+      "publication_date": null,
+      "authority": "official_court_guidance",
+      "uncertainty": [
+        "Apply current legislation, current forms and qualified advice for case-specific uncertainty."
+      ]
+    },
+    {
+      "source_id": "QLD-COR-ACT",
+      "title": "Coroners Act 2003",
+      "issuer": "Queensland legislation",
+      "jurisdiction": "AU-QLD",
+      "document_type": "legislation",
+      "urls": [
+        "https://www.legislation.qld.gov.au/view/whole/html/current/act-2003-013"
+      ],
+      "observed_status": "current_consolidated_legislation_url",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "Coroners Act 2003 (Qld)",
+      "publication_date": null,
+      "authority": "primary_legislation",
+      "sections_considered": [
+        "8"
+      ],
+      "uncertainty": [
+        "No complete legal decision engine implemented; version/amendment applicability must be captured before operational use."
+      ]
+    },
+    {
+      "source_id": "QLD-COR-FORM",
+      "title": "Medical practitioner report of a death to a coroner (Form 1A)",
+      "issuer": "Coroners Court of Queensland",
+      "jurisdiction": "AU-QLD",
+      "document_type": "official_form_and_instructions",
+      "urls": [
+        "https://www.coronerscourt.qld.gov.au/__data/assets/pdf_file/0005/806513/form-1a-medical-practitioner-report-of-a-death-to-a-coroner.pdf"
+      ],
+      "observed_status": "current_linked_form",
+      "retrieved_at": "2026-11-12T20:03:13Z",
+      "retrieval_method": "official_public_page_or_pdf_text_via_web_retrieval",
+      "access_scope": "public",
+      "rights": {
+        "handling": "links_and_original_mapping_only",
+        "redistribution_permission": "not_assumed",
+        "source_bytes_redistributed": false,
+        "branded_templates_copied": false
+      },
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured_in_repository",
+      "document_id": "Form 1A",
+      "version": "11",
+      "publication_date": "2024-07-01",
+      "authority": "official_form_instructions",
+      "uncertainty": [
+        "Restricted eligibility; not the correct route for every reportable death.",
+        "Form not copied or auto-submitted."
+      ]
+    }
+  ],
+  "policy_engine_implemented": false,
+  "unresolved_rule_behaviour": "withhold_rule_and_record_question_for_authorised_review"
+}

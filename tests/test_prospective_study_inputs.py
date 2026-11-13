@@ -31,7 +31,10 @@ def test_actual_protocol_references_and_declared_condition_remain_consistent():
     assert condition["registry_sha256"] == REGISTRY_PIN
     assert condition["profile_sha256"] == profile.profile_digest()
     assert condition["runtime_sha256"] == profile.PINNED_FILES[profile.EXECUTABLE]
-    assert condition["adapter_sha256"] == hashlib.sha256((ROOT / gate.ADAPTER).read_bytes()).hexdigest()
+    assert (
+        condition["adapter_sha256"]
+        == hashlib.sha256((ROOT / gate.ADAPTER).read_bytes()).hexdigest()
+    )
     manifest = json.loads((ROOT / gate.REGISTRY).read_bytes())
     selected = next(row for row in manifest["models"] if row["id"] == MODEL_ID)
     assert condition["model_revision"] == selected["revision"]

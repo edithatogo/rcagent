@@ -1,15 +1,17 @@
 # DOCX Generation: SAE Review Report
 
-Use the document-skills:docx skill to generate this document.
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
+
+Use an available document-generation adapter within the approved data boundary, or return populated Markdown.
 Apply styles from: assets/styles/docx-style-guide.md
 Source content from: assets/templates/markdown/09-sae-review-report.md (populated)
 
 ## Document Properties
 - Title: Serious Adverse Event Review Report
-- Confidentiality: CONFIDENTIAL: QUALITY IMPROVEMENT
+- Marking: [Exact wording only if directed through the verified authority record; otherwise no protective marking]
 
 ## Cover Page
-- SAC 1 badge (red, prominent)
+- Classification badge only after criteria, applicable policy and accountable determination are recorded; show unresolved status otherwise
 - Event category badge (e.g. Medication error, Falls, etc.)
 - Sentinel event flag if applicable (ACSQHC sentinel event list)
 
@@ -34,7 +36,7 @@ Source content from: assets/templates/markdown/09-sae-review-report.md (populate
    - Action table with strength classification
 
 6. Mandatory Notification and Regulatory Obligations (Heading 1)
-   - Compliance checklist table with tick/cross/pending indicators
+   - Source, jurisdiction, authorised determination, verified timing and notification receipt table; unresolved is an explicit option
 
 7. Governance Endorsement (Heading 1)
    - Endorsement table with dates and outcomes

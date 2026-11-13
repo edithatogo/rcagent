@@ -27,7 +27,7 @@ def _strings(value: Any) -> bool:
 def _timestamp(value: Any) -> datetime:
     if not isinstance(value, str):
         raise ValueError("timestamp must be text")
-    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    parsed = datetime.fromisoformat(value)
     if parsed.tzinfo is None:
         raise ValueError("timestamp must include timezone")
     return parsed

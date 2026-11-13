@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-11-12T20:52:06Z",
+  "scope": "integrated synthetic engineering verification; no clinical or model qualification",
+  "implementation_commit": "d0771fc4670552a4785d2ac56666561379f44eff",
+  "implementation_tree": "872328d43d7974b9ac493aa6629a744421f76689",
+  "local_equivalent_commit": "5f55336",
+  "python": "3.12.14",
+  "initial_measurements": "./verification-20261113.json",
+  "conductor_receipt": "../conductor/tracks/frontier-assurance_20261113/delivery-evidence.md",
+  "typing": {
+    "checker": "basedpyright==1.40.2",
+    "mode": "strict",
+    "initial_legacy_diagnostics": 9801,
+    "integrated_legacy_diagnostics": 9713,
+    "baseline_growth_allowed": false,
+    "new_quality_code_baselined": false
+  },
+  "local_complete_run": {
+    "pytest": "9.1.1",
+    "passed": 1890,
+    "skipped": 11,
+    "failed": 53,
+    "coverage_percent": 93.19,
+    "environment_socket_failures": 52,
+    "hypothesis_timing_failures": 1,
+    "full_pass": false
+  },
+  "hypothesis_followup": {
+    "properties_passed": 4,
+    "coverage_enabled": true,
+    "finite_deadline_ms": 1000,
+    "observed_example_retained": true,
+    "generated_ranges_reduced": false,
+    "health_checks_disabled": false
+  },
+  "pytest_update_followup": {
+    "pytest": "9.2.0",
+    "passed": 78,
+    "scope": [
+      "tests/test_quality_gate.py",
+      "tests/test_release_admission.py",
+      "tests/test_full_validation.py"
+    ],
+    "full_matrix_pass_claim": false
+  },
+  "mutation": {
+    "package": "pytest-gremlins==1.13.2",
+    "target": "tools/release_admission.py",
+    "total": 23,
+    "killed": 23,
+    "survived": 0,
+    "timeout": 0,
+    "error": 0,
+    "pardoned": 0,
+    "observation_stage": "before pytest 9.2.0 integration; hosted rerun pending",
+    "initial_report": "./verification-20261113.json"
+  },
+  "scalene": {
+    "package": "scalene==2.4.0",
+    "workload": "tools/profile_workload.py",
+    "iterations": 300,
+    "elapsed_time_sec": 11.869760513305664,
+    "workload_wall_time_sec": 11.451331,
+    "sampled_max_footprint_mb": 2.0069217681884766,
+    "allocation_samples": 5,
+    "memory_enabled": true,
+    "strong_program_cpu_memory_completion_fixture_gate": "passed",
+    "raw_report_sha256": "7f8de628cb2d4bc38477587428dec6f2ad49ea20eb55ac1cd158d87d40c0a5bb",
+    "workload_receipt_sha256": "b8e19213ade9904ce6ecdd4bd3c207636676dfc869e1fc014144be541389271d",
+    "fixture_fingerprint": "sha256:25f159bebf270234e21ba3bba6efd13a6bf522157eb323cacef4511b53345f88",
+    "peak_rss_claim": false,
+    "performance_budget_established": false
+  },
+  "frozen_sources": {
+    "protocol_modified": false,
+    "hash_bound_bandit_findings": 2,
+    "actual_native_linux_scan": "passed",
+    "windows_hosted_scan": "pending"
+  },
+  "hosted_ci": {
+    "status": "queued",
+    "observed_head_commit": "d0771fc4670552a4785d2ac56666561379f44eff",
+    "quality_run": 43303006221,
+    "pass_claim": false
+  },
+  "limitations": [
+    "No hosted execution result observed at this receipt",
+    "The complete local suite is not reported as passing",
+    "Typing baseline remains explicit legacy debt",
+    "Mutation results concern only the named release-admission target",
+    "Sampled allocation footprint is not peak RSS or a performance improvement",
+    "No clinical validation, new model run, real death case or Rust implementation"
+  ]
+}

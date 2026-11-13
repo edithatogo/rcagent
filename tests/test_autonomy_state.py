@@ -175,7 +175,7 @@ def test_circuit_breaker_persists_and_cannot_resume(store: StateStore) -> None:
 
 
 @pytest.mark.parametrize(
-    "field,value",
+    ("field", "value"),
     [
         ("base_revision", "b" * 40),
         ("stage", "review"),
@@ -295,7 +295,7 @@ def test_wait_rejects_unused_receipt(store: StateStore) -> None:
 
 
 @pytest.mark.parametrize(
-    "plan,revision",
+    ("plan", "revision"),
     [("plan", REVISION), (None, REVISION), ([{"id": "first", "phases": ["one"]}], None)],
 )
 def test_malformed_initialisation_is_value_error(tmp_path: Path, plan, revision) -> None:
@@ -413,7 +413,8 @@ def test_recovery_rejects_missing_preservation_evidence(store: StateStore) -> No
 def test_lease_records_owner_run_worktree_and_heartbeat(store: StateStore) -> None:
     with store._locked():
         lease = json.loads(store.lock.read_text())
-        assert lease["owner"] and lease["run_id"]
+        assert lease["owner"]
+        assert lease["run_id"]
         assert lease["worktree"] == str(store.path.parent.resolve())
         assert datetime.fromisoformat(lease["heartbeat_at"]) < datetime.fromisoformat(
             lease["expires_at"]
@@ -435,7 +436,7 @@ def test_recovery_rejects_malformed_lock_metadata(store: StateStore, raw: str) -
 
 @pytest.mark.skipif(os.name != "posix", reason="POSIX advisory recovery contract")
 @pytest.mark.parametrize(
-    "field,value",
+    ("field", "value"),
     [
         ("heartbeat_at", "2026-01-01T00:00:00"),
         ("expires_at", "2026-01-01T00:00:00"),
@@ -457,7 +458,7 @@ def test_recovery_rejects_inconsistent_lease(store: StateStore, field: str, valu
 
 @pytest.mark.skipif(os.name != "posix", reason="POSIX advisory recovery contract")
 @pytest.mark.parametrize(
-    "changed_file,error",
+    ("changed_file", "error"),
     [("recovery-receipt.json", "receipt changed"), ("branch.txt", "evidence changed")],
 )
 def test_recovery_rechecks_evidence_before_preservation(

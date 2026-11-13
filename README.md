@@ -28,6 +28,18 @@ governed capability work. Its [product plan](conductor/product.md) describes
 a broader workbench; those plans are not claims that every capability is
 included in the released skill or validated for operational use.
 
+### Current development programme
+
+[Track 13](conductor/tracks/frontier-assurance_20261113/index.md) repairs evidence,
+export and template boundaries and strengthens the engineering gates. Its
+[D0–D8 ladder](conductor/research/frontier-assurance/capability-ladder.md) starts
+with deterministic source binding and uncertain timelines, then tests the
+added value of NLP, models and modalities. [Track 12](conductor/tracks/cognitive-autopsy_20261107/index.md)
+retains the scientific component studies; [Track 14](conductor/tracks/death-review_20261113/index.md)
+adds NSW/Queensland death reviews. These plans do not qualify a model or update
+the historical v0.1.1 release. Current source admission fixes require a newly
+built and separately verified package.
+
 ## Explore the workflow
 
 Start with the [portable skill](skills/rca-investigation/SKILL.md). It selects
@@ -92,6 +104,10 @@ real-world deployment or directory acceptance. See
 [CONTRIBUTING.md](CONTRIBUTING.md), the [Conductor index](conductor/index.md)
 and [delivery workflow](conductor/workflow.md) for project conventions.
 No live model run is required to read this package introduction.
+
+The strict quality commands, measured legacy typing debt, mutation scope and
+profiling limits are recorded in [CONSTRAINTS.md](CONSTRAINTS.md). A baseline
+records existing debt; it is not evidence that the legacy code is fully typed.
 
 ## Licence and release records
 

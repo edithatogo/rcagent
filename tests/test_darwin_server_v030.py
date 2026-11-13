@@ -218,7 +218,12 @@ def test_diagnostic_cli_rejects_other_modes(tmp_path):
 
 def test_diagnostic_cli_rejects_parent_resolution_change(tmp_path, monkeypatch):
     destination = tmp_path.resolve() / "receipt.json"
-    monkeypatch.setattr(Path, "resolve", lambda path, strict=False: path / "changed")
+
+    def changed(path, strict=False):
+        del strict
+        return path / "changed"
+
+    monkeypatch.setattr(Path, "resolve", changed)
 
     def forbidden(*args, **kwargs):
         raise AssertionError("capture must not run")

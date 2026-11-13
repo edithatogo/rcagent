@@ -44,7 +44,7 @@ def pinned(path: Path) -> str:
 
 
 @pytest.mark.parametrize(
-    "field,value",
+    ("field", "value"),
     [
         ("role", []),
         ("role", "unknown"),
@@ -100,7 +100,7 @@ def test_io_error_is_sanitised(tmp_path: Path, monkeypatch) -> None:
         raise PermissionError("private path must not leak")
 
     monkeypatch.setattr(Path, "open", denied)
-    with pytest.raises(ValueError, match="^unreadable_artifact$"):
+    with pytest.raises(ValueError, match=r"^unreadable_artifact$"):
         check_envelope(receipt, digest, "admission")
 
 
@@ -265,7 +265,7 @@ def test_legacy_entrypoints_never_accept_positive_prose(tmp_path: Path, script: 
 
 
 @pytest.mark.parametrize(
-    "script,alias",
+    ("script", "alias"),
     [
         ("phase4_admission_preflight.ps1", "AuditPath"),
         ("track5_preflight.ps1", "ManifestAudit"),

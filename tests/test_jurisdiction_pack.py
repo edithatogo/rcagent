@@ -23,20 +23,68 @@ def registry() -> dict[str, Any]:
     return load_registry()
 
 
+def under_review_registry() -> dict[str, Any]:
+    """Exercise under-review rules without inventing a real policy status."""
+    value = registry()
+    source = deepcopy(value["sources"][0])
+    source.update(
+        source_id="synthetic-under-review-source",
+        issuer="Synthetic test authority",
+        title="Synthetic policy under review",
+        document_id="SYNTHETIC-REVIEW",
+        url="https://example.invalid/synthetic-policy",
+        status="under_review",
+        checksum=None,
+        checksum_basis="not_available",
+    )
+    value["sources"].append(source)
+    rule = deepcopy(value["rules"][0])
+    rule.update(
+        rule_id="synthetic-under-review-rule",
+        source_ids=[source["source_id"]],
+        uncertainty="Synthetic source under review; applicability is uncertain.",
+        decision_id="synthetic-recorded-decision",
+        decision_status="approved",
+    )
+    value["rules"].append(rule)
+    return value
+
+
 def test_registry_and_pack_inheritance_are_valid() -> None:
     value = registry()
     assert validate_registry(value) == []
     packs = {pack["pack_id"]: pack for pack in value["packs"]}
     assert packs["nsw"]["inherits"] == "national"
-    assert packs["nsw"]["status"] == "implemented"
+    assert packs["nsw"]["status"] == "blocked"
     assert packs["qld"]["inherits"] == "national"
+    assert packs["qld"]["status"] == "implemented"
 
 
-def test_current_under_review_consultation_superseded_local_and_advisory_are_visible() -> None:
+@pytest.mark.parametrize(
+    ("collection", "field", "replacement"),
+    [
+        ("sources", "source_id", {"invalid": "identifier"}),
+        ("sources", "status", {"invalid": "status"}),
+        ("packs", "inherits", ["invalid-parent"]),
+        ("rules", "source_ids", [{"invalid": "identifier"}]),
+        ("rules", "safeguards", [{"invalid": "safeguard"}]),
+        ("rules", "workflow", {"from_states": ["review"], "to_state": {}}),
+    ],
+)
+def test_malformed_nested_fields_remain_schema_diagnostics(
+    collection: str, field: str, replacement: object
+) -> None:
+    value = registry()
+    value[collection][0][field] = replacement
+    errors = validate_registry(value)
+    assert any(error.startswith(f"{collection}.0.{field}") for error in errors)
+
+
+def test_observed_source_statuses_do_not_require_a_manufactured_under_review_source() -> None:
     statuses = {source["status"] for source in registry()["sources"]}
     assert {
         "current",
-        "under_review",
+        "unavailable",
         "consultation",
         "superseded",
         "local",
@@ -59,38 +107,111 @@ def test_mandatory_language_requires_strong_authority() -> None:
 
 
 def test_under_review_rule_requires_uncertainty_disclosure() -> None:
-    value = registry()
-    rule = next(rule for rule in value["rules"] if rule["rule_id"] == "nsw-notify-ims")
+    value = under_review_registry()
+    rule = value["rules"][-1]
     rule.pop("uncertainty")
     assert any("must disclose under-review" in error for error in validate_registry(value))
 
 
 def test_under_review_rules_activate_only_with_the_recorded_owner_decision() -> None:
-    value = registry()
-    rules = [rule for rule in value["rules"] if "nsw-pd2020-047" in rule["source_ids"]]
-    assert rules
-    assert {rule["activation_status"] for rule in rules} == {"active"}
-    assert {rule["decision_status"] for rule in rules} == {"approved"}
-    assert {rule["decision_id"] for rule in rules} == {
-        "20260829-001-active-under-review-pd2020-047"
-    }
-
-    rules[0].pop("decision_status")
+    value = under_review_registry()
+    assert validate_registry(value) == []
+    value["rules"][-1].pop("decision_status")
     assert any("must remain pending" in error for error in validate_registry(value))
 
 
 def test_pending_rule_requires_decision_and_blocks_its_pack() -> None:
-    value = registry()
-    rule = next(rule for rule in value["rules"] if rule["rule_id"] == "nsw-notify-ims")
+    value = under_review_registry()
+    rule = value["rules"][-1]
     rule.pop("decision_id")
     assert any("must reference" in error for error in validate_registry(value))
 
-    value = registry()
-    pending_rule = next(rule for rule in value["rules"] if rule["rule_id"] == "nsw-notify-ims")
+    value = under_review_registry()
+    pending_rule = value["rules"][-1]
     pending_rule["activation_status"] = "pending_owner_decision"
     pending_rule["decision_status"] = "pending"
-    next(pack for pack in value["packs"] if pack["pack_id"] == "nsw")["status"] = "implemented"
     assert any("must be blocked" in error for error in validate_registry(value))
+
+
+def test_nsw_transition_withholds_rules_without_requiring_owner_approval() -> None:
+    value = registry()
+    pending = [rule for rule in value["rules"] if "nsw-pd2026-036" in rule["source_ids"]]
+    assert {rule["rule_id"] for rule in pending} == {"nsw-notify-ims", "nsw-serious-review"}
+    for rule in pending:
+        assert rule["activation_status"] == "pending_source_verification"
+        assert rule["workflow"]["deadline"] is None
+        assert rule["uncertainty"].strip()
+        assert "nsw-cec-incident-transition-2026" in rule["source_ids"]
+        assert "decision_id" not in rule
+        assert "decision_status" not in rule
+    assert all("nsw-pd2020-047" not in rule["source_ids"] for rule in value["rules"])
+    legacy = next(source for source in value["sources"] if source["source_id"] == "nsw-pd2020-047")
+    assert legacy["status"] == "unavailable"
+    assert legacy["retrieved_at"] == "2026-08-29T00:54:13Z"
+    assert (
+        legacy["checksum"]
+        == "sha256:206514440bf425ccb5fc0dc1743ea546f8b81d89f5007e27db4f988795d5d560"
+    )
+    assert "20260829-001-active-under-review-pd2020-047" in legacy["limitations"]
+    assert validate_registry(value) == []
+
+
+@pytest.mark.parametrize("activation", ["active", "pending_owner_decision"])
+def test_unavailable_source_cannot_be_enabled_by_owner_approval(activation: str) -> None:
+    value = registry()
+    rule = next(rule for rule in value["rules"] if rule["rule_id"] == "nsw-notify-ims")
+    rule.update(
+        activation_status=activation,
+        decision_id="synthetic-owner-approval",
+        decision_status="approved",
+    )
+    assert any("cannot depend on unavailable source" in error for error in validate_registry(value))
+
+
+@pytest.mark.parametrize("uncertainty", [None, "", "   "])
+def test_pending_source_verification_requires_visible_uncertainty(uncertainty: str | None) -> None:
+    value = registry()
+    rule = next(rule for rule in value["rules"] if rule["rule_id"] == "nsw-notify-ims")
+    rule["uncertainty"] = uncertainty
+    assert any(
+        "must disclose pending source verification" in error for error in validate_registry(value)
+    )
+
+
+def test_pending_source_verification_forbids_deadlines_and_blocks_its_pack() -> None:
+    value = registry()
+    rule = next(rule for rule in value["rules"] if rule["rule_id"] == "nsw-notify-ims")
+    rule["workflow"]["deadline"] = "P1D from obsolete policy"
+    next(pack for pack in value["packs"] if pack["pack_id"] == "nsw")["status"] = "implemented"
+    errors = validate_registry(value)
+    assert any("cannot set a deadline" in error for error in errors)
+    assert any(
+        "must be blocked while its rules await source verification" in error for error in errors
+    )
+
+
+def test_source_verification_can_precede_any_under_review_owner_decision() -> None:
+    value = under_review_registry()
+    rule = value["rules"][-1]
+    rule["activation_status"] = "pending_source_verification"
+    rule.pop("decision_id")
+    rule.pop("decision_status")
+    next(pack for pack in value["packs"] if pack["pack_id"] == "national")["status"] = "blocked"
+    assert validate_registry(value) == []
+
+
+def test_qld_deadlines_retain_directive_authority_despite_guideline_metadata_conflict() -> None:
+    value = registry()
+    rules = {rule["rule_id"]: rule for rule in value["rules"]}
+    for rule_id in ("qld-sac1-report", "qld-sac1-analysis"):
+        assert rules[rule_id]["activation_status"] == "active"
+        assert rules[rule_id]["source_ids"] == ["qld-qh-hsd-032"]
+        assert rules[rule_id]["workflow"]["deadline"]
+    guideline = next(
+        source for source in value["sources"] if source["source_id"] == "qld-qh-hsdgdl-032-2"
+    )
+    assert guideline["status"] == "current"
+    assert "metadata conflict" in guideline["version"]
 
 
 def test_national_rules_cannot_import_state_authority() -> None:
@@ -154,8 +275,11 @@ def test_unavailable_upstream_is_not_a_pass() -> None:
 
 
 def test_review_cadence_produces_a_deterministic_due_queue() -> None:
-    assert due_sources(registry(), as_of="2026-08-30T00:54:13Z") == []
-    due = due_sources(registry(), as_of="2026-09-29T00:54:13Z")
+    value = registry()
+    for source in value["sources"]:
+        source["retrieved_at"] = "2026-08-29T00:54:13Z"
+    assert due_sources(value, as_of="2026-08-30T00:54:13Z") == []
+    due = due_sources(value, as_of="2026-09-29T00:54:13Z")
     assert "nsw-pd2020-047" in due
     assert "qld-qh-hsd-032" in due
 
@@ -180,6 +304,7 @@ def test_generic_evidence_core_has_no_state_policy_identifiers() -> None:
 
     source = evidence_core.SCHEMA_PATH.read_text(encoding="utf-8")
     assert "PD2020_047" not in source
+    assert "PD2026_036" not in source
     assert "QH-HSD-032" not in source
     assert "ims+" not in source
     assert "RiskMan" not in source
@@ -201,8 +326,8 @@ def test_registry_rejects_duplicate_inheritance_artefact_and_missing_safeguards(
 
 
 def test_under_review_decision_status_and_candidate_lookup_fail_closed() -> None:
-    value = registry()
-    rule = next(rule for rule in value["rules"] if rule["rule_id"] == "nsw-notify-ims")
+    value = under_review_registry()
+    rule = value["rules"][-1]
     rule["decision_status"] = "rejected"
     assert any("pending or approved" in error for error in validate_registry(value))
     with pytest.raises(KeyError, match="missing-source"):

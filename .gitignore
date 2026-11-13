@@ -5,3 +5,9 @@ coverage.xml
 __pycache__/
 *.py[cod]
 .capability-state/
+
+.hypothesis/
+.gremlins_cache/
+coverage/
+quality-artifacts/
+scalene-profile.json

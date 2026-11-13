@@ -112,7 +112,7 @@ def test_requires_every_native_field(field):
 
 
 @pytest.mark.parametrize(
-    "field,value",
+    ("field", "value"),
     [
         ("error", {}),
         ("choices", []),
@@ -156,7 +156,7 @@ def test_rejects_invalid_native_fields(field, value):
 
 
 @pytest.mark.parametrize(
-    "field,value",
+    ("field", "value"),
     [
         ("seed", 43),
         ("seed", 42.0),

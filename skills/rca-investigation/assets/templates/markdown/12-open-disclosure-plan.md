@@ -1,17 +1,25 @@
 # Open Disclosure Planning and Record
-**CONFIDENTIAL**
+
+> Draft working template. Complete the [template use contract](../../template-use-contract.md). Examples are synthetic prompts; replace them with cited evidence and verified authority. This template establishes no finding, approval, protection or deadline.
 
 ---
 
-**Incident ID**: [INC-2026-XXX]
+**Incident ID**: [Case ID]
 **Patient/Family Reference**: [De-identified — e.g. Patient A, Family B]
-**Disclosure Lead**: [Name/Position of person responsible]
+**Disclosure Lead**: [Accountable disclosure role]
 
 ---
 
-## Legal and Ethical Obligations
+## Applicable Disclosure Pathway
 
-Open disclosure is required under the ACSQHC Open Disclosure Framework. For SAC 1 events, initial contact must be made as soon as practicable (ideally within 24 hours of the event being identified).
+Record the applicable jurisdiction and organisation, current disclosure policy or framework (issuing body, exact title, version/date and source), decision authority, disclosure trigger, and any verified timing requirement. Applicability and timing are unresolved until checked by the accountable role; this template supplies no universal deadline.
+
+| Decision | Verified record |
+|---|---|
+| Applicable pathway | [Source, clause and applicability rationale] |
+| Responsible role and authority | [Role, scope and decision reference] |
+| Initial contact plan | [Date/time, source for timing, urgency and support needs] |
+| Information authorised for disclosure | [Verified facts, uncertainties, audience and review record] |
 
 ---
 
@@ -36,7 +44,7 @@ Open disclosure is required under the ACSQHC Open Disclosure Framework. For SAC 
 - Support offered: [Y/N — what support]
 
 ### Formal Meeting
-- Full explanation of what happened: [Y/N — summary of what was explained]
+- Explanation of what is currently known and uncertain: [Summary, evidence checked and limitations shared]
 - Acknowledgement of impact: [Y/N]
 - Investigation findings shared (if available): [Y/N]
 - Actions being taken: [Y/N — summary]
@@ -58,8 +66,8 @@ Open disclosure is required under the ACSQHC Open Disclosure Framework. For SAC 
 
 | Support Type | Offered? | Accepted? | Provider |
 |---|---|---|---|
-| Patient liaison officer | Y/N | Y/N | [Name] |
-| Pastoral/chaplaincy care | Y/N | Y/N | [Name] |
+| Patient liaison officer | Y/N | Y/N | [Role] |
+| Pastoral/chaplaincy care | Y/N | Y/N | [Role] |
 | Counselling | Y/N | Y/N | [Service] |
 | Formal complaint pathway explained | Y/N | Y/N | |
 | Independent advocate information | Y/N | Y/N | |
@@ -71,9 +79,9 @@ Open disclosure is required under the ACSQHC Open Disclosure Framework. For SAC 
 
 | Date | Purpose | Responsible Person |
 |---|---|---|
-| [Date] | Share investigation findings | [Name/Position] |
-| [Date] | Share CAPA actions | [Name/Position] |
-| [Date] | Check on family wellbeing | [Name/Position] |
+| [Date] | Share investigation findings | [Accountable role] |
+| [Date] | Share CAPA actions | [Accountable role] |
+| [Date] | Check on family wellbeing | [Accountable role] |
 
 ---
 

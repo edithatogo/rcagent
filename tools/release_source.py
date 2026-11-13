@@ -16,7 +16,7 @@ def _git(repository: Path, *args: str, text: Literal[False]) -> bytes: ...
 
 
 def _git(repository: Path, *args: str, text: bool = True) -> str | bytes:
-    result = subprocess.run(
+    result = subprocess.run(  # nosec B603, B607 # trusted local Git with fixed operations and argv, no shell
         ["git", *args], cwd=repository, check=True, capture_output=True, text=text
     )
     return result.stdout
@@ -65,15 +65,15 @@ def verify_release_source(repository: Path, revision: str, paths: list[Path]) ->
             raise ValueError(f"release input differs from source revision: {relative}")
 
 
-def verify_release_payloads(
-    repository: Path, revision: str, payloads: dict[str, bytes]
-) -> None:
+def verify_release_payloads(repository: Path, revision: str, payloads: dict[str, bytes]) -> None:
     """Bind already captured package bytes to the exact named commit."""
     for relative, payload in payloads.items():
         try:
             committed = _git(repository, "show", f"{revision}:{relative}", text=False)
         except (OSError, subprocess.CalledProcessError) as error:
-            raise ValueError(f"release payload is absent from source revision: {relative}") from error
+            raise ValueError(
+                f"release payload is absent from source revision: {relative}"
+            ) from error
         if committed != payload:
             raise ValueError(f"captured release payload differs from source revision: {relative}")
 

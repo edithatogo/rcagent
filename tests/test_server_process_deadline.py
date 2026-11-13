@@ -18,13 +18,17 @@ pytestmark = pytest.mark.skipif(os.name != "posix", reason="POSIX child capture"
     ids=["bool", "string", "nan", "infinity", "zero", "negative", "huge"],
 )
 def test_invalid_absolute_deadline_never_launches(monkeypatch, deadline):
-    monkeypatch.setattr(subject.subprocess, "Popen", lambda *a, **kw: pytest.fail("launched"))
+    monkeypatch.setattr(
+        subject.subprocess, "Popen", lambda *_args, **_kwargs: pytest.fail("launched")
+    )
     with pytest.raises(ValueError, match="invalid_deadline"):
         subject.capture_child(["/synthetic/python"], {}, deadline=deadline)
 
 
 def test_expired_worker_deadline_does_not_launch(monkeypatch):
-    monkeypatch.setattr(subject.subprocess, "Popen", lambda *a, **kw: pytest.fail("launched"))
+    monkeypatch.setattr(
+        subject.subprocess, "Popen", lambda *_args, **_kwargs: pytest.fail("launched")
+    )
     result = subject.capture_child(["/synthetic/python"], {}, deadline=time.monotonic() - 1)
     assert result["error"] == "deadline_exceeded"
     assert result["execution_observed"] is False
@@ -33,17 +37,19 @@ def test_expired_worker_deadline_does_not_launch(monkeypatch):
 def test_deadline_crossed_during_setup_does_not_launch(monkeypatch):
     clock = iter([100.0, 101.0, 102.0])
     monkeypatch.setattr(subject.time, "monotonic", lambda: next(clock))
-    monkeypatch.setattr(subject.subprocess, "Popen", lambda *a, **kw: pytest.fail("launched"))
+    monkeypatch.setattr(
+        subject.subprocess, "Popen", lambda *_args, **_kwargs: pytest.fail("launched")
+    )
     result = subject.capture_child(["/synthetic/python"], {}, deadline=100.5)
     assert result["error"] == "deadline_exceeded"
     assert result["execution_observed"] is False
 
 
-@pytest.mark.parametrize("timeout,absolute,expected", [(2, 110, 102), (20, 105, 105)])
+@pytest.mark.parametrize(("timeout", "absolute", "expected"), [(2, 110, 102), (20, 105, 105)])
 def test_earlier_deadline_wins(monkeypatch, timeout, absolute, expected):
     monkeypatch.setattr(subject.time, "monotonic", lambda: 100.0)
     monkeypatch.setattr(
-        subject.subprocess, "Popen", lambda *a, **kw: (_ for _ in ()).throw(OSError())
+        subject.subprocess, "Popen", lambda *_args, **_kwargs: (_ for _ in ()).throw(OSError())
     )
     result = subject.capture_child(["/synthetic/python"], {}, timeout=timeout, deadline=absolute)
     assert result["execution_deadline_monotonic"] == expected

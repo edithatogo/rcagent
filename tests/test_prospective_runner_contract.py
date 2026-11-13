@@ -104,7 +104,8 @@ def test_untrusted_shapes_are_rejected_without_serializing_them(damage, monkeypa
     original = subject._json
 
     def generated_only(value):
-        assert type(value) is dict and set(value) == {
+        assert type(value) is dict
+        assert set(value) == {
             "prompt",
             "n_predict",
             "seed",
@@ -194,7 +195,8 @@ def test_normalization_preserves_raw_and_content_without_aliasing():
     assert base64.b64decode(result["response"]["base64"]) == raw
     assert result["response"]["sha256"] == hashlib.sha256(raw).hexdigest()
     assert result["decoded"]["content"] == response()["content"]
-    assert result["request"] == package and result["request"] is not package
+    assert result["request"] == package
+    assert result["request"] is not package
     package["generation"]["seed"] = 0
     package["limitations"].clear()
     assert result["request"]["generation"]["seed"] == 42
