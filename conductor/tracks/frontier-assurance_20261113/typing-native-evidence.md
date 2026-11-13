@@ -173,3 +173,25 @@ The deterministic component demonstrations, hallucination-reduction comparisons,
 death-review profiles and selective Rust experiment remain in their existing
 Conductor tracks. This increment makes no clinical qualification, model-observation
 or Rust-migration claim.
+
+## Subsequent hosted acceptance, recorded 14 November 2026
+
+PR #129 was accepted at exact head
+`ad594e4e0003ce8d7ace8a9a124a52f10fead544` and merged normally as
+`388a4c610b2d38643890d5db28bc2d0241cb5926`. The earlier publication snapshot
+above and its machine-readable receipt are retained unchanged.
+
+[Quality 43422510425](https://github.com/edithatogo/rcagent/actions/runs/43422510425)
+passed all nine jobs. Both Linux Python versions passed 2,057 tests at 94.86%
+coverage; macOS passed 2,057 at 94.89%; Windows passed 1,797 with 260 platform
+skips. The combined gate validated all four branch-coverage databases and
+passed the 90% floor. Mutation killed all 24 mutants without pardons or timeouts;
+Scalene recorded the required 300 synthetic validation/hash round-trips.
+
+[Dependency review](https://github.com/edithatogo/rcagent/actions/runs/43422510436),
+[privacy/secrets](https://github.com/edithatogo/rcagent/actions/runs/43422510451)
+and [official conformance](https://github.com/edithatogo/rcagent/actions/runs/43422540001)
+also passed on that head. The conformance run used a temporary `codex/` branch
+pointing to the same commit. The dedicated self-hosted offline-security run
+remained queued when acceptance was recorded; no completed scan is claimed.
+Branch protection remained active, with no bypass or extra approval gate.

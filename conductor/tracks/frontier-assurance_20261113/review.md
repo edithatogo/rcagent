@@ -84,3 +84,38 @@ measurement. No file/rule grew, and the new enum test module has no allowance.
 An unchanged-base rerun reproduces all 52 local failed IDs, with identical messages
 after normalizing only two generated session-directory names. Hosted acceptance
 must establish the socket-dependent execution separately.
+
+## Producer and admission contract increment, PR #130
+
+The [producer/admission receipt](./typing-producers-evidence.md) records separate
+inventory/freeze and execution implementation lanes, followed by the first
+lane's admission-test scope. Root owned admission production contracts,
+integration, consumer fixture corrections and the baseline. A read-only reviewer
+checked all those changes without editing them. No blocking finding remains.
+
+Review confirmed schema equality, the independent second read/pin before
+reference access, distinct committed-file versus identity-file shapes, exact
+dictionary and literal checks, original gate ordering, repeated artifact checks
+and fresh checked reconstruction from immutable plan bytes. Witness removal
+still precedes its later validation; incomplete tuples are not typed as already
+satisfying the two-slot invariant. Persisted receipt checks preserve their
+existing error ordering and exception wrapping.
+
+The reviewer checked complete positive fixtures and all retained rejection,
+copy/isolation, journal, slot, directory-lock and second-consumption assertions.
+The final integration run found another incomplete primary-session fixture;
+root completed it using the same four original admission values and shallow
+copy semantics. The reviewer verified that its changed-plan test again reaches
+the intended drift check. No assertion or test was removed. The final full run
+has precisely the base's 52 socket failures, including equal normalized messages.
+
+Four unmatched private-use reports were traced to existing APIs moved into
+explicit test imports and the variadic plan alias. Only two files were
+re-anchored, from 312 to 26 residuals. A newly surfaced digest argument report was
+repaired by annotating the constructed unsigned test payload; its legacy values
+remain uncertain, with no new allowance. Ordinary shrinking removed another
+947 entries after the selective maintenance. Final baseline entries, caps and
+independent measurements all equal 3,198; no file/rule or message signature grew.
+
+These are shared-context agent engineering reviews. They do not substitute for
+hosted execution, clinical validation or independent model triangulation.

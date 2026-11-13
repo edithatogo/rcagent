@@ -1,0 +1,513 @@
+{
+  "schema_version": "1.0",
+  "observed_at": "2026-11-14T09:37:52.364255+10:00",
+  "task": "Track13 FAW06: inventory, freeze, identity, model, slot and execution-plan producers; owned observation-admission consumers",
+  "pull_request": "https://github.com/edithatogo/rcagent/pull/130",
+  "base_commit": "388a4c610b2d38643890d5db28bc2d0241cb5926",
+  "base_tree": "5ab0d02f26a37505d0ce215cd44901a6282ba7a9",
+  "published_source_commit": "377d65346f6ebdaa099ea779633aa159b555fe86",
+  "published_source_tree": "e37b29c5b8ed91a587083686590589f2544421ba",
+  "matching_local_source_and_baseline_commit": "7d200d818f0186b635b529978c454b0f7ca8d3a4",
+  "python": "3.12.14",
+  "checker": {
+    "name": "basedpyright",
+    "version": "1.40.2",
+    "measurement_mode": "empty external baseline; discard"
+  },
+  "commands": {
+    "measurement": "python -m basedpyright --baselinefile /tmp/typing-producers-empty-baseline.json --baselinemode=discard --outputjson",
+    "ordinary_shrink": "python -m basedpyright --outputjson",
+    "retained": "python -m basedpyright --baselinemode=discard --outputjson",
+    "ratchet": "python -m tools.quality_gate baseline --base 388a4c610b2d38643890d5db28bc2d0241cb5926",
+    "tests": "python -m pytest --cov --cov-report=xml --cov-report=term-missing --junitxml=/tmp/rcagent-typing-producers-full-final.xml",
+    "conformance": "python -m tools.run_skill_conformance --output /tmp/rcagent-typing-producers-conformance.json"
+  },
+  "diagnostics": {
+    "before": {
+      "total": 4431,
+      "production": 824,
+      "tests": 3607,
+      "files_with_debt": 91,
+      "files_analyzed": 153
+    },
+    "after": {
+      "total": 3198,
+      "production": 482,
+      "tests": 2716,
+      "files_with_debt": 88,
+      "files_analyzed": 153
+    },
+    "removed": 1233,
+    "new_or_increased_file_rule_counts": {},
+    "new_file_rule_message_signatures": 0,
+    "newly_debt_free_files": [
+      "tests/test_prospective_inventory.py",
+      "tests/test_prospective_server_model.py",
+      "tools/prospective_execution_identity.py"
+    ],
+    "per_file_changes": {
+      "tests/test_prospective_admission_adversarial.py": {
+        "before": 60,
+        "after": 37,
+        "removed": 23
+      },
+      "tests/test_prospective_admission_coverage.py": {
+        "before": 161,
+        "after": 14,
+        "removed": 147
+      },
+      "tests/test_prospective_execution_gate.py": {
+        "before": 213,
+        "after": 8,
+        "removed": 205
+      },
+      "tests/test_prospective_execution_identity_adversarial.py": {
+        "before": 12,
+        "after": 5,
+        "removed": 7
+      },
+      "tests/test_prospective_freeze.py": {
+        "before": 52,
+        "after": 5,
+        "removed": 47
+      },
+      "tests/test_prospective_inventory.py": {
+        "before": 64,
+        "after": 0,
+        "removed": 64
+      },
+      "tests/test_prospective_model.py": {
+        "before": 133,
+        "after": 130,
+        "removed": 3
+      },
+      "tests/test_prospective_native_protocol.py": {
+        "before": 3,
+        "after": 1,
+        "removed": 2
+      },
+      "tests/test_prospective_primary_session.py": {
+        "before": 9,
+        "after": 6,
+        "removed": 3
+      },
+      "tests/test_prospective_server_model.py": {
+        "before": 215,
+        "after": 0,
+        "removed": 215
+      },
+      "tests/test_prospective_slot_binding.py": {
+        "before": 172,
+        "after": 1,
+        "removed": 171
+      },
+      "tests/test_prospective_study_controller.py": {
+        "before": 38,
+        "after": 34,
+        "removed": 4
+      },
+      "tools/evaluation_preflight.py": {
+        "before": 16,
+        "after": 12,
+        "removed": 4
+      },
+      "tools/prospective_execution_gate.py": {
+        "before": 58,
+        "after": 10,
+        "removed": 48
+      },
+      "tools/prospective_execution_identity.py": {
+        "before": 16,
+        "after": 0,
+        "removed": 16
+      },
+      "tools/prospective_freeze.py": {
+        "before": 9,
+        "after": 1,
+        "removed": 8
+      },
+      "tools/prospective_inventory.py": {
+        "before": 73,
+        "after": 3,
+        "removed": 70
+      },
+      "tools/prospective_model.py": {
+        "before": 7,
+        "after": 5,
+        "removed": 2
+      },
+      "tools/prospective_native_prerequisites.py": {
+        "before": 8,
+        "after": 6,
+        "removed": 2
+      },
+      "tools/prospective_observation_admission.py": {
+        "before": 151,
+        "after": 12,
+        "removed": 139
+      },
+      "tools/prospective_protocol.py": {
+        "before": 7,
+        "after": 1,
+        "removed": 6
+      },
+      "tools/prospective_server_model.py": {
+        "before": 6,
+        "after": 2,
+        "removed": 4
+      },
+      "tools/prospective_server_session.py": {
+        "before": 9,
+        "after": 6,
+        "removed": 3
+      },
+      "tools/prospective_slot_binding.py": {
+        "before": 20,
+        "after": 2,
+        "removed": 18
+      },
+      "tools/prospective_study_controller.py": {
+        "before": 71,
+        "after": 49,
+        "removed": 22
+      }
+    }
+  },
+  "baseline_maintenance": {
+    "reviewed_files": {
+      "tests/test_prospective_admission_coverage.py": {
+        "before": 161,
+        "after": 14,
+        "rules": {
+          "reportPrivateUsage": 14
+        }
+      },
+      "tools/prospective_observation_admission.py": {
+        "before": 151,
+        "after": 12,
+        "rules": {
+          "reportPrivateUsage": 10,
+          "reportUnusedFunction": 2
+        }
+      }
+    },
+    "before_selective_reanchoring": 4431,
+    "after_selective_reanchoring": 4145,
+    "writebaseline_used": false,
+    "ordinary_auto_shrink_removed": 947,
+    "final_retained": 3198,
+    "final_cap_sum": 3198,
+    "empty_baseline_counts_equal_retained": true,
+    "new_or_increased_file_rules": {},
+    "origin_commit_unchanged": "718b418eba3c17f149d52124b97532240870c0b1",
+    "unmatched_diagnostics_initially_surfaced": 5,
+    "unmatched_diagnostics_reanchored": 4,
+    "unmatched_diagnostic_repaired": "Typed constructed unsigned model-test payload; no new allowance.",
+    "surfaced_reviewed_diagnostics": [
+      {
+        "file": "tests/test_prospective_admission_coverage.py",
+        "line": 22,
+        "rule": "reportPrivateUsage",
+        "message": "\"_Plan\" is private and used outside of the module in which it is declared"
+      },
+      {
+        "file": "tests/test_prospective_admission_coverage.py",
+        "line": 23,
+        "rule": "reportPrivateUsage",
+        "message": "\"_OwnedRun\" is private and used outside of the module in which it is declared"
+      },
+      {
+        "file": "tests/test_prospective_admission_coverage.py",
+        "line": 23,
+        "rule": "reportPrivateUsage",
+        "message": "\"_Receipt\" is private and used outside of the module in which it is declared"
+      },
+      {
+        "file": "tests/test_prospective_model.py",
+        "line": 54,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"digest\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_observation_admission.py",
+        "line": 35,
+        "rule": "reportPrivateUsage",
+        "message": "\"_Plan\" is private and used outside of the module in which it is declared"
+      }
+    ],
+    "reviewer": "read-only typing_contract_review agent; shared project context",
+    "basis": "Four existing private-use reports moved from qualified uses to explicit fixture imports or the variadic Plans alias. Preserve all residuals in only the two reviewed files; ordinary shrinking removes other resolved entries."
+  },
+  "explicit_any_name_references_in_edited_python": {
+    "before": 3,
+    "after": 0
+  },
+  "source_sha256": {
+    "tests/test_prospective_admission_adversarial.py": "f21a070d36c02b1be9d05f31a2fe76ca33afecf4b416cdee4ce279113422f70e",
+    "tests/test_prospective_admission_coverage.py": "61c0576ccc23b0fcaa6b2e893228f0b0750410ec57d284e9df251b51c8a283c0",
+    "tests/test_prospective_execution_gate.py": "794026aadd9e71cc440159b49fddfa6ec27f518a57c2ce47153d04066bbe0e26",
+    "tests/test_prospective_execution_identity_adversarial.py": "91c3bbb15c1f8254da4b600a833a226a3ffc25f84af11eedff386cf0255df73e",
+    "tests/test_prospective_freeze.py": "34ef741aec5346ef58c97ccee5b05e1c4d2da9bb30f344e8c09888e4f0c7b0fa",
+    "tests/test_prospective_inventory.py": "fcf92c4ddf1171446c84a0a84de5bd2beab3c04ba2567536b3139bba98917195",
+    "tests/test_prospective_model.py": "074ca1a73f2984e8dec505b2bc0c6fb48939de535eb15d851d2979dadbe573ab",
+    "tests/test_prospective_primary_session.py": "a46eb73e0a50341d3ba4a033399dc6d72f47b5fc9470ac0ed79c29c346329eb9",
+    "tests/test_prospective_server_model.py": "027dfcb6c4dc12a20bbb4ff8a78af4272667decfcc1bd36ee25a8db7e27f54fa",
+    "tests/test_prospective_slot_binding.py": "f23360a81d3d37091bbb702c07ff26992f9407b0ad965eead7e9c4fc1fa54614",
+    "tools/evaluation_preflight.py": "344b9bdcf8bb7d32de2d32990c39e62e34f03e75b09ecc89af977ed7494023be",
+    "tools/prospective_execution_gate.py": "4134dbe58a4ee882f03497bce8cf13d6d5bbc7f38da89baa5b2ee44c165b8588",
+    "tools/prospective_execution_identity.py": "3d72f912d7beb5fe6d49871dded75122c45e65116ce3e8ba565f85f3631cb24f",
+    "tools/prospective_freeze.py": "5b7af311d26ac0c1addf89e39d239d1408d17386b399242e0a6b547c6fd85874",
+    "tools/prospective_inventory.py": "fa0e494a0dc8c6934738b14c597ba775902014d50e785cde687c6ae0b7fa94cd",
+    "tools/prospective_model.py": "fdabd19d5ced45e1b9661670ec9f09af4cfe9b0dbc600f0995a0a398287dfbc6",
+    "tools/prospective_observation_admission.py": "a8975ff39a5a780592a5596f95755c1d5492437b23dc9a56d4553df376b449ad",
+    "tools/prospective_server_model.py": "0a5c61edc4d2dee717a1166b06d5bb766b4adf1ff36f318a6789a637795dadd8",
+    "tools/prospective_slot_binding.py": "0890e62d2defa681de684992bb1d324c2ad9591f5a59f66443906f48b5ada026"
+  },
+  "retained_baseline_sha256": "862396069e354e0663f6ec8a905244f7fa1c90b7c73111b66bbbf4dac23490a3",
+  "unchanged_frozen_source_sha256": {
+    "tools/darwin_runtime_profile.py": "c910b867fa1bb71c397fd466fe0f57931cfe1894f2b49a5752befb4d3b854998",
+    "tools/local_model_comparator.py": "429ae531533c5a90f618c3eb2f4d8f04c745c06ebf993159603710cefd25b090",
+    "tools/darwin_server_v030.py": "419d4fb56e00f4117b637f5b31eb1961179f8b649a155e366e8db5fd53259acb",
+    "tools/darwin_runtime_v030.py": "d84755db8d098393887e0fca0e67ef4d5d76bdfcacdda2a229d3138fe2605f37"
+  },
+  "historical_protocol_and_review_directories_unchanged": true,
+  "verification": {
+    "ruff": "passed",
+    "format": "passed",
+    "ty": "passed",
+    "basedpyright_retained": "passed",
+    "baseline_ratchet": "passed",
+    "bandit_hash_bound": "passed",
+    "vulture": "passed",
+    "unicode_scan": "passed",
+    "repository_governance": "passed",
+    "deterministic_benchmark": {
+      "case_count": 7,
+      "external_cost": {
+        "amount": 0,
+        "currency": "AUD"
+      },
+      "passed": 7,
+      "promotion_status": "eligible_for_agent_panel_review"
+    },
+    "official_conformance": {
+      "checked_at": "2026-11-13T23:25:37.588158+00:00",
+      "current_conformance": true,
+      "local_validation_passed": true,
+      "official_validator": {
+        "command": [
+          "python",
+          "-I",
+          "-m",
+          "skills_ref.cli",
+          "validate",
+          "skills/rca-investigation"
+        ],
+        "exit_code": 0,
+        "passed": true,
+        "provenance": {
+          "revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+          "source": "https://github.com/agentskills/agentskills.git",
+          "verified": true
+        }
+      },
+      "project_profile": {
+        "complete": true,
+        "completion_diagnostics": [],
+        "diagnostics": [],
+        "passed": true
+      },
+      "runtime": {
+        "platform": "Linux",
+        "python": "3.12.14"
+      },
+      "schema_version": "1.0",
+      "upstream_drift": {
+        "baseline_revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+        "changed_paths": [
+          "GOVERNANCE.md",
+          "MAINTAINERS.md",
+          "docs/footer.js",
+          "docs/style.css"
+        ],
+        "checked_at": "2026-11-13T23:25:22.713726+00:00",
+        "current_conformance": true,
+        "guidance_paths": [],
+        "message": "Upstream changed only outside monitored specification, validator, and guidance paths.",
+        "mode": "live",
+        "normative_paths": [],
+        "resolved_revision": "83021e2be457a9b6679148719c1f6074f0ad975e",
+        "sources": [
+          "https://agentskills.io/specification",
+          "https://agentskills.io/skill-creation/best-practices",
+          "https://agentskills.io/skill-creation/optimizing-descriptions",
+          "https://agentskills.io/skill-creation/evaluating-skills",
+          "https://github.com/agentskills/agentskills"
+        ],
+        "status": "upstream_change_irrelevant"
+      }
+    },
+    "inventory_freeze_tests": {
+      "before_passed": 83,
+      "after_passed": 84
+    },
+    "execution_producer_tests": {
+      "before_passed": 169,
+      "after_passed": 180
+    },
+    "admission_tests": {
+      "before_passed": 86,
+      "after_passed": 86
+    },
+    "model_annotation_followup_tests": {
+      "passed": 16
+    },
+    "full_pytest": {
+      "total": 2069,
+      "failed": 52,
+      "errors": 0,
+      "skipped": 11,
+      "passed": 2006,
+      "coverage_percent": 93.32,
+      "success": false
+    },
+    "unchanged_failure_parity": {
+      "baseline_local_commit": "ee6d05cf7de900e94e1c39fe9e6fd946a421d367",
+      "baseline_tree": "5ab0d02f26a37505d0ce215cd44901a6282ba7a9",
+      "reference_master_commit": "388a4c610b2d38643890d5db28bc2d0241cb5926",
+      "baseline_matches_reference_tree": true,
+      "base_full_pytest": {
+        "total": 2057,
+        "failed": 52,
+        "errors": 0,
+        "skipped": 11,
+        "passed": 1994
+      },
+      "current_failure_count": 52,
+      "baseline_failure_count": 52,
+      "failure_node_sets_equal": true,
+      "failure_ids": [
+        "tests/test_prospective_primary_session.py::test_cleanup_failure_and_postflight_failure_both_retained",
+        "tests/test_prospective_primary_session.py::test_http_failure_with_successful_gate_stays_failed",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[exit]",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[identity-drift]",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[interrupt]",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[missing-package]",
+        "tests/test_prospective_primary_session.py::test_primary_failure_never_masks_http_or_cleanup_failure",
+        "tests/test_prospective_primary_session.py::test_primary_uses_exact_selected_request_and_persists_candidate",
+        "tests/test_prospective_primary_session.py::test_real_guarded_git_child_http_and_decoder_composition",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[duplicate]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[http]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[malformed]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[oversize]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[status]",
+        "tests/test_prospective_server_session.py::test_completion_failure_is_not_erased_by_successful_stop",
+        "tests/test_prospective_server_session.py::test_completion_request_hash_mismatch_rejected",
+        "tests/test_prospective_server_session.py::test_delayed_socket_creation_does_not_consume_health_attempts",
+        "tests/test_prospective_server_session.py::test_fixed_session_reserved_and_locked",
+        "tests/test_prospective_server_session.py::test_health_attempt_budget_stops_without_completion",
+        "tests/test_prospective_server_session.py::test_interrupted_health_keeps_failure_after_worker_cleanup",
+        "tests/test_prospective_server_session.py::test_loading_health_retries_on_same_socket",
+        "tests/test_prospective_server_session.py::test_real_synthetic_child_http_and_graceful_stop",
+        "tests/test_prospective_server_session.py::test_shared_deadline_expiry_stops_readiness_without_completion",
+        "tests/test_prospective_server_session.py::test_socket_replacement_between_health_and_completion_is_rejected",
+        "tests/test_prospective_server_session.py::test_unexpected_directory_content_is_not_recursively_removed",
+        "tests/test_prospective_server_session.py::test_worker_join_failure_preserves_paths_and_blocks_next_run",
+        "tests/test_prospective_study_controller.py::test_two_real_synthetic_children_transport_and_admission",
+        "tests/test_unix_http_capture.py::test_absolute_deadline_stops_trickling_headers",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: -1\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Encoding: gzip\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nTransfer-Encoding: chunked\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 9999999\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Type: application/json\\r\\nContent-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: text/plain\\r\\nContent-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_bad_http",
+        "tests/test_unix_http_capture.py::test_body_deadline_retains_partial_bytes",
+        "tests/test_unix_http_capture.py::test_connect_failure_returns_receipt",
+        "tests/test_unix_http_capture.py::test_connection_setup_expiry_returns_receipt",
+        "tests/test_unix_http_capture.py::test_exact_body_and_locked_receipt",
+        "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[301]",
+        "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[400]",
+        "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[500]",
+        "tests/test_unix_http_capture.py::test_http_header_line_bound",
+        "tests/test_unix_http_capture.py::test_malformed_header_not_silently_ignored",
+        "tests/test_unix_http_capture.py::test_post_request_bound_by_digest",
+        "tests/test_unix_http_capture.py::test_shared_directory_rejected",
+        "tests/test_unix_http_capture.py::test_short_body_retained",
+        "tests/test_unix_http_capture.py::test_socket_replacement_rejected",
+        "tests/test_unix_http_capture.py::test_socket_symlink_and_foreign_owner_rejected"
+      ],
+      "verbatim_message_matches": 50,
+      "normalized_message_differences": 0,
+      "normalization_regex": "/tmp/rca-session-[a-z0-9_]{8}(?=/)"
+    },
+    "collected_test_delta": {
+      "added": 12,
+      "removed": 0,
+      "new_test_ids": [
+        "tests/test_prospective_execution_gate.py::test_checked_plan_rejects_incomplete_payload",
+        "tests/test_prospective_execution_gate.py::test_plan_reconstruction_rejects_invalid_nested_shapes[field0-True]",
+        "tests/test_prospective_execution_gate.py::test_plan_reconstruction_rejects_invalid_nested_shapes[field1-7]",
+        "tests/test_prospective_execution_gate.py::test_plan_reconstruction_rejects_invalid_nested_shapes[field2-0]",
+        "tests/test_prospective_execution_gate.py::test_plan_reconstruction_rejects_invalid_nested_shapes[field3-True]",
+        "tests/test_prospective_execution_gate.py::test_plan_reconstruction_rejects_invalid_nested_shapes[field4-3]",
+        "tests/test_prospective_execution_gate.py::test_plan_reconstruction_rejects_invalid_nested_shapes[field5-replacement5]",
+        "tests/test_prospective_execution_gate.py::test_plan_reconstruction_rejects_invalid_nested_shapes[field6-replacement6]",
+        "tests/test_prospective_execution_gate.py::test_plan_reconstruction_rejects_invalid_nested_shapes[field7-0]",
+        "tests/test_prospective_execution_gate.py::test_plan_reconstruction_rejects_invalid_nested_shapes[field8-1]",
+        "tests/test_prospective_execution_gate.py::test_plan_reconstruction_rejects_invalid_nested_shapes[field9-replacement9]",
+        "tests/test_prospective_freeze.py::test_second_pin_mismatch_precedes_reference_shape_checks"
+      ]
+    },
+    "integration_findings_resolved": [
+      "Completed the existing primary-session positive ModelAdmission and ExecutionEvidence fixtures so checked plans reach payload-drift and process paths; preserved all assertions and shallow-copy behavior.",
+      "Annotated the unsigned model-test dictionary to remove the newly surfaced unknown digest argument while retaining legacy producer debt."
+    ]
+  },
+  "review": {
+    "status": "no_open_blocking_finding",
+    "roles": [
+      "inventory/freeze and admission-fixture implementation",
+      "execution producer and fixture implementation",
+      "read-only contract and baseline review",
+      "root integration and acceptance"
+    ],
+    "shared_project_context": true,
+    "independent_model_or_human_validation": false
+  },
+  "hosted_acceptance": {
+    "status": "pending_final_documented_head",
+    "pass_claim": false,
+    "required": [
+      "Quality complete matrix including Python floor, combined coverage, mutation and profile",
+      "dependency-review",
+      "privacy/secrets",
+      "official skill conformance"
+    ],
+    "offline_security": "dedicated self-hosted queue; no completed scan claimed"
+  },
+  "previous_typing_acceptance": {
+    "pull_request": 129,
+    "head": "ad594e4e0003ce8d7ace8a9a124a52f10fead544",
+    "merged_commit": "388a4c610b2d38643890d5db28bc2d0241cb5926",
+    "quality_run": 43422510425,
+    "quality": "success",
+    "dependency_run": 43422510436,
+    "privacy_run": 43422510451,
+    "conformance_run": 43422540001,
+    "offline_security": "queued_not_a_completed_scan"
+  },
+  "limits": [
+    "3198 legacy diagnostics remain; FAW06 is in progress.",
+    "Local AF_UNIX failures require hosted execution; unchanged-base parity is not a passing full local suite.",
+    "No clinical case, model run, hallucination-rate estimate, death-review qualification or Rust migration was performed."
+  ],
+  "next_work": [
+    "Distinct CLI admission producer and local_output_probe result contracts, with corresponding synthetic fixtures.",
+    "local_execution_probe admission and phase-dependent process receipts, with corresponding synthetic fixtures.",
+    "Small static preflight/native-prerequisite tail, then independent retrieval and benchmark producer boundaries; preserve four frozen sources."
+  ]
+}
