@@ -8,20 +8,21 @@ from pathlib import Path
 
 import pytest
 
-from tools.prospective_protocol import main, validate_protocol
+from tests.prospective_fixture_types import mapping
+from tools.prospective_protocol import ArtifactReference, ProtocolDocument, main, validate_protocol
 
 
 def pin(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def fixture(root: Path) -> tuple[Path, dict]:
-    refs = {}
+def fixture(root: Path) -> tuple[Path, ProtocolDocument]:
+    refs: dict[str, ArtifactReference] = {}
     for name in ("case-a", "case-b", "rubric", "instructions", "prompt"):
         file = root / f"{name}.txt"
         file.write_text(f"Synthetic {name}", encoding="utf-8")
         refs[name] = {"path": file.name, "sha256": pin(file)}
-    value = {
+    value: ProtocolDocument = {
         "schema_version": "1.0",
         "kind": "prospective-study-protocol",
         "protocol_version": "1.0.0",
@@ -80,7 +81,9 @@ def test_valid_candidate_never_unlocks(tmp_path: Path) -> None:
 
 
 @pytest.mark.parametrize("mode", ["identity-utf8-v1", "strict-runtime-wrapper-v1"])
-def test_legacy_api_and_cli_result_shape_remain_unchanged(tmp_path, capsys, mode):
+def test_legacy_api_and_cli_result_shape_remain_unchanged(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str], mode: str
+) -> None:
     path, value = fixture(tmp_path)
     value["normalization"] = mode
     path.write_text(json.dumps(value), encoding="utf-8")
@@ -106,10 +109,13 @@ def test_legacy_api_and_cli_result_shape_remain_unchanged(tmp_path, capsys, mode
 
 
 @pytest.mark.parametrize("legacy_version", [False, True])
-def test_legacy_api_and_cli_reject_native_declaration(tmp_path, capsys, legacy_version):
+def test_legacy_api_and_cli_reject_native_declaration(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str], legacy_version: bool
+) -> None:
     from tools.prospective_runner_contract import VERSION
 
-    path, value = fixture(tmp_path)
+    path, declared = fixture(tmp_path)
+    value = mapping(declared)
     value.update(
         protocol_version="2.0.0",
         normalization="llama-native-json-v1",
@@ -147,7 +153,7 @@ def test_legacy_api_and_cli_reject_native_declaration(tmp_path, capsys, legacy_v
 )
 def test_bad_top_level(tmp_path: Path, field: str, value: object) -> None:
     path, protocol = fixture(tmp_path)
-    protocol[field] = value
+    mapping(protocol)[field] = value
     path.write_text(json.dumps(protocol), encoding="utf-8")
     with pytest.raises(ValueError):
         validate_protocol(path, pin(path))
@@ -186,11 +192,11 @@ def test_bad_nested(tmp_path: Path, mutation: str) -> None:
     elif mutation == "bool-seed":
         value["generation"]["seed"] = True
     elif mutation == "float-tokens":
-        value["generation"]["max_tokens"] = 512.0
+        mapping(value["generation"])["max_tokens"] = 512.0
     elif mutation == "float-timeout":
-        value["generation"]["timeout_seconds"] = 120.0
+        mapping(value["generation"])["timeout_seconds"] = 120.0
     elif mutation == "extra-condition":
-        value["condition"]["trusted"] = True
+        mapping(value["condition"])["trusted"] = True
     elif mutation == "duplicate-role":
         value["scoring"]["roles"][1] = "scorer-1"
     elif mutation == "early-adjudication":

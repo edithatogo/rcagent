@@ -11,7 +11,7 @@ import pytest
 
 from tools import prospective_freeze
 from tools.prospective_freeze import COMPONENTS, verify_freeze
-from tools.prospective_protocol import CLAIMS, GENERATION
+from tools.prospective_protocol import CLAIMS, GENERATION, ProtocolCandidate
 
 
 def git(root: Path, *args: str) -> str:
@@ -88,6 +88,13 @@ def test_exact_commit_is_not_admission(tmp_path: Path) -> None:
     assert result["status"] == "freeze_verified"
     assert result["study_unlocked"] is result["admitted"] is False
     assert len(result["files"]) == len(COMPONENTS) + 6
+
+
+def test_shape_guard_change_after_freeze_is_rejected(tmp_path: Path) -> None:
+    protocol, commit = fixture(tmp_path)
+    (tmp_path / "tools/json_shapes.py").write_bytes(b"# changed validation boundary\n")
+    with pytest.raises(ValueError, match="freeze_bytes_mismatch"):
+        verify_freeze(protocol, pin(protocol), commit, tmp_path)
 
 
 def test_extracted_checks_preserve_legacy_result_and_order(tmp_path):
@@ -221,7 +228,7 @@ def test_protocol_changed_after_validation(tmp_path: Path, monkeypatch: pytest.M
     original = prospective_freeze.validate_protocol
     expected = pin(protocol)
 
-    def change_after_validation(path: Path, digest: str) -> dict:
+    def change_after_validation(path: Path, digest: str) -> ProtocolCandidate:
         result = original(path, digest)
         path.write_bytes(path.read_bytes() + b"\n")
         return result

@@ -206,15 +206,19 @@ def validate_runtime_registry(registry: object) -> list[str]:
             errors.append(f"{prefix}.id is duplicated")
         else:
             seen.add(runtime_id)
-        if runtime.get("dependency_class") not in RUNTIME_CLASSES:
+        dependency_class = runtime.get("dependency_class")
+        if not isinstance(dependency_class, str) or dependency_class not in RUNTIME_CLASSES:
             errors.append(f"{prefix}.dependency_class is invalid")
-        if runtime.get("support_state") not in SUPPORT_STATES:
+        support_state = runtime.get("support_state")
+        if not isinstance(support_state, str) or support_state not in SUPPORT_STATES:
             errors.append(f"{prefix}.support_state is invalid")
         if runtime.get("remote_code") is not False:
             errors.append(f"{prefix}.remote_code must be false")
-        if runtime.get("network") not in {"none", "unknown"}:
+        network = runtime.get("network")
+        if not isinstance(network, str) or network not in {"none", "unknown"}:
             errors.append(f"{prefix}.network must be none or unknown")
-        if runtime.get("telemetry") not in {"disabled", "unknown"}:
+        telemetry = runtime.get("telemetry")
+        if not isinstance(telemetry, str) or telemetry not in {"disabled", "unknown"}:
             errors.append(f"{prefix}.telemetry must be disabled or unknown")
         failure_modes = runtime.get("failure_modes")
         if not is_array(failure_modes) or not failure_modes:

@@ -10,6 +10,7 @@ import base64
 import hashlib
 import json
 import re
+from typing import Literal, TypedDict, cast
 
 from tools import native_completion as native
 from tools.prospective_protocol import GENERATION
@@ -30,13 +31,54 @@ LIMITATIONS = (
 )
 
 
+class Artifact(TypedDict):
+    base64: str
+    sha256: str
+    bytes: int
+
+
+class RequestLimits(TypedDict):
+    max_bytes_per_artifact: int
+    context_tokens_validated: Literal[False]
+
+
+class RequestPackage(TypedDict):
+    """Constructed native request bytes and their unadmitted provenance labels."""
+
+    version: str
+    template: Artifact
+    input: Artifact
+    prompt: Artifact
+    request: Artifact
+    generation: dict[str, int]
+    limits: RequestLimits
+    limitations: list[str]
+    execution_observed: Literal[False]
+    admitted: Literal[False]
+    study_unlocked: Literal[False]
+
+
+class NormalizedCandidate(TypedDict):
+    version: str
+    status: Literal["normalized_candidate"]
+    slot_id: str
+    expected_model: str
+    request: RequestPackage
+    response: Artifact
+    decoded: native.DecodedCompletion
+    limitations: list[str]
+    execution_observed: Literal[False]
+    admitted: Literal[False]
+    study_unlocked: Literal[False]
+
+
 def _json(value: object) -> bytes:
     return json.dumps(
         value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False
     ).encode("utf-8")
 
 
-def _artifact(raw: bytes) -> dict:
+def _artifact(raw: bytes) -> Artifact:
     return {
         "base64": base64.b64encode(raw).decode("ascii"),
         "sha256": hashlib.sha256(raw).hexdigest(),
@@ -44,7 +86,7 @@ def _artifact(raw: bytes) -> dict:
     }
 
 
-def _text(raw: bytes) -> str:
+def _text(raw: object) -> str:
     if type(raw) is not bytes or len(raw) > native.MAX_BYTES:
         raise ValueError("invalid_text_bytes")
     try:
@@ -53,10 +95,13 @@ def _text(raw: bytes) -> str:
         raise ValueError("invalid_utf8") from None
 
 
-def build_request(template: bytes, input_bytes: bytes) -> dict:
+def build_request(template: object, input_bytes: object) -> RequestPackage:
     """Insert exactly once and retain exact UTF-8 bytes; do not apply chat wrapping."""
     _text(template)
     _text(input_bytes)
+    # _text has checked the exact bytes type, byte bound and UTF-8 for each input.
+    template = cast("bytes", template)
+    input_bytes = cast("bytes", input_bytes)
     if template.count(MARKER) != 1:
         raise ValueError("invalid_template_marker")
     prompt = template.replace(MARKER, input_bytes, 1)
@@ -98,52 +143,71 @@ def _same(value: object, expected: object) -> bool:
     if isinstance(expected, dict):
         if not isinstance(value, dict):
             raise ValueError("invalid_validated_object_type")
+        # Establish only container types; inspect length before keys or values
+        # so unexpected huge/deep fields cannot expand reconstruction work.
+        actual_object = cast("dict[object, object]", value)
+        expected_object = cast("dict[object, object]", expected)
         return (
-            len(value) == len(expected)
-            and all(type(key) is str for key in value)
-            and value.keys() == expected.keys()
-            and all(_same(value[key], item) for key, item in expected.items())
+            len(actual_object) == len(expected_object)
+            and all(type(key) is str for key in actual_object)
+            and actual_object.keys() == expected_object.keys()
+            and all(_same(actual_object[key], item) for key, item in expected_object.items())
         )
     if isinstance(expected, list):
         if not isinstance(value, list):
             raise ValueError("invalid_validated_object_type")
-        return len(value) == len(expected) and all(
-            _same(actual, item) for actual, item in zip(value, expected, strict=True)
+        actual_items = cast("list[object]", value)
+        expected_items = cast("list[object]", expected)
+        return len(actual_items) == len(expected_items) and all(
+            _same(actual, item) for actual, item in zip(actual_items, expected_items, strict=True)
         )
     return value == expected
 
 
-def _reconstruct(request: dict) -> dict:
+def _reconstruct(request: object) -> RequestPackage:
     try:
         if type(request) is not dict:
             raise ValueError("invalid_request_package")
+        package = cast("dict[object, object]", request)
         # Bound encoded inputs before decoding; canonical equality rejects alternate encodings.
-        raw = []
+        raw: list[bytes] = []
         for name in ("template", "input"):
-            if type(request[name]) is not dict:
+            artifact = package[name]
+            if type(artifact) is not dict:
                 raise ValueError("invalid_request_package")
-            encoded = request[name]["base64"]
+            fields = cast("dict[object, object]", artifact)
+            encoded = fields["base64"]
             if type(encoded) is not str or len(encoded) > 4 * ((native.MAX_BYTES + 2) // 3):
                 raise ValueError("invalid_request_package")
             raw.append(base64.b64decode(encoded, validate=True))
         rebuilt = build_request(raw[0], raw[1])
-        if not _same(request, rebuilt):
+        if not _same(package, rebuilt):
             raise ValueError("invalid_request_package")
         return rebuilt
     except (ValueError, TypeError, KeyError, UnicodeError, RecursionError, OverflowError):
         raise ValueError("invalid_request_package") from None
 
 
+def _slot(slot: object) -> str:
+    if type(slot) is not str or len(slot) > 150:
+        raise ValueError("invalid_slot_id")
+    match = SLOT.fullmatch(slot)
+    if match is None or any(len(label) > 64 for label in match.groups()):
+        raise ValueError("invalid_slot_id")
+    return slot
+
+
 def normalize_candidate(
-    request: dict, raw_body: bytes, *, slot_id: str, expected_slot_id: str, expected_model: str
-) -> dict:
+    request: object,
+    raw_body: object,
+    *,
+    slot_id: object,
+    expected_slot_id: object,
+    expected_model: object,
+) -> NormalizedCandidate:
     """Retain a slot-labelled candidate, not a verified primary observation."""
-    for slot in (slot_id, expected_slot_id):
-        if type(slot) is not str or len(slot) > 150:
-            raise ValueError("invalid_slot_id")
-        match = SLOT.fullmatch(slot)
-        if match is None or any(len(label) > 64 for label in match.groups()):
-            raise ValueError("invalid_slot_id")
+    slot_id = _slot(slot_id)
+    expected_slot_id = _slot(expected_slot_id)
     if slot_id != expected_slot_id:
         raise ValueError("slot_mismatch")
     if (
@@ -154,6 +218,8 @@ def normalize_candidate(
         raise ValueError("invalid_expected_model")
     rebuilt = _reconstruct(request)
     decoded = native.decode_completion(raw_body, expected_model=expected_model)
+    # Successful decoding establishes the exact bytes type and response size bound.
+    raw_body = cast("bytes", raw_body)
     return {
         "version": VERSION,
         "status": "normalized_candidate",

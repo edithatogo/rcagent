@@ -16,6 +16,7 @@ from tools.prospective_protocol import validate_protocol
 COMPONENTS = (
     "tools/prospective_freeze.py",
     "tools/prospective_protocol.py",
+    "tools/json_shapes.py",
     "tools/prospective_inventory.py",
     "tools/evaluation_preflight.py",
     "tools/local_execution_probe.py",

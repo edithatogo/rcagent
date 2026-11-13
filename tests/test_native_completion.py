@@ -2,14 +2,14 @@
 
 import hashlib
 import json
-from typing import Any, cast
 
 import pytest
 
+from tests.prospective_fixture_types import ObjectMap, mapping, text_value
 from tools import native_completion as subject
 
 
-def response():
+def response() -> ObjectMap:
     return {
         "index": 0,
         "content": "  Synthetic response\r\n\n",
@@ -38,12 +38,12 @@ def response():
     }
 
 
-def decode(value):
+def decode(value: object) -> subject.DecodedCompletion:
     return subject.decode_completion(json.dumps(value).encode(), expected_model="synthetic-model")
 
 
 @pytest.mark.parametrize("content", ["READY", "READY\n", "\n", " a\r\n\n", "é e\u0301 🌿", "\x00"])
-def test_preserves_content_exactly(content):
+def test_preserves_content_exactly(content: str) -> None:
     value = response()
     value["content"] = content
     raw = json.dumps(value).encode()
@@ -58,12 +58,13 @@ def test_preserves_content_exactly(content):
     assert "request-binding-not-verified" in result["limitations"]
 
 
-def test_detokenized_prompt_is_not_request_echo():
+def test_detokenized_prompt_is_not_request_echo() -> None:
     value = response()
     value["prompt"] = "<BOS> synthetic prompt"
     result = decode(value)
     assert (
-        result["detokenized_prompt_sha256"] == hashlib.sha256(value["prompt"].encode()).hexdigest()
+        result["detokenized_prompt_sha256"]
+        == hashlib.sha256(text_value(value["prompt"]).encode()).hexdigest()
     )
 
 
@@ -86,25 +87,25 @@ def test_detokenized_prompt_is_not_request_echo():
         b"[" * 2000 + b"]" * 2000,
     ],
 )
-def test_rejects_bad_json(raw):
+def test_rejects_bad_json(raw: bytes) -> None:
     with pytest.raises(ValueError):
         subject.decode_completion(raw, expected_model="synthetic-model")
 
 
-def test_rejects_oversized_and_nonbytes():
+def test_rejects_oversized_and_nonbytes() -> None:
     for raw in (b" " * (subject.MAX_BYTES + 1), "{}", bytearray(b"{}")):
         with pytest.raises(ValueError):
-            subject.decode_completion(cast(Any, raw), expected_model="synthetic-model")
+            subject.decode_completion(raw, expected_model="synthetic-model")
 
 
 @pytest.mark.parametrize("model", [None, "", 1, "\ud800"])
-def test_rejects_bad_expected_model(model):
+def test_rejects_bad_expected_model(model: object) -> None:
     with pytest.raises(ValueError):
         subject.decode_completion(json.dumps(response()).encode(), expected_model=model)
 
 
 @pytest.mark.parametrize("field", list(response()))
-def test_requires_every_native_field(field):
+def test_requires_every_native_field(field: str) -> None:
     value = response()
     del value[field]
     with pytest.raises(ValueError):
@@ -148,7 +149,7 @@ def test_requires_every_native_field(field):
         ("generation_settings", []),
     ],
 )
-def test_rejects_invalid_native_fields(field, value):
+def test_rejects_invalid_native_fields(field: str, value: object) -> None:
     fixture = response()
     fixture[field] = value
     with pytest.raises(ValueError):
@@ -172,31 +173,31 @@ def test_rejects_invalid_native_fields(field, value):
         ("stop", None),
     ],
 )
-def test_rejects_settings_mismatch(field, value):
+def test_rejects_settings_mismatch(field: str, value: object) -> None:
     fixture = response()
-    fixture["generation_settings"][field] = value
+    mapping(fixture["generation_settings"])[field] = value
     with pytest.raises(ValueError):
         decode(fixture)
 
 
-@pytest.mark.parametrize("field", list(response()["generation_settings"]))
-def test_requires_selected_settings(field):
+@pytest.mark.parametrize("field", list(mapping(response()["generation_settings"])))
+def test_requires_selected_settings(field: str) -> None:
     fixture = response()
-    del fixture["generation_settings"][field]
+    del mapping(fixture["generation_settings"])[field]
     with pytest.raises(ValueError):
         decode(fixture)
 
 
-def test_native_tokens_and_other_settings_are_retained_in_raw_only():
+def test_native_tokens_and_other_settings_are_retained_in_raw_only() -> None:
     fixture = response()
     fixture["tokens"] = [1, 2]
-    fixture["generation_settings"]["top_k"] = 40
+    mapping(fixture["generation_settings"])["top_k"] = 40
     assert decode(fixture)["status"] == "native_completion_consistent"
 
 
-def test_wrapper_rendering_is_not_invertible():
+def test_wrapper_rendering_is_not_invertible() -> None:
     # Independent synthetic counterexample to the inspected renderer's final-LF rule.
-    def render(content):
+    def render(content: str) -> str:
         return content + ("" if content.endswith("\n") else "\n")
 
     assert render("READY") == render("READY\n")

@@ -244,7 +244,8 @@ def validate_registry(registry: object) -> list[str]:
                 errors.append(f"frameworks[{index}].id is invalid or duplicated")
             else:
                 seen.add(identifier)
-            if framework.get("status") not in STATUS:
+            status = framework.get("status")
+            if not isinstance(status, str) or status not in STATUS:
                 errors.append(f"frameworks[{index}].status is invalid")
             if framework.get("revision") != "not_acquired":
                 errors.append(f"frameworks[{index}].revision must remain not_acquired")
@@ -320,6 +321,7 @@ def validate_dataset_manifest(manifest: object) -> list[str]:
     expected_names = {"train", "validation", "held_out", "challenge", "contamination_control"}
     if (
         not is_array(splits)
+        or any(is_object(item) and not isinstance(item.get("name"), str) for item in splits)
         or {item.get("name") for item in splits if is_object(item)} != expected_names
     ):
         errors.append("dataset splits are incomplete")
