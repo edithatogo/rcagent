@@ -188,7 +188,8 @@ def validate_registry(registry: object) -> list[str]:
                 errors.append(f"{prefix}.id is invalid or duplicated")
             else:
                 template_ids.add(identifier)
-            if template.get("rights") not in {"original_apache_2_0", "linked_only"}:
+            rights = template.get("rights")
+            if not isinstance(rights, str) or rights not in {"original_apache_2_0", "linked_only"}:
                 errors.append(f"{prefix}.rights is invalid")
             audiences = template.get("audiences")
             if (
@@ -209,7 +210,10 @@ def validate_registry(registry: object) -> list[str]:
                         "provenance_required",
                     }:
                         errors.append(f"{prefix}.fields[{field_index}] is invalid")
-                    elif field.get("canonical_path") not in CANONICAL_PATHS:
+                    elif (
+                        not isinstance(canonical_path := field.get("canonical_path"), str)
+                        or canonical_path not in CANONICAL_PATHS
+                    ):
                         errors.append(f"{prefix}.fields[{field_index}].canonical_path is invalid")
             disclaimers = template.get("disclaimers")
             required_disclaimers = {
@@ -255,7 +259,8 @@ def validate_registry(registry: object) -> list[str]:
                 or interface.get("external_send") is not False
             ):
                 errors.append(f"interfaces[{index}] must be dry-run only")
-            if interface.get("status") not in {"contract_only", "unavailable"}:
+            status = interface.get("status")
+            if not isinstance(status, str) or status not in {"contract_only", "unavailable"}:
                 errors.append(f"interfaces[{index}].status is invalid")
             identifier = interface.get("id")
             if not isinstance(identifier, str) or not identifier or identifier in interface_ids:

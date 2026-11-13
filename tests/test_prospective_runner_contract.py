@@ -4,16 +4,17 @@ import base64
 import copy
 import hashlib
 import json
-from typing import Any, cast
+from typing import Literal, Never
 
 import pytest
 
+from tests.prospective_fixture_types import ObjectMap, mapping, sequence
 from tools import prospective_runner_contract as subject
 
 SLOT = "case-synthetic__condition-local__r1"
 
 
-def response():
+def response() -> ObjectMap:
     return {
         "index": 0,
         "content": "  Synthetic é\r\n",
@@ -42,7 +43,7 @@ def response():
     }
 
 
-def normalize(package, raw=None, **kwargs):
+def normalize(package: object, raw: object = None, **kwargs: object) -> subject.NormalizedCandidate:
     return subject.normalize_candidate(
         package,
         json.dumps(response()).encode() if raw is None else raw,
@@ -52,27 +53,27 @@ def normalize(package, raw=None, **kwargs):
     )
 
 
-def test_build_request_preserves_exact_bytes():
+def test_build_request_preserves_exact_bytes() -> None:
     result = subject.build_request(b"prefix {{INPUT}} suffix", b"synthetic")
     assert result["admitted"] is result["study_unlocked"] is False
 
 
-def test_empty_prompt_rejected_but_empty_input_with_literal_template_allowed():
+def test_empty_prompt_rejected_but_empty_input_with_literal_template_allowed() -> None:
     with pytest.raises(ValueError, match="empty_prompt"):
         subject.build_request(subject.MARKER, b"")
     assert subject.build_request(b"prefix{{INPUT}}", b"")["input"]["bytes"] == 0
 
 
 @pytest.mark.parametrize("model", [None, "", "A", "a" * 101, "\ud800", "bad/label"])
-def test_expected_model_is_bounded_label(model):
+def test_expected_model_is_bounded_label(model: object) -> None:
     with pytest.raises(ValueError, match="invalid_expected_model"):
         normalize(subject.build_request(subject.MARKER, b"s"), expected_model=model)
 
 
 @pytest.mark.parametrize("flag", ["execution_observed", "admitted", "study_unlocked"])
 @pytest.mark.parametrize("value", [True, 0], ids=["claim-true", "integer-false"])
-def test_all_request_execution_and_admission_flags_fail_closed(flag, value):
-    package = subject.build_request(subject.MARKER, b"s")
+def test_all_request_execution_and_admission_flags_fail_closed(flag: str, value: object) -> None:
+    package = mapping(subject.build_request(subject.MARKER, b"s"))
     package[flag] = value
     with pytest.raises(ValueError, match="invalid_request_package"):
         normalize(package)
@@ -82,30 +83,33 @@ def test_all_request_execution_and_admission_flags_fail_closed(flag, value):
     "damage",
     ["artifact-type", "custom-scalar", "key-type", "list-size", "huge-prompt", "cyclic-field"],
 )
-def test_untrusted_shapes_are_rejected_without_serializing_them(damage, monkeypatch):
-    package = subject.build_request(subject.MARKER, b"s")
+def test_untrusted_shapes_are_rejected_without_serializing_them(
+    damage: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    package = dict[object, object](subject.build_request(subject.MARKER, b"s").items())
     if damage == "artifact-type":
         package["input"] = []
     elif damage == "custom-scalar":
 
         class CustomInt(int):
-            def __eq__(self, other):
+            def __eq__(self, _other: object) -> Never:
                 raise AssertionError("custom comparisons must not run")
 
-        package["generation"]["seed"] = CustomInt(42)
+        mapping(package["generation"])["seed"] = CustomInt(42)
     elif damage == "key-type":
         package[1] = package.pop("version")
     elif damage == "list-size":
-        package["limitations"].append("extra")
+        sequence(package["limitations"]).append("extra")
     elif damage == "huge-prompt":
-        package["prompt"]["base64"] = "A" * (2 * subject.native.MAX_BYTES)
+        mapping(package["prompt"])["base64"] = "A" * (2 * subject.native.MAX_BYTES)
     else:
         package["prompt"] = package
     original = subject._json
 
-    def generated_only(value):
+    def generated_only(value: object) -> bytes:
+        generated = mapping(value)
         assert type(value) is dict
-        assert set(value) == {
+        assert set(generated) == {
             "prompt",
             "n_predict",
             "seed",
@@ -114,7 +118,7 @@ def test_untrusted_shapes_are_rejected_without_serializing_them(damage, monkeypa
             "ignore_eos",
             "stop",
         }
-        return original(value)
+        return original(generated)
 
     monkeypatch.setattr(subject, "_json", generated_only)
     with pytest.raises(ValueError, match="invalid_request_package"):
@@ -122,18 +126,22 @@ def test_untrusted_shapes_are_rejected_without_serializing_them(damage, monkeypa
 
 
 @pytest.mark.parametrize("text", ["", " \r\n", "é e\u0301 🌿", "\ufefftext", "{{INPUT}}", "\x00"])
-def test_exact_bytes_deterministic_and_single_insertion(text):
+def test_exact_bytes_deterministic_and_single_insertion(text: str) -> None:
     template = b"\xef\xbb\xbf prefix\r\n{{INPUT}}\n suffix "
     raw_input = text.encode()
     package = subject.build_request(template, raw_input)
     assert package == subject.build_request(template, raw_input)
     prompt = template.replace(subject.MARKER, raw_input, 1)
-    for name, raw in (("template", template), ("input", raw_input), ("prompt", prompt)):
-        assert base64.b64decode(package[name]["base64"]) == raw
-        assert package[name]["sha256"] == hashlib.sha256(raw).hexdigest()
-        assert package[name]["bytes"] == len(raw)
+    for artifact, raw in (
+        (package["template"], template),
+        (package["input"], raw_input),
+        (package["prompt"], prompt),
+    ):
+        assert base64.b64decode(artifact["base64"]) == raw
+        assert artifact["sha256"] == hashlib.sha256(raw).hexdigest()
+        assert artifact["bytes"] == len(raw)
     request = base64.b64decode(package["request"]["base64"])
-    value = json.loads(request)
+    value: object = json.loads(request)
     assert value == {
         "prompt": prompt.decode(),
         "seed": 42,
@@ -153,7 +161,7 @@ def test_exact_bytes_deterministic_and_single_insertion(text):
 
 
 @pytest.mark.parametrize("template", [b"", b"absent", b"{{INPUT}}{{INPUT}}"])
-def test_marker_rejected(template):
+def test_marker_rejected(template: bytes) -> None:
     with pytest.raises(ValueError, match="invalid_template_marker"):
         subject.build_request(template, b"synthetic")
 
@@ -162,14 +170,14 @@ def test_marker_rejected(template):
     "bad", ["text", bytearray(b"text"), b"\xff", None], ids=["str", "bytearray", "utf8", "none"]
 )
 @pytest.mark.parametrize("position", ["template", "input"])
-def test_nonbytes_and_invalid_utf8_rejected(bad, position):
+def test_nonbytes_and_invalid_utf8_rejected(bad: object, position: str) -> None:
     args = (bad, b"input") if position == "template" else (subject.MARKER, bad)
     with pytest.raises(ValueError):
-        subject.build_request(*cast(Any, args))
+        subject.build_request(*args)
 
 
 @pytest.mark.parametrize("kind", ["template", "input", "prompt", "request"])
-def test_byte_limits_cover_every_stage(kind, monkeypatch):
+def test_byte_limits_cover_every_stage(kind: str, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(subject.native, "MAX_BYTES", 200)
     template, raw_input = subject.MARKER, b"s"
     if kind == "template":
@@ -184,7 +192,7 @@ def test_byte_limits_cover_every_stage(kind, monkeypatch):
         subject.build_request(template, raw_input)
 
 
-def test_normalization_preserves_raw_and_content_without_aliasing():
+def test_normalization_preserves_raw_and_content_without_aliasing() -> None:
     package = subject.build_request(subject.MARKER, b"synthetic")
     raw = json.dumps(response()).encode()
     result = normalize(package, raw)
@@ -208,9 +216,12 @@ def test_normalization_preserves_raw_and_content_without_aliasing():
 
 @pytest.mark.parametrize("field", ["base64", "sha256", "bytes"])
 @pytest.mark.parametrize("artifact", ["template", "input", "prompt", "request"])
-def test_every_retained_artifact_is_reconstructed(artifact, field):
+def test_every_retained_artifact_is_reconstructed(
+    artifact: Literal["template", "input", "prompt", "request"],
+    field: Literal["base64", "sha256", "bytes"],
+) -> None:
     package = subject.build_request(subject.MARKER, b"synthetic")
-    package[artifact][field] = 0 if field == "bytes" else "tampered"
+    mapping(package[artifact])[field] = 0 if field == "bytes" else "tampered"
     with pytest.raises(ValueError, match="invalid_request_package"):
         normalize(package)
 
@@ -234,18 +245,20 @@ def test_every_retained_artifact_is_reconstructed(artifact, field):
         "noncanonical-base64",
     ],
 )
-def test_strict_complete_package_types_and_fields(kind):
-    package = subject.build_request(subject.MARKER, b"s")
+def test_strict_complete_package_types_and_fields(kind: str) -> None:
+    package: dict[object, object] | list[object] = dict[object, object](
+        subject.build_request(subject.MARKER, b"s").items()
+    )
     if kind == "bool-int":
-        package["input"]["bytes"] = True
+        mapping(package["input"])["bytes"] = True
     elif kind == "float-int":
-        package["generation"]["temperature"] = 0.0
+        mapping(package["generation"])["temperature"] = 0.0
     elif kind == "extra":
         package["extra"] = None
     elif kind == "missing":
         del package["version"]
     elif kind == "tuple":
-        package["limitations"] = tuple(package["limitations"])
+        package["limitations"] = tuple(sequence(package["limitations"]))
     elif kind == "nonstring-key":
         package[1] = "extra"
     elif kind == "nonfinite":
@@ -255,20 +268,20 @@ def test_strict_complete_package_types_and_fields(kind):
     elif kind == "object":
         package["extra"] = object()
     elif kind == "deep":
-        nested = []
+        nested: list[object] = []
         package["extra"] = nested
         for _ in range(40):
-            child = []
+            child: list[object] = []
             nested.append(child)
             nested = child
     elif kind == "notdict":
         package = []
     elif kind == "encoded-too-long":
-        package["input"]["base64"] = "A" * (4 * subject.native.MAX_BYTES)
+        mapping(package["input"])["base64"] = "A" * (4 * subject.native.MAX_BYTES)
     elif kind == "encoded-notstr":
-        package["input"]["base64"] = 4
+        mapping(package["input"])["base64"] = 4
     else:
-        package["input"]["base64"] = "cx=="  # Same decoded s, nonzero unused bits.
+        mapping(package["input"])["base64"] = "cx=="  # Same decoded s, nonzero unused bits.
     with pytest.raises(ValueError, match="invalid_request_package"):
         normalize(package)
 
@@ -285,13 +298,13 @@ def test_strict_complete_package_types_and_fields(kind):
         "x" * 151,
     ],
 )
-def test_invalid_slot_labels(slot):
+def test_invalid_slot_labels(slot: object) -> None:
     package = subject.build_request(subject.MARKER, b"s")
     with pytest.raises(ValueError, match="invalid_slot_id"):
         normalize(package, slot_id=slot, expected_slot_id=slot)
 
 
-def test_expected_slot_is_checked_and_mismatch_rejected():
+def test_expected_slot_is_checked_and_mismatch_rejected() -> None:
     package = subject.build_request(subject.MARKER, b"s")
     for expected, error in (
         ("invalid", "invalid_slot_id"),
@@ -302,14 +315,14 @@ def test_expected_slot_is_checked_and_mismatch_rejected():
 
 
 @pytest.mark.parametrize("damage", ["eos", "truncated", "settings", "model", "extra"])
-def test_native_decoder_rejections_remain_failures(damage):
+def test_native_decoder_rejections_remain_failures(damage: str) -> None:
     value = copy.deepcopy(response())
     if damage == "eos":
         value["stop_type"] = "limit"
     elif damage == "truncated":
         value["truncated"] = True
     elif damage == "settings":
-        value["generation_settings"]["seed"] = 0
+        mapping(value["generation_settings"])["seed"] = 0
     elif damage == "model":
         value["model"] = "other"
     else:
@@ -321,6 +334,6 @@ def test_native_decoder_rejections_remain_failures(damage):
 @pytest.mark.parametrize(
     "raw", [b"{}", b"\xff", b'{"a":1,"a":2}', b""], ids=["schema", "utf8", "duplicate", "empty"]
 )
-def test_malformed_response_rejected(raw):
+def test_malformed_response_rejected(raw: bytes) -> None:
     with pytest.raises(ValueError):
         normalize(subject.build_request(subject.MARKER, b"s"), raw)

@@ -13,6 +13,7 @@ KNOWN_NATIVE_SOURCES = (
     "tools/prospective_freeze.py",
     "tools/prospective_native_protocol.py",
     "tools/prospective_protocol.py",
+    "tools/json_shapes.py",
     "tools/prospective_runner_contract.py",
     "tools/native_completion.py",
     "tools/prospective_inventory.py",

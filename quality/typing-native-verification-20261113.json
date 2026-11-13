@@ -1,0 +1,549 @@
+{
+  "schema_version": "1.0",
+  "observed_at": "2026-11-13T22:02:23.503741+10:00",
+  "task": "Track13 FAW06: native completion, runner and protocol contracts; nine enum boundary defects",
+  "pull_request": "https://github.com/edithatogo/rcagent/pull/129",
+  "base_commit": "4d17acece190888e364f30a645b79b53cf31d66d",
+  "base_tree": "08914bfe901d5e42329191a3f03396037bcaf50f",
+  "published_source_commit": "d2a8b217e97fe427acbc21a70d94a7ca20e98bb3",
+  "published_source_tree": "13a6e6947196d9ef94acaca97d286028e0a74fa4",
+  "matching_local_source_and_baseline_commit": "75454f4fbe7069f9d194cfdf1d105a6117b0522b",
+  "python": "3.12.14",
+  "checker": {
+    "name": "basedpyright",
+    "version": "1.40.2",
+    "measurement_mode": "empty external baseline; discard"
+  },
+  "commands": {
+    "measurement": "python -m basedpyright --baselinefile /tmp/typing-native-empty-baseline.json --baselinemode=discard --outputjson",
+    "retained": "python -m basedpyright --baselinemode=discard --outputjson",
+    "ratchet": "python -m tools.quality_gate baseline --base 4d17acece190888e364f30a645b79b53cf31d66d",
+    "tests": "python -m pytest --cov --cov-report=xml --cov-report=term-missing --junitxml=/tmp/rcagent-typing-native-full-tests.xml",
+    "conformance": "python -m tools.run_skill_conformance --output /tmp/rcagent-typing-native-conformance.json"
+  },
+  "diagnostics": {
+    "before": {
+      "total": 5023,
+      "production": 1008,
+      "tests": 4015,
+      "files_with_debt": 96,
+      "files_analyzed": 152
+    },
+    "after": {
+      "total": 4431,
+      "production": 824,
+      "tests": 3607,
+      "files_with_debt": 91,
+      "files_analyzed": 153
+    },
+    "removed": 592,
+    "new_or_increased_file_rule_counts": {},
+    "newly_debt_free_files": [
+      "tests/test_native_completion.py",
+      "tests/test_prospective_protocol.py",
+      "tests/test_prospective_study_inputs.py",
+      "tools/native_completion.py",
+      "tools/prospective_runner_contract.py"
+    ],
+    "per_file_changes": {
+      "tests/test_native_completion.py": {
+        "before": 64,
+        "after": 0,
+        "removed": 64
+      },
+      "tests/test_prospective_execution_gate.py": {
+        "before": 233,
+        "after": 213,
+        "removed": 20
+      },
+      "tests/test_prospective_freeze.py": {
+        "before": 59,
+        "after": 52,
+        "removed": 7
+      },
+      "tests/test_prospective_native_prerequisites.py": {
+        "before": 197,
+        "after": 189,
+        "removed": 8
+      },
+      "tests/test_prospective_native_protocol.py": {
+        "before": 123,
+        "after": 3,
+        "removed": 120
+      },
+      "tests/test_prospective_primary_session.py": {
+        "before": 12,
+        "after": 9,
+        "removed": 3
+      },
+      "tests/test_prospective_protocol.py": {
+        "before": 36,
+        "after": 0,
+        "removed": 36
+      },
+      "tests/test_prospective_runner_contract.py": {
+        "before": 120,
+        "after": 1,
+        "removed": 119
+      },
+      "tests/test_prospective_slot_binding.py": {
+        "before": 189,
+        "after": 172,
+        "removed": 17
+      },
+      "tests/test_prospective_study_controller.py": {
+        "before": 48,
+        "after": 38,
+        "removed": 10
+      },
+      "tests/test_prospective_study_inputs.py": {
+        "before": 4,
+        "after": 0,
+        "removed": 4
+      },
+      "tools/native_completion.py": {
+        "before": 24,
+        "after": 0,
+        "removed": 24
+      },
+      "tools/prospective_execution_gate.py": {
+        "before": 72,
+        "after": 58,
+        "removed": 14
+      },
+      "tools/prospective_freeze.py": {
+        "before": 11,
+        "after": 9,
+        "removed": 2
+      },
+      "tools/prospective_native_prerequisites.py": {
+        "before": 23,
+        "after": 8,
+        "removed": 15
+      },
+      "tools/prospective_native_protocol.py": {
+        "before": 22,
+        "after": 1,
+        "removed": 21
+      },
+      "tools/prospective_observation_admission.py": {
+        "before": 155,
+        "after": 151,
+        "removed": 4
+      },
+      "tools/prospective_primary_session.py": {
+        "before": 5,
+        "after": 3,
+        "removed": 2
+      },
+      "tools/prospective_protocol.py": {
+        "before": 51,
+        "after": 7,
+        "removed": 44
+      },
+      "tools/prospective_runner_contract.py": {
+        "before": 45,
+        "after": 0,
+        "removed": 45
+      },
+      "tools/prospective_server_session.py": {
+        "before": 13,
+        "after": 9,
+        "removed": 4
+      },
+      "tools/prospective_slot_binding.py": {
+        "before": 27,
+        "after": 20,
+        "removed": 7
+      },
+      "tools/prospective_study_controller.py": {
+        "before": 73,
+        "after": 71,
+        "removed": 2
+      }
+    },
+    "new_test_module_diagnostics": 0
+  },
+  "baseline_maintenance": {
+    "reviewed_files": {
+      "tools/prospective_protocol.py": {
+        "before": 51,
+        "after": 7,
+        "rules": {
+          "reportPrivateUsage": 1,
+          "reportUnknownArgumentType": 1,
+          "reportUnknownVariableType": 5
+        }
+      }
+    },
+    "unmatched_diagnostics_reviewed": 1,
+    "surfaced_reviewed_diagnostics": [
+      {
+        "file": "tools/prospective_protocol.py",
+        "line": 170,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"require_object\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      }
+    ],
+    "basis": "Unchanged prospective_inventory.obj returns dict[Unknown, Unknown]; the checked schema guard exposes existing producer uncertainty at its argument. No incompatible operation added.",
+    "reviewer": "read-only typing_contract_review agent; shared project context",
+    "after_selective_reanchoring": 4979,
+    "ordinary_auto_shrink_removed": 548,
+    "final_retained": 4431,
+    "final_cap_sum": 4431,
+    "empty_baseline_counts_equal_retained": true,
+    "new_or_increased_file_rules": {},
+    "writebaseline_used": false,
+    "origin_commit_unchanged": "718b418eba3c17f149d52124b97532240870c0b1"
+  },
+  "explicit_any_name_references_in_edited_python": {
+    "before": 24,
+    "after": 22
+  },
+  "source_sha256": {
+    "tests/test_enum_boundary_rejections.py": "7f1182a342c7e9218241d531119829fed6d7bcf89656cf364637f5e4b530e3f4",
+    "tests/test_native_completion.py": "cabfef2afb629154eddd03323ca46b8a32f5f0a1b7d58e995242182d7c611083",
+    "tests/test_prospective_freeze.py": "7b296e68dfadeead9da412c537b10a864a9b4ce86661d527625a9e0689106ac4",
+    "tests/test_prospective_native_protocol.py": "20afadea18933245b8fe567f773f355d1a5d8cec011263ae887968f0b18e7164",
+    "tests/test_prospective_protocol.py": "0791dfbe3d27c2abb7c6f909fcb8a0e3af76b5bdcb2951a308685f9ff202e9c5",
+    "tests/test_prospective_runner_contract.py": "2365418c25c5116a68cf75dee26327610450bf3e80230aaa50b140a66eff6131",
+    "tests/test_prospective_slot_binding.py": "383b9ee275ab772821a34d772efbc7502759cc4a17fb9002ae5dc9cc74582f3a",
+    "tools/adaptation_readiness.py": "6d8180c7237b78f25c3a22b3221aa96a7c137c284a5f5c9ca7f09e88509df858",
+    "tools/interface_actions.py": "94dca9594d93484f917ff86bdfe0d14a3b0195568dd458670ce6d627db5c5010",
+    "tools/native_completion.py": "ce6a67b25689a76f760db52c7671c4deb2eac5c609c4a1c7ef92d098706767c4",
+    "tools/prospective_freeze.py": "4a0d57339881a31f62b48b310e969ab7f9b6ca3bafec9e7f823f25fd25792d7a",
+    "tools/prospective_native_prerequisites.py": "90a05759d078172bf4a1240d9519e2960f78aac4272e00db9e1fc8bb3830d462",
+    "tools/prospective_native_protocol.py": "6f0180aa99e0949789a161203138b3d52a534af55d36f5d1e824be5c33c31f3e",
+    "tools/prospective_protocol.py": "04009630bb3c8cf50ee7781bee2057dd12bc99a114053187f34162ef29cd6166",
+    "tools/prospective_runner_contract.py": "fb5e4762f47c63db7b28b54fd2a46cc12cd8eb3034aa77e0ab35962184e91000",
+    "tools/runtime_lab.py": "9ade71a2ad02d4728e4e585818f3f759e36257aa73a42c21601af826e0da4e6b"
+  },
+  "retained_baseline_sha256": "eec085b2eaa272989b20daa6ae8f2b51f573bd7a887570a4bb1c63cf92afae2c",
+  "unchanged_frozen_source_sha256": {
+    "tools/darwin_runtime_profile.py": "c910b867fa1bb71c397fd466fe0f57931cfe1894f2b49a5752befb4d3b854998",
+    "tools/local_model_comparator.py": "429ae531533c5a90f618c3eb2f4d8f04c745c06ebf993159603710cefd25b090",
+    "tools/darwin_server_v030.py": "419d4fb56e00f4117b637f5b31eb1961179f8b649a155e366e8db5fd53259acb",
+    "tools/darwin_runtime_v030.py": "d84755db8d098393887e0fca0e67ef4d5d76bdfcacdda2a229d3138fe2605f37"
+  },
+  "historical_protocol_and_review_directories_unchanged": true,
+  "verification": {
+    "ruff": "passed",
+    "format": "passed",
+    "ty": "passed",
+    "basedpyright_retained": "passed",
+    "baseline_ratchet": "passed",
+    "bandit_hash_bound": "passed",
+    "vulture": "passed",
+    "unicode_scan": "passed",
+    "repository_governance": "passed",
+    "deterministic_benchmark": {
+      "case_count": 7,
+      "external_cost": {
+        "amount": 0,
+        "currency": "AUD"
+      },
+      "passed": 7,
+      "promotion_status": "eligible_for_agent_panel_review"
+    },
+    "official_conformance": {
+      "checked_at": "2026-11-13T11:52:16.357285+00:00",
+      "current_conformance": true,
+      "local_validation_passed": true,
+      "official_validator": {
+        "command": [
+          "python",
+          "-I",
+          "-m",
+          "skills_ref.cli",
+          "validate",
+          "skills/rca-investigation"
+        ],
+        "exit_code": 0,
+        "passed": true,
+        "provenance": {
+          "revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+          "source": "https://github.com/agentskills/agentskills.git",
+          "verified": true
+        }
+      },
+      "project_profile": {
+        "complete": true,
+        "completion_diagnostics": [],
+        "diagnostics": [],
+        "passed": true
+      },
+      "runtime": {
+        "platform": "Linux",
+        "python": "3.12.14"
+      },
+      "schema_version": "1.0",
+      "upstream_drift": {
+        "baseline_revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+        "changed_paths": [
+          "GOVERNANCE.md",
+          "MAINTAINERS.md",
+          "docs/footer.js",
+          "docs/style.css"
+        ],
+        "checked_at": "2026-11-13T11:52:03.321603+00:00",
+        "current_conformance": true,
+        "guidance_paths": [],
+        "message": "Upstream changed only outside monitored specification, validator, and guidance paths.",
+        "mode": "live",
+        "normative_paths": [],
+        "resolved_revision": "83021e2be457a9b6679148719c1f6074f0ad975e",
+        "sources": [
+          "https://agentskills.io/specification",
+          "https://agentskills.io/skill-creation/best-practices",
+          "https://agentskills.io/skill-creation/optimizing-descriptions",
+          "https://agentskills.io/skill-creation/evaluating-skills",
+          "https://github.com/agentskills/agentskills"
+        ],
+        "status": "upstream_change_irrelevant"
+      }
+    },
+    "native_io_existing_tests": {
+      "before_passed": 180,
+      "after_passed": 180
+    },
+    "protocol_existing_tests": {
+      "before_passed": 64,
+      "after_passed": 64
+    },
+    "enum_and_existing_validator_tests": {
+      "passed": 142,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "total": 142
+    },
+    "consumer_and_freeze_tests": {
+      "passed": 103
+    },
+    "enum_regressions": {
+      "fields": [
+        "templates.rights",
+        "template_fields.canonical_path",
+        "interfaces.status",
+        "runtimes.dependency_class",
+        "runtimes.support_state",
+        "runtimes.network",
+        "runtimes.telemetry",
+        "frameworks.status",
+        "dataset_splits.name"
+      ],
+      "concrete_reproductions_before": {
+        "passed": 0,
+        "failed": 20,
+        "errors": 0,
+        "skipped": 0,
+        "total": 20
+      },
+      "before_failure": "20 TypeError failures from unhashable list/dictionary enum values",
+      "new_tests": 29,
+      "concrete_cases": 20,
+      "property_cases": 9,
+      "after_behavior": "Existing field-specific validation errors; no hashability crash.",
+      "new_module_strict_diagnostics": 0
+    },
+    "source_closure_regressions": [
+      "test_shape_guard_change_after_freeze_is_rejected",
+      "test_each_fixed_source_drift_rejected[tools/json_shapes.py]"
+    ],
+    "full_pytest": {
+      "passed": 1994,
+      "failed": 52,
+      "errors": 0,
+      "skipped": 11,
+      "total": 2057,
+      "coverage_percent": 93.34,
+      "success": false
+    },
+    "unchanged_failure_parity": {
+      "baseline_commit": "a2a2cc705648965e7e174df5c6ae9a2b9a9bb25b",
+      "baseline_tree": "08914bfe901d5e42329191a3f03396037bcaf50f",
+      "reference_master_commit": "4d17acece190888e364f30a645b79b53cf31d66d",
+      "baseline_matches_reference_tree": true,
+      "current_failure_count": 52,
+      "baseline_failure_count": 52,
+      "failure_node_sets_equal": true,
+      "failure_ids": [
+        "tests/test_prospective_primary_session.py::test_cleanup_failure_and_postflight_failure_both_retained",
+        "tests/test_prospective_primary_session.py::test_http_failure_with_successful_gate_stays_failed",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[exit]",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[identity-drift]",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[interrupt]",
+        "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[missing-package]",
+        "tests/test_prospective_primary_session.py::test_primary_failure_never_masks_http_or_cleanup_failure",
+        "tests/test_prospective_primary_session.py::test_primary_uses_exact_selected_request_and_persists_candidate",
+        "tests/test_prospective_primary_session.py::test_real_guarded_git_child_http_and_decoder_composition",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[duplicate]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[http]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[malformed]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[oversize]",
+        "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[status]",
+        "tests/test_prospective_server_session.py::test_completion_failure_is_not_erased_by_successful_stop",
+        "tests/test_prospective_server_session.py::test_completion_request_hash_mismatch_rejected",
+        "tests/test_prospective_server_session.py::test_delayed_socket_creation_does_not_consume_health_attempts",
+        "tests/test_prospective_server_session.py::test_fixed_session_reserved_and_locked",
+        "tests/test_prospective_server_session.py::test_health_attempt_budget_stops_without_completion",
+        "tests/test_prospective_server_session.py::test_interrupted_health_keeps_failure_after_worker_cleanup",
+        "tests/test_prospective_server_session.py::test_loading_health_retries_on_same_socket",
+        "tests/test_prospective_server_session.py::test_real_synthetic_child_http_and_graceful_stop",
+        "tests/test_prospective_server_session.py::test_shared_deadline_expiry_stops_readiness_without_completion",
+        "tests/test_prospective_server_session.py::test_socket_replacement_between_health_and_completion_is_rejected",
+        "tests/test_prospective_server_session.py::test_unexpected_directory_content_is_not_recursively_removed",
+        "tests/test_prospective_server_session.py::test_worker_join_failure_preserves_paths_and_blocks_next_run",
+        "tests/test_prospective_study_controller.py::test_two_real_synthetic_children_transport_and_admission",
+        "tests/test_unix_http_capture.py::test_absolute_deadline_stops_trickling_headers",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: -1\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Encoding: gzip\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nTransfer-Encoding: chunked\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 9999999\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Type: application/json\\r\\nContent-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\n]",
+        "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: text/plain\\r\\nContent-Length: 2\\r\\n]",
+        "tests/test_unix_http_capture.py::test_bad_http",
+        "tests/test_unix_http_capture.py::test_body_deadline_retains_partial_bytes",
+        "tests/test_unix_http_capture.py::test_connect_failure_returns_receipt",
+        "tests/test_unix_http_capture.py::test_connection_setup_expiry_returns_receipt",
+        "tests/test_unix_http_capture.py::test_exact_body_and_locked_receipt",
+        "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[301]",
+        "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[400]",
+        "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[500]",
+        "tests/test_unix_http_capture.py::test_http_header_line_bound",
+        "tests/test_unix_http_capture.py::test_malformed_header_not_silently_ignored",
+        "tests/test_unix_http_capture.py::test_post_request_bound_by_digest",
+        "tests/test_unix_http_capture.py::test_shared_directory_rejected",
+        "tests/test_unix_http_capture.py::test_short_body_retained",
+        "tests/test_unix_http_capture.py::test_socket_replacement_rejected",
+        "tests/test_unix_http_capture.py::test_socket_symlink_and_foreign_owner_rejected"
+      ],
+      "raw_equal_message_count": 50,
+      "normalization_regex": "/tmp/rca-session-[a-z0-9_]{8}(?=/)",
+      "normalized_equal_message_count": 52,
+      "normalized_differences": [],
+      "baseline_checkout_clean_before_and_after": true
+    },
+    "collected_test_delta": {
+      "previous_total": 2026,
+      "current_total": 2057,
+      "delta": 31,
+      "per_file_delta": [
+        {
+          "file": "tests/test_enum_boundary_rejections.py",
+          "previous": 0,
+          "current": 29,
+          "delta": 29
+        },
+        {
+          "file": "tests/test_prospective_freeze.py",
+          "previous": 31,
+          "current": 32,
+          "delta": 1
+        },
+        {
+          "file": "tests/test_prospective_native_prerequisites.py",
+          "previous": 34,
+          "current": 35,
+          "delta": 1
+        }
+      ],
+      "added_ids": [
+        "tests/test_enum_boundary_rejections.py::test_collection_contents_do_not_bypass_enum_rejection[canonical-path]",
+        "tests/test_enum_boundary_rejections.py::test_collection_contents_do_not_bypass_enum_rejection[dataset-split-name]",
+        "tests/test_enum_boundary_rejections.py::test_collection_contents_do_not_bypass_enum_rejection[framework-status]",
+        "tests/test_enum_boundary_rejections.py::test_collection_contents_do_not_bypass_enum_rejection[interface-status]",
+        "tests/test_enum_boundary_rejections.py::test_collection_contents_do_not_bypass_enum_rejection[runtime-dependency]",
+        "tests/test_enum_boundary_rejections.py::test_collection_contents_do_not_bypass_enum_rejection[runtime-network]",
+        "tests/test_enum_boundary_rejections.py::test_collection_contents_do_not_bypass_enum_rejection[runtime-support]",
+        "tests/test_enum_boundary_rejections.py::test_collection_contents_do_not_bypass_enum_rejection[runtime-telemetry]",
+        "tests/test_enum_boundary_rejections.py::test_collection_contents_do_not_bypass_enum_rejection[template-rights]",
+        "tests/test_enum_boundary_rejections.py::test_malformed_extra_split_is_not_ignored_when_required_names_exist[array]",
+        "tests/test_enum_boundary_rejections.py::test_malformed_extra_split_is_not_ignored_when_required_names_exist[object]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[array-canonical-path]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[array-dataset-split-name]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[array-framework-status]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[array-interface-status]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[array-runtime-dependency]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[array-runtime-network]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[array-runtime-support]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[array-runtime-telemetry]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[array-template-rights]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[object-canonical-path]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[object-dataset-split-name]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[object-framework-status]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[object-interface-status]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[object-runtime-dependency]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[object-runtime-network]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[object-runtime-support]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[object-runtime-telemetry]",
+        "tests/test_enum_boundary_rejections.py::test_unhashable_enum_values_report_the_intended_error[object-template-rights]",
+        "tests/test_prospective_freeze.py::test_shape_guard_change_after_freeze_is_rejected",
+        "tests/test_prospective_native_prerequisites.py::test_each_fixed_source_drift_rejected[tools/json_shapes.py]"
+      ],
+      "removed_ids": []
+    }
+  },
+  "review": {
+    "blocking_findings": [],
+    "roles": [
+      "root integration and global verification",
+      "native I/O implementation lane",
+      "legacy/native protocol implementation lane",
+      "read-only contract and baseline reviewer"
+    ],
+    "limits": "Shared-context agent engineering review; not independent human or model observations."
+  },
+  "prior_hosted_acceptance": {
+    "pull_request": 128,
+    "head": "d8da1cb63ec40ca7200ec2ff0cbe079dd9cb18a2",
+    "merge_commit": "4d17acece190888e364f30a645b79b53cf31d66d",
+    "quality_run": 43416154826,
+    "quality": "success",
+    "dependency_review": "success",
+    "privacy_secrets": "success",
+    "skill_conformance": "success",
+    "offline_security": "queued_not_a_completed_scan"
+  },
+  "hosted_ci": {
+    "status": "required_on_final_pr_head_after_documentation",
+    "pass_claim": false,
+    "required_before_merge": [
+      "Quality",
+      "Dependency Review",
+      "Privacy and secrets",
+      "Agent Skill Conformance"
+    ],
+    "separate_offline_security": "Observe separately; queued is not a completed scan; workflow unchanged."
+  },
+  "evidence_sha256": {
+    "rcagent-typing-native-before.json": "5bc8b4f93af38eebc287e11999a1525509b8f457b78cfb67c6239c8391c1278f",
+    "rcagent-typing-native-after.json": "05f721c202ebc9297625c21de019f3d1c0c27db75e07b7f8a47d7a5475006d05",
+    "rcagent-typing-native-retained-first.json": "4e5727745160e6999dc4f918a7e793960698ed03a826920b6098292a7da79c0c",
+    "rcagent-typing-native-retained-final.json": "213161ae283aaeeaa664bee626a91c0db0aba2c3744c309f751ac5f3adce4b45",
+    "rcagent-typing-native-full-tests.xml": "30f5d4c7f1e6c12b20f0f3f21d1ae16c255169b38367af7a8b94a172fc1f0f80",
+    "rcagent-typing-native-full-tests.log": "38fa3320fbfe78aa54bf9dc71a4e9f7c38d68798a21319921e125fb3b8397cfc",
+    "rcagent-typing-native-baseline-52.xml": "93755a96e30034912162cae12fe0c8df0a5e073966ed80a46674351bc56cb073",
+    "rcagent-typing-native-baseline-52.log": "be26b9e5c31f19d6fbc1c5d88287ed4e2af4a7f7279822c0a0420f611eb06279",
+    "rcagent-typing-native-baseline-52-comparison.json": "8213182130acfe86a6401e69d968538f41a10976ec852ec03c9d83d87bc31901",
+    "rcagent-typing-native-baseline-52-command.json": "01c61867f3d00cbc89ae57f7f19565bb3010fa00ec34c6a6bf2eaafec6499168",
+    "rcagent-typing-native-baseline-52-preflight.json": "0aec96f3ff43035616f1fbac0e2c1a307993630fbdf010e82348b7179ca618cc",
+    "rcagent-typing-native-test-count-delta.json": "14672f88343ea91985c20d2585088072420ef1d530bedbde24430d8d4db8ec76",
+    "rcagent-typing-native-conformance.json": "cc457afaab607aa83ea31a22fa8de59e17b8a74fdcc890f527c578b0eddb3a70",
+    "rcagent-typing-native-benchmark.json": "d1a34781f1dfbde7bec86b8f26ccbf24aba740e38b6d34b04b38818adce3a634",
+    "rcagent-enum-before.xml": "62a565937cabbaa749521941b597f3b0103605162125b41ec8da5dd8314ebe06",
+    "rcagent-enum-after.xml": "37d62377239b0ca5c07b17136340df25de6f4ddf670fd1abcbc1015a38199715",
+    "rcagent-enum-types.json": "2b0870a595df9a6bdbb4d894c5e33a05b805a66b9394d56de1669b8ff535b6a4",
+    "rcagent-native-consumer-tests.log": "d6e48e6402ff4e2b61a03a3568f3b0887954d686238d4b7466c18281e3c431ec"
+  },
+  "limitations": [
+    "52 local socket-dependent failures remain failures; exact unchanged-source parity does not prove socket integration success.",
+    "4431 strict diagnostics remain as measured non-growing legacy debt.",
+    "The nine known enum fields are repaired; this is not proof that every repository boundary is free of enum/hashability defects.",
+    "Current source inventories enumerate consumed dependencies; they are not a claim of complete repository attestation.",
+    "No clinical qualification, model observation, Rust migration or historical study requalification."
+  ]
+}

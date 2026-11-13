@@ -3,22 +3,26 @@
 import base64
 import copy
 import json
+from collections.abc import Mapping
+from pathlib import Path
 
 import pytest
 
+from tests.prospective_fixture_types import mapping, sequence
 from tests.test_prospective_protocol import fixture as legacy_fixture
 from tests.test_prospective_protocol import pin
 from tools import prospective_native_protocol as subject
 from tools import prospective_protocol as legacy
 
 
-def fixture(root):
-    path, value = legacy_fixture(root)
-    value.update(
-        protocol_version="2.0.0",
-        normalization="llama-native-json-v1",
-        runner_contract_version=subject.runner.VERSION,
-    )
+def fixture(root: Path) -> tuple[Path, subject.NativeProtocolDocument]:
+    path, declaration = legacy_fixture(root)
+    value: subject.NativeProtocolDocument = {
+        **declaration,
+        "protocol_version": "2.0.0",
+        "normalization": "llama-native-json-v1",
+        "runner_contract_version": subject.runner.VERSION,
+    }
     prompt = root / value["prompt_template"]["path"]
     prompt.write_bytes(b"\xef\xbb\xbfSynthetic\r\n{{INPUT}}\n")
     value["prompt_template"]["sha256"] = pin(prompt)
@@ -26,16 +30,16 @@ def fixture(root):
     return path, value
 
 
-def rewrite(path, value):
+def rewrite(path: Path, value: object) -> subject.NativeProtocolCandidate:
     path.write_text(json.dumps(value), encoding="utf-8")
     return subject.validate_protocol(path, pin(path))
 
 
-def test_native_version_is_distinct():
+def test_native_version_is_distinct() -> None:
     assert subject.PROTOCOL_VERSION == "2.0.0"
 
 
-def test_private_validated_view_preserves_public_api(tmp_path):
+def test_private_validated_view_preserves_public_api(tmp_path: Path) -> None:
     path, value = fixture(tmp_path)
     parsed, candidate = subject._validated_candidate(path, pin(path))
     assert parsed == value
@@ -56,13 +60,13 @@ def test_private_validated_view_preserves_public_api(tmp_path):
     }
 
 
-def test_native_rejects_unchanged_legacy_declaration(tmp_path):
+def test_native_rejects_unchanged_legacy_declaration(tmp_path: Path) -> None:
     path, _ = legacy_fixture(tmp_path)
     with pytest.raises(ValueError):
         subject.validate_protocol(path, pin(path))
 
 
-def test_native_candidate_builds_two_exact_slot_requests(tmp_path):
+def test_native_candidate_builds_two_exact_slot_requests(tmp_path: Path) -> None:
     path, value = fixture(tmp_path)
     result = subject.validate_protocol(path, pin(path))
     assert result["status"] == "native_protocol_candidate_valid"
@@ -84,21 +88,24 @@ def test_native_candidate_builds_two_exact_slot_requests(tmp_path):
     assert "request-response-binding-unverified" in result["limitations"]
 
 
-def test_protocol_and_references_read_once_then_exact_retained_bytes_used(tmp_path, monkeypatch):
+def test_protocol_and_references_read_once_then_exact_retained_bytes_used(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     path, value = fixture(tmp_path)
     original_read, original_artifact = legacy.read_json, legacy.artifact
-    reads, retained = [], {}
+    reads: list[Path] = []
+    retained: dict[str, bytes] = {}
 
-    def read_once(file):
+    def read_once(file: Path) -> tuple[object, str]:
         assert file not in reads
         reads.append(file)
         result = original_read(file)
         file.write_bytes(b"changed after pinned read")
         return result
 
-    def artifact_once(root, ref):
+    def artifact_once(root: Path, ref: Mapping[str, str]) -> bytes:
         assert ref["path"] not in retained
-        raw = original_artifact(root, ref)
+        raw = original_artifact(root, dict(ref))
         retained[ref["path"]] = raw
         (root / ref["path"]).write_bytes(b"changed after pinned read")
         return raw
@@ -119,7 +126,7 @@ def test_protocol_and_references_read_once_then_exact_retained_bytes_used(tmp_pa
 
 
 @pytest.mark.parametrize("mode", ["identity-utf8-v1", "strict-runtime-wrapper-v1"])
-def test_native_rejects_both_legacy_modes(tmp_path, mode):
+def test_native_rejects_both_legacy_modes(tmp_path: Path, mode: str) -> None:
     path, value = fixture(tmp_path)
     value["normalization"] = mode
     with pytest.raises(ValueError):
@@ -146,12 +153,12 @@ def test_native_rejects_both_legacy_modes(tmp_path, mode):
         "invalid-utf8",
     ],
 )
-def test_native_adversarial_declarations(tmp_path, mutation):
+def test_native_adversarial_declarations(tmp_path: Path, mutation: str) -> None:
     path, value = fixture(tmp_path)
     if mutation == "legacy-version":
         value["protocol_version"] = "1.0.0"
     elif mutation == "missing-runner":
-        del value["runner_contract_version"]
+        del mapping(value)["runner_contract_version"]
     elif mutation == "wrong-runner":
         value["runner_contract_version"] = "unknown"
     elif mutation == "duplicate-slot":
@@ -173,7 +180,7 @@ def test_native_adversarial_declarations(tmp_path, mutation):
     elif mutation == "generation-bool":
         value["generation"]["temperature"] = False
     elif mutation == "extra-field":
-        value["admitted"] = True
+        mapping(value)["admitted"] = True
     elif mutation == "path-escape":
         value["cases"][0]["input"]["path"] = "../outside.txt"
     else:
@@ -184,10 +191,12 @@ def test_native_adversarial_declarations(tmp_path, mutation):
         rewrite(path, value)
 
 
-def test_wrong_pin_rejected_before_any_reference_read(tmp_path, monkeypatch):
+def test_wrong_pin_rejected_before_any_reference_read(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     path, _ = fixture(tmp_path)
 
-    def forbidden(*args):
+    def forbidden(*args: object) -> None:
         raise AssertionError("references must not be read")
 
     monkeypatch.setattr(legacy, "artifact", forbidden)
@@ -195,13 +204,13 @@ def test_wrong_pin_rejected_before_any_reference_read(tmp_path, monkeypatch):
         subject.validate_protocol(path, "0" * 64)
 
 
-def test_schemas_do_not_share_mutable_declaration_state():
+def test_schemas_do_not_share_mutable_declaration_state() -> None:
+    native_properties = mapping(subject.SCHEMA["properties"])
+    legacy_properties = mapping(legacy.SCHEMA["properties"])
     assert subject.SCHEMA is not legacy.SCHEMA
-    assert (
-        subject.SCHEMA["properties"]["generation"] is not legacy.SCHEMA["properties"]["generation"]
-    )
-    assert legacy.SCHEMA["properties"]["protocol_version"] == {"const": "1.0.0"}
-    assert legacy.SCHEMA["properties"]["normalization"] == {
+    assert native_properties["generation"] is not legacy_properties["generation"]
+    assert legacy_properties["protocol_version"] == {"const": "1.0.0"}
+    assert legacy_properties["normalization"] == {
         "enum": ["identity-utf8-v1", "strict-runtime-wrapper-v1"]
     }
-    assert "runner_contract_version" not in legacy.SCHEMA["required"]
+    assert "runner_contract_version" not in sequence(legacy.SCHEMA["required"])

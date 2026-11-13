@@ -10,7 +10,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+from typing import Literal, TypedDict, TypeGuard
 
+from tools.json_shapes import is_array, is_object
 from tools.prospective_protocol import GENERATION
 
 MAX_BYTES = 1024 * 1024
@@ -36,8 +38,25 @@ FIELDS = frozenset(
 )
 
 
-def _pairs(pairs: list[tuple[str, object]]) -> dict:
-    result: dict = {}
+class DecodedCompletion(TypedDict):
+    """Selected checked response declarations, without runtime attestation."""
+
+    status: Literal["native_completion_consistent"]
+    normalization: Literal["llama-native-json-v1"]
+    raw_sha256: str
+    content: str
+    content_sha256: str
+    content_bytes: int
+    detokenized_prompt_sha256: str
+    tokens_predicted: int
+    tokens_evaluated: int
+    admitted: Literal[False]
+    study_unlocked: Literal[False]
+    limitations: list[str]
+
+
+def _pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
     for key, value in pairs:
         if key in result:
             raise ValueError("duplicate_json_key")
@@ -49,11 +68,11 @@ def _constant(value: str) -> object:
     raise ValueError("nonfinite_json_number")
 
 
-def _integer(value: object, minimum: int, maximum: int) -> bool:
+def _integer(value: object, minimum: int, maximum: int) -> TypeGuard[int]:
     return type(value) is int and minimum <= value <= maximum
 
 
-def decode_completion(raw: bytes, *, expected_model: str) -> dict:
+def decode_completion(raw: object, *, expected_model: object) -> DecodedCompletion:
     """Check selected response declarations; labels/settings are not attestation.
 
     The response prompt is detokenised input, NOT a byte-for-byte request echo.
@@ -66,12 +85,14 @@ def decode_completion(raw: bytes, *, expected_model: str) -> dict:
         raise ValueError("invalid_expected_model")
     try:
         expected_model.encode("utf-8")
-        value = json.loads(raw.decode("utf-8"), object_pairs_hook=_pairs, parse_constant=_constant)
+        value: object = json.loads(
+            raw.decode("utf-8"), object_pairs_hook=_pairs, parse_constant=_constant
+        )
         # Also reject lone surrogates and numeric overflow in ignored metadata.
         json.dumps(value, ensure_ascii=False, allow_nan=False).encode("utf-8")
     except (ValueError, UnicodeError, RecursionError) as exc:
         raise ValueError("invalid_completion_json") from exc
-    if not isinstance(value, dict) or set(value) != FIELDS:
+    if not is_object(value) or frozenset(value) != FIELDS:
         raise ValueError("unsupported_completion_fields")
     if (
         value["stop"] is not True
@@ -80,14 +101,16 @@ def decode_completion(raw: bytes, *, expected_model: str) -> dict:
         or value["stopping_word"] != ""
     ):
         raise ValueError("incomplete_generation")
+    content_text = value["content"]
+    prompt = value["prompt"]
     if (
-        not isinstance(value["content"], str)
-        or not value["content"]
-        or not isinstance(value["prompt"], str)
-        or not value["prompt"]
+        not isinstance(content_text, str)
+        or not content_text
+        or not isinstance(prompt, str)
+        or not prompt
         or value["model"] != expected_model
         or type(value["has_new_line"]) is not bool
-        or not isinstance(value["timings"], dict)
+        or not is_object(value["timings"])
     ):
         raise ValueError("invalid_completion_metadata")
     counts = (
@@ -97,14 +120,17 @@ def decode_completion(raw: bytes, *, expected_model: str) -> dict:
         ("tokens_evaluated", 1, GENERATION["context_tokens"]),
         ("tokens_cached", 0, GENERATION["context_tokens"]),
     )
-    if any(not _integer(value[key], low, high) for key, low, high in counts):
-        raise ValueError("invalid_completion_counts")
-    if not isinstance(value["tokens"], list) or any(
-        not _integer(token, 0, 2**31 - 1) for token in value["tokens"]
-    ):
+    checked_counts: dict[str, int] = {}
+    for key, low, high in counts:
+        number = value[key]
+        if not _integer(number, low, high):
+            raise ValueError("invalid_completion_counts")
+        checked_counts[key] = number
+    tokens = value["tokens"]
+    if not is_array(tokens) or any(not _integer(token, 0, 2**31 - 1) for token in tokens):
         raise ValueError("invalid_completion_tokens")
     settings = value["generation_settings"]
-    if not isinstance(settings, dict):
+    if not is_object(settings):
         raise ValueError("invalid_generation_settings")
     expected = {
         "seed": GENERATION["seed"],
@@ -120,17 +146,17 @@ def decode_completion(raw: bytes, *, expected_model: str) -> dict:
         or settings.get("stop") != []
     ):
         raise ValueError("generation_settings_mismatch")
-    content = value["content"].encode("utf-8")
+    content = content_text.encode("utf-8")
     return {
         "status": "native_completion_consistent",
         "normalization": "llama-native-json-v1",
         "raw_sha256": hashlib.sha256(raw).hexdigest(),
-        "content": value["content"],
+        "content": content_text,
         "content_sha256": hashlib.sha256(content).hexdigest(),
         "content_bytes": len(content),
-        "detokenized_prompt_sha256": hashlib.sha256(value["prompt"].encode("utf-8")).hexdigest(),
-        "tokens_predicted": value["tokens_predicted"],
-        "tokens_evaluated": value["tokens_evaluated"],
+        "detokenized_prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+        "tokens_predicted": checked_counts["tokens_predicted"],
+        "tokens_evaluated": checked_counts["tokens_evaluated"],
         "admitted": False,
         "study_unlocked": False,
         "limitations": [

@@ -11,17 +11,154 @@ import argparse
 import json
 import re
 from pathlib import Path
+from typing import Literal, TypedDict, TypeGuard
 
+from tools import json_shapes
 from tools.evaluation_preflight import _digest
 from tools.prospective_inventory import REF, artifact, identifier, obj, read_json, validate
 
 
-def fixed(value: object) -> dict:
+class ArtifactReference(TypedDict):
+    path: str
+    sha256: str
+
+
+class ProtocolCase(TypedDict):
+    id: str
+    input: ArtifactReference
+
+
+class ScoringDeclaration(TypedDict):
+    reviewer_class: str
+    roles: list[str]
+    adjudication: str
+    raw_agreement_minimum: float
+    ordinal_agreement_minimum: float
+    hard_gates: list[str]
+    non_operational: bool
+
+
+class ProtocolDocument(TypedDict):
+    """Common document fields after schema and immediate shape validation."""
+
+    schema_version: str
+    kind: str
+    protocol_version: str
+    study_id: str
+    data_class: str
+    case_exposure: str
+    held_out: bool
+    claims_boundary: str
+    repeats: int
+    cases: list[ProtocolCase]
+    condition: dict[str, str]
+    expected_slots: list[str]
+    rubric: ArtifactReference
+    scoring_instructions: ArtifactReference
+    prompt_template: ArtifactReference
+    generation: dict[str, int]
+    technical_retries: int
+    blinding: str
+    normalization: str
+    scoring: ScoringDeclaration
+
+
+class ProtocolCandidateFields(TypedDict):
+    protocol_sha256: str
+    study_id: str
+    expected_slots: Literal[2]
+    study_unlocked: Literal[False]
+    admitted: Literal[False]
+    limitations: list[str]
+
+
+class ProtocolCandidate(ProtocolCandidateFields):
+    status: Literal["protocol_candidate_valid"]
+
+
+def _is_strings(value: object) -> TypeGuard[list[str]]:
+    return json_shapes.is_array(value) and all(isinstance(item, str) for item in value)
+
+
+def _is_text_object(value: object) -> TypeGuard[dict[str, str]]:
+    return json_shapes.is_object(value) and all(isinstance(item, str) for item in value.values())
+
+
+def _is_integer_object(value: object) -> TypeGuard[dict[str, int]]:
+    return json_shapes.is_object(value) and all(type(item) is int for item in value.values())
+
+
+def _is_reference(value: object) -> TypeGuard[ArtifactReference]:
+    return (
+        json_shapes.is_object(value)
+        and isinstance(value.get("path"), str)
+        and isinstance(value.get("sha256"), str)
+    )
+
+
+def _is_case(value: object) -> TypeGuard[ProtocolCase]:
+    return (
+        json_shapes.is_object(value)
+        and isinstance(value.get("id"), str)
+        and _is_reference(value.get("input"))
+    )
+
+
+def _is_cases(value: object) -> TypeGuard[list[ProtocolCase]]:
+    return json_shapes.is_array(value) and all(_is_case(item) for item in value)
+
+
+def _is_scoring(value: object) -> TypeGuard[ScoringDeclaration]:
+    return (
+        json_shapes.is_object(value)
+        and isinstance(value.get("reviewer_class"), str)
+        and _is_strings(value.get("roles"))
+        and isinstance(value.get("adjudication"), str)
+        and isinstance(value.get("raw_agreement_minimum"), (int, float))
+        and isinstance(value.get("ordinal_agreement_minimum"), (int, float))
+        and _is_strings(value.get("hard_gates"))
+        and isinstance(value.get("non_operational"), bool)
+    )
+
+
+def _is_document(value: object) -> TypeGuard[ProtocolDocument]:
+    return (
+        json_shapes.is_object(value)
+        and all(
+            isinstance(value.get(key), str)
+            for key in (
+                "schema_version",
+                "kind",
+                "protocol_version",
+                "study_id",
+                "data_class",
+                "case_exposure",
+                "claims_boundary",
+                "blinding",
+                "normalization",
+            )
+        )
+        and isinstance(value.get("held_out"), bool)
+        and type(value.get("repeats")) is int
+        and type(value.get("technical_retries")) is int
+        and _is_cases(value.get("cases"))
+        and _is_text_object(value.get("condition"))
+        and _is_strings(value.get("expected_slots"))
+        and all(
+            _is_reference(value.get(key))
+            for key in ("rubric", "scoring_instructions", "prompt_template")
+        )
+        and _is_integer_object(value.get("generation"))
+        and _is_scoring(value.get("scoring"))
+    )
+
+
+def fixed(value: object) -> json_shapes.JsonObject:
     return {"const": value}
 
 
-DIGEST = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
-GENERATION = {
+DIGEST: json_shapes.JsonObject = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+GENERATION: dict[str, int] = {
     "seed": 42,
     "temperature": 0,
     "max_tokens": 512,
@@ -29,85 +166,91 @@ GENERATION = {
     "timeout_seconds": 120,
 }
 CLAIMS = "research-only-public-two-case-one-condition-no-comparative-or-operational-claims"
-SCHEMA = obj(
-    {
-        "schema_version": fixed("1.0"),
-        "kind": fixed("prospective-study-protocol"),
-        "protocol_version": fixed("1.0.0"),
-        "study_id": identifier("prospective"),
-        "data_class": fixed("synthetic"),
-        "case_exposure": fixed("public"),
-        "held_out": {"type": "boolean", "const": False},
-        "claims_boundary": fixed(CLAIMS),
-        "repeats": fixed(1),
-        "cases": {
-            "type": "array",
-            "minItems": 2,
-            "maxItems": 2,
-            "items": obj({"id": identifier("case"), "input": REF}),
-        },
-        "condition": obj(
-            {
-                "id": identifier("condition"),
-                "model_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,99}$"},
-                "model_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-                **dict.fromkeys(
-                    (
-                        "model_sha256",
-                        "runtime_sha256",
-                        "profile_sha256",
-                        "adapter_sha256",
-                        "registry_sha256",
+SCHEMA = json_shapes.require_object(
+    obj(
+        {
+            "schema_version": fixed("1.0"),
+            "kind": fixed("prospective-study-protocol"),
+            "protocol_version": fixed("1.0.0"),
+            "study_id": identifier("prospective"),
+            "data_class": fixed("synthetic"),
+            "case_exposure": fixed("public"),
+            "held_out": {"type": "boolean", "const": False},
+            "claims_boundary": fixed(CLAIMS),
+            "repeats": fixed(1),
+            "cases": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": obj({"id": identifier("case"), "input": REF}),
+            },
+            "condition": obj(
+                {
+                    "id": identifier("condition"),
+                    "model_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,99}$"},
+                    "model_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+                    **dict.fromkeys(
+                        (
+                            "model_sha256",
+                            "runtime_sha256",
+                            "profile_sha256",
+                            "adapter_sha256",
+                            "registry_sha256",
+                        ),
+                        DIGEST,
                     ),
-                    DIGEST,
-                ),
-            }
-        ),
-        "expected_slots": {
-            "type": "array",
-            "minItems": 2,
-            "maxItems": 2,
-            "uniqueItems": True,
-            "items": {"type": "string", "maxLength": 150},
-        },
-        "rubric": REF,
-        "scoring_instructions": REF,
-        "prompt_template": REF,
-        "generation": obj({key: fixed(value) for key, value in GENERATION.items()}),
-        "technical_retries": fixed(1),
-        "blinding": fixed("metadata-blinding-v1"),
-        "normalization": {"enum": ["identity-utf8-v1", "strict-runtime-wrapper-v1"]},
-        "scoring": obj(
-            {
-                "reviewer_class": fixed("agent"),
-                "roles": fixed(["scorer-1", "scorer-2", "scorer-3"]),
-                "adjudication": fixed("after-three-sealed-submissions"),
-                "raw_agreement_minimum": fixed(0.80),
-                "ordinal_agreement_minimum": fixed(0.67),
-                "hard_gates": fixed(
-                    ["privacy", "cultural-safety", "clinical-safety", "authority-boundaries"]
-                ),
-                "non_operational": {"type": "boolean", "const": True},
-            }
-        ),
-    }
+                }
+            ),
+            "expected_slots": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "uniqueItems": True,
+                "items": {"type": "string", "maxLength": 150},
+            },
+            "rubric": REF,
+            "scoring_instructions": REF,
+            "prompt_template": REF,
+            "generation": obj({key: fixed(value) for key, value in GENERATION.items()}),
+            "technical_retries": fixed(1),
+            "blinding": fixed("metadata-blinding-v1"),
+            "normalization": {"enum": ["identity-utf8-v1", "strict-runtime-wrapper-v1"]},
+            "scoring": obj(
+                {
+                    "reviewer_class": fixed("agent"),
+                    "roles": fixed(["scorer-1", "scorer-2", "scorer-3"]),
+                    "adjudication": fixed("after-three-sealed-submissions"),
+                    "raw_agreement_minimum": fixed(0.80),
+                    "ordinal_agreement_minimum": fixed(0.67),
+                    "hard_gates": fixed(
+                        ["privacy", "cultural-safety", "clinical-safety", "authority-boundaries"]
+                    ),
+                    "non_operational": {"type": "boolean", "const": True},
+                }
+            ),
+        }
+    ),
+    context="protocol schema",
 )
 
 
 def _validate_candidate(
-    path: Path, expected_sha256: str, schema: dict
-) -> tuple[dict, dict, dict[str, bytes]]:
+    path: Path, expected_sha256: str, schema: json_shapes.JsonObject
+) -> tuple[ProtocolCandidate, ProtocolDocument, dict[str, bytes]]:
     """Share existing checks and retain the exact reference bytes already validated."""
     path = path.absolute()
     value, pin = read_json(path)
     if not _digest(expected_sha256) or pin != expected_sha256:
         raise ValueError("protocol_pin_mismatch")
     validate(value, schema)
-    if not isinstance(value, dict):
+    if not json_shapes.is_object(value):
         raise ValueError("invalid_validated_object_type")
-    integers = [value["repeats"], value["technical_retries"], *value["generation"].values()]
+    generation = json_shapes.require_object(value["generation"], context="protocol generation")
+    integers = [value["repeats"], value["technical_retries"], *generation.values()]
     if any(type(item) is not int for item in integers):
         raise ValueError("invalid_integer_type")
+    if not _is_document(value):
+        raise ValueError("invalid_validated_object_type")
     condition = value["condition"]
     identities = [("prospective", value["study_id"]), ("condition", condition["id"])]
     identities.extend(("case", case["id"]) for case in value["cases"])
@@ -134,12 +277,12 @@ def _validate_candidate(
             raise ValueError("duplicate_artifact_path")
         paths.add(ref["path"].casefold())
         try:
-            data = artifact(path.parent, ref)
+            data = artifact(path.parent, dict(ref))
             data.decode("utf-8")
             artifacts[ref["path"]] = data
         except UnicodeError as exc:
             raise ValueError("invalid_artifact_utf8") from exc
-    result = {
+    result: ProtocolCandidate = {
         "status": "protocol_candidate_valid",
         "protocol_sha256": pin,
         "study_id": value["study_id"],
@@ -158,7 +301,7 @@ def _validate_candidate(
     return result, value, artifacts
 
 
-def validate_protocol(path: Path, expected_sha256: str) -> dict:
+def validate_protocol(path: Path, expected_sha256: str) -> ProtocolCandidate:
     """Validate candidate declarations and referenced text, not primary evidence."""
     return _validate_candidate(path, expected_sha256, SCHEMA)[0]
 

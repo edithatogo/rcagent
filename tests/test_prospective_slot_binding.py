@@ -8,13 +8,14 @@ import pytest
 from tests.test_prospective_native_protocol import fixture as native_fixture
 from tests.test_prospective_protocol import pin
 from tools import prospective_slot_binding as subject
+from tools.json_shapes import JsonObject
 
 
 @pytest.fixture
 def synthetic(tmp_path, monkeypatch):
     path, value = native_fixture(tmp_path)
     condition = value["condition"]
-    receipt = {
+    receipt: JsonObject = {
         key: condition[key]
         for key in (
             "model_id",
