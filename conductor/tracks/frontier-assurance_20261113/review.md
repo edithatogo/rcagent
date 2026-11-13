@@ -60,3 +60,27 @@ no file/rule growth. The full local suite retains 52 environment failures whose
 exact IDs and normalized messages match a fresh run on master's unchanged tree.
 These agent reviews share context and do not establish independent model agreement,
 clinical validity or successful execution of the unavailable socket paths.
+
+## Native I/O, protocol and enum-boundary increment, PR #129
+
+The [native-contract receipt](./typing-native-evidence.md) records two separate
+implementation lanes, root integration and read-only review. The reviewer
+reproduced 180 native I/O and 64 protocol test passes, and checked exact schema
+equality, independent schema objects, exact-integer ordering, bounded parsing,
+one-read artifact handling, retained request bytes and original rejection tests.
+No blocking source or contract issue remained in the integrated review.
+
+Root's nine enum guards were reviewed with the 20 concrete pre-fix `TypeError`
+reproductions, 29 new tests and the current dependency-inventory changes. The
+freeze tamper test is discriminating: omitting `json_shapes.py` from that inventory
+would ignore the changed helper and fail the required rejection assertion.
+The consumer annotations preserve the existing runtime representation.
+
+The single unmatched schema-boundary report traces to the unchanged upstream
+`prospective_inventory.obj` return. Only the protocol file was re-anchored to its
+seven residual reports, down from 51. Ordinary shrinking removed another 548;
+the final 4,431 baseline entries and caps exactly match the independent empty
+measurement. No file/rule grew, and the new enum test module has no allowance.
+An unchanged-base rerun reproduces all 52 local failed IDs, with identical messages
+after normalizing only two generated session-directory names. Hosted acceptance
+must establish the socket-dependent execution separately.

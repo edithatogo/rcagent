@@ -6,15 +6,16 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-12T20:10:44Z",
-  "updated_at": "2026-11-13T21:16:00.808871+10:00",
+  "updated_at": "2026-11-13T22:02:23.503741+10:00",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/125",
     "parent_issue": "https://github.com/edithatogo/rcagent/issues/2",
-    "pull_request": "https://github.com/edithatogo/rcagent/pull/128",
-    "implementation_commit": "b83b461d6c12c5e6ae6aa535b87c2fb0715593d6",
-    "last_merged_pull_request": "https://github.com/edithatogo/rcagent/pull/127",
-    "last_merged_commit": "a38dd9c1215c317bd5d0558b9383c1444f9cbfb2"
+    "pull_request": "https://github.com/edithatogo/rcagent/pull/129",
+    "implementation_commit": "d2a8b217e97fe427acbc21a70d94a7ca20e98bb3",
+    "last_merged_pull_request": "https://github.com/edithatogo/rcagent/pull/128",
+    "last_merged_commit": "4d17acece190888e364f30a645b79b53cf31d66d",
+    "active_branch": "fix/typing-native-contracts-20261113"
   },
   "autonomy": "continuous-autonomy-with-owner-decision-gates",
   "autonomy_contract": "../../autonomy.json",
@@ -28,7 +29,7 @@
   ],
   "description": "Repair confirmed integrity, public-export and template defects; implement strict quality tooling; coordinate staged source/timeline/decision demonstrations, triangulation, hallucination reduction and prospective frontier comparison.",
   "verification": {
-    "status": "typing_contract_batch_locally_verified_hosted_pending",
+    "status": "native_contract_batch_locally_verified_current_head_hosted_required",
     "scope": "engineering_repairs_prospective_plan_and_bounded_typing_reduction",
     "receipt": "./delivery-evidence.md",
     "model_runs": 0,
@@ -37,26 +38,29 @@
     "agent_review": "./review.md",
     "integrated_quality_receipt": "../../../quality/verification-integrated-20261113.json",
     "hosted_ci": {
-      "status": "required_on_final_pr128_head",
-      "observed_source_commit": "b83b461d6c12c5e6ae6aa535b87c2fb0715593d6",
+      "status": "required_on_final_pr_head_after_documentation",
+      "observed_source_commit": "d2a8b217e97fe427acbc21a70d94a7ca20e98bb3",
       "pass_claim": false
     },
-    "typing_receipt": "./typing-contracts-evidence.md",
-    "typing_measurement": "../../../quality/typing-contracts-verification-20261113.json",
-    "typing_remaining_diagnostics": 5023,
+    "typing_receipt": "./typing-native-evidence.md",
+    "typing_measurement": "../../../quality/typing-native-verification-20261113.json",
+    "typing_remaining_diagnostics": 4431,
     "previous_typing_acceptance": {
-      "head": "ce35323999b87ee208c280a6b5ff5c0ff498dfc4",
-      "quality_run": 43400688051,
+      "head": "d8da1cb63ec40ca7200ec2ff0cbe079dd9cb18a2",
+      "quality_run": 43416154826,
       "quality": "success",
       "dependency_review": "success",
       "privacy_secrets": "success",
       "skill_conformance": "success",
       "offline_security": "queued_not_a_completed_scan",
-      "merged_commit": "a38dd9c1215c317bd5d0558b9383c1444f9cbfb2"
+      "merged_commit": "4d17acece190888e364f30a645b79b53cf31d66d"
     },
-    "continuation_base": "a38dd9c1215c317bd5d0558b9383c1444f9cbfb2",
-    "continuation_initial_diagnostics": 6012,
-    "previous_typing_receipt": "./typing-evidence.md"
+    "continuation_base": "4d17acece190888e364f30a645b79b53cf31d66d",
+    "continuation_initial_diagnostics": 5023,
+    "previous_typing_receipt": "./typing-contracts-evidence.md",
+    "earlier_typing_receipts": [
+      "./typing-evidence.md"
+    ]
   },
   "decisions": [
     "../../decisions/20261113-001-frontier-assurance.md"

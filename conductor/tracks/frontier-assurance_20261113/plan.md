@@ -9,7 +9,7 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
 - [x] FAW03: correct portable templates, hash-bind current admission and enforce selection/package invariants; preserve historical quarantine (FA03; accepted with PR127).
 - [x] FAW04: lock CI installation; broad Ruff plus format; strict basedpyright and measured legacy baseline with no growth (FA04; accepted with PR127, remaining debt belongs to FAW06).
 - [x] FAW05: add Hypothesis, pytest-gremlins, Scalene, Bandit and Vulture with real invocations and meaningful failure behaviour (FA05; accepted with PR127).
-- [~] FAW06: migrate legacy unknown/Any boundaries into typed schemas/modules in bounded batches, reducing rather than refreshing the baseline (FA04; each batch separate and reviewed). The process/HTTP/session/controller increment reduces 6,012 diagnostics at master `a38dd9c` to 5,023, preserves historical pins and closes the reproduced corrupt-coverage resource leak; see the [current receipt](./typing-contracts-evidence.md). PR #128 requires current-head hosted acceptance. Next: native protocol, request/completion and observation-admission contracts, then the execution gate with its consumers.
+- [~] FAW06: migrate legacy unknown/Any boundaries into typed schemas/modules in bounded batches, reducing rather than refreshing the baseline (FA04; each batch separate and reviewed). PR #128 merged as `4d17ace` after complete hosted acceptance. The next native I/O/protocol increment in PR #129 reduces 5,023 diagnostics to 4,431 and repairs nine recorded enum/hashability defects; see the [current receipt](./typing-native-evidence.md). Local verification and agent review are complete; exact-head hosted acceptance remains required. Inventory helpers, observation-admission and the execution gate follow with their consumers.
 - [ ] Checkpoint A: run applicable local/hosted gates, three-role agent review, merge evidence and rollback notes; mark only verified leaves complete.
 
 ## Phase B: Incremental component demonstrations
@@ -54,8 +54,11 @@ FAW01–05 are accepted in merged PR127 after complete hosted Quality, dependenc
 privacy/secrets and official conformance success. The user's current
 priority is FAW06: finish and verify the bounded typing batches before starting
 new capability demonstrations. Next typing work should replace remaining bare
-dictionary/process callback contracts and guard domain enum values before hashed
-membership; checked container shapes alone do not validate those values. Retain
+inventory/schema, observation-admission and execution-plan contracts with their
+consumers. The nine recorded domain enum/hashability fields now have checked
+string guards and concrete/property regressions; further boundary findings need
+their own reproductions. Checked container shapes alone do not validate domain
+values. Retain
 intentional private-access debt until its test/API design is reviewed. The next
 capability batch remains FAW07–10, which maps into existing CAW02/04/08/10/20 rather
 than creating duplicate implementation counters. Model/hardware/data-dependent

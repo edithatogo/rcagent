@@ -139,3 +139,30 @@ enum/hashability defects. Preserve frozen production bytes when selecting that w
 The component demonstrations, hallucination-reduction comparisons, death-review
 profiles and selective Rust experiment remain in their existing tracks. This
 increment adds no clinical qualification, model observation or Rust migration.
+
+## Subsequent hosted acceptance and merge
+
+Accepted final head: `d8da1cb63ec40ca7200ec2ff0cbe079dd9cb18a2`, tree
+`08914bfe901d5e42329191a3f03396037bcaf50f`. PR #128 merged normally as
+`4d17acece190888e364f30a645b79b53cf31d66d` after these observed results:
+
+- [Quality 43416154826](https://github.com/edithatogo/rcagent/actions/runs/43416154826)
+  succeeded, including every matrix, complete-coverage, mutation, profile and
+  required aggregate job.
+- Linux Python 3.11 and 3.15.2 each passed 2,026 tests at 94.84% coverage; macOS
+  Python 3.15.2 passed 2,026 at 94.87%. Windows passed 1,766 with 260 platform skips.
+- All four branch databases were validated and their combined 90% floor passed.
+  Mutation killed 24/24 with no excluded verdicts. Scalene recorded the required
+  300 synthetic round-trips and passed profile validation.
+- [Dependency Review 43416154913](https://github.com/edithatogo/rcagent/actions/runs/43416154913),
+  [Privacy and secrets 43416154834](https://github.com/edithatogo/rcagent/actions/runs/43416154834)
+  and [Agent Skill Conformance 43416154890](https://github.com/edithatogo/rcagent/actions/runs/43416154890)
+  succeeded.
+- [Offline AI security 43416155395](https://github.com/edithatogo/rcagent/actions/runs/43416155395)
+  remained queued for its dedicated self-hosted runner. It was not a completed
+  scan or a required check in refreshed active ruleset 21834601.
+
+No administrator bypass or review-count change was used. This append records
+later hosted acceptance without rewriting the local publication observations.
+The [next native-contract receipt](./typing-native-evidence.md) owns subsequent
+typing and enum-boundary changes.
