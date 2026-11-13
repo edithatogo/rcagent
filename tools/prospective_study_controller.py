@@ -8,40 +8,103 @@ JSON provenance claim, global deduplication or permission to score/unblind.
 from __future__ import annotations
 
 import os
+from collections.abc import Mapping
 from pathlib import Path
+from typing import Literal, NotRequired, Protocol, TypeAlias, TypedDict
 
+from tools import json_shapes
 from tools import prospective_execution_gate as gate
 from tools import prospective_native_protocol as native
 from tools import prospective_observation_admission as admission
 from tools import prospective_primary_session as primary
 from tools import prospective_server_session as session
+from tools.prospective_observation_admission import _Receipt
+
+Disposition: TypeAlias = Literal[
+    "not-attempted", "attempted-outcome-unknown", "failed-receipt-retained", "captured"
+]
+FailureStage: TypeAlias = Literal[
+    "persistence", "capture", "readback", "capture_validation", "admission"
+]
+
+
+class JournalStream(Protocol):
+    def fileno(self) -> int: ...
+
+    def write(self, raw: bytes, /) -> int: ...
+
+    def flush(self) -> None: ...
+
+
+class ControllerResult(TypedDict):
+    """Durable controller outcome, without permission to unblind or score."""
+
+    status: Literal["controller_failed", "controller_admitted_before_blinding"]
+    error: Literal["none", "capture_or_admission_failed"]
+    admitted: bool
+    admission_before_blinding: bool
+    study_unlocked: Literal[False]
+    scoring_start: Literal[False]
+    run_id: str
+    dispositions: dict[str, Disposition]
+    limitations: list[str]
+    journal_sha256: NotRequired[str]
+    admission_sha256: NotRequired[str]
+    failure_stage: NotRequired[FailureStage]
+    outcome_persistence_error: NotRequired[Literal["failure_outcome_persistence_failed"]]
+    journal_persistence_error: NotRequired[Literal["journal_persistence_failed"]]
+
+
+def _strings(value: object) -> list[str]:
+    if not json_shapes.is_array(value):
+        raise ValueError("invalid_controller_context")
+    result: list[str] = []
+    for item in value:
+        if not isinstance(item, str):
+            raise ValueError("invalid_controller_context")
+        result.append(item)
+    return result
+
+
+def _plan_value(plan: session.PrimaryPlan) -> json_shapes.JsonObject:
+    return json_shapes.require_object(plan.value(), context="controller plan")
 
 
 def _plans(protocol_path: Path, pin: str, review: str, root: Path, model_root: Path):
     if ".." in protocol_path.parts or type(review) is not str:
         raise ValueError("invalid_controller_context")
     root, protocol_path, _ = gate.freeze._repository(protocol_path, review, root)
-    value, _ = native._validated_candidate(protocol_path, pin)
-    slots = value["expected_slots"]
+    value = json_shapes.require_object(
+        native._validated_candidate(protocol_path, pin)[0], context="controller protocol"
+    )
+    slots = _strings(value["expected_slots"])
     plans = tuple(
         gate._verify(protocol_path, pin, slot, review, root, model_root) for slot in slots
     )
     if len(plans) != 2:
         raise ValueError("invalid_controller_denominator")
-    common = []
+    common: list[bytes] = []
     for plan in plans:
-        current = plan.value()
-        evidence = dict(current["evidence"])
+        current = _plan_value(plan)
+        evidence = dict(
+            json_shapes.require_object(current["evidence"], context="controller evidence")
+        )
         evidence.pop("slot_id")
         common.append(
             admission._canonical({"admission": current["admission"], "evidence": evidence})
         )
     if common[0] != common[1]:
         raise ValueError("controller_gate_disagreement")
-    return protocol_path, root, plans
+    return protocol_path, root, (plans[0], plans[1])
 
 
-def _append(stream, path, parent, events: list[dict], event: dict) -> None:
+def _append(
+    stream: JournalStream,
+    path: Path,
+    parent: tuple[int, int],
+    events: list[json_shapes.JsonObject],
+    event: json_shapes.JsonObject,
+) -> None:
     if session._directory(path.parent) != parent:
         raise ValueError("owned_directory_changed")
     existing, _ = admission._read(path, parent, admission.MAX_JOURNAL)
@@ -68,7 +131,7 @@ def _append(stream, path, parent, events: list[dict], event: dict) -> None:
     events.append(event)
 
 
-def _write_result(path: Path, parent, result: dict) -> None:
+def _write_result(path: Path, parent: tuple[int, int], result: Mapping[str, object]) -> None:
     descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     with os.fdopen(descriptor, "wb") as stream:
         session._reserved(path, descriptor, parent)
@@ -80,7 +143,7 @@ def _write_result(path: Path, parent, result: dict) -> None:
         session._reserved(path, descriptor, parent)
 
 
-def _sync_directory(path: Path, expected) -> None:
+def _sync_directory(path: Path, expected: tuple[int, int]) -> None:
     if session._directory(path) != expected:
         raise ValueError("owned_directory_changed")
     descriptor = os.open(
@@ -108,14 +171,15 @@ def run_study(
     root: Path,
     model_root: Path,
     evidence_root: Path,
-) -> dict:
+) -> ControllerResult:
     """Own two once-only captures and consume immediate admission internally."""
     protocol_path, root, plans = _plans(protocol_path, pin, review_commit, root, model_root)
     if ".." in evidence_root.parts:
         raise ValueError("unsafe_evidence_root")
     evidence_root = evidence_root.absolute()
     parent_identity = session._directory(evidence_root)
-    header = admission._header(plans)
+    header = json_shapes.require_object(admission._header(plans), context="controller header")
+    slots = _strings(header["slots"])
     run_id = admission._sha(
         admission._canonical(
             {key: header[key] for key in ("study_id", "protocol_sha256", "review_commit")}
@@ -124,7 +188,12 @@ def run_study(
     directory = evidence_root / ("run-" + run_id)
     # Revalidate exact plans before reserving persistent attempt ownership.
     for plan in plans:
-        slot = plan.value()["evidence"]["slot_id"]
+        evidence = json_shapes.require_object(
+            _plan_value(plan)["evidence"], context="controller evidence"
+        )
+        slot = evidence["slot_id"]
+        if not isinstance(slot, str):
+            raise ValueError("invalid_controller_context")
         if (
             gate._verify(protocol_path, pin, slot, review_commit, root, model_root).payload
             != plan.payload
@@ -138,10 +207,10 @@ def run_study(
     owned_parent = session._directory(directory)
     journal_path = directory / "journal.jsonl"
     descriptor = os.open(journal_path, os.O_CREAT | os.O_EXCL | os.O_RDWR, 0o600)
-    events, receipts = [], []
-    slots = header["slots"]
-    dispositions = dict.fromkeys(slots, "not-attempted")
-    result = {
+    events: list[json_shapes.JsonObject] = []
+    receipts: list[_Receipt] = []
+    dispositions: dict[str, Disposition] = dict.fromkeys(slots, "not-attempted")
+    result: ControllerResult = {
         "status": "controller_failed",
         "error": "none",
         "admitted": False,
@@ -159,7 +228,7 @@ def run_study(
         ],
     }
     with os.fdopen(descriptor, "w+b") as stream:
-        stage = "persistence"
+        stage: FailureStage = "persistence"
         try:
             _append(stream, journal_path, owned_parent, events, header)
             # Persist the newly reserved directory entry before any child attempt.
@@ -170,7 +239,15 @@ def run_study(
                 receipt_path = directory / name
                 if receipt_path.exists() or receipt_path.is_symlink():
                     raise ValueError("existing_slot_receipt")
-                _append(stream, journal_path, owned_parent, events, admission._start(slot, name))
+                _append(
+                    stream,
+                    journal_path,
+                    owned_parent,
+                    events,
+                    json_shapes.require_object(
+                        admission._start(slot, name), context="controller start event"
+                    ),
+                )
                 if session._directory(directory) != owned_parent:
                     raise ValueError("owned_directory_changed")
                 dispositions[slot] = "attempted-outcome-unknown"
@@ -186,13 +263,15 @@ def run_study(
                 returned_bytes = admission._canonical(returned)
                 if admission._canonical(admission._parse(raw)) != returned_bytes:
                     raise ValueError("primary_return_receipt_mismatch")
-                row = admission._Receipt(slot, name, identity, raw, returned_bytes)
+                row = _Receipt(slot, name, identity, raw, returned_bytes)
                 if (
                     returned.get("status") != "primary_session_captured"
                     or returned.get("error") != "none"
                 ):
                     dispositions[slot] = "failed-receipt-retained"
-                    failed = admission._complete(row)
+                    failed = json_shapes.require_object(
+                        admission._complete(row), context="controller failed event"
+                    )
                     failed["type"] = "slot_failed"
                     _append(stream, journal_path, owned_parent, events, failed)
                     raise ValueError("primary_capture_failed")
@@ -200,7 +279,15 @@ def run_study(
                 admission._validate_receipt(raw, plan)
                 receipts.append(row)
                 dispositions[slot] = "captured"
-                _append(stream, journal_path, owned_parent, events, admission._complete(row))
+                _append(
+                    stream,
+                    journal_path,
+                    owned_parent,
+                    events,
+                    json_shapes.require_object(
+                        admission._complete(row), context="controller complete event"
+                    ),
+                )
             _sync_directory(directory, owned_parent)
             _append(
                 stream,
@@ -225,7 +312,9 @@ def run_study(
                 tuple(receipts),
             )
             stage = "admission"
-            admitted = admission._consume(owned)
+            admitted = json_shapes.require_object(
+                admission._consume(owned), context="controller admission"
+            )
             stage = "persistence"
             _write_result(directory / "admission.json", owned_parent, admitted)
             _sync_directory(directory, owned_parent)

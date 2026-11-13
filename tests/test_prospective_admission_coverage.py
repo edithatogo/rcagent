@@ -139,6 +139,7 @@ def test_postcapture_owned_evidence_rejection_consumes_witness(
     result = controller.run_study(*args)
     assert len(calls) == 2
     assert result["admitted"] is result["scoring_start"] is False
+    assert "failure_stage" in result
     assert result["failure_stage"] == "admission"
     assert observed == [reason]
     with pytest.raises(FileExistsError):

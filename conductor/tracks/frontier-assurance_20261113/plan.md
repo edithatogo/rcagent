@@ -4,12 +4,12 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
 
 ## Phase A: Repair and strict engineering
 
-- [~] FAW01: repair typed entity/relationship references and add adversarial regression tests (FA01; evidence core and its tests).
-- [~] FAW02: replace unsafe public relabelling with an explicit public-view boundary; document compatibility and canary tests (FA02).
-- [~] FAW03: correct portable templates, hash-bind current admission and enforce selection/package invariants; preserve historical quarantine (FA03).
-- [~] FAW04: lock CI installation; broad Ruff plus format; strict basedpyright and measured legacy baseline with no growth (FA04).
-- [~] FAW05: add Hypothesis, pytest-gremlins, Scalene, Bandit and Vulture with real invocations and meaningful failure behaviour (FA05).
-- [~] FAW06: migrate legacy unknown/Any boundaries into typed schemas/modules in bounded batches, reducing rather than refreshing the baseline (FA04; each batch separate and reviewed). Current owner-directed priority: checked JSON containers, evidence/admission validators, conformance tools and prospective test fixture/callback contracts; record counts in the typing receipt.
+- [x] FAW01: repair typed entity/relationship references and add adversarial regression tests (FA01; evidence core and its tests; PR127 merged, hosted Quality43400688051 passed).
+- [x] FAW02: replace unsafe public relabelling with an explicit public-view boundary; document compatibility and canary tests (FA02; accepted with PR127).
+- [x] FAW03: correct portable templates, hash-bind current admission and enforce selection/package invariants; preserve historical quarantine (FA03; accepted with PR127).
+- [x] FAW04: lock CI installation; broad Ruff plus format; strict basedpyright and measured legacy baseline with no growth (FA04; accepted with PR127, remaining debt belongs to FAW06).
+- [x] FAW05: add Hypothesis, pytest-gremlins, Scalene, Bandit and Vulture with real invocations and meaningful failure behaviour (FA05; accepted with PR127).
+- [~] FAW06: migrate legacy unknown/Any boundaries into typed schemas/modules in bounded batches, reducing rather than refreshing the baseline (FA04; each batch separate and reviewed). The process/HTTP/session/controller increment reduces 6,012 diagnostics at master `a38dd9c` to 5,023, preserves historical pins and closes the reproduced corrupt-coverage resource leak; see the [current receipt](./typing-contracts-evidence.md). PR #128 requires current-head hosted acceptance. Next: native protocol, request/completion and observation-admission contracts, then the execution gate with its consumers.
 - [ ] Checkpoint A: run applicable local/hosted gates, three-role agent review, merge evidence and rollback notes; mark only verified leaves complete.
 
 ## Phase B: Incremental component demonstrations
@@ -50,7 +50,8 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
 
 Phase A may run in parallel with public-source planning and fixture design. B consumes repaired source/provenance boundaries. C consumes qualified extraction/view contracts; D consumes its qualified components and Track 14 applicability. E experiments are conditional and never block a useful deterministic timeline product.
 
-FAW01–05 are implemented and await complete hosted acceptance. The user's current
+FAW01–05 are accepted in merged PR127 after complete hosted Quality, dependency,
+privacy/secrets and official conformance success. The user's current
 priority is FAW06: finish and verify the bounded typing batches before starting
 new capability demonstrations. Next typing work should replace remaining bare
 dictionary/process callback contracts and guard domain enum values before hashed

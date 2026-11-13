@@ -1,6 +1,6 @@
 # Track 13: Frontier assurance and incremental capability evidence
 
-Status: FAW06 typing is the current user-directed priority in [PR #127](https://github.com/edithatogo/rcagent/pull/127). The verified reduction is 9,713 to 6,012 diagnostics; current-head hosted CI remains required. Component demonstrations and comparative research remain planned until their receipts exist.
+Status: FAW06 typing is the current user-directed priority in [PR #128](https://github.com/edithatogo/rcagent/pull/128), following merged PR #127. The new verified reduction is 6,012 to 5,023 diagnostics; the publication receipt requires current-head hosted CI before merge. Component demonstrations and comparative research remain planned until their receipts exist.
 
 - [Specification and MoSCoW requirements](./spec.md)
 - [Executable work packages and acceptance](./plan.md)
@@ -16,6 +16,7 @@ Status: FAW06 typing is the current user-directed priority in [PR #127](https://
 - [Standing scope decision](../../decisions/20261113-001-frontier-assurance.md)
 - [Implementation and verification receipt](./delivery-evidence.md)
 - [Typing repair and coverage correction receipt](./typing-evidence.md)
+- [Process/session typing and resource cleanup receipt](./typing-contracts-evidence.md)
 - [Agent review and resolved findings](./review.md)
 - [GitHub issue 125](https://github.com/edithatogo/rcagent/issues/125)
 

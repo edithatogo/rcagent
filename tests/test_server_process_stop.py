@@ -2,30 +2,96 @@
 
 import base64
 import os
+import selectors
 import signal
 import subprocess
 import sys
 import threading
 import time
+from collections.abc import Callable
 from pathlib import Path
-from types import SimpleNamespace
+from typing import IO, Never, Protocol, TypedDict, Unpack
 
 import pytest
 
 from tools import server_process as subject
 
 
+class ReadyChildOptions(TypedDict, total=False):
+    output_limit: int
+    cleanup_grace: float
+    cancel: threading.Event | None
+    deadline: float | None
+
+
+class WaitForProcess(Protocol):
+    def __call__(self, timeout: float | None = None) -> int: ...
+
+
+class ReadyChildRunner(Protocol):
+    def __call__(
+        self,
+        handler: str,
+        *,
+        action: Callable[[threading.Event], None] | None = None,
+        timeout: float = 10,
+        **kwargs: Unpack[ReadyChildOptions],
+    ) -> subject.CaptureResult: ...
+
+
+class PopenOptions(TypedDict):
+    stdin: int
+    stdout: int
+    stderr: int
+    env: dict[str, str]
+    shell: bool
+    start_new_session: bool
+
+
+class PipeProcess:
+    def __init__(
+        self,
+        stdout: IO[bytes],
+        stderr: IO[bytes],
+        returncode: int | None = None,
+        *,
+        exit_on_terminate: bool = False,
+    ) -> None:
+        self.stdout = stdout
+        self.stderr = stderr
+        self.pid = 123
+        self.returncode = returncode
+        self.exit_on_terminate = exit_on_terminate
+
+    def poll(self) -> int | None:
+        return self.returncode
+
+    def terminate(self) -> None:
+        if self.exit_on_terminate:
+            self.returncode = 0
+
+
+def _unexpected_launch(*_args: object, **_kwargs: object) -> Never:
+    pytest.fail("launched")
+
+
 @pytest.fixture
-def ready_child(tmp_path):
+def ready_child(tmp_path: Path) -> ReadyChildRunner:
     if os.name != "posix":
         pytest.skip("POSIX child supervisor")
 
-    def run(handler, *, action=None, **kwargs):
+    def run(
+        handler: str,
+        *,
+        action: Callable[[threading.Event], None] | None = None,
+        timeout: float = 10,
+        **kwargs: Unpack[ReadyChildOptions],
+    ) -> subject.CaptureResult:
         marker = tmp_path / "ready"
         stop = threading.Event()
         done = threading.Event()
 
-        def request_stop():
+        def request_stop() -> None:
             deadline = time.monotonic() + 8
             while not marker.exists() and not done.is_set() and time.monotonic() < deadline:
                 time.sleep(0.01)
@@ -47,7 +113,7 @@ def ready_child(tmp_path):
                 [str(Path(sys.executable).resolve()), "-c", script],
                 {"PATH": os.defpath, "LANG": "C"},
                 stop_event=stop,
-                timeout=kwargs.pop("timeout", 10),
+                timeout=timeout,
                 **kwargs,
             )
         finally:
@@ -60,14 +126,12 @@ def ready_child(tmp_path):
     return run
 
 
-def test_prestop_does_not_launch(monkeypatch):
+def test_prestop_does_not_launch(monkeypatch: pytest.MonkeyPatch) -> None:
     if os.name != "posix":
         pytest.skip("POSIX child supervisor")
     event = threading.Event()
     event.set()
-    monkeypatch.setattr(
-        subject.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("launched")
-    )
+    monkeypatch.setattr(subject.subprocess, "Popen", _unexpected_launch)
     result = subject.capture_child(["/synthetic/child"], {}, stop_event=event)
     assert result["error"] == "stop_before_launch"
     assert result["execution_observed"] is False
@@ -75,14 +139,12 @@ def test_prestop_does_not_launch(monkeypatch):
     assert result["stop_started"] is False
 
 
-def test_cancel_wins_over_prestop(monkeypatch):
+def test_cancel_wins_over_prestop(monkeypatch: pytest.MonkeyPatch) -> None:
     if os.name != "posix":
         pytest.skip("POSIX child supervisor")
     event = threading.Event()
     event.set()
-    monkeypatch.setattr(
-        subject.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("launched")
-    )
+    monkeypatch.setattr(subject.subprocess, "Popen", _unexpected_launch)
     result = subject.capture_child(["/synthetic/child"], {}, stop_event=event, cancel=event)
     assert result["error"] == "cancelled"
     assert result["stop_started"] is False
@@ -91,15 +153,13 @@ def test_cancel_wins_over_prestop(monkeypatch):
 @pytest.mark.parametrize(
     "invalid", [True, 1, "stop", object()], ids=["bool", "int", "str", "object"]
 )
-def test_stop_event_requires_event(monkeypatch, invalid):
-    monkeypatch.setattr(
-        subject.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("launched")
-    )
+def test_stop_event_requires_event(monkeypatch: pytest.MonkeyPatch, invalid: object) -> None:
+    monkeypatch.setattr(subject.subprocess, "Popen", _unexpected_launch)
     with pytest.raises(ValueError):
         subject.capture_child(["/synthetic/child"], {}, stop_event=invalid)
 
 
-def test_handler_final_streams_are_drained(ready_child):
+def test_handler_final_streams_are_drained(ready_child: ReadyChildRunner) -> None:
     result = ready_child(
         "def stop(signum, frame):\n os.write(1,b'final-out')\n os.write(2,b'final-err')\n raise SystemExit(0)\nsignal.signal(signal.SIGTERM,stop)",
         cleanup_grace=1,
@@ -115,22 +175,24 @@ def test_handler_final_streams_are_drained(ready_child):
     assert result["admitted"] is result["study_unlocked"] is False
 
 
-def test_default_sigterm_is_stopped_not_natural_exit(ready_child):
+def test_default_sigterm_is_stopped_not_natural_exit(ready_child: ReadyChildRunner) -> None:
     result = ready_child("pass")
     assert result["status"] == "process_stopped"
     assert result["returncode"] == -signal.SIGTERM
     assert result["stop_started"] is True
 
 
-def test_ignored_term_fails_and_is_sent_once(ready_child, monkeypatch):
+def test_ignored_term_fails_and_is_sent_once(
+    ready_child: ReadyChildRunner, monkeypatch: pytest.MonkeyPatch
+) -> None:
     original = subject.subprocess.Popen
-    terms = []
+    terms: list[bool] = []
 
-    def popen(*args, **kwargs):
+    def popen(*args: *tuple[list[str]], **kwargs: Unpack[PopenOptions]) -> subprocess.Popen[bytes]:
         process = original(*args, **kwargs)
         terminate = process.terminate
 
-        def term():
+        def term() -> None:
             terms.append(True)
             terminate()
 
@@ -146,17 +208,20 @@ def test_ignored_term_fails_and_is_sent_once(ready_child, monkeypatch):
 
 
 @pytest.mark.parametrize("stream", [1, 2], ids=["stdout", "stderr"])
-def test_stopping_output_overflow_remains_failure(ready_child, stream):
+def test_stopping_output_overflow_remains_failure(
+    ready_child: ReadyChildRunner, stream: int
+) -> None:
     handler = f"def stop(signum,frame):\n os.write({stream},b'x'*4097)\n raise SystemExit(0)\nsignal.signal(signal.SIGTERM,stop)"
     result = ready_child(handler, output_limit=4096)
-    name = "stdout" if stream == 1 else "stderr"
     assert result["error"] == "output_limit_exceeded"
     assert result["status"] == "capture_failed"
-    assert result[f"{name}_sha256"] is None
-    assert len(base64.b64decode(result[f"raw_{name}_base64"])) == 4096
+    digest = result["stdout_sha256"] if stream == 1 else result["stderr_sha256"]
+    raw = result["raw_stdout_base64"] if stream == 1 else result["raw_stderr_base64"]
+    assert digest is None
+    assert len(base64.b64decode(raw)) == 4096
 
 
-def test_handler_nonzero_is_not_laundered(ready_child):
+def test_handler_nonzero_is_not_laundered(ready_child: ReadyChildRunner) -> None:
     result = ready_child(
         "def stop(signum,frame):\n raise SystemExit(7)\nsignal.signal(signal.SIGTERM,stop)"
     )
@@ -165,10 +230,10 @@ def test_handler_nonzero_is_not_laundered(ready_child):
     assert result["error"] == "nonzero_exit"
 
 
-def test_active_cancel_and_stop_remain_cancellation(ready_child):
+def test_active_cancel_and_stop_remain_cancellation(ready_child: ReadyChildRunner) -> None:
     cancel = threading.Event()
 
-    def both(stop):
+    def both(stop: threading.Event) -> None:
         cancel.set()
         stop.set()
 
@@ -178,7 +243,9 @@ def test_active_cancel_and_stop_remain_cancellation(ready_child):
 
 
 @pytest.mark.parametrize("code", [0, 7], ids=["zero", "nonzero"])
-def test_observed_exit_is_not_relabelled_by_stop(monkeypatch, code):
+def test_observed_exit_is_not_relabelled_by_stop(
+    monkeypatch: pytest.MonkeyPatch, code: int
+) -> None:
     if os.name != "posix":
         pytest.skip("POSIX child supervisor")
     stop = threading.Event()
@@ -187,9 +254,9 @@ def test_observed_exit_is_not_relabelled_by_stop(monkeypatch, code):
     os.close(out_w)
     os.close(err_w)
     with os.fdopen(out_r, "rb") as stdout, os.fdopen(err_r, "rb") as stderr:
-        process = SimpleNamespace(stdout=stdout, stderr=stderr, pid=123, poll=lambda: code)
+        process = PipeProcess(stdout, stderr, returncode=code)
 
-        def popen(*args, **kwargs):
+        def popen(*args: object, **kwargs: object) -> PipeProcess:
             stop.set()
             return process
 
@@ -207,7 +274,9 @@ def test_observed_exit_is_not_relabelled_by_stop(monkeypatch, code):
     [(5, "stop_grace_exceeded"), (0.05, "deadline_exceeded")],
     ids=["stop-budget", "execution-deadline"],
 )
-def test_held_pipe_after_stopped_child_is_bounded(monkeypatch, timeout, error):
+def test_held_pipe_after_stopped_child_is_bounded(
+    monkeypatch: pytest.MonkeyPatch, timeout: float, error: str
+) -> None:
     if os.name != "posix":
         pytest.skip("POSIX child supervisor")
     stop = threading.Event()
@@ -215,15 +284,9 @@ def test_held_pipe_after_stopped_child_is_bounded(monkeypatch, timeout, error):
     err_r, err_w = os.pipe()
     try:
         with os.fdopen(out_r, "rb") as stdout, os.fdopen(err_r, "rb") as stderr:
-            process = SimpleNamespace(stdout=stdout, stderr=stderr, pid=123, returncode=None)
+            process = PipeProcess(stdout, stderr, exit_on_terminate=True)
 
-            def terminate():
-                process.returncode = 0
-
-            process.poll = lambda: process.returncode
-            process.terminate = terminate
-
-            def popen(*args, **kwargs):
+            def popen(*args: object, **kwargs: object) -> PipeProcess:
                 stop.set()
                 return process
 
@@ -243,23 +306,27 @@ def test_held_pipe_after_stopped_child_is_bounded(monkeypatch, timeout, error):
     assert result["stdout_sha256"] is None
 
 
-def test_read_failure_after_stop_still_reaps(ready_child, monkeypatch):
+def test_read_failure_after_stop_still_reaps(
+    ready_child: ReadyChildRunner, monkeypatch: pytest.MonkeyPatch
+) -> None:
     original = subject.subprocess.Popen
     real_select = subject.selectors.DefaultSelector.select
-    stopping = []
+    stopping: list[bool] = []
 
-    def popen(*args, **kwargs):
+    def popen(*args: *tuple[list[str]], **kwargs: Unpack[PopenOptions]) -> subprocess.Popen[bytes]:
         process = original(*args, **kwargs)
         terminate = process.terminate
 
-        def term():
+        def term() -> None:
             stopping.append(True)
             terminate()
 
         monkeypatch.setattr(process, "terminate", term)
         return process
 
-    def select(selector, timeout):
+    def select(
+        selector: selectors.DefaultSelector, timeout: float | None
+    ) -> list[tuple[selectors.SelectorKey, int]]:
         if stopping:
             raise OSError("private failure")
         return real_select(selector, timeout)
@@ -274,18 +341,20 @@ def test_read_failure_after_stop_still_reaps(ready_child, monkeypatch):
 
 
 @pytest.mark.parametrize("signal_name", ["terminate", "kill"])
-def test_signal_error_is_preserved_without_leaking_child(ready_child, monkeypatch, signal_name):
+def test_signal_error_is_preserved_without_leaking_child(
+    ready_child: ReadyChildRunner, monkeypatch: pytest.MonkeyPatch, signal_name: str
+) -> None:
     original = subject.subprocess.Popen
-    calls = []
-    children = []
+    calls: list[bool] = []
+    children: list[tuple[subprocess.Popen[bytes], Callable[[], None], WaitForProcess]] = []
 
-    def popen(*args, **kwargs):
+    def popen(*args: *tuple[list[str]], **kwargs: Unpack[PopenOptions]) -> subprocess.Popen[bytes]:
         process = original(*args, **kwargs)
-        send = getattr(process, signal_name)
+        send = process.terminate if signal_name == "terminate" else process.kill
         kill, wait = process.kill, process.wait
         children.append((process, kill, wait))
 
-        def fail():
+        def fail() -> Never:
             calls.append(True)
             send()
             # Test error preservation, not scheduler latency within the stop budget.
@@ -317,11 +386,20 @@ def test_signal_error_is_preserved_without_leaking_child(ready_child, monkeypatc
                 wait(timeout=5)
 
 
-def test_cleanup_error_cannot_become_successful_stop(ready_child, monkeypatch):
+def test_cleanup_error_cannot_become_successful_stop(
+    ready_child: ReadyChildRunner, monkeypatch: pytest.MonkeyPatch
+) -> None:
     original = subject._finish_stop
 
-    def finish(*args, **kwargs):
-        result = original(*args, **kwargs)
+    def finish(
+        process: subject.ReapableProcess,
+        deadline: float,
+        terminate_sent: bool,
+        kill_attempted: bool,
+        kill_sent: bool,
+        errors: list[str],
+    ) -> subject.CleanupResult:
+        result = original(process, deadline, terminate_sent, kill_attempted, kill_sent, errors)
         result["cleanup_errors"].append("synthetic_reap_error")
         return result
 
@@ -337,22 +415,22 @@ def test_cleanup_error_cannot_become_successful_stop(ready_child, monkeypatch):
     ["poll", "kill", "wait", "timeout", "already-attempted"],
     ids=["poll-error", "kill-error", "wait-error", "reap-timeout", "no-repeated-kill"],
 )
-def test_finish_stop_errors_and_budget_are_bounded(failure):
-    kills = []
-    waits = []
+def test_finish_stop_errors_and_budget_are_bounded(failure: str) -> None:
+    kills: list[bool] = []
+    waits: list[float] = []
 
     class Fake:
-        def poll(self):
+        def poll(self) -> int | None:
             if failure == "poll":
                 raise OSError("private")
             return
 
-        def kill(self):
+        def kill(self) -> None:
             kills.append(True)
             if failure == "kill":
                 raise OSError("private")
 
-        def wait(self, timeout):
+        def wait(self, timeout: float) -> int:
             waits.append(timeout)
             if failure == "wait":
                 raise OSError("private")
@@ -378,7 +456,7 @@ def test_finish_stop_errors_and_budget_are_bounded(failure):
     assert "private" not in str(result)
 
 
-def test_late_observed_clean_exit_is_not_successful_stop(monkeypatch):
+def test_late_observed_clean_exit_is_not_successful_stop(monkeypatch: pytest.MonkeyPatch) -> None:
     if os.name != "posix":
         pytest.skip("POSIX child supervisor")
     stop = threading.Event()
@@ -389,15 +467,15 @@ def test_late_observed_clean_exit_is_not_successful_stop(monkeypatch):
     os.close(out_w)
     os.close(err_w)
     with os.fdopen(out_r, "rb") as stdout, os.fdopen(err_r, "rb") as stderr:
-        process = SimpleNamespace(stdout=stdout, stderr=stderr, pid=123, returncode=None)
-        process.poll = lambda: process.returncode
-        process.terminate = lambda: None
+        process = PipeProcess(stdout, stderr)
 
-        def popen(*args, **kwargs):
+        def popen(*args: object, **kwargs: object) -> PipeProcess:
             stop.set()
             return process
 
-        def select(selector, timeout):
+        def select(
+            selector: selectors.DefaultSelector, timeout: float | None
+        ) -> list[tuple[selectors.SelectorKey, int]]:
             events = real_select(selector, timeout)
             clock[0] += 0.15  # Both EOF and clean exit are observed after the 0.1s grace.
             process.returncode = 0
@@ -415,7 +493,7 @@ def test_late_observed_clean_exit_is_not_successful_stop(monkeypatch):
     assert result["status"] == "capture_failed"
 
 
-def test_sigterm_without_stop_request_is_not_graceful_stop():
+def test_sigterm_without_stop_request_is_not_graceful_stop() -> None:
     if os.name != "posix":
         pytest.skip("POSIX child supervisor")
     result = subject.capture_child(

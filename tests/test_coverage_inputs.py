@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import gc
 import subprocess
 import sys
+import warnings
 from pathlib import Path
 
 import pytest
@@ -83,6 +85,19 @@ def test_non_measurement_shard_cannot_pass(matrix: tuple[Path, Path], change: st
         data.write()
     with pytest.raises(ValueError, match=r"coverage (artifact|database)"):
         validate_inputs(directory, repository=repository)
+
+
+def test_corrupt_database_rejection_closes_its_connection(matrix: tuple[Path, Path]) -> None:
+    repository, directory = matrix
+    path = directory / min(MATRIX_ARTIFACTS) / ".coverage"
+    path.write_bytes(b"not a coverage database")
+    gc.collect()
+    with warnings.catch_warnings(record=True) as observed:
+        warnings.simplefilter("always", ResourceWarning)
+        with pytest.raises(ValueError, match="coverage database is unreadable"):
+            validate_inputs(directory, repository=repository)
+        gc.collect()
+    assert not [warning for warning in observed if issubclass(warning.category, ResourceWarning)]
 
 
 @pytest.mark.parametrize(

@@ -16,13 +16,91 @@ import subprocess
 import threading
 import time
 from pathlib import Path
-from typing import Any
+from typing import Literal, NamedTuple, Protocol, TypedDict, cast
 
 POSIX = os.name == "posix"
 
 
-def _cleanup(process: Any, grace: float) -> dict:
-    result: dict = {
+class ReapableProcess(Protocol):
+    """The process operations needed to finish a bounded stop."""
+
+    def poll(self) -> int | None: ...
+
+    def kill(self) -> None: ...
+
+    def wait(self, timeout: float) -> int: ...
+
+
+class ProcessControl(ReapableProcess, Protocol):
+    """Direct-child control, independent of a concrete subprocess implementation."""
+
+    def terminate(self) -> None: ...
+
+
+class CleanupResult(TypedDict):
+    reaped: bool
+    terminate_sent: bool
+    kill_sent: bool
+    cleanup_errors: list[str]
+    returncode: int | None
+
+
+class _CaptureObservation(CleanupResult):
+    status: Literal["process_stopped", "process_captured", "capture_failed"]
+    error: str
+    execution_observed: bool
+    pid: int | None
+    admitted: Literal[False]
+    study_unlocked: Literal[False]
+    runtime_verified: Literal[False]
+    stop_requested: bool
+    stop_started: bool
+    elapsed_seconds: float
+    execution_deadline_monotonic: float
+    limitations: list[str]
+
+
+class CaptureResult(_CaptureObservation):
+    """The complete receipt shape, including incomplete or failed captures."""
+
+    raw_stdout_base64: str
+    stdout_bytes_observed: int
+    stdout_bytes_retained: int
+    stdout_complete: bool
+    stdout_truncated: bool
+    stdout_retained_sha256: str
+    stdout_sha256: str | None
+    raw_stderr_base64: str
+    stderr_bytes_observed: int
+    stderr_bytes_retained: int
+    stderr_complete: bool
+    stderr_truncated: bool
+    stderr_retained_sha256: str
+    stderr_sha256: str | None
+
+
+class _CaptureInputs(NamedTuple):
+    argv: list[str]
+    environment: dict[str, str]
+    timeout: float
+    output_limit: int
+    cleanup_grace: float
+    cancel: threading.Event | None
+    stop_event: threading.Event | None
+
+
+class _StreamResult(TypedDict):
+    raw_base64: str
+    bytes_observed: int
+    bytes_retained: int
+    complete: bool
+    truncated: bool
+    retained_sha256: str
+    sha256: str | None
+
+
+def _cleanup(process: ProcessControl, grace: float) -> CleanupResult:
+    result: CleanupResult = {
         "reaped": False,
         "terminate_sent": False,
         "kill_sent": False,
@@ -63,22 +141,25 @@ def _cleanup(process: Any, grace: float) -> dict:
 
 
 def _validate(
-    argv: list[str],
-    environment: dict[str, str],
-    timeout: float,
-    output_limit: int,
-    cleanup_grace: float,
-    cancel: threading.Event | None,
-    stop_event: threading.Event | None,
-) -> None:
+    argv: object,
+    environment: object,
+    timeout: object,
+    output_limit: object,
+    cleanup_grace: object,
+    cancel: object,
+    stop_event: object,
+) -> _CaptureInputs:
     if not POSIX:
         raise ValueError("unsupported_platform")
+    if type(argv) is not list or type(environment) is not dict:
+        raise ValueError("invalid_invocation")
+    # Only the concrete containers are established here; inspect their elements
+    # before claiming the caller's argv/environment contract.
+    raw_argv = cast("list[object]", argv)
+    raw_environment = cast("dict[object, object]", environment)
     if (
-        type(argv) is not list
-        or not argv
-        or any(type(value) is not str or "\x00" in value for value in argv)
-        or not Path(argv[0]).is_absolute()
-        or type(environment) is not dict
+        not raw_argv
+        or any(type(value) is not str or "\x00" in value for value in raw_argv)
         or any(
             type(key) is not str
             or not key
@@ -86,14 +167,19 @@ def _validate(
             or "\x00" in key
             or type(value) is not str
             or "\x00" in value
-            for key, value in environment.items()
+            for key, value in raw_environment.items()
         )
     ):
         raise ValueError("invalid_invocation")
+    # Every element/key/value has just passed the exact string checks above.
+    checked_argv = cast("list[str]", raw_argv)
+    checked_environment = cast("dict[str, str]", raw_environment)
+    if not Path(checked_argv[0]).is_absolute():
+        raise ValueError("invalid_invocation")
     if (
-        type(timeout) not in (int, float)
+        (type(timeout) is not int and type(timeout) is not float)
         or not 0 < timeout <= 120
-        or type(cleanup_grace) not in (int, float)
+        or (type(cleanup_grace) is not int and type(cleanup_grace) is not float)
         or not 0 < cleanup_grace <= 5
         or type(output_limit) is not int
         or not 0 < output_limit <= 1048576
@@ -101,18 +187,27 @@ def _validate(
         or (stop_event is not None and not isinstance(stop_event, threading.Event))
     ):
         raise ValueError("invalid_capture_limits")
+    return _CaptureInputs(
+        checked_argv,
+        checked_environment,
+        timeout,
+        output_limit,
+        cleanup_grace,
+        cancel,
+        stop_event,
+    )
 
 
 def _finish_stop(
-    process: Any,
+    process: ReapableProcess,
     deadline: float,
     terminate_sent: bool,
     kill_attempted: bool,
     kill_sent: bool,
     errors: list[str],
-) -> dict:
+) -> CleanupResult:
     """Finish within the stop budget, never resending an attempted signal."""
-    result: dict = {
+    result: CleanupResult = {
         "reaped": False,
         "terminate_sent": terminate_sent,
         "kill_sent": kill_sent,
@@ -142,16 +237,16 @@ def _finish_stop(
 
 
 def capture_child(
-    argv: list[str],
-    environment: dict[str, str],
+    argv: object,
+    environment: object,
     *,
-    timeout: float = 60,
-    output_limit: int = 1048576,
-    cleanup_grace: float = 1,
-    cancel: threading.Event | None = None,
-    stop_event: threading.Event | None = None,
-    deadline: float | None = None,
-) -> dict:
+    timeout: object = 60,
+    output_limit: object = 1048576,
+    cleanup_grace: object = 1,
+    cancel: object = None,
+    stop_event: object = None,
+    deadline: object = None,
+) -> CaptureResult:
     """Capture authorised caller-selected bytes with bounded direct-child cleanup.
 
     Invalid inputs raise before launch. Operational failures retain the original
@@ -162,7 +257,9 @@ def capture_child(
     An absolute monotonic deadline can only shorten the relative timeout. An
     already-expired valid deadline refuses launch, including delayed workers.
     """
-    _validate(argv, environment, timeout, output_limit, cleanup_grace, cancel, stop_event)
+    argv, environment, timeout, output_limit, cleanup_grace, cancel, stop_event = _validate(
+        argv, environment, timeout, output_limit, cleanup_grace, cancel, stop_event
+    )
     set_blocking = getattr(os, "set_blocking", None)
     if not callable(set_blocking):
         raise ValueError("unsupported_nonblocking_pipes")
@@ -172,7 +269,8 @@ def capture_child(
     truncated = dict.fromkeys(buffers, False)
     started = time.monotonic()
     if deadline is not None and (
-        type(deadline) not in (int, float) or not 0 < deadline <= started + 120
+        (type(deadline) is not int and type(deadline) is not float)
+        or not 0 < deadline <= started + 120
     ):
         raise ValueError("invalid_deadline")
     deadline = min(started + timeout, deadline) if deadline is not None else started + timeout
@@ -183,7 +281,7 @@ def capture_child(
     stop_term_sent = stop_kill_attempted = stop_kill_sent = False
     stop_errors: list[str] = []
     process: subprocess.Popen[bytes] | None = None
-    cleanup: dict = {
+    cleanup: CleanupResult = {
         "reaped": False,
         "terminate_sent": False,
         "kill_sent": False,
@@ -262,7 +360,9 @@ def capture_child(
                         events = selector.select(min(remaining, 0.05))
                         overflow = False
                         for key, _ in events:
-                            name = key.data
+                            name: object = key.data
+                            if not isinstance(name, str):
+                                raise ValueError("invalid_pipe_name")
                             available = output_limit - len(buffers[name])
                             try:
                                 chunk = os.read(key.fd, min(65536, available + 1))
@@ -309,7 +409,7 @@ def capture_child(
             error = "nonzero_exit"
         elif not all(eof.values()):
             error = "incomplete_output"
-    result = {
+    result: _CaptureObservation = {
         "status": (
             ("process_stopped" if stop_started else "process_captured")
             if error == "none"
@@ -338,6 +438,7 @@ def capture_child(
             "not-study-admission",
         ],
     }
+    streams: dict[str, _StreamResult] = {}
     for name, data in buffers.items():
         complete = (
             eof[name]
@@ -346,15 +447,30 @@ def capture_child(
             and not cleanup["cleanup_errors"]
         )
         digest = hashlib.sha256(data).hexdigest()
-        result.update(
-            {
-                f"raw_{name}_base64": base64.b64encode(data).decode("ascii"),
-                f"{name}_bytes_observed": observed[name],
-                f"{name}_bytes_retained": len(data),
-                f"{name}_complete": complete,
-                f"{name}_truncated": truncated[name],
-                f"{name}_retained_sha256": digest,
-                f"{name}_sha256": digest if complete else None,
-            }
-        )
-    return result
+        streams[name] = {
+            "raw_base64": base64.b64encode(data).decode("ascii"),
+            "bytes_observed": observed[name],
+            "bytes_retained": len(data),
+            "complete": complete,
+            "truncated": truncated[name],
+            "retained_sha256": digest,
+            "sha256": digest if complete else None,
+        }
+    stdout, stderr = streams["stdout"], streams["stderr"]
+    return {
+        **result,
+        "raw_stdout_base64": stdout["raw_base64"],
+        "stdout_bytes_observed": stdout["bytes_observed"],
+        "stdout_bytes_retained": stdout["bytes_retained"],
+        "stdout_complete": stdout["complete"],
+        "stdout_truncated": stdout["truncated"],
+        "stdout_retained_sha256": stdout["retained_sha256"],
+        "stdout_sha256": stdout["sha256"],
+        "raw_stderr_base64": stderr["raw_base64"],
+        "stderr_bytes_observed": stderr["bytes_observed"],
+        "stderr_bytes_retained": stderr["bytes_retained"],
+        "stderr_complete": stderr["complete"],
+        "stderr_truncated": stderr["truncated"],
+        "stderr_retained_sha256": stderr["retained_sha256"],
+        "stderr_sha256": stderr["sha256"],
+    }

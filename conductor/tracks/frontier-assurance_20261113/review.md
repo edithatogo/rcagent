@@ -42,3 +42,21 @@ on unchanged `e82fb97` with the same locked environment. Test IDs, statuses and
 normalized failure messages matched exactly. This establishes the observed
 AF_UNIX-environment failure parity, while hosted success remains required. See
 the [typing receipt](./typing-evidence.md) for commands, scope and limits.
+
+## Process and session contract increment, PR #128
+
+The [next receipt](./typing-contracts-evidence.md) and its machine-readable evidence
+identify the process/HTTP and session/controller implementation lanes, root
+integration, and read-only contract review. Review found no blocking changes to
+deadlines, cleanup, receipt completeness, durable journaling, historical source
+integrity or test assertions. The corrupt-coverage cleanup was independently
+reproduced against unchanged and repaired implementations on Python 3.13.5.
+
+All 31 newly unmatched baseline reports were traced to existing unknown producers
+at checked guards or existing private APIs. Only six reviewed files were re-anchored
+to 155 residual reports, down from 337. Ordinary basedpyright removed another 807
+entries; all final caps equal the independently measured 5,023 diagnostics, with
+no file/rule growth. The full local suite retains 52 environment failures whose
+exact IDs and normalized messages match a fresh run on master's unchanged tree.
+These agent reviews share context and do not establish independent model agreement,
+clinical validity or successful execution of the unavailable socket paths.

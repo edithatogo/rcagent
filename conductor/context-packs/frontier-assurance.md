@@ -2,11 +2,14 @@
 
 - Purpose: prioritise Track 13 FAW06 typing repairs under the user's latest direction; retain the Track 14 death-review plan for later implementation.
 - Initial integration revision: 50c8a81; assessment reference: a895d42a8738d2937f849b65e3b892042f64b979.
+- Current typing base: merged PR #127 at a38dd9c; PR #128 records the next 6,012-to-5,023 reduction. Read the [current receipt](../tracks/frontier-assurance_20261113/typing-contracts-evidence.md) and exact-head hosted results before claiming acceptance.
 - Authority: user request of 13 November 2026; existing autonomous workflow and agent-panel decisions.
 - Start: AGENTS.md, CONSTRAINTS.md, conductor/index.md, selected spec/plan/metadata, and the exact capability/claim/triangulation document needed by that task.
 - Budget: prefer 20,000 input tokens; fetch only relevant source/schema/tests and receipts. This is a planning budget, not permission to omit a material safety dependency.
 - Exclude: private cases, model weights, generated coverage/profile reports, historical raw transcripts and unrelated repositories unless the selected task needs their exact evidence.
-- Ownership: root integration owns shared indexes/contracts, the typing baseline/caps and CI; one implementation lane owns declared production-validator/conformance files, one owns declared prospective test files. Review remains read-only. Do not edit another lane's files without handing off ownership.
+- Ownership: root integration owns shared indexes/contracts, the typing baseline/caps and CI; at most two implementation lanes own declared non-overlapping source/test batches. The current lanes were process/HTTP and session/controller contracts. Review remains read-only. Do not edit another lane's files without handing off ownership.
+- Frozen source: preserve darwin_runtime_profile.py, local_model_comparator.py, darwin_server_v030.py and darwin_runtime_v030.py, historical protocols/reviews and negative outcomes. Current engineering closure updates do not requalify consumed studies.
+- Worktree runtime: use the selected worktree's interpreter with `python -m pytest` and verify imported module origins; a reused editable environment's pytest console script can import a different checkout.
 - Checks: locked environment; relevant tests first, then tools.full_validation and hosted required checks. Socket-denied environments must record unavailable integration evidence; never skip it silently in CI.
 - Safety: generated synthetic fixtures; preserve source/view hashes; no cloud fallback or new publication. Agent agreement is labelled and does not supply clinical authority.
 - Handoff: selected FAW/CAW ID, exact commit/worktree, dirty files, tests and failures, baseline/debt delta, unresolved source questions, next command and rollback path.

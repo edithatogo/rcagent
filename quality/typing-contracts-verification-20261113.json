@@ -1,0 +1,610 @@
+{
+  "schema_version": "1.0",
+  "observed_at": "2026-11-13T21:16:00.808871+10:00",
+  "task": "Track13 FAW06: process, HTTP, session and controller typing contracts",
+  "pull_request": "https://github.com/edithatogo/rcagent/pull/128",
+  "base_commit": "a38dd9c1215c317bd5d0558b9383c1444f9cbfb2",
+  "base_tree": "ddddefeeb7556700870d1322b97d1755246a3f80",
+  "published_source_commit": "b83b461d6c12c5e6ae6aa535b87c2fb0715593d6",
+  "published_source_tree": "cdb8d52b606a649cf07887d4c424a9a8e6d185a3",
+  "matching_local_source_and_baseline_commit": "171166e8df9bab8eaa123d6e730de5c5fc2954b6",
+  "python": "3.12.14",
+  "checker": {
+    "name": "basedpyright",
+    "version": "1.40.2",
+    "measurement_mode": "empty external baseline; discard"
+  },
+  "commands": {
+    "measurement": "python -m basedpyright --baselinefile /tmp/typing-next-empty-baseline.json --baselinemode=discard --outputjson",
+    "retained": "python -m basedpyright --baselinemode=discard --outputjson",
+    "ratchet": "python -m tools.quality_gate baseline --base a38dd9c1215c317bd5d0558b9383c1444f9cbfb2",
+    "tests": "python -m pytest --cov --cov-report=xml --cov-report=term-missing --junitxml=/tmp/rcagent-typing-next-full-tests.xml",
+    "conformance": "python -m tools.run_skill_conformance --output /tmp/rcagent-typing-next-conformance.json"
+  },
+  "diagnostics": {
+    "before": {
+      "total": 6012,
+      "production": 1196,
+      "tests": 4816,
+      "files_with_debt": 98,
+      "files_analyzed": 152
+    },
+    "after": {
+      "total": 5023,
+      "production": 1008,
+      "tests": 4015,
+      "files_with_debt": 96,
+      "files_analyzed": 152
+    },
+    "removed": 989,
+    "new_or_increased_file_rule_counts": {},
+    "per_file_changes": {
+      "tests/test_prospective_admission_adversarial.py": {
+        "before": 65,
+        "after": 60,
+        "removed": 5
+      },
+      "tests/test_prospective_admission_coverage.py": {
+        "before": 168,
+        "after": 161,
+        "removed": 7
+      },
+      "tests/test_prospective_primary_session.py": {
+        "before": 23,
+        "after": 12,
+        "removed": 11
+      },
+      "tests/test_prospective_server_session.py": {
+        "before": 50,
+        "after": 7,
+        "removed": 43
+      },
+      "tests/test_prospective_study_controller.py": {
+        "before": 63,
+        "after": 48,
+        "removed": 15
+      },
+      "tests/test_prospective_study_inputs.py": {
+        "before": 17,
+        "after": 4,
+        "removed": 13
+      },
+      "tests/test_server_process.py": {
+        "before": 278,
+        "after": 3,
+        "removed": 275
+      },
+      "tests/test_server_process_deadline.py": {
+        "before": 46,
+        "after": 36,
+        "removed": 10
+      },
+      "tests/test_server_process_stop.py": {
+        "before": 256,
+        "after": 2,
+        "removed": 254
+      },
+      "tests/test_unix_http_capture.py": {
+        "before": 172,
+        "after": 4,
+        "removed": 168
+      },
+      "tools/prospective_observation_admission.py": {
+        "before": 156,
+        "after": 155,
+        "removed": 1
+      },
+      "tools/prospective_primary_session.py": {
+        "before": 17,
+        "after": 5,
+        "removed": 12
+      },
+      "tools/prospective_server_session.py": {
+        "before": 70,
+        "after": 13,
+        "removed": 57
+      },
+      "tools/prospective_study_controller.py": {
+        "before": 147,
+        "after": 73,
+        "removed": 74
+      },
+      "tools/server_process.py": {
+        "before": 38,
+        "after": 0,
+        "removed": 38
+      },
+      "tools/unix_http_capture.py": {
+        "before": 6,
+        "after": 0,
+        "removed": 6
+      }
+    }
+  },
+  "baseline_maintenance": {
+    "reviewed_files": {
+      "tests/test_prospective_primary_session.py": {
+        "before": 23,
+        "after": 12,
+        "rules": {
+          "reportPrivateUsage": 6,
+          "reportUnknownArgumentType": 3,
+          "reportUnknownMemberType": 1,
+          "reportUnknownVariableType": 2
+        }
+      },
+      "tests/test_prospective_study_controller.py": {
+        "before": 63,
+        "after": 48,
+        "rules": {
+          "reportPrivateUsage": 34,
+          "reportUnknownArgumentType": 7,
+          "reportUnknownMemberType": 4,
+          "reportUnknownVariableType": 3
+        }
+      },
+      "tests/test_prospective_study_inputs.py": {
+        "before": 17,
+        "after": 4,
+        "rules": {
+          "reportUnknownArgumentType": 1,
+          "reportUnknownMemberType": 2,
+          "reportUnknownVariableType": 1
+        }
+      },
+      "tools/prospective_primary_session.py": {
+        "before": 17,
+        "after": 5,
+        "rules": {
+          "reportPrivateUsage": 3,
+          "reportUnknownArgumentType": 1,
+          "reportUnknownMemberType": 1
+        }
+      },
+      "tools/prospective_server_session.py": {
+        "before": 70,
+        "after": 13,
+        "rules": {
+          "reportConstantRedefinition": 3,
+          "reportPrivateUsage": 3,
+          "reportUnknownArgumentType": 3,
+          "reportUnknownMemberType": 4
+        }
+      },
+      "tools/prospective_study_controller.py": {
+        "before": 147,
+        "after": 73,
+        "rules": {
+          "reportPrivateUsage": 49,
+          "reportUnknownArgumentType": 8,
+          "reportUnknownMemberType": 16
+        }
+      }
+    },
+    "new_or_increased_file_rules": {},
+    "unmatched_diagnostics_reviewed": 31,
+    "basis": "Existing upstream uncertainty exposed at checked guards and existing private API use; read-only review before selected re-anchoring.",
+    "before_selected_files": 337,
+    "after_selected_files": 155,
+    "after_selective_reanchoring": 5830,
+    "ordinary_auto_shrink_removed": 807,
+    "final_retained": 5023,
+    "final_cap_sum": 5023,
+    "empty_baseline_counts_equal_retained": true,
+    "writebaseline_used": false,
+    "surfaced_reviewed_diagnostics": [
+      {
+        "file": "tests/test_prospective_primary_session.py",
+        "line": 39,
+        "rule": "reportUnknownMemberType",
+        "message": "Type of \"build_request\" is partially unknown\n\u00a0\u00a0Type of \"build_request\" is \"(template: bytes, input_bytes: bytes) -> dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tests/test_prospective_primary_session.py",
+        "line": 39,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"mapping\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tests/test_prospective_study_controller.py",
+        "line": 53,
+        "rule": "reportUnknownMemberType",
+        "message": "Type of \"normalize_candidate\" is partially unknown\n\u00a0\u00a0Type of \"normalize_candidate\" is \"(request: dict[Unknown, Unknown], raw_body: bytes, *, slot_id: str, expected_slot_id: str, expected_model: str) -> dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tests/test_prospective_study_controller.py",
+        "line": 53,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"mapping\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tests/test_prospective_study_inputs.py",
+        "line": 25,
+        "rule": "reportUnknownVariableType",
+        "message": "Type of \"raw_result\" is partially unknown\n\u00a0\u00a0Type of \"raw_result\" is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tests/test_prospective_study_inputs.py",
+        "line": 25,
+        "rule": "reportUnknownMemberType",
+        "message": "Type of \"validate_protocol\" is partially unknown\n\u00a0\u00a0Type of \"validate_protocol\" is \"(path: Path, expected_sha256: str) -> dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tests/test_prospective_study_inputs.py",
+        "line": 26,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"require_object\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_primary_session.py",
+        "line": 57,
+        "rule": "reportUnknownMemberType",
+        "message": "Type of \"normalize_candidate\" is partially unknown\n\u00a0\u00a0Type of \"normalize_candidate\" is \"(request: dict[Unknown, Unknown], raw_body: bytes, *, slot_id: str, expected_slot_id: str, expected_model: str) -> dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_primary_session.py",
+        "line": 57,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"require_object\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_server_session.py",
+        "line": 334,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"require_object\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown] | object\""
+      },
+      {
+        "file": "tools/prospective_server_session.py",
+        "line": 434,
+        "rule": "reportUnknownMemberType",
+        "message": "Type of \"decode_completion\" is partially unknown\n\u00a0\u00a0Type of \"decode_completion\" is \"(raw: bytes, *, expected_model: str) -> dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_server_session.py",
+        "line": 434,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"require_object\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 21,
+        "rule": "reportPrivateUsage",
+        "message": "\"_Receipt\" is private and used outside of the module in which it is declared"
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 78,
+        "rule": "reportUnknownMemberType",
+        "message": "Type of \"_validated_candidate\" is partially unknown\n\u00a0\u00a0Type of \"_validated_candidate\" is \"(path: Path, expected_sha256: str) -> tuple[dict[Unknown, Unknown], dict[Unknown, Unknown]]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 78,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"require_object\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 78,
+        "rule": "reportPrivateUsage",
+        "message": "\"_validated_candidate\" is private and used outside of the module in which it is declared"
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 181,
+        "rule": "reportUnknownMemberType",
+        "message": "Type of \"_header\" is partially unknown\n\u00a0\u00a0Type of \"_header\" is \"(plans: tuple[_Plan, _Plan]) -> dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 181,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"require_object\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 181,
+        "rule": "reportPrivateUsage",
+        "message": "\"_header\" is private and used outside of the module in which it is declared"
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 248,
+        "rule": "reportUnknownMemberType",
+        "message": "Type of \"_start\" is partially unknown\n\u00a0\u00a0Type of \"_start\" is \"(slot: str, name: str) -> dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 248,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"require_object\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 248,
+        "rule": "reportPrivateUsage",
+        "message": "\"_start\" is private and used outside of the module in which it is declared"
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 273,
+        "rule": "reportUnknownMemberType",
+        "message": "Type of \"_complete\" is partially unknown\n\u00a0\u00a0Type of \"_complete\" is \"(receipt: _Receipt) -> dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 273,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"require_object\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 273,
+        "rule": "reportPrivateUsage",
+        "message": "\"_complete\" is private and used outside of the module in which it is declared"
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 288,
+        "rule": "reportUnknownMemberType",
+        "message": "Type of \"_complete\" is partially unknown\n\u00a0\u00a0Type of \"_complete\" is \"(receipt: _Receipt) -> dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 288,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"require_object\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 288,
+        "rule": "reportPrivateUsage",
+        "message": "\"_complete\" is private and used outside of the module in which it is declared"
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 316,
+        "rule": "reportUnknownMemberType",
+        "message": "Type of \"_consume\" is partially unknown\n\u00a0\u00a0Type of \"_consume\" is \"(owned: _OwnedRun) -> dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 316,
+        "rule": "reportUnknownArgumentType",
+        "message": "Argument type is partially unknown\n\u00a0\u00a0Argument corresponds to parameter \"value\" in function \"require_object\"\n\u00a0\u00a0Argument type is \"dict[Unknown, Unknown]\""
+      },
+      {
+        "file": "tools/prospective_study_controller.py",
+        "line": 316,
+        "rule": "reportPrivateUsage",
+        "message": "\"_consume\" is private and used outside of the module in which it is declared"
+      }
+    ],
+    "reviewer": "read-only typing_contract_review agent; shared project context"
+  },
+  "explicit_any_name_references_in_edited_python": {
+    "before": 5,
+    "after": 0
+  },
+  "source_sha256": {
+    ".github/workflows/skill-conformance.yml": "bbc2829b4676fda500bed1e7ebe532053b8ef22afa9a52cfa55deaa8e50512d8",
+    "tests/test_coverage_inputs.py": "67b9e4dbd403069deba87b44a7010b9bffec009c585b301d57c0874645c28941",
+    "tests/test_prospective_admission_coverage.py": "9930dc72107662ef49ad0976fbd7ca8536394cb8a7f934f8085afd649efdcfb4",
+    "tests/test_prospective_primary_session.py": "44216070673de91cc204d5141c1940b0e7c67954d335ca55060f25f312139732",
+    "tests/test_prospective_server_session.py": "80300bd68ea14e85d7823e7a79e279763be54b9380287ada28dc611215ef010d",
+    "tests/test_prospective_study_controller.py": "355065d8c157d2dff3d8d07aca1856f220a3821ca2b6cd68b19ec04ba1c3ed3d",
+    "tests/test_prospective_study_inputs.py": "eac639383be616a00ec537c8776f06f9022bbeec8086fb5bbbcbbd3460afb94b",
+    "tests/test_server_process.py": "2b1d4cceaea3240f0aa6fd7e992f8d7ff4e63f65ca73aaabc8d4ddc996364551",
+    "tests/test_server_process_stop.py": "398d6af03ca9b8c432564577141f611254950ee072c7d5844a095ce92a0fc0e8",
+    "tests/test_unix_http_capture.py": "e038834c37beac332416774397d4d9b0b341d0ff2554a2e04d3887d2a72c5d26",
+    "tools/coverage_inputs.py": "a02b3e2c0cb0702407cbd37843a413ed95d56d0b6756ac8c1dec415f201f33ad",
+    "tools/prospective_execution_gate.py": "3fed7c4f8c812e22954ff95372e6a05c32c98a680e83d6ea12c0b5e548460f5e",
+    "tools/prospective_primary_session.py": "ac23f2f665046009854be400274f2b968b61266d31af93941b6cd2798b3f7114",
+    "tools/prospective_server_session.py": "5bed200cc83e87fc921ddad8dae873de1b94640f4883673928bec266c7fbea48",
+    "tools/prospective_study_controller.py": "3829af7549e6ebca00b5a68c8a44bdfae14a4fcca339492d391d0c769cfef4cc",
+    "tools/server_process.py": "f415f624b22bb67a92fb1e942dfb87dbf82725741c42430cfac77cc985b6552a",
+    "tools/unix_http_capture.py": "0626b375f0d2b34af1c0f4fcda27c593fd1818532991f8d51ce06f8baa4222b4"
+  },
+  "unchanged_frozen_source_sha256": {
+    "tools/darwin_runtime_profile.py": "c910b867fa1bb71c397fd466fe0f57931cfe1894f2b49a5752befb4d3b854998",
+    "tools/local_model_comparator.py": "429ae531533c5a90f618c3eb2f4d8f04c745c06ebf993159603710cefd25b090",
+    "tools/darwin_server_v030.py": "419d4fb56e00f4117b637f5b31eb1961179f8b649a155e366e8db5fd53259acb",
+    "tools/darwin_runtime_v030.py": "d84755db8d098393887e0fca0e67ef4d5d76bdfcacdda2a229d3138fe2605f37"
+  },
+  "historical_protocol_and_review_directories_unchanged": true,
+  "verification": {
+    "ruff": "passed",
+    "format": "passed",
+    "ty": "passed",
+    "basedpyright_retained": "passed",
+    "baseline_ratchet": "passed",
+    "bandit_hash_bound": "passed",
+    "vulture": "passed",
+    "unicode_scan": "passed",
+    "repository_governance": "passed",
+    "deterministic_benchmark": {
+      "passed": 7,
+      "total": 7
+    },
+    "official_conformance": {
+      "checked_at": "2026-11-13T11:09:48.836647+00:00",
+      "current_conformance": true,
+      "local_validation_passed": true,
+      "official_validator": {
+        "command": [
+          "python",
+          "-I",
+          "-m",
+          "skills_ref.cli",
+          "validate",
+          "skills/rca-investigation"
+        ],
+        "exit_code": 0,
+        "passed": true,
+        "provenance": {
+          "revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+          "source": "https://github.com/agentskills/agentskills.git",
+          "verified": true
+        }
+      },
+      "project_profile": {
+        "complete": true,
+        "completion_diagnostics": [],
+        "diagnostics": [],
+        "passed": true
+      },
+      "runtime": {
+        "platform": "Linux",
+        "python": "3.12.14"
+      },
+      "schema_version": "1.0",
+      "upstream_drift": {
+        "baseline_revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+        "changed_paths": [
+          "GOVERNANCE.md",
+          "MAINTAINERS.md",
+          "docs/footer.js",
+          "docs/style.css"
+        ],
+        "checked_at": "2026-11-13T11:09:30.782259+00:00",
+        "current_conformance": true,
+        "guidance_paths": [],
+        "message": "Upstream changed only outside monitored specification, validator, and guidance paths.",
+        "mode": "live",
+        "normative_paths": [],
+        "resolved_revision": "83021e2be457a9b6679148719c1f6074f0ad975e",
+        "sources": [
+          "https://agentskills.io/specification",
+          "https://agentskills.io/skill-creation/best-practices",
+          "https://agentskills.io/skill-creation/optimizing-descriptions",
+          "https://agentskills.io/skill-creation/evaluating-skills",
+          "https://github.com/agentskills/agentskills"
+        ],
+        "status": "upstream_change_irrelevant"
+      }
+    },
+    "root_focused_tests": {
+      "passed": 57
+    },
+    "full_pytest": {
+      "passed": 1963,
+      "failed": 52,
+      "errors": 0,
+      "skipped": 11,
+      "total": 2026,
+      "coverage_percent": 93.3,
+      "success": false
+    },
+    "unchanged_failure_parity": {
+      "baseline_commit": "0f76d50c415a8d0ac2a39cc64127dc049a795357",
+      "baseline_tree": "ddddefeeb7556700870d1322b97d1755246a3f80",
+      "reference_master_commit": "a38dd9c1215c317bd5d0558b9383c1444f9cbfb2",
+      "baseline_matches_reference_tree": true,
+      "current_failure_count": 52,
+      "baseline_failure_count": 52,
+      "failure_node_sets_equal": true,
+      "raw_equal_message_count": 50,
+      "normalization_regex": "/tmp/rca-session-[a-z0-9_]{8}(?=/)",
+      "normalized_equal_message_count": 52,
+      "normalized_differences": []
+    },
+    "sqlite_regression": {
+      "python": "3.13.5",
+      "coverage_version": "7.15.2",
+      "results": {
+        "base": {
+          "error": "coverage database is unreadable: coverage-data-macos-latest-py3.15.2",
+          "resource_warning_count": 1
+        },
+        "current": {
+          "error": "coverage database is unreadable: coverage-data-macos-latest-py3.15.2",
+          "resource_warning_count": 0
+        }
+      }
+    },
+    "malformed_http_regressions": [
+      {
+        "case": "list-method",
+        "before": {
+          "exception": "TypeError",
+          "message": "unhashable type: 'list'"
+        },
+        "after": {
+          "exception": "ValueError",
+          "message": "unsupported_request"
+        }
+      },
+      {
+        "case": "dict-method",
+        "before": {
+          "exception": "TypeError",
+          "message": "unhashable type: 'dict'"
+        },
+        "after": {
+          "exception": "ValueError",
+          "message": "unsupported_request"
+        }
+      },
+      {
+        "case": "list-route",
+        "before": {
+          "exception": "TypeError",
+          "message": "unhashable type: 'list'"
+        },
+        "after": {
+          "exception": "ValueError",
+          "message": "unsupported_request"
+        }
+      },
+      {
+        "case": "dict-route",
+        "before": {
+          "exception": "TypeError",
+          "message": "unhashable type: 'dict'"
+        },
+        "after": {
+          "exception": "ValueError",
+          "message": "unsupported_request"
+        }
+      }
+    ]
+  },
+  "review": {
+    "blocking_findings": [],
+    "roles": [
+      "root integration and global verification",
+      "process/HTTP implementation lane",
+      "session/controller implementation lane",
+      "read-only contract and baseline reviewer"
+    ],
+    "limits": "Shared-context agent engineering review; not independent human or model observations."
+  },
+  "hosted_ci": {
+    "status": "required_on_final_pr_head_after_documentation",
+    "pass_claim": false,
+    "required_before_merge": [
+      "Quality",
+      "Dependency Review",
+      "Privacy and secrets",
+      "Agent Skill Conformance"
+    ],
+    "separate_offline_security": "Observe separately; queued is not a completed scan; workflow unchanged."
+  },
+  "evidence_sha256": {
+    "rcagent-typing-next-before.json": "f89a4cfbf3d2e2000e3e71d1feb29911a65eded9463aca9900299d879efb0dcc",
+    "rcagent-typing-next-after.json": "5cca7a5216221be4296793d95431026f10e419b07f66abe83e359e6b8c402a45",
+    "rcagent-typing-next-retained-verified.json": "0b22535891fac1106e43c2188a0dc5710d65dd48ad70a4398bea6f4ec48729e1",
+    "rcagent-typing-next-full-tests.xml": "c532fc94abb17ce2253970a37f9489a856d786c3422fa0cb71bdb6feb2fbdca4",
+    "rcagent-typing-next-full-tests.log": "5dea1b636e9ac88a8c2512c2ecaebb2963c965f87afe6302fbe7c07356ad1d3a",
+    "rcagent-typing-next-baseline-52.xml": "fb92ff9efa2db20ad273db8d921b72189e468306df0a76d1ee6ade082c930aa8",
+    "rcagent-typing-next-baseline-52-comparison.json": "6ec30ad9a8ebd4568c47e95db1fae5ff5de480307a94ca965808a0d8c7a835f8",
+    "rcagent-typing-next-conformance.json": "1450fe66cb77d25d0fe5bd2a6cb3e21b0635f89668f159ee2ac06563ab419073",
+    "rcagent-typing-next-sqlite-regression.json": "759a8cba9ad638fec96fd317dfffe908d5a1855995af14fcefba1632e5f86866",
+    "typing-transport-malformed-http-regression.json": "3c7b0e646c2e0cbcaa61971004c0c781cbac1e9f409b8b0634aeec9893452341"
+  },
+  "limitations": [
+    "52 local socket-dependent failures remain failures; exact unchanged-source parity does not prove socket integration success.",
+    "5023 strict diagnostics remain as measured non-growing legacy debt.",
+    "No clinical qualification, model observation, Rust migration or historical study requalification."
+  ]
+}

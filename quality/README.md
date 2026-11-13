@@ -4,10 +4,12 @@ The harness combines different failure detectors, with explicit scope and
 bounded runtime. It does not claim clinical validity, zero hallucinations,
 complete static typing, or independent model agreement.
 
-The current [typing receipt](typing-verification-20261113.json) and
-[Conductor explanation](../conductor/tracks/frontier-assurance_20261113/typing-evidence.md)
-record 3,701 diagnostics removed, 6,012 remaining, exact cap tightening, reviewed
-baseline relocation and the Windows/combined-coverage correction.
+The current [typing receipt](typing-contracts-verification-20261113.json) and
+[Conductor explanation](../conductor/tracks/frontier-assurance_20261113/typing-contracts-evidence.md)
+record a further 989 diagnostics removed, 5,023 remaining, exact cap tightening,
+reviewed baseline maintenance, typed process/session contracts and the corrupt
+coverage reader cleanup. The [previous receipt](typing-verification-20261113.json)
+preserves the first reduction and Windows/combined-coverage correction.
 
 | Check | Enforced behavior | Remaining limitation |
 | --- | --- | --- |

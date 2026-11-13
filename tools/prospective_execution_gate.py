@@ -25,6 +25,7 @@ SOURCES = tuple(
     "tools/" + name + ".py"
     for name in (
         "__init__",
+        "json_shapes",
         "prospective_execution_gate",
         "prospective_execution_identity",
         "prospective_primary_session",

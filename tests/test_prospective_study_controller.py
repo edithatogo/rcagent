@@ -4,7 +4,7 @@ import base64
 import json
 import os
 import sys
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from pathlib import Path
 from types import TracebackType
 from typing import BinaryIO, Literal, Self, cast
@@ -49,12 +49,14 @@ def receipt_for(plan: Plan, socket_path: Path) -> ObjectMap:
     request = base64.b64decode(
         text_value(mapping(mapping(expected["request"])["request"])["base64"])
     )
-    candidate = runner.normalize_candidate(
-        mapping(expected["request"]),
-        body,
-        slot_id=text_value(mapping(expected["evidence"])["slot_id"]),
-        expected_slot_id=text_value(mapping(expected["evidence"])["slot_id"]),
-        expected_model=text_value(native["model"]),
+    candidate = mapping(
+        runner.normalize_candidate(
+            mapping(expected["request"]),
+            body,
+            slot_id=text_value(mapping(expected["evidence"])["slot_id"]),
+            expected_slot_id=text_value(mapping(expected["evidence"])["slot_id"]),
+            expected_model=text_value(native["model"]),
+        )
     )
     child: ObjectMap = {
         "status": "process_stopped",
@@ -358,7 +360,7 @@ def test_final_persistence_never_returns_positive_on_failure(
     args, _, _ = capture_fixture
     original = controller._write_result
 
-    def write(path: Path, parent: tuple[int, int], result: ObjectMap) -> None:
+    def write(path: Path, parent: tuple[int, int], result: Mapping[str, object]) -> None:
         if damage == "failure-persistence":
             raise OSError("fixture")
         original(path, parent, result)
@@ -537,7 +539,7 @@ def test_owned_directory_identity_drift_blocks_launch(
     append = controller._append
 
     def record(
-        stream: BinaryIO,
+        stream: controller.JournalStream,
         path: Path,
         parent: tuple[int, int],
         events: list[ObjectMap],
