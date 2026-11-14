@@ -6,13 +6,12 @@ The byte/offset contract uses UTF-8 byte positions, never character positions.
 
 from __future__ import annotations
 
-import argparse
 import json
 from hashlib import sha256
-from pathlib import Path
 from typing import Literal, TypedDict
 
 from tools.evidence_core import canonical_bytes, fingerprint
+from tools.json_shapes import is_array, is_object
 
 
 class SourceObservation(TypedDict):
@@ -159,11 +158,11 @@ def _require_offset(row: dict[str, object], key: str) -> int:
 
 
 def _rows(value: object, *, label: str) -> list[dict[str, object]]:
-    if not isinstance(value, list):
+    if not is_array(value):
         raise ValueError(f"{label} must contain objects")
     rows: list[dict[str, object]] = []
     for item in value:
-        if not isinstance(item, dict) or not all(isinstance(key, str) for key in item):
+        if not is_object(item):
             raise ValueError(f"{label} must contain objects")
         rows.append(item)
     return rows
@@ -276,16 +275,11 @@ def generate_receipt() -> D0Receipt:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path)
-    args = parser.parse_args(argv)
+    """Emit a canonical receipt; unsupported arguments fail closed."""
+    if argv:
+        raise ValueError("D0 accepts no external inputs")
     receipt = generate_receipt()
-    content = canonical_bytes(receipt) + b"\n"
-    if args.output is not None:
-        # No input paths or external data are accepted; output is explicit.
-        args.output.write_bytes(content)
-    else:
-        print(content.decode("utf-8"), end="")
+    print(canonical_bytes(receipt).decode("utf-8"))
     return 0
 
 
