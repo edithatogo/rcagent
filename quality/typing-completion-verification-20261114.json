@@ -1,0 +1,750 @@
+{
+  "schema_version": "1.0",
+  "observed_at": "2026-11-14T04:10:58.945174+00:00",
+  "task": "Track13 FAW06: complete active source/test typing and checked runtime boundaries",
+  "status": "source_accepted_final_documented_head_requires_protected_delivery",
+  "base_commit": "e6d95394241661db117dc429976aaa6204a1128b",
+  "base_tree": "93cefe9d6db2ca1f755e65e5ca25327ef0b4d963",
+  "python": "3.12.14",
+  "checker": {
+    "name": "basedpyright",
+    "version": "1.40.2",
+    "measurement_mode": "empty external baseline; discard",
+    "scope": [
+      "tools",
+      "tests"
+    ],
+    "explicit_any_severity": "error"
+  },
+  "commands": {
+    "measurement": "python -m basedpyright --baselinefile /tmp/faw06-empty-baseline.json --baselinemode=discard --outputjson",
+    "ordinary_shrink": "python -m basedpyright --outputjson",
+    "ratchet": "python -m tools.quality_gate baseline --base e6d95394241661db117dc429976aaa6204a1128b",
+    "full_validation": "PYTEST_ADDOPTS='--junitxml=/tmp/faw06-full.xml' python -m tools.full_validation"
+  },
+  "diagnostics": {
+    "before": {
+      "total": 3198,
+      "tests": 2716,
+      "production": 482,
+      "files_analyzed": 153
+    },
+    "after": {
+      "total": 0,
+      "production": 0,
+      "tests": 0,
+      "files_with_debt": 0,
+      "files_analyzed": 153,
+      "raw_summary": {
+        "filesAnalyzed": 153,
+        "errorCount": 0,
+        "warningCount": 0,
+        "informationCount": 0,
+        "timeInSec": 6.695
+      }
+    },
+    "removed": 3198,
+    "active_baseline_entries": 0,
+    "policy_allowances": {},
+    "suppression_or_exclusion_added": false,
+    "origin_commit_unchanged": "718b418eba3c17f149d52124b97532240870c0b1"
+  },
+  "explicit_any_fault_probe": {
+    "command_template": "python -m basedpyright --project pyproject.toml --baselinefile /tmp/faw06-empty-baseline.json --baselinemode=discard --outputjson <temporary explicit-Any fault file>",
+    "fault_source": "from typing import Any\n\ndef unchecked(value: Any) -> object:\n    return value\n",
+    "fault_source_sha256": "621e5f119a1a9d200de4beaaf88ec0d2e44aa0799d7237e3a8773f696618fe64",
+    "exit_code": 1,
+    "summary": {
+      "filesAnalyzed": 1,
+      "errorCount": 1,
+      "warningCount": 0,
+      "informationCount": 0,
+      "timeInSec": 0.18
+    },
+    "diagnostics": [
+      {
+        "severity": "error",
+        "message": "Type `Any` is not allowed",
+        "range": {
+          "start": {
+            "line": 2,
+            "character": 21
+          },
+          "end": {
+            "line": 2,
+            "character": 24
+          }
+        },
+        "rule": "reportExplicitAny"
+      }
+    ],
+    "active_files_ast_checked": 153,
+    "explicit_any_references": []
+  },
+  "boundary_comparison": {
+    "receipt": "quality/typing-completion-boundaries-20261114.json",
+    "case_count": 43,
+    "repaired_behaviors": 33,
+    "unchanged_controls": 10,
+    "scope": "Synthetic isolated exact-base/current comparison with process launches intercepted."
+  },
+  "valid_output_equivalence": {
+    "data": {
+      "benchmark_smoke": {
+        "equal": true,
+        "receipt_sha256": "5f20e6e552dc8e718dfdf07e9a2aefd37452fdd419b29c8f60f711d28ef74841"
+      },
+      "benchmark_regression": {
+        "equal": true,
+        "receipt_sha256": "cff8ac006d8ba6ac0b00d8cdf58a59894ae2f1661d028c4efebab2eb8276b316"
+      },
+      "admitted_manifest": {
+        "equal": true
+      },
+      "search_export_lifecycle": {
+        "equal": true
+      },
+      "assurance": {
+        "equal": true,
+        "receipt_sha256": "449a46d66c32981c7c2609c410a8e0dff07e82a9c24cad4fd9f76cdf2840ba83"
+      },
+      "module_origins": {
+        "benchmark": "/workspace/scratch/ea571a0ab38c/rcagent-faw06-a/tools/benchmark_harness.py",
+        "retrieval": "/workspace/scratch/ea571a0ab38c/rcagent-faw06-a/tools/retrieval_system.py"
+      }
+    },
+    "autonomy": {
+      "initialisation_and_six_transitions_equal": true,
+      "checkpoint_bytes_equal": true,
+      "checkpoint_sha256": "cc8e8fc2560f698746ab3e4f6a8bcaa7ff94badf1e58f0ff4953be879c63f28b",
+      "transition_count": 6,
+      "module_origin": "/workspace/scratch/ea571a0ab38c/rcagent-faw06-a/tools/autonomy_state.py"
+    },
+    "evidence": {
+      "canonical_round_trip_equal": true,
+      "governed_export": {
+        "equal": true,
+        "fingerprint": "sha256:f594034ae8f8a4f0547701302cf82f961a9c3a5bef5fe716d6035f3287b70812"
+      },
+      "public_export": {
+        "equal": true,
+        "fingerprint": "sha256:348e6523d7366022a94740b0382ce683e4a81849010d2ac5545d2de782e8357f"
+      },
+      "redaction_equal": true,
+      "audit_chain_equal": true,
+      "legacy_migration_equal": true,
+      "jurisdiction_drift_and_due_equal": true,
+      "module_origins": {
+        "evidence_core": "/workspace/scratch/ea571a0ab38c/rcagent-faw06-a/tools/evidence_core.py",
+        "jurisdiction_pack": "/workspace/scratch/ea571a0ab38c/rcagent-faw06-a/tools/jurisdiction_pack.py"
+      }
+    }
+  },
+  "source_fixity_review": {
+    "blocking_findings": [],
+    "focused_test_evidence": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/test_quality_gate.py tests/test_darwin_server_v030.py tests/test_runtime_profile_versions.py tests/test_prospective_study_inputs.py -k 'bandit or source or profile_digest or actual_protocol_references' -q -p no:cacheprovider --junitxml=/tmp/faw06-final-fixity-tests.xml",
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests": 28
+      },
+      "exit_code": 0,
+      "xml_path": "/tmp/faw06-final-fixity-tests.xml",
+      "xml_sha256": "89b00669d65198cd0c47708257ffc4983a920e870659e704c7311a8f7f90158a"
+    },
+    "head_commit": "ef23446d08de1fad53e004c8d20e11e5eb6c453b",
+    "historical_identity": {
+      "changed_historical_protocol_or_track_paths_from_base": [],
+      "current_profile_is_distinct": true,
+      "historical_condition_profile_sha256": "c5bdd37eb8391baedd191c482996210ebdfbd43888ab8afb578092fafd8896c1",
+      "protocol_and_review_unchanged_from_integration_base": {
+        "conductor/reviews/primary-execution.json": true,
+        "evaluation/prospective/prospective-agent-text-20260830/protocol.json": true
+      },
+      "protocol_sha256": "650186fd54dd832532ea995c954862026203b848bb520e8e0cae7a4af8c80628",
+      "review_observation": "The consistency test reconstructs the four trusted source-S declarations in an isolated no-site-packages interpreter, compares historical condition hashes, and independently asserts a distinct current profile identity.",
+      "review_protocol_sha256": "650186fd54dd832532ea995c954862026203b848bb520e8e0cae7a4af8c80628",
+      "review_source_commit": "e6c1453d68b562829b99f40b925de6d287496601",
+      "review_source_is_consumed_S": true,
+      "source_sha256_at_S": {
+        "darwin_runtime_profile.py": "c910b867fa1bb71c397fd466fe0f57931cfe1894f2b49a5752befb4d3b854998",
+        "darwin_runtime_v030.py": "d84755db8d098393887e0fca0e67ef4d5d76bdfcacdda2a229d3138fe2605f37",
+        "darwin_server_v030.py": "419d4fb56e00f4117b637f5b31eb1961179f8b649a155e366e8db5fd53259acb",
+        "local_model_comparator.py": "429ae531533c5a90f618c3eb2f4d8f04c745c06ebf993159603710cefd25b090"
+      }
+    },
+    "integration_base": "e6d95394241661db117dc429976aaa6204a1128b",
+    "remaining_verification": [
+      "Whole-repository empty-baseline basedpyright after optional-adapter integration",
+      "Compare final root full-suite failure identities against /tmp/faw06-base-full.xml"
+    ],
+    "review_mode": "read-only source and test review; evidence files only under /tmp",
+    "reviewed_at_utc": "2026-11-14T03:45:12.424452+00:00",
+    "reviewed_file_sha256": {
+      "pyproject.toml": "eff6a7cac25fca489b3f1fb96cfe83a650bcf171c7e91ba212dbd8e3e6b7d73c",
+      "tests/test_darwin_server_v030.py": "12c2f605f05ac412fb91f5dda9fc5161016326f2fd2facb814a90db7294ce986",
+      "tests/test_prospective_study_inputs.py": "f4251dce6a2de2bdf9b14b57560200abf58e2db3ac76f7491146804885c314e8",
+      "tests/test_quality_gate.py": "1a38f9caf3199b73a3ab921b877c27f4f5e6130fb97f20545970ceb40472b930",
+      "tests/test_runtime_profile_versions.py": "2d2f8995561c6af7464ef083d3ef837d9c5b69870fa2a009f462f069cbcb4645",
+      "tools/darwin_server_v030.py": "9d3841e20e1e761190fed889eeae84c045adbbb6d081c2ff1826ac1afa8ffe3b",
+      "tools/quality_gate.py": "c104277cfa6316ed50d4830a4009ade332b9bb32341f4c14f9f93ab87032a706"
+    },
+    "reviewer": "/root/faw06_lane_a",
+    "root": "/workspace/scratch/ea571a0ab38c/rcagent-faw06",
+    "runtime_source_fixity": {
+      "cli_profile_id": "darwin-llama-0.3.0-typing-20261114",
+      "package_init_contents": "\"\"\"Repository governance and validation tools.\"\"\"\n",
+      "package_init_sha256": "16063e5c75a32458029b1999c973a92e00c282a7df7ca270d5107e31bcd9ee5c",
+      "profile_id": "darwin-llama-server-0.3.0-typing-20261114",
+      "profile_sha256": "da4e00f58516bc3aafbb6f2d438b31c721c3438bdb6da6cb26a901cc81b8818c",
+      "source_hashes": {
+        "darwin_runtime_profile.py": {
+          "actual_sha256": "31f0627bd3386a164872f1c14640e14b26a5551b7f61c6c23795ce2427a5c3ee",
+          "declared_sha256": "31f0627bd3386a164872f1c14640e14b26a5551b7f61c6c23795ce2427a5c3ee",
+          "matches": true
+        },
+        "darwin_runtime_v030.py": {
+          "actual_sha256": "2f9d42e8522d376401188c89e6a4d55692cd145985506b88e31e26c31f26de8d",
+          "declared_sha256": "2f9d42e8522d376401188c89e6a4d55692cd145985506b88e31e26c31f26de8d",
+          "matches": true
+        },
+        "json_shapes.py": {
+          "actual_sha256": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+          "declared_sha256": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+          "matches": true
+        },
+        "local_model_comparator.py": {
+          "actual_sha256": "f27bf6dcf890887bf30112982ba78843828d58ce00b8a1b3481f23a1c2a49074",
+          "declared_sha256": "f27bf6dcf890887bf30112982ba78843828d58ce00b8a1b3481f23a1c2a49074",
+          "matches": true
+        }
+      },
+      "source_hashes_stable_during_native_scan": true,
+      "source_inventory_equals_imported_module_closure": true,
+      "transitive_imported_project_modules_excluding_entrypoint": [
+        "tools/darwin_runtime_profile.py",
+        "tools/darwin_runtime_v030.py",
+        "tools/json_shapes.py",
+        "tools/local_model_comparator.py"
+      ]
+    },
+    "security_baseline": {
+      "actual_sha256": "fe1dbcc8e0ba35b659e648889757cc8eded387ce2d78c7807627538892adaa9a",
+      "baseline_sha256_matches_gate": true,
+      "gate_check_result": "passed",
+      "gate_declared_sha256": "fe1dbcc8e0ba35b659e648889757cc8eded387ce2d78c7807627538892adaa9a",
+      "native_errors": [],
+      "native_finding_objects_equal_reviewed_results": true,
+      "native_findings": [
+        {
+          "code": "241         try:\n242             result = subprocess.run(\n243                 [cfg.EXECUTABLE, \"--\" + diagnostic],\n244                 stdin=subprocess.DEVNULL,\n245                 stdout=stdout,\n246                 stderr=stderr,\n247                 env=cfg.profile_environment(),\n248                 timeout=TIMEOUT,\n249                 check=False,\n250             )\n251             exit_state = result.returncode\n",
+          "col_offset": 21,
+          "end_col_offset": 13,
+          "filename": "tools/darwin_runtime_profile.py",
+          "issue_confidence": "HIGH",
+          "issue_cwe": {
+            "id": 78,
+            "link": "https://cwe.mitre.org/data/definitions/78.html"
+          },
+          "issue_severity": "LOW",
+          "issue_text": "subprocess call - check for execution of untrusted input.",
+          "line_number": 242,
+          "line_range": [
+            242,
+            243,
+            244,
+            245,
+            246,
+            247,
+            248,
+            249,
+            250
+          ],
+          "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html",
+          "test_id": "B603",
+          "test_name": "subprocess_without_shell_equals_true"
+        },
+        {
+          "code": "335                 try:\n336                     completed = subprocess.run(\n337                         [\n338                             executable,\n339                             \"-m\",\n340                             str(model_path),\n341                             \"-p\",\n342                             prompt,\n343                             \"-n\",\n344                             \"128\",\n345                             \"--seed\",\n346                             str(42 + repeat),\n347                             \"--temp\",\n348                             \"0\",\n349                             \"--no-display-prompt\",\n350                             \"--log-disable\",\n351                             \"--single-turn\",\n352                         ],\n353                         check=False,\n354                         capture_output=True,\n355                         text=True,\n356                         timeout=timeout,\n357                     )\n358                     output = completed.stdout\n",
+          "col_offset": 32,
+          "end_col_offset": 21,
+          "filename": "tools/local_model_comparator.py",
+          "issue_confidence": "HIGH",
+          "issue_cwe": {
+            "id": 78,
+            "link": "https://cwe.mitre.org/data/definitions/78.html"
+          },
+          "issue_severity": "LOW",
+          "issue_text": "subprocess call - check for execution of untrusted input.",
+          "line_number": 336,
+          "line_range": [
+            336,
+            337,
+            338,
+            339,
+            340,
+            341,
+            342,
+            343,
+            344,
+            345,
+            346,
+            347,
+            348,
+            349,
+            350,
+            351,
+            352,
+            353,
+            354,
+            355,
+            356,
+            357
+          ],
+          "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html",
+          "test_id": "B603",
+          "test_name": "subprocess_without_shell_equals_true"
+        }
+      ],
+      "native_unbaselined_command": [
+        "/workspace/scratch/ea571a0ab38c/rcagent-faw06/.venv/bin/python",
+        "-m",
+        "bandit",
+        "-r",
+        "tools",
+        "-c",
+        "pyproject.toml",
+        "-f",
+        "json",
+        "-q"
+      ],
+      "native_unbaselined_exit_code": 1,
+      "path": "quality/bandit-reviewed.json",
+      "review_observation": "Source and baseline hashes are checked before native baseline use; the only two allowed filenames remain explicit. Tamper tests retain rejection before scanner invocation, source drift rejection, exact native baseline adaptation, return-code propagation and temporary-file cleanup.",
+      "reviewed_sources": {
+        "tools/darwin_runtime_profile.py": {
+          "line_number": 242,
+          "sha256": "31f0627bd3386a164872f1c14640e14b26a5551b7f61c6c23795ce2427a5c3ee"
+        },
+        "tools/local_model_comparator.py": {
+          "line_number": 336,
+          "sha256": "f27bf6dcf890887bf30112982ba78843828d58ce00b8a1b3481f23a1c2a49074"
+        }
+      }
+    },
+    "strict_configuration": {
+      "include": [
+        "tools",
+        "tests"
+      ],
+      "pythonPlatform": "All",
+      "pythonVersion": "3.11",
+      "reportAttributeAccessIssue": "error",
+      "reportExplicitAny": "error",
+      "reportMissingImports": "error",
+      "typeCheckingMode": "strict"
+    }
+  },
+  "source_files_sha256": {
+    "tests/prospective_fixture_types.py": "37395515fcd22707726d0148083c9f33f4d304d4cfadb95032a1313da864d303",
+    "tests/test_adaptation_readiness.py": "5ee0ace2837e6855fdc3924050e189afb131b9687a1f6333725bbc5f999b005f",
+    "tests/test_agent_panel_review.py": "e5e0d0b501f19369df2731892497ccbac60a8c122c22a70cae02c28ae0c53148",
+    "tests/test_autonomy_harness.py": "5cf5cd82e5923f1dddf6ec6325583859f3ac07e3a42cce373e8bf0d3092f81c4",
+    "tests/test_autonomy_state.py": "2b4eaa65a9fe7e778251edfda30212954dee45c6da842c1acb4194472a457d10",
+    "tests/test_benchmark_harness.py": "14a3745ee53b36f23c7bf760075daa9d5fdf60a632ffb3d0f7decee07e9ef9e5",
+    "tests/test_check_gremlins.py": "a4c45b3940b0222d79d35ffaff2e71e1157fb0ffdfc967746cc4af4ac904ae8d",
+    "tests/test_check_skill_drift.py": "a7f6c08c08045cec1e1216197b8ac3cb971e69ab194b9da744cf055f1e866ee8",
+    "tests/test_client_plugin_packages.py": "ebb3aaf20860bb4ba3c5e6aa1c72bc86ce418e5414ccd9b449d120644af83971",
+    "tests/test_coverage_inputs.py": "67b9e4dbd403069deba87b44a7010b9bffec009c585b301d57c0874645c28941",
+    "tests/test_darwin_runtime_profile.py": "b33411507a6948230eb1d351d6cc35290d36a794b32c1ffdd9dd074d380ebc5b",
+    "tests/test_darwin_runtime_v030.py": "3b5614b5e1c934a1ab3988e630264079f11a3db202a07481d756fb07d3276e00",
+    "tests/test_darwin_server_v030.py": "12c2f605f05ac412fb91f5dda9fc5161016326f2fd2facb814a90db7294ce986",
+    "tests/test_dependency_maintenance.py": "ecb8a2a089f004edb593a93e23f2ca097ddf73426e972e4ab18f5f6064da934f",
+    "tests/test_distribution_governance.py": "93af987df04bcc0ac001b091e7ae438ded196f84eab49aef1cb843fd52d37a87",
+    "tests/test_distribution_package.py": "fa8bdc788fafd18255e88ddc2da946ead281f7ab40128e5b36c6c2431c085c9f",
+    "tests/test_docling_synthetic_evaluation.py": "6a3779663f6a31e02c9a2b4f729d834ebaf1d53d5e3f480dda780208c36dc1f2",
+    "tests/test_encoder_adapter_eval.py": "19054f44b5d412ebd5da55561595a4c6d4b41ef4b0567746aa233cf8630a822d",
+    "tests/test_enum_boundary_rejections.py": "7f1182a342c7e9218241d531119829fed6d7bcf89656cf364637f5e4b530e3f4",
+    "tests/test_evaluation_preflight.py": "ef5067560a71b82d40ea774149a8846c4b213698fb3fd1b2f7ece33651e66266",
+    "tests/test_evidence_core.py": "23aa41eb37b917760feef5e56f3137df46d134050d697328449b64351115dabb",
+    "tests/test_evidence_ports.py": "af9cd32f6af58c2e733518b1a5bda515af72a8f5da074df2c068548d4eefe9f4",
+    "tests/test_evidence_properties.py": "52da0b999b1def151f548c865c7d9083088b78193f55dbeb6ae344164641b79a",
+    "tests/test_full_validation.py": "85224c03540665cbd5a6278e07c843d98c649aa7454816c023b711b0b8ef489d",
+    "tests/test_interface_actions.py": "e14c48b833c1a94094024b121f8224e11aea98bb73c56926184d27f06d5c3bfc",
+    "tests/test_json_shapes.py": "ac56dca58fbf2a9734aa1bc83863a450b4dbb9d4f24c329869c2b0486cc6ba6d",
+    "tests/test_jurisdiction_pack.py": "5f8e3131a7c3af035f102989bf2d290308976c1001bfa2171072d573b4ded33b",
+    "tests/test_local_execution_probe.py": "2db7f75e9d449d986fb13126059e22092def9faa111e79977d91bbf679317fb8",
+    "tests/test_local_model_comparator.py": "ca9681fec31ce9c665b4f875e03156a555c694c2518fd4fcd1c385414448d3e1",
+    "tests/test_local_output_probe.py": "b2775bad5bd8367fc786e1a18e6d4f461d2521ca0cb6598d99371f2eced6c193",
+    "tests/test_medical_signal_contract.py": "bcb95180d366ad6796d07ad69598717333ab4da1269ff05e4a6a6e05e143bab9",
+    "tests/test_multimodal_contract_benchmark.py": "e1911bb813203ba80b1f8a446f8c28ef323d0ab096753f54d81daad1ec1dd049",
+    "tests/test_multimodal_fabric.py": "41739b3cd38d4f289f239090b24ece8c932ab97026aa73504ffa55f122f3691b",
+    "tests/test_multimodal_support_matrix.py": "744a57b37a5ec434382da0c03cf48e45d8c7575c243fea2c585078afca1417bf",
+    "tests/test_native_completion.py": "cabfef2afb629154eddd03323ca46b8a32f5f0a1b7d58e995242182d7c611083",
+    "tests/test_optional_adapter_probe.py": "190fa0b6848883a9a0d81d5e2511f5ae6abc536aa5eff0d103b25228ed104a72",
+    "tests/test_optional_adapter_probe_full.py": "893b1be6df83d9a618428e1cc046924cf9c7ce82efaedede794b162e9e0baf08",
+    "tests/test_plugin_lifecycle.py": "72b12a371cbf9122f97b320c40575a1693afa61d371730b0fbceac8e765dabb9",
+    "tests/test_privacy_assurance.py": "551f3d962be179ad969ff68c93296b182bd09d17229bcd67bb57f80f8b990c66",
+    "tests/test_prospective_admission_adversarial.py": "dda611079459ee2bf73a6015c7db4d02f90f210cf236e6efab5466ff0b3e2bfc",
+    "tests/test_prospective_admission_coverage.py": "fdf416e110a232336ae2253f74ae675b1c27290ff5e05b0e2199edb66f1c22ed",
+    "tests/test_prospective_execution_gate.py": "b77a7ef44d0542cf17f9d06a642277af2368da95ebfc2904e3a4296ce5e20b02",
+    "tests/test_prospective_execution_identity_adversarial.py": "badf7b840e72d1830bb816560b303412b0a66c85bc9b7d7b2de8273bd2d28df9",
+    "tests/test_prospective_freeze.py": "8bbd004136e5e7753c2dc9a45ff40942a4d20332d3bd093d8ce0a80aeb92685b",
+    "tests/test_prospective_inventory.py": "fcf92c4ddf1171446c84a0a84de5bd2beab3c04ba2567536b3139bba98917195",
+    "tests/test_prospective_model.py": "102b9ae4c89c581b376847369beed5fe8b07da47b3ed75508229252b4decf6c8",
+    "tests/test_prospective_native_prerequisites.py": "bd927fad572b6a333986d4f95be124ee289e77c410c3e23838f96c0415fd6aaa",
+    "tests/test_prospective_native_protocol.py": "71749dd039655a5da9bc6179c89f6b8a17033afe4ae8b26f853974a7b1c19e1d",
+    "tests/test_prospective_primary_session.py": "fa685c186668fbf96f285acfcc3a2e2a6df5f9e95bfea125489c4ead11ecde57",
+    "tests/test_prospective_protocol.py": "0791dfbe3d27c2abb7c6f909fcb8a0e3af76b5bdcb2951a308685f9ff202e9c5",
+    "tests/test_prospective_runner_contract.py": "d2bbf55cb5132aadeafe3526e3b14b6a905edb7cce53f031c5b7213055134617",
+    "tests/test_prospective_server_model.py": "027dfcb6c4dc12a20bbb4ff8a78af4272667decfcc1bd36ee25a8db7e27f54fa",
+    "tests/test_prospective_server_session.py": "016efdd6e6b544d8170d8d85dcc161bd5913edf16c317352d36fd2aa9b013fa5",
+    "tests/test_prospective_slot_binding.py": "2477ca9ecfd172af47a48bab09bff64d2e231063525b1940bfa44294723622a9",
+    "tests/test_prospective_study_controller.py": "79dc02397dc5711ee903bc74a45c841c811e6703b5e37ae2a84a2c990afb9a47",
+    "tests/test_prospective_study_inputs.py": "f4251dce6a2de2bdf9b14b57560200abf58e2db3ac76f7491146804885c314e8",
+    "tests/test_quality_gate.py": "1a38f9caf3199b73a3ab921b877c27f4f5e6130fb97f20545970ceb40472b930",
+    "tests/test_release_admission.py": "14f7b89bce8ee33a447cf9912e125f1aeb02fe0ccdf67f2d4f67743d16bc610f",
+    "tests/test_release_candidate.py": "4cc0aef11fa745cd789cbda94a6ce61e13bfcc0b0be6e388fddea6b2a6ad9993",
+    "tests/test_release_source.py": "1e603c84a1a1a8ec3b2c949033bd811a23f4b976450e020d3859e49ab0bd96eb",
+    "tests/test_renovate_governance.py": "022992a5180a5e4cc0d3b8f0a4f8cb760db3faea8b4e2ee98f4973a790bbe588",
+    "tests/test_retrieval_system.py": "506494de910eecaef32cc49e1a46242003b794a9a675d72c414521e02dc93cca",
+    "tests/test_run_skill_conformance.py": "595704077c95904c70d3dd0f08b6a0ef4134bc77c7f6d8d5799fa36b32f29053",
+    "tests/test_run_skill_output_eval.py": "572a4060ea820a2a8cf71612a91f36b6526346816172f27bf77ff7c326bd3d86",
+    "tests/test_run_skill_trigger_eval.py": "f7abe0cc6f2223785d3c244de60f98efee0082e49f056e3131bd1fc8cf83072c",
+    "tests/test_runtime_lab.py": "aecdd6b52f629ffef5e7aee0ef646b5e20ac35284154465dda38388da714b9ec",
+    "tests/test_runtime_profile_versions.py": "2d2f8995561c6af7464ef083d3ef837d9c5b69870fa2a009f462f069cbcb4645",
+    "tests/test_safety_work_schema.py": "48f14a821ec6079d074a6722c16adf6f49d36576d3ded92d064583102caa74fb",
+    "tests/test_server_process.py": "c9665c003df901824def499c4f9ec6534fc9c243229ac797ae8f3b4e711fe3d5",
+    "tests/test_server_process_deadline.py": "cc3bd067bc9677d1ec2b347e526ab015eb03cb33ad6d10ec747a700e85a87fef",
+    "tests/test_server_process_stop.py": "e445d9252d88b7bf6d072908a8c8da1efbc54762b962bd658d9f6c7d27cccd7e",
+    "tests/test_setup_capability_script.py": "f5ac839e53b2990e54ae998493576a3e26c8cf6aaacae65c4140d51059e0f09c",
+    "tests/test_skill_adapters.py": "9cc1a838c11418d0d378f9c618414343ba5030acafa11cd0bd61bd2a4a13fb8e",
+    "tests/test_skill_evaluation_contracts.py": "953b1306b507e0742ccf637ad4dede311b197ebb877e7488c66ca81060915e5e",
+    "tests/test_speech_adapter_eval.py": "f7b65a0fd2559f30ee41da4cec5135803f8796f5a16c82034e9c199bb9c5abfa",
+    "tests/test_template_admission.py": "b9cffd1b1e349a48cfd49bdb14dcab7bd18cc6582cf7befd56ae426755edfc14",
+    "tests/test_typed_boundaries.py": "5e8ec01df6fc2ba1d6cda8752be00320cb025c6ed8589106f3fdfce65e5483f2",
+    "tests/test_unix_http_capture.py": "b3db9c90a2a4b256fbbd906e75824121098f764c65a2814712e941e6fdf4ec13",
+    "tests/test_unix_http_collection.py": "6bbb9a591bbec4eb12d2b21451d6a5b0c5432e1bbab12f8d408fdbd18fcb352c",
+    "tests/test_validate_repository.py": "3460ecabe4c4bb5d40c94428a379786d217642143e6e11ae2de90c4fd2d6c92c",
+    "tests/test_validate_skill.py": "fcede8dded2ffd3e1e5cc70b3da61ff8d6560aed6a49007d903830f31896bbe8",
+    "tests/test_validate_skill_profile.py": "28f30ee6f183426dbf26b8d2b9811830da9fdbaa4ddb607df2ffddfa089d88d7",
+    "tests/test_verify_distribution_sources.py": "8e2272a74c1c7ef278a5396d77ca0addb7fd91840ddf4b21d3ac637261ca210a",
+    "tests/test_workbench.py": "8c4b1a4e121a234d963e01c6b8f43ab3af2510eb302b3c613e726fb46f3266f0",
+    "tools/__init__.py": "16063e5c75a32458029b1999c973a92e00c282a7df7ca270d5107e31bcd9ee5c",
+    "tools/adaptation_readiness.py": "439893689c46cf28a8dffacbada61f85886173d4591d1d093693c73ba3f266a2",
+    "tools/agent_panel_review.py": "dd5b5fef586761e9bdf2d34715535985ca7ff7ff13dcd11dd23cec147594b973",
+    "tools/autonomy_harness.py": "3014c6f20cbb3ff5d9cce75c34da720d7768a74aedfb0c39ba602f0ed9e8c056",
+    "tools/autonomy_state.py": "d3d624c0967a2f91c81a0b0428bff1bad1aa388f91491d7b629ed9d2a6da52d8",
+    "tools/benchmark_harness.py": "e84b37ff81188ba610a2eac0a4dee0d945f32069be2bc77f6752ed367fa9303d",
+    "tools/build_client_plugins.py": "4337bba9701368053ee17b48dc1982e98421da6a9104c917b5e82e2d0c8468d7",
+    "tools/build_distribution.py": "ea3e5f600180c2034f6b2324765f674d0e92881584b950e34b1d621e67e6f83c",
+    "tools/build_release_candidate.py": "7dd1abaa63cd62e8aba98da6abf27c15bce77dc405a5b98ce799b977c5aab23b",
+    "tools/check_gremlins.py": "0f07a8c6c8d627159bd55266418514c8158ae70b757c529d6a05ba860e5b7d4e",
+    "tools/check_skill_drift.py": "fa2b89ede8e2d3eede6e76747d96c2cb9de51079c037741c3a993247c6fb9dc2",
+    "tools/coverage_inputs.py": "a02b3e2c0cb0702407cbd37843a413ed95d56d0b6756ac8c1dec415f201f33ad",
+    "tools/darwin_runtime_profile.py": "31f0627bd3386a164872f1c14640e14b26a5551b7f61c6c23795ce2427a5c3ee",
+    "tools/darwin_runtime_v030.py": "2f9d42e8522d376401188c89e6a4d55692cd145985506b88e31e26c31f26de8d",
+    "tools/darwin_server_v030.py": "9d3841e20e1e761190fed889eeae84c045adbbb6d081c2ff1826ac1afa8ffe3b",
+    "tools/docling_synthetic_evaluation.py": "084d6d4850506c36ca7b3c02e227709bdbdb190dc90cb25ec321e9f27258c7b2",
+    "tools/encoder_adapter_eval.py": "0a2062a633cf09f260f281c5cb98a2061b4bdf381db73ae1b7d0042f32e8695e",
+    "tools/evaluation_preflight.py": "a74ec2bfe36953897d1b6f8ea1ae94bd58e3ef21674a1dfb8a2e97133b30536d",
+    "tools/evidence_core.py": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+    "tools/evidence_ports.py": "b60c88d9e9e9d39689f14124136a1a0b726857e013ad14758bc93a3a9a02c58b",
+    "tools/full_validation.py": "a1305fd0f056859548dd148273d58131e0db4bdcc13af9365d8cc6559c2b24ff",
+    "tools/install_skill_adapter.py": "c729ee9a7ab19d861b7548437d53f328377d81581bcf18683850e6a70fd4bb64",
+    "tools/interface_actions.py": "32ec06ec5b7659f0613dc29d6db146b17ef3ff5bed18b1948ba8c9a44c0b3bbf",
+    "tools/json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+    "tools/jurisdiction_pack.py": "3b70f914a23e89eb1405d9da19d36541eaffd8423a01db23ea0200b411b2d0f4",
+    "tools/local_execution_probe.py": "d688966f4dd6260db6b5ebe9a9137c792d093646288fe3bc91a93322501c2430",
+    "tools/local_model_comparator.py": "f27bf6dcf890887bf30112982ba78843828d58ce00b8a1b3481f23a1c2a49074",
+    "tools/local_output_probe.py": "9f3db96d97d548d3c1f1f04b01d0304d7d24033e9310a1c09c5c6f083882ce3c",
+    "tools/medical_signal_contract.py": "0423c3e7d0ef97ea05de0136ed8988af0eb0c562cfe865bc5a51463fb4fad1a4",
+    "tools/multimodal_contract_benchmark.py": "f4ff6f60e575af29a5342e9ec2356ee876d0e4fab06ead7a6116212247956c5e",
+    "tools/multimodal_fabric.py": "dbc62a36cbf050cc3756afc4faf15cf5b2d75976f0bf6587c6546ed9df5b9a69",
+    "tools/native_completion.py": "88770d0ddb878f489212ab97bc3f54e00578e8e568cb2c68c337bb5a62c4b4e2",
+    "tools/optional_adapter_probe.py": "dbc40c0503da31df4aaeb29a19f25224ea234e61573310ae6d804f961b1cf430",
+    "tools/plugin_lifecycle.py": "b05640bb498f576f3087c08295526ae108f73583f8d504768a9d14e98f8dffa5",
+    "tools/privacy_assurance.py": "1c5f3ef1b4d9fce6906d7c328e67704668fc2509be4775eda5f42af6270c0e96",
+    "tools/profile_workload.py": "f1517031852686eb35a216c23a6b0db0e73f2c9d2c745edacece9996cb9f74aa",
+    "tools/prospective_execution_gate.py": "eb0ea3120288f72b1cceb50988aff246d3391b1329a71c251b54e9e7cbe5e679",
+    "tools/prospective_execution_identity.py": "92025befbe1cdd6c2f70596a11955a8265abbc888abd6be791ade2dad84981ea",
+    "tools/prospective_freeze.py": "59a47781a19efb3a418ee461defc0637f316104357f01b41f39507ac51796a75",
+    "tools/prospective_inventory.py": "82b3190f72977621856e771bc955494969b26d5f72a3d389c061784fc08d3832",
+    "tools/prospective_model.py": "3da795e169c74fe770a940c76b55429a490abb6e311ca9a5cb6b65d48c2ca888",
+    "tools/prospective_native_prerequisites.py": "86cfd60cf300fda01fe94b0018230161be18dc4673171024a63112736745bff9",
+    "tools/prospective_native_protocol.py": "26fc52a3b70bf3fb8a20947c4c07fa8db094bc0846b93aaf902ada062a836412",
+    "tools/prospective_observation_admission.py": "17aa3c7686be4dc1f918ec33a364fb20b34fe0e0389900e61e433d1d0b13c0cc",
+    "tools/prospective_primary_session.py": "3e65cdf4ee4b299b4b1e70bb35417b5019673c2d7398b9ce7aea198d41133392",
+    "tools/prospective_protocol.py": "e6b65d760d01fb76ffb2249d3e1166422a4fc794e6b10e23fa98de50934873f7",
+    "tools/prospective_runner_contract.py": "af6ba15f5ca3030907a7fa6370a9796472c67514502a936bb3d6ce3b17d1282a",
+    "tools/prospective_server_model.py": "0a5c61edc4d2dee717a1166b06d5bb766b4adf1ff36f318a6789a637795dadd8",
+    "tools/prospective_server_session.py": "bdc8fd34412adde063d02902cb8082eb1cc23ed41b9e066c062e9c5b106b8672",
+    "tools/prospective_slot_binding.py": "9f12265c07ca636d91083771b5f9719b816d08f5d208036981009c1dcb9ac26c",
+    "tools/prospective_study_controller.py": "d9af5691d8697c74204c2f8702464da3a57d8f5858317c68164942e887ee2a9f",
+    "tools/quality_gate.py": "822a903aa78a5ab12d2c01db3943293e9f9f1a003a0d61824b7b1afdaa648da3",
+    "tools/release_admission.py": "f224894340d9dba1659d50e7d702691aad580dc3f05f90c49ce07c11252392aa",
+    "tools/release_source.py": "adb8bd234b0b3b06f7ecd3566cf836725eaba81981703172f4a08ba4695d78db",
+    "tools/retrieval_system.py": "93a43db5466772204e2b73d3f20259a121cf07df9998c452441a44bbd7f80a2e",
+    "tools/run_skill_conformance.py": "b487b52fd6fef03dbad7266efdebdb8028a962971f423c0c98a34177c8fe83e5",
+    "tools/run_skill_output_eval.py": "6d5887e640d56ce9f9b18c0c3914d407c9b9670128fc8abbdd9b2678140c6256",
+    "tools/run_skill_trigger_eval.py": "fd477299d0583dcd927e1fa761720a27c22b646f2084438c9abcf2011050a532",
+    "tools/runtime_lab.py": "c11c53d0fd12cba858a8e4be2374673f83f9059536b26d19fc5a94b28198336f",
+    "tools/server_process.py": "4f5f96d0e0bbd11535c939a2be66693fc9dacd511838f9deaafc089e2f634e79",
+    "tools/sourceright_adapter.py": "681e5fd3490649df3cf61c509a94c77d2f44a1d82f93f0b1087dd03b7c072a0d",
+    "tools/speech_adapter_eval.py": "63b9e66d3ea8a57d8189d32bc50a1904d8e761a48d81fc6ac957ce846565c20d",
+    "tools/template_admission.py": "b6577045bbfe6811da3627c06b2087c8be19a56427e2a0513b2ea43f499305aa",
+    "tools/unix_http_capture.py": "d6c550e5c2c552aa30b89c343be744832db42fe7f57d8179480c045a877adcc9",
+    "tools/validate_repository.py": "a9e6795b1d9395b9817282a6a5ccd8ddaef3e6f700618023f16157e6837fde85",
+    "tools/validate_skill.py": "8472150b82506f79c40af66c8552317c18267f7603fd38cbe731c624139c7091",
+    "tools/validate_skill_profile.py": "0c73806986a4e9ee7169088eb025c0cfa4911c2e392e67eef47227e19205c565",
+    "tools/verify_distribution_sources.py": "b1bbdf2bc91088be36b0aa63318063d5f4629fcd5db349debbfb7c1a3401c77b",
+    "tools/workbench.py": "ece468488fe86329b147e7a0171abda4f7866ee589435d4fc64648cde713d80a"
+  },
+  "configuration_sha256": {
+    "pyproject.toml": "eff6a7cac25fca489b3f1fb96cfe83a650bcf171c7e91ba212dbd8e3e6b7d73c",
+    "uv.lock": "324be4a444b386c39e795b62acc1de9470736d524e07c529dfc92a4cc0679025",
+    ".basedpyright/baseline.json": "17bf74b3da1e3acc40247984dcd3b2f6efd08e4b4ffc031e56a5fc28c0be5687",
+    "quality/typing-debt.json": "99f83f6e32ac4e6ddf10ccc766588d20468f036dac670a5693dcf384928ef19f",
+    "quality/bandit-reviewed.json": "fe1dbcc8e0ba35b659e648889757cc8eded387ce2d78c7807627538892adaa9a"
+  },
+  "local_full_validation": {
+    "exit_code": 1,
+    "full_suite_success": false,
+    "pre_pytest_gates": "all passed",
+    "tests": {
+      "total": 2246,
+      "passed": 2183,
+      "failed": 52,
+      "errors": 0,
+      "skipped": 11,
+      "coverage_percent": 93.27,
+      "coverage_floor_percent": 90
+    },
+    "base_tests": {
+      "total": 2069,
+      "passed": 2006,
+      "failed": 52,
+      "errors": 0,
+      "skipped": 11
+    },
+    "collection": {
+      "original_ids_retained": 2069,
+      "added": 177,
+      "added_passed": 177,
+      "removed": 0,
+      "test_functions_before": 1004,
+      "test_functions_after": 1065,
+      "removed_test_functions": 0
+    },
+    "reason": "Host forbids AF_UNIX operations. The same 52 failed IDs and normalized messages, plus the same 11 skips, occur on a fresh unchanged base; hosted execution is recorded separately.",
+    "failure_parity_receipt": "quality/typing-completion-suite-parity-20261114.json",
+    "raw_evidence": {
+      "/tmp/faw06-full-validation.log": "972b7fe72a704cf3da6cfe658b29a6bd0fe0e1a9eac4654702a4304b30594ef9",
+      "/tmp/faw06-full.xml": "90278534e077afcf57200e2cba1855a135afaca93a7b4997827769847e182818",
+      "/tmp/faw06-base-full.xml": "162b06f05b79824182c53487e4281fb689783bd1e672a5fdbfb0f77989e43237",
+      "/tmp/faw06-base-full.log": "72bf5a8a68301081cbd2baeb84f36517a13378dd3e34c4482865bf891555cbc6",
+      "/tmp/faw06-final-zero.json": "7517ca52d9e9f4a52f2a88e83b9e7c5cd41e764f172354ad2b03828cb5d70baa"
+    },
+    "bandit_notices": [
+      "B108 nosec present without matching finding in prospective_server_session.py",
+      "B608 nosec present without matching finding in retrieval_system.py"
+    ],
+    "benchmark": {
+      "suite": "regression",
+      "passed": 7,
+      "total": 7
+    }
+  },
+  "hosted_ci": {
+    "status": "source_head_passed",
+    "head": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+    "quality_run": 43553845148,
+    "quality_jobs_passed": 9,
+    "pass_claim": true,
+    "receipt": "quality/typing-completion-hosted-source-20261114.json",
+    "observed_runs": [
+      {
+        "id": 43553845334,
+        "name": "Offline AI security",
+        "event": "pull_request",
+        "status": "queued",
+        "conclusion": null,
+        "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+        "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845334",
+        "created_at": "2026-11-14T03:52:41Z",
+        "updated_at": "2026-11-14T03:52:41Z"
+      },
+      {
+        "id": 43553845085,
+        "name": "Dependency Review",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+        "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845085",
+        "created_at": "2026-11-14T03:52:41Z",
+        "updated_at": "2026-11-14T03:55:56Z"
+      },
+      {
+        "id": 43553845020,
+        "name": "Privacy and secrets",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+        "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845020",
+        "created_at": "2026-11-14T03:52:41Z",
+        "updated_at": "2026-11-14T03:56:07Z"
+      },
+      {
+        "id": 43553845035,
+        "name": "Agent Skill Conformance",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+        "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845035",
+        "created_at": "2026-11-14T03:52:41Z",
+        "updated_at": "2026-11-14T03:57:40Z"
+      },
+      {
+        "id": 43553845148,
+        "name": "Quality",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+        "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148",
+        "created_at": "2026-11-14T03:52:41Z",
+        "updated_at": "2026-11-14T04:07:55Z"
+      },
+      {
+        "id": 43553817785,
+        "name": "Offline AI security",
+        "event": "push",
+        "status": "queued",
+        "conclusion": null,
+        "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+        "url": "https://github.com/edithatogo/rcagent/actions/runs/43553817785",
+        "created_at": "2026-11-14T03:52:19Z",
+        "updated_at": "2026-11-14T03:52:19Z"
+      },
+      {
+        "id": 43553817705,
+        "name": "Agent Skill Conformance",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+        "url": "https://github.com/edithatogo/rcagent/actions/runs/43553817705",
+        "created_at": "2026-11-14T03:52:19Z",
+        "updated_at": "2026-11-14T03:57:27Z"
+      }
+    ],
+    "final_delivery_acceptance_record": "https://github.com/edithatogo/rcagent/pull/131",
+    "final_documented_head_status_at_publication": "Requires its own exact-head checks and protected merge; no future-head pass claim.",
+    "receipt_sha256": "13969681fedf6cd7f3702e69c9d691f436dad9339b046a48fd7fa3bd90f71941"
+  },
+  "limitations": [
+    "No clinical validation, model execution or measured hallucination reduction.",
+    "Synthetic optional-adapter fakes do not prove real dependency or device support.",
+    "Historical consumed source, protocol, review and negative result remain unchanged.",
+    "Full socket/process execution requires hosted runners; local denial is not a pass.",
+    "Dedicated self-hosted offline-security execution is separate from hosted Quality."
+  ],
+  "baseline_maintenance": {
+    "method": "ordinary basedpyright shrink; all resolved entries removed",
+    "baseline_before": 3198,
+    "baseline_after": 0,
+    "policy_caps_after": 0,
+    "reanchored_entries": 0,
+    "writebaseline_used": false,
+    "baseline_ratchet_against_base": "passed"
+  },
+  "local_conformance": {
+    "checked_at": "2026-11-14T03:48:03.461626+00:00",
+    "current_conformance": true,
+    "local_validation_passed": true,
+    "official_validator": {
+      "command": [
+        "python",
+        "-I",
+        "-m",
+        "skills_ref.cli",
+        "validate",
+        "skills/rca-investigation"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "provenance": {
+        "revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+        "source": "https://github.com/agentskills/agentskills.git",
+        "verified": true
+      }
+    },
+    "project_profile": {
+      "complete": true,
+      "completion_diagnostics": [],
+      "diagnostics": [],
+      "passed": true
+    },
+    "runtime": {
+      "platform": "Linux",
+      "python": "3.12.14"
+    },
+    "schema_version": "1.0",
+    "upstream_drift": {
+      "baseline_revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+      "changed_paths": [
+        "GOVERNANCE.md",
+        "MAINTAINERS.md",
+        "docs/footer.js",
+        "docs/style.css"
+      ],
+      "checked_at": "2026-11-14T03:47:47.292679+00:00",
+      "current_conformance": true,
+      "guidance_paths": [],
+      "message": "Upstream changed only outside monitored specification, validator, and guidance paths.",
+      "mode": "live",
+      "normative_paths": [],
+      "resolved_revision": "83021e2be457a9b6679148719c1f6074f0ad975e",
+      "sources": [
+        "https://agentskills.io/specification",
+        "https://agentskills.io/skill-creation/best-practices",
+        "https://agentskills.io/skill-creation/optimizing-descriptions",
+        "https://agentskills.io/skill-creation/evaluating-skills",
+        "https://github.com/agentskills/agentskills"
+      ],
+      "status": "upstream_change_irrelevant"
+    }
+  },
+  "tool_versions": {
+    "basedpyright": "1.40.2",
+    "ty": "0.0.75",
+    "ruff": "0.17.3",
+    "bandit": "1.9.4",
+    "vulture": "2.16",
+    "pytest": "9.2.0",
+    "hypothesis": "6.170.15",
+    "pytest-gremlins": "1.13.2"
+  },
+  "final_review": {
+    "implementation_lanes": 2,
+    "read_only_critic": true,
+    "all_submitted_batches_accepted": true,
+    "outstanding_findings": [],
+    "source_fixity_and_failure_parity_reviewer": "completed evidence lane reviewed root integration independently of its own implementation",
+    "earlier_fixity_snapshot_pending_items_resolved_by": [
+      "diagnostics.after (final empty-baseline measurement)",
+      "local_full_validation.failure_parity_receipt (independent full-suite comparison)"
+    ],
+    "shared_context_limit": "Agent engineering reviews, not independent model or human observations.",
+    "delivery_documentation_review": "Fresh read-only agent review accepted after replacing premature future-delivery wording; source acceptance and required final-head checks/merge remain distinct."
+  },
+  "pull_request": "https://github.com/edithatogo/rcagent/pull/131",
+  "published_source_commit": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+  "published_source_tree": "2e7c36c831a4f92e78d508e8b15d28f554536ccb",
+  "matching_local_source_and_baseline_commit": "fd9623a211e18a679e68730776af2f71ac48865f"
+}

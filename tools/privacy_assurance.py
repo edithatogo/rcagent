@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from typing import Any
+from typing import Literal, TypedDict, TypeGuard
 
 from tools.evidence_core import fingerprint
+from tools.json_shapes import is_array, is_object, object_rows
 
 MODES = {"public_remote", "governed_hybrid", "fully_local", "air_gapped"}
 CLASSIFICATIONS = {"public", "internal", "confidential", "sensitive"}
@@ -16,6 +18,7 @@ DESTINATIONS = {"local", "model", "remote_log", "telemetry", "public_index"}
 CONNECTION_STATES = {"off", "on", "unknown"}
 ASSURANCE_DOMAINS = {"security", "privacy", "cultural_safety", "clinical_safety"}
 ASSURANCE_CONTROL_STATUSES = {"inherited", "implemented", "supplemented"}
+DECLARED_CONTROL_STATUSES = ASSURANCE_CONTROL_STATUSES | {"unavailable", "out_of_scope"}
 SAFE_ARTIFACT_TYPES = {"application/json", "text/csv", "text/markdown", "text/plain"}
 UNSAFE_ARTIFACT_SUFFIXES = {
     ".app",
@@ -43,6 +46,35 @@ INJECTION_PATTERNS = (
     re.compile(r"reveal (?:the )?(?:system prompt|credentials|secrets)", re.IGNORECASE),
     re.compile(r"disable (?:privacy|security|logging|audit)", re.IGNORECASE),
 )
+
+
+class _QuarantineFields(TypedDict):
+    output_id: str
+    status: Literal["quarantined"]
+    reasons: list[str]
+    actor: str
+    at: str
+
+
+class QuarantineReceipt(_QuarantineFields):
+    receipt_hash: str
+
+
+class _DeletionFields(TypedDict):
+    resource_hash: str
+    compartment: str
+    status: Literal["deletion_verified"]
+    actor: str
+    at: str
+    verification: dict[str, str]
+
+
+class DeletionReceipt(_DeletionFields):
+    receipt_hash: str
+
+
+def _choice(value: object, choices: set[str]) -> TypeGuard[str]:
+    return isinstance(value, str) and value in choices
 
 
 @dataclass(frozen=True)
@@ -117,7 +149,7 @@ def compartment_key(mode: str, classification: str, resource: str) -> str:
     return f"{mode}:{zone}:{resource}"
 
 
-def validate_execution_disclosure(disclosure: dict[str, Any]) -> list[str]:
+def validate_execution_disclosure(disclosure: Mapping[str, object]) -> list[str]:
     required = {
         "task",
         "tool",
@@ -131,29 +163,31 @@ def validate_execution_disclosure(disclosure: dict[str, Any]) -> list[str]:
         "human_review",
     }
     errors = [f"missing disclosure field: {key}" for key in sorted(required - disclosure.keys())]
-    if disclosure.get("mode") not in MODES:
+    if not _choice(disclosure.get("mode"), MODES):
         errors.append("invalid disclosure mode")
-    if disclosure.get("classification") not in CLASSIFICATIONS:
+    if not _choice(disclosure.get("classification"), CLASSIFICATIONS):
         errors.append("invalid disclosure classification")
     for key in ("task", "tool", "revision", "storage"):
-        if key in disclosure and (
-            not isinstance(disclosure[key], str) or not disclosure[key].strip()
-        ):
+        value = disclosure.get(key)
+        if key in disclosure and (not isinstance(value, str) or not value.strip()):
             errors.append(f"disclosure field must be a non-empty string: {key}")
-    if disclosure.get("network") not in CONNECTION_STATES or disclosure.get("network") == "unknown":
+    if (
+        not _choice(disclosure.get("network"), CONNECTION_STATES)
+        or disclosure.get("network") == "unknown"
+    ):
         errors.append("network status must be known")
     if (
-        disclosure.get("telemetry") not in CONNECTION_STATES
+        not _choice(disclosure.get("telemetry"), CONNECTION_STATES)
         or disclosure.get("telemetry") == "unknown"
     ):
         errors.append("telemetry status must be known")
     if (
-        disclosure.get("mode") in {"fully_local", "air_gapped"}
+        _choice(disclosure.get("mode"), {"fully_local", "air_gapped"})
         and disclosure.get("network") != "off"
     ):
         errors.append("local-only disclosure requires network off")
     if (
-        disclosure.get("mode") in {"fully_local", "air_gapped"}
+        _choice(disclosure.get("mode"), {"fully_local", "air_gapped"})
         and disclosure.get("telemetry") != "off"
     ):
         errors.append("local-only disclosure requires telemetry off")
@@ -161,25 +195,27 @@ def validate_execution_disclosure(disclosure: dict[str, Any]) -> list[str]:
         errors.append("public remote disclosure requires public classification")
     limitations = disclosure.get("limitations")
     if (
-        not isinstance(limitations, list)
+        not is_array(limitations)
         or not limitations
         or not all(isinstance(item, str) and item.strip() for item in limitations)
     ):
         errors.append("limitations must contain at least one explicit limitation")
-    if disclosure.get("human_review") in {None, "", False}:
+    review = disclosure.get("human_review")
+    if review is not True and (not isinstance(review, str) or not review.strip()):
         errors.append("human review must be explicit")
     return sorted(set(errors))
 
 
-def validate_model_result(result: dict[str, Any]) -> list[str]:
+def validate_model_result(result: Mapping[str, object]) -> list[str]:
     """Require every model-assisted result to carry its complete disclosure."""
     errors: list[str] = []
-    if not isinstance(result.get("output_id"), str) or not result.get("output_id", "").strip():
+    output_id = result.get("output_id")
+    if not isinstance(output_id, str) or not output_id.strip():
         errors.append("model result output_id must be explicit")
-    if result.get("status") not in {"produced", "abstained", "quarantined"}:
+    if not _choice(result.get("status"), {"produced", "abstained", "quarantined"}):
         errors.append("model result status invalid")
     disclosure = result.get("disclosure")
-    if not isinstance(disclosure, dict):
+    if not is_object(disclosure):
         errors.append("model result disclosure missing")
     else:
         errors.extend(
@@ -188,10 +224,12 @@ def validate_model_result(result: dict[str, Any]) -> list[str]:
     return sorted(errors)
 
 
-def quarantine_output(*, output_id: str, reasons: list[str], actor: str, at: str) -> dict[str, Any]:
+def quarantine_output(
+    *, output_id: str, reasons: list[str], actor: str, at: str
+) -> QuarantineReceipt:
     if not reasons:
         raise ValueError("quarantine requires at least one reason")
-    receipt = {
+    receipt: _QuarantineFields = {
         "output_id": output_id,
         "status": "quarantined",
         "reasons": sorted(set(reasons)),
@@ -217,7 +255,7 @@ def sanitise_diagnostic(text: str) -> str:
 
 def deletion_receipt(
     *, resource_id: str, compartment: str, actor: str, at: str, verification: dict[str, str]
-) -> dict[str, Any]:
+) -> DeletionReceipt:
     """Create a content-free receipt after a caller has verified deletion."""
     if not resource_id or not compartment or not actor or not at:
         raise ValueError("deletion receipt fields must be explicit")
@@ -228,7 +266,7 @@ def deletion_receipt(
     verified_by = verification.get("verified_by", "").strip()
     if not method or not re.fullmatch(r"sha256:[0-9a-f]{64}", evidence_hash) or not verified_by:
         raise ValueError("deletion verification evidence must be explicit and hashed")
-    receipt = {
+    receipt: _DeletionFields = {
         "resource_hash": fingerprint({"resource_id": resource_id}),
         "compartment": compartment,
         "status": "deletion_verified",
@@ -256,7 +294,7 @@ def assess_input_artifact(*, name: str, media_type: str, text: str) -> list[str]
     return sorted(set(findings))
 
 
-def validate_retrieval_item(item: dict[str, Any], *, expected_compartment: str) -> list[str]:
+def validate_retrieval_item(item: Mapping[str, object], *, expected_compartment: str) -> list[str]:
     """Reject cross-compartment or unprovenanced retrieval before use."""
     errors: list[str] = []
     if item.get("compartment") != expected_compartment:
@@ -273,11 +311,12 @@ def validate_retrieval_item(item: dict[str, Any], *, expected_compartment: str) 
     return sorted(errors)
 
 
-def validate_plugin_manifest(manifest: dict[str, Any]) -> list[str]:
+def validate_plugin_manifest(manifest: Mapping[str, object]) -> list[str]:
     """Validate a bounded plugin admission declaration without activating it."""
     errors: list[str] = []
     for key in ("plugin_id", "revision", "licence", "sandbox"):
-        if not isinstance(manifest.get(key), str) or not manifest.get(key, "").strip():
+        value = manifest.get(key)
+        if not isinstance(value, str) or not value.strip():
             errors.append(f"plugin field missing: {key}")
     if not re.fullmatch(r"sha256:[0-9a-f]{64}", str(manifest.get("checksum", ""))):
         errors.append("plugin checksum invalid")
@@ -285,7 +324,7 @@ def validate_plugin_manifest(manifest: dict[str, Any]) -> list[str]:
         errors.append("plugin remote code must be disabled")
     if manifest.get("telemetry") != "off":
         errors.append("plugin telemetry must default off")
-    if manifest.get("network") not in {"off", "disclosed"}:
+    if not _choice(manifest.get("network"), {"off", "disclosed"}):
         errors.append("plugin network state must be off or disclosed")
     if manifest.get("network") == "disclosed" and not manifest.get("external_processing"):
         errors.append("plugin external processing disclosure missing")
@@ -308,7 +347,7 @@ def recovery_action(failure: str, *, mode: str) -> RouteDecision:
     return RouteDecision(False, reason, "human recovery review")
 
 
-def evaluate_assurance(case: dict[str, Any], *, now: datetime | None = None) -> list[str]:
+def evaluate_assurance(case: Mapping[str, object], *, now: datetime | None = None) -> list[str]:
     now = now or datetime.now(UTC)
     errors: list[str] = []
     for key in (
@@ -328,42 +367,60 @@ def evaluate_assurance(case: dict[str, Any], *, now: datetime | None = None) -> 
             errors.append(f"assurance case missing: {key}")
     if case.get("schema_version") != "1.1":
         errors.append("assurance case schema version invalid")
-    if case.get("mode") not in MODES:
+    if not _choice(case.get("mode"), MODES):
         errors.append("assurance case mode invalid")
     for key in ("risks", "controls", "tests", "evidence", "owners", "limitations"):
-        if key in case and (not isinstance(case[key], list) or not case[key]):
+        if key in case and (not is_array(case[key]) or not case[key]):
             errors.append(f"assurance case requires non-empty: {key}")
-    controls = case.get("controls", []) if isinstance(case.get("controls", []), list) else []
-    risks = case.get("risks", []) if isinstance(case.get("risks", []), list) else []
-    control_ids = [control.get("control_id") for control in controls if isinstance(control, dict)]
-    risk_ids = [risk.get("risk_id") for risk in risks if isinstance(risk, dict)]
+    controls = object_rows(case.get("controls"))
+    risks = object_rows(case.get("risks"))
+    for key, rows, id_key in (("controls", controls, "control_id"), ("risks", risks, "risk_id")):
+        raw = case.get(key)
+        if is_array(raw) and (
+            len(raw) != len(rows)
+            or any(not isinstance(row.get(id_key), str) or not row.get(id_key) for row in rows)
+        ):
+            errors.append(f"assurance {key} require object rows with string identifiers")
+    control_ids = [
+        identifier
+        for control in controls
+        if isinstance(identifier := control.get("control_id"), str)
+    ]
+    risk_ids = [identifier for risk in risks if isinstance(identifier := risk.get("risk_id"), str)]
     if len(control_ids) != len(set(control_ids)):
         errors.append("assurance control identifiers must be unique")
     if len(risk_ids) != len(set(risk_ids)):
         errors.append("assurance risk identifiers must be unique")
+    for control in controls:
+        if not _choice(control.get("status"), DECLARED_CONTROL_STATUSES):
+            errors.append(f"assurance control status invalid: {control.get('control_id')}")
     valid_controls = {
-        control.get("control_id")
+        identifier
         for control in controls
-        if isinstance(control, dict) and control.get("status") in ASSURANCE_CONTROL_STATUSES
+        if isinstance(identifier := control.get("control_id"), str)
+        and _choice(control.get("status"), ASSURANCE_CONTROL_STATUSES)
     }
     for risk in risks:
-        if isinstance(risk, dict) and risk.get("control_id") not in valid_controls:
+        if not _choice(risk.get("control_id"), valid_controls):
             errors.append(f"risk has no valid control: {risk.get('risk_id')}")
     domains = case.get("domains")
-    if not isinstance(domains, dict) or set(domains) != ASSURANCE_DOMAINS:
+    if not is_object(domains) or set(domains) != ASSURANCE_DOMAINS:
         errors.append(
             "assurance domains must cover security, privacy, cultural safety, and clinical safety"
         )
     else:
         for domain, result in domains.items():
-            if not isinstance(result, dict) or result.get("status") not in {
-                "tested_bounded",
-                "owner_required",
-            }:
+            if not is_object(result) or not _choice(
+                result.get("status"),
+                {
+                    "tested_bounded",
+                    "owner_required",
+                },
+            ):
                 errors.append(f"assurance domain status invalid: {domain}")
             if (
-                not isinstance(result, dict)
-                or not isinstance(result.get("evidence"), list)
+                not is_object(result)
+                or not is_array(result.get("evidence"))
                 or not result["evidence"]
             ):
                 errors.append(f"assurance domain evidence missing: {domain}")

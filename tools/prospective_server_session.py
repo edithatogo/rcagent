@@ -15,7 +15,8 @@ import stat
 import tempfile
 import threading
 import time
-from collections.abc import Mapping
+from collections.abc import Generator, Mapping
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Literal, NotRequired, Protocol, TypedDict
 
@@ -34,6 +35,25 @@ from tools import native_completion as native
 from tools import prospective_server_model as model
 from tools import server_process as process
 from tools import unix_http_capture as transport
+
+# Trusted package lifecycle hook. Only prospective_primary_session constructs
+# the guarded primary context; this is not a JSON or external execution entry.
+__all__ = [
+    "BodyReceipt",
+    "HealthReceipt",
+    "PrimaryContext",
+    "PrimaryPlan",
+    "SessionResult",
+    "_capture_session",
+    "capture_session",
+    "exclusive_session",
+    "fixed_server_arguments",
+    "private_directory_identity",
+    "remove_owned_path",
+    "source_pins",
+    "verified_body",
+    "verify_reserved_receipt",
+]
 
 PROMPT = "This is a synthetic software capability probe. Reply with the word READY."
 TIMEOUT = 120
@@ -55,7 +75,7 @@ REQUEST = json.dumps(
     separators=(",", ":"),
 ).encode()
 _LOCK = threading.Lock()
-_BLOCKED: bool = False
+_blocked: bool = False
 SAFE_REASONS = frozenset(
     {
         "profile_identity_mismatch",
@@ -176,7 +196,7 @@ def source_pins() -> dict[str, str]:
     return {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
 
 
-def _directory(path: Path) -> tuple[int, int]:
+def private_directory_identity(path: Path) -> tuple[int, int]:
     getuid = getattr(os, "getuid", None)
     if not callable(getuid) or path.resolve(strict=True) != path or path.is_symlink():
         raise ValueError("unsafe_session_directory")
@@ -193,16 +213,16 @@ def _directory(path: Path) -> tuple[int, int]:
 def _socket(
     path: Path, directory: tuple[int, int], expected: tuple[int, int, int, int] | None
 ) -> tuple[int, int, int, int]:
-    identity = transport._path_identity(path)
+    identity = transport.socket_identity(path)
     if identity[:2] != directory or (expected is not None and identity != expected):
         raise ValueError("session_socket_changed")
     return identity
 
 
-def _remove_owned(
+def remove_owned_path(
     path: Path, directory: tuple[int, int], expected: tuple[int, int, int, int] | None
 ) -> None:
-    if _directory(path.parent) != directory:
+    if private_directory_identity(path.parent) != directory:
         raise ValueError("session_directory_changed")
     if path.exists() or path.is_symlink():
         if expected is None:
@@ -212,7 +232,7 @@ def _remove_owned(
     path.parent.rmdir()  # Never recursively remove unexpected contents.
 
 
-def _body(receipt: BodyReceipt) -> bytes:
+def verified_body(receipt: BodyReceipt) -> bytes:
     raw = base64.b64decode(receipt["body_base64"], validate=True)
     if (
         len(raw) != receipt["body_bytes"]
@@ -226,7 +246,9 @@ def _healthy(receipt: transport.CaptureResult) -> bool:
     if receipt["body_bytes"] > HEALTH_BYTES:
         raise ValueError("health_body_too_large")
     value: object = json.loads(
-        _body(receipt), object_pairs_hook=native._pairs, parse_constant=native._constant
+        verified_body(receipt),
+        object_pairs_hook=native.unique_json_pairs,
+        parse_constant=native.reject_json_constant,
     )
     if receipt["status"] != "http_response_captured":
         if receipt["http_status"] == 503 and receipt["body_complete"]:
@@ -237,7 +259,7 @@ def _healthy(receipt: transport.CaptureResult) -> bool:
     return True
 
 
-def _fixed_arguments(admission: Mapping[str, object], path: Path) -> list[str]:
+def fixed_server_arguments(admission: Mapping[str, object], path: Path) -> list[str]:
     model_path = admission["model_path"]
     if not isinstance(model_path, str):
         raise TypeError("invalid_model_path")
@@ -260,7 +282,7 @@ def _fixed_arguments(admission: Mapping[str, object], path: Path) -> list[str]:
     ]
 
 
-def _reserved(destination: Path, descriptor: int, parent: tuple[int, int]) -> None:
+def verify_reserved_receipt(destination: Path, descriptor: int, parent: tuple[int, int]) -> None:
     if any(path.is_symlink() for path in (destination, *destination.parents)):
         raise ValueError("receipt_identity_changed")
     current_parent = destination.parent.stat()
@@ -281,7 +303,7 @@ def _run(
     parent: tuple[int, int],
     primary: PrimaryContext | None = None,
 ) -> SessionResult:
-    global _BLOCKED
+    global _blocked
     result: SessionResult = {
         "status": "session_failed",
         "error": "none",
@@ -350,10 +372,10 @@ def _run(
         )
         path = Path(tempfile.mkdtemp(prefix="rca-session-", dir="/tmp")).resolve() / "server.sock"  # nosec B108 # mkdtemp is private; short fixed root avoids Unix socket path overflow
         result["socket_path"] = str(path)
-        directory = _directory(path.parent)
+        directory = private_directory_identity(path.parent)
         deadline = time.monotonic() + TIMEOUT
         result["execution_deadline_monotonic"] = deadline
-        argv = _fixed_arguments(admission, path)
+        argv = fixed_server_arguments(admission, path)
         environment = profile.profile_environment()
         result.update(
             arguments=argv,
@@ -362,7 +384,7 @@ def _run(
             ).hexdigest(),
             environment_keys=sorted(environment),
         )
-        _reserved(destination, descriptor, parent)
+        verify_reserved_receipt(destination, descriptor, parent)
 
         def capture() -> None:
             try:
@@ -391,7 +413,7 @@ def _run(
                 raise ValueError("worker_ended_before_completion")
             if time.monotonic() >= deadline:
                 raise ValueError("session_deadline_exceeded")
-            if _directory(path.parent) != directory:
+            if private_directory_identity(path.parent) != directory:
                 raise ValueError("session_directory_changed")
             if not path.exists() and not path.is_symlink():
                 done.wait(min(0.1, max(0, deadline - time.monotonic())))
@@ -431,7 +453,7 @@ def _run(
         if completion["request_body_sha256"] != hashlib.sha256(request).hexdigest():
             raise ValueError("completion_request_mismatch")
         result["decoded"] = json_shapes.require_object(
-            native.decode_completion(_body(completion), expected_model=model.MODEL_ID),
+            native.decode_completion(verified_body(completion), expected_model=model.MODEL_ID),
             context="decoded completion",
         )
         stage = "postflight_failed"
@@ -464,12 +486,12 @@ def _run(
                 result["worker_joined"] = False
             if not result["worker_joined"]:
                 cancel.set()
-                _BLOCKED = True
+                _blocked = True
                 result["cleanup_errors"].append("worker_join_failed")
             elif "process" in handoff:
                 result["process"] = handoff["process"]
             else:
-                _BLOCKED = True
+                _blocked = True
                 result["cleanup_errors"].append("worker_receipt_unavailable")
             if "error" in handoff:
                 result["worker_error"] = handoff["error"]
@@ -484,11 +506,11 @@ def _run(
             or not worker_attempted
         )
         if worker_attempted and not safe:
-            _BLOCKED = True
+            _blocked = True
             result["cleanup_errors"].append("child_reaping_unverified")
         if path is not None and directory is not None and safe:
             try:
-                _remove_owned(path, directory, identity)
+                remove_owned_path(path, directory, identity)
                 result["resources_removed"] = True
             except (ValueError, OSError):
                 result["cleanup_errors"].append("socket_resources_preserved")
@@ -533,14 +555,23 @@ def capture_session(model_root: Path, receipt: Path) -> SessionResult:
     return _capture_session(model_root, receipt)
 
 
+@contextmanager
+def exclusive_session() -> Generator[None]:
+    """Hold the nonblocking session lease without exposing or resetting its lock."""
+    if not _LOCK.acquire(blocking=False):
+        raise ValueError("session_already_running")
+    try:
+        yield
+    finally:
+        _LOCK.release()
+
+
 def _capture_session(
     model_root: Path, receipt: Path, primary: PrimaryContext | None = None
 ) -> SessionResult:
     """Private shared lifecycle; primary context is created only by its guarded entry."""
-    if not _LOCK.acquire(blocking=False):
-        raise ValueError("session_already_running")
-    try:
-        if _BLOCKED:
+    with exclusive_session():
+        if _blocked:
             raise ValueError("session_circuit_breaker")
         if primary is not None:
             primary.verify()
@@ -560,7 +591,7 @@ def _capture_session(
             raise ValueError("receipt_unavailable") from exc
         try:
             with os.fdopen(descriptor, "wb") as stream:
-                _reserved(destination, descriptor, parent)
+                verify_reserved_receipt(destination, descriptor, parent)
                 result = (
                     _run(model_root, destination, descriptor, parent)
                     if primary is None
@@ -569,7 +600,7 @@ def _capture_session(
                 if primary is not None:
                     primary.finish(result)
                 try:
-                    _reserved(destination, descriptor, parent)
+                    verify_reserved_receipt(destination, descriptor, parent)
                 except (ValueError, OSError):
                     result["error"] = (
                         result["error"] if result["error"] != "none" else "receipt_identity_changed"
@@ -577,9 +608,7 @@ def _capture_session(
                     result["status"] = "session_failed"
                 stream.write((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
                 stream.flush()
-                _reserved(destination, descriptor, parent)
+                verify_reserved_receipt(destination, descriptor, parent)
         except OSError:
             raise ValueError("receipt_persistence_failed") from None
         return result
-    finally:
-        _LOCK.release()

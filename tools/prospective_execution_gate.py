@@ -21,7 +21,7 @@ from tools import prospective_native_protocol as native
 from tools import prospective_runner_contract as runner
 from tools import prospective_server_model as model
 from tools import prospective_slot_binding as binding
-from tools.evaluation_preflight import _digest, _unique
+from tools.evaluation_preflight import is_sha256, unique_object_pairs
 
 REVIEW_PATH = "conductor/reviews/primary-execution.json"
 SOURCES = tuple(
@@ -244,7 +244,7 @@ def _is_execution_plan(value: object) -> TypeGuard[ExecutionPlanValue]:
 
 
 @dataclass(frozen=True)
-class _Plan:
+class ExecutionPlan:
     payload: bytes
 
     def value(self) -> ExecutionPlanValue:
@@ -254,22 +254,22 @@ class _Plan:
         return value
 
 
-def _canonical(value: object) -> bytes:
+def canonical_bytes(value: object) -> bytes:
     return json.dumps(
         value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
     ).encode()
 
 
-def _blob(root: Path, commit: str, path: str) -> bytes:
+def committed_blob(root: Path, commit: str, path: str) -> bytes:
     if not re.fullmatch(r"[A-Za-z0-9_-]+(?:/[A-Za-z0-9_.-]+)+", path) or any(
         part in {".", ".."} for part in path.split("/")
     ):
         raise ValueError("invalid_review_path")
-    entry = freeze._git(root, "ls-tree", "-z", commit, "--", path)
+    entry = freeze.git_bytes(root, "ls-tree", "-z", commit, "--", path)
     match = re.fullmatch(rb"100644 blob ([0-9a-f]{40})\t([^\x00]+)\x00", entry)
     if match is None or match[2] != path.encode():
         raise ValueError("review_not_regular_blob")
-    raw = freeze._git(root, "cat-file", "blob", match[1].decode())
+    raw = freeze.git_bytes(root, "cat-file", "blob", match[1].decode())
     if not raw:
         raise ValueError("empty_review_evidence")
     return raw
@@ -282,10 +282,10 @@ def _keys(value: object, keys: set[str]) -> json_shapes.JsonObject:
 
 
 def _record(root: Path, review_commit: str) -> tuple[ReviewRecord, str]:
-    raw = _blob(root, review_commit, REVIEW_PATH)
+    raw = committed_blob(root, review_commit, REVIEW_PATH)
     try:
         value = _keys(
-            json.loads(raw, object_pairs_hook=_unique),
+            json.loads(raw, object_pairs_hook=unique_object_pairs),
             {
                 "version",
                 "source_commit",
@@ -305,7 +305,7 @@ def _record(root: Path, review_commit: str) -> tuple[ReviewRecord, str]:
         if type(source) is not str or re.fullmatch(r"[0-9a-f]{40}", source) is None:
             raise ValueError("invalid_review_record")
         for key in ("protocol_sha256", "adapter_sha256", "closure_sha256", "environment_sha256"):
-            if not _digest(value[key]):
+            if not is_sha256(value[key]):
                 raise ValueError("invalid_review_record")
         reviewers = value["reviewers"]
         if not json_shapes.is_array(reviewers) or len(reviewers) != 3:
@@ -325,14 +325,14 @@ def _record(root: Path, review_commit: str) -> tuple[ReviewRecord, str]:
                 not 1 <= len(name) <= 200
                 or len(path) > 200
                 or not path.startswith("conductor/reviews/evidence/")
-                or not _digest(reviewer["evidence_sha256"])
+                or not is_sha256(reviewer["evidence_sha256"])
             ):
                 raise ValueError("invalid_review_record")
-            evidence = _blob(root, review_commit, path)
+            evidence = committed_blob(root, review_commit, path)
             if hashlib.sha256(evidence).hexdigest() != reviewer["evidence_sha256"]:
                 raise ValueError("review_evidence_mismatch")
             envelope = _keys(
-                json.loads(evidence, object_pairs_hook=_unique),
+                json.loads(evidence, object_pairs_hook=unique_object_pairs),
                 {
                     "role",
                     "reviewer_id",
@@ -360,7 +360,7 @@ def _record(root: Path, review_commit: str) -> tuple[ReviewRecord, str]:
             paths.add(path)
         if len(roles) != 3 or len(ids) != 3 or len(paths) != 3:
             raise ValueError("invalid_review_record")
-        _canonical(value)
+        canonical_bytes(value)
         if not _is_review_record(value):
             raise ValueError("invalid_review_record")
     except (TypeError, KeyError, UnicodeError, RecursionError):
@@ -368,25 +368,25 @@ def _record(root: Path, review_commit: str) -> tuple[ReviewRecord, str]:
     return value, hashlib.sha256(raw).hexdigest()
 
 
-def _verify(
+def verify_execution_plan(
     protocol_path: Path,
     pin: str,
     slot_id: object,
     review_commit: object,
     root: Path,
     model_root: Path,
-) -> _Plan:
+) -> ExecutionPlan:
     if (platform.system(), platform.machine()) != ("Darwin", "arm64"):
         raise ValueError("unsupported_primary_platform")
     if type(review_commit) is not str or ".." in protocol_path.parts:
         raise ValueError("invalid_gate_path_or_commit")
-    root, protocol_path, relative = freeze._repository(protocol_path, review_commit, root)
+    root, protocol_path, relative = freeze.resolve_repository(protocol_path, review_commit, root)
     record, review_pin = _record(root, review_commit)
     source = record["source_commit"]
     if source == review_commit:
         raise ValueError("review_must_follow_source")
-    freeze._git(root, "merge-base", "--is-ancestor", source, review_commit)
-    value, candidate = native._validated_candidate(protocol_path, pin)
+    freeze.git_bytes(root, "merge-base", "--is-ancestor", source, review_commit)
+    value, candidate = native.validated_candidate(protocol_path, pin)
     if type(slot_id) is not str or len(slot_id) > 150 or slot_id not in candidate["requests"]:
         raise ValueError("slot_not_in_protocol")
     if record["protocol_sha256"] != pin:
@@ -400,8 +400,8 @@ def _verify(
         paths.append(path)
         expected[path] = ref["sha256"]
     paths.extend((*SOURCES, REGISTRY))
-    files = freeze._committed_files(root, source, paths, expected)
-    if freeze._committed_files(root, review_commit, paths, expected) != files:
+    files = freeze.committed_files(root, source, paths, expected)
+    if freeze.committed_files(root, review_commit, paths, expected) != files:
         raise ValueError("review_source_parity_mismatch")
     hashes = {item["path"]: item["sha256"] for item in files}
     identity.project_closure(root, SOURCES, hashes)
@@ -447,4 +447,4 @@ def _verify(
         "admission": admission,
         "evidence": evidence,
     }
-    return _Plan(_canonical(result))
+    return ExecutionPlan(canonical_bytes(result))

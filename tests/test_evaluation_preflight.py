@@ -11,11 +11,12 @@ from pathlib import Path
 
 import pytest
 
+from tests.prospective_fixture_types import mapping, sequence, text_value
 from tools.evaluation_preflight import ROLES, check_envelope, main
 
 
-def fixture(root: Path, stage: str = "admission") -> tuple[Path, dict]:
-    files = []
+def fixture(root: Path, stage: str = "admission") -> tuple[Path, dict[str, object]]:
+    files: list[dict[str, str]] = []
     for role in sorted(ROLES[stage]):
         path = root / f"{role}.txt"
         path.write_text(f"Synthetic {role} contract placeholder", encoding="utf-8")
@@ -26,7 +27,7 @@ def fixture(root: Path, stage: str = "admission") -> tuple[Path, dict]:
                 "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             }
         )
-    payload = {
+    payload: dict[str, object] = {
         "schema_version": "1.0",
         "purpose": "contract-fixture",
         "study_id": "synthetic-test-only",
@@ -57,7 +58,7 @@ def pinned(path: Path) -> str:
 )
 def test_invalid_entry_values(tmp_path: Path, field: str, value: object) -> None:
     receipt, payload = fixture(tmp_path)
-    payload["files"][0][field] = value
+    mapping(sequence(payload["files"])[0])[field] = value
     receipt.write_text(json.dumps(payload), encoding="utf-8")
     with pytest.raises(ValueError):
         check_envelope(receipt, pinned(receipt), "admission")
@@ -71,15 +72,19 @@ def test_structural_rejections(tmp_path: Path, change: str) -> None:
     elif change == "revision":
         payload["revision"] = None
     elif change == "entry":
-        payload["files"][0] = None
+        sequence(payload["files"])[0] = None
     else:
-        payload["files"][1][change] = payload["files"][0][change]
+        mapping(sequence(payload["files"])[1])[change] = mapping(sequence(payload["files"])[0])[
+            change
+        ]
     receipt.write_text(json.dumps(payload), encoding="utf-8")
     with pytest.raises(ValueError):
         check_envelope(receipt, pinned(receipt), "admission")
 
 
-def test_missing_receipt_and_resource_limits(tmp_path: Path, monkeypatch) -> None:
+def test_missing_receipt_and_resource_limits(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     assert main(["--stage", "admission", "--check-fixture"]) == 1
     receipt = tmp_path / "receipt.json"
     for data in [b"\xff", b"[" * 2000]:
@@ -92,11 +97,11 @@ def test_missing_receipt_and_resource_limits(tmp_path: Path, monkeypatch) -> Non
         check_envelope(receipt, pinned(receipt), "admission")
 
 
-def test_io_error_is_sanitised(tmp_path: Path, monkeypatch) -> None:
+def test_io_error_is_sanitised(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     receipt, _ = fixture(tmp_path)
     digest = pinned(receipt)
 
-    def denied(*args, **kwargs):
+    def denied(*args: object, **kwargs: object) -> None:
         raise PermissionError("private path must not leak")
 
     monkeypatch.setattr(Path, "open", denied)
@@ -174,19 +179,19 @@ def test_invalid_envelopes_fail_closed(tmp_path: Path, change: str) -> None:
     elif change == "stage":
         value["stage"] = "analysis"
     elif change == "missing-role":
-        value["files"].pop()
+        sequence(value["files"]).pop()
     elif change == "duplicate-role":
-        value["files"].append(value["files"][0])
+        sequence(value["files"]).append(sequence(value["files"])[0])
     elif change == "extra-field":
         value["approved"] = True
     elif change == "bad-hash":
-        value["files"][0]["sha256"] = "0" * 64
+        mapping(sequence(value["files"])[0])["sha256"] = "0" * 64
     elif change == "absolute":
-        value["files"][0]["path"] = str(tmp_path / "raw.txt")
+        mapping(sequence(value["files"])[0])["path"] = str(tmp_path / "raw.txt")
     elif change == "traversal":
-        value["files"][0]["path"] = "../raw.txt"
+        mapping(sequence(value["files"])[0])["path"] = "../raw.txt"
     elif change == "backslash":
-        value["files"][0]["path"] = "..\\raw.txt"
+        mapping(sequence(value["files"])[0])["path"] = "..\\raw.txt"
     else:
         value["files"] = "not a list"
     receipt.write_text(json.dumps(value), encoding="utf-8")
@@ -198,7 +203,7 @@ def test_pins_missing_empty_and_modified_artifacts(tmp_path: Path) -> None:
     receipt, value = fixture(tmp_path)
     with pytest.raises(ValueError):
         check_envelope(receipt, "0" * 64, "admission")
-    artifact = tmp_path / value["files"][0]["path"]
+    artifact = tmp_path / text_value(mapping(sequence(value["files"])[0])["path"])
     artifact.write_text("changed", encoding="utf-8")
     with pytest.raises(ValueError):
         check_envelope(receipt, pinned(receipt), "admission")
@@ -216,19 +221,21 @@ def test_duplicate_json_and_symlink_are_rejected(tmp_path: Path) -> None:
     with pytest.raises(ValueError):
         check_envelope(receipt, pinned(receipt), "admission")
     receipt.write_text(json.dumps(value), encoding="utf-8")
-    target = tmp_path / value["files"][0]["path"]
+    target = tmp_path / text_value(mapping(sequence(value["files"])[0])["path"])
     alias = tmp_path / "alias.txt"
     try:
         alias.symlink_to(target)
     except OSError:
         pytest.skip("symlinks unavailable for this account")
-    value["files"][0]["path"] = alias.name
+    mapping(sequence(value["files"])[0])["path"] = alias.name
     receipt.write_text(json.dumps(value), encoding="utf-8")
     with pytest.raises(ValueError):
         check_envelope(receipt, pinned(receipt), "admission")
 
 
-def test_live_mode_does_not_read_supplied_evidence(tmp_path: Path, capsys) -> None:
+def test_live_mode_does_not_read_supplied_evidence(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     assert main(["--stage", "analysis", "--receipt", str(tmp_path / "absent")]) == 1
     output = capsys.readouterr().out
     assert "semantic_admission_not_implemented" in output

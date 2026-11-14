@@ -1,12 +1,17 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Iterable
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Protocol, TypedDict, Unpack, cast
 
 import pytest
 from jsonschema import Draft202012Validator, FormatChecker
+from jsonschema.exceptions import ValidationError
 
+from tests.prospective_fixture_types import mapping, sequence
+from tools.json_shapes import JsonObject
 from tools.privacy_assurance import (
     RouteDecision,
     RouteRequest,
@@ -27,18 +32,30 @@ from tools.privacy_assurance import (
 )
 
 
-def request(**changes: object) -> RouteRequest:
-    values = {
-        "classification": "public",
-        "mode": "public_remote",
-        "destination": "model",
-        "network": "on",
-        "telemetry": "off",
-        "model_provenance_known": True,
-        "deidentified": False,
-    }
-    values.update(changes)
-    return RouteRequest(**values)  # type: ignore[arg-type]
+class RouteOptions(TypedDict, total=False):
+    classification: str | None
+    mode: str | None
+    destination: str
+    network: str
+    telemetry: str
+    model_provenance_known: bool
+    deidentified: bool
+
+
+class SchemaValidator(Protocol):
+    def iter_errors(self, instance: object) -> Iterable[ValidationError]: ...
+
+
+def request(**changes: Unpack[RouteOptions]) -> RouteRequest:
+    return RouteRequest(
+        classification=changes.get("classification", "public"),
+        mode=changes.get("mode", "public_remote"),
+        destination=changes.get("destination", "model"),
+        network=changes.get("network", "on"),
+        telemetry=changes.get("telemetry", "off"),
+        model_provenance_known=changes.get("model_provenance_known", True),
+        deidentified=changes.get("deidentified", False),
+    )
 
 
 @pytest.mark.parametrize(
@@ -71,7 +88,7 @@ def request(**changes: object) -> RouteRequest:
         ),
     ],
 )
-def test_routing_fails_closed(changes: dict[str, object], reason: str) -> None:
+def test_routing_fails_closed(changes: RouteOptions, reason: str) -> None:
     decision = route(request(**changes))
     assert not decision.allowed
     assert decision.reason == reason
@@ -111,7 +128,7 @@ def test_compartments_never_alias_public_and_private_resources() -> None:
 
 
 def test_execution_disclosure_is_complete_and_human_reviewed() -> None:
-    disclosure = {
+    disclosure: JsonObject = {
         "task": "synthetic fixture review",
         "tool": "none",
         "revision": "fixture-1",
@@ -133,7 +150,7 @@ def test_execution_disclosure_is_complete_and_human_reviewed() -> None:
 
 
 def test_execution_disclosure_rejects_unknown_or_inconsistent_boundaries() -> None:
-    disclosure = {
+    disclosure: JsonObject = {
         "task": "synthetic fixture review",
         "tool": "local-model",
         "revision": "fixture-1",
@@ -193,7 +210,7 @@ def test_execution_disclosure_rejects_unknown_or_inconsistent_boundaries() -> No
 
 
 def test_every_model_result_requires_a_complete_disclosure() -> None:
-    disclosure = {
+    disclosure: JsonObject = {
         "task": "synthetic fixture review",
         "tool": "local-model",
         "revision": "fixture-1",
@@ -393,7 +410,7 @@ def test_recovery_rejects_unknown_mode() -> None:
 
 
 def test_assurance_links_risks_and_invalidates_drift_and_staleness() -> None:
-    case = {
+    case: JsonObject = {
         "schema_version": "1.1",
         "mode": "fully_local",
         "risks": [{"risk_id": "risk-01", "control_id": "control-01"}],
@@ -416,7 +433,7 @@ def test_assurance_links_risks_and_invalidates_drift_and_staleness() -> None:
     assert evaluate_assurance(case, now=now) == []
     case["dependency_status"] = "drifted"
     case["review_due"] = "2026-01-01T00:00:00Z"
-    case["risks"][0]["control_id"] = "missing"
+    mapping(sequence(case["risks"])[0])["control_id"] = "missing"
     case["residual_risks"] = ["risk-remaining"]
     errors = evaluate_assurance(case, now=now)
     assert "assurance invalidated by dependency drift" in errors
@@ -435,10 +452,65 @@ def test_assurance_fixture_matches_machine_readable_contract() -> None:
     )
     Draft202012Validator.check_schema(schema)
     assert (
-        list(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(fixture))
+        list(
+            cast(
+                SchemaValidator, Draft202012Validator(schema, format_checker=FormatChecker())
+            ).iter_errors(fixture)
+        )
         == []
     )
     assert evaluate_assurance(fixture, now=datetime(2026, 8, 29, tzinfo=UTC)) == []
+
+
+@pytest.mark.parametrize(
+    "field", ["mode", "classification", "network", "telemetry", "human_review"]
+)
+def test_disclosure_rejects_container_enum_values(field: str) -> None:
+    disclosure: JsonObject = {
+        "task": "synthetic",
+        "tool": "test",
+        "revision": "fixture",
+        "mode": "fully_local",
+        "classification": "public",
+        "network": "off",
+        "telemetry": "off",
+        "storage": "local",
+        "limitations": ["synthetic"],
+        "human_review": "required",
+    }
+    assert validate_execution_disclosure(disclosure) == []
+    disclosure[field] = []
+    assert validate_execution_disclosure(disclosure)
+
+
+def test_assurance_rejects_extra_malformed_identifier_after_valid_coverage() -> None:
+    root = Path(__file__).parents[1]
+    case = mapping(json.loads((root / "tests/fixtures/privacy/assurance-case.json").read_bytes()))
+    now = datetime(2026, 8, 29, tzinfo=UTC)
+    assert evaluate_assurance(case, now=now) == []
+    sequence(case["controls"]).append({"control_id": [], "status": "implemented"})
+    assert "assurance controls require object rows with string identifiers" in evaluate_assurance(
+        case, now=now
+    )
+
+
+def test_model_and_plugin_status_containers_return_validation_errors() -> None:
+    assert "model result status invalid" in validate_model_result({"status": []})
+    assert "plugin network state must be off or disclosed" in validate_plugin_manifest(
+        {"network": []}
+    )
+
+
+@pytest.mark.parametrize("status", [[], "unknown", "unavailable", "out_of_scope"])
+def test_extra_control_status_is_checked_even_without_a_risk_link(status: object) -> None:
+    root = Path(__file__).parents[1]
+    case = mapping(json.loads((root / "tests/fixtures/privacy/assurance-case.json").read_bytes()))
+    sequence(case["controls"]).append({"control_id": "unused-extra-control", "status": status})
+    errors = evaluate_assurance(case, now=datetime(2026, 8, 29, tzinfo=UTC))
+    if status in ("unavailable", "out_of_scope"):
+        assert errors == []
+    else:
+        assert errors == ["assurance control status invalid: unused-extra-control"]
 
 
 def test_capability_installation_contract_is_fail_closed() -> None:
@@ -466,7 +538,7 @@ def test_assurance_missing_invalid_date_and_mode_are_diagnostic() -> None:
 
 
 def test_assurance_rejects_empty_duplicate_unavailable_and_naive_cases() -> None:
-    case = {
+    case: JsonObject = {
         "schema_version": "1.1",
         "mode": "fully_local",
         "risks": [

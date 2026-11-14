@@ -5,16 +5,17 @@ import subprocess
 import sys
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import Mock
 
 import pytest
 
-from tools import local_model_comparator
+from tools import json_shapes, local_model_comparator
 from tools.local_model_comparator import (
-    _extract_object,
-    _prompt,
-    _read_object,
-    _score,
+    build_prompt,
+    extract_response,
+    read_object,
     run,
+    score_response,
     validate_admission,
 )
 
@@ -27,11 +28,11 @@ def _file_record(path: Path) -> dict[str, object]:
     }
 
 
-def _admitted_manifest(tmp_path: Path) -> tuple[dict, Path]:
+def _admitted_manifest(tmp_path: Path) -> tuple[json_shapes.JsonObject, Path]:
     executable = tmp_path / "llama-cli"
     executable.write_bytes(b"runtime")
     model_root = tmp_path / "models"
-    models = []
+    models: list[json_shapes.JsonObject] = []
     for size_class in ("small", "medium", "larger"):
         directory = model_root / size_class
         directory.mkdir(parents=True)
@@ -74,10 +75,10 @@ def _admitted_manifest(tmp_path: Path) -> tuple[dict, Path]:
 
 
 def test_extract_and_score_valid_response() -> None:
-    response = _extract_object(
+    response = extract_response(
         '```json\n{"evidence_ids":["e1"],"claim_types":["unknown"],"abstained":true,"rationale":"Missing."}\n```'
     )
-    score = _score(
+    score = score_response(
         {"evidence_ids": ["e1"], "claim_types": ["unknown"], "must_abstain": True}, response
     )
     assert score["passed"] is True
@@ -86,20 +87,20 @@ def test_extract_and_score_valid_response() -> None:
 def test_read_object_accepts_object_and_rejects_other_json(tmp_path: Path) -> None:
     path = tmp_path / "value.json"
     path.write_text('{"status":"ok"}')
-    assert _read_object(path) == {"status": "ok"}
+    assert read_object(path) == {"status": "ok"}
     path.write_text("[]")
     with pytest.raises(ValueError, match="expected a JSON object"):
-        _read_object(path)
+        read_object(path)
 
 
 def test_score_rejects_non_boolean_abstention() -> None:
-    response = {
+    response: json_shapes.JsonObject = {
         "evidence_ids": ["e1"],
         "claim_types": ["unknown"],
         "abstained": ["person"],
         "rationale": "No.",
     }
-    score = _score(
+    score = score_response(
         {"evidence_ids": ["e1"], "claim_types": ["unknown"], "must_abstain": True}, response
     )
     assert score["schema_valid"] is False
@@ -107,13 +108,13 @@ def test_score_rejects_non_boolean_abstention() -> None:
 
 
 def test_extract_object_skips_invalid_candidates_and_rejects_non_objects() -> None:
-    assert _extract_object('prefix {bad} then {"ok": true}') == {"ok": True}
-    assert _extract_object('```json\n["not", "an", "object"]\n```') is None
-    assert _extract_object("no structured response") is None
+    assert extract_response('prefix {bad} then {"ok": true}') == {"ok": True}
+    assert extract_response('```json\n["not", "an", "object"]\n```') is None
+    assert extract_response("no structured response") is None
 
 
 def test_score_handles_missing_response() -> None:
-    assert _score({"evidence_ids": [], "claim_types": [], "must_abstain": True}, None) == {
+    assert score_response({"evidence_ids": [], "claim_types": [], "must_abstain": True}, None) == {
         "schema_valid": False,
         "evidence_exact": False,
         "claim_types_exact": False,
@@ -123,7 +124,7 @@ def test_score_handles_missing_response() -> None:
 
 
 def test_prompt_contains_case_contract_and_evidence() -> None:
-    prompt = _prompt(
+    prompt = build_prompt(
         {
             "summary": "Synthetic accounts disagree.",
             "expected": {"evidence_ids": ["account-a", "account-b"]},
@@ -151,11 +152,15 @@ def test_admission_accepts_exact_local_files(tmp_path: Path) -> None:
 
 def test_admission_reports_policy_runtime_and_model_metadata_errors(tmp_path: Path) -> None:
     manifest, model_root = _admitted_manifest(tmp_path)
-    manifest["admission_policy"]["network"] = "enabled"
-    manifest["runtime"]["license"] = "GPL"
-    manifest["runtime"]["executable_sha256"] = "0" * 64
-    manifest["models"][0]["license"] = "research-only"
-    manifest["models"][0]["admission_status"] = "pending"
+    json_shapes.require_object(manifest["admission_policy"], context="policy")["network"] = (
+        "enabled"
+    )
+    json_shapes.require_object(manifest["runtime"], context="runtime")["license"] = "GPL"
+    json_shapes.require_object(manifest["runtime"], context="runtime")["executable_sha256"] = (
+        "0" * 64
+    )
+    json_shapes.object_rows(manifest["models"])[0]["license"] = "research-only"
+    json_shapes.object_rows(manifest["models"])[0]["admission_status"] = "pending"
 
     errors = validate_admission(manifest, model_root)
 
@@ -168,7 +173,7 @@ def test_admission_reports_policy_runtime_and_model_metadata_errors(tmp_path: Pa
 
 def test_admission_reports_escape_missing_licence_and_bad_model_files(tmp_path: Path) -> None:
     manifest, model_root = _admitted_manifest(tmp_path)
-    manifest["models"][0]["cache_subdirectory"] = "../escape"
+    json_shapes.object_rows(manifest["models"])[0]["cache_subdirectory"] = "../escape"
     (model_root / "medium" / "LICENSE").unlink()
     (model_root / "larger" / "model.gguf").write_bytes(b"changed")
     missing = model_root / "medium" / "model.gguf"
@@ -224,7 +229,7 @@ def test_admission_rejects_symlinked_cache_directory(tmp_path: Path) -> None:
 
 
 def test_run_rejects_invalid_admission(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(local_model_comparator, "validate_admission", lambda *_: ["bad"])
+    monkeypatch.setattr(local_model_comparator, "validate_admission", Mock(return_value=["bad"]))
     with pytest.raises(ValueError, match="invalid comparator admission: bad"):
         run({}, tmp_path, repeats=1, timeout=1)
 
@@ -233,8 +238,8 @@ def test_run_records_successful_observation_and_summary(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     manifest, model_root = _admitted_manifest(tmp_path)
-    manifest["models"] = manifest["models"][:1]
-    case = {
+    manifest["models"] = json_shapes.object_rows(manifest["models"])[:1]
+    case: json_shapes.JsonObject = {
         "id": "case-1",
         "summary": "Evidence is missing.",
         "expected": {
@@ -251,12 +256,12 @@ def test_run_records_successful_observation_and_summary(
             "rationale": "Missing.",
         }
     )
-    monkeypatch.setattr(local_model_comparator, "validate_admission", lambda *_: [])
-    monkeypatch.setattr(local_model_comparator, "_read_object", lambda _: {"cases": [case]})
+    monkeypatch.setattr(local_model_comparator, "validate_admission", Mock(return_value=[]))
+    monkeypatch.setattr(local_model_comparator, "read_object", Mock(return_value={"cases": [case]}))
     monkeypatch.setattr(
         local_model_comparator.subprocess,
         "run",
-        lambda *args, **kwargs: SimpleNamespace(stdout=output, returncode=0),
+        Mock(return_value=SimpleNamespace(stdout=output, returncode=0)),
     )
     ticks = iter((10.0, 10.025))
     monkeypatch.setattr(local_model_comparator.time, "perf_counter", lambda: next(ticks))
@@ -285,14 +290,14 @@ def test_run_records_timeout_output(
     partial_stdout: bytes | str | None,
 ) -> None:
     manifest, model_root = _admitted_manifest(tmp_path)
-    manifest["models"] = manifest["models"][:1]
-    case = {
+    manifest["models"] = json_shapes.object_rows(manifest["models"])[:1]
+    case: json_shapes.JsonObject = {
         "id": "case-1",
         "summary": "Timeout case.",
         "expected": {"evidence_ids": [], "claim_types": [], "must_abstain": True},
     }
-    monkeypatch.setattr(local_model_comparator, "validate_admission", lambda *_: [])
-    monkeypatch.setattr(local_model_comparator, "_read_object", lambda _: {"cases": [case]})
+    monkeypatch.setattr(local_model_comparator, "validate_admission", Mock(return_value=[]))
+    monkeypatch.setattr(local_model_comparator, "read_object", Mock(return_value={"cases": [case]}))
 
     def timeout(*args: object, **kwargs: object) -> None:
         raise subprocess.TimeoutExpired("llama-cli", 1, output=partial_stdout)
@@ -318,8 +323,8 @@ def test_failed_execution_cannot_pass_with_valid_json_output(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, failure: str
 ) -> None:
     manifest, model_root = _admitted_manifest(tmp_path)
-    manifest["models"] = manifest["models"][:1]
-    case = {
+    manifest["models"] = json_shapes.object_rows(manifest["models"])[:1]
+    case: json_shapes.JsonObject = {
         "id": "case-1",
         "summary": "Evidence is missing.",
         "expected": {
@@ -336,13 +341,13 @@ def test_failed_execution_cannot_pass_with_valid_json_output(
             "rationale": "Missing.",
         }
     )
-    monkeypatch.setattr(local_model_comparator, "validate_admission", lambda *_: [])
-    monkeypatch.setattr(local_model_comparator, "_read_object", lambda _: {"cases": [case]})
+    monkeypatch.setattr(local_model_comparator, "validate_admission", Mock(return_value=[]))
+    monkeypatch.setattr(local_model_comparator, "read_object", Mock(return_value={"cases": [case]}))
     if failure == "nonzero":
         monkeypatch.setattr(
             local_model_comparator.subprocess,
             "run",
-            lambda *args, **kwargs: SimpleNamespace(stdout=output, returncode=1),
+            Mock(return_value=SimpleNamespace(stdout=output, returncode=1)),
         )
     else:
 
@@ -364,8 +369,8 @@ def test_failed_execution_cannot_pass_with_valid_json_output(
 def test_comparator_cli_validate_and_run_paths(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    monkeypatch.setattr(local_model_comparator, "validate_admission", lambda manifest, root: [])
-    monkeypatch.setattr(local_model_comparator, "_read_object", lambda path: {"models": []})
+    monkeypatch.setattr(local_model_comparator, "validate_admission", Mock(return_value=[]))
+    monkeypatch.setattr(local_model_comparator, "read_object", Mock(return_value={"models": []}))
     monkeypatch.setattr(
         sys, "argv", ["comparator", "--model-root", str(tmp_path), "--validate-only"]
     )
@@ -376,7 +381,7 @@ def test_comparator_cli_validate_and_run_paths(
     monkeypatch.setattr(
         local_model_comparator,
         "run",
-        lambda manifest, root, repeats, timeout: {"receipt_sha256": "a" * 64},
+        Mock(return_value={"receipt_sha256": "a" * 64}),
     )
     monkeypatch.setattr(
         sys,
@@ -390,12 +395,12 @@ def test_comparator_cli_validate_and_run_paths(
 def test_comparator_cli_prints_result_without_output_file(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    monkeypatch.setattr(local_model_comparator, "validate_admission", lambda *_: [])
-    monkeypatch.setattr(local_model_comparator, "_read_object", lambda _: {"models": []})
+    monkeypatch.setattr(local_model_comparator, "validate_admission", Mock(return_value=[]))
+    monkeypatch.setattr(local_model_comparator, "read_object", Mock(return_value={"models": []}))
     monkeypatch.setattr(
         local_model_comparator,
         "run",
-        lambda *_: {"receipt_sha256": "b" * 64, "status": "unsupported"},
+        Mock(return_value={"receipt_sha256": "b" * 64, "status": "unsupported"}),
     )
     monkeypatch.setattr(sys, "argv", ["comparator", "--model-root", str(tmp_path)])
 
@@ -406,10 +411,52 @@ def test_comparator_cli_prints_result_without_output_file(
 def test_comparator_cli_reports_admission_errors(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    monkeypatch.setattr(local_model_comparator, "_read_object", lambda path: {})
+    monkeypatch.setattr(local_model_comparator, "read_object", Mock(return_value={}))
     monkeypatch.setattr(
-        local_model_comparator, "validate_admission", lambda manifest, root: ["missing model"]
+        local_model_comparator, "validate_admission", Mock(return_value=["missing model"])
     )
     monkeypatch.setattr(sys, "argv", ["comparator", "--model-root", str(tmp_path)])
     assert local_model_comparator.main() == 1
     assert "ERROR: missing model" in capsys.readouterr().out
+
+
+@pytest.mark.parametrize("field", ["admission_policy", "runtime", "models"])
+def test_admission_rejects_null_containers(tmp_path: Path, field: str) -> None:
+    manifest, model_root = _admitted_manifest(tmp_path)
+    manifest[field] = None
+    errors = validate_admission(manifest, model_root)
+    assert len(errors) == 1
+    assert errors[0].startswith(field)
+
+
+def test_admission_rejects_nonobject_model_and_file_rows(tmp_path: Path) -> None:
+    manifest, model_root = _admitted_manifest(tmp_path)
+    models = json_shapes.object_rows(manifest["models"])
+    manifest["models"] = [None, *models]
+    assert validate_admission(manifest, model_root) == ["models: expected an array of objects"]
+    manifest["models"] = models
+    models[0]["files"] = [None]
+    assert "model-small: model.files: expected an array of objects" in validate_admission(
+        manifest, model_root
+    )
+
+
+def test_comparator_rejects_invalid_fixture_before_execution(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    manifest, model_root = _admitted_manifest(tmp_path)
+    fixture = {
+        "cases": [
+            {
+                "id": "case-1",
+                "summary": "Synthetic case",
+                "expected": {"evidence_ids": ["e1"], "claim_types": None, "must_abstain": True},
+            }
+        ]
+    }
+    monkeypatch.setattr(local_model_comparator, "read_object", Mock(return_value=fixture))
+    launch = Mock(side_effect=AssertionError("must not execute"))
+    monkeypatch.setattr(local_model_comparator.subprocess, "run", launch)
+    with pytest.raises(ValueError, match=r"case\.expected has invalid scoring fields"):
+        run(manifest, model_root, repeats=1, timeout=1)
+    launch.assert_not_called()

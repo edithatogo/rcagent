@@ -5,25 +5,28 @@ import json
 import sys
 from copy import deepcopy
 from pathlib import Path
+from unittest.mock import Mock
 
 import pytest
 
+from tests.prospective_fixture_types import mapping, sequence
 from tools import agent_panel_review
 from tools.agent_panel_review import (
     CRITERIA,
-    _ordinal_alpha,
-    _read,
-    _weighted_kappa,
     aggregate,
+    ordinal_alpha,
+    read_object,
     validate_adjudication,
     validate_governance_evidence,
     validate_submission,
+    weighted_kappa,
 )
+from tools.json_shapes import JsonObject
 
 ROOT = Path(__file__).parents[1]
 
 
-def _submission(reviewer: str, score: int = 2) -> dict:
+def _submission(reviewer: str, score: int = 2) -> JsonObject:
     criteria = {
         criterion: {
             "score": score,
@@ -80,9 +83,9 @@ def test_unanimous_panel_still_fails_incomplete_gate_coverage() -> None:
 
 def test_hard_gate_zero_requires_matching_flag_and_blocks() -> None:
     first = _submission("a")
-    first["ratings"][0]["criteria"]["privacy"]["score"] = 0
+    mapping(mapping(mapping(sequence(first["ratings"])[0])["criteria"])["privacy"])["score"] = 0
     assert validate_submission(first)
-    first["ratings"][0]["hard_gate_flags"] = ["privacy"]
+    mapping(sequence(first["ratings"])[0])["hard_gate_flags"] = ["privacy"]
     receipt = aggregate([first, _submission("b"), _submission("c")])
     assert receipt["threshold_pass"] is False
 
@@ -136,7 +139,9 @@ def test_panel_cli_prints_receipt(
     monkeypatch.setattr(
         sys, "argv", ["agent-panel", str(submission), str(submission), str(submission)]
     )
-    monkeypatch.setattr(agent_panel_review, "aggregate", lambda values: {"threshold_pass": False})
+    monkeypatch.setattr(
+        agent_panel_review, "aggregate", Mock(return_value={"threshold_pass": False})
+    )
     assert agent_panel_review.main() == 0
     assert '"threshold_pass": false' in capsys.readouterr().out
 
@@ -145,13 +150,17 @@ def test_panel_validators_reject_tampered_evidence(tmp_path: Path) -> None:
     invalid = tmp_path / "array.json"
     invalid.write_text("[]", encoding="utf-8")
     with pytest.raises(ValueError, match="expected an object"):
-        _read(invalid)
+        read_object(invalid)
 
     submission = _submission("tampered")
-    submission["ratings"][1]["model_id"] = submission["ratings"][0]["model_id"]
-    submission["input_hashes"] = dict.fromkeys(submission["input_hashes"], "0" * 64)
-    submission["ratings"][0]["criteria"].pop("uncertainty")
-    submission["ratings"][0]["criteria"]["privacy"]["evidence"] = ["missing-case"]
+    mapping(sequence(submission["ratings"])[1])["model_id"] = mapping(
+        sequence(submission["ratings"])[0]
+    )["model_id"]
+    submission["input_hashes"] = dict.fromkeys(mapping(submission["input_hashes"]), "0" * 64)
+    mapping(mapping(sequence(submission["ratings"])[0])["criteria"]).pop("uncertainty")
+    mapping(mapping(mapping(sequence(submission["ratings"])[0])["criteria"])["privacy"])[
+        "evidence"
+    ] = ["missing-case"]
     errors = validate_submission(submission)
     assert any("duplicate model_id" in error for error in errors)
     assert any("does not match" in error for error in errors)
@@ -185,6 +194,29 @@ def test_adjudication_and_governance_tampering_is_detected() -> None:
 
 def test_agreement_helpers_reject_empty_or_unpaired_values() -> None:
     with pytest.raises(ValueError, match="paired"):
-        _weighted_kappa([], [])
+        weighted_kappa([], [])
     with pytest.raises(ValueError, match="two raters"):
-        _ordinal_alpha([[1]])
+        ordinal_alpha([[1]])
+
+
+@pytest.mark.parametrize("field", ["ratings", "input_hashes"])
+def test_panel_rejects_malformed_containers_without_crashing(field: str) -> None:
+    value = _submission("synthetic")
+    value[field] = None
+    assert validate_submission(value)
+
+
+def test_panel_rejects_extra_invalid_rating_identifier_with_full_coverage() -> None:
+    value = _submission("synthetic")
+    ratings = sequence(value["ratings"])
+    ratings.append({**mapping(ratings[0]), "model_id": []})
+    assert validate_submission(value)
+    with pytest.raises(ValueError, match="invalid submissions"):
+        aggregate([value, _submission("b"), _submission("c")])
+
+
+def test_panel_rejects_malformed_nested_criteria_and_flags() -> None:
+    for field in ("criteria", "hard_gate_flags"):
+        value = _submission("synthetic")
+        mapping(sequence(value["ratings"])[0])[field] = None
+        assert validate_submission(value)

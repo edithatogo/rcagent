@@ -1,18 +1,44 @@
 """Explicit synthetic profiles share verification without mutating legacy pins."""
 
+from __future__ import annotations
+
 import hashlib
 import subprocess
+from collections.abc import Callable
 from pathlib import Path
 from types import ModuleType
-from typing import Any
+from typing import BinaryIO, TypedDict, Unpack
 
 import pytest
 
 from tools import darwin_runtime_profile as shared
 
 
-def fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Any:
-    cfg: Any = ModuleType("synthetic_profile")
+class SyntheticProfile(ModuleType):
+    EXECUTABLE: str
+    PINNED_FILES: dict[str, str]
+    REQUIRED_IMAGES: set[str]
+    LIBRARY_DIRS: tuple[str, ...]
+    LOAD_ALIASES: dict[str, str]
+    VERSION_LINE: bytes
+    VERSION_MARKERS: tuple[bytes, ...]
+    verify_files: Callable[[], None]
+    profile_digest: Callable[[], str]
+    profile_environment: Callable[[], dict[str, str]]
+    verify_loaded_images: Callable[[bytes], list[str]]
+
+
+class RunOptions(TypedDict):
+    stdout: BinaryIO
+    stderr: BinaryIO
+    stdin: int
+    env: dict[str, str]
+    timeout: int
+    check: bool
+
+
+def fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> SyntheticProfile:
+    cfg = SyntheticProfile("synthetic_profile")
     source = tmp_path / "profile.py"
     source.write_bytes(b"# synthetic profile\n")
     cfg.__file__ = str(source)
@@ -31,17 +57,22 @@ def fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Any:
     monkeypatch.setattr(shared.platform, "system", lambda: "Darwin")
     monkeypatch.setattr(shared.platform, "machine", lambda: "arm64")
 
-    def forbidden(*args, **kwargs):
+    def forbidden(*args: object, **kwargs: object) -> None:
         raise AssertionError("real process forbidden")
 
     monkeypatch.setattr(shared.subprocess, "run", forbidden)
     return cfg
 
 
-def process(cfg, monkeypatch, out=None, mutate=None):
-    calls = []
+def process(
+    cfg: SyntheticProfile,
+    monkeypatch: pytest.MonkeyPatch,
+    out: bytes | None = None,
+    mutate: Callable[[], object] | None = None,
+) -> list[tuple[list[str], RunOptions]]:
+    calls: list[tuple[list[str], RunOptions]] = []
 
-    def run(args, **kwargs):
+    def run(args: list[str], **kwargs: Unpack[RunOptions]) -> subprocess.CompletedProcess[bytes]:
         calls.append((args, kwargs))
         kwargs["stdout"].write(cfg.VERSION_LINE if out is None else out)
         # Synthetic loader verification supplied explicitly; native Windows paths
@@ -56,7 +87,9 @@ def process(cfg, monkeypatch, out=None, mutate=None):
     return calls
 
 
-def test_explicit_profile_does_not_mutate_legacy(tmp_path, monkeypatch):
+def test_explicit_profile_does_not_mutate_legacy(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     old = shared.profile_digest()
     cfg = fixture(tmp_path, monkeypatch)
     shared.verify_files(cfg)
@@ -66,28 +99,35 @@ def test_explicit_profile_does_not_mutate_legacy(tmp_path, monkeypatch):
 
 
 @pytest.mark.parametrize(("diagnostic", "out"), [("version", None), ("help", b"synthetic help")])
-def test_explicit_capture_binds_both_sources(tmp_path, monkeypatch, diagnostic, out):
+def test_explicit_capture_binds_both_sources(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, diagnostic: str, out: bytes | None
+) -> None:
     cfg = fixture(tmp_path, monkeypatch)
     calls = process(cfg, monkeypatch, out)
     result = shared.capture_version(cfg, diagnostic=diagnostic)
     assert result["status"] == "runtime_profile_observed"
     assert calls[0][0] == [cfg.EXECUTABLE, "--" + diagnostic]
+    assert "profile_module_sha256" in result
+    assert isinstance(cfg.__file__, str)
     assert result["profile_module_sha256"] == shared._sha256(Path(cfg.__file__))
+    assert "shared_helper_sha256" in result
     assert result["shared_helper_sha256"] == shared._sha256(Path(shared.__file__))
+    assert "diagnostic" in result
     assert result["diagnostic"] == diagnostic
     assert result["admitted"] is result["study_unlocked"] is False
+    assert "limitations" in result
     assert not any("OpenSSL" in item for item in result["limitations"])
     assert set(calls[0][1]["env"]) == {"PATH", "LANG", "DYLD_LIBRARY_PATH", "DYLD_PRINT_LIBRARIES"}
 
 
 @pytest.mark.parametrize("source", ["profile", "helper"])
-def test_source_drift_fails(tmp_path, monkeypatch, source):
+def test_source_drift_fails(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, source: str) -> None:
     cfg = fixture(tmp_path, monkeypatch)
     real = shared._sha256
     target = cfg.__file__ if source == "profile" else shared.__file__
-    calls = []
+    calls: list[Path] = []
 
-    def drift(path):
+    def drift(path: Path) -> str:
         if str(path) == target:
             calls.append(path)
             return "a" * 64 if len(calls) == 1 else "b" * 64
@@ -97,6 +137,7 @@ def test_source_drift_fails(tmp_path, monkeypatch, source):
     process(cfg, monkeypatch)
     result = shared.capture_version(cfg)
     assert result["status"] == "profile_failed"
+    assert "pins_unchanged_after" in result
     assert result["pins_unchanged_after"] is False
 
 
@@ -105,7 +146,9 @@ def test_source_drift_fails(tmp_path, monkeypatch, source):
     [("help", b""), ("version", b"wrong version"), ("help", b"x" * (1024 * 1024 + 1))],
     ids=["emptyhelp", "wrongversion", "oversize"],
 )
-def test_bad_diagnostic_output(tmp_path, monkeypatch, diagnostic, out):
+def test_bad_diagnostic_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, diagnostic: str, out: bytes | None
+) -> None:
     cfg = fixture(tmp_path, monkeypatch)
     process(cfg, monkeypatch, out)
     result = shared.capture_version(cfg, diagnostic=diagnostic)
@@ -113,13 +156,13 @@ def test_bad_diagnostic_output(tmp_path, monkeypatch, diagnostic, out):
     assert result["admitted"] is False
 
 
-def test_unknown_diagnostic_never_executes(tmp_path, monkeypatch):
+def test_unknown_diagnostic_never_executes(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     cfg = fixture(tmp_path, monkeypatch)
     with pytest.raises(ValueError, match="unsupported_diagnostic"):
         shared.capture_version(cfg, diagnostic="shell")
 
 
-def test_cross_profile_loader_rejected(tmp_path, monkeypatch):
+def test_cross_profile_loader_rejected(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     cfg = fixture(tmp_path, monkeypatch)
     cfg.PINNED_FILES = {"/synthetic/new/cli": "a" * 64}
     cfg.REQUIRED_IMAGES = set(cfg.PINNED_FILES)
@@ -131,23 +174,27 @@ def test_cross_profile_loader_rejected(tmp_path, monkeypatch):
     ]
 
 
-def test_explicit_file_damage_not_legacy(tmp_path, monkeypatch):
+def test_explicit_file_damage_not_legacy(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     cfg = fixture(tmp_path, monkeypatch)
     Path(cfg.EXECUTABLE).write_bytes(b"changed")
     with pytest.raises(ValueError, match="profile_hash_mismatch"):
         shared.verify_files(cfg)
 
 
-def test_version_requires_all_markers(tmp_path, monkeypatch):
+def test_version_requires_all_markers(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     cfg = fixture(tmp_path, monkeypatch)
     cfg.VERSION_MARKERS = (cfg.VERSION_LINE, b"commit synthetic)")
     process(cfg, monkeypatch)
-    assert shared.capture_version(cfg)["reason"] == "version_mismatch"
+    result = shared.capture_version(cfg)
+    assert "reason" in result
+    assert result["reason"] == "version_mismatch"
     process(cfg, monkeypatch, cfg.VERSION_LINE + b" commit synthetic)")
     assert shared.capture_version(cfg)["status"] == "runtime_profile_observed"
 
 
-def test_unavailable_profile_source_fails_before_execution(tmp_path, monkeypatch):
+def test_unavailable_profile_source_fails_before_execution(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     cfg = fixture(tmp_path, monkeypatch)
     cfg.__file__ = None
     result = shared.capture_version(cfg, diagnostic="help")
@@ -156,9 +203,11 @@ def test_unavailable_profile_source_fails_before_execution(tmp_path, monkeypatch
     assert result["execution_observed"] is False
 
 
-def test_profile_configuration_drift(tmp_path, monkeypatch):
+def test_profile_configuration_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     cfg = fixture(tmp_path, monkeypatch)
     process(cfg, monkeypatch, mutate=lambda: setattr(cfg, "LIBRARY_DIRS", ("/changed",)))
     result = shared.capture_version(cfg)
+    assert "reason" in result
     assert result["reason"] == "profile_changed"
+    assert "pins_unchanged_after" in result
     assert result["pins_unchanged_after"] is False

@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Callable
 from pathlib import Path
 
 import pytest
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, validate
 
+from tools import json_shapes
 from tools.interface_actions import (
     build_audit_event,
     canonical_hash,
@@ -29,11 +31,34 @@ ROOT = Path(__file__).parents[1]
 HASH = "a" * 64
 
 
-def registry() -> dict:
-    return json.loads((ROOT / "evaluation/interfaces/registry.json").read_text())
+def obj(value: object) -> json_shapes.JsonObject:
+    return json_shapes.require_object(value, context="test fixture object")
 
 
-def recommendation() -> dict:
+def arr(value: object) -> list[object]:
+    assert json_shapes.is_array(value)
+    return value
+
+
+def rows(value: object) -> list[json_shapes.JsonObject]:
+    return [obj(item) for item in arr(value)]
+
+
+def string(value: object) -> str:
+    assert isinstance(value, str)
+    return value
+
+
+def read_json(path: Path) -> json_shapes.JsonObject:
+    value: object = json.loads(path.read_text())
+    return obj(value)
+
+
+def registry() -> json_shapes.JsonObject:
+    return read_json(ROOT / "evaluation/interfaces/registry.json")
+
+
+def recommendation() -> json_shapes.JsonObject:
     return {
         "recommendation_id": "rec-1",
         "evidence_ids": ["e-1"],
@@ -58,7 +83,7 @@ def recommendation() -> dict:
     }
 
 
-def view_context() -> dict:
+def view_context() -> json_shapes.JsonObject:
     return {
         "citations": [],
         "model_involvement": {"used": False},
@@ -68,7 +93,7 @@ def view_context() -> dict:
     }
 
 
-def action_approval(action: dict) -> dict:
+def action_approval(action: object) -> json_shapes.JsonObject:
     return {
         "artefact_sha256": canonical_hash(action),
         "scope": "action",
@@ -83,8 +108,8 @@ def action_approval(action: dict) -> dict:
     }
 
 
-def canonical_record() -> dict:
-    payload = {
+def canonical_record() -> json_shapes.JsonObject:
+    payload: json_shapes.JsonObject = {
         "schema_version": "1.1",
         "version": 1,
         "case_id": "syn-case-1",
@@ -109,24 +134,24 @@ def canonical_record() -> dict:
 def test_registry_passes_and_covers_original_templates() -> None:
     value = registry()
     assert validate_registry(value) == []
-    schema = json.loads((ROOT / "conductor/schemas/interface-workspace.schema.json").read_text())
-    assert list(Draft202012Validator(schema).iter_errors(value)) == []
-    assert all(item["rights"] == "original_apache_2_0" for item in value["templates"])
-    assert all(item["mutation"] is False for item in value["interfaces"])
+    schema = read_json(ROOT / "conductor/schemas/interface-workspace.schema.json")
+    assert validate(value, schema, cls=Draft202012Validator) is None
+    assert all(item["rights"] == "original_apache_2_0" for item in rows(value["templates"]))
+    assert all(item["mutation"] is False for item in rows(value["interfaces"]))
 
 
 def test_unsafe_legacy_templates_are_quarantined_from_supported_registry() -> None:
-    audit = json.loads((ROOT / "evaluation/interfaces/legacy-template-audit.json").read_text())
+    audit = read_json(ROOT / "evaluation/interfaces/legacy-template-audit.json")
     assert audit["status"] == "quarantined_legacy_not_supported"
     assert audit["admission"] is False
-    supported_ids = {item["id"] for item in registry()["templates"]}
+    supported_ids = {string(item["id"]) for item in rows(registry()["templates"])}
     assert not any("legacy" in identifier for identifier in supported_ids)
-    lines = (ROOT / audit["manifest"]).read_text().splitlines()
+    lines = (ROOT / string(audit["manifest"])).read_text().splitlines()
     entries = {path: digest for digest, path in (line.split("  ", 1) for line in lines)}
     # This receipt describes the quarantined historical bytes, not later fixes.
     # Pin its inventory rather than silently relabelling old content as admitted.
     assert (
-        hashlib.sha256((ROOT / audit["manifest"]).read_bytes()).hexdigest()
+        hashlib.sha256((ROOT / string(audit["manifest"])).read_bytes()).hexdigest()
         == "745f9c51014671fc7f2c8e344949947db926c6379eead5189766d3a06d2ac8b8"
     )
     assert len(entries) == audit["manifest_entries"]
@@ -146,12 +171,14 @@ def test_unsafe_legacy_templates_are_quarantined_from_supported_registry() -> No
 
 
 def test_registered_canonical_paths_resolve_against_safety_schema() -> None:
-    safety = json.loads((ROOT / "conductor/schemas/safety-work.schema.json").read_text())
-    roots = set(safety["properties"])
-    statement_kinds = set(safety["$defs"]["statement"]["properties"]["kind"]["enum"])
-    for template in registry()["templates"]:
-        for field in template["fields"]:
-            path = field["canonical_path"].removeprefix("$.")
+    safety = read_json(ROOT / "conductor/schemas/safety-work.schema.json")
+    roots = set(obj(safety["properties"]))
+    statement = obj(obj(safety["$defs"])["statement"])
+    kind = obj(obj(statement["properties"])["kind"])
+    statement_kinds = set(arr(kind["enum"]))
+    for template in rows(registry()["templates"]):
+        for field in rows(template["fields"]):
+            path = string(field["canonical_path"]).removeprefix("$.")
             root = path.split("[")[0]
             assert root in roots
             if ".kind=" in path:
@@ -165,13 +192,13 @@ def test_registry_rejects_non_object(value: object) -> None:
 
 def test_registry_rejects_policy_journey_workflow_and_template_drift() -> None:
     value = registry()
-    value["policy"]["external_actions"] = True
+    obj(value["policy"])["external_actions"] = True
     value["journeys"] = []
-    value["workflows"][0]["system_of_record"] = "local_shadow_registry"
-    value["templates"][0]["disclaimers"] = []
-    value["interfaces"][0]["operations"] = ["send"]
-    value["interfaces"][0]["mutation"] = True
-    value["participation"]["aboriginal_cultural_safety"] = "automated"
+    rows(value["workflows"])[0]["system_of_record"] = "local_shadow_registry"
+    rows(value["templates"])[0]["disclaimers"] = []
+    rows(value["interfaces"])[0]["operations"] = ["send"]
+    rows(value["interfaces"])[0]["mutation"] = True
+    obj(value["participation"])["aboriginal_cultural_safety"] = "automated"
     errors = validate_registry(value)
     assert "policy.external_actions must be False" in errors
     assert "journeys must be a non-empty array" in errors
@@ -184,33 +211,112 @@ def test_registry_rejects_policy_journey_workflow_and_template_drift() -> None:
 
 def test_registry_fails_closed_on_malformed_array_members() -> None:
     value = registry()
-    value["journeys"][0]["role"] = {}
-    value["templates"][0]["audiences"] = [{}]
-    value["interfaces"][0]["operations"] = [{}]
+    rows(value["journeys"])[0]["role"] = {}
+    rows(value["templates"])[0]["audiences"] = [{}]
+    rows(value["interfaces"])[0]["operations"] = [{}]
     errors = validate_registry(value)
     assert errors
 
 
+def test_extra_malformed_journey_role_is_not_hidden_by_complete_coverage() -> None:
+    value = registry()
+    extra = dict(rows(value["journeys"])[0])
+    extra["role"] = []
+    arr(value["journeys"]).append(extra)
+    assert "journeys do not cover every required role" in validate_registry(value)
+
+
+@pytest.mark.parametrize(
+    ("boundary", "field", "error"),
+    [
+        ("adapter", "operation", "operation is not permitted"),
+        ("adapter", "data_class", "data class is not admitted"),
+        ("communication", "recipient", "recipient must be synthetic or unresolved"),
+        ("approval", "authority_class", "authority class is invalid"),
+        ("approval", "decision", "decision is invalid"),
+        ("approval", "scope", "scope is invalid"),
+        ("participation", "consent_state", "consent state is invalid"),
+        ("participation", "contact_preference", "contact preference is invalid"),
+        (
+            "participation",
+            "cultural_authority_status",
+            "cultural authority cannot be inferred or completed here",
+        ),
+        ("participation", "cultural_need", "cultural need must not be inferred"),
+        ("recommendation", "status", "status is invalid"),
+        ("recommendation", "effectiveness_state", "effectiveness_state is invalid"),
+        (
+            "recommendation",
+            "effectiveness_authority",
+            "effectiveness state requires accountable human authority",
+        ),
+        ("referral", "pathway", "pathway is invalid"),
+        ("referral", "status", "referral status is invalid"),
+    ],
+)
+def test_unhashable_categories_return_existing_rejection_errors(
+    boundary: str, field: str, error: str
+) -> None:
+    value: json_shapes.JsonObject = {field: []}
+    if boundary == "adapter":
+        receipt = dry_run_adapter(value, registry())
+        assert receipt["status"] == "rejected"
+        errors = receipt["reasons"]
+    elif boundary == "communication":
+        errors = validate_communication_draft(value)
+    elif boundary == "approval":
+        value = action_approval(recommendation())
+        value[field] = []
+        errors = validate_approval(
+            value, artefact_sha256=value["artefact_sha256"], evaluated_at="2026-08-29T00:00:00Z"
+        )
+    elif boundary == "participation":
+        errors = validate_participation(value)
+    elif boundary == "recommendation":
+        value = recommendation()
+        value[field] = []
+        if field == "effectiveness_authority":
+            value["effectiveness_state"] = "effective"
+        errors = validate_recommendation(value)
+    else:
+        errors = validate_specialist_referral(value)
+    assert error in errors
+
+
+@pytest.mark.parametrize("value", [None, {"journeys": [None]}])
+def test_malformed_registry_never_passes_a_journey_checkpoint(value: object) -> None:
+    scenarios = [
+        {"id": "checkpoint", "kind": "registry_checkpoint", "payload": {"role": "investigator"}}
+    ]
+    result = evaluate_synthetic_journeys(value, scenarios)
+    assert result["cases"] == [
+        {"id": "checkpoint", "assertion": "role has explicit recovery", "passed": False}
+    ]
+
+
 def test_registry_rejects_each_structural_boundary() -> None:
-    mutations = [
+    malformed_rows: list[object] = [{}]
+    mutations: list[Callable[[json_shapes.JsonObject], None]] = [
         lambda v: v.update(schema_version="2", extra=True),
         lambda v: v.update(policy=[]),
-        lambda v: v["policy"].update(extra=True),
+        lambda v: obj(v["policy"]).update(extra=True),
         lambda v: v.update(journeys=["bad"]),
-        lambda v: v["journeys"][0].update(checkpoints=[]),
+        lambda v: rows(v["journeys"])[0].update(checkpoints=[]),
         lambda v: v.update(workflows=[]),
-        lambda v: v.update(workflows=[{}]),
-        lambda v: v["workflows"][1].update(id=v["workflows"][0]["id"], methods=[], steps=[]),
-        lambda v: v.update(templates=[]),
-        lambda v: v.update(templates=[{}]),
-        lambda v: v["templates"][1].update(
-            id=v["templates"][0]["id"], rights="unknown", fields=[], audiences=[]
+        lambda v: v.update(workflows=malformed_rows),
+        lambda v: rows(v["workflows"])[1].update(
+            id=rows(v["workflows"])[0]["id"], methods=[], steps=[]
         ),
-        lambda v: v["templates"][0]["fields"][0].update(canonical_path="$.unknown"),
-        lambda v: v["templates"][0].update(fields=["bad"], disclaimers=[{}]),
+        lambda v: v.update(templates=[]),
+        lambda v: v.update(templates=malformed_rows),
+        lambda v: rows(v["templates"])[1].update(
+            id=rows(v["templates"])[0]["id"], rights="unknown", fields=[], audiences=[]
+        ),
+        lambda v: rows(rows(v["templates"])[0]["fields"])[0].update(canonical_path="$.unknown"),
+        lambda v: rows(v["templates"])[0].update(fields=["bad"], disclaimers=malformed_rows),
         lambda v: v.update(interfaces=[]),
-        lambda v: v.update(interfaces=[{}]),
-        lambda v: v["interfaces"][1].update(id=v["interfaces"][0]["id"], status="live"),
+        lambda v: v.update(interfaces=malformed_rows),
+        lambda v: rows(v["interfaces"])[1].update(id=rows(v["interfaces"])[0]["id"], status="live"),
         lambda v: v.update(participation=[]),
     ]
     for mutate in mutations:
@@ -301,7 +407,7 @@ def test_adapter_rejects_credentials_and_unknown_fields() -> None:
 
 def test_adapter_fails_closed_for_non_object_invalid_registry_and_active_request() -> None:
     bad_registry = registry()
-    bad_registry["policy"]["external_actions"] = True
+    obj(bad_registry["policy"])["external_actions"] = True
     result = dry_run_adapter([], bad_registry)
     assert "registry is invalid" in result["reasons"]
     result = dry_run_adapter(
@@ -319,7 +425,7 @@ def test_adapter_fails_closed_for_non_object_invalid_registry_and_active_request
 
 
 def test_communication_is_preparation_only_and_synthetic() -> None:
-    draft = {
+    draft: json_shapes.JsonObject = {
         "purpose": "questions",
         "status": "preparation_only",
         "recipient": "[Consumer B]",
@@ -426,7 +532,8 @@ def test_audit_event_is_hash_chained_but_does_not_claim_persistence() -> None:
         "continuity" in error or "hash" in error for error in verify_audit_chain([first, second])
     )
     assert verify_audit_chain([]) == ["audit chain must be a non-empty array"]
-    assert verify_audit_chain([{}])
+    invalid_event: json_shapes.JsonObject = {}
+    assert verify_audit_chain([invalid_event])
     with pytest.raises(ValueError):
         build_audit_event(event={}, previous_sha256=None)
     with pytest.raises(ValueError):
@@ -434,7 +541,7 @@ def test_audit_event_is_hash_chained_but_does_not_claim_persistence() -> None:
 
 
 def test_participation_preserves_withdrawal_and_cultural_authority_boundary() -> None:
-    record = {
+    record: json_shapes.JsonObject = {
         "account_id": "syn-account-1",
         "account_sha256": "",
         "attribution": "generated_synthetic",
@@ -459,7 +566,7 @@ def test_participation_preserves_withdrawal_and_cultural_authority_boundary() ->
 
 
 def test_participation_rejects_sensitive_nested_content_and_hash_drift() -> None:
-    record = {
+    record: json_shapes.JsonObject = {
         "account_id": "syn-account-1",
         "account_sha256": HASH,
         "attribution": "generated_synthetic",
@@ -483,7 +590,7 @@ def test_participation_rejects_sensitive_nested_content_and_hash_drift() -> None
 
 
 def test_participation_hash_covers_disagreement_and_consent() -> None:
-    record = {
+    record: json_shapes.JsonObject = {
         "account_id": "syn-account-1",
         "account_sha256": "",
         "attribution": "generated_synthetic",
@@ -665,7 +772,7 @@ def test_audience_views_expose_limits_and_never_send() -> None:
     assert "private_note" not in view
     assert "reviews" not in view
     assert view["external_action"] is False
-    assert len(view["disclaimers"]) == 3
+    assert len(arr(view["disclaimers"])) == 3
 
 
 def test_view_minimises_by_audience_and_rejects_nested_active_content() -> None:
@@ -737,13 +844,13 @@ def test_view_rejects_malformed_record_and_audience() -> None:
 
 
 def test_synthetic_journey_evaluation_is_non_operational() -> None:
-    scenarios = json.loads((ROOT / "evaluation/interfaces/scenarios.json").read_text())
+    scenarios: object = json.loads((ROOT / "evaluation/interfaces/scenarios.json").read_text())
     result = evaluate_synthetic_journeys(registry(), scenarios)
     assert len(result["cases"]) == 7
     assert all(item["passed"] for item in result["cases"])
     assert result["metrics"]["external_actions"] == 0
     assert "not human usability research" in result["limitations"][0]
-    checked = json.loads(
+    checked: object = json.loads(
         (
             ROOT
             / "conductor/archive/interfaces-templates-action-loop_20260731/evidence/synthetic-evaluation-20260829.json"
@@ -754,6 +861,6 @@ def test_synthetic_journey_evaluation_is_non_operational() -> None:
 
 def test_synthetic_journey_evaluation_negative_controls() -> None:
     assert evaluate_synthetic_journeys(registry(), None)["cases"] == []
-    scenarios = [{"id": "bad", "kind": "unknown", "payload": {}}, "malformed"]
+    scenarios: list[object] = [{"id": "bad", "kind": "unknown", "payload": {}}, "malformed"]
     result = evaluate_synthetic_journeys(registry(), scenarios)
     assert result["cases"] == [{"id": "bad", "assertion": "invalid", "passed": False}]

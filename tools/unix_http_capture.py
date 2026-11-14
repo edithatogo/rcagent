@@ -47,14 +47,14 @@ class CaptureResult(_ResponseObservation):
     body_bytes: int
 
 
-def _remaining(deadline: float) -> float:
+def remaining_seconds(deadline: float) -> float:
     remaining = deadline - time.monotonic()
     if remaining <= 0:
         raise TimeoutError("deadline_exceeded")
     return remaining
 
 
-class _DeadlineSocket(socket.socket):
+class DeadlineSocket(socket.socket):
     def __init__(self, deadline: float):
         family = getattr(socket, "AF_UNIX", None)
         if family is None:
@@ -64,27 +64,27 @@ class _DeadlineSocket(socket.socket):
 
     def recv_into(self, buffer: WriteableBuffer, nbytes: int = 0, flags: int = 0) -> int:
         # socket.makefile()/SocketIO uses this method for every underlying read.
-        self.settimeout(_remaining(self.deadline))
+        self.settimeout(remaining_seconds(self.deadline))
         return super().recv_into(buffer, nbytes, flags)
 
     def sendall(self, data: ReadableBuffer, flags: int = 0) -> None:
-        self.settimeout(_remaining(self.deadline))
+        self.settimeout(remaining_seconds(self.deadline))
         super().sendall(data, flags)
 
 
 class _Connection(http.client.HTTPConnection):
     def __init__(self, path: Path, deadline: float):
-        super().__init__("localhost", timeout=_remaining(deadline))
+        super().__init__("localhost", timeout=remaining_seconds(deadline))
         self.path = path
         self.deadline = deadline
 
     def connect(self) -> None:
-        self.sock = _DeadlineSocket(self.deadline)
-        self.sock.settimeout(_remaining(self.deadline))
+        self.sock = DeadlineSocket(self.deadline)
+        self.sock.settimeout(remaining_seconds(self.deadline))
         self.sock.connect(str(self.path))
 
 
-def _path_identity(path: Path) -> tuple[int, int, int, int]:
+def socket_identity(path: Path) -> tuple[int, int, int, int]:
     getuid = getattr(os, "getuid", None)
     if getuid is None:
         raise ValueError("unix_identity_unavailable")
@@ -135,7 +135,7 @@ def capture(
         type(deadline) is not int and type(deadline) is not float
     ) or not now < deadline <= now + MAX_SECONDS:
         raise ValueError("invalid_deadline")
-    identity = _path_identity(path)
+    identity = socket_identity(path)
     result: _ResponseObservation = {
         "status": "transport_failed",
         "error": "none",
@@ -191,14 +191,14 @@ def capture(
                 raise ValueError("unsupported_http_framing")
             expected = int(lengths[0])
             while len(data) < expected:
-                _remaining(deadline)
+                remaining_seconds(deadline)
                 part = response.read1(min(65536, expected - len(data)))
                 if not part:
                     raise ValueError("incomplete_body")
                 data.extend(part)
-            _remaining(deadline)
+            remaining_seconds(deadline)
             result["body_complete"] = True
-            if _path_identity(path) != identity:
+            if socket_identity(path) != identity:
                 raise ValueError("socket_changed")
             if response.status != 200:
                 raise ValueError("http_status_rejected")

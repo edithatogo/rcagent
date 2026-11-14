@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from tests.prospective_fixture_types import ObjectMap, mapping
 from tools.workbench import main, select_queue, validate_context, validate_receipt
 
 
@@ -35,7 +36,7 @@ def test_context_contract() -> None:
 
 
 def test_queue_contract_releases_blocked_lane() -> None:
-    payload = {
+    payload: ObjectMap = {
         "items": [
             {
                 "id": "blocked",
@@ -62,11 +63,13 @@ def test_queue_contract_releases_blocked_lane() -> None:
     assert select_queue(payload) == {"status": "ready", "selected": "ready"}
 
 
-def test_context_cli_is_machine_readable(tmp_path: Path, capsys) -> None:
+def test_context_cli_is_machine_readable(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     path = tmp_path / "context.json"
     path.write_text(json.dumps(valid_context()), encoding="utf-8")
     assert main(["context", str(path)]) == 0
-    assert json.loads(capsys.readouterr().out)["status"] == "pass"
+    assert mapping(json.loads(capsys.readouterr().out))["status"] == "pass"
 
 
 def test_receipt_and_evaluation_fail_closed(capsys: pytest.CaptureFixture[str]) -> None:
@@ -82,7 +85,7 @@ def test_receipt_and_evaluation_fail_closed(capsys: pytest.CaptureFixture[str]) 
     }
     assert validate_receipt(receipt) == []
     assert main(["evaluate"]) == 2
-    output = json.loads(capsys.readouterr().out)
+    output = mapping(json.loads(capsys.readouterr().out))
     assert output["status"] == "unavailable"
     assert output["model_execution"] is False
 
@@ -104,13 +107,13 @@ def test_receipt_and_evaluation_fail_closed(capsys: pytest.CaptureFixture[str]) 
         ("rollback", True),
     ],
 )
-def test_invalid_context_fails_closed(field, value):
+def test_invalid_context_fails_closed(field: str, value: object) -> None:
     payload = valid_context()
     payload[field] = value
     assert validate_context(payload)
 
 
-def test_malformed_receipt_rejected():
+def test_malformed_receipt_rejected() -> None:
     assert validate_receipt(
         dict.fromkeys(
             (
@@ -159,43 +162,51 @@ def test_malformed_receipt_rejected():
         },
     ],
 )
-def test_invalid_queue_is_machine_readable_failure(tmp_path, capsys, payload):
+def test_invalid_queue_is_machine_readable_failure(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str], payload: ObjectMap
+) -> None:
     path = tmp_path / "queue.json"
     path.write_text(json.dumps(payload))
     assert main(["queue", str(path)]) == 1
-    assert json.loads(capsys.readouterr().out)["status"] == "fail"
+    assert mapping(json.loads(capsys.readouterr().out))["status"] == "fail"
 
 
-def test_invalid_json_is_machine_readable_failure(tmp_path, capsys):
+def test_invalid_json_is_machine_readable_failure(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     path = tmp_path / "context.json"
     path.write_text("{")
     assert main(["context", str(path)]) == 1
-    assert json.loads(capsys.readouterr().out)["status"] == "fail"
+    assert mapping(json.loads(capsys.readouterr().out))["status"] == "fail"
 
 
-def test_durable_state_cli_resumes_existing_checkpoint(tmp_path, capsys):
+def test_durable_state_cli_resumes_existing_checkpoint(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     plan = tmp_path / "plan.json"
     plan.write_text(
         json.dumps({"tracks": [{"id": "track", "phases": ["phase"]}], "base_revision": "a" * 40})
     )
     checkpoint = tmp_path / "checkpoint.json"
     assert main(["state", "initialise", str(checkpoint), "--input", str(plan)]) == 0
-    initial = json.loads(capsys.readouterr().out)
+    initial = mapping(json.loads(capsys.readouterr().out))
     assert main(["state", "next", str(checkpoint)]) == 0
-    assert json.loads(capsys.readouterr().out) == initial
-    assert initial["next_action"]["stage"] == "implement"
+    assert mapping(json.loads(capsys.readouterr().out)) == initial
+    assert mapping(initial["next_action"])["stage"] == "implement"
     assert initial["model_execution"] is False
     assert main(["state", "initialise", str(checkpoint), "--input", str(plan)]) == 1
 
 
-def test_state_cli_wait_resume_and_phase_completion(tmp_path, capsys):
+def test_state_cli_wait_resume_and_phase_completion(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     plan = tmp_path / "plan.json"
     plan.write_text(
         json.dumps({"tracks": [{"id": "track", "phases": ["phase"]}], "base_revision": "a" * 40})
     )
     checkpoint = tmp_path / "checkpoint.json"
     assert main(["state", "initialise", str(checkpoint), "--input", str(plan)]) == 0
-    instruction = json.loads(capsys.readouterr().out)["next_action"]
+    instruction = mapping(mapping(json.loads(capsys.readouterr().out))["next_action"])
     evidence = tmp_path / "evidence.txt"
     evidence.write_text("synthetic test observation")
     artefacts = [
@@ -212,7 +223,7 @@ def test_state_cli_wait_resume_and_phase_completion(tmp_path, capsys):
         )
     )
     assert main(["state", "advance", str(checkpoint), "--input", str(event)]) == 0
-    assert json.loads(capsys.readouterr().out)["next_action"] is None
+    assert mapping(json.loads(capsys.readouterr().out))["next_action"] is None
     receipt = tmp_path / "receipt.json"
     receipt.write_text(
         json.dumps(
@@ -231,11 +242,11 @@ def test_state_cli_wait_resume_and_phase_completion(tmp_path, capsys):
         main(["state", "resume", str(checkpoint), "--root", str(tmp_path), "--input", str(event)])
         == 0
     )
-    assert json.loads(capsys.readouterr().out)["next_action"] == instruction
+    assert mapping(json.loads(capsys.readouterr().out))["next_action"] == instruction
     receipt.write_text(json.dumps({**instruction, "outcome": "pass", "artefacts": artefacts}))
     event.write_text(json.dumps({"event_id": "pass", "action": "pass", "receipt": receipt.name}))
     assert (
         main(["state", "advance", str(checkpoint), "--root", str(tmp_path), "--input", str(event)])
         == 0
     )
-    assert json.loads(capsys.readouterr().out)["next_action"]["stage"] == "review"
+    assert mapping(mapping(json.loads(capsys.readouterr().out))["next_action"])["stage"] == "review"

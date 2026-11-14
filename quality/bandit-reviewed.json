@@ -1,7 +1,7 @@
 {
   "results": [
     {
-      "code": "191         try:\n192             result = subprocess.run(\n193                 [cfg.EXECUTABLE, \"--\" + diagnostic],\n194                 stdin=subprocess.DEVNULL,\n195                 stdout=stdout,\n196                 stderr=stderr,\n197                 env=cfg.profile_environment(),\n198                 timeout=TIMEOUT,\n199                 check=False,\n200             )\n201             exit_state = result.returncode\n",
+      "code": "241         try:\n242             result = subprocess.run(\n243                 [cfg.EXECUTABLE, \"--\" + diagnostic],\n244                 stdin=subprocess.DEVNULL,\n245                 stdout=stdout,\n246                 stderr=stderr,\n247                 env=cfg.profile_environment(),\n248                 timeout=TIMEOUT,\n249                 check=False,\n250             )\n251             exit_state = result.returncode\n",
       "col_offset": 21,
       "end_col_offset": 13,
       "filename": "tools/darwin_runtime_profile.py",
@@ -12,24 +12,24 @@
       },
       "issue_severity": "LOW",
       "issue_text": "subprocess call - check for execution of untrusted input.",
-      "line_number": 192,
+      "line_number": 242,
       "line_range": [
-        192,
-        193,
-        194,
-        195,
-        196,
-        197,
-        198,
-        199,
-        200
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250
       ],
       "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html",
       "test_id": "B603",
       "test_name": "subprocess_without_shell_equals_true"
     },
     {
-      "code": "202                 try:\n203                     completed = subprocess.run(\n204                         [\n205                             executable,\n206                             \"-m\",\n207                             str(model_path),\n208                             \"-p\",\n209                             _prompt(case),\n210                             \"-n\",\n211                             \"128\",\n212                             \"--seed\",\n213                             str(42 + repeat),\n214                             \"--temp\",\n215                             \"0\",\n216                             \"--no-display-prompt\",\n217                             \"--log-disable\",\n218                             \"--single-turn\",\n219                         ],\n220                         check=False,\n221                         capture_output=True,\n222                         text=True,\n223                         timeout=timeout,\n224                     )\n225                     output = completed.stdout\n",
+      "code": "335                 try:\n336                     completed = subprocess.run(\n337                         [\n338                             executable,\n339                             \"-m\",\n340                             str(model_path),\n341                             \"-p\",\n342                             prompt,\n343                             \"-n\",\n344                             \"128\",\n345                             \"--seed\",\n346                             str(42 + repeat),\n347                             \"--temp\",\n348                             \"0\",\n349                             \"--no-display-prompt\",\n350                             \"--log-disable\",\n351                             \"--single-turn\",\n352                         ],\n353                         check=False,\n354                         capture_output=True,\n355                         text=True,\n356                         timeout=timeout,\n357                     )\n358                     output = completed.stdout\n",
       "col_offset": 32,
       "end_col_offset": 21,
       "filename": "tools/local_model_comparator.py",
@@ -40,30 +40,30 @@
       },
       "issue_severity": "LOW",
       "issue_text": "subprocess call - check for execution of untrusted input.",
-      "line_number": 203,
+      "line_number": 336,
       "line_range": [
-        203,
-        204,
-        205,
-        206,
-        207,
-        208,
-        209,
-        210,
-        211,
-        212,
-        213,
-        214,
-        215,
-        216,
-        217,
-        218,
-        219,
-        220,
-        221,
-        222,
-        223,
-        224
+        336,
+        337,
+        338,
+        339,
+        340,
+        341,
+        342,
+        343,
+        344,
+        345,
+        346,
+        347,
+        348,
+        349,
+        350,
+        351,
+        352,
+        353,
+        354,
+        355,
+        356,
+        357
       ],
       "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html",
       "test_id": "B603",
@@ -71,16 +71,18 @@
     }
   ],
   "review": {
-    "source_commit": "50c8a81d1cbffc451380dd2cb973cb33c7cc74cd",
-    "reason": "Preserve byte-identical source consumed by the frozen prospective protocol; reviewed argv calls use no shell. Any source or baseline change requires new validation.",
+    "source_base_commit": "e6d95394241661db117dc429976aaa6204a1128b",
+    "historical_source_commit": "e6c1453d68b562829b99f40b925de6d287496601",
+    "scope": "current-engineering-only; historical protocol and negative results unchanged",
+    "reason": "FAW06 current typed source revalidation: both observed B603 findings remain argv calls without a shell; runtime/profile and model admission checks precede execution. Exceptions remain bound to exact current source bytes and scanner findings.",
     "sources": {
       "tools/darwin_runtime_profile.py": {
-        "sha256": "c910b867fa1bb71c397fd466fe0f57931cfe1894f2b49a5752befb4d3b854998",
-        "line_number": 192
+        "sha256": "31f0627bd3386a164872f1c14640e14b26a5551b7f61c6c23795ce2427a5c3ee",
+        "line_number": 242
       },
       "tools/local_model_comparator.py": {
-        "sha256": "429ae531533c5a90f618c3eb2f4d8f04c745c06ebf993159603710cefd25b090",
-        "line_number": 203
+        "sha256": "f27bf6dcf890887bf30112982ba78843828d58ce00b8a1b3481f23a1c2a49074",
+        "line_number": 336
       }
     }
   }

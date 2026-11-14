@@ -41,7 +41,7 @@ def test_native_version_is_distinct() -> None:
 
 def test_private_validated_view_preserves_public_api(tmp_path: Path) -> None:
     path, value = fixture(tmp_path)
-    parsed, candidate = subject._validated_candidate(path, pin(path))
+    parsed, candidate = subject.validated_candidate(path, pin(path))
     assert parsed == value
     assert candidate == subject.validate_protocol(path, pin(path))
     assert set(candidate) == {

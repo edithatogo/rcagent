@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from typing import Any, Protocol
+from typing import Protocol
+
+from tools.json_shapes import JsonObject
 
 
 @dataclass(frozen=True)
@@ -25,18 +28,20 @@ class Operation:
 @dataclass(frozen=True)
 class OperationResult:
     status: str
-    payload: dict[str, Any]
+    payload: JsonObject
     retryable: bool = False
     diagnostic: str | None = None
 
 
 class EvidenceStore(Protocol):
-    def put(self, operation: Operation, record: dict[str, Any]) -> OperationResult: ...
+    def put(self, operation: Operation, record: Mapping[str, object]) -> OperationResult: ...
     def get(self, operation: Operation, case_id: str) -> OperationResult: ...
 
 
 class RetrievalPort(Protocol):
-    def verify(self, operation: Operation, references: list[dict[str, Any]]) -> OperationResult: ...
+    def verify(
+        self, operation: Operation, references: Sequence[Mapping[str, object]]
+    ) -> OperationResult: ...
 
 
 class CapabilityPort(Protocol):
@@ -45,11 +50,11 @@ class CapabilityPort(Protocol):
 
 class WorkflowPort(Protocol):
     def transition(
-        self, operation: Operation, case_id: str, event: dict[str, Any]
+        self, operation: Operation, case_id: str, event: Mapping[str, object]
     ) -> OperationResult: ...
 
 
 class ExportPort(Protocol):
     def export(
-        self, operation: Operation, record: dict[str, Any], profile: str
+        self, operation: Operation, record: Mapping[str, object], profile: str
     ) -> OperationResult: ...

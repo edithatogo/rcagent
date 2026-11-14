@@ -5,26 +5,49 @@ from __future__ import annotations
 import argparse
 import json
 import platform
+from collections.abc import Mapping
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Literal, NotRequired, TypedDict, TypeGuard
 
 from tools.autonomy_harness import WorkItem, paths_conflict, select_next_ready
 from tools.autonomy_state import StateStore, next_action
+from tools.json_shapes import JsonObject, is_array, is_object
 from tools.validate_repository import validate
 
 MODES = {"public_remote", "governed_hybrid", "fully_local", "air_gapped"}
 
 
-def _text(value: Any) -> bool:
+class DoctorResult(TypedDict):
+    status: Literal["pass", "fail"]
+    root: str
+    python: str
+    governance_errors: list[str]
+    network_checked: Literal[False]
+    credentials_checked: Literal[False]
+    model_execution: Literal[False]
+    hosted_state_checked: NotRequired[Literal[False]]
+    external_completion_claim: NotRequired[Literal[False]]
+
+
+class QueueSelection(TypedDict):
+    status: Literal["ready", "no_ready_work"]
+    selected: str | None
+
+
+def _text(value: object) -> TypeGuard[str]:
     return isinstance(value, str) and bool(value.strip())
 
 
-def _strings(value: Any) -> bool:
-    return isinstance(value, list) and bool(value) and all(_text(item) for item in value)
+def _text_array(value: object) -> TypeGuard[list[str]]:
+    return is_array(value) and all(_text(item) for item in value)
 
 
-def _timestamp(value: Any) -> datetime:
+def _strings(value: object) -> TypeGuard[list[str]]:
+    return _text_array(value) and bool(value)
+
+
+def _timestamp(value: object) -> datetime:
     if not isinstance(value, str):
         raise ValueError("timestamp must be text")
     parsed = datetime.fromisoformat(value)
@@ -33,14 +56,14 @@ def _timestamp(value: Any) -> datetime:
     return parsed
 
 
-def _read_object(path: Path) -> dict[str, Any]:
-    value = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(value, dict):
+def _read_object(path: Path) -> JsonObject:
+    value: object = json.loads(path.read_text(encoding="utf-8"))
+    if not is_object(value):
         raise ValueError("input must be a JSON object")
     return value
 
 
-def doctor(root: Path) -> dict[str, Any]:
+def doctor(root: Path) -> DoctorResult:
     errors = validate(root)
     return {
         "status": "pass" if not errors else "fail",
@@ -53,7 +76,7 @@ def doctor(root: Path) -> dict[str, Any]:
     }
 
 
-def validate_context(payload: dict[str, Any]) -> list[str]:
+def validate_context(payload: Mapping[str, object]) -> list[str]:
     required = {
         "track_id",
         "task_id",
@@ -69,7 +92,8 @@ def validate_context(payload: dict[str, Any]) -> list[str]:
         "rollback",
     }
     errors = [f"missing {field}" for field in sorted(required) if not payload.get(field)]
-    if not isinstance(payload.get("privacy_mode"), str) or payload["privacy_mode"] not in MODES:
+    privacy_mode = payload.get("privacy_mode")
+    if not isinstance(privacy_mode, str) or privacy_mode not in MODES:
         errors.append("invalid privacy_mode")
     for field in required - {
         "context_budget",
@@ -85,7 +109,7 @@ def validate_context(payload: dict[str, Any]) -> list[str]:
             errors.append(f"invalid {field}")
     budget = payload.get("context_budget")
     if (
-        not isinstance(budget, dict)
+        not is_object(budget)
         or not budget
         or any(
             key not in {"files", "tokens", "bytes"} or type(value) is not int or value <= 0
@@ -94,9 +118,10 @@ def validate_context(payload: dict[str, Any]) -> list[str]:
     ):
         errors.append("invalid context_budget")
     for field in ("owned_files", "authoritative_inputs"):
-        if _strings(payload.get(field)):
+        values = payload.get(field)
+        if _strings(values):
             try:
-                paths_conflict(payload[field], ())
+                paths_conflict(values, ())
             except ValueError:
                 errors.append(f"non-portable {field}")
     try:
@@ -113,7 +138,7 @@ def validate_context(payload: dict[str, Any]) -> list[str]:
     return errors
 
 
-def validate_receipt(payload: dict[str, Any]) -> list[str]:
+def validate_receipt(payload: Mapping[str, object]) -> list[str]:
     required = {
         "task_id",
         "revision",
@@ -130,17 +155,14 @@ def validate_receipt(payload: dict[str, Any]) -> list[str]:
     for field in required - {"commands", "results", "limitations", "privacy_mode"}:
         if not _text(payload.get(field)):
             errors.append(f"invalid {field}")
-    if not isinstance(payload.get("privacy_mode"), str) or payload["privacy_mode"] not in MODES:
+    privacy_mode = payload.get("privacy_mode")
+    if not isinstance(privacy_mode, str) or privacy_mode not in MODES:
         errors.append("invalid privacy_mode")
     for field in ("results", "limitations"):
         if not _strings(payload.get(field)):
             errors.append(f"invalid {field}")
     commands = payload.get("commands")
-    if (
-        not isinstance(commands, list)
-        or not commands
-        or not all(_strings(command) for command in commands)
-    ):
+    if not is_array(commands) or not commands or not all(_strings(command) for command in commands):
         errors.append("invalid commands")
     try:
         if _timestamp(payload.get("timestamp")) > datetime.now(UTC):
@@ -150,46 +172,58 @@ def validate_receipt(payload: dict[str, Any]) -> list[str]:
     return errors
 
 
-def _work_item(payload: dict[str, Any]) -> WorkItem:
-    if not isinstance(payload, dict):
+def _work_item(payload: object) -> WorkItem:
+    if not is_object(payload):
         raise ValueError("work item must be an object")
-    if any(not _text(payload.get(field)) for field in ("id", "track_id", "status", "lane")):
-        raise ValueError("work item requires non-empty identity, status and lane")
+    identities: dict[str, str] = {}
+    for field in ("id", "track_id", "status", "lane"):
+        value = payload.get(field)
+        if not _text(value):
+            raise ValueError("work item requires non-empty identity, status and lane")
+        identities[field] = value
+    arrays: dict[str, list[str]] = {}
     for field in ("dependencies", "owned_paths"):
         value = payload.get(field, [])
-        if not isinstance(value, list) or any(not _text(item) for item in value):
+        if not _text_array(value):
             raise ValueError(f"invalid {field}")
-    if any(type(payload.get(field, 0)) is not int for field in ("priority", "criticality")):
+        arrays[field] = value
+    priority, criticality = payload.get("priority", 0), payload.get("criticality", 0)
+    if type(priority) is not int or type(criticality) is not int:
         raise ValueError("priority and criticality must be integers")
-    if payload.get("blocker") is not None and not _text(payload["blocker"]):
+    blocker = payload.get("blocker")
+    if blocker is not None and not _text(blocker):
         raise ValueError("blocker must be non-empty text or null")
     return WorkItem(
-        id=str(payload["id"]),
-        track_id=str(payload["track_id"]),
-        status=str(payload["status"]),
-        lane=str(payload["lane"]),
-        priority=int(payload.get("priority", 0)),
-        criticality=int(payload.get("criticality", 0)),
-        dependencies=tuple(map(str, payload.get("dependencies", []))),
-        owned_paths=tuple(map(str, payload.get("owned_paths", []))),
-        blocker=str(payload["blocker"]) if payload.get("blocker") else None,
+        id=identities["id"],
+        track_id=identities["track_id"],
+        status=identities["status"],
+        lane=identities["lane"],
+        priority=priority,
+        criticality=criticality,
+        dependencies=tuple(arrays["dependencies"]),
+        owned_paths=tuple(arrays["owned_paths"]),
+        blocker=blocker,
     )
 
 
-def select_queue(payload: dict[str, Any]) -> dict[str, Any]:
+def select_queue(payload: Mapping[str, object]) -> QueueSelection:
+    collections: dict[str, list[object]] = {}
     for field in ("items", "active", "completed"):
-        if not isinstance(payload.get(field, []), list):
+        value = payload.get(field, [])
+        if not is_array(value):
             raise ValueError(f"{field} must be an array")
-    if any(not _text(item) for item in payload.get("completed", [])):
+        collections[field] = value
+    completed = collections["completed"]
+    if not _text_array(completed):
         raise ValueError("completed must contain task identifiers")
-    items = [_work_item(item) for item in payload.get("items", [])]
-    active = [_work_item(item) for item in payload.get("active", [])]
+    items = [_work_item(item) for item in collections["items"]]
+    active = [_work_item(item) for item in collections["active"]]
     configured_limits = payload.get("lane_limits")
-    if configured_limits is not None and not isinstance(configured_limits, dict):
+    if configured_limits is not None and not is_object(configured_limits):
         raise ValueError("lane_limits must be an object")
     selected = select_next_ready(
         items,
-        completed=set(map(str, payload.get("completed", []))),
+        completed=set(completed),
         active=active,
         lane_limits=configured_limits,
     )
@@ -197,6 +231,16 @@ def select_queue(payload: dict[str, Any]) -> dict[str, Any]:
         "status": "ready" if selected else "no_ready_work",
         "selected": selected.id if selected else None,
     }
+
+
+def _input_text(value: object) -> str:
+    if not isinstance(value, str):
+        raise ValueError("command field must be text")
+    return value
+
+
+def _optional_input_text(value: object) -> str | None:
+    return None if value is None else _input_text(value)
 
 
 def _main(argv: list[str] | None = None) -> int:
@@ -218,28 +262,29 @@ def _main(argv: list[str] | None = None) -> int:
     state_parser.add_argument("--root", type=Path, default=Path.cwd())
     state_parser.add_argument("--input", type=Path)
     args = parser.parse_args(argv)
+    result: Mapping[str, object]
     if args.command == "state":
         store = StateStore(args.checkpoint)
-        payload = _read_object(args.input) if args.input is not None else {}
+        payload: JsonObject = _read_object(args.input) if args.input is not None else {}
         if args.operation == "initialise":
             state = store.initialise(payload["tracks"], base_revision=payload["base_revision"])
         elif args.operation == "advance":
             state = store.advance(
                 root=args.root,
-                event_id=payload["event_id"],
+                event_id=_input_text(payload["event_id"]),
                 action=payload["action"],
-                receipt=payload.get("receipt"),
-                wake_condition=payload.get("wake_condition"),
+                receipt=_optional_input_text(payload.get("receipt")),
+                wake_condition=_optional_input_text(payload.get("wake_condition")),
             )
         elif args.operation == "resume":
             state = store.resume(
                 root=args.root,
-                track_id=payload["track_id"],
-                event_id=payload["event_id"],
-                receipt=payload["receipt"],
+                track_id=_input_text(payload["track_id"]),
+                event_id=_input_text(payload["event_id"]),
+                receipt=_input_text(payload["receipt"]),
             )
         elif args.operation == "recover":
-            store.recover(root=args.root, receipt=payload["receipt"])
+            store.recover(root=args.root, receipt=_input_text(payload["receipt"]))
             state = store.load()
         else:
             state = store.load()
@@ -250,10 +295,11 @@ def _main(argv: list[str] | None = None) -> int:
             "circuit_breaker": state["circuit_breaker"],
         }
     elif args.command in {"doctor", "validate", "reconcile"}:
-        result = doctor(args.root.resolve())
+        diagnosis = doctor(args.root.resolve())
         if args.command == "reconcile":
-            result["hosted_state_checked"] = False
-            result["external_completion_claim"] = False
+            diagnosis["hosted_state_checked"] = False
+            diagnosis["external_completion_claim"] = False
+        result = diagnosis
     elif args.command == "context":
         errors = validate_context(_read_object(args.input))
         result = {"status": "pass" if not errors else "fail", "errors": errors}

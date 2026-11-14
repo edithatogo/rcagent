@@ -12,7 +12,7 @@ from typing import Literal, Protocol, TypedDict, TypeGuard, cast
 from jsonschema import Draft202012Validator
 
 from tools import json_shapes
-from tools.evaluation_preflight import _bytes, _digest, _unique
+from tools.evaluation_preflight import is_sha256, read_artifact_bytes, unique_object_pairs
 
 
 class _SchemaValidator(Protocol):
@@ -244,9 +244,11 @@ SUBMISSION: json_shapes.JsonObject = obj(
 
 
 def read_json(path: Path) -> tuple[object, str]:
-    data = _bytes(path.absolute())
+    data = read_artifact_bytes(path.absolute())
     try:
-        return json.loads(data, object_pairs_hook=_unique), hashlib.sha256(data).hexdigest()
+        return json.loads(data, object_pairs_hook=unique_object_pairs), hashlib.sha256(
+            data
+        ).hexdigest()
     except (UnicodeError, json.JSONDecodeError, RecursionError) as exc:
         raise ValueError("invalid_json") from exc
 
@@ -268,7 +270,7 @@ def artifact(root: Path, ref: object) -> bytes:
         r"[a-zA-Z0-9_-]+(?:/[a-zA-Z0-9_-]+)*(?:\.[a-zA-Z0-9_-]+)?", path
     ):
         raise ValueError("invalid_artifact_path")
-    data = _bytes(root / path)
+    data = read_artifact_bytes(root / path)
     pin = ref.get("sha256")
     if not isinstance(pin, str) or hashlib.sha256(data).hexdigest() != pin:
         raise ValueError("artifact_hash_mismatch")
@@ -312,7 +314,7 @@ def submission_reason(
 def inventory(manifest: Path, expected_sha256: object) -> InventoryResult:
     manifest = manifest.absolute()
     plan, pin = read_json(manifest)
-    if not _digest(expected_sha256) or pin != expected_sha256:
+    if not is_sha256(expected_sha256) or pin != expected_sha256:
         raise ValueError("manifest_pin_mismatch")
     validate(plan, SCHEMA)
     if not json_shapes.is_object(plan):

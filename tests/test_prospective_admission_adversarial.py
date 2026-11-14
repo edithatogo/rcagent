@@ -5,7 +5,7 @@ import dataclasses
 import json
 import os
 import pickle
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from pathlib import Path
 from types import TracebackType
 from typing import Literal, Protocol, Self, TypeAlias, TypedDict
@@ -42,9 +42,9 @@ run_study = mapping_call(controller.run_study)
 
 
 @pytest.fixture
-def capability(tmp_path: Path):
+def capability(tmp_path: Path) -> Iterator[admission.OwnedCapture]:
     # Deliberately incomplete witness tests ownership without reaching a gate.
-    owned = admission._issue(
+    owned = admission.issue_controller_capture(
         (tmp_path / "protocol.json", "a" * 64, "b" * 40, tmp_path, tmp_path),
         (),
         tmp_path,
@@ -55,7 +55,7 @@ def capability(tmp_path: Path):
         (),
     )
     yield owned
-    admission._LIVE.discard(owned)
+    admission.revoke_capture(owned)
 
 
 @pytest.mark.parametrize("copier", [copy.copy, copy.deepcopy, pickle.dumps])
@@ -71,27 +71,41 @@ def test_live_witness_cannot_be_json_serialized(capability: object) -> None:
         json.dumps(capability)
 
 
-def test_dataclass_replacement_does_not_issue_a_second_live_witness(capability) -> None:
+def test_dataclass_replacement_does_not_issue_a_second_live_witness(
+    capability: admission.OwnedCapture,
+) -> None:
     replacement = dataclasses.replace(capability)
     try:
         with pytest.raises(ValueError, match="invalid_or_consumed_capture_capability"):
-            admission._consume(replacement)
+            admission.consume_controller_capture(replacement)
     finally:
-        admission._LIVE.discard(replacement)
-    assert capability in admission._LIVE
+        admission.revoke_capture(replacement)
+    assert admission.capture_is_live(capability)
 
 
 def test_failed_consumption_still_consumes_witness(capability: object) -> None:
     with pytest.raises(ValueError, match="incomplete_capture_denominator"):
-        admission._consume(capability)
+        admission.consume_controller_capture(capability)
     with pytest.raises(ValueError, match="invalid_or_consumed_capture_capability"):
-        admission._consume(capability)
+        admission.consume_controller_capture(capability)
+
+
+def test_capture_inspection_and_revocation_never_issue_authority(capability: object) -> None:
+    assert admission.capture_is_live(capability)
+    assert not admission.capture_is_live({"origin": "controller"})
+    admission.revoke_capture({"origin": "controller"})
+    assert admission.capture_is_live(capability)
+    admission.revoke_capture(capability)
+    assert not admission.capture_is_live(capability)
+    admission.revoke_capture(capability)
+    with pytest.raises(ValueError, match="invalid_or_consumed_capture_capability"):
+        admission.consume_controller_capture(capability)
 
 
 @pytest.mark.parametrize("value", [{}, {"admitted": True}, {"origin": "controller"}, None, True])
 def test_untrusted_json_cannot_rehydrate_capture_authority(value: object) -> None:
     with pytest.raises(ValueError, match="invalid_or_consumed_capture_capability"):
-        admission._consume(value)
+        admission.consume_controller_capture(value)
 
 
 @pytest.fixture
@@ -108,7 +122,7 @@ def owned_file(tmp_path: Path) -> OwnedFile:
 
 def test_owned_read_exact_bound_and_identity(owned_file: OwnedFile) -> None:
     path, parent = owned_file
-    data, observed = admission._read(path, parent, 2)
+    data, observed = admission.read_owned_receipt(path, parent, 2)
     info = path.stat()
     assert data == b"{}"
     assert observed == (info.st_dev, info.st_ino)
@@ -117,19 +131,19 @@ def test_owned_read_exact_bound_and_identity(owned_file: OwnedFile) -> None:
 def test_owned_read_rejects_oversize(owned_file: OwnedFile) -> None:
     path, parent = owned_file
     with pytest.raises(ValueError, match="owned_receipt_byte_limit"):
-        admission._read(path, parent, 1)
+        admission.read_owned_receipt(path, parent, 1)
 
 
 def test_owned_read_rejects_replaced_identity(owned_file: OwnedFile) -> None:
     path, parent = owned_file
     with pytest.raises(ValueError, match="owned_receipt_replaced"):
-        admission._read(path, parent, 20, (-1, -1))
+        admission.read_owned_receipt(path, parent, 20, (-1, -1))
 
 
 def test_owned_read_rejects_wrong_parent(owned_file: OwnedFile) -> None:
     path, _ = owned_file
     with pytest.raises(ValueError):
-        admission._read(path, (-1, -1), 20)
+        admission.read_owned_receipt(path, (-1, -1), 20)
 
 
 def test_owned_read_rejects_hardlink(owned_file: OwnedFile) -> None:
@@ -139,7 +153,7 @@ def test_owned_read_rejects_hardlink(owned_file: OwnedFile) -> None:
     except OSError:
         pytest.skip("host does not permit synthetic hardlinks")
     with pytest.raises(ValueError):
-        admission._read(path, parent, 20)
+        admission.read_owned_receipt(path, parent, 20)
 
 
 def test_owned_read_rejects_symlink(owned_file: OwnedFile) -> None:
@@ -150,7 +164,7 @@ def test_owned_read_rejects_symlink(owned_file: OwnedFile) -> None:
     except OSError:
         pytest.skip("host does not permit synthetic symlinks")
     with pytest.raises((ValueError, OSError)):
-        admission._read(alias, parent, 20)
+        admission.read_owned_receipt(alias, parent, 20)
 
 
 def test_owned_read_sets_nonblocking_nofollow_before_open(
@@ -170,7 +184,7 @@ def test_owned_read_sets_nonblocking_nofollow_before_open(
         return real_open(name, flags, mode, dir_fd=dir_fd)
 
     monkeypatch.setattr(admission.os, "open", checked_open)
-    assert admission._read(path, parent, 2)[0] == b"{}"
+    assert admission.read_owned_receipt(path, parent, 2)[0] == b"{}"
     assert len(observed) == 1
 
 
@@ -193,7 +207,7 @@ def test_owned_read_fifo_rejected_without_blocking(
 
     monkeypatch.setattr(admission.os, "open", nonblocking_open)
     with pytest.raises((ValueError, OSError)):
-        admission._read(path, parent, 20)
+        admission.read_owned_receipt(path, parent, 20)
 
 
 def test_owned_read_rejects_hardlink_created_during_read(
@@ -234,36 +248,36 @@ def test_owned_read_rejects_hardlink_created_during_read(
 
     monkeypatch.setattr(admission.os, "fdopen", LinkedDuringRead)
     with pytest.raises(ValueError):
-        admission._read(path, parent, 2)
+        admission.read_owned_receipt(path, parent, 2)
 
 
 @pytest.mark.parametrize("raw", [b"[]", b"true", b'{"x":1,"x":2}', b'{"x":NaN}', b"\xff"])
 def test_receipt_json_rejects_invalid_shapes_and_numbers(raw: bytes) -> None:
     with pytest.raises(ValueError, match="invalid_owned_receipt"):
-        admission._parse(raw)
+        admission.parse_owned_receipt(raw)
 
 
 @pytest.mark.parametrize("value", [None, False, 1, [], "====", "eA==\n"])
 def test_capture_body_requires_canonical_base64_string(value: object) -> None:
     with pytest.raises(ValueError):
-        admission._body({"body": value}, "body", 2)
+        admission.verified_bounded_body({"body": value}, "body", 2)
 
 
 def test_capture_body_enforces_decoded_size() -> None:
     with pytest.raises(ValueError, match="invalid_capture_bytes"):
-        admission._body({"body": "eHl6"}, "body", 2)
+        admission.verified_bounded_body({"body": "eHl6"}, "body", 2)
 
 
 def test_journal_binds_event_order_and_previous_hash() -> None:
     events = [{"type": "run_started"}, {"type": "slot_started"}]
-    raw = admission._journal(events)
+    raw = admission.encode_journal(events)
     lines = raw.splitlines(keepends=True)
     first, second = [mapping(json.loads(line)) for line in lines]
     assert first["sequence"] == 0
     assert first["previous_sha256"] == "0" * 64
     assert second["sequence"] == 1
-    assert second["previous_sha256"] == admission._sha(lines[0])
-    assert raw != admission._journal(list(reversed(events)))
+    assert second["previous_sha256"] == admission.sha256_bytes(lines[0])
+    assert raw != admission.encode_journal(list(reversed(events)))
 
 
 @pytest.mark.parametrize(
@@ -292,9 +306,9 @@ def test_malformed_capture_flags_rejected_before_deeper_evidence(field: str, val
         "cleanup_errors": [],
     }
     raw[field] = value
-    plan = admission.gate._Plan(b"{}")
+    plan = admission.gate.ExecutionPlan(b"{}")
     with pytest.raises(ValueError, match="capture_not_admissible"):
-        admission._validate_receipt(admission._canonical(raw), plan)
+        admission.validate_captured_receipt(admission.canonical_bytes(raw), plan)
 
 
 @pytest.mark.parametrize(
@@ -336,7 +350,7 @@ def test_forged_capture_fields_stop_before_second_slot(
         for component in field[:-1]:
             parent = mapping(parent[component])
         parent[field[-1]] = replacement
-        parameters[-1].write_bytes(admission._canonical(result) + b"\n")
+        parameters[-1].write_bytes(admission.canonical_bytes(result) + b"\n")
         return result
 
     monkeypatch.setattr(controller.primary, "run_primary", mutated)
@@ -369,7 +383,7 @@ def test_lost_or_replaced_journal_prevents_second_capture(
         else:
             records = [mapping(json.loads(line)) for line in raw.splitlines()]
             records[-1]["previous_sha256"] = "f" * 64
-            path.write_bytes(b"".join(admission._canonical(row) + b"\n" for row in records))
+            path.write_bytes(b"".join(admission.canonical_bytes(row) + b"\n" for row in records))
         return result
 
     monkeypatch.setattr(controller.primary, "run_primary", damaged)
@@ -461,7 +475,7 @@ def test_directory_sync_uses_nonblocking_directory_nofollow_flags(
         return original(path, flags, mode, dir_fd=dir_fd)
 
     monkeypatch.setattr(controller.os, "open", checked_open)
-    controller._sync_directory(directory, (info.st_dev, info.st_ino))
+    controller.sync_private_directory(directory, (info.st_dev, info.st_ino))
     assert len(calls) == 1
 
 
@@ -479,7 +493,7 @@ def test_postseal_failure_outcome_cannot_overwrite_existing_evidence(
         failure.chmod(0o600)
         raise ValueError("synthetic-admission-failure")
 
-    monkeypatch.setattr(admission, "_consume", fail_after_seal)
+    monkeypatch.setattr(admission, "consume_controller_capture", fail_after_seal)
     result = run_study(*args)
     assert len(calls) == 2
     assert result["admitted"] is result["scoring_start"] is False
@@ -494,7 +508,7 @@ def test_admission_write_failure_preserves_sealed_journal_and_locked_failure(
     capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     args, calls, _ = capture_fixture
-    original = controller._write_result
+    original = controller.write_result_exclusively
     retained: RetainedEvidence = {}
 
     def fail_admission_write(path: Path, parent: tuple[int, int], result: ObjectMap) -> None:
@@ -504,7 +518,7 @@ def test_admission_write_failure_preserves_sealed_journal_and_locked_failure(
             raise OSError("synthetic-admission-write-failure")
         return original(path, parent, result)
 
-    monkeypatch.setattr(controller, "_write_result", fail_admission_write)
+    monkeypatch.setattr(controller, "write_result_exclusively", fail_admission_write)
     result = run_study(*args)
     assert "directory" in retained
     assert "journal" in retained
@@ -515,7 +529,7 @@ def test_admission_write_failure_preserves_sealed_journal_and_locked_failure(
     assert durable_failure["admitted"] is durable_failure["study_unlocked"] is False
     assert durable_failure["scoring_start"] is False
     assert durable_failure["failure_stage"] == "persistence"
-    assert durable_failure["journal_sha256"] == admission._sha(retained["journal"])
+    assert durable_failure["journal_sha256"] == admission.sha256_bytes(retained["journal"])
     assert (directory / "journal.jsonl").read_bytes() == retained["journal"]
     assert not (directory / "admission.json").exists()
     with pytest.raises(FileExistsError):

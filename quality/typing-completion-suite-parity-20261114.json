@@ -1,0 +1,445 @@
+{
+  "base": {
+    "collected_ids_sha256": "416cf16f809b60778b74f80cce51e82fce60fb6da30f8d6b69927182541e7b52",
+    "counts": {
+      "errors": 0,
+      "failures": 52,
+      "passed": 2006,
+      "skipped": 11,
+      "tests": 2069
+    },
+    "duplicate_ids": {},
+    "xml_path": "/tmp/faw06-base-full.xml",
+    "xml_sha256": "162b06f05b79824182c53487e4281fb689783bd1e672a5fdbfb0f77989e43237"
+  },
+  "blocking_findings": [],
+  "collection_comparison": {
+    "added_count": 177,
+    "added_ids": [
+      "tests.test_agent_panel_review::test_panel_rejects_extra_invalid_rating_identifier_with_full_coverage",
+      "tests.test_agent_panel_review::test_panel_rejects_malformed_containers_without_crashing[input_hashes]",
+      "tests.test_agent_panel_review::test_panel_rejects_malformed_containers_without_crashing[ratings]",
+      "tests.test_agent_panel_review::test_panel_rejects_malformed_nested_criteria_and_flags",
+      "tests.test_autonomy_state::test_rehashed_checkpoint_cannot_dispatch_malformed_track[dependencies-value2]",
+      "tests.test_autonomy_state::test_rehashed_checkpoint_cannot_dispatch_malformed_track[phase_index-100]",
+      "tests.test_autonomy_state::test_rehashed_checkpoint_cannot_dispatch_malformed_track[phases-None]",
+      "tests.test_autonomy_state::test_rehashed_checkpoint_requires_checked_shapes[circuit_breaker-false]",
+      "tests.test_autonomy_state::test_rehashed_checkpoint_requires_checked_shapes[events-value1]",
+      "tests.test_autonomy_state::test_rehashed_checkpoint_requires_checked_shapes[tracks-None]",
+      "tests.test_benchmark_harness::test_registry_malformed_nested_values_return_diagnostics[cases-id-value0]",
+      "tests.test_benchmark_harness::test_registry_malformed_nested_values_return_diagnostics[hard_gates-category-value2]",
+      "tests.test_benchmark_harness::test_registry_malformed_nested_values_return_diagnostics[legacy_map-source_paths-None]",
+      "tests.test_benchmark_harness::test_registry_malformed_nested_values_return_diagnostics[suites-case_ids-value1]",
+      "tests.test_benchmark_harness::test_registry_non_array_collections_return_schema_errors[cases]",
+      "tests.test_benchmark_harness::test_registry_non_array_collections_return_schema_errors[dependencies]",
+      "tests.test_benchmark_harness::test_registry_non_array_collections_return_schema_errors[hard_gates]",
+      "tests.test_benchmark_harness::test_registry_non_array_collections_return_schema_errors[legacy_map]",
+      "tests.test_benchmark_harness::test_registry_non_array_collections_return_schema_errors[metrics]",
+      "tests.test_benchmark_harness::test_registry_non_array_collections_return_schema_errors[suites]",
+      "tests.test_docling_synthetic_evaluation::test_rehashed_malformed_fields_return_errors[class]",
+      "tests.test_docling_synthetic_evaluation::test_rehashed_malformed_fields_return_errors[execution_boundary]",
+      "tests.test_docling_synthetic_evaluation::test_rehashed_malformed_fields_return_errors[id]",
+      "tests.test_docling_synthetic_evaluation::test_rehashed_malformed_fields_return_errors[state]",
+      "tests.test_encoder_adapter_eval::test_malformed_encoder_fixture_is_rejected[fixture0]",
+      "tests.test_encoder_adapter_eval::test_malformed_encoder_fixture_is_rejected[fixture1]",
+      "tests.test_encoder_adapter_eval::test_malformed_encoder_fixture_is_rejected[fixture2]",
+      "tests.test_encoder_adapter_eval::test_rehashed_malformed_backends_return_errors[None]",
+      "tests.test_encoder_adapter_eval::test_rehashed_malformed_backends_return_errors[backends1]",
+      "tests.test_encoder_adapter_eval::test_rehashed_malformed_backends_return_errors[backends2]",
+      "tests.test_evidence_core::test_legacy_migration_rejects_malformed_sources_without_mutating_input",
+      "tests.test_interface_actions::test_extra_malformed_journey_role_is_not_hidden_by_complete_coverage",
+      "tests.test_interface_actions::test_malformed_registry_never_passes_a_journey_checkpoint[None]",
+      "tests.test_interface_actions::test_malformed_registry_never_passes_a_journey_checkpoint[value1]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[adapter-data_class-data class is not admitted]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[adapter-operation-operation is not permitted]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[approval-authority_class-authority class is invalid]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[approval-decision-decision is invalid]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[approval-scope-scope is invalid]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[communication-recipient-recipient must be synthetic or unresolved]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[participation-consent_state-consent state is invalid]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[participation-contact_preference-contact preference is invalid]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[participation-cultural_authority_status-cultural authority cannot be inferred or completed here]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[participation-cultural_need-cultural need must not be inferred]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[recommendation-effectiveness_authority-effectiveness state requires accountable human authority]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[recommendation-effectiveness_state-effectiveness_state is invalid]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[recommendation-status-status is invalid]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[referral-pathway-pathway is invalid]",
+      "tests.test_interface_actions::test_unhashable_categories_return_existing_rejection_errors[referral-status-referral status is invalid]",
+      "tests.test_jurisdiction_pack::test_drift_rejects_extra_malformed_source_instead_of_reporting_no_change",
+      "tests.test_jurisdiction_pack::test_due_queue_rejects_malformed_cadence[-1]",
+      "tests.test_jurisdiction_pack::test_due_queue_rejects_malformed_cadence[0]",
+      "tests.test_jurisdiction_pack::test_due_queue_rejects_malformed_cadence[1.5]",
+      "tests.test_jurisdiction_pack::test_due_queue_rejects_malformed_cadence[367]",
+      "tests.test_jurisdiction_pack::test_due_queue_rejects_malformed_cadence[True]",
+      "tests.test_jurisdiction_pack::test_due_queue_rejects_malformed_cadence[cadence0]",
+      "tests.test_jurisdiction_pack::test_due_queue_rejects_malformed_cadence[inf]",
+      "tests.test_jurisdiction_pack::test_due_queue_rejects_malformed_cadence[nan]",
+      "tests.test_local_execution_probe::test_invalid_metadata_cannot_cross_admission[None-model-id]",
+      "tests.test_local_execution_probe::test_invalid_metadata_cannot_cross_admission[None-model-revision]",
+      "tests.test_local_execution_probe::test_invalid_metadata_cannot_cross_admission[None-runtime-version]",
+      "tests.test_local_execution_probe::test_invalid_metadata_cannot_cross_admission[True-model-id]",
+      "tests.test_local_execution_probe::test_invalid_metadata_cannot_cross_admission[True-model-revision]",
+      "tests.test_local_execution_probe::test_invalid_metadata_cannot_cross_admission[True-runtime-version]",
+      "tests.test_local_execution_probe::test_invalid_metadata_cannot_cross_admission[value1-model-id]",
+      "tests.test_local_execution_probe::test_invalid_metadata_cannot_cross_admission[value1-model-revision]",
+      "tests.test_local_execution_probe::test_invalid_metadata_cannot_cross_admission[value1-runtime-version]",
+      "tests.test_local_execution_probe::test_missing_selected_model_cannot_cross_admission",
+      "tests.test_local_model_comparator::test_admission_rejects_nonobject_model_and_file_rows",
+      "tests.test_local_model_comparator::test_admission_rejects_null_containers[admission_policy]",
+      "tests.test_local_model_comparator::test_admission_rejects_null_containers[models]",
+      "tests.test_local_model_comparator::test_admission_rejects_null_containers[runtime]",
+      "tests.test_local_model_comparator::test_comparator_rejects_invalid_fixture_before_execution",
+      "tests.test_local_output_probe::test_shape_guard_change_changes_its_source_pin",
+      "tests.test_medical_signal_contract::test_malformed_image_inputs_are_rejected[pixels-value1]",
+      "tests.test_medical_signal_contract::test_malformed_image_inputs_are_rejected[series_uids-value2]",
+      "tests.test_medical_signal_contract::test_malformed_image_inputs_are_rejected[target_shape-value0]",
+      "tests.test_medical_signal_contract::test_rehashed_malformed_receipt_fields_are_rejected[interpretation_allowed]",
+      "tests.test_medical_signal_contract::test_rehashed_malformed_receipt_fields_are_rejected[observed]",
+      "tests.test_medical_signal_contract::test_rehashed_malformed_receipt_fields_are_rejected[results]",
+      "tests.test_medical_signal_contract::test_rehashed_malformed_receipt_fields_are_rejected[summary]",
+      "tests.test_medical_signal_contract::test_unknown_profile_and_boolean_sampling_rate_are_rejected",
+      "tests.test_multimodal_contract_benchmark::test_extra_malformed_profile_is_not_hidden_by_complete_coverage",
+      "tests.test_multimodal_contract_benchmark::test_rehashed_malformed_results_return_errors[None]",
+      "tests.test_multimodal_contract_benchmark::test_rehashed_malformed_results_return_errors[results1]",
+      "tests.test_multimodal_contract_benchmark::test_rehashed_malformed_results_return_errors[results2]",
+      "tests.test_multimodal_contract_benchmark::test_rehashed_malformed_results_return_errors[results3]",
+      "tests.test_multimodal_fabric::test_extra_malformed_matrix_profile_is_not_hidden_by_complete_coverage",
+      "tests.test_multimodal_fabric::test_malformed_registry_shapes_return_errors_and_block_disclosure[device-classes-42]",
+      "tests.test_multimodal_fabric::test_malformed_registry_shapes_return_errors_and_block_disclosure[fixture-profile-id-value4]",
+      "tests.test_multimodal_fabric::test_malformed_registry_shapes_return_errors_and_block_disclosure[fixtures-value1]",
+      "tests.test_multimodal_fabric::test_malformed_registry_shapes_return_errors_and_block_disclosure[modality-value5]",
+      "tests.test_multimodal_fabric::test_malformed_registry_shapes_return_errors_and_block_disclosure[privacy-None]",
+      "tests.test_multimodal_fabric::test_malformed_registry_shapes_return_errors_and_block_disclosure[profile-id-value3]",
+      "tests.test_multimodal_fabric::test_malformed_registry_shapes_return_errors_and_block_disclosure[profiles-None]",
+      "tests.test_optional_adapter_probe::test_signing_preserves_source_binding_and_input_mutation",
+      "tests.test_optional_adapter_probe_full::test_every_native_annotation_sample_is_checked[500]",
+      "tests.test_optional_adapter_probe_full::test_every_native_annotation_sample_is_checked[True]",
+      "tests.test_optional_adapter_probe_full::test_integer_scalar_subclasses_retain_native_compatibility",
+      "tests.test_optional_adapter_probe_full::test_malformed_native_dicom_fields_are_not_coerced_into_evidence[InstanceNumber-True]",
+      "tests.test_optional_adapter_probe_full::test_malformed_native_dicom_fields_are_not_coerced_into_evidence[Rows-2.5]",
+      "tests.test_optional_adapter_probe_full::test_malformed_native_dicom_fields_are_not_coerced_into_evidence[SeriesInstanceUID-None]",
+      "tests.test_optional_adapter_probe_full::test_malformed_native_signal_fields_are_not_coerced_into_evidence[fs-True]",
+      "tests.test_optional_adapter_probe_full::test_malformed_native_signal_fields_are_not_coerced_into_evidence[fs-inf]",
+      "tests.test_optional_adapter_probe_full::test_malformed_native_signal_fields_are_not_coerced_into_evidence[fs-nan]",
+      "tests.test_optional_adapter_probe_full::test_malformed_native_signal_fields_are_not_coerced_into_evidence[sig_len-True]",
+      "tests.test_optional_adapter_probe_full::test_malformed_native_signal_fields_are_not_coerced_into_evidence[sig_name-value4]",
+      "tests.test_optional_adapter_probe_full::test_native_index_error_remains_adversarial_header_rejection",
+      "tests.test_optional_adapter_probe_full::test_unavailable_header_reader_cannot_count_as_adversarial_rejection[missing]",
+      "tests.test_optional_adapter_probe_full::test_unavailable_header_reader_cannot_count_as_adversarial_rejection[noncallable]",
+      "tests.test_privacy_assurance::test_assurance_rejects_extra_malformed_identifier_after_valid_coverage",
+      "tests.test_privacy_assurance::test_disclosure_rejects_container_enum_values[classification]",
+      "tests.test_privacy_assurance::test_disclosure_rejects_container_enum_values[human_review]",
+      "tests.test_privacy_assurance::test_disclosure_rejects_container_enum_values[mode]",
+      "tests.test_privacy_assurance::test_disclosure_rejects_container_enum_values[network]",
+      "tests.test_privacy_assurance::test_disclosure_rejects_container_enum_values[telemetry]",
+      "tests.test_privacy_assurance::test_extra_control_status_is_checked_even_without_a_risk_link[out_of_scope]",
+      "tests.test_privacy_assurance::test_extra_control_status_is_checked_even_without_a_risk_link[status0]",
+      "tests.test_privacy_assurance::test_extra_control_status_is_checked_even_without_a_risk_link[unavailable]",
+      "tests.test_privacy_assurance::test_extra_control_status_is_checked_even_without_a_risk_link[unknown]",
+      "tests.test_privacy_assurance::test_model_and_plugin_status_containers_return_validation_errors",
+      "tests.test_prospective_admission_adversarial::test_capture_inspection_and_revocation_never_issue_authority",
+      "tests.test_retrieval_system::test_assurance_malformed_nested_receipts_return_diagnostics[research_observations-False-research performance observations missing]",
+      "tests.test_retrieval_system::test_assurance_malformed_nested_receipts_return_diagnostics[research_observations-True-research performance observations missing]",
+      "tests.test_retrieval_system::test_assurance_malformed_nested_receipts_return_diagnostics[results-False-assurance case coverage mismatch]",
+      "tests.test_retrieval_system::test_assurance_malformed_nested_receipts_return_diagnostics[results-True-assurance case coverage mismatch]",
+      "tests.test_retrieval_system::test_assurance_malformed_nested_receipts_return_diagnostics[suites-False-assurance suite coverage mismatch]",
+      "tests.test_retrieval_system::test_assurance_malformed_nested_receipts_return_diagnostics[suites-True-assurance suite coverage mismatch]",
+      "tests.test_retrieval_system::test_federated_unhashable_compartment_is_rejected",
+      "tests.test_retrieval_system::test_literature_unhashable_quality_fields_return_diagnostics[identifier]",
+      "tests.test_retrieval_system::test_literature_unhashable_quality_fields_return_diagnostics[status]",
+      "tests.test_retrieval_system::test_manifest_nested_shapes_return_diagnostics_before_index_mutation[location-None]",
+      "tests.test_retrieval_system::test_manifest_nested_shapes_return_diagnostics_before_index_mutation[location-value3]",
+      "tests.test_retrieval_system::test_manifest_nested_shapes_return_diagnostics_before_index_mutation[rights-value0]",
+      "tests.test_retrieval_system::test_manifest_nested_shapes_return_diagnostics_before_index_mutation[rights_basis-None]",
+      "tests.test_retrieval_system::test_manifest_non_array_units_return_schema_diagnostics[None]",
+      "tests.test_retrieval_system::test_manifest_non_array_units_return_schema_diagnostics[value1]",
+      "tests.test_retrieval_system::test_profiles_malformed_container_and_identifier_return_diagnostics",
+      "tests.test_run_skill_output_eval::test_empty_or_unsafe_output_cases_never_execute[None]",
+      "tests.test_run_skill_output_eval::test_empty_or_unsafe_output_cases_never_execute[cases0]",
+      "tests.test_run_skill_output_eval::test_empty_or_unsafe_output_cases_never_execute[cases2]",
+      "tests.test_run_skill_output_eval::test_response_ignores_malformed_objects_and_usage_without_fabricating_text",
+      "tests.test_run_skill_trigger_eval::test_events_do_not_coerce_commands_or_invalid_token_counts",
+      "tests.test_run_skill_trigger_eval::test_invalid_case_contract_never_starts_evaluation[boolean-trials]",
+      "tests.test_run_skill_trigger_eval::test_invalid_case_contract_never_starts_evaluation[duplicate]",
+      "tests.test_run_skill_trigger_eval::test_invalid_case_contract_never_starts_evaluation[missing-cases]",
+      "tests.test_run_skill_trigger_eval::test_invalid_case_contract_never_starts_evaluation[path]",
+      "tests.test_runtime_lab::test_extra_malformed_runtime_id_is_not_hidden_by_complete_coverage[discovery]",
+      "tests.test_runtime_lab::test_extra_malformed_runtime_id_is_not_hidden_by_complete_coverage[registry]",
+      "tests.test_runtime_lab::test_rehashed_unhashable_device_categories_return_errors[accelerator_class]",
+      "tests.test_runtime_lab::test_rehashed_unhashable_device_categories_return_errors[architecture]",
+      "tests.test_runtime_lab::test_rehashed_unhashable_device_categories_return_errors[driver_state]",
+      "tests.test_runtime_lab::test_rehashed_unhashable_device_categories_return_errors[instruction_set_state]",
+      "tests.test_runtime_lab::test_rehashed_unhashable_device_categories_return_errors[memory_probe_state]",
+      "tests.test_runtime_lab::test_rehashed_unhashable_device_categories_return_errors[network_observation]",
+      "tests.test_runtime_lab::test_rehashed_unhashable_device_categories_return_errors[os_family]",
+      "tests.test_runtime_lab::test_rehashed_unhashable_device_categories_return_errors[power_proxy_state]",
+      "tests.test_runtime_lab::test_rehashed_unhashable_device_categories_return_errors[storage_probe_state]",
+      "tests.test_runtime_lab::test_rehashed_unhashable_device_categories_return_errors[telemetry_observation]",
+      "tests.test_runtime_lab::test_unhashable_routing_categories_return_no_capability[admission_status-model lacks measured admission]",
+      "tests.test_runtime_lab::test_unhashable_routing_categories_return_no_capability[data_class-request.data_class is invalid]",
+      "tests.test_runtime_lab::test_unhashable_routing_categories_return_no_capability[observed_state-runtime lacks a measured execution receipt]",
+      "tests.test_speech_adapter_eval::test_boolean_and_nonfinite_timestamps_are_rejected[True]",
+      "tests.test_speech_adapter_eval::test_boolean_and_nonfinite_timestamps_are_rejected[inf]",
+      "tests.test_speech_adapter_eval::test_faster_whisper_does_not_manufacture_missing_or_nonstring_text[segment0]",
+      "tests.test_speech_adapter_eval::test_faster_whisper_does_not_manufacture_missing_or_nonstring_text[segment1]",
+      "tests.test_speech_adapter_eval::test_faster_whisper_does_not_manufacture_missing_or_nonstring_text[segment2]",
+      "tests.test_speech_adapter_eval::test_faster_whisper_does_not_manufacture_missing_or_nonstring_text[segment3]",
+      "tests.test_speech_adapter_eval::test_faster_whisper_does_not_manufacture_missing_or_nonstring_text[segment4]",
+      "tests.test_speech_adapter_eval::test_faster_whisper_does_not_manufacture_missing_or_nonstring_text[segment5]",
+      "tests.test_speech_adapter_eval::test_faster_whisper_generator_preserves_native_segment_offsets",
+      "tests.test_speech_adapter_eval::test_malformed_faster_whisper_results_raise_validation_errors[None]",
+      "tests.test_speech_adapter_eval::test_malformed_faster_whisper_results_raise_validation_errors[result1]",
+      "tests.test_speech_adapter_eval::test_malformed_whisper_cpp_offsets_raise_validation_error",
+      "tests.test_speech_adapter_eval::test_whisper_cpp_does_not_manufacture_nonstring_text[42]",
+      "tests.test_speech_adapter_eval::test_whisper_cpp_does_not_manufacture_nonstring_text[None]",
+      "tests.test_speech_adapter_eval::test_whisper_cpp_requires_explicit_segment_text"
+    ],
+    "added_outcome_counts": {
+      "passed": 177
+    },
+    "base_ids_retained": true,
+    "changed_multiplicity_for_shared_ids": {},
+    "removed_ids": [],
+    "shared_status_changes": {}
+  },
+  "conclusion": "All base IDs and outcomes are retained. Exactly 177 additional tests pass. All 52 failure IDs and normalized messages match the base; all 11 skip IDs and messages match. This is suite parity under the same environment restrictions, not a claim that the full suite passed.",
+  "failure_comparison": {
+    "failing_ids": [
+      "tests.test_prospective_primary_session::test_cleanup_failure_and_postflight_failure_both_retained",
+      "tests.test_prospective_primary_session::test_http_failure_with_successful_gate_stays_failed",
+      "tests.test_prospective_primary_session::test_postflight_failure_retains_raw_capture[exit]",
+      "tests.test_prospective_primary_session::test_postflight_failure_retains_raw_capture[identity-drift]",
+      "tests.test_prospective_primary_session::test_postflight_failure_retains_raw_capture[interrupt]",
+      "tests.test_prospective_primary_session::test_postflight_failure_retains_raw_capture[missing-package]",
+      "tests.test_prospective_primary_session::test_primary_failure_never_masks_http_or_cleanup_failure",
+      "tests.test_prospective_primary_session::test_primary_uses_exact_selected_request_and_persists_candidate",
+      "tests.test_prospective_primary_session::test_real_guarded_git_child_http_and_decoder_composition",
+      "tests.test_prospective_server_session::test_bad_health_cannot_be_replaced_by_later_success[duplicate]",
+      "tests.test_prospective_server_session::test_bad_health_cannot_be_replaced_by_later_success[http]",
+      "tests.test_prospective_server_session::test_bad_health_cannot_be_replaced_by_later_success[malformed]",
+      "tests.test_prospective_server_session::test_bad_health_cannot_be_replaced_by_later_success[oversize]",
+      "tests.test_prospective_server_session::test_bad_health_cannot_be_replaced_by_later_success[status]",
+      "tests.test_prospective_server_session::test_completion_failure_is_not_erased_by_successful_stop",
+      "tests.test_prospective_server_session::test_completion_request_hash_mismatch_rejected",
+      "tests.test_prospective_server_session::test_delayed_socket_creation_does_not_consume_health_attempts",
+      "tests.test_prospective_server_session::test_fixed_session_reserved_and_locked",
+      "tests.test_prospective_server_session::test_health_attempt_budget_stops_without_completion",
+      "tests.test_prospective_server_session::test_interrupted_health_keeps_failure_after_worker_cleanup",
+      "tests.test_prospective_server_session::test_loading_health_retries_on_same_socket",
+      "tests.test_prospective_server_session::test_real_synthetic_child_http_and_graceful_stop",
+      "tests.test_prospective_server_session::test_shared_deadline_expiry_stops_readiness_without_completion",
+      "tests.test_prospective_server_session::test_socket_replacement_between_health_and_completion_is_rejected",
+      "tests.test_prospective_server_session::test_unexpected_directory_content_is_not_recursively_removed",
+      "tests.test_prospective_server_session::test_worker_join_failure_preserves_paths_and_blocks_next_run",
+      "tests.test_prospective_study_controller::test_two_real_synthetic_children_transport_and_admission",
+      "tests.test_unix_http_capture::test_absolute_deadline_stops_trickling_headers",
+      "tests.test_unix_http_capture::test_ambiguous_framing_rejected[Content-Length: 2\\r\\n]",
+      "tests.test_unix_http_capture::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: -1\\r\\n]",
+      "tests.test_unix_http_capture::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Encoding: gzip\\r\\n]",
+      "tests.test_unix_http_capture::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Length: 2\\r\\n]",
+      "tests.test_unix_http_capture::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nTransfer-Encoding: chunked\\r\\n]",
+      "tests.test_unix_http_capture::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 9999999\\r\\n]",
+      "tests.test_unix_http_capture::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Type: application/json\\r\\nContent-Length: 2\\r\\n]",
+      "tests.test_unix_http_capture::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\n]",
+      "tests.test_unix_http_capture::test_ambiguous_framing_rejected[Content-Type: text/plain\\r\\nContent-Length: 2\\r\\n]",
+      "tests.test_unix_http_capture::test_bad_http",
+      "tests.test_unix_http_capture::test_body_deadline_retains_partial_bytes",
+      "tests.test_unix_http_capture::test_connect_failure_returns_receipt",
+      "tests.test_unix_http_capture::test_connection_setup_expiry_returns_receipt",
+      "tests.test_unix_http_capture::test_exact_body_and_locked_receipt",
+      "tests.test_unix_http_capture::test_http_error_preserves_body_without_following_redirect[301]",
+      "tests.test_unix_http_capture::test_http_error_preserves_body_without_following_redirect[400]",
+      "tests.test_unix_http_capture::test_http_error_preserves_body_without_following_redirect[500]",
+      "tests.test_unix_http_capture::test_http_header_line_bound",
+      "tests.test_unix_http_capture::test_malformed_header_not_silently_ignored",
+      "tests.test_unix_http_capture::test_post_request_bound_by_digest",
+      "tests.test_unix_http_capture::test_shared_directory_rejected",
+      "tests.test_unix_http_capture::test_short_body_retained",
+      "tests.test_unix_http_capture::test_socket_replacement_rejected",
+      "tests.test_unix_http_capture::test_socket_symlink_and_foreign_owner_rejected"
+    ],
+    "new_failure_ids": [],
+    "normalization": {
+      "pattern": "/tmp/rca-session-[A-Za-z0-9_-]+",
+      "replacement": "/tmp/rca-session-<run>",
+      "scope": "Only random session-directory names; exception class, errno, filename, assertion values and all other message content remain unchanged."
+    },
+    "normalized_message_changes": {},
+    "normalized_message_records_sha256": "efe455e9e7d76297be4000f61696d7b845154845d694394d0878e9c172baa572",
+    "normalized_messages_equal": true,
+    "raw_message_changes": {
+      "tests.test_prospective_primary_session::test_cleanup_failure_and_postflight_failure_both_retained": {
+        "base": [
+          "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/rca-session-cv0w032z/server.sock'"
+        ],
+        "final": [
+          "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/rca-session-61z0ybz6/server.sock'"
+        ]
+      },
+      "tests.test_prospective_server_session::test_unexpected_directory_content_is_not_recursively_removed": {
+        "base": [
+          "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/rca-session-ullq_awu/unexpected.txt'"
+        ],
+        "final": [
+          "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/rca-session-kqgm1lle/unexpected.txt'"
+        ]
+      }
+    },
+    "resolved_failure_ids": [],
+    "same_failing_ids": true
+  },
+  "final": {
+    "collected_ids_sha256": "7df407d78654447eff2e172cc264fdd6a82591aaa5877516683e6609dcfd885f",
+    "counts": {
+      "errors": 0,
+      "failures": 52,
+      "passed": 2183,
+      "skipped": 11,
+      "tests": 2246
+    },
+    "duplicate_ids": {},
+    "xml_path": "/tmp/faw06-full.xml",
+    "xml_sha256": "90278534e077afcf57200e2cba1855a135afaca93a7b4997827769847e182818"
+  },
+  "head_commit": "71cdd97679c32e6e3c177e9749f55e7a1f4de258",
+  "review_mode": "read-only; receipt files under /tmp only",
+  "reviewed_at_utc": "2026-11-14T03:50:08.414317+00:00",
+  "reviewer": "/root/faw06_lane_a",
+  "root": "/workspace/scratch/ea571a0ab38c/rcagent-faw06",
+  "skip_comparison": {
+    "changed_skip_messages": {},
+    "new_skip_ids": [],
+    "removed_skip_ids": [],
+    "same_skipped_ids": true,
+    "skipped_records": {
+      "tests.test_evaluation_preflight::test_legacy_entrypoints_never_accept_positive_prose[phase4_admission_preflight.ps1]": {
+        "messages": [
+          "PowerShell not available; Python gate covered on every platform"
+        ],
+        "status": "skipped"
+      },
+      "tests.test_evaluation_preflight::test_legacy_entrypoints_never_accept_positive_prose[track5_preflight.ps1]": {
+        "messages": [
+          "PowerShell not available; Python gate covered on every platform"
+        ],
+        "status": "skipped"
+      },
+      "tests.test_evaluation_preflight::test_legacy_entrypoints_never_accept_positive_prose[track6_preflight.ps1]": {
+        "messages": [
+          "PowerShell not available; Python gate covered on every platform"
+        ],
+        "status": "skipped"
+      },
+      "tests.test_evaluation_preflight::test_wrapper_cannot_trust_successful_interpreter[phase4_admission_preflight.ps1-AuditPath]": {
+        "messages": [
+          "PowerShell unavailable"
+        ],
+        "status": "skipped"
+      },
+      "tests.test_evaluation_preflight::test_wrapper_cannot_trust_successful_interpreter[track5_preflight.ps1-ManifestAudit]": {
+        "messages": [
+          "PowerShell unavailable"
+        ],
+        "status": "skipped"
+      },
+      "tests.test_evaluation_preflight::test_wrapper_cannot_trust_successful_interpreter[track6_preflight.ps1-ClaimsBoundary]": {
+        "messages": [
+          "PowerShell unavailable"
+        ],
+        "status": "skipped"
+      },
+      "tests.test_setup_capability_script::test_preflight_is_read_only_and_machine_readable": {
+        "messages": [
+          "PowerShell 7 unavailable"
+        ],
+        "status": "skipped"
+      },
+      "tests.test_setup_capability_script::test_rollback_is_honestly_unavailable": {
+        "messages": [
+          "PowerShell 7 unavailable"
+        ],
+        "status": "skipped"
+      },
+      "tests.test_setup_capability_script::test_uninstall_dry_run_preserves_owned_target": {
+        "messages": [
+          "PowerShell 7 unavailable"
+        ],
+        "status": "skipped"
+      },
+      "tests.test_setup_capability_script::test_uninstall_refuses_unowned_target": {
+        "messages": [
+          "PowerShell 7 unavailable"
+        ],
+        "status": "skipped"
+      },
+      "tests.test_setup_capability_script::test_verify_rejects_owned_target_without_environment_python": {
+        "messages": [
+          "PowerShell 7 unavailable"
+        ],
+        "status": "skipped"
+      }
+    }
+  },
+  "source_binding_recheck": {
+    "bandit_baseline_gate_declared_sha256": "fe1dbcc8e0ba35b659e648889757cc8eded387ce2d78c7807627538892adaa9a",
+    "bandit_baseline_sha256": "fe1dbcc8e0ba35b659e648889757cc8eded387ce2d78c7807627538892adaa9a",
+    "bandit_baseline_unchanged": true,
+    "prior_review_path": "/tmp/faw06-final-fixity-review.json",
+    "prior_review_sha256": "00bdde70ff95860bc1576315b9f59fd9c991fcc5100aecf4c31ab01a476d6008",
+    "profile_digest_unchanged": true,
+    "quality_gate_diff_since_prior_review_is_only_stated_print_formatting": true,
+    "quality_gate_sha256": "822a903aa78a5ab12d2c01db3943293e9f9f1a003a0d61824b7b1afdaa648da3",
+    "runtime_sources": {
+      "darwin_runtime_profile.py": {
+        "actual_sha256": "31f0627bd3386a164872f1c14640e14b26a5551b7f61c6c23795ce2427a5c3ee",
+        "declared_sha256": "31f0627bd3386a164872f1c14640e14b26a5551b7f61c6c23795ce2427a5c3ee",
+        "matches_declared": true,
+        "unchanged_since_review": true
+      },
+      "darwin_runtime_v030.py": {
+        "actual_sha256": "2f9d42e8522d376401188c89e6a4d55692cd145985506b88e31e26c31f26de8d",
+        "declared_sha256": "2f9d42e8522d376401188c89e6a4d55692cd145985506b88e31e26c31f26de8d",
+        "matches_declared": true,
+        "unchanged_since_review": true
+      },
+      "json_shapes.py": {
+        "actual_sha256": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+        "declared_sha256": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+        "matches_declared": true,
+        "unchanged_since_review": true
+      },
+      "local_model_comparator.py": {
+        "actual_sha256": "f27bf6dcf890887bf30112982ba78843828d58ce00b8a1b3481f23a1c2a49074",
+        "declared_sha256": "f27bf6dcf890887bf30112982ba78843828d58ce00b8a1b3481f23a1c2a49074",
+        "matches_declared": true,
+        "unchanged_since_review": true
+      }
+    },
+    "security_baseline_gate_result": "passed",
+    "server_entrypoint_sha256": "9d3841e20e1e761190fed889eeae84c045adbbb6d081c2ff1826ac1afa8ffe3b",
+    "server_entrypoint_unchanged": true
+  },
+  "strict_receipt_inspection": {
+    "canonical_baseline": {
+      "files": {}
+    },
+    "diagnostics_empty": true,
+    "explicit_any_fault_diagnostic_rules": [
+      "reportExplicitAny"
+    ],
+    "explicit_any_fault_exit_code": 1,
+    "explicit_any_fault_path": "/tmp/faw06-explicit-any-fault.json",
+    "explicit_any_fault_sha256": "d9db146c285d6a7ea637bcd413a8338be9597e3fb4b718579610fbf5930dc8da",
+    "measurement_path": "/tmp/faw06-zero-measurement.json",
+    "measurement_sha256": "c4dbc7ee56df3529eedf49d0988d284a0180f574ea5e328de9c2489233d6a37b",
+    "scope": "Inspected parent-produced strict/fault-injection receipts and current configuration/baseline; did not rerun those checks.",
+    "summary": {
+      "errorCount": 0,
+      "filesAnalyzed": 153,
+      "informationCount": 0,
+      "timeInSec": 6.069,
+      "warningCount": 0
+    },
+    "typing_limits": {}
+  }
+}

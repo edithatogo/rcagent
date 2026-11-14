@@ -6,16 +6,14 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-12T20:10:44Z",
-  "updated_at": "2026-11-14T09:37:52.364255+10:00",
+  "updated_at": "2026-11-14T04:10:58.945174+00:00",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/125",
     "parent_issue": "https://github.com/edithatogo/rcagent/issues/2",
-    "pull_request": "https://github.com/edithatogo/rcagent/pull/130",
-    "implementation_commit": "377d65346f6ebdaa099ea779633aa159b555fe86",
-    "last_merged_pull_request": "https://github.com/edithatogo/rcagent/pull/129",
-    "last_merged_commit": "388a4c610b2d38643890d5db28bc2d0241cb5926",
-    "active_branch": "codex/typing-producers-20261114"
+    "pull_request": "https://github.com/edithatogo/rcagent/pull/131",
+    "implementation_commit": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+    "delivery_branch": "codex/faw06-complete-20261114"
   },
   "autonomy": "continuous-autonomy-with-owner-decision-gates",
   "autonomy_contract": "../../autonomy.json",
@@ -29,8 +27,8 @@
   ],
   "description": "Repair confirmed integrity, public-export and template defects; implement strict quality tooling; coordinate staged source/timeline/decision demonstrations, triangulation, hallucination reduction and prospective frontier comparison.",
   "verification": {
-    "status": "producer_and_admission_typing_verified_locally_hosted_required",
-    "scope": "engineering_repairs_prospective_plan_and_bounded_typing_reduction",
+    "status": "faw06_source_accepted_final_delivery_gated",
+    "scope": "zero_active_typing_debt_checked_boundaries_and_runtime_source_revalidation",
     "receipt": "./delivery-evidence.md",
     "model_runs": 0,
     "qualified_capabilities": 0,
@@ -38,31 +36,41 @@
     "agent_review": "./review.md",
     "integrated_quality_receipt": "../../../quality/verification-integrated-20261113.json",
     "hosted_ci": {
-      "status": "pending_final_documented_head",
-      "observed_source_commit": "377d65346f6ebdaa099ea779633aa159b555fe86",
-      "quality_run": null,
-      "pass_claim": false
+      "status": "source_head_passed",
+      "observed_source_commit": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "quality_run": 43553845148,
+      "quality_jobs_passed": 9,
+      "pass_claim": true,
+      "dependency_review": "success",
+      "privacy_secrets": "success",
+      "skill_conformance": "success",
+      "offline_security": "queued_not_a_completed_scan",
+      "final_delivery": "Exact final documentation head must pass required checks and protected merge; observed acceptance will be recorded on PR #131."
     },
-    "typing_receipt": "./typing-producers-evidence.md",
-    "typing_measurement": "../../../quality/typing-producers-verification-20261114.json",
-    "typing_remaining_diagnostics": 3198,
+    "typing_receipt": "./typing-completion-evidence.md",
+    "typing_measurement": "../../../quality/typing-completion-verification-20261114.json",
+    "typing_remaining_diagnostics": 0,
     "previous_typing_acceptance": {
-      "head": "ad594e4e0003ce8d7ace8a9a124a52f10fead544",
-      "quality_run": 43422510425,
+      "head": "e933c52cf5e8b9ce72045251f9804a3f88f7098b",
+      "quality_run": 43529164806,
       "quality": "success",
       "dependency_review": "success",
       "privacy_secrets": "success",
       "skill_conformance": "success",
       "offline_security": "queued_not_a_completed_scan",
-      "merged_commit": "388a4c610b2d38643890d5db28bc2d0241cb5926"
+      "merged_commit": "e6d95394241661db117dc429976aaa6204a1128b",
+      "pull_request": "https://github.com/edithatogo/rcagent/pull/130"
     },
-    "continuation_base": "388a4c610b2d38643890d5db28bc2d0241cb5926",
-    "continuation_initial_diagnostics": 4431,
-    "previous_typing_receipt": "./typing-native-evidence.md",
+    "continuation_base": "e6d95394241661db117dc429976aaa6204a1128b",
+    "continuation_initial_diagnostics": 3198,
+    "previous_typing_receipt": "./typing-producers-evidence.md",
     "earlier_typing_receipts": [
+      "./typing-native-evidence.md",
       "./typing-contracts-evidence.md",
       "./typing-evidence.md"
-    ]
+    ],
+    "next_work_package": "FAW07 / D0 deterministic demonstration command and receipt",
+    "delivery_acceptance_record": "https://github.com/edithatogo/rcagent/pull/131"
   },
   "decisions": [
     "../../decisions/20261113-001-frontier-assurance.md"

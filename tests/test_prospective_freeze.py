@@ -270,14 +270,14 @@ def test_reference_rechecked_after_validation(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     protocol, commit = fixture(tmp_path)
-    original = prospective_freeze._bytes
+    original = prospective_freeze.read_artifact_bytes
 
     def changed_read(path: Path) -> bytes:
         if path.name == "rubric.txt":
             return b"Synthetic switched bytes"
         return original(path)
 
-    monkeypatch.setattr(prospective_freeze, "_bytes", changed_read)
+    monkeypatch.setattr(prospective_freeze, "read_artifact_bytes", changed_read)
     with pytest.raises(ValueError, match="artifact_changed_during_verification"):
         verify_freeze(protocol, pin(protocol), commit, tmp_path)
 
@@ -293,7 +293,7 @@ def test_git_disables_lazy_fetch(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
         return original(args, **kwargs)
 
     monkeypatch.setattr(prospective_freeze.subprocess, "run", inspect)
-    assert prospective_freeze._git(tmp_path, "--version").startswith(b"git version")
+    assert prospective_freeze.git_bytes(tmp_path, "--version").startswith(b"git version")
 
 
 @pytest.mark.parametrize("failure", [OSError("synthetic"), subprocess.TimeoutExpired("git", 10)])
@@ -305,7 +305,7 @@ def test_git_launch_failure(
 
     monkeypatch.setattr(prospective_freeze.subprocess, "run", fail)
     with pytest.raises(ValueError, match="git_unavailable"):
-        prospective_freeze._git(tmp_path, "--version")
+        prospective_freeze.git_bytes(tmp_path, "--version")
 
 
 def test_git_oversized_output(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -317,7 +317,7 @@ def test_git_oversized_output(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -
 
     monkeypatch.setattr(prospective_freeze.subprocess, "run", oversized)
     with pytest.raises(ValueError, match="git_lookup_failed"):
-        prospective_freeze._git(tmp_path, "--version")
+        prospective_freeze.git_bytes(tmp_path, "--version")
 
 
 def test_missing_repository_root(tmp_path: Path) -> None:
@@ -331,7 +331,7 @@ def test_git_identity_mismatch(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str
 ) -> None:
     protocol, commit = fixture(tmp_path)
-    original = prospective_freeze._git
+    original = prospective_freeze.git_bytes
 
     def mismatched(root: Path, *args: str) -> bytes:
         if mutation == "root" and args == ("rev-parse", "--show-toplevel"):
@@ -343,7 +343,7 @@ def test_git_identity_mismatch(
             return value.replace(b"\tprotocol.json", b"\tother.json")
         return value
 
-    monkeypatch.setattr(prospective_freeze, "_git", mismatched)
+    monkeypatch.setattr(prospective_freeze, "git_bytes", mismatched)
     reason = {
         "root": "repository_root_mismatch",
         "commit": "freeze_commit_mismatch",

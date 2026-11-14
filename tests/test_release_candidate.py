@@ -4,6 +4,7 @@ import hashlib
 import json
 import zipfile
 from pathlib import Path
+from unittest.mock import Mock
 
 import pytest
 
@@ -18,17 +19,11 @@ REVISION = "2" * 40
 
 @pytest.fixture(autouse=True)
 def _unit_release_source(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(plugin_module, "verify_release_source", lambda *_args, **_kwargs: None)
-    monkeypatch.setattr(plugin_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
-    monkeypatch.setattr(
-        distribution_module, "verify_release_source", lambda *_args, **_kwargs: None
-    )
-    monkeypatch.setattr(
-        distribution_module, "verify_release_payloads", lambda *_args, **_kwargs: None
-    )
-    monkeypatch.setattr(
-        candidate_module, "validate_release_inventory", lambda *_args, **_kwargs: {}
-    )
+    monkeypatch.setattr(plugin_module, "verify_release_source", Mock(return_value=None))
+    monkeypatch.setattr(plugin_module, "verify_release_payloads", Mock(return_value=None))
+    monkeypatch.setattr(distribution_module, "verify_release_source", Mock(return_value=None))
+    monkeypatch.setattr(distribution_module, "verify_release_payloads", Mock(return_value=None))
+    monkeypatch.setattr(candidate_module, "validate_release_inventory", Mock(return_value={}))
 
 
 def test_release_candidate_is_deterministic_hash_bound_and_public_only(tmp_path: Path) -> None:

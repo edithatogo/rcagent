@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from tests.prospective_fixture_types import ObjectMap, mapping, sequence
 from tools.retrieval_system import (
     CORPUS,
     LexicalIndex,
@@ -222,7 +223,7 @@ def test_grounding_conflicts_poisoning_and_abstention() -> None:
 
 
 def test_literature_receipt_preserves_provider_screening_and_sourceright_state() -> None:
-    receipt = {
+    receipt: ObjectMap = {
         "query": "synthetic safety evidence",
         "provider": "unconfigured-provider-port",
         "date": "2026-08-29",
@@ -255,8 +256,8 @@ def test_literature_receipt_preserves_provider_screening_and_sourceright_state()
     }
     receipt["receipt_sha256"] = canonical_hash(receipt)
     assert validate_literature_receipt(receipt) == []
-    receipt["results"][0].pop("authors")
-    receipt["sourceright"]["status"] = "verified_true"
+    mapping(sequence(receipt["results"])[0]).pop("authors")
+    mapping(receipt["sourceright"])["status"] = "verified_true"
     receipt["receipt_sha256"] = canonical_hash(
         {k: v for k, v in receipt.items() if k != "receipt_sha256"}
     )
@@ -273,8 +274,8 @@ def test_literature_receipt_preserves_provider_screening_and_sourceright_state()
 def test_profiles_reject_missing_lifecycle_and_enabled_optional_capability() -> None:
     profiles = load_json(Path("evaluation/retrieval/profiles.json"))
     changed = deepcopy(profiles)
-    changed["profiles"][0].pop("health_check")
-    changed["profiles"][1]["status"] = "supported_ci_contract"
+    mapping(sequence(changed["profiles"])[0]).pop("health_check")
+    mapping(sequence(changed["profiles"])[1])["status"] = "supported_ci_contract"
     errors = validate_profiles(changed)
     assert "lexical-sqlite-fts5: missing health_check" in errors
     assert "vector-local: optional profile cannot be supported" in errors
@@ -338,9 +339,9 @@ def test_assurance_records_positive_and_negative_results() -> None:
     altered_observation = deepcopy(receipt)
     altered_observation["research_observations"]["elapsed_ms"] = 999999
     assert "research observation hash mismatch" in verify_assurance(altered_observation)
-    changed = deepcopy(receipt)
-    changed["network"] = "enabled"
-    assert "execution boundary mismatch" in verify_assurance(changed)
+    changed_boundary = mapping(deepcopy(receipt))
+    changed_boundary["network"] = "enabled"
+    assert "execution boundary mismatch" in verify_assurance(changed_boundary)
     changed = deepcopy(receipt)
     changed["results"]["exact"]["hits"] = 999
     changed["receipt_sha256"] = canonical_hash(
@@ -378,7 +379,9 @@ def test_source_drift_marks_retrieval_receipts_for_rebuild() -> None:
         drift_impact(previous, broken, [])
 
 
-def test_cli_validate_assure_search_and_output(monkeypatch, tmp_path, capsys) -> None:
+def test_cli_validate_assure_search_and_output(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     for command in ("validate", "assure", "search"):
         monkeypatch.setattr("sys.argv", ["retrieval", command])
         assert main() == 0
@@ -419,9 +422,9 @@ def test_fail_closed_validator_and_lifecycle_diagnostics(tmp_path: Path) -> None
     broken["date"] = "2026-02-31"
     broken["query"] = ""
     broken["provider"] = ""
-    broken["screening"].append(deepcopy(broken["screening"][0]))
-    broken["study_quality"][0].pop("reason")
-    broken["sourceright"]["revision"] = "bogus-c5fa583"
+    sequence(broken["screening"]).append(deepcopy(sequence(broken["screening"])[0]))
+    mapping(sequence(broken["study_quality"])[0]).pop("reason")
+    mapping(broken["sourceright"])["revision"] = "bogus-c5fa583"
     broken["receipt_sha256"] = canonical_hash(
         {key: value for key, value in broken.items() if key != "receipt_sha256"}
     )
@@ -467,8 +470,8 @@ def test_fail_closed_validator_and_lifecycle_diagnostics(tmp_path: Path) -> None
     assert "conflicts must be an array" in collection_errors
 
     unhashable_identifiers = deepcopy(receipt)
-    unhashable_identifiers["results"][0]["identifier"] = {}
-    unhashable_identifiers["screening"][0]["identifier"] = {}
+    mapping(sequence(unhashable_identifiers["results"])[0])["identifier"] = {}
+    mapping(sequence(unhashable_identifiers["screening"])[0])["identifier"] = {}
     unhashable_identifiers["receipt_sha256"] = canonical_hash(
         {key: value for key, value in unhashable_identifiers.items() if key != "receipt_sha256"}
     )
@@ -479,14 +482,14 @@ def test_fail_closed_validator_and_lifecycle_diagnostics(tmp_path: Path) -> None
 
 def test_assurance_rejects_each_bound_contract() -> None:
     receipt = assurance()
-    mutations = (
+    mutations: tuple[tuple[str, object, str], ...] = (
         ("manifest_sha256", "invalid", "manifest binding mismatch"),
         ("profile_revision", "invalid", "profile revision mismatch"),
         ("unsupported", [], "unsupported capability declaration mismatch"),
         ("profile_comparison", [], "profile comparison mismatch"),
     )
     for field, value, expected in mutations:
-        changed = deepcopy(receipt)
+        changed = mapping(deepcopy(receipt))
         changed[field] = value
         changed["receipt_sha256"] = canonical_hash(
             {
@@ -496,3 +499,85 @@ def test_assurance_rejects_each_bound_contract() -> None:
             }
         )
         assert expected in verify_assurance(changed)
+
+
+@pytest.mark.parametrize("value", [None, {}])
+def test_manifest_non_array_units_return_schema_diagnostics(value: object) -> None:
+    manifest = mapping(admitted_manifest())
+    manifest["units"] = value
+    assert any(error.startswith("units:") for error in validate_manifest(manifest))
+
+
+MALFORMED_UNIT_VALUES: list[tuple[str, object]] = [
+    ("rights", {}),
+    ("rights_basis", None),
+    ("location", None),
+    ("location", {"kind": []}),
+]
+
+
+@pytest.mark.parametrize(("field", "value"), MALFORMED_UNIT_VALUES)
+def test_manifest_nested_shapes_return_diagnostics_before_index_mutation(
+    field: str, value: object
+) -> None:
+    with LexicalIndex(compartment="public") as index:
+        index.ingest(admitted_manifest())
+        exported, audit = index.deterministic_export(), index.lifecycle_receipt()
+        malformed = mapping(admitted_manifest())
+        mapping(sequence(malformed["units"])[0])[field] = value
+        assert any(error.startswith(f"units.0.{field}") for error in validate_manifest(malformed))
+        with pytest.raises(ValueError):
+            index.rebuild(malformed)
+        assert index.deterministic_export() == exported
+        assert index.lifecycle_receipt() == audit
+
+
+@pytest.mark.parametrize(
+    ("field", "nested", "expected"),
+    [
+        ("results", False, "assurance case coverage mismatch"),
+        ("results", True, "assurance case coverage mismatch"),
+        ("suites", False, "assurance suite coverage mismatch"),
+        ("suites", True, "assurance suite coverage mismatch"),
+        ("research_observations", False, "research performance observations missing"),
+        ("research_observations", True, "research performance observations missing"),
+    ],
+)
+def test_assurance_malformed_nested_receipts_return_diagnostics(
+    field: str, nested: bool, expected: str
+) -> None:
+    receipt = load_json(Path("evaluation/retrieval/assurance-20260829.json"))
+    if nested:
+        section = mapping(receipt[field])
+        key = "elapsed_ms" if field == "research_observations" else next(iter(section))
+        section[key] = None
+    else:
+        receipt[field] = None
+    assert expected in verify_assurance(receipt)
+
+
+@pytest.mark.parametrize("field", ["identifier", "status"])
+def test_literature_unhashable_quality_fields_return_diagnostics(field: str) -> None:
+    receipt = load_json(Path("evaluation/retrieval/literature-contract-receipt-20260829.json"))
+    mapping(sequence(receipt["study_quality"])[0])[field] = {}
+    assert "study-quality record is incomplete" in validate_literature_receipt(receipt)
+
+
+def test_profiles_malformed_container_and_identifier_return_diagnostics() -> None:
+    assert "profiles must be an array" in validate_profiles({"profiles": None})
+    profiles = load_json(Path("evaluation/retrieval/profiles.json"))
+    mapping(sequence(profiles["profiles"])[0])["id"] = {}
+    assert "profile coverage mismatch" in validate_profiles(profiles)
+
+    profiles = load_json(Path("evaluation/retrieval/profiles.json"))
+    extra = deepcopy(mapping(sequence(profiles["profiles"])[-1]))
+    extra["id"] = []
+    sequence(profiles["profiles"]).append(extra)
+    assert "profile coverage mismatch" in validate_profiles(profiles)
+
+
+def test_federated_unhashable_compartment_is_rejected() -> None:
+    request: ObjectMap = {"compartments": [{}]}
+    errors = validate_federated_request(request)
+    assert "cross-compartment federation prohibited" in errors
+    assert "federation remains public synthetic contract-only" in errors

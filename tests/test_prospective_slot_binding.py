@@ -233,7 +233,7 @@ def test_no_reread_or_alias_after_protocol_validation(
     synthetic: SlotFixture, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     path, value, _, _, root = synthetic
-    original = subject.protocol._validated_candidate
+    original = subject.protocol.validated_candidate
     snapshots: list[JsonObject] = []
 
     def changed_after_validation(
@@ -246,7 +246,7 @@ def test_no_reread_or_alias_after_protocol_validation(
             (path.parent / case["input"]["path"]).write_bytes(b"changed input")
         return parsed, candidate
 
-    monkeypatch.setattr(subject.protocol, "_validated_candidate", changed_after_validation)
+    monkeypatch.setattr(subject.protocol, "validated_candidate", changed_after_validation)
     protocol_pin = pin(path)
     slot = value["expected_slots"][0]
     result = subject.bind_slot(path, protocol_pin, slot, root)

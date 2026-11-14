@@ -6,7 +6,8 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-from typing import Any
+
+from tools import json_shapes
 
 ROOT = Path(__file__).parents[1]
 EVALUATION = ROOT / "evaluation/multimodal/docling-synthetic-evaluation.json"
@@ -21,14 +22,16 @@ REQUIRED_CLASSES = {
 }
 
 
-def load_evaluation(path: Path = EVALUATION) -> dict[str, Any]:
-    value = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(value, dict):
+def load_evaluation(path: Path = EVALUATION) -> json_shapes.JsonObject:
+    value: object = json.loads(path.read_text(encoding="utf-8"))
+    if not json_shapes.is_object(value):
         raise ValueError("evaluation must be an object")
     return value
 
 
-def validate_evaluation(value: dict[str, Any]) -> list[str]:
+def validate_evaluation(value: object) -> list[str]:
+    if not json_shapes.is_object(value):
+        return ["evaluation must be an object"]
     errors: list[str] = []
     unsigned = {key: item for key, item in value.items() if key != "receipt_sha256"}
     digest = hashlib.sha256(
@@ -36,7 +39,8 @@ def validate_evaluation(value: dict[str, Any]) -> list[str]:
     ).hexdigest()
     if value.get("receipt_sha256") != digest:
         errors.append("receipt hash mismatch")
-    boundary = value.get("execution_boundary", {})
+    raw_boundary = value.get("execution_boundary")
+    boundary = raw_boundary if json_shapes.is_object(raw_boundary) else {}
     for key, expected in (
         ("network", "disabled during evaluation"),
         ("remote_code", "prohibited"),
@@ -46,25 +50,35 @@ def validate_evaluation(value: dict[str, Any]) -> list[str]:
         if boundary.get(key) != expected:
             errors.append(f"execution_boundary.{key} must be {expected!r}")
     cases = value.get("cases", [])
-    if not isinstance(cases, list):
+    if not json_shapes.is_array(cases):
         return [*errors, "cases must be an array"]
-    classes = {case.get("class") for case in cases if isinstance(case, dict)}
-    if classes != REQUIRED_CLASSES:
+    classes = [case.get("class") for case in json_shapes.object_rows(cases)]
+    if (
+        any(not isinstance(item, str) for item in classes)
+        or {item for item in classes if isinstance(item, str)} != REQUIRED_CLASSES
+    ):
         errors.append("cases must cover every required challenge class exactly")
-    ids = [case.get("id") for case in cases if isinstance(case, dict)]
-    if len(ids) != len(set(ids)):
+    ids = [case.get("id") for case in json_shapes.object_rows(cases)]
+    if any(not isinstance(identifier, str) for identifier in ids):
+        errors.append("case identifiers must be strings")
+    string_ids = [identifier for identifier in ids if isinstance(identifier, str)]
+    if len(string_ids) != len(set(string_ids)):
         errors.append("case identifiers must be unique")
     for case in cases:
-        if not isinstance(case, dict):
+        if not json_shapes.is_object(case):
             errors.append("case must be an object")
             continue
-        if case.get("state") not in {"measured_contract", "unsupported"}:
+        if case.get("state") not in ("measured_contract", "unsupported"):
             errors.append(f"{case.get('id')}: invalid state")
         for field in ("source", "output", "transformations", "provenance_limit", "evidence"):
             if field not in case:
                 errors.append(f"{case.get('id')}: missing {field}")
         output = case.get("output", {})
-        if not isinstance(output, dict) or "region" not in output or "confidence" not in output:
+        if (
+            not json_shapes.is_object(output)
+            or "region" not in output
+            or "confidence" not in output
+        ):
             errors.append(f"{case.get('id')}: region and confidence state are required")
     return sorted(errors)
 

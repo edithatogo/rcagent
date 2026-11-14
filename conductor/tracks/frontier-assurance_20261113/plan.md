@@ -9,8 +9,8 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
 - [x] FAW03: correct portable templates, hash-bind current admission and enforce selection/package invariants; preserve historical quarantine (FA03; accepted with PR127).
 - [x] FAW04: lock CI installation; broad Ruff plus format; strict basedpyright and measured legacy baseline with no growth (FA04; accepted with PR127, remaining debt belongs to FAW06).
 - [x] FAW05: add Hypothesis, pytest-gremlins, Scalene, Bandit and Vulture with real invocations and meaningful failure behaviour (FA05; accepted with PR127).
-- [~] FAW06: migrate legacy unknown/Any boundaries into typed schemas/modules in bounded batches, reducing rather than refreshing the baseline (FA04; each batch separate and reviewed). PR #129 merged as `388a4c6` after complete hosted acceptance. [PR #130](https://github.com/edithatogo/rcagent/pull/130) now reduces 4,431 to 3,198 diagnostics through inventory/freeze, identity/model/slot/execution-plan and owned observation-admission contracts; final-head hosted acceptance is required. Twelve boundary regressions and the final unchanged-base failure comparison are recorded in the [current receipt](./typing-producers-evidence.md). Next: distinct CLI admission/output-probe and capability-probe producers with their synthetic fixtures; then the static preflight/prerequisite tail. Preserve existing rejection order, single-use witnesses and frozen source bytes.
-- [ ] Checkpoint A: run applicable local/hosted gates, three-role agent review, merge evidence and rollback notes; mark only verified leaves complete.
+- [x] FAW06: complete active source/test typing migration. All 3,198 remaining diagnostics are removed across 153 Python files; the baseline and allowances are empty, and explicit Any is an error. Checked raw boundaries, typed receipts and reviewed package/lifecycle APIs preserve rejection ordering and single-use witnesses. Source `c3d26b0c70a65f06dcab9f878db99d351de7b758` passed all nine Quality jobs in [run43553845148](https://github.com/edithatogo/rcagent/actions/runs/43553845148), plus dependency/privacy/conformance. Current runtime identities are distinct from unchanged consumed research source/protocol/review/results. See [completion evidence](./typing-completion-evidence.md); final documented-head checks and protected delivery remain required and will be recorded on [PR #131](https://github.com/edithatogo/rcagent/pull/131).
+- [x] Checkpoint A: source engineering acceptance verified by local/hosted gates and three-role agent review, with rollback notes and immutable receipts. Final publication requires the exact documented-head gates and protected merge on [PR #131](https://github.com/edithatogo/rcagent/pull/131); the receipt distinguishes that delivery step from observed source acceptance.
 
 ## Phase B: Incremental component demonstrations
 
@@ -52,17 +52,16 @@ Phase A may run in parallel with public-source planning and fixture design. B co
 
 FAW01–05 are accepted in merged PR127 after complete hosted Quality, dependency,
 privacy/secrets and official conformance success. The user's current
-priority is FAW06: finish and verify the bounded typing batches before starting
-new capability demonstrations. Next typing work should publish the distinct CLI model-admission contract,
-then the output-probe and capability-probe receipt variants with their consumers.
-The CLI receipt must not acquire server-only profile or limitations fields by
-type assertion. Preserve early rejection, oversized-stream hash withholding,
-timeout/launch-failure states and repeated post-run pin checks. These scopes use
-synthetic fixtures and do not require model or hardware execution. The nine recorded domain enum/hashability fields now have checked
-string guards and concrete/property regressions; further boundary findings need
-their own reproductions. Checked container shapes alone do not validate domain
-values. Retain
-intentional private-access debt until its test/API design is reviewed. The next
+priority FAW06 now has zero-debt source acceptance. The final documented head
+remains subject to normal CI and protected merge before starting capability
+demonstrations. The implementation now has distinct CLI/server admission and
+phase-dependent probe receipts, checked optional/native output, typed autonomy,
+evidence, retrieval, benchmark, privacy, panel and evaluator contracts, and
+reviewed package/test APIs. Preserve early rejection, oversized-stream hash
+withholding, timeout/launch-failure states, repeated pin checks and single-use
+observation witnesses. Checked container shapes alone do not validate domain
+values. Current engineering source revalidation does not revise historical
+study declarations or revive consumed protocols. The next
 capability batch remains FAW07–10, which maps into existing CAW02/04/08/10/20 rather
 than creating duplicate implementation counters. Model/hardware/data-dependent
 leaves may wait while software work continues. No elapsed research-time promise

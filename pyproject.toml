@@ -89,6 +89,7 @@ include = ["tools", "tests"]
 pythonVersion = "3.11"
 pythonPlatform = "All"
 typeCheckingMode = "strict"
+reportExplicitAny = "error"
 reportMissingImports = "error"
 reportAttributeAccessIssue = "error"
 

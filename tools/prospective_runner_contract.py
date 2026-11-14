@@ -72,7 +72,7 @@ class NormalizedCandidate(TypedDict):
     study_unlocked: Literal[False]
 
 
-def _json(value: object) -> bytes:
+def canonical_json(value: object) -> bytes:
     return json.dumps(
         value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False
     ).encode("utf-8")
@@ -108,7 +108,7 @@ def build_request(template: object, input_bytes: object) -> RequestPackage:
     text = _text(prompt)
     if not text:
         raise ValueError("empty_prompt")
-    raw = _json(
+    raw = canonical_json(
         {
             "prompt": text,
             "n_predict": GENERATION["max_tokens"],

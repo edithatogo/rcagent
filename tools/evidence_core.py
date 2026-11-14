@@ -7,12 +7,12 @@ from collections.abc import Iterable, Mapping, Sequence
 from copy import deepcopy
 from hashlib import sha256
 from pathlib import Path
-from typing import Any, Protocol, cast
+from typing import Literal, Protocol, TypedDict, cast, overload
 
 from jsonschema import Draft202012Validator, FormatChecker
 from jsonschema.exceptions import ValidationError
 
-from tools.json_shapes import JsonObject, is_array, is_object, object_rows
+from tools.json_shapes import JsonObject, is_array, is_object, object_rows, require_object
 
 SCHEMA_PATH = Path(__file__).parents[1] / "conductor/schemas/safety-work.schema.json"
 CURRENT_SCHEMA_VERSION = "1.1"
@@ -36,11 +36,44 @@ NON_STATE_EVENTS = {"correction_recorded", "evidence_withdrawn", "appeal_note_re
 class _RecordValidator(Protocol):
     """The supported non-deprecated part of jsonschema's validator interface."""
 
-    def iter_errors(self, instance: object) -> Iterable[ValidationError]: ...
+    def iter_errors(self, _instance: object, /) -> Iterable[ValidationError]: ...
 
 
-def load_schema() -> dict[str, Any]:
-    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+class _AuditFields(TypedDict):
+    sequence: int
+    previous_hash: str | None
+    event: JsonObject
+
+
+class AuditReceipt(_AuditFields):
+    receipt_hash: str
+
+
+class _PublicSummaryFields(TypedDict):
+    schema_version: Literal["public-summary-1.0"]
+    source_schema_version: str
+    privacy_mode: Literal["public_remote"]
+    state: str
+    record_counts: dict[str, int]
+    statement_kinds: dict[str, int]
+    content_policy: Literal["metadata-only-no-record-text-or-identifiers"]
+    distribution_authority: Literal["not-established-by-export"]
+    export_profile: Literal["public"]
+
+
+class PublicSummary(_PublicSummaryFields):
+    export_fingerprint: str
+
+
+def _text(value: object, *, context: str) -> str:
+    if not isinstance(value, str):
+        raise ValueError(f"{context} must be text")
+    return value
+
+
+def load_schema() -> JsonObject:
+    value: object = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    schema = require_object(value, context="safety-work schema")
     Draft202012Validator.check_schema(schema)
     return schema
 
@@ -229,10 +262,11 @@ def can_transition(from_state: str, to_state: str) -> bool:
     return to_state in TRANSITIONS.get(from_state, set())
 
 
-def canonical_round_trip(record: dict[str, Any]) -> dict[str, Any]:
+def canonical_round_trip(record: Mapping[str, object]) -> JsonObject:
     if errors := validate_record(record):
         raise ValueError("invalid safety-work record: " + "; ".join(errors))
-    return json.loads(json.dumps(record, sort_keys=True, separators=(",", ":")))
+    value: object = json.loads(json.dumps(record, sort_keys=True, separators=(",", ":")))
+    return require_object(value, context="safety-work record")
 
 
 def canonical_bytes(value: object) -> bytes:
@@ -245,10 +279,10 @@ def fingerprint(value: object) -> str:
 
 
 def redact_evidence(
-    item: dict[str, Any], *, reason: str, actor_role_id: str, at: str
-) -> dict[str, Any]:
+    item: Mapping[str, object], *, reason: str, actor_role_id: str, at: str
+) -> JsonObject:
     """Create a non-destructive redacted view while retaining source integrity."""
-    redacted = deepcopy(item)
+    redacted = deepcopy(dict(item))
     redacted["original_fingerprint"] = item.get("fingerprint") or fingerprint(item)
     redacted.pop("content", None)
     redacted["redacted"] = True
@@ -257,11 +291,15 @@ def redact_evidence(
     return redacted
 
 
-def append_audit_receipt(receipts: list[dict[str, Any]], event: dict[str, Any]) -> dict[str, Any]:
+def append_audit_receipt(receipts: list[AuditReceipt], event: Mapping[str, object]) -> AuditReceipt:
     """Append a hash-linked receipt without mutating earlier receipts."""
     previous = receipts[-1]["receipt_hash"] if receipts else None
-    payload = {"sequence": len(receipts) + 1, "previous_hash": previous, "event": deepcopy(event)}
-    receipt = {**payload, "receipt_hash": fingerprint(payload)}
+    payload: _AuditFields = {
+        "sequence": len(receipts) + 1,
+        "previous_hash": previous,
+        "event": deepcopy(dict(event)),
+    }
+    receipt: AuditReceipt = {**payload, "receipt_hash": fingerprint(payload)}
     receipts.append(receipt)
     return receipt
 
@@ -287,15 +325,15 @@ def verify_audit_receipts(receipts: Sequence[object]) -> list[str]:
 
 
 def migrate_record(
-    record: dict[str, Any], target_version: str = CURRENT_SCHEMA_VERSION
-) -> dict[str, Any]:
+    record: Mapping[str, object], target_version: str = CURRENT_SCHEMA_VERSION
+) -> JsonObject:
     """Perform the only supported, additive and reversible 1.0 to 1.1 migration."""
     source_version = record.get("schema_version")
     if source_version == target_version:
-        return deepcopy(record)
+        return deepcopy(dict(record))
     if (source_version, target_version) != ("1.0", "1.1"):
         raise ValueError(f"unsupported migration {source_version!r} -> {target_version!r}")
-    migrated = deepcopy(record)
+    migrated = deepcopy(dict(record))
     migrated["schema_version"] = "1.1"
     for collection in (
         "sources",
@@ -322,7 +360,10 @@ def migrate_record(
             continue
         source_id = provenance.get("source_id")
         if isinstance(source_id, str) and source_id not in known_sources:
-            migrated["sources"].append(
+            sources = migrated["sources"]
+            if not is_array(sources):
+                raise ValueError("migration sources must be an array")
+            sources.append(
                 {
                     "source_id": source_id,
                     "source_type": "other",
@@ -337,7 +378,19 @@ def migrate_record(
     return migrated
 
 
-def export_record(record: dict[str, Any], *, profile: str) -> dict[str, Any]:
+@overload
+def export_record(record: Mapping[str, object], *, profile: Literal["public"]) -> PublicSummary: ...
+
+
+@overload
+def export_record(record: Mapping[str, object], *, profile: Literal["governed"]) -> JsonObject: ...
+
+
+@overload
+def export_record(record: Mapping[str, object], *, profile: str) -> JsonObject | PublicSummary: ...
+
+
+def export_record(record: Mapping[str, object], *, profile: str) -> JsonObject | PublicSummary:
     """Export a governed record or a metadata-only summary of an already public record.
 
     Public summaries exclude identifiers, source hashes, dates and all free text.
@@ -353,21 +406,26 @@ def export_record(record: dict[str, Any], *, profile: str) -> dict[str, Any]:
                 "public export requires an already public record; private-mode conversion is prohibited"
             )
         kinds: dict[str, int] = {}
-        for statement in validated["statements"]:
-            kind = statement["kind"]
+        for statement in _objects(validated["statements"]):
+            kind = _text(statement["kind"], context="statement kind")
             kinds[kind] = kinds.get(kind, 0) + 1
-        exported: dict[str, Any] = {
+        summary: _PublicSummaryFields = {
             "schema_version": "public-summary-1.0",
-            "source_schema_version": validated["schema_version"],
+            "source_schema_version": _text(
+                validated["schema_version"], context="record schema version"
+            ),
             "privacy_mode": "public_remote",
-            "state": validated["state"],
-            "record_counts": {name: len(validated.get(name, [])) for name in COLLECTION_IDS},
+            "state": _text(validated["state"], context="record state"),
+            "record_counts": {
+                name: len(_objects(validated.get(name, []))) for name in COLLECTION_IDS
+            },
             "statement_kinds": kinds,
             "content_policy": "metadata-only-no-record-text-or-identifiers",
             "distribution_authority": "not-established-by-export",
+            "export_profile": "public",
         }
-    else:
-        exported = validated
+        return {**summary, "export_fingerprint": fingerprint(summary)}
+    exported = validated
     exported["export_profile"] = profile
     exported["export_fingerprint"] = fingerprint(exported)
     return exported

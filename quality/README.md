@@ -2,12 +2,16 @@
 
 The harness combines different failure detectors, with explicit scope and
 bounded runtime. It does not claim clinical validity, zero hallucinations,
-complete static typing, or independent model agreement.
+runtime type safety for every dependency, or independent model agreement.
 
-The current [typing receipt](typing-producers-verification-20261114.json) and
-[Conductor explanation](../conductor/tracks/frontier-assurance_20261113/typing-producers-evidence.md)
-record a further 1,233 diagnostics removed, 3,198 remaining, exact cap tightening,
-checked inventory/execution/admission contracts and twelve boundary regressions.
+The current [typing completion receipt](typing-completion-verification-20261114.json) and
+[Conductor explanation](../conductor/tracks/frontier-assurance_20261113/typing-completion-evidence.md)
+record the final 3,198 diagnostics removed, zero empty-baseline diagnostics across
+all 153 Python files, empty debt allowances, checked raw-input boundaries and an
+explicit `Any` ban. Their verification sections distinguish local measurements,
+hosted acceptance and historical study identity.
+The [producer/admission receipt](typing-producers-verification-20261114.json)
+retains the prior 1,233-diagnostic reduction and twelve boundary regressions.
 The [native-contract receipt](typing-native-verification-20261113.json) retains
 the prior 592-diagnostic reduction and nine enum/hashability repairs.
 The [process/session receipt](typing-contracts-verification-20261113.json)
@@ -19,18 +23,19 @@ reduction and Windows/combined-coverage correction.
 | --- | --- | --- |
 | Locked uv environment | Exact direct and transitive dependencies; Python 3.11 floor plus Linux/macOS/Windows 3.15 matrix | A lock is reproducibility, not a vulnerability or provenance guarantee |
 | Ruff + format | Broad correctness/style families, unused suppressions, debugger checks and deterministic formatting | PT011 legacy rejection-matrix exception; not all optional style rules are useful gates |
-| ty + basedpyright strict | Two static engines; no new strict debt beyond measured legacy baseline; caps decrease with repairs | The initial 9,801 diagnostics are being reduced in bounded batches; see the current typing receipt |
+| ty + basedpyright strict | Two static engines; zero diagnostics and allowances; explicit `Any` is an error | Checked types do not replace runtime validation, behavioral tests or dependency review |
 | Bandit | All production tools; all severities/confidence levels; narrow reviewed exceptions | Static patterns cannot prove authorization, privacy or runtime isolation |
 | Vulture | Fail findings at 80% confidence | Dynamic entry points need manual interpretation at lower confidence |
 | pytest + Hypothesis | Deterministic regressions, generated adversarial report invariants; 90% branch-enabled coverage on Linux/macOS and the complete combined matrix | Windows supplies functional results and branch data to the combined gate; coverage alone does not prove assertions useful |
-| pytest-gremlins | 100% real kills for the public release admission boundary; raw verdict gate | 23 initial mutants in one module; other boundaries remain planned |
+| pytest-gremlins | 100% real kills for the public release admission boundary; raw verdict gate | 24 current mutants in one module; other boundaries remain planned |
 | Scalene | Real CPU/memory profile of a synthetic validation/hash workload; validated artifacts | Platform-specific sample; performance budgets need repeated measurements |
 
 The [frozen-source Bandit review](frozen-source-bandit-review.md) explains two
-exact B603 exceptions outside source files whose bytes were consumed by the
-historical prospective protocol. Their baseline and source hashes are enforced
-before scanning. The protocol, its historical review and its failed outcome
-remain unchanged; this quality work does not create a new study declaration.
+exact B603 exceptions outside the current descendants of source files consumed
+by the historical prospective protocol. Their reviewed current baseline and
+source hashes are enforced before scanning. New runtime profile identities
+separate current engineering from the protocol, its original source/review and
+its failed outcome; this quality work does not create a new study declaration.
 
 ## Commands
 

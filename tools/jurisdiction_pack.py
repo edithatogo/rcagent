@@ -7,13 +7,13 @@ import json
 from collections.abc import Iterable, Mapping
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Literal, Protocol, TypeAlias, TypedDict, cast
+from typing import Literal, Protocol, TypeAlias, TypedDict, cast
 
 from jsonschema import Draft202012Validator, FormatChecker
 from jsonschema.exceptions import ValidationError
 
 from tools.evidence_core import TRANSITIONS
-from tools.json_shapes import is_array, is_object, object_rows, require_object
+from tools.json_shapes import JsonObject, is_array, is_object, object_rows, require_object
 
 ROOT = Path(__file__).parents[1]
 REGISTRY_PATH = ROOT / "conductor/jurisdictions/registry.json"
@@ -24,7 +24,7 @@ MATERIAL_CHANGE_CLASSES = {"guidance", "normative", "breaking"}
 class _RegistryValidator(Protocol):
     """Non-deprecated jsonschema interface; the stub's other overload is untyped."""
 
-    def iter_errors(self, instance: object) -> Iterable[ValidationError]: ...
+    def iter_errors(self, _instance: object, /) -> Iterable[ValidationError]: ...
 
 
 ChangeClass: TypeAlias = Literal["cosmetic", "guidance", "normative", "breaking"]
@@ -44,19 +44,46 @@ class DriftResult(TypedDict):
     behaviour_updated: Literal[False]
 
 
+class UpstreamUnavailable(TypedDict):
+    source_id: str
+    status: Literal["unavailable_not_passed"]
+    diagnostic: str
+    behaviour_updated: Literal[False]
+    receipt_status: Literal["current_snapshot_retained_pending_retrieval"]
+
+
 def _strings(value: object) -> list[str]:
     """Read string members; the schema pass separately diagnoses invalid values."""
     return [item for item in value if isinstance(item, str)] if is_array(value) else []
 
 
-def load_registry(path: Path = REGISTRY_PATH) -> dict[str, Any]:
+def _text(value: object, *, context: str) -> str:
+    if not isinstance(value, str):
+        raise ValueError(f"{context} must be text")
+    return value
+
+
+def _required_rows(value: object, *, context: str) -> list[JsonObject]:
+    if not is_array(value):
+        raise ValueError(f"{context} must be an array")
+    return [require_object(item, context=context) for item in value]
+
+
+def _required_strings(value: object, *, context: str) -> list[str]:
+    if not is_array(value):
+        raise ValueError(f"{context} must be an array")
+    return [_text(item, context=context) for item in value]
+
+
+def load_registry(path: Path = REGISTRY_PATH) -> JsonObject:
     return require_object(
         json.loads(path.read_text(encoding="utf-8")), context="jurisdiction registry"
     )
 
 
-def load_schema() -> dict[str, Any]:
-    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+def load_schema() -> JsonObject:
+    value: object = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    schema = require_object(value, context="jurisdiction schema")
     Draft202012Validator.check_schema(schema)
     return schema
 
@@ -262,10 +289,18 @@ def _unique_id_errors(items: object, key: str, label: str) -> list[str]:
     ]
 
 
-def compare_snapshots(baseline: dict[str, Any], candidate: dict[str, Any]) -> DriftResult:
+def compare_snapshots(
+    baseline: Mapping[str, object], candidate: Mapping[str, object]
+) -> DriftResult:
     """Return a reviewable, receipt-invalidating drift context without changing behaviour."""
-    baseline_sources = {source["source_id"]: source for source in baseline.get("sources", [])}
-    candidate_sources = {source["source_id"]: source for source in candidate.get("sources", [])}
+    baseline_sources = {
+        _text(source["source_id"], context="baseline source id"): source
+        for source in _required_rows(baseline.get("sources", []), context="baseline sources")
+    }
+    candidate_sources = {
+        _text(source["source_id"], context="candidate source id"): source
+        for source in _required_rows(candidate.get("sources", []), context="candidate sources")
+    }
     changes: list[SourceChange] = []
     for source_id in sorted(baseline_sources.keys() | candidate_sources.keys()):
         before = baseline_sources.get(source_id)
@@ -299,9 +334,11 @@ def compare_snapshots(baseline: dict[str, Any], candidate: dict[str, Any]) -> Dr
     material = [change for change in changes if change["change_class"] in MATERIAL_CHANGE_CLASSES]
     affected_sources = {change["source_id"] for change in material}
     affected_rules = sorted(
-        rule["rule_id"]
-        for rule in baseline.get("rules", [])
-        if affected_sources.intersection(rule.get("source_ids", []))
+        _text(rule["rule_id"], context="baseline rule id")
+        for rule in _required_rows(baseline.get("rules", []), context="baseline rules")
+        if affected_sources.intersection(
+            _required_strings(rule.get("source_ids", []), context="rule sources")
+        )
     )
     return {
         "status": "review_required" if material else "no_material_change",
@@ -312,20 +349,25 @@ def compare_snapshots(baseline: dict[str, Any], candidate: dict[str, Any]) -> Dr
     }
 
 
-def due_sources(registry: dict[str, Any], *, as_of: str) -> list[str]:
+def due_sources(registry: Mapping[str, object], *, as_of: str) -> list[str]:
     """List sources due for retrieval using UTC timestamps and declared cadences."""
     from datetime import datetime, timedelta
 
     now = datetime.fromisoformat(as_of)
     due: list[str] = []
-    for source in registry.get("sources", []):
-        retrieved = datetime.fromisoformat(source["retrieved_at"])
-        if now >= retrieved + timedelta(days=source["review_cadence_days"]):
-            due.append(source["source_id"])
+    for source in _required_rows(registry.get("sources", []), context="registry sources"):
+        retrieved = datetime.fromisoformat(
+            _text(source["retrieved_at"], context="retrieval timestamp")
+        )
+        cadence = source["review_cadence_days"]
+        if type(cadence) is not int or not 1 <= cadence <= 366:
+            raise ValueError("review cadence must be an integer between 1 and 366 days")
+        if now >= retrieved + timedelta(days=cadence):
+            due.append(_text(source["source_id"], context="source id"))
     return sorted(due)
 
 
-def unavailable_upstream(source_id: str, diagnostic: str) -> dict[str, str | bool]:
+def unavailable_upstream(source_id: str, diagnostic: str) -> UpstreamUnavailable:
     return {
         "source_id": source_id,
         "status": "unavailable_not_passed",
@@ -340,11 +382,11 @@ def _change(source_id: str, change_class: ChangeClass, fields: list[str]) -> Sou
 
 
 def candidate_with_change(
-    registry: dict[str, Any], source_id: str, **updates: object
-) -> dict[str, Any]:
+    registry: Mapping[str, object], source_id: str, **updates: object
+) -> JsonObject:
     """Test helper: return a detached candidate snapshot."""
-    candidate = deepcopy(registry)
-    for source in candidate["sources"]:
+    candidate = deepcopy(dict(registry))
+    for source in _required_rows(candidate["sources"], context="candidate sources"):
         if source["source_id"] == source_id:
             source.update(updates)
             return candidate

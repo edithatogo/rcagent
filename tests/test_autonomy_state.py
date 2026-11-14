@@ -3,20 +3,31 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+from collections.abc import Mapping
+from contextlib import AbstractContextManager
 from datetime import UTC, datetime, timedelta
 from pathlib import Path, PureWindowsPath
 
 import pytest
 
+from tests.prospective_fixture_types import ObjectMap, mapping, sequence
 from tools.autonomy_harness import deterministic_run_id
-from tools.autonomy_state import StateStore, next_action
+from tools.autonomy_state import CheckpointState, StateStore, next_action
 
 REVISION = "a" * 40
 
 
+class InspectableStateStore(StateStore):
+    def writer_lease(self) -> AbstractContextManager[None]:
+        return self._locked()
+
+    def save_checkpoint_for_test(self, state: Mapping[str, object]) -> None:
+        self._save(state)
+
+
 @pytest.fixture
-def store(tmp_path: Path) -> StateStore:
-    result = StateStore(tmp_path / "checkpoint.json")
+def store(tmp_path: Path) -> InspectableStateStore:
+    result = InspectableStateStore(tmp_path / "checkpoint.json")
     result.initialise(
         [
             {"id": "first", "phases": ["phase1", "phase2"]},
@@ -34,21 +45,21 @@ def receipt(
     assert instruction is not None
     evidence = root / "synthetic-result.txt"
     evidence.write_text("Synthetic fixture result; not actual execution.\n")
-    value = dict(
-        instruction,
-        outcome=outcome,
-        artefacts=[
+    value: ObjectMap = {
+        **instruction,
+        "outcome": outcome,
+        "artefacts": [
             {
                 "path": evidence.name,
                 "sha256": hashlib.sha256(evidence.read_bytes()).hexdigest(),
             }
         ],
-    )
+    }
     (root / name).write_text(json.dumps(value))
     return name
 
 
-def advance(store: StateStore, action: str = "pass") -> dict:
+def advance(store: StateStore, action: str = "pass") -> CheckpointState:
     state = store.load()
     instruction = next_action(state)
     assert instruction is not None
@@ -57,7 +68,7 @@ def advance(store: StateStore, action: str = "pass") -> dict:
     return store.advance(root=store.path.parent, event_id=event_id, action=action, receipt=path)
 
 
-def ready_action(state: dict) -> dict[str, str]:
+def ready_action(state: CheckpointState) -> dict[str, str]:
     instruction = next_action(state)
     assert instruction is not None
     return instruction
@@ -130,10 +141,12 @@ def test_resume_after_interruption_and_idempotent_event(store: StateStore) -> No
         reopened.advance(root=store.path.parent, event_id="once", action="fail", receipt=path)
 
 
-def test_failed_atomic_write_preserves_last_checkpoint(store: StateStore, monkeypatch) -> None:
+def test_failed_atomic_write_preserves_last_checkpoint(
+    store: StateStore, monkeypatch: pytest.MonkeyPatch
+) -> None:
     before = store.path.read_bytes()
 
-    def interrupted(*args):
+    def interrupted(*_args: object) -> None:
         raise OSError("simulated interruption before replace")
 
     monkeypatch.setattr("tools.autonomy_state.os.replace", interrupted)
@@ -185,7 +198,9 @@ def test_circuit_breaker_persists_and_cannot_resume(store: StateStore) -> None:
         ("artefacts", []),
     ],
 )
-def test_completion_requires_exact_bound_receipt(store: StateStore, field: str, value) -> None:
+def test_completion_requires_exact_bound_receipt(
+    store: StateStore, field: str, value: object
+) -> None:
     path = receipt(store.path.parent, next_action(store.load()), "pass")
     receipt_path = store.path.parent / path
     data = json.loads(receipt_path.read_text())
@@ -230,7 +245,7 @@ def test_checkpoint_tampering_fails_closed(store: StateStore) -> None:
         [{"id": "x", "phases": ["one"], "dependencies": ["missing"]}],
     ],
 )
-def test_invalid_plan_fails_closed(tmp_path: Path, plan) -> None:
+def test_invalid_plan_fails_closed(tmp_path: Path, plan: object) -> None:
     with pytest.raises(ValueError):
         StateStore(tmp_path / "state.json").initialise(plan, base_revision=REVISION)
 
@@ -266,13 +281,15 @@ def test_unsafe_receipt_path_rejected(store: StateStore, name: str) -> None:
     assert store.path.read_bytes() == before
 
 
-def test_windows_rooted_receipt_path_is_rejected_on_any_host(tmp_path: Path, monkeypatch) -> None:
+def test_windows_rooted_receipt_path_is_rejected_on_any_host(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     from tools import autonomy_state
 
     assert not PureWindowsPath("/outside.json").is_absolute()
     monkeypatch.setattr(autonomy_state, "Path", PureWindowsPath)
     with pytest.raises(ValueError, match="relative and non-escaping"):
-        autonomy_state._relative_file(tmp_path, "/outside.json")
+        autonomy_state.confined_file(tmp_path, "/outside.json")
 
 
 def test_symlinked_receipt_rejected(store: StateStore) -> None:
@@ -298,14 +315,16 @@ def test_wait_rejects_unused_receipt(store: StateStore) -> None:
     ("plan", "revision"),
     [("plan", REVISION), (None, REVISION), ([{"id": "first", "phases": ["one"]}], None)],
 )
-def test_malformed_initialisation_is_value_error(tmp_path: Path, plan, revision) -> None:
+def test_malformed_initialisation_is_value_error(
+    tmp_path: Path, plan: object, revision: object
+) -> None:
     with pytest.raises(ValueError):
         StateStore(tmp_path / "state.json").initialise(plan, base_revision=revision)
 
 
 def recovery_receipt(store: StateStore) -> str:
-    lease = json.loads(store.lock.read_text())
-    artefacts = []
+    lease = mapping(json.loads(store.lock.read_text()))
+    artefacts: list[dict[str, str]] = []
     for role in ("branch", "diff", "log"):
         path = store.path.parent / f"{role}.txt"
         path.write_text(f"Synthetic {role} preservation fixture\n")
@@ -365,8 +384,8 @@ def test_expired_inactive_lock_recovery_preserves_bound_work(store: StateStore) 
 
 
 @pytest.mark.skipif(os.name != "posix", reason="POSIX advisory recovery contract")
-def test_expired_active_writer_cannot_be_recovered(store: StateStore) -> None:
-    with store._locked():
+def test_expired_active_writer_cannot_be_recovered(store: InspectableStateStore) -> None:
+    with store.writer_lease():
         lease = json.loads(store.lock.read_text())
         lease["heartbeat_at"] = (datetime.now(UTC) - timedelta(minutes=10)).isoformat()
         lease["expires_at"] = (datetime.now(UTC) - timedelta(minutes=5)).isoformat()
@@ -378,20 +397,22 @@ def test_expired_active_writer_cannot_be_recovered(store: StateStore) -> None:
 
 
 @pytest.mark.skipif(os.name != "posix", reason="POSIX advisory recovery contract")
-def test_recovery_rejects_replaced_lock_and_keeps_snapshot(store: StateStore, monkeypatch) -> None:
+def test_recovery_rejects_replaced_lock_and_keeps_snapshot(
+    store: StateStore, monkeypatch: pytest.MonkeyPatch
+) -> None:
     from tools import autonomy_state
 
     stale_lock(store)
     path = recovery_receipt(store)
-    original_read = autonomy_state._read_receipt
+    original_read = autonomy_state.read_bound_receipt
 
-    def replace_owner(*args):
-        result = original_read(*args)
+    def replace_owner(root: Path, name: str, expected: Mapping[str, str], outcome: str) -> str:
+        result = original_read(root, name, expected, outcome)
         store.lock.unlink()
         store.lock.write_text("new owner")
         return result
 
-    monkeypatch.setattr(autonomy_state, "_read_receipt", replace_owner)
+    monkeypatch.setattr(autonomy_state, "read_bound_receipt", replace_owner)
     with pytest.raises(ValueError, match="owner or checkpoint changed"):
         store.recover(root=store.path.parent, receipt=path)
     assert store.lock.read_text() == "new owner"
@@ -410,8 +431,8 @@ def test_recovery_rejects_missing_preservation_evidence(store: StateStore) -> No
     assert store.lock.exists()
 
 
-def test_lease_records_owner_run_worktree_and_heartbeat(store: StateStore) -> None:
-    with store._locked():
+def test_lease_records_owner_run_worktree_and_heartbeat(store: InspectableStateStore) -> None:
+    with store.writer_lease():
         lease = json.loads(store.lock.read_text())
         assert lease["owner"]
         assert lease["run_id"]
@@ -462,20 +483,20 @@ def test_recovery_rejects_inconsistent_lease(store: StateStore, field: str, valu
     [("recovery-receipt.json", "receipt changed"), ("branch.txt", "evidence changed")],
 )
 def test_recovery_rechecks_evidence_before_preservation(
-    store: StateStore, monkeypatch, changed_file: str, error: str
+    store: StateStore, monkeypatch: pytest.MonkeyPatch, changed_file: str, error: str
 ) -> None:
     from tools import autonomy_state
 
     stale_lock(store)
     path = recovery_receipt(store)
-    original_read = autonomy_state._read_receipt
+    original_read = autonomy_state.read_bound_receipt
 
-    def change_evidence(*args):
-        result = original_read(*args)
+    def change_evidence(root: Path, name: str, expected: Mapping[str, str], outcome: str) -> str:
+        result = original_read(root, name, expected, outcome)
         (store.path.parent / changed_file).write_text("changed after validation")
         return result
 
-    monkeypatch.setattr(autonomy_state, "_read_receipt", change_evidence)
+    monkeypatch.setattr(autonomy_state, "read_bound_receipt", change_evidence)
     with pytest.raises(ValueError, match=error):
         store.recover(root=store.path.parent, receipt=path)
     assert store.lock.exists()
@@ -483,9 +504,9 @@ def test_recovery_rechecks_evidence_before_preservation(
 
 @pytest.mark.parametrize("contents", [None, "invalid-json", "[]"])
 def test_writer_cleanup_does_not_remove_changed_lock(
-    store: StateStore, contents: str | None
+    store: InspectableStateStore, contents: str | None
 ) -> None:
-    with store._locked():
+    with store.writer_lease():
         if contents is None:
             if os.name == "nt":
                 with pytest.raises(PermissionError):
@@ -510,7 +531,7 @@ def test_writer_cleanup_does_not_remove_changed_lock(
     ],
 )
 def test_receipt_artefacts_reject_malformed_and_self_reference(
-    store: StateStore, artefacts
+    store: StateStore, artefacts: object
 ) -> None:
     path = receipt(store.path.parent, next_action(store.load()), "pass")
     value = json.loads((store.path.parent / path).read_text())
@@ -529,10 +550,51 @@ def test_non_object_checkpoint_rejected(store: StateStore) -> None:
 def test_symlink_checkpoint_cannot_be_loaded_or_overwritten(store: StateStore) -> None:
     link = store.path.parent / "linked-state.json"
     link.symlink_to(store.path.name)
-    linked_store = StateStore(link)
+    linked_store = InspectableStateStore(link)
     before = store.path.read_bytes()
     with pytest.raises(ValueError, match="symlink"):
         linked_store.load()
     with pytest.raises(ValueError, match="symlink"):
-        linked_store._save(store.load())
+        linked_store.save_checkpoint_for_test(store.load())
     assert store.path.read_bytes() == before
+
+
+MALFORMED_CHECKPOINT_FIELDS: list[tuple[str, object]] = [
+    ("tracks", None),
+    ("events", [None]),
+    ("circuit_breaker", "false"),
+]
+
+
+@pytest.mark.parametrize(("field", "value"), MALFORMED_CHECKPOINT_FIELDS)
+def test_rehashed_checkpoint_requires_checked_shapes(
+    store: InspectableStateStore, field: str, value: object
+) -> None:
+    state = mapping(store.load())
+    state[field] = value
+    store.save_checkpoint_for_test(state)
+    before = store.path.read_bytes()
+    with pytest.raises(ValueError, match="checkpoint shape"):
+        store.load()
+    assert store.path.read_bytes() == before
+
+
+MALFORMED_TRACK_FIELDS: list[tuple[str, object]] = [
+    ("phase_index", 100),
+    ("phases", None),
+    ("dependencies", [None]),
+]
+
+
+@pytest.mark.parametrize(("field", "value"), MALFORMED_TRACK_FIELDS)
+def test_rehashed_checkpoint_cannot_dispatch_malformed_track(
+    store: InspectableStateStore, field: str, value: object
+) -> None:
+    state = mapping(store.load())
+    mapping(sequence(state["tracks"])[0])[field] = value
+    store.save_checkpoint_for_test(state)
+    before = store.path.read_bytes()
+    with pytest.raises(ValueError, match="checkpoint shape"):
+        store.advance(root=store.path.parent, event_id="invalid", action="pass", receipt="missing")
+    assert store.path.read_bytes() == before
+    assert not store.lock.exists()

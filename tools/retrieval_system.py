@@ -12,11 +12,16 @@ import tempfile
 import time
 import tracemalloc
 import unicodedata
+from collections.abc import Iterable, Mapping, Sequence
+from copy import deepcopy
 from datetime import date
 from pathlib import Path
-from typing import Any, Self
+from typing import Literal, NotRequired, Protocol, Self, TypedDict, TypeGuard, cast
 
 from jsonschema import Draft202012Validator, FormatChecker
+from jsonschema.exceptions import ValidationError
+
+from tools.json_shapes import JsonObject, is_array, is_object, object_rows, require_object
 
 ROOT = Path(__file__).parents[1]
 CORPUS = ROOT / "evaluation/retrieval/synthetic-public-corpus.json"
@@ -35,7 +40,236 @@ MANDATORY_UNSUPPORTED = [
 ]
 
 
-def canonical_hash(value: Any) -> str:
+class _SchemaValidator(Protocol):
+    """Non-deprecated object-validation API; the stub's other overload is untyped."""
+
+    def iter_errors(self, _instance: object, /) -> Iterable[ValidationError]: ...
+
+
+class RetrievalUnit(TypedDict):
+    id: str
+    source: str
+    authority: str
+    jurisdiction: str
+    rights: str
+    rights_basis: JsonObject
+    version: str
+    timestamp: str
+    location: JsonObject
+    transformation: list[str]
+    compartment: str
+    status: str
+    content: str
+    checksum: str
+    retention: str
+
+
+class RetrievalManifest(TypedDict):
+    schema_version: str
+    corpus_id: str
+    compartment: str
+    units: list[RetrievalUnit]
+
+
+class RetrievalHit(TypedDict):
+    unit_id: str
+    source: str
+    authority: str
+    jurisdiction: str
+    rights: str
+    rights_basis: JsonObject
+    version: str
+    timestamp: str
+    location: JsonObject
+    transformation: list[str]
+    status: str
+    checksum: str
+    retention: str
+    safety_flags: list[str]
+    score: float
+
+
+class _RetrievalFields(TypedDict):
+    schema_version: Literal["1.0"]
+    profile: Literal["lexical-sqlite-fts5"]
+    query: str
+    query_mode: str
+    filters: dict[str, str]
+    compartment: str
+    limit: int
+    results: list[RetrievalHit]
+    network: Literal["disabled"]
+    telemetry: Literal["none"]
+
+
+class RetrievalReceipt(_RetrievalFields):
+    receipt_sha256: str
+
+
+class LifecycleEvent(TypedDict):
+    sequence: int
+    action: str
+    unit_id: str | None
+    compartment: str
+    detail_sha256: str
+
+
+class _LifecycleFields(TypedDict):
+    schema_version: Literal["1.0"]
+    compartment: str
+    events: list[LifecycleEvent]
+
+
+class LifecycleReceipt(_LifecycleFields):
+    receipt_sha256: str
+
+
+class GroundingResult(TypedDict):
+    claims: list[JsonObject]
+    conflicts: list[str]
+    poisoned_content: list[str]
+    abstained: bool
+    grounding: Literal["claim_link_only"]
+    clinical_interpretation: Literal[False]
+    human_review_required: Literal[True]
+
+
+class FusionResult(TypedDict):
+    unit_id: str
+    fusion_score: float
+
+
+class DriftImpact(TypedDict):
+    changed_units: list[str]
+    affected_receipts: list[str]
+    requires_rebuild: bool
+
+
+class AssuranceCase(TypedDict):
+    hits: int
+    passed: bool
+
+
+class AssuranceSuite(TypedDict):
+    passed: bool
+    mode: NotRequired[str]
+    status: NotRequired[str]
+
+
+class ProfileComparison(TypedDict):
+    id: str
+    status: str
+    revision: str
+
+
+class ResearchObservations(TypedDict):
+    elapsed_ms: float
+    allocation_peak_bytes: int
+    integrity_scope: str
+
+
+class _AssuranceFields(TypedDict):
+    schema_version: Literal["1.0"]
+    scope: Literal["deterministic_synthetic_ci_contract"]
+    manifest_sha256: str
+    profile_revision: str
+    results: dict[str, AssuranceCase]
+    suites: dict[str, AssuranceSuite]
+    profile_comparison: list[ProfileComparison]
+    research_observations: ResearchObservations
+    network: Literal["disabled"]
+    private_data: Literal[False]
+    unsupported: list[str]
+
+
+class AssuranceReceipt(_AssuranceFields):
+    observation_sha256: str
+    receipt_sha256: str
+
+
+def _text(value: object, *, context: str) -> str:
+    if not isinstance(value, str):
+        raise ValueError(f"{context}: expected text")
+    return value
+
+
+def _texts(value: object, *, context: str) -> list[str]:
+    if not is_array(value) or any(not isinstance(item, str) for item in value):
+        raise ValueError(f"{context}: expected an array of text")
+    return [item for item in value if isinstance(item, str)]
+
+
+def _is_unit(value: object) -> TypeGuard[RetrievalUnit]:
+    """Narrow fields used by the index after separate domain validation."""
+    if not is_object(value):
+        return False
+    text_fields = (
+        "id",
+        "source",
+        "authority",
+        "jurisdiction",
+        "rights",
+        "version",
+        "timestamp",
+        "compartment",
+        "status",
+        "content",
+        "checksum",
+        "retention",
+    )
+    transformation = value.get("transformation")
+    return (
+        all(isinstance(value.get(field), str) for field in text_fields)
+        and is_object(value.get("rights_basis"))
+        and is_object(value.get("location"))
+        and is_array(transformation)
+        and all(isinstance(item, str) for item in transformation)
+    )
+
+
+def _checked_units(value: object) -> list[RetrievalUnit]:
+    if not is_array(value):
+        raise ValueError("units must be an array")
+    units: list[RetrievalUnit] = []
+    for unit in value:
+        if not _is_unit(unit):
+            raise ValueError("invalid validated retrieval unit shape")
+        units.append(unit)
+    return units
+
+
+def _row(value: object) -> sqlite3.Row:
+    if not isinstance(value, sqlite3.Row):
+        raise ValueError("index query did not return a SQLite row")
+    return value
+
+
+def _row_text(row: sqlite3.Row, field: str) -> str:
+    return _text(row[field], context=f"index {field}")
+
+
+def _row_json(row: sqlite3.Row, field: str) -> object:
+    return json.loads(_row_text(row, field))
+
+
+def _profile_comparison(profiles: Mapping[str, object]) -> list[ProfileComparison]:
+    values = profiles.get("profiles")
+    if not is_array(values):
+        raise ValueError("profiles must be an array")
+    result: list[ProfileComparison] = []
+    for value in values:
+        profile = require_object(value, context="retrieval profile")
+        result.append(
+            {
+                "id": _text(profile["id"], context="profile id"),
+                "status": _text(profile["status"], context="profile status"),
+                "revision": _text(profile["revision"], context="profile revision"),
+            }
+        )
+    return result
+
+
+def canonical_hash(value: object) -> str:
     payload = json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
     return hashlib.sha256(payload).hexdigest()
 
@@ -48,7 +282,7 @@ def byte_checksum(content: bytes) -> str:
     return "sha256:" + hashlib.sha256(content).hexdigest()
 
 
-def instruction_markers(value: Any) -> list[str]:
+def instruction_markers(value: object) -> list[str]:
     raw = unicodedata.normalize(
         "NFKC", json.dumps(value, sort_keys=True, ensure_ascii=False).lower()
     )
@@ -57,25 +291,24 @@ def instruction_markers(value: Any) -> list[str]:
     return [marker for marker in INSTRUCTION_MARKERS if marker in text]
 
 
-def load_json(path: Path) -> dict[str, Any]:
-    value = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(value, dict):
+def load_json(path: Path) -> JsonObject:
+    value: object = json.loads(path.read_text(encoding="utf-8"))
+    if not is_object(value):
         raise ValueError(f"{path}: expected an object")
     return value
 
 
-def validate_manifest(manifest: dict[str, Any]) -> list[str]:
+def validate_manifest(manifest: Mapping[str, object]) -> list[str]:
     schema = load_json(SCHEMA)
-    validator = Draft202012Validator(schema, format_checker=FormatChecker())
+    # Adapt the library method only; input values remain unchecked until validation.
+    validator = cast(_SchemaValidator, Draft202012Validator(schema, format_checker=FormatChecker()))
     errors = [
         f"{'.'.join(map(str, item.absolute_path))}: {item.message}"
         for item in validator.iter_errors(manifest)
     ]
     ids: list[str] = []
     corpus_compartment = manifest.get("compartment")
-    for unit in manifest.get("units", []):
-        if not isinstance(unit, dict):
-            continue
+    for unit in object_rows(manifest.get("units", [])):
         unit_id = unit.get("id")
         if isinstance(unit_id, str):
             ids.append(unit_id)
@@ -83,15 +316,17 @@ def validate_manifest(manifest: dict[str, Any]) -> list[str]:
             errors.append(f"{unit_id}: content checksum mismatch")
         if unit.get("compartment") != corpus_compartment:
             errors.append(f"{unit_id}: cross-compartment unit")
-        if unit.get("rights") in {"restricted", "unknown"}:
+        if unit.get("rights") in ("restricted", "unknown"):
             errors.append(f"{unit_id}: rights not admitted")
-        basis = unit.get("rights_basis", {})
+        basis_value = unit.get("rights_basis", {})
+        basis = basis_value if is_object(basis_value) else {}
         expected_basis = {"generated": "generated_origin"}.get(str(unit.get("rights")))
         if expected_basis and basis.get("kind") != expected_basis:
             errors.append(f"{unit_id}: rights basis does not admit {unit.get('rights')}")
         if unit.get("rights") == "approved_public":
             errors.append(f"{unit_id}: approved-public admission receipt registry unavailable")
-        location = unit.get("location", {})
+        location_value = unit.get("location", {})
+        location = location_value if is_object(location_value) else {}
         location_requirements = {
             "chunk": "chunk_id",
             "page": "page",
@@ -101,8 +336,12 @@ def validate_manifest(manifest: dict[str, Any]) -> list[str]:
             "image_region": "region",
             "signal_window": "window",
         }
-        kind = location.get("kind") if isinstance(location, dict) else None
-        if kind not in location_requirements or location_requirements.get(kind) not in location:
+        kind = location.get("kind")
+        if (
+            not isinstance(kind, str)
+            or kind not in location_requirements
+            or location_requirements[kind] not in location
+        ):
             errors.append(f"{unit_id}: unsupported or incomplete provenance location")
         markers = instruction_markers(unit)
         if markers and unit.get("status") != "quarantined":
@@ -113,15 +352,19 @@ def validate_manifest(manifest: dict[str, Any]) -> list[str]:
     return sorted(errors)
 
 
-def admitted_manifest(path: Path = CORPUS, *, compartment: str = "public") -> dict[str, Any]:
+def admitted_manifest(path: Path = CORPUS, *, compartment: str = "public") -> RetrievalManifest:
     raw = load_json(path)
+    raw_units = raw.get("units", [])
+    if not is_array(raw_units):
+        raise ValueError("units must be an array")
     units = [
         unit
-        for unit in raw.get("units", [])
+        for value in raw_units
+        if (unit := require_object(value, context="source unit"))
         if unit.get("compartment") == compartment
-        and unit.get("rights") in {"generated", "approved_public"}
+        and unit.get("rights") in ("generated", "approved_public")
     ]
-    manifest = {
+    manifest: JsonObject = {
         "schema_version": "1.0",
         "corpus_id": raw["corpus_id"],
         "compartment": compartment,
@@ -130,7 +373,12 @@ def admitted_manifest(path: Path = CORPUS, *, compartment: str = "public") -> di
     errors = validate_manifest(manifest)
     if errors:
         raise ValueError("; ".join(errors))
-    return manifest
+    return {
+        "schema_version": "1.0",
+        "corpus_id": _text(raw["corpus_id"], context="corpus id"),
+        "compartment": compartment,
+        "units": _checked_units(units),
+    }
 
 
 class LexicalIndex:
@@ -142,7 +390,7 @@ class LexicalIndex:
         self.connection.execute(
             "CREATE TABLE IF NOT EXISTS index_metadata(key TEXT PRIMARY KEY, value TEXT NOT NULL)"
         )
-        stored = self.connection.execute(
+        stored: object = self.connection.execute(
             "SELECT value FROM index_metadata WHERE key = 'compartment'"
         ).fetchone()
         if stored is None:
@@ -151,7 +399,7 @@ class LexicalIndex:
                 (compartment,),
             )
             self.connection.commit()
-        elif stored["value"] != compartment:
+        elif _row_text(_row(stored), "value") != compartment:
             self.connection.close()
             raise ValueError("persistent index compartment mismatch")
         self.connection.execute(
@@ -176,23 +424,29 @@ class LexicalIndex:
         if connection is not None:
             connection.close()
 
-    def ingest(self, manifest: dict[str, Any]) -> None:
+    def ingest(self, manifest: Mapping[str, object]) -> None:
         errors = validate_manifest(manifest)
         if errors:
             raise ValueError("; ".join(errors))
         if manifest["compartment"] != self.compartment:
             raise ValueError("index compartment mismatch")
+        units = _checked_units(manifest["units"])
         with self.connection:
-            self._ingest_validated(manifest)
+            self._ingest_validated(units)
 
-    def _ingest_validated(self, manifest: dict[str, Any]) -> None:
-        for unit in manifest["units"]:
+    def _ingest_validated(self, units: list[RetrievalUnit]) -> None:
+        for unit in units:
             self.connection.execute(
                 "DELETE FROM units WHERE id = ? AND compartment = ?",
                 (unit["id"], self.compartment),
             )
             flags = instruction_markers(
-                {key: unit[key] for key in ("content", "source", "authority", "location")}
+                {
+                    "content": unit["content"],
+                    "source": unit["source"],
+                    "authority": unit["authority"],
+                    "location": unit["location"],
+                }
             )
             self.connection.execute(
                 "INSERT INTO units VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -217,7 +471,7 @@ class LexicalIndex:
             )
             self._audit("ingest", unit["id"], unit)
 
-    def _audit(self, action: str, unit_id: str | None, detail: Any) -> None:
+    def _audit(self, action: str, unit_id: str | None, detail: object) -> None:
         self.connection.execute(
             "INSERT INTO lifecycle_audit(action, unit_id, compartment, detail_sha256) VALUES (?, ?, ?, ?)",
             (action, unit_id, self.compartment, canonical_hash(detail)),
@@ -230,7 +484,7 @@ class LexicalIndex:
         filters: dict[str, str] | None = None,
         limit: int = 10,
         mode: str = "literal",
-    ) -> dict[str, Any]:
+    ) -> RetrievalReceipt:
         if not query.strip() or limit < 1 or limit > 100:
             raise ValueError("query must be non-empty and limit must be between 1 and 100")
         if mode not in {"literal", "expert_fts"}:
@@ -241,7 +495,7 @@ class LexicalIndex:
             raise ValueError("unsupported filter")
         expression = '"' + query.replace('"', '""') + '"' if mode == "literal" else query
         where = ["units MATCH ?", "compartment = ?"]
-        parameters: list[Any] = [expression, self.compartment]
+        parameters: list[str | int] = [expression, self.compartment]
         if "status" not in filters:
             filters["status"] = "current"
         for field in sorted(filters):
@@ -249,33 +503,46 @@ class LexicalIndex:
             parameters.append(filters[field])
         parameters.append(limit)
         try:
-            rows = self.connection.execute(
+            rows: list[object] = self.connection.execute(
                 f"SELECT id, source, authority, jurisdiction, rights, rights_basis, version, timestamp, location, transformation, status, checksum, retention, safety_flags, bm25(units) AS rank FROM units WHERE {' AND '.join(where)} ORDER BY rank, id LIMIT ?",  # nosec B608 # identifiers are allowlisted; all values use SQL parameters
                 parameters,
             ).fetchall()
         except sqlite3.OperationalError as exc:
             raise ValueError("invalid FTS query") from exc
-        results = [
-            {
-                "unit_id": row["id"],
-                "source": row["source"],
-                "authority": row["authority"],
-                "jurisdiction": row["jurisdiction"],
-                "rights": row["rights"],
-                "rights_basis": json.loads(row["rights_basis"]),
-                "version": row["version"],
-                "timestamp": row["timestamp"],
-                "location": json.loads(row["location"]),
-                "transformation": json.loads(row["transformation"]),
-                "status": row["status"],
-                "checksum": row["checksum"],
-                "retention": row["retention"],
-                "safety_flags": json.loads(row["safety_flags"]),
-                "score": round(-float(row["rank"]), 8),
-            }
-            for row in rows
-        ]
-        receipt: dict[str, Any] = {
+        results: list[RetrievalHit] = []
+        for value in rows:
+            row = _row(value)
+            rank: object = row["rank"]
+            if not isinstance(rank, (float, int)):
+                raise ValueError("index rank must be numeric")
+            results.append(
+                {
+                    "unit_id": _row_text(row, "id"),
+                    "source": _row_text(row, "source"),
+                    "authority": _row_text(row, "authority"),
+                    "jurisdiction": _row_text(row, "jurisdiction"),
+                    "rights": _row_text(row, "rights"),
+                    "rights_basis": require_object(
+                        _row_json(row, "rights_basis"), context="index rights basis"
+                    ),
+                    "version": _row_text(row, "version"),
+                    "timestamp": _row_text(row, "timestamp"),
+                    "location": require_object(
+                        _row_json(row, "location"), context="index location"
+                    ),
+                    "transformation": _texts(
+                        _row_json(row, "transformation"), context="index transformation"
+                    ),
+                    "status": _row_text(row, "status"),
+                    "checksum": _row_text(row, "checksum"),
+                    "retention": _row_text(row, "retention"),
+                    "safety_flags": _texts(
+                        _row_json(row, "safety_flags"), context="index safety flags"
+                    ),
+                    "score": round(-float(rank), 8),
+                }
+            )
+        receipt: _RetrievalFields = {
             "schema_version": "1.0",
             "profile": "lexical-sqlite-fts5",
             "query": query,
@@ -287,8 +554,7 @@ class LexicalIndex:
             "network": "disabled",
             "telemetry": "none",
         }
-        receipt["receipt_sha256"] = canonical_hash(receipt)
-        return receipt
+        return {**receipt, "receipt_sha256": canonical_hash(receipt)}
 
     def delete(self, unit_id: str) -> None:
         with self.connection:
@@ -310,10 +576,13 @@ class LexicalIndex:
                 raise ValueError("unit not found in index compartment")
             self._audit("supersede", unit_id, {"unit_id": unit_id})
 
-    def correct(self, unit: dict[str, Any]) -> None:
-        previous = self.connection.execute(
+    def correct(self, unit: Mapping[str, object]) -> None:
+        unit_id = unit.get("id")
+        if not isinstance(unit_id, str):
+            raise ValueError("unit not found in index compartment")
+        previous: object = self.connection.execute(
             "SELECT checksum FROM units WHERE id = ? AND compartment = ?",
-            (unit.get("id"), self.compartment),
+            (unit_id, self.compartment),
         ).fetchone()
         if previous is None:
             raise ValueError("unit not found in index compartment")
@@ -328,40 +597,66 @@ class LexicalIndex:
         with self.connection:
             self._audit(
                 "correct",
-                unit.get("id"),
-                {"previous_checksum": previous["checksum"], "new_checksum": unit.get("checksum")},
+                unit_id,
+                {
+                    "previous_checksum": _row_text(_row(previous), "checksum"),
+                    "new_checksum": unit.get("checksum"),
+                },
             )
 
-    def rebuild(self, manifest: dict[str, Any]) -> None:
+    def rebuild(self, manifest: Mapping[str, object]) -> None:
         errors = validate_manifest(manifest)
         if errors:
             raise ValueError("; ".join(errors))
         if manifest["compartment"] != self.compartment:
             raise ValueError("index compartment mismatch")
+        units = _checked_units(manifest["units"])
         with self.connection:
             self.connection.execute("DELETE FROM units WHERE compartment = ?", (self.compartment,))
             self._audit("rebuild", None, {"manifest_sha256": canonical_hash(manifest)})
-            self._ingest_validated(manifest)
+            self._ingest_validated(units)
 
-    def deterministic_export(self) -> list[dict[str, Any]]:
-        rows = self.connection.execute(
+    def deterministic_export(self) -> list[dict[str, str]]:
+        rows: list[object] = self.connection.execute(
             "SELECT id, source, authority, jurisdiction, rights, rights_basis, version, timestamp, location, transformation, status, checksum, compartment, retention, safety_flags FROM units WHERE compartment = ? ORDER BY id",
             (self.compartment,),
         ).fetchall()
-        return [dict(row) for row in rows]
+        exported: list[dict[str, str]] = []
+        for value in rows:
+            row = _row(value)
+            fields = row.keys()
+            exported.append({field: _row_text(row, field) for field in fields})
+        return exported
 
-    def lifecycle_receipt(self) -> dict[str, Any]:
-        rows = self.connection.execute(
+    def lifecycle_receipt(self) -> LifecycleReceipt:
+        rows: list[object] = self.connection.execute(
             "SELECT sequence, action, unit_id, compartment, detail_sha256 FROM lifecycle_audit WHERE compartment = ? ORDER BY sequence",
             (self.compartment,),
         ).fetchall()
-        receipt: dict[str, Any] = {
+        events: list[LifecycleEvent] = []
+        for value in rows:
+            row = _row(value)
+            sequence: object = row["sequence"]
+            if not isinstance(sequence, int):
+                raise ValueError("lifecycle sequence must be an integer")
+            unit_id: object = row["unit_id"]
+            events.append(
+                {
+                    "sequence": sequence,
+                    "action": _row_text(row, "action"),
+                    "unit_id": None
+                    if unit_id is None
+                    else _text(unit_id, context="lifecycle unit id"),
+                    "compartment": _row_text(row, "compartment"),
+                    "detail_sha256": _row_text(row, "detail_sha256"),
+                }
+            )
+        receipt: _LifecycleFields = {
             "schema_version": "1.0",
             "compartment": self.compartment,
-            "events": [dict(row) for row in rows],
+            "events": events,
         }
-        receipt["receipt_sha256"] = canonical_hash(receipt)
-        return receipt
+        return {**receipt, "receipt_sha256": canonical_hash(receipt)}
 
     def backup(self, destination: Path) -> None:
         if self.path == ":memory:":
@@ -383,7 +678,7 @@ class LexicalIndex:
         return restored
 
 
-def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
+def validate_literature_receipt(receipt: Mapping[str, object]) -> list[str]:
     required = {
         "schema_version",
         "query",
@@ -407,29 +702,29 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
     if receipt.get("schema_version") != "1.0":
         errors.append("invalid schema version")
     sourceright_value = receipt.get("sourceright", {})
-    if not isinstance(sourceright_value, dict):
+    if not is_object(sourceright_value):
         errors.append("SourceRight receipt must be an object")
-        sourceright: dict[str, Any] = {}
+        sourceright: JsonObject = {}
     else:
         sourceright = sourceright_value
-    if sourceright.get("status") not in {
+    if sourceright.get("status") not in (
         "succeeded",
         "unavailable",
         "review_required",
-    }:
+    ):
         errors.append("invalid SourceRight status")
     elif sourceright.get("status") == "succeeded":
         errors.append("SourceRight success is not admitted without a checked Track07 execution")
     elif sourceright.get("status") == "unavailable" and not sourceright.get("diagnostic"):
         errors.append("unavailable SourceRight receipt lacks diagnostic")
     results_value = receipt.get("results", [])
-    if not isinstance(results_value, list):
+    if not is_array(results_value):
         errors.append("literature results must be an array")
-        results: list[Any] = []
+        results: list[object] = []
     else:
         results = results_value
     if any(
-        not isinstance(item, dict)
+        not is_object(item)
         or not {"title", "authors", "year", "identifier", "source"} <= item.keys()
         or not isinstance(item.get("identifier"), str)
         for item in results
@@ -446,49 +741,53 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
     except ValueError:
         errors.append("literature date must be ISO YYYY-MM-DD")
     identifiers = [
-        item["identifier"]
+        identifier
         for item in results
-        if isinstance(item, dict) and isinstance(item.get("identifier"), str)
+        if is_object(item) and isinstance(identifier := item.get("identifier"), str)
     ]
     if len(identifiers) != len(set(identifiers)):
         errors.append("duplicate literature identifier")
     screening_value = receipt.get("screening", [])
-    if not isinstance(screening_value, list):
+    if not is_array(screening_value):
         errors.append("literature screening must be an array")
-        screening: list[Any] = []
+        screening: list[object] = []
     else:
         screening = screening_value
     screened = {
-        item["identifier"]
+        identifier
         for item in screening
-        if isinstance(item, dict) and isinstance(item.get("identifier"), str)
+        if is_object(item) and isinstance(identifier := item.get("identifier"), str)
     }
     if screened != set(identifiers):
         errors.append("screening/result identifier mismatch")
     if len(screening) != len(screened):
         errors.append("duplicate screening identifier")
     if any(
-        not isinstance(item, dict)
+        not is_object(item)
         or not {"identifier", "decision", "reason"} <= item.keys()
         or not isinstance(item.get("identifier"), str)
-        or item.get("decision") not in {"include", "exclude"}
+        or item.get("decision") not in ("include", "exclude")
         or not str(item.get("reason", "")).strip()
         for item in screening
     ):
         errors.append("screening decision is incomplete")
     quality_value = receipt.get("study_quality", [])
-    if not isinstance(quality_value, list):
+    if not is_array(quality_value):
         errors.append("study quality must be an array")
-        quality: list[Any] = []
+        quality: list[object] = []
     else:
         quality = quality_value
-    if {item.get("identifier") for item in quality if isinstance(item, dict)} != set(identifiers):
+    if {
+        identifier
+        for item in quality
+        if is_object(item) and isinstance(identifier := item.get("identifier"), str)
+    } != set(identifiers):
         errors.append("study-quality/result identifier mismatch")
     if any(
-        not isinstance(item, dict)
+        not is_object(item)
         or not {"identifier", "status", "reason"} <= item.keys()
         or not isinstance(item.get("identifier"), str)
-        or item.get("status") not in {"not_assessed", "assessed"}
+        or item.get("status") not in ("not_assessed", "assessed")
         or not str(item.get("reason", "")).strip()
         for item in quality
     ):
@@ -498,26 +797,32 @@ def validate_literature_receipt(receipt: dict[str, Any]) -> list[str]:
         or "no Track07" not in str(sourceright.get("diagnostic", ""))
     ):
         errors.append("unavailable SourceRight boundary is not bound to the clean pin")
-    referenced: set[Any] = set()
+    referenced: set[str] = set()
     for field in ("study_quality", "claim_links", "conflicts"):
         records = receipt.get(field, [])
-        if not isinstance(records, list):
+        if not is_array(records):
             errors.append(f"{field} must be an array")
             continue
         referenced.update(
-            item.get("identifier")
+            identifier
             for item in records
-            if isinstance(item, dict) and isinstance(item.get("identifier"), str)
+            if is_object(item) and isinstance(identifier := item.get("identifier"), str)
         )
     if not referenced <= set(identifiers):
         errors.append("literature record references unknown identifier")
     return errors
 
 
-def validate_profiles(profiles: dict[str, Any]) -> list[str]:
+def validate_profiles(profiles: Mapping[str, object]) -> list[str]:
     errors: list[str] = []
-    items = profiles.get("profiles", [])
-    identifiers = [item.get("id") for item in items if isinstance(item, dict)]
+    values = profiles.get("profiles", [])
+    if not is_array(values):
+        errors.append("profiles must be an array")
+        items: list[object] = []
+    else:
+        items = values
+    raw_identifiers = [item.get("id") for item in items if is_object(item)]
+    identifiers = [identifier for identifier in raw_identifiers if isinstance(identifier, str)]
     expected = {
         "lexical-sqlite-fts5",
         "vector-local",
@@ -526,10 +831,14 @@ def validate_profiles(profiles: dict[str, Any]) -> list[str]:
         "literature-provider",
         "sourceright",
     }
-    if set(identifiers) != expected or len(identifiers) != len(set(identifiers)):
+    if (
+        len(identifiers) != len(raw_identifiers)
+        or set(identifiers) != expected
+        or len(identifiers) != len(set(identifiers))
+    ):
         errors.append("profile coverage mismatch")
     for item in items:
-        if not isinstance(item, dict):
+        if not is_object(item):
             errors.append("profile must be an object")
             continue
         if item.get("network") != "disabled" or item.get("telemetry") != "none":
@@ -542,13 +851,10 @@ def validate_profiles(profiles: dict[str, Any]) -> list[str]:
         for field in ("owner", "upstream", "removal_condition"):
             if not item.get(field):
                 errors.append(f"{item.get('id')}: missing {field}")
+    empty_profile: JsonObject = {}
     lexical = next(
-        (
-            item
-            for item in items
-            if isinstance(item, dict) and item.get("id") == "lexical-sqlite-fts5"
-        ),
-        {},
+        (item for item in items if is_object(item) and item.get("id") == "lexical-sqlite-fts5"),
+        empty_profile,
     )
     for field in ("install", "discover", "health_check", "uninstall", "rollback"):
         if not lexical.get(field):
@@ -556,20 +862,25 @@ def validate_profiles(profiles: dict[str, Any]) -> list[str]:
     return errors
 
 
-def grounded_answer(claims: list[dict[str, Any]], retrieved: dict[str, Any]) -> dict[str, Any]:
-    available = {item["unit_id"]: item for item in retrieved.get("results", [])}
-    valid_claims = []
-    conflicts = []
-    poisoned = []
+def grounded_answer(
+    claims: Sequence[Mapping[str, object]], retrieved: Mapping[str, object]
+) -> GroundingResult:
+    available = {
+        _text(item["unit_id"], context="retrieved unit id"): item
+        for item in object_rows(retrieved.get("results", []))
+    }
+    valid_claims: list[JsonObject] = []
+    conflicts: list[str] = []
+    poisoned: list[str] = []
     for claim in claims:
-        evidence = set(claim.get("evidence", []))
+        evidence = set(_texts(claim.get("evidence", []), context="claim evidence"))
         if not evidence or not evidence <= available.keys():
             continue
         if claim.get("conflict"):
-            conflicts.append(claim["id"])
+            conflicts.append(_text(claim["id"], context="claim id"))
         flagged = any(available[item].get("safety_flags") for item in evidence)
         if flagged or instruction_markers(claim.get("text", "")):
-            poisoned.append(claim["id"])
+            poisoned.append(_text(claim["id"], context="claim id"))
             continue
         # A search receipt proves a link, not the semantics or exact bytes of
         # caller-supplied claim text. No synthesis is admitted at this port.
@@ -584,7 +895,7 @@ def grounded_answer(claims: list[dict[str, Any]], retrieved: dict[str, Any]) -> 
     }
 
 
-def validate_federated_request(request: dict[str, Any]) -> list[str]:
+def validate_federated_request(request: Mapping[str, object]) -> list[str]:
     required_true = (
         "authorised",
         "minimised",
@@ -594,11 +905,18 @@ def validate_federated_request(request: dict[str, Any]) -> list[str]:
         "fresh",
     )
     errors = [f"{field} required" for field in required_true if request.get(field) is not True]
-    if request.get("purpose") not in {"synthetic_research", "quality_assurance"}:
+    if request.get("purpose") not in ("synthetic_research", "quality_assurance"):
         errors.append("purpose not admitted")
-    if request.get("compartments") and len(set(request["compartments"])) != 1:
+    compartments = request.get("compartments")
+    valid_compartments = is_array(compartments) and all(
+        isinstance(item, str) for item in compartments
+    )
+    if compartments and (
+        not valid_compartments
+        or len(set(_texts(compartments, context="federated compartments"))) != 1
+    ):
         errors.append("cross-compartment federation prohibited")
-    if not request.get("compartments") or len(request["compartments"]) != 1:
+    if not is_array(compartments) or len(compartments) != 1:
         errors.append("exactly one compartment required")
     if request.get("access_decision") != "synthetic_contract_admitted" or not request.get("role"):
         errors.append("explicit access decision and role required")
@@ -611,7 +929,7 @@ def validate_federated_request(request: dict[str, Any]) -> list[str]:
 
 def reciprocal_rank_fusion(
     candidate_sets: list[list[str]], *, rank_constant: int = 60
-) -> list[dict[str, Any]]:
+) -> list[FusionResult]:
     """Fuse declared candidate identifiers without adding retrieval or model behaviour."""
     if rank_constant < 1 or not candidate_sets:
         raise ValueError("rank constant and candidate sets must be non-empty")
@@ -628,23 +946,27 @@ def reciprocal_rank_fusion(
 
 
 def drift_impact(
-    previous: dict[str, Any], current: dict[str, Any], receipts: list[dict[str, Any]]
-) -> dict[str, Any]:
+    previous: Mapping[str, object],
+    current: Mapping[str, object],
+    receipts: Sequence[Mapping[str, object]],
+) -> DriftImpact:
     for label, manifest in (("previous", previous), ("current", current)):
         errors = validate_manifest(manifest)
         if errors:
             raise ValueError(f"invalid {label} manifest: {'; '.join(errors)}")
-    before = {item["id"]: item["checksum"] for item in previous.get("units", [])}
-    after = {item["id"]: item["checksum"] for item in current.get("units", [])}
+    before = {item["id"]: item["checksum"] for item in _checked_units(previous["units"])}
+    after = {item["id"]: item["checksum"] for item in _checked_units(current["units"])}
     changed = sorted(
         unit_id
         for unit_id in before.keys() | after.keys()
         if before.get(unit_id) != after.get(unit_id)
     )
     affected = sorted(
-        receipt.get("receipt_sha256", "unhashed")
+        _text(receipt.get("receipt_sha256", "unhashed"), context="retrieval receipt hash")
         for receipt in receipts
-        if any(result.get("unit_id") in changed for result in receipt.get("results", []))
+        if any(
+            result.get("unit_id") in changed for result in object_rows(receipt.get("results", []))
+        )
     )
     return {
         "changed_units": changed,
@@ -653,7 +975,7 @@ def drift_impact(
     }
 
 
-def assurance() -> dict[str, Any]:
+def assurance() -> AssuranceReceipt:
     manifest = admitted_manifest()
     index = LexicalIndex(compartment="public")
     index.ingest(manifest)
@@ -666,7 +988,7 @@ def assurance() -> dict[str, Any]:
         "version_filter": index.search("policy", filters={"version": "2.0"}),
         "typo": index.search("uncertanty"),
     }
-    results = {
+    results: dict[str, AssuranceCase] = {
         name: {
             "hits": len(receipt["results"]),
             "passed": bool(receipt["results"]) if name != "typo" else not receipt["results"],
@@ -686,7 +1008,7 @@ def assurance() -> dict[str, Any]:
         index.search('"', mode="expert_fts")
     except ValueError:
         malformed_controlled = True
-    changed = json.loads(json.dumps(manifest))
+    changed = deepcopy(manifest)
     changed["units"][0]["content"] += " Revised synthetic source."
     changed["units"][0]["checksum"] = content_checksum(changed["units"][0]["content"])
     freshness = drift_impact(manifest, changed, [cases["exact"]])
@@ -699,7 +1021,7 @@ def assurance() -> dict[str, Any]:
         restored.close()
     index.close()
     profiles = load_json(PROFILES)
-    receipt: dict[str, Any] = {
+    receipt: _AssuranceFields = {
         "schema_version": "1.0",
         "scope": "deterministic_synthetic_ci_contract",
         "manifest_sha256": canonical_hash(manifest),
@@ -735,10 +1057,7 @@ def assurance() -> dict[str, Any]:
             "latency": {"passed": elapsed_ms >= 0, "status": "descriptive_not_thresholded"},
             "memory": {"passed": peak_bytes > 0, "status": "descriptive_not_thresholded"},
         },
-        "profile_comparison": [
-            {"id": item["id"], "status": item["status"], "revision": item["revision"]}
-            for item in profiles["profiles"]
-        ],
+        "profile_comparison": _profile_comparison(profiles),
         "research_observations": {
             "elapsed_ms": elapsed_ms,
             "allocation_peak_bytes": peak_bytes,
@@ -748,18 +1067,21 @@ def assurance() -> dict[str, Any]:
         "private_data": False,
         "unsupported": MANDATORY_UNSUPPORTED,
     }
-    receipt["observation_sha256"] = canonical_hash(receipt["research_observations"])
-    receipt["receipt_sha256"] = canonical_hash(
+    receipt_hash = canonical_hash(
         {
             key: value
             for key, value in receipt.items()
             if key not in {"research_observations", "observation_sha256"}
         }
     )
-    return receipt
+    return {
+        **receipt,
+        "observation_sha256": canonical_hash(receipt["research_observations"]),
+        "receipt_sha256": receipt_hash,
+    }
 
 
-def verify_assurance(receipt: dict[str, Any]) -> list[str]:
+def verify_assurance(receipt: Mapping[str, object]) -> list[str]:
     errors: list[str] = []
     unsigned = {
         key: value
@@ -776,15 +1098,20 @@ def verify_assurance(receipt: dict[str, Any]) -> list[str]:
         errors.append("profile revision mismatch")
     if receipt.get("unsupported") != MANDATORY_UNSUPPORTED:
         errors.append("unsupported capability declaration mismatch")
-    results = receipt.get("results", {})
+    results_value = receipt.get("results", {})
+    results = results_value if is_object(results_value) else {}
     expected_hits = {"exact": 1, "phrase": 1, "acronym": 1, "version_filter": 1, "typo": 0}
     if set(results) != {"exact", "phrase", "acronym", "version_filter", "typo"} or any(
-        item.get("passed") is not True for item in results.values()
+        not is_object(item) or item.get("passed") is not True for item in results.values()
     ):
         errors.append("assurance case coverage mismatch")
-    if any(results.get(case, {}).get("hits") != hits for case, hits in expected_hits.items()):
+    if any(
+        not is_object(item := results.get(case)) or item.get("hits") != hits
+        for case, hits in expected_hits.items()
+    ):
         errors.append("assurance hit-count mismatch")
-    suites = receipt.get("suites", {})
+    suites_value = receipt.get("suites", {})
+    suites = suites_value if is_object(suites_value) else {}
     if set(suites) != {
         "citation",
         "privacy",
@@ -793,20 +1120,17 @@ def verify_assurance(receipt: dict[str, Any]) -> list[str]:
         "recovery",
         "latency",
         "memory",
-    } or any(item.get("passed") is not True for item in suites.values()):
+    } or any(not is_object(item) or item.get("passed") is not True for item in suites.values()):
         errors.append("assurance suite coverage mismatch")
-    observations = receipt.get("research_observations", {})
+    observations_value = receipt.get("research_observations", {})
+    observations = observations_value if is_object(observations_value) else {}
     if not isinstance(observations.get("elapsed_ms"), (int, float)) or not isinstance(
         observations.get("allocation_peak_bytes"), int
     ):
         errors.append("research performance observations missing")
-    if receipt.get("observation_sha256") != canonical_hash(observations):
+    if receipt.get("observation_sha256") != canonical_hash(observations_value):
         errors.append("research observation hash mismatch")
-    profiles = load_json(PROFILES).get("profiles", [])
-    expected_profiles = [
-        {"id": item["id"], "status": item["status"], "revision": item["revision"]}
-        for item in profiles
-    ]
+    expected_profiles = _profile_comparison(load_json(PROFILES))
     if receipt.get("profile_comparison") != expected_profiles:
         errors.append("profile comparison mismatch")
     return errors
@@ -819,9 +1143,10 @@ def main() -> int:
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     exit_code = 0
+    result: Mapping[str, object]
     if args.command == "validate":
         errors = validate_manifest(admitted_manifest()) + validate_profiles(load_json(PROFILES))
-        result: Any = {"valid": not errors, "errors": errors}
+        result = {"valid": not errors, "errors": errors}
         exit_code = 1 if errors else 0
     elif args.command == "assure":
         result = assurance()

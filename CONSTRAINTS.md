@@ -25,23 +25,26 @@ is a union of executed coverage, not an average of platform percentages.
 Expected failures must be strict: an unexpected pass fails the suite. Full
 socket/process tests stay enabled on supported CI runners.
 
-## Legacy debt is explicit
+## Strict typing has no active debt allowance
 
-The initial strict typing measurement contains **9,801 diagnostics in 117 legacy
-files** after adding upstream type stubs and cleaning lint. This is substantial
-unfinished work, not strict type completeness. The upstream basedpyright baseline
-records the diagnostics; `quality/typing-debt.json` caps each existing file/rule
-count. CI rejects new baseline files/rules and growth against the PR base or
-previous master commit. The new quality helpers and tests have no baseline
-allowance. Fix affected types incrementally; reduce the baseline with ordinary
-basedpyright, then commit the decrease. Do not routinely run `--writebaseline`.
-Ratchet each policy cap down to the remaining count when integrating a batch;
-do not leave permission to restore removed debt. Verify claimed reductions with
-an empty external baseline and retain unresolved private-access or upstream
-unknown contracts instead of hiding them behind `Any`, ignores or blanket casts.
+The initial strict typing measurement contained **9,801 diagnostics in 117 legacy
+files** after adding upstream type stubs and cleaning lint. FAW06 removes the
+remaining 3,198 diagnostics across the active `tools` and `tests` scope. All 153
+Python files pass an empty external baseline with zero errors, warnings or
+information diagnostics. The committed basedpyright baseline is empty and every
+allowance in `quality/typing-debt.json` is removed. Keep both files as a zero-debt
+ratchet: CI rejects new files/rules/counts and growth against the PR base or
+previous master commit. Preserve the original measurement and rollout provenance.
 
-Basedpyright's baseline matches code positions, not semantic proofs. The retained
-ty check, tests, code review, and later typed-boundary migration remain necessary.
+Explicit `Any` annotations are errors. Raw external values enter as `object` or
+checked structural containers; validate domain fields before using them or
+issuing typed receipts. Do not conceal uncertainty with ignores, blanket schema
+casts, exclusions or disabled rules. Do not run `--writebaseline` to absorb new
+failures. New code and tests have the same zero allowance. The completion receipt
+records the empty-baseline measurement and a failing explicit-`Any` fault probe.
+
+Static checking does not prove runtime input validity or scientific correctness.
+The retained ty check, adversarial tests and code review remain necessary.
 Ruff deliberately does not enforce annotation/docstring volume or arbitrary
 complexity limits. Legacy `pytest.raises` rejection matrices retain the PT011
 exception; new boundary regressions should check the intended error precisely.
@@ -52,10 +55,13 @@ Bandit scans all production tools at all severities and confidence levels.
 Import-only B404 findings are excluded; reviewed subprocess argv calls, the
 private `mkdtemp` socket directory, allowlisted SQL identifiers with bound values,
 and the fixed HTTPS source fetch have individual rule-specific explanations.
-Two argv findings in historically frozen source use the native external
-baseline instead of source comments. A pre-scan hash gate binds that baseline
-and both source files to their reviewed bytes; any change fails and requires
-revalidation. See [the frozen-source review](quality/frozen-source-bandit-review.md).
+Two argv findings in the current descendants of historically frozen source use
+the native external baseline instead of source comments. A pre-scan hash gate
+binds that baseline and both current source files to their reviewed bytes; any
+change fails and requires revalidation. The historical source, protocol, review
+and negative results keep their original identities. Current runtime profiles
+have distinct engineering identities and do not requalify a consumed study.
+See [the source review](quality/frozen-source-bandit-review.md).
 New suppression comments require a concrete reason and code review; never use
 bare `nosec`. These checks are not sandboxing or proof that an executable is safe.
 Runtime type guards use explicit failures, so optimized Python does not remove

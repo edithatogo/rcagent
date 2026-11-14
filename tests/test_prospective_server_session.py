@@ -57,17 +57,13 @@ def test_transport_body_integrity_mismatch_rejected(field: str) -> None:
     else:
         receipt["body_sha256"] = "0" * 64
     with pytest.raises(ValueError, match="transport_body_mismatch"):
-        session._body(receipt)
+        session.verified_body(receipt)
 
 
 def test_concurrent_session_rejected_before_receipt_creation(tmp_path: Path) -> None:
     receipt = tmp_path / "receipt.json"
-    assert session._LOCK.acquire(blocking=False)
-    try:
-        with pytest.raises(ValueError, match="session_already_running"):
-            run_session(tmp_path, receipt)
-    finally:
-        session._LOCK.release()
+    with session.exclusive_session(), pytest.raises(ValueError, match="session_already_running"):
+        run_session(tmp_path, receipt)
     assert not receipt.exists()
 
 
@@ -76,17 +72,17 @@ def test_private_directory_and_cleanup_identity_guards(tmp_path: Path) -> None:
         pytest.skip("POSIX ownership and mode guards")
     directory = tmp_path.resolve() / "private"
     directory.mkdir(mode=0o700)
-    identity = session._directory(directory)
+    identity = session.private_directory_identity(directory)
     alias = tmp_path / "alias"
     alias.symlink_to(directory, target_is_directory=True)
     with pytest.raises(ValueError, match="unsafe_session_directory"):
-        session._directory(alias)
+        session.private_directory_identity(alias)
     directory.chmod(0o755)
     with pytest.raises(ValueError, match="unsafe_session_directory"):
-        session._directory(directory)
+        session.private_directory_identity(directory)
     directory.chmod(0o700)
     with pytest.raises(ValueError, match="session_directory_changed"):
-        session._remove_owned(directory / "server.sock", (identity[0], identity[1] + 1), None)
+        session.remove_owned_path(directory / "server.sock", (identity[0], identity[1] + 1), None)
     assert directory.is_dir()
     assert alias.is_symlink()
 
@@ -133,7 +129,7 @@ def test_source_pin_inventory_matches_repository_bytes() -> None:
 def synthetic(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> SessionFixture:
     if os.name != "posix":
         pytest.skip("Unix session composition")
-    monkeypatch.setattr(session, "_BLOCKED", False)
+    monkeypatch.setattr(session, "_blocked", False)
     monkeypatch.setattr(session.platform, "system", lambda: "Darwin")
     monkeypatch.setattr(session.platform, "machine", lambda: "arm64")
     root = tmp_path.resolve()
@@ -545,7 +541,7 @@ with socket.socket(socket.AF_UNIX,socket.SOCK_STREAM) as listener:
     def arguments(admission: object, path: Path) -> list[str]:
         return [str(Path(sys.executable).resolve()), "-c", script, str(path)]
 
-    monkeypatch.setattr(session, "_fixed_arguments", arguments)
+    monkeypatch.setattr(session, "fixed_server_arguments", arguments)
     result = run_session(root, receipt)
     assert result["status"] == "session_captured"
     assert mapping(result["process"])["reaped"] is True

@@ -5,8 +5,9 @@ import json
 from pathlib import Path
 
 import pytest
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, validate
 
+from tools import json_shapes
 from tools.adaptation_readiness import (
     assess_readiness,
     build_rejection_card,
@@ -22,29 +23,41 @@ from tools.adaptation_readiness import (
 ROOT = Path(__file__).parents[1]
 
 
-def registry() -> dict:
-    return json.loads((ROOT / "evaluation/adaptation/registry.json").read_text())
+def obj(value: object) -> json_shapes.JsonObject:
+    return json_shapes.require_object(value, context="test fixture object")
 
 
-def dataset() -> dict:
-    return json.loads((ROOT / "evaluation/adaptation/dataset-manifest.json").read_text())
+def arr(value: object) -> list[object]:
+    assert json_shapes.is_array(value)
+    return value
 
 
-def dependencies() -> dict:
-    return json.loads((ROOT / "evaluation/adaptation/dependencies.json").read_text())
+def read_fixture(name: str) -> json_shapes.JsonObject:
+    parsed: object = json.loads((ROOT / "evaluation/adaptation" / name).read_text())
+    return obj(parsed)
 
 
-def evidence_matrix() -> dict:
-    return json.loads(
-        (ROOT / "evaluation/adaptation/evidence-availability-matrix.json").read_text()
-    )
+def registry() -> json_shapes.JsonObject:
+    return read_fixture("registry.json")
 
 
-def readiness() -> dict:
-    return assess_readiness(registry(), dataset(), dependencies(), ROOT)
+def dataset() -> json_shapes.JsonObject:
+    return read_fixture("dataset-manifest.json")
 
 
-def proposal(level: str = "prompt") -> dict:
+def dependencies() -> json_shapes.JsonObject:
+    return read_fixture("dependencies.json")
+
+
+def evidence_matrix() -> json_shapes.JsonObject:
+    return read_fixture("evidence-availability-matrix.json")
+
+
+def readiness() -> json_shapes.JsonObject:
+    return dict(assess_readiness(registry(), dataset(), dependencies(), ROOT))
+
+
+def proposal(level: str = "prompt") -> json_shapes.JsonObject:
     return {
         "experiment_id": "syn-proposal-1",
         "level": level,
@@ -81,9 +94,9 @@ def test_registry_fails_closed_on_policy_framework_and_comparator_drift() -> Non
     value = registry()
     value["extra"] = True
     value["schema_version"] = "2"
-    value["policy"]["training"] = True
-    value["frameworks"].append(dict(value["frameworks"][0]))
-    value["frameworks"][0].update(
+    obj(value["policy"])["training"] = True
+    arr(value["frameworks"]).append(dict(obj(arr(value["frameworks"])[0])))
+    obj(arr(value["frameworks"])[0]).update(
         status="supported",
         revision="main",
         licence="Apache-2.0",
@@ -102,7 +115,10 @@ def test_registry_fails_closed_on_policy_framework_and_comparator_drift() -> Non
 
 def test_registry_rejects_malformed_collections() -> None:
     value = registry()
-    value.update(policy=[], frameworks=[None, {}], comparators="bad", readiness_thresholds=[])
+    malformed_frameworks: list[object] = [None, {}]
+    value.update(
+        policy=[], frameworks=malformed_frameworks, comparators="bad", readiness_thresholds=[]
+    )
     errors = validate_registry(value)
     assert "policy fields are invalid" in errors
     assert "frameworks[0] fields are invalid" in errors
@@ -126,8 +142,8 @@ def test_dataset_rejects_rights_private_overlap_hash_and_split_drift() -> None:
         private_data=True,
         redistribution=True,
     )
-    value["splits"][1]["item_ids"] = ["syn-should-not-exist"]
-    value["splits"][2]["sha256"] = "0" * 64
+    obj(arr(value["splits"])[1])["item_ids"] = ["syn-should-not-exist"]
+    obj(arr(value["splits"])[2])["sha256"] = "0" * 64
     errors = validate_dataset_manifest(value)
     assert "dataset manifest fields are invalid" in errors
     assert "dataset must be repository-authored generated synthetic" in errors
@@ -138,7 +154,8 @@ def test_dataset_rejects_rights_private_overlap_hash_and_split_drift() -> None:
 
 def test_dataset_rejects_malformed_splits_and_empty_governance() -> None:
     value = dataset()
-    value.update(purpose="", deletion="", splits=[None, {}])
+    malformed_splits: list[object] = [None, {}]
+    value.update(purpose="", deletion="", splits=malformed_splits)
     errors = validate_dataset_manifest(value)
     assert "dataset purpose must be a non-empty string" in errors
     assert "dataset splits are incomplete" in errors
@@ -151,9 +168,13 @@ def test_readiness_is_hash_bound_negative_and_schema_valid() -> None:
     assert result["training_executed"] is False
     unsigned = {key: value for key, value in result.items() if key != "receipt_sha256"}
     assert result["receipt_sha256"] == canonical_hash(unsigned)
-    schema = json.loads((ROOT / "conductor/schemas/adaptation-readiness.schema.json").read_text())
-    assert list(Draft202012Validator(schema).iter_errors(result)) == []
-    checked = json.loads((ROOT / "evaluation/adaptation/readiness-20260829.json").read_text())
+    schema_value: object = json.loads(
+        (ROOT / "conductor/schemas/adaptation-readiness.schema.json").read_text()
+    )
+    assert validate(result, obj(schema_value), cls=Draft202012Validator) is None
+    checked: object = json.loads(
+        (ROOT / "evaluation/adaptation/readiness-20260829.json").read_text()
+    )
     assert result == checked
 
 
@@ -270,9 +291,9 @@ def test_rejection_card_rejects_forged_positive_or_invalid_dataset() -> None:
 
 def test_dependency_manifest_rejects_hash_path_and_claim_forgery() -> None:
     value = dependencies()
-    value["dependencies"][0]["receipt_path"] = "../outside"
-    value["dependencies"][1]["sha256"] = "0" * 64
-    value["claims"][0]["id"] = "forged"
+    obj(arr(value["dependencies"])[0])["receipt_path"] = "../outside"
+    obj(arr(value["dependencies"])[1])["sha256"] = "0" * 64
+    obj(arr(value["claims"])[0])["id"] = "forged"
     errors = validate_dependency_manifest(value, ROOT)
     assert "dependencies[0] path escapes repository" in errors
     assert "dependencies[1] receipt hash mismatched" in errors
@@ -293,7 +314,7 @@ def test_dependency_manifest_rejects_malformed_collections_and_entries() -> None
     assert "dependency track coverage is incomplete" in errors
     assert "dependency claims are incomplete" in errors
     value = dependencies()
-    value["dependencies"] = [None, {}, {**value["dependencies"][0], "state": "active"}]
+    value["dependencies"] = [None, {}, {**obj(arr(value["dependencies"])[0]), "state": "active"}]
     value["claims"] = [None, {}]
     errors = validate_dependency_manifest(value, ROOT)
     assert "dependencies[0] fields are invalid" in errors
@@ -303,9 +324,9 @@ def test_dependency_manifest_rejects_malformed_collections_and_entries() -> None
 
 def test_dependency_manifest_rejects_bad_claim_paths_and_receipt_locations() -> None:
     value = dependencies()
-    value["dependencies"][0]["receipt_path"] = "README.md"
-    value["claims"][0]["path"] = "../outside.json"
-    value["claims"][1]["sha256"] = "0" * 64
+    obj(arr(value["dependencies"])[0])["receipt_path"] = "README.md"
+    obj(arr(value["claims"])[0])["path"] = "../outside.json"
+    obj(arr(value["claims"])[1])["sha256"] = "0" * 64
     errors = validate_dependency_manifest(value, ROOT)
     assert "dependencies[0] receipt path is invalid" in errors
     assert "claims[0] path is invalid" in errors
@@ -320,7 +341,7 @@ def test_dependency_manifest_rejects_intermediate_symlink(tmp_path: Path) -> Non
     track_dir.mkdir(parents=True)
     (track_dir / "linked").symlink_to(outside, target_is_directory=True)
     value = dependencies()
-    value["dependencies"][0]["receipt_path"] = (
+    obj(arr(value["dependencies"])[0])["receipt_path"] = (
         "conductor/archive/benchmark-evaluation-harness_20260731/linked/receipt.md"
     )
     assert "dependencies[0] receipt path is invalid" in validate_dependency_manifest(
@@ -342,18 +363,18 @@ def test_dependency_manifest_rejects_valid_non_object_json(tmp_path: Path) -> No
         return hashlib.sha256(path.read_bytes()).hexdigest()
 
     value = dependencies()
-    value["dependencies"][0].update(
+    obj(arr(value["dependencies"])[0]).update(
         receipt_path="conductor/archive/benchmark-evaluation-harness_20260731/receipt.md",
         sha256=digest(receipt),
         metadata_path="conductor/archive/benchmark-evaluation-harness_20260731/metadata.json",
         metadata_sha256=digest(metadata),
     )
-    value["claims"][0].update(path="claim.json", sha256=digest(claim_file))
+    obj(arr(value["claims"])[0]).update(path="claim.json", sha256=digest(claim_file))
     errors = validate_dependency_manifest(value, tmp_path)
     assert "dependencies[0] metadata must be an object" in errors
     assert "claims[0] content must be an object" in errors
     metadata.write_text('{"track_id":"wrong","status":"active"}')
-    value["dependencies"][0]["metadata_sha256"] = digest(metadata)
+    obj(arr(value["dependencies"])[0])["metadata_sha256"] = digest(metadata)
     assert "dependencies[0] metadata state or identity mismatched" in validate_dependency_manifest(
         value, tmp_path
     )
@@ -388,7 +409,7 @@ def test_readiness_receipt_rejects_tampering_and_wrong_input_binding() -> None:
 
 def test_consumers_reject_self_consistent_receipt_bound_to_invalid_inputs() -> None:
     bad_registry = registry()
-    bad_registry["policy"]["training"] = True
+    obj(bad_registry["policy"])["training"] = True
     forged = assess_readiness(bad_registry, dataset(), dependencies(), ROOT)
     errors = validate_readiness_receipt(
         forged, registry=bad_registry, dataset=dataset(), dependencies=dependencies(), root=ROOT
@@ -421,8 +442,8 @@ def test_consumers_reject_self_consistent_receipt_bound_to_invalid_inputs() -> N
 def test_evidence_matrix_is_complete_null_and_hash_bound() -> None:
     assert validate_evidence_matrix(evidence_matrix(), readiness()) == []
     value = evidence_matrix()
-    value["metrics"]["quality"] = 1
-    value["approaches"].pop()
+    obj(value["metrics"])["quality"] = 1
+    arr(value["approaches"]).pop()
     assert validate_evidence_matrix(value, readiness())
     assert validate_evidence_matrix([], readiness()) == ["evidence matrix must be an object"]
     value = evidence_matrix()
@@ -440,7 +461,7 @@ def test_evidence_matrix_is_complete_null_and_hash_bound() -> None:
     assert "unexecuted evidence matrix metrics must be null" in errors
     assert "evidence matrix limitations are invalid" in errors
     value = evidence_matrix()
-    value["approaches"][0]["state"] = "executed_supported"
+    obj(arr(value["approaches"])[0])["state"] = "executed_supported"
     value["receipt_sha256"] = canonical_hash(
         {key: item for key, item in value.items() if key != "receipt_sha256"}
     )
@@ -451,7 +472,7 @@ def test_evidence_matrix_is_complete_null_and_hash_bound() -> None:
 
 def test_rejection_card_rejects_invalid_evidence_matrix() -> None:
     bad_matrix = evidence_matrix()
-    bad_matrix["metrics"]["quality"] = 1
+    obj(bad_matrix["metrics"])["quality"] = 1
     with pytest.raises(ValueError, match="valid negative evidence matrix"):
         build_rejection_card(
             readiness(),

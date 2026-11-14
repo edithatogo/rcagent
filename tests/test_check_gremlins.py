@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from tools.check_gremlins import main, scan
 
 
@@ -78,7 +80,7 @@ def test_invalid_utf8_reported_once(tmp_path: Path) -> None:
     assert "not valid UTF-8" in findings[0]
 
 
-def test_main_exit_codes(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
+def test_main_exit_codes(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     _write(tmp_path, "clean.py", "value = 1\n")
     assert main([str(tmp_path)]) == 0
     _write(tmp_path, "dirty.md", "a\u200bb\n")

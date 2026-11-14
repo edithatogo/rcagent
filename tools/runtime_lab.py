@@ -12,7 +12,7 @@ import os
 import platform
 import shutil
 from pathlib import Path, PurePosixPath, PureWindowsPath
-from typing import Any
+from typing import Literal, TypedDict, TypeGuard
 
 from tools.json_shapes import is_array, is_object
 
@@ -26,6 +26,136 @@ SUPPORT_STATES = {
 RUNTIME_CLASSES = {"optional_adapter", "experimental"}
 DATA_CLASSES = {"synthetic", "public", "governed_private"}
 HASH_LENGTH = 64
+
+
+class DeviceProfileBody(TypedDict):
+    schema_version: str
+    os_family: str
+    architecture: str
+    logical_cpu_count: int | None
+    memory_gib_floor: int | None
+    memory_probe_state: Literal["provided_coarse", "unobserved"]
+    storage_gib_floor: None
+    storage_probe_state: Literal["unobserved"]
+    accelerator_class: Literal["apple_silicon", "unobserved"]
+    driver_state: Literal["unobserved"]
+    instruction_set_state: Literal["architecture_only_unmeasured"]
+    power_proxy_state: Literal["unobserved"]
+    identifiers_redacted: Literal[True]
+    network_observation: Literal["not_probed"]
+    telemetry_observation: Literal["not_probed"]
+
+
+class DeviceProfile(DeviceProfileBody):
+    receipt_sha256: str
+
+
+class RuntimeIdentity(TypedDict):
+    id: str
+    executable_names: list[str]
+
+
+class RegistryInventory(TypedDict):
+    runtimes: list[RuntimeIdentity]
+
+
+class ObservationIdentity(TypedDict):
+    runtime_id: str
+    observed_state: str
+
+
+class DiscoveryInventory(TypedDict):
+    observations: list[ObservationIdentity]
+
+
+class Observation(TypedDict):
+    runtime_id: str
+    observed_state: Literal["installed_unmeasured", "unavailable"]
+    executable_observed: bool
+    executable_path: None
+    version: Literal["unmeasured", "unavailable"]
+    support_state: Literal["unsupported_without_execution_receipt"]
+
+
+class DiscoveryBody(TypedDict):
+    schema_version: str
+    scope: Literal["read_only_runtime_discovery_no_execution"]
+    observations: list[Observation]
+    network: Literal["not_used"]
+    telemetry: Literal["not_used"]
+    model_executed: Literal[False]
+
+
+class DiscoveryReceipt(DiscoveryBody):
+    receipt_sha256: str
+
+
+class RouteBody(TypedDict):
+    status: Literal["no_capability", "eligible_local_route"]
+    reasons: list[str]
+    external_fallback: Literal[False]
+    model_executed: Literal[False]
+
+
+class RouteReceipt(RouteBody):
+    receipt_sha256: str
+
+
+class RecommendationRow(TypedDict):
+    runtime_id: str
+    classification: Literal["unsupported"]
+    evidence_state: str
+    measured_device: Literal[False]
+    public_comparative_claim: Literal[False]
+    rationale: str
+
+
+class AgentAgreement(TypedDict):
+    status: Literal["unanimous_accept"]
+    reviewed_revision: str
+    roles: list[str]
+    human_agreement: Literal[False]
+
+
+class MatrixBody(TypedDict):
+    schema_version: str
+    date: str
+    scope: Literal["internal_non_operational_recommendation"]
+    rows: list[RecommendationRow]
+    agent_agreement: AgentAgreement
+    human_agreement: Literal[False]
+    limitations: list[str]
+
+
+class RecommendationMatrix(MatrixBody):
+    receipt_sha256: str
+
+
+def _is_registry_inventory(value: object) -> TypeGuard[RegistryInventory]:
+    if not is_object(value):
+        return False
+    runtimes = value.get("runtimes")
+    if not is_array(runtimes):
+        return False
+    for runtime in runtimes:
+        if not is_object(runtime) or not isinstance(runtime.get("id"), str):
+            return False
+        names = runtime.get("executable_names")
+        if not is_array(names) or not all(isinstance(name, str) for name in names):
+            return False
+    return True
+
+
+def _is_discovery_inventory(value: object) -> TypeGuard[DiscoveryInventory]:
+    if not is_object(value):
+        return False
+    observations = value.get("observations")
+    return is_array(observations) and all(
+        is_object(item)
+        and isinstance(item.get("runtime_id"), str)
+        and isinstance(item.get("observed_state"), str)
+        for item in observations
+    )
 
 
 def _is_sha256(value: object) -> bool:
@@ -49,7 +179,7 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def privacy_safe_device_profile(*, memory_bytes: int | None = None) -> dict[str, Any]:
+def privacy_safe_device_profile(*, memory_bytes: int | None = None) -> DeviceProfile:
     """Return coarse capability fields without host, user, path, or serial data."""
     machine = platform.machine().lower() or "unknown"
     system = platform.system().lower() or "unknown"
@@ -59,7 +189,7 @@ def privacy_safe_device_profile(*, memory_bytes: int | None = None) -> dict[str,
     accelerator = (
         "apple_silicon" if system == "darwin" and machine in {"arm64", "aarch64"} else "unobserved"
     )
-    profile = {
+    profile: DeviceProfileBody = {
         "schema_version": SCHEMA_VERSION,
         "os_family": system,
         "architecture": machine,
@@ -76,8 +206,7 @@ def privacy_safe_device_profile(*, memory_bytes: int | None = None) -> dict[str,
         "network_observation": "not_probed",
         "telemetry_observation": "not_probed",
     }
-    profile["receipt_sha256"] = _digest(profile)
-    return profile
+    return {**profile, "receipt_sha256": _digest(profile)}
 
 
 def validate_device_profile(profile: object) -> list[str]:
@@ -108,9 +237,17 @@ def validate_device_profile(profile: object) -> list[str]:
         errors.append("device profile schema version is invalid")
     if profile.get("identifiers_redacted") is not True:
         errors.append("device identifiers must be redacted")
-    if profile.get("os_family") not in {"darwin", "linux", "windows", "unknown"}:
+    os_family = profile.get("os_family")
+    if not isinstance(os_family, str) or os_family not in {"darwin", "linux", "windows", "unknown"}:
         errors.append("device os_family is not a coarse allowed value")
-    if profile.get("architecture") not in {"arm64", "aarch64", "x86_64", "amd64", "unknown"}:
+    architecture = profile.get("architecture")
+    if not isinstance(architecture, str) or architecture not in {
+        "arm64",
+        "aarch64",
+        "x86_64",
+        "amd64",
+        "unknown",
+    }:
         errors.append("device architecture is not a coarse allowed value")
     cpu_count = profile.get("logical_cpu_count")
     if cpu_count is not None and (
@@ -138,7 +275,8 @@ def validate_device_profile(profile: object) -> list[str]:
         "telemetry_observation": {"not_probed"},
     }
     for field, choices in categorical.items():
-        if profile.get(field) not in choices:
+        value = profile.get(field)
+        if not isinstance(value, str) or value not in choices:
             errors.append(f"device {field} is invalid")
     supplied = profile.get("receipt_sha256")
     unsigned = {key: value for key, value in profile.items() if key != "receipt_sha256"}
@@ -280,7 +418,11 @@ def validate_runtime_registry(registry: object) -> list[str]:
         for field in ("repository", "licence", "quantisation", "device_evidence"):
             if not isinstance(model.get(field), str) or not model.get(field):
                 errors.append(f"{prefix}.{field} must be a non-empty string")
-        if model.get("admission_status") not in {"measured_research", "supported"}:
+        admission_status = model.get("admission_status")
+        if not isinstance(admission_status, str) or admission_status not in {
+            "measured_research",
+            "supported",
+        }:
             errors.append(f"{prefix}.admission_status is invalid")
         for field in ("task_fit", "failure_modes"):
             values = model.get(field)
@@ -317,11 +459,13 @@ def validate_runtime_registry(registry: object) -> list[str]:
     return sorted(errors)
 
 
-def discover_runtimes(registry: dict[str, Any]) -> dict[str, Any]:
+def discover_runtimes(registry: object) -> DiscoveryReceipt:
     errors = validate_runtime_registry(registry)
     if errors:
         raise ValueError("invalid runtime registry: " + "; ".join(errors))
-    observations: list[dict[str, object]] = []
+    if not _is_registry_inventory(registry):
+        raise ValueError("invalid runtime registry: invalid runtime field shapes")
+    observations: list[Observation] = []
     for runtime in registry["runtimes"]:
         executable_names: list[str] = runtime["executable_names"]
         found = next((shutil.which(name) for name in executable_names if shutil.which(name)), None)
@@ -335,7 +479,7 @@ def discover_runtimes(registry: dict[str, Any]) -> dict[str, Any]:
                 "support_state": "unsupported_without_execution_receipt",
             }
         )
-    receipt: dict[str, object] = {
+    receipt: DiscoveryBody = {
         "schema_version": SCHEMA_VERSION,
         "scope": "read_only_runtime_discovery_no_execution",
         "observations": observations,
@@ -343,8 +487,7 @@ def discover_runtimes(registry: dict[str, Any]) -> dict[str, Any]:
         "telemetry": "not_used",
         "model_executed": False,
     }
-    receipt["receipt_sha256"] = _digest(receipt)
-    return receipt
+    return {**receipt, "receipt_sha256": _digest(receipt)}
 
 
 def validate_discovery_receipt(discovery: object, registry: object) -> list[str]:
@@ -382,18 +525,24 @@ def validate_discovery_receipt(discovery: object, registry: object) -> list[str]
     runtimes = safe_registry.get("runtimes", [])
     if not is_array(runtimes):
         runtimes = []
-    runtime_ids = {item.get("id") for item in runtimes if is_object(item)}
+    runtime_ids = [item.get("id") for item in runtimes if is_object(item)]
     observed_ids = [item.get("runtime_id") for item in observations if is_object(item)]
     if (
-        len(observed_ids) != len(observations)
-        or set(observed_ids) != runtime_ids
+        len(runtime_ids) != len(runtimes)
+        or len(observed_ids) != len(observations)
+        or any(not isinstance(identifier, str) for identifier in [*runtime_ids, *observed_ids])
+        or set(observed_ids) != set(runtime_ids)
         or len(set(observed_ids)) != len(observed_ids)
     ):
         errors.append("discovery observations must bind every registered runtime exactly once")
     for index, observation in enumerate(observations):
         if not is_object(observation):
             continue
-        if observation.get("observed_state") not in {"installed_unmeasured", "unavailable"}:
+        observed_state = observation.get("observed_state")
+        if not isinstance(observed_state, str) or observed_state not in {
+            "installed_unmeasured",
+            "unavailable",
+        }:
             errors.append(
                 f"discovery.observations[{index}] cannot contain measured support evidence"
             )
@@ -518,7 +667,7 @@ def route_request(
     request: object,
     registry: object,
     discovery: object,
-) -> dict[str, Any]:
+) -> RouteReceipt:
     reasons: list[str] = []
     registry_errors = validate_runtime_registry(registry)
     reasons.extend(f"registry invalid: {error}" for error in registry_errors)
@@ -529,7 +678,8 @@ def route_request(
         request = {}
     required = {"task", "modality", "data_class", "runtime_id", "model_id", "context_tokens"}
     reasons.extend(f"request.{key} is required" for key in sorted(required - request.keys()))
-    if request.get("data_class") not in DATA_CLASSES:
+    data_class = request.get("data_class")
+    if not isinstance(data_class, str) or data_class not in DATA_CLASSES:
         reasons.append("request.data_class is invalid")
     context_tokens = request.get("context_tokens")
     if (
@@ -574,7 +724,8 @@ def route_request(
         reasons.append("runtime is not registered")
     elif runtime.get("network") != "none" or runtime.get("telemetry") != "disabled":
         reasons.append("runtime isolation is not established")
-    if observation is None or observation.get("observed_state") not in {
+    observed_state = observation.get("observed_state") if observation is not None else None
+    if not isinstance(observed_state, str) or observed_state not in {
         "measured_research",
         "supported",
     }:
@@ -582,7 +733,11 @@ def route_request(
     if model is None:
         reasons.append("model is not admitted")
     else:
-        if model.get("admission_status") not in {"measured_research", "supported"}:
+        admission_status = model.get("admission_status")
+        if not isinstance(admission_status, str) or admission_status not in {
+            "measured_research",
+            "supported",
+        }:
             reasons.append("model lacks measured admission")
         model_limit = model.get("context_limit")
         if (
@@ -602,29 +757,30 @@ def route_request(
             reasons.append("modality is unsupported")
     if request.get("data_class") == "governed_private":
         reasons.append("governed-private routing requires separately verified local isolation")
-    result = {
+    result: RouteBody = {
         "status": "no_capability" if reasons else "eligible_local_route",
         "reasons": sorted(set(reasons)),
         "external_fallback": False,
         "model_executed": False,
     }
-    result["receipt_sha256"] = _digest(result)
-    return result
+    return {**result, "receipt_sha256": _digest(result)}
 
 
 def recommendation_matrix(
-    registry: dict[str, Any], discovery: dict[str, Any], *, date: str
-) -> dict[str, Any]:
+    registry: object, discovery: object, *, date: str
+) -> RecommendationMatrix:
     validation_errors = [
         *validate_runtime_registry(registry),
         *validate_discovery_receipt(discovery, registry),
     ]
     if validation_errors:
         raise ValueError("invalid recommendation evidence: " + "; ".join(validation_errors))
-    rows: list[dict[str, object]] = []
-    observed = {item["runtime_id"]: item for item in discovery.get("observations", [])}
-    for runtime in registry.get("runtimes", []):
-        state = observed.get(runtime["id"], {}).get("observed_state", "unavailable")
+    if not _is_registry_inventory(registry) or not _is_discovery_inventory(discovery):
+        raise ValueError("invalid recommendation evidence: invalid runtime field shapes")
+    rows: list[RecommendationRow] = []
+    observed = {item["runtime_id"]: item["observed_state"] for item in discovery["observations"]}
+    for runtime in registry["runtimes"]:
+        state = observed.get(runtime["id"], "unavailable")
         rows.append(
             {
                 "runtime_id": runtime["id"],
@@ -635,7 +791,7 @@ def recommendation_matrix(
                 "rationale": "No exact runtime, model, device and benchmark promotion receipt.",
             }
         )
-    matrix = {
+    matrix: MatrixBody = {
         "schema_version": SCHEMA_VERSION,
         "date": date,
         "scope": "internal_non_operational_recommendation",
@@ -652,5 +808,4 @@ def recommendation_matrix(
             "No clinical, legal, policy, organisational, deployment or public-comparison approval.",
         ],
     }
-    matrix["receipt_sha256"] = _digest(matrix)
-    return matrix
+    return {**matrix, "receipt_sha256": _digest(matrix)}
