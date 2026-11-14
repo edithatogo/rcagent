@@ -55,13 +55,24 @@ class D0Receipt(TypedDict):
     output_fingerprint: str
 
 
+def _generated_source(source_id: str, version: int, content: str) -> dict[str, object]:
+    """Generate an admitted source and its declared byte fingerprint."""
+    return {
+        "id": source_id,
+        "version": version,
+        "state": "present",
+        "content": content,
+        "fingerprint": f"sha256:{sha256(content.encode('utf-8')).hexdigest()}",
+    }
+
+
 def _synthetic_cases() -> list[dict[str, object]]:
     """Generate finite examples separately from the independent oracle lane."""
     return [
         {
             "case_id": "d0-valid-span",
             "sources": [
-                {"id": "src-a", "version": 1, "state": "present", "content": "Café: 12 mg."}
+                _generated_source("src-a", 1, "Café: 12 mg.")
             ],
             "evidence": [
                 {
@@ -77,8 +88,8 @@ def _synthetic_cases() -> list[dict[str, object]]:
         {
             "case_id": "d0-revised-source",
             "sources": [
-                {"id": "src-b", "version": 1, "state": "present", "content": "Note: first"},
-                {"id": "src-b", "version": 2, "state": "present", "content": "Note: revised"},
+                _generated_source("src-b", 1, "Note: first"),
+                _generated_source("src-b", 2, "Note: revised"),
             ],
             "evidence": [
                 {
@@ -108,8 +119,8 @@ def _synthetic_cases() -> list[dict[str, object]]:
         {
             "case_id": "d0-cross-version",
             "sources": [
-                {"id": "src-d", "version": 1, "state": "present", "content": "old"},
-                {"id": "src-d", "version": 2, "state": "present", "content": "new"},
+                _generated_source("src-d", 1, "old"),
+                _generated_source("src-d", 2, "new"),
             ],
             "evidence": [
                 {
@@ -124,7 +135,7 @@ def _synthetic_cases() -> list[dict[str, object]]:
         },
         {
             "case_id": "d0-duplicate-evidence",
-            "sources": [{"id": "src-e", "version": 1, "state": "present", "content": "seen"}],
+            "sources": [_generated_source("src-e", 1, "seen")],
             "evidence": [
                 {
                     "id": "ev-e",
@@ -212,13 +223,17 @@ def inspect_case(case: dict[str, object]) -> CaseObservation:
             if not isinstance(content, str):
                 raise ValueError("present source content must be text")
             raw = content.encode("utf-8")
+            actual_digest = f"sha256:{sha256(raw).hexdigest()}"
+            if row.get("fingerprint") != actual_digest:
+                errors.append(f"source fingerprint mismatch: {sid}@{version}")
+                continue
             index[identity] = raw
             sources.append(
                 {
                     "source_id": sid,
                     "version": version,
                     "state": "present",
-                    "sha256": f"sha256:{sha256(raw).hexdigest()}",
+                    "sha256": actual_digest,
                     "bytes": len(raw),
                 }
             )
