@@ -127,7 +127,8 @@ def test_independent_oracle_collection_duplicates_and_revisions() -> None:
         indices = sequence(item["source_indices"])
         selected: list[ObjectMap] = []
         for index in indices:
-            assert isinstance(index, int) and not isinstance(index, bool)
+            assert isinstance(index, int)
+            assert not isinstance(index, bool)
             selected.append(sources[index])
         actual = _check_collection(selected)
         if item["expected"] == "accept":
