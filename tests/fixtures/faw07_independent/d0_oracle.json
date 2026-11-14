@@ -1,0 +1,357 @@
+{
+  "schema_version": "faw07-independent-oracle-1.0",
+  "data_class": "synthetic-only",
+  "source_digest_algorithm": "sha256-raw-utf8",
+  "coordinate_system": "utf8-byte-half-open",
+  "sources": [
+    {
+      "id": "source-a",
+      "revision": 1,
+      "case_id": "synthetic-case-a",
+      "text": "[Patient A] synthetic evidence: pulse 72.\n",
+      "sha256": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+      "state": "admitted"
+    },
+    {
+      "id": "source-a",
+      "revision": 2,
+      "case_id": "synthetic-case-a",
+      "text": "[Patient A] synthetic evidence: pulse 73.\n",
+      "sha256": "0cca04861946e9e1c11b77d62fe47657b6d5d98c92a711218d465f8921efebcd",
+      "state": "admitted"
+    },
+    {
+      "id": "source-unicode",
+      "revision": 1,
+      "case_id": "synthetic-case-a",
+      "text": "[Clinician A] note: café at [Ward X].\n",
+      "sha256": "47cc41880dc0a82000832ac02a7a8e916ad56faee0ce5ae453bacc9d698f629b",
+      "state": "admitted"
+    },
+    {
+      "id": "source-b",
+      "revision": 1,
+      "case_id": "synthetic-case-b",
+      "text": "[Consumer B] provided an alternative synthetic account.\n",
+      "sha256": "5aab008b018e0ba1646a9e450fde978dabbb244fa307136d3526ac1f11665bc2",
+      "state": "admitted"
+    },
+    {
+      "id": "source-withdrawn",
+      "revision": 1,
+      "case_id": "synthetic-case-a",
+      "text": "[Patient A] synthetic evidence: pulse 72.\n",
+      "sha256": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+      "state": "withdrawn"
+    }
+  ],
+  "cases": [
+    {
+      "id": "A01-exact",
+      "expected": "accept",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "A02-repeat",
+      "expected": "accept",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "A03-revision",
+      "expected": "accept",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 2,
+        "case_id": "synthetic-case-a",
+        "digest": "0cca04861946e9e1c11b77d62fe47657b6d5d98c92a711218d465f8921efebcd",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 73."
+      }
+    },
+    {
+      "id": "A04-multibyte",
+      "expected": "accept",
+      "claim": {
+        "source_id": "source-unicode",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "47cc41880dc0a82000832ac02a7a8e916ad56faee0ce5ae453bacc9d698f629b",
+        "unit": "utf8-byte",
+        "start": 20,
+        "end": 25,
+        "span_text": "café"
+      }
+    },
+    {
+      "id": "A05-other-case",
+      "expected": "accept",
+      "claim": {
+        "source_id": "source-b",
+        "revision": 1,
+        "case_id": "synthetic-case-b",
+        "digest": "5aab008b018e0ba1646a9e450fde978dabbb244fa307136d3526ac1f11665bc2",
+        "unit": "utf8-byte",
+        "start": 0,
+        "end": 12,
+        "span_text": "[Consumer B]"
+      }
+    },
+    {
+      "id": "R01-forged-digest",
+      "expected": "reject",
+      "reason": "digest_mismatch",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "R02-stale-revision-digest",
+      "expected": "reject",
+      "reason": "digest_mismatch",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 2,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 73."
+      }
+    },
+    {
+      "id": "R03-cross-case",
+      "expected": "reject",
+      "reason": "case_mismatch",
+      "claim": {
+        "source_id": "source-b",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "5aab008b018e0ba1646a9e450fde978dabbb244fa307136d3526ac1f11665bc2",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "R04-unknown-source",
+      "expected": "reject",
+      "reason": "unknown_source",
+      "claim": {
+        "source_id": "source-missing",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "R05-unknown-revision",
+      "expected": "reject",
+      "reason": "unknown_revision",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 3,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "R06-negative-offset",
+      "expected": "reject",
+      "reason": "invalid_span",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "utf8-byte",
+        "start": -1,
+        "end": 41,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "R07-out-of-bounds",
+      "expected": "reject",
+      "reason": "invalid_span",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 100000,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "R08-reversed-span",
+      "expected": "reject",
+      "reason": "invalid_span",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "utf8-byte",
+        "start": 41,
+        "end": 32,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "R09-wrong-span-text",
+      "expected": "reject",
+      "reason": "span_mismatch",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 73."
+      }
+    },
+    {
+      "id": "R10-utf8-split",
+      "expected": "reject",
+      "reason": "invalid_span",
+      "claim": {
+        "source_id": "source-unicode",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "47cc41880dc0a82000832ac02a7a8e916ad56faee0ce5ae453bacc9d698f629b",
+        "unit": "utf8-byte",
+        "start": 20,
+        "end": 24,
+        "span_text": "café"
+      }
+    },
+    {
+      "id": "R11-withdrawn",
+      "expected": "reject",
+      "reason": "source_not_admitted",
+      "claim": {
+        "source_id": "source-withdrawn",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "R12-missing-hash",
+      "expected": "reject",
+      "reason": "malformed_claim",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "unit": "utf8-byte",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "R13-malformed-offset",
+      "expected": "reject",
+      "reason": "malformed_claim",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "utf8-byte",
+        "start": "32",
+        "end": 41,
+        "span_text": "pulse 72."
+      }
+    },
+    {
+      "id": "R14-wrong-coordinate-system",
+      "expected": "reject",
+      "reason": "invalid_coordinate_system",
+      "claim": {
+        "source_id": "source-a",
+        "revision": 1,
+        "case_id": "synthetic-case-a",
+        "digest": "1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
+        "unit": "unicode-codepoint",
+        "start": 32,
+        "end": 41,
+        "span_text": "pulse 72."
+      }
+    }
+  ],
+  "collection_checks": [
+    {
+      "id": "C01-duplicate-id-revision",
+      "expected": "reject",
+      "reason": "duplicate_source_version",
+      "source_indices": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "C02-two-revisions",
+      "expected": "accept",
+      "source_indices": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "C03-independent-sources",
+      "expected": "accept",
+      "source_indices": [
+        0,
+        2,
+        3
+      ]
+    }
+  ]
+}
