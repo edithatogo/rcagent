@@ -126,10 +126,22 @@ def _synthetic_cases() -> list[dict[str, object]]:
             "case_id": "d0-duplicate-evidence",
             "sources": [{"id": "src-e", "version": 1, "state": "present", "content": "seen"}],
             "evidence": [
-                {"id": "ev-e", "source_id": "src-e", "source_version": 1,
-                 "start_byte": 0, "end_byte": 4, "text": "seen"},
-                {"id": "ev-e", "source_id": "src-e", "source_version": 1,
-                 "start_byte": 0, "end_byte": 4, "text": "seen"},
+                {
+                    "id": "ev-e",
+                    "source_id": "src-e",
+                    "source_version": 1,
+                    "start_byte": 0,
+                    "end_byte": 4,
+                    "text": "seen",
+                },
+                {
+                    "id": "ev-e",
+                    "source_id": "src-e",
+                    "source_version": 1,
+                    "start_byte": 0,
+                    "end_byte": 4,
+                    "text": "seen",
+                },
             ],
         },
     ]
@@ -187,8 +199,13 @@ def inspect_case(case: dict[str, object]) -> CaseObservation:
         if state == "unknown" and "content" not in row:
             index[identity] = None
             sources.append(
-                {"source_id": sid, "version": version, "state": "unknown",
-                 "sha256": None, "bytes": None}
+                {
+                    "source_id": sid,
+                    "version": version,
+                    "state": "unknown",
+                    "sha256": None,
+                    "bytes": None,
+                }
             )
         elif state == "present" and isinstance(row.get("content"), str):
             content = row["content"]
@@ -197,8 +214,13 @@ def inspect_case(case: dict[str, object]) -> CaseObservation:
             raw = content.encode("utf-8")
             index[identity] = raw
             sources.append(
-                {"source_id": sid, "version": version, "state": "present",
-                 "sha256": f"sha256:{sha256(raw).hexdigest()}", "bytes": len(raw)}
+                {
+                    "source_id": sid,
+                    "version": version,
+                    "state": "present",
+                    "sha256": f"sha256:{sha256(raw).hexdigest()}",
+                    "bytes": len(raw),
+                }
             )
         else:
             errors.append(f"invalid source state/content: {sid}@{version}")
@@ -235,16 +257,23 @@ def inspect_case(case: dict[str, object]) -> CaseObservation:
             continue
         spans.append(
             {
-                "evidence_id": eid, "source_id": sid, "source_version": version,
-                "start_byte": start, "end_byte": end, "text": decoded,
+                "evidence_id": eid,
+                "source_id": sid,
+                "source_version": version,
+                "start_byte": start,
+                "end_byte": end,
+                "text": decoded,
                 "source_sha256": f"sha256:{sha256(raw).hexdigest()}",
                 "verified": True,
             }
         )
 
     return {
-        "case_id": case_id, "status": "rejected" if errors else "accepted",
-        "sources": sources, "spans": spans, "errors": sorted(errors),
+        "case_id": case_id,
+        "status": "rejected" if errors else "accepted",
+        "sources": sources,
+        "spans": spans,
+        "errors": sorted(errors),
     }
 
 
@@ -269,7 +298,9 @@ def generate_receipt() -> D0Receipt:
         ],
         "output_fingerprint": "",
     }
-    base["output_fingerprint"] = fingerprint({k: v for k, v in base.items() if k != "output_fingerprint"})
+    base["output_fingerprint"] = fingerprint(
+        {k: v for k, v in base.items() if k != "output_fingerprint"}
+    )
     return base
 
 
