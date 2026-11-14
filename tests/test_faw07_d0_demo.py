@@ -8,6 +8,7 @@ import json
 import pytest
 
 from tools.faw07_d0_demo import generate_receipt, inspect_case
+from tools.json_shapes import is_array, is_object
 from tools.workbench import main
 
 
@@ -52,9 +53,9 @@ def test_utf8_byte_offsets_and_source_hash() -> None:
 def test_unaligned_utf8_and_forged_span_reject() -> None:
     bad = _case()
     evidence = bad["evidence"]
-    assert isinstance(evidence, list)
+    assert is_array(evidence)
     row = evidence[0]
-    assert isinstance(row, dict)
+    assert is_object(row)
     row["start_byte"] = 4
     assert "unaligned UTF-8" in " ".join(inspect_case(bad)["errors"])
     row["start_byte"] = 6
@@ -65,16 +66,16 @@ def test_unaligned_utf8_and_forged_span_reject() -> None:
 def test_missing_version_unknown_bytes_and_duplicates_reject() -> None:
     bad = _case()
     rows = bad["evidence"]
-    assert isinstance(rows, list)
+    assert is_array(rows)
     row = rows[0]
-    assert isinstance(row, dict)
+    assert is_object(row)
     row["source_version"] = 2
     assert "unknown source identity" in " ".join(inspect_case(bad)["errors"])
     row["source_version"] = 1
     rows.append(dict(row))
     assert "duplicate evidence" in " ".join(inspect_case(bad)["errors"])
     sources = bad["sources"]
-    assert isinstance(sources, list)
+    assert is_array(sources)
     sources[0] = {"id": "source-a", "version": 1, "state": "unknown"}
     assert "unknown source bytes" in " ".join(inspect_case(bad)["errors"])
 
@@ -83,9 +84,9 @@ def test_missing_version_unknown_bytes_and_duplicates_reject() -> None:
 def test_invalid_versions_are_not_coerced(value: object) -> None:
     bad = _case()
     rows = bad["sources"]
-    assert isinstance(rows, list)
+    assert is_array(rows)
     row = rows[0]
-    assert isinstance(row, dict)
+    assert is_object(row)
     row["version"] = value
     with pytest.raises(ValueError, match="positive integer"):
         inspect_case(bad)
