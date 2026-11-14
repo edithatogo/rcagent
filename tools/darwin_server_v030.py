@@ -17,7 +17,7 @@ from pathlib import Path
 from tools import darwin_runtime_profile as core
 from tools import darwin_runtime_v030 as cli
 
-PROFILE_ID = "darwin-llama-server-0.3.0-20260830"
+PROFILE_ID = "darwin-llama-server-0.3.0-typing-20261114"
 EXECUTABLE = "/opt/homebrew/Cellar/llama.cpp/0.3.0/bin/llama-server"
 LIBRARY_DIRS = tuple(cli.LIBRARY_DIRS)
 VERSION_LINE = cli.VERSION_LINE
@@ -33,9 +33,10 @@ LOAD_ALIASES = dict(cli.LOAD_ALIASES)
 EVIDENCE_FILES = dict(cli.EVIDENCE_FILES)
 SOURCE_ROOT = Path(__file__).resolve().parent
 SOURCE_FILES = {
-    "darwin_runtime_profile.py": "c910b867fa1bb71c397fd466fe0f57931cfe1894f2b49a5752befb4d3b854998",
-    "darwin_runtime_v030.py": "d84755db8d098393887e0fca0e67ef4d5d76bdfcacdda2a229d3138fe2605f37",
-    "local_model_comparator.py": "429ae531533c5a90f618c3eb2f4d8f04c745c06ebf993159603710cefd25b090",
+    "darwin_runtime_profile.py": "31f0627bd3386a164872f1c14640e14b26a5551b7f61c6c23795ce2427a5c3ee",
+    "darwin_runtime_v030.py": "2f9d42e8522d376401188c89e6a4d55692cd145985506b88e31e26c31f26de8d",
+    "local_model_comparator.py": "f27bf6dcf890887bf30112982ba78843828d58ce00b8a1b3481f23a1c2a49074",
+    "json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
 }
 
 

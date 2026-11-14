@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 @pytest.mark.parametrize("version", ["3.11.0", "3.13.15", "3.14.5"])
-def test_dependency_pins_preserve_supported_python(version):
+def test_dependency_pins_preserve_supported_python(version: str) -> None:
     project = tomllib.loads((ROOT / "pyproject.toml").read_text())
     lock = tomllib.loads((ROOT / "uv.lock").read_text())
     constraint = project["project"]["requires-python"]
@@ -19,7 +19,7 @@ def test_dependency_pins_preserve_supported_python(version):
     assert lock["requires-python"] == constraint
 
 
-def test_renovate_does_not_pin_python_compatibility_floor():
+def test_renovate_does_not_pin_python_compatibility_floor() -> None:
     config = json.loads((ROOT / "renovate.json").read_text())
     rules = config["packageRules"]
     assert any(

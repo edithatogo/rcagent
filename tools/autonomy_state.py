@@ -13,26 +13,160 @@ import os
 import re
 import tempfile
 import uuid
-from collections.abc import Generator
+from collections.abc import Generator, Mapping
 from contextlib import contextmanager
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from typing import Any
+from typing import NotRequired, TypedDict, TypeGuard
 
 from tools.autonomy_harness import deterministic_run_id
+from tools.json_shapes import is_array, is_object
 
 
-def _digest(value: Any) -> str:
+class TrackState(TypedDict):
+    id: str
+    phases: list[str]
+    dependencies: list[str]
+    phase_index: int
+    stage: str
+    repairs: int
+    wait_resume_stage: NotRequired[str]
+    wake_condition: NotRequired[str | None]
+    resume_stage: NotRequired[str]
+
+
+class StateEvent(TypedDict):
+    id: str
+    request: dict[str, str | None]
+    instruction: dict[str, str]
+    receipt_sha256: str | None
+    timestamp: str
+
+
+class CheckpointState(TypedDict):
+    schema_version: str
+    base_revision: str
+    tracks: list[TrackState]
+    events: list[StateEvent]
+    circuit_breaker: bool
+
+
+class _CheckpointLease(TypedDict):
+    protocol: str
+    token: str
+    owner: str
+    run_id: str
+    worktree: str
+    heartbeat_at: str
+    expires_at: str
+
+
+class _RecoveryArtefact(TypedDict):
+    path: str
+    sha256: str
+    role: str
+
+
+def _digest(value: object) -> str:
     return hashlib.sha256(
         json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
     ).hexdigest()
 
 
-def _text(value: Any) -> bool:
+def _text(value: object) -> TypeGuard[str]:
     return isinstance(value, str) and bool(value.strip())
 
 
-def _relative_file(root: Path, name: Any) -> Path:
+def _texts(value: object) -> TypeGuard[list[str]]:
+    return is_array(value) and all(_text(item) for item in value)
+
+
+def _string_map(value: object) -> TypeGuard[dict[str, str]]:
+    return is_object(value) and all(isinstance(item, str) for item in value.values())
+
+
+def _is_track(value: object) -> TypeGuard[TrackState]:
+    if not is_object(value):
+        return False
+    phases, index, repairs = value.get("phases"), value.get("phase_index"), value.get("repairs")
+    if (
+        not _text(value.get("id"))
+        or not _texts(phases)
+        or not phases
+        or not _texts(value.get("dependencies"))
+        or type(index) is not int
+        or not 0 <= index < len(phases)
+        or type(repairs) is not int
+        or repairs < 0
+        or not _text(value.get("stage"))
+    ):
+        return False
+    for field in ("wait_resume_stage", "resume_stage"):
+        if field in value and not _text(value[field]):
+            return False
+    if (
+        "wake_condition" in value
+        and value["wake_condition"] is not None
+        and not _text(value["wake_condition"])
+    ):
+        return False
+    if value["stage"] == "rework" and "resume_stage" not in value:
+        return False
+    return not (
+        value["stage"] in ("waiting_external", "decision_needed")
+        and ("wait_resume_stage" not in value or "wake_condition" not in value)
+    )
+
+
+def _is_event(value: object) -> TypeGuard[StateEvent]:
+    if not is_object(value):
+        return False
+    request = value.get("request")
+    return (
+        _text(value.get("id"))
+        and is_object(request)
+        and all(item is None or isinstance(item, str) for item in request.values())
+        and _string_map(value.get("instruction"))
+        and "receipt_sha256" in value
+        and (value["receipt_sha256"] is None or isinstance(value["receipt_sha256"], str))
+        and _text(value.get("timestamp"))
+    )
+
+
+def _is_checkpoint(value: object) -> TypeGuard[CheckpointState]:
+    if not is_object(value):
+        return False
+    tracks, events = value.get("tracks"), value.get("events")
+    return (
+        isinstance(value.get("schema_version"), str)
+        and _text(value.get("base_revision"))
+        and isinstance(value.get("circuit_breaker"), bool)
+        and is_array(tracks)
+        and all(_is_track(track) for track in tracks)
+        and is_array(events)
+        and all(_is_event(event) for event in events)
+    )
+
+
+def _is_lease(value: object) -> TypeGuard[_CheckpointLease]:
+    return (
+        is_object(value)
+        and value.get("protocol") == "checkpoint-lease-v1"
+        and all(
+            _text(value.get(field))
+            for field in ("token", "owner", "run_id", "worktree", "heartbeat_at", "expires_at")
+        )
+    )
+
+
+def _is_recovery_artefact(value: object) -> TypeGuard[_RecoveryArtefact]:
+    return is_object(value) and all(
+        isinstance(value.get(field), str) for field in ("path", "sha256", "role")
+    )
+
+
+def confined_file(root: Path, name: object) -> Path:
+    """Resolve an existing evidence file inside the root without symlink traversal."""
     if not _text(name):
         raise ValueError("evidence path must be a non-empty relative path")
     path = Path(name)
@@ -49,22 +183,23 @@ def _relative_file(root: Path, name: Any) -> Path:
     return resolved
 
 
-def _read_receipt(root: Path, name: str, expected: dict[str, str], outcome: str) -> str:
-    path = _relative_file(root, name)
+def read_bound_receipt(root: Path, name: str, expected: Mapping[str, str], outcome: str) -> str:
+    """Check exact transition bindings and artefact bytes, then return the receipt hash."""
+    path = confined_file(root, name)
     raw = path.read_bytes()
-    receipt = json.loads(raw)
-    if not isinstance(receipt, dict) or any(receipt.get(k) != v for k, v in expected.items()):
+    receipt: object = json.loads(raw)
+    if not is_object(receipt) or any(receipt.get(k) != v for k, v in expected.items()):
         raise ValueError("receipt does not match the exact run, revision, track, phase and stage")
     if receipt.get("outcome") != outcome:
         raise ValueError("receipt outcome does not match the transition")
     artefacts = receipt.get("artefacts")
-    if not isinstance(artefacts, list) or not artefacts:
+    if not is_array(artefacts) or not artefacts:
         raise ValueError("receipt requires non-empty artefact evidence")
     seen: set[str] = set()
     for artefact in artefacts:
-        if not isinstance(artefact, dict):
+        if not is_object(artefact):
             raise ValueError("invalid artefact evidence")
-        evidence = _relative_file(root, artefact.get("path"))
+        evidence = confined_file(root, artefact.get("path"))
         identity = str(evidence)
         if identity in seen or evidence == path:
             raise ValueError("duplicate or self-referential artefact evidence")
@@ -75,7 +210,7 @@ def _read_receipt(root: Path, name: str, expected: dict[str, str], outcome: str)
     return hashlib.sha256(raw).hexdigest()
 
 
-def next_action(state: dict[str, Any]) -> dict[str, str] | None:
+def next_action(state: CheckpointState) -> dict[str, str] | None:
     """Return the next local instruction; blocked lanes consume no dispatch slot."""
     if state["circuit_breaker"]:
         return None
@@ -103,7 +238,7 @@ class StateStore:
     preservation of receipt-bound work. Process IDs never prove inactivity.
     """
 
-    def __init__(self, path: Path):
+    def __init__(self, path: Path) -> None:
         self.path = path.absolute()
         self.lock = self.path.with_name(self.path.name + ".lock")
 
@@ -134,9 +269,11 @@ class StateStore:
             if os.name != "posix":
                 os.close(fd)
             try:
-                observed = json.loads(self.lock.read_text()) if not self.lock.is_symlink() else None
+                observed: object = (
+                    json.loads(self.lock.read_text()) if not self.lock.is_symlink() else None
+                )
                 if (
-                    isinstance(observed, dict)
+                    is_object(observed)
                     and self.lock.stat().st_ino == owned_stat.st_ino
                     and observed.get("token") == token
                 ):
@@ -166,22 +303,8 @@ class StateStore:
             raw_lock = os.read(fd, 65537)
             if len(raw_lock) > 65536:
                 raise ValueError("invalid lock metadata")
-            lease = json.loads(raw_lock)
-            if (
-                not isinstance(lease, dict)
-                or lease.get("protocol") != "checkpoint-lease-v1"
-                or any(
-                    not _text(lease.get(field))
-                    for field in (
-                        "token",
-                        "owner",
-                        "run_id",
-                        "worktree",
-                        "heartbeat_at",
-                        "expires_at",
-                    )
-                )
-            ):
+            lease: object = json.loads(raw_lock)
+            if not _is_lease(lease):
                 raise ValueError("invalid lock metadata")
             heartbeat = datetime.fromisoformat(lease["heartbeat_at"])
             expires = datetime.fromisoformat(lease["expires_at"])
@@ -203,15 +326,22 @@ class StateStore:
                 "run_id": lease["run_id"],
                 "worktree": lease["worktree"],
             }
-            receipt_path = _relative_file(root, receipt)
-            receipt_hash = _read_receipt(root, receipt, expected, "recover")
+            receipt_path = confined_file(root, receipt)
+            receipt_hash = read_bound_receipt(root, receipt, expected, "recover")
             receipt_bytes = receipt_path.read_bytes()
             if hashlib.sha256(receipt_bytes).hexdigest() != receipt_hash:
                 raise ValueError("recovery receipt changed")
-            evidence = json.loads(receipt_bytes)["artefacts"]
-            if any(not isinstance(item.get("role"), str) for item in evidence) or {
-                item["role"] for item in evidence
-            } != {"branch", "diff", "log"}:
+            receipt_value: object = json.loads(receipt_bytes)
+            if not is_object(receipt_value) or not is_array(
+                raw_evidence := receipt_value.get("artefacts")
+            ):
+                raise ValueError("recovery requires branch, diff and log evidence")
+            evidence: list[_RecoveryArtefact] = []
+            for value in raw_evidence:
+                if not _is_recovery_artefact(value):
+                    raise ValueError("recovery requires branch, diff and log evidence")
+                evidence.append(value)
+            if {item["role"] for item in evidence} != {"branch", "diff", "log"}:
                 raise ValueError("recovery requires branch, diff and log evidence")
             preserved = self.path.parent / f"{self.path.name}.recovery-{uuid.uuid4().hex}"
             preserved.mkdir(mode=0o700)
@@ -221,7 +351,7 @@ class StateStore:
                 "receipt.json": receipt_bytes,
             }
             for index, item in enumerate(evidence):
-                data = _relative_file(root, item["path"]).read_bytes()
+                data = confined_file(root, item["path"]).read_bytes()
                 if hashlib.sha256(data).hexdigest() != item["sha256"]:
                     raise ValueError("recovery evidence changed")
                 snapshots[f"artefact-{index}.bin"] = data
@@ -259,18 +389,20 @@ class StateStore:
         finally:
             os.close(fd)
 
-    def load(self) -> dict[str, Any]:
+    def load(self) -> CheckpointState:
         if self.path.is_symlink():
             raise ValueError("checkpoint cannot be a symlink")
-        state = json.loads(self.path.read_text())
-        if not isinstance(state, dict):
+        state: object = json.loads(self.path.read_text())
+        if not is_object(state):
             raise ValueError("invalid checkpoint")
         expected = state.pop("checkpoint_sha256", None)
         if expected != _digest(state) or state.get("schema_version") != "1.0":
             raise ValueError("checkpoint integrity failure; preserve and reconcile")
+        if not _is_checkpoint(state):
+            raise ValueError("invalid checkpoint shape; preserve and reconcile")
         return state
 
-    def _save(self, state: dict[str, Any]) -> None:
+    def _save(self, state: Mapping[str, object]) -> None:
         if self.path.is_symlink():
             raise ValueError("checkpoint cannot be a symlink")
         payload = dict(state, checkpoint_sha256=_digest(state))
@@ -292,30 +424,34 @@ class StateStore:
         finally:
             temporary.unlink(missing_ok=True)
 
-    def initialise(self, plan: list[dict[str, Any]], *, base_revision: str) -> dict[str, Any]:
+    def initialise(self, plan: object, *, base_revision: object) -> CheckpointState:
         if (
             not isinstance(base_revision, str)
             or re.fullmatch(r"[0-9a-f]{40}", base_revision) is None
         ):
             raise ValueError("an exact Git revision is required")
-        if not isinstance(plan, list) or not plan:
+        if not is_array(plan) or not plan:
             raise ValueError("plan cannot be empty")
         identifiers: set[str] = set()
-        tracks: list[dict[str, Any]] = []
+        tracks: list[TrackState] = []
         for item in plan:
-            if not isinstance(item, dict) or not _text(item.get("id")) or item["id"] in identifiers:
+            if (
+                not is_object(item)
+                or not _text(identifier := item.get("id"))
+                or identifier in identifiers
+            ):
                 raise ValueError("track identifiers must be non-empty and unique")
             phases, dependencies = item.get("phases"), item.get("dependencies", [])
-            if not isinstance(phases, list) or not phases or any(not _text(p) for p in phases):
+            if not _texts(phases) or not phases:
                 raise ValueError("each track requires named phases")
             if len(set(phases)) != len(phases):
                 raise ValueError("phase identifiers must be unique")
-            if not isinstance(dependencies, list) or any(not _text(d) for d in dependencies):
+            if not _texts(dependencies):
                 raise ValueError("dependencies must be a list of identifiers")
-            identifiers.add(item["id"])
+            identifiers.add(identifier)
             tracks.append(
                 {
-                    "id": item["id"],
+                    "id": identifier,
                     "phases": phases,
                     "dependencies": dependencies,
                     "phase_index": 0,
@@ -331,7 +467,7 @@ class StateStore:
             if not ready:
                 raise ValueError("dependency graph contains a cycle or unknown dependency")
             resolved.update(ready)
-        state = {
+        state: CheckpointState = {
             "schema_version": "1.0",
             "base_revision": base_revision,
             "tracks": tracks,
@@ -349,10 +485,10 @@ class StateStore:
         *,
         root: Path,
         event_id: str,
-        action: str,
+        action: object,
         receipt: str | None = None,
         wake_condition: str | None = None,
-    ) -> dict[str, Any]:
+    ) -> CheckpointState:
         """Persist one evidence-bound outcome and expose the next ready instruction."""
         if not _text(event_id):
             raise ValueError("event_id is required")
@@ -366,7 +502,11 @@ class StateStore:
             raise ValueError("unsupported transition")
         if action not in {"pass", "fail"} and receipt is not None:
             raise ValueError("blocked transitions cannot supply an unverified receipt")
-        request = {"action": action, "receipt": receipt, "wake_condition": wake_condition}
+        request: dict[str, str | None] = {
+            "action": action,
+            "receipt": receipt,
+            "wake_condition": wake_condition,
+        }
         with self._locked():
             state = self.load()
             prior = next((e for e in state["events"] if e["id"] == event_id), None)
@@ -375,7 +515,7 @@ class StateStore:
                     raise ValueError("event ID reused for a different transition")
                 if (
                     receipt
-                    and _read_receipt(root.resolve(), receipt, prior["instruction"], action)
+                    and read_bound_receipt(root.resolve(), receipt, prior["instruction"], action)
                     != prior["receipt_sha256"]
                 ):
                     raise ValueError("replayed receipt changed")
@@ -388,7 +528,7 @@ class StateStore:
             if action in {"pass", "fail"}:
                 if receipt is None:
                     raise ValueError("completion and rework require a bound receipt")
-                receipt_hash = _read_receipt(root.resolve(), receipt, current, action)
+                receipt_hash = read_bound_receipt(root.resolve(), receipt, current, action)
             elif not _text(wake_condition):
                 raise ValueError("blocked state requires a wake condition")
             if action == "circuit_breaker":
@@ -424,7 +564,7 @@ class StateStore:
             self._save(state)
             return state
 
-    def resume(self, *, root: Path, track_id: str, event_id: str, receipt: str) -> dict[str, Any]:
+    def resume(self, *, root: Path, track_id: str, event_id: str, receipt: str) -> CheckpointState:
         """Resume an external/decision wait only after a matching reconciliation receipt.
 
         Circuit breakers and exhausted rework cannot be reset through this API.
@@ -437,12 +577,16 @@ class StateStore:
             state = self.load()
             if state["circuit_breaker"]:
                 raise ValueError("circuit breaker requires separate governed reconciliation")
-            request = {"action": "resume", "track_id": track_id, "receipt": receipt}
+            request: dict[str, str | None] = {
+                "action": "resume",
+                "track_id": track_id,
+                "receipt": receipt,
+            }
             prior = next((e for e in state["events"] if e["id"] == event_id), None)
             if prior is not None:
                 if (
                     prior["request"] != request
-                    or _read_receipt(root.resolve(), receipt, prior["instruction"], "resume")
+                    or read_bound_receipt(root.resolve(), receipt, prior["instruction"], "resume")
                     != prior["receipt_sha256"]
                 ):
                     raise ValueError("resume event or evidence changed")
@@ -458,7 +602,7 @@ class StateStore:
                 "base_revision": state["base_revision"],
                 "run_id": deterministic_run_id(track_id, phase, state["base_revision"]),
             }
-            receipt_hash = _read_receipt(root.resolve(), receipt, expected, "resume")
+            receipt_hash = read_bound_receipt(root.resolve(), receipt, expected, "resume")
             track["stage"] = track.pop("wait_resume_stage")
             track.pop("wake_condition")
             state["events"].append(

@@ -10,10 +10,13 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Literal, TypedDict, TypeGuard
+
+from tools import json_shapes
 
 ROOT = Path(__file__).parents[1]
 FIXTURE_PATH = ROOT / "evaluation/multimodal/speech/synthetic-interface-fixtures.json"
@@ -37,51 +40,155 @@ class Segment:
     speaker: None = None
 
 
-def _segment(value: Any) -> Segment:
+class ExpectedSegment(TypedDict):
+    start_ms: int
+    end_ms: int
+
+
+class ExpectedOutput(TypedDict):
+    text: str
+    segments: list[ExpectedSegment]
+
+
+class EvaluationCase(TypedDict):
+    id: str
+    expected: ExpectedOutput
+
+
+class CaseResult(TypedDict):
+    case_id: str
+    synthetic: Literal[True]
+    word_error_rate: float | None
+    timestamp_mean_absolute_error_ms: float | None
+    hallucination_detected: bool
+    segment_count: int
+
+
+class QualityDimension(TypedDict):
+    status: Literal["measured", "unsupported"]
+    reason: str
+
+
+class ReceiptBody(TypedDict):
+    schema_version: Literal["1.0"]
+    profile_id: Literal["speech-local"]
+    backend_interface: str
+    data_class: Literal["generated_synthetic_descriptors_only"]
+    execution: Literal["model_free_interface_contract"]
+    network: Literal["disabled_no_network_api_used"]
+    telemetry: Literal["none"]
+    remote_code: Literal["prohibited"]
+    private_audio: Literal[False]
+    external_inference: Literal[False]
+    redistribution: Literal[False]
+    diarisation: Literal["unsupported_pending_exact_licence_and_compute_clearance"]
+    results: list[CaseResult]
+    quality_dimensions: dict[str, QualityDimension]
+    limitations: list[str]
+    supported: Literal[False]
+
+
+class SpeechReceipt(ReceiptBody):
+    receipt_sha256: str
+
+
+def _seconds_to_ms(value: object) -> int:
+    message = "faster-whisper segment requires numeric start and end offsets"
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        raise ValueError(message)
+    try:
+        milliseconds = float(value) * 1000
+        if not math.isfinite(milliseconds):
+            raise ValueError(message)
+        return round(milliseconds)
+    except OverflowError as exc:
+        raise ValueError(message) from exc
+
+
+def _segment(value: object) -> Segment:
     """Normalise an object or mapping returned by a faster-whisper iterator."""
-    if isinstance(value, dict):
+    if json_shapes.is_object(value):
         start, end, text = value.get("start"), value.get("end"), value.get("text")
     else:
-        start, end, text = value.start, value.end, value.text
-    if not isinstance(start, (int, float)) or not isinstance(end, (int, float)):
-        raise ValueError("faster-whisper segment requires numeric start and end offsets")
+        start: object = getattr(value, "start", None)
+        end: object = getattr(value, "end", None)
+        text: object = getattr(value, "text", None)
+    start_ms, end_ms = _seconds_to_ms(start), _seconds_to_ms(end)
+    if not isinstance(text, str):
+        raise ValueError("faster-whisper segment text must be a string")
     return Segment(
-        start_ms=round(float(start) * 1000),
-        end_ms=round(float(end) * 1000),
-        text=str(text).strip(),
+        start_ms=start_ms,
+        end_ms=end_ms,
+        text=text.strip(),
     )
 
 
-def normalise_faster_whisper(result: Any) -> list[Segment]:
+def _is_tuple(value: object) -> TypeGuard[tuple[object, ...]]:
+    return isinstance(value, tuple)
+
+
+def _is_iterable(value: object) -> TypeGuard[Iterable[object]]:
+    return isinstance(value, Iterable)
+
+
+def normalise_faster_whisper(result: object) -> list[Segment]:
     """Normalise ``WhisperModel.transcribe`` output without importing the package."""
-    segments = result[0] if isinstance(result, tuple) else result
+    if _is_tuple(result):
+        if not result:
+            raise ValueError("faster-whisper result must contain a segments iterable")
+        segments = result[0]
+    else:
+        segments = result
+    if (
+        not _is_iterable(segments)
+        or isinstance(segments, (str, bytes))
+        or json_shapes.is_object(segments)
+    ):
+        raise ValueError("faster-whisper result must contain a segments iterable")
     return [_segment(value) for value in segments]
 
 
-def normalise_whisper_cpp(result: dict[str, Any]) -> list[Segment]:
+def _cpp_offset(value: object) -> int:
+    message = "whisper.cpp offsets must be finite numbers or integer strings"
+    if not isinstance(value, (int, float, str)) or isinstance(value, bool):
+        raise ValueError(message)
+    try:
+        return int(value)
+    except (ValueError, OverflowError) as exc:
+        raise ValueError(message) from exc
+
+
+def normalise_whisper_cpp(result: object) -> list[Segment]:
     """Normalise whisper.cpp JSON output using millisecond or centisecond offsets."""
+    if not json_shapes.is_object(result):
+        raise ValueError("whisper.cpp result must contain a transcription or segments list")
     values = result.get("transcription", result.get("segments"))
-    if not isinstance(values, list):
+    if not json_shapes.is_array(values):
         raise ValueError("whisper.cpp result must contain a transcription or segments list")
     normalised: list[Segment] = []
     for value in values:
-        if not isinstance(value, dict):
+        if not json_shapes.is_object(value):
             raise ValueError("whisper.cpp segments must be objects")
         offsets = value.get("offsets", {})
+        if not json_shapes.is_object(offsets):
+            raise ValueError("whisper.cpp timestamp offsets must be an object")
         if "from" in offsets and "to" in offsets:
-            start_ms, end_ms = int(offsets["from"]), int(offsets["to"])
+            start_ms, end_ms = _cpp_offset(offsets["from"]), _cpp_offset(offsets["to"])
         elif "t0" in value and "t1" in value:
-            start_ms, end_ms = int(value["t0"]) * 10, int(value["t1"]) * 10
+            start_ms, end_ms = _cpp_offset(value["t0"]) * 10, _cpp_offset(value["t1"]) * 10
         else:
             raise ValueError("whisper.cpp segment is missing timestamp offsets")
-        normalised.append(Segment(start_ms, end_ms, str(value.get("text", "")).strip()))
+        text = value.get("text")
+        if not isinstance(text, str):
+            raise ValueError("whisper.cpp segment text must be a string")
+        normalised.append(Segment(start_ms, end_ms, text.strip()))
     return normalised
 
 
-def normalise(backend: str, result: Any) -> list[Segment]:
+def normalise(backend: str, result: object) -> list[Segment]:
     if backend == "faster-whisper":
         return normalise_faster_whisper(result)
-    if backend == "whisper.cpp" and isinstance(result, dict):
+    if backend == "whisper.cpp" and json_shapes.is_object(result):
         return normalise_whisper_cpp(result)
     raise ValueError(f"unsupported backend or result shape: {backend!r}")
 
@@ -107,7 +214,23 @@ def _edit_distance(left: Iterable[str], right: Iterable[str]) -> int:
     return previous[-1]
 
 
-def evaluate_case(case: dict[str, Any], segments: list[Segment]) -> dict[str, Any]:
+def _is_case(value: object) -> TypeGuard[EvaluationCase]:
+    if not json_shapes.is_object(value) or not isinstance(value.get("id"), str):
+        return False
+    expected = value.get("expected")
+    if not json_shapes.is_object(expected) or not isinstance(expected.get("text"), str):
+        return False
+    segments = expected.get("segments")
+    return json_shapes.is_array(segments) and all(
+        json_shapes.is_object(segment)
+        and all(type(segment.get(key)) is int for key in ("start_ms", "end_ms"))
+        for segment in segments
+    )
+
+
+def evaluate_case(case: object, segments: list[Segment]) -> CaseResult:
+    if not _is_case(case):
+        raise ValueError("speech fixture case requires text and integer timestamp expectations")
     expected = case["expected"]
     actual_text = " ".join(segment.text for segment in segments).strip()
     expected_words, actual_words = _words(expected["text"]), _words(actual_text)
@@ -132,13 +255,21 @@ def evaluate_case(case: dict[str, Any], segments: list[Segment]) -> dict[str, An
     }
 
 
-def interface_receipt(backend: str, outputs: dict[str, Any]) -> dict[str, Any]:
+def interface_receipt(backend: str, outputs: object) -> SpeechReceipt:
     if backend not in SUPPORTED_BACKENDS:
         raise ValueError(f"unsupported backend: {backend!r}")
-    fixture = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
+    outputs = json_shapes.require_object(outputs, context="speech outputs")
+    parsed: object = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
+    fixture = json_shapes.require_object(parsed, context="speech fixture")
     cases = fixture["cases"]
-    results = [evaluate_case(case, normalise(backend, outputs[case["id"]])) for case in cases]
-    dimensions = {
+    if not json_shapes.is_array(cases):
+        raise ValueError("speech fixture cases must be an array")
+    results: list[CaseResult] = []
+    for case in cases:
+        if not _is_case(case):
+            raise ValueError("speech fixture case requires text and integer timestamp expectations")
+        results.append(evaluate_case(case, normalise(backend, outputs[case["id"]])))
+    dimensions: dict[str, QualityDimension] = {
         dimension: {
             "status": "measured" if dimension in {"timestamps", "hallucination"} else "unsupported",
             "reason": (
@@ -153,7 +284,7 @@ def interface_receipt(backend: str, outputs: dict[str, Any]) -> dict[str, Any]:
         "status": "unsupported",
         "reason": "diarisation is separately licence and compute gated; no diarisation backend was admitted",
     }
-    receipt: dict[str, Any] = {
+    receipt: ReceiptBody = {
         "schema_version": "1.0",
         "profile_id": "speech-local",
         "backend_interface": backend,
@@ -177,11 +308,12 @@ def interface_receipt(backend: str, outputs: dict[str, Any]) -> dict[str, Any]:
         "supported": False,
     }
     payload = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
-    receipt["receipt_sha256"] = hashlib.sha256(payload).hexdigest()
-    return receipt
+    return {**receipt, "receipt_sha256": hashlib.sha256(payload).hexdigest()}
 
 
-def verify(receipt: dict[str, Any]) -> list[str]:
+def verify(receipt: object) -> list[str]:
+    if not json_shapes.is_object(receipt):
+        return ["receipt must be an object"]
     errors: list[str] = []
     unsigned = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
     digest = hashlib.sha256(
@@ -204,7 +336,7 @@ def main() -> int:
     parser.add_argument("result_json", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    outputs = json.loads(args.result_json.read_text(encoding="utf-8"))
+    outputs: object = json.loads(args.result_json.read_text(encoding="utf-8"))
     rendered = json.dumps(interface_receipt(args.backend, outputs), indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

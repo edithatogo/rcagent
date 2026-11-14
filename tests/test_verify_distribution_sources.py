@@ -3,9 +3,11 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 from typing import Self
+from unittest.mock import Mock
 
 import pytest
 
+from tests.prospective_fixture_types import mapping, sequence
 from tools import verify_distribution_sources as source_module
 from tools.verify_distribution_sources import SOURCES, verify_sources
 
@@ -18,21 +20,18 @@ def _valid(url: str) -> tuple[str, bytes]:
 def test_source_verifier_emits_hash_bound_receipt() -> None:
     value = verify_sources(fetch=_valid, retrieved_at="2026-08-29T00:00:00Z")
     assert value["retrieved_at"] == "2026-08-29T00:00:00Z"
-    sources = value["sources"]
-    assert isinstance(sources, list)
+    sources = [mapping(row) for row in sequence(value["sources"])]
     assert len(sources) == len(SOURCES)
-    assert all(isinstance(record, dict) and record["status"] == "verified" for record in sources)
+    assert all(record["status"] == "verified" for record in sources)
     assert all(
-        isinstance(record, dict)
-        and isinstance(record["content_sha256"], str)
-        and len(record["content_sha256"]) == 64
+        isinstance(record["content_sha256"], str) and len(record["content_sha256"]) == 64
         for record in sources
     )
 
 
 def test_source_verifier_fails_closed_on_network_or_marker_drift() -> None:
     with pytest.raises(ValueError, match="unavailable"):
-        verify_sources(fetch=lambda _url: (_ for _ in ()).throw(OSError("offline")))
+        verify_sources(fetch=Mock(side_effect=OSError("offline")))
     with pytest.raises(ValueError, match="drifted"):
         verify_sources(fetch=lambda url: (url, b"unexpected"))
     with pytest.raises(ValueError, match="outside HTTPS"):
@@ -73,10 +72,8 @@ def test_default_fetcher_returns_final_url_and_bytes(monkeypatch: pytest.MonkeyP
         def read(self) -> bytes:
             return b"payload"
 
-    monkeypatch.setattr(
-        source_module.urllib.request, "urlopen", lambda *_args, **_kwargs: Response()
-    )
-    assert source_module._fetch("https://example.invalid") == (
+    monkeypatch.setattr(source_module.urllib.request, "urlopen", Mock(return_value=Response()))
+    assert source_module.fetch_source("https://example.invalid") == (
         "https://example.invalid/final",
         b"payload",
     )

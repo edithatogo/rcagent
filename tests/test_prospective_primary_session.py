@@ -87,8 +87,10 @@ def synthetic(session_fixture: SessionFixture, monkeypatch: pytest.MonkeyPatch) 
         "execution_permitted": True,
         "limitations": ["synthetic-fixture-not-actual-eligibility"],
     }
-    plan: Plan = primary.gate._Plan(
-        primary.gate._canonical({"request": request, "admission": admission, "evidence": evidence})
+    plan: Plan = primary.gate.ExecutionPlan(
+        primary.gate.canonical_bytes(
+            {"request": request, "admission": admission, "evidence": evidence}
+        )
     )
     checks: list[VerifyArgs] = []
 
@@ -96,7 +98,7 @@ def synthetic(session_fixture: SessionFixture, monkeypatch: pytest.MonkeyPatch) 
         checks.append(args)
         return plan
 
-    monkeypatch.setattr(primary.gate, "_verify", verify)
+    monkeypatch.setattr(primary.gate, "verify_execution_plan", verify)
     return root, receipt, calls, processes, plan, checks
 
 
@@ -147,7 +149,7 @@ def test_gate_failure_prevents_all_session_resources(
             raise ValueError("synthetic_gate_failure")
         return plan
 
-    monkeypatch.setattr(primary.gate, "_verify", verify)
+    monkeypatch.setattr(primary.gate, "verify_execution_plan", verify)
 
     def forbidden(*args: object, **kwargs: object) -> None:
         raise AssertionError("No session resources before both gates pass")
@@ -167,12 +169,12 @@ def test_changed_plan_prevents_reservation(
     _, receipt, _, processes, plan, _ = synthetic
     changed = mapping(plan.value())
     mapping(changed["evidence"])["review_commit"] = "different"
-    results = iter([plan, primary.gate._Plan(primary.gate._canonical(changed))])
+    results = iter([plan, primary.gate.ExecutionPlan(primary.gate.canonical_bytes(changed))])
 
     def next_plan(*args: *VerifyArgs) -> Plan:
         return next(results)
 
-    monkeypatch.setattr(primary.gate, "_verify", next_plan)
+    monkeypatch.setattr(primary.gate, "verify_execution_plan", next_plan)
     with pytest.raises(ValueError, match="primary_gate_changed"):
         run(synthetic)
     assert not receipt.exists()
@@ -197,7 +199,7 @@ def test_postflight_failure_retains_raw_capture(
             raise failure
         return plan
 
-    monkeypatch.setattr(primary.gate, "_verify", verify)
+    monkeypatch.setattr(primary.gate, "verify_execution_plan", verify)
     result = run(synthetic)
     assert result["error"] == "primary_postflight_failed"
     assert result["status"] == "session_failed"
@@ -229,7 +231,7 @@ def test_primary_failure_never_masks_http_or_cleanup_failure(
             raise ValueError("postflight")
         return plan
 
-    monkeypatch.setattr(primary.gate, "_verify", verify)
+    monkeypatch.setattr(primary.gate, "verify_execution_plan", verify)
     result = run(synthetic)
     assert result["error"] == "completion_transport_failed"
     assert result["primary_postflight_error"] == "primary_postflight_failed"
@@ -239,12 +241,11 @@ def test_primary_failure_never_masks_http_or_cleanup_failure(
 
 def test_primary_and_ready_share_lock(synthetic: PrimaryFixture) -> None:
     _, receipt, _, processes, _, _ = synthetic
-    assert primary.session._LOCK.acquire(blocking=False)
-    try:
-        with pytest.raises(ValueError, match="session_already_running"):
-            run(synthetic)
-    finally:
-        primary.session._LOCK.release()
+    with (
+        primary.session.exclusive_session(),
+        pytest.raises(ValueError, match="session_already_running"),
+    ):
+        run(synthetic)
     assert not receipt.exists()
     assert not processes
 
@@ -276,7 +277,7 @@ def test_cleanup_failure_and_postflight_failure_both_retained(
     def fail_cleanup(*args: object) -> None:
         raise OSError("synthetic cleanup failure")
 
-    monkeypatch.setattr(primary.session, "_remove_owned", fail_cleanup)
+    monkeypatch.setattr(primary.session, "remove_owned_path", fail_cleanup)
     count = 0
 
     def verify(*args: *VerifyArgs) -> Plan:
@@ -286,7 +287,7 @@ def test_cleanup_failure_and_postflight_failure_both_retained(
             raise ValueError("synthetic postflight failure")
         return plan
 
-    monkeypatch.setattr(primary.gate, "_verify", verify)
+    monkeypatch.setattr(primary.gate, "verify_execution_plan", verify)
     result = run(synthetic)
     try:
         assert result["error"] == "postflight_failed"
@@ -305,7 +306,7 @@ def test_primary_circuit_breaker_blocks_before_reservation(
     synthetic: PrimaryFixture, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _, receipt, _, processes, _, _ = synthetic
-    monkeypatch.setattr(primary.session, "_BLOCKED", True)
+    monkeypatch.setattr(primary.session, "_blocked", True)
     with pytest.raises(ValueError, match="session_circuit_breaker"):
         run(synthetic)
     assert not receipt.exists()
@@ -320,10 +321,10 @@ def test_real_guarded_git_child_http_and_decoder_composition(
         pytest.skip("Real synthetic Unix child composition")
     root, path, value, _, _, _, _, admission = gate_fixture
     source, review = commit_review(gate_fixture)
-    monkeypatch.setattr(primary.gate.freeze, "_git", REAL_GIT)
-    monkeypatch.setattr(primary.gate.freeze, "_committed_files", REAL_FILES)
+    monkeypatch.setattr(primary.gate.freeze, "git_bytes", REAL_GIT)
+    monkeypatch.setattr(primary.gate.freeze, "committed_files", REAL_FILES)
     admission["profile_sha256"] = mapping(value["condition"])["profile_sha256"]
-    monkeypatch.setattr(primary.session, "_BLOCKED", False)
+    monkeypatch.setattr(primary.session, "_blocked", False)
     monkeypatch.setattr(primary.session, "source_pins", lambda: {"synthetic": "a" * 64})
     monkeypatch.setattr(
         primary.session.profile, "profile_digest", lambda: admission["profile_sha256"]
@@ -372,7 +373,7 @@ while True:
     def arguments(admission: object, socket_path: Path) -> list[str]:
         return [sys.executable, "-c", script, str(socket_path), raw_body.hex()]
 
-    monkeypatch.setattr(primary.session, "_fixed_arguments", arguments)
+    monkeypatch.setattr(primary.session, "fixed_server_arguments", arguments)
     receipt = root / "synthetic-primary-receipt.json"
     result = mapping(
         primary.run_primary(

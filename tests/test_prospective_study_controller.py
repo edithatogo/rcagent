@@ -78,8 +78,8 @@ def receipt_for(plan: Plan, socket_path: Path) -> ObjectMap:
                 f"{name}_truncated": False,
                 f"{name}_bytes_observed": len(data),
                 f"{name}_bytes_retained": len(data),
-                f"{name}_sha256": admission._sha(data),
-                f"{name}_retained_sha256": admission._sha(data),
+                f"{name}_sha256": admission.sha256_bytes(data),
+                f"{name}_retained_sha256": admission.sha256_bytes(data),
             }
         )
     environment = session.profile.profile_environment()
@@ -99,14 +99,14 @@ def receipt_for(plan: Plan, socket_path: Path) -> ObjectMap:
                 "http_status": 200,
                 "body_complete": True,
                 "body_bytes": len(health_body),
-                "body_sha256": admission._sha(health_body),
+                "body_sha256": admission.sha256_bytes(health_body),
                 "body_base64": base64.b64encode(health_body).decode(),
             }
         ],
         "primary_gate": expected["evidence"],
         "admission": expected["admission"],
         "request_base64": base64.b64encode(request).decode(),
-        "request_sha256": admission._sha(request),
+        "request_sha256": admission.sha256_bytes(request),
         "completion": {
             "status": "http_response_captured",
             "error": "none",
@@ -115,10 +115,10 @@ def receipt_for(plan: Plan, socket_path: Path) -> ObjectMap:
             "method": "POST",
             "route": "/completion",
             "transport": "unix-domain-socket",
-            "request_body_sha256": admission._sha(request),
+            "request_body_sha256": admission.sha256_bytes(request),
             "body_base64": base64.b64encode(body).decode(),
             "body_bytes": len(body),
-            "body_sha256": admission._sha(body),
+            "body_sha256": admission.sha256_bytes(body),
         },
         "candidate": candidate,
         "decoded": candidate["decoded"],
@@ -127,8 +127,10 @@ def receipt_for(plan: Plan, socket_path: Path) -> ObjectMap:
         "source_sha256": session.source_pins(),
         "profile_sha256": session.profile.profile_digest(),
         "socket_path": str(socket_path),
-        "arguments": session._fixed_arguments(mapping(expected["admission"]), socket_path),
-        "environment_sha256": admission._sha(json.dumps(environment, sort_keys=True).encode()),
+        "arguments": session.fixed_server_arguments(mapping(expected["admission"]), socket_path),
+        "environment_sha256": admission.sha256_bytes(
+            json.dumps(environment, sort_keys=True).encode()
+        ),
         "environment_keys": sorted(environment),
     }
 
@@ -161,11 +163,11 @@ def capture_fixture(synthetic: GateFixture, monkeypatch: pytest.MonkeyPatch) -> 
         receipt: Path,
     ) -> ObjectMap:
         calls.append(slot)
-        plan = gate._verify(protocol, pinned, slot, review, repo, model_root)
+        plan = gate.verify_execution_plan(protocol, pinned, slot, review, repo, model_root)
         result = receipt_for(plan, receipt.parent / "server.sock")
         fd = os.open(receipt, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
         with os.fdopen(fd, "wb") as stream:
-            stream.write(admission._canonical(result) + b"\n")
+            stream.write(admission.canonical_bytes(result) + b"\n")
         return result
 
     monkeypatch.setattr(controller.primary, "run_primary", capture)
@@ -217,7 +219,7 @@ def test_first_capture_damage_prevents_second(
         path = parameters[-1]
         if mutation == "cleanup":
             result["resources_removed"] = False
-            path.write_bytes(admission._canonical(result))
+            path.write_bytes(admission.canonical_bytes(result))
         elif mutation == "journal":
             (path.parent / "journal.jsonl").write_bytes(b"corrupt")
         else:
@@ -236,7 +238,7 @@ def test_two_real_synthetic_children_transport_and_admission(
     """Real process/HTTP/decoder/controller; Git/profile/model/origins/environment mocked."""
     args, _, _ = capture_fixture
     monkeypatch.setattr(controller.primary, "run_primary", REAL_PRIMARY)
-    monkeypatch.setattr(session, "_BLOCKED", False)
+    monkeypatch.setattr(session, "_blocked", False)
     body = mapping(response())
     body["model"] = gate.model.MODEL_ID
     encoded = json.dumps(body).encode().hex()
@@ -263,7 +265,7 @@ while True:
     def arguments(admission: object, path: Path) -> list[str]:
         return [sys.executable, "-c", script, str(path), encoded]
 
-    monkeypatch.setattr(session, "_fixed_arguments", arguments)
+    monkeypatch.setattr(session, "fixed_server_arguments", arguments)
     result = run_study(*args)
     assert result["status"] == "controller_admitted_before_blinding", result
     directory = next(args[-1].iterdir())
@@ -280,7 +282,7 @@ def test_postseal_admission_failure_has_durable_locked_outcome(
     def reject_consumption(value: object) -> None:
         raise ValueError("failure")
 
-    monkeypatch.setattr(admission, "_consume", reject_consumption)
+    monkeypatch.setattr(admission, "consume_controller_capture", reject_consumption)
     result = run_study(*args)
     assert result["admitted"] is False
     directory = next(args[-1].iterdir())
@@ -306,7 +308,7 @@ def test_preflight_refusals_create_no_resources(
     elif boundary == "evidence-traversal":
         evidence_root = args[-1] / ".." / "evidence"
     else:
-        original = gate._verify
+        original = gate.verify_execution_plan
         count = 0
 
         def drift(*params: *VerifyArgs) -> Plan:
@@ -316,10 +318,10 @@ def test_preflight_refusals_create_no_resources(
             if count == (2 if boundary == "gate-disagree" else 3):
                 value = mapping(plan.value())
                 mapping(value["admission"])["admission_sha256"] = "0" * 64
-                return gate._Plan(gate._canonical(value))
+                return gate.ExecutionPlan(gate.canonical_bytes(value))
             return plan
 
-        monkeypatch.setattr(gate, "_verify", drift)
+        monkeypatch.setattr(gate, "verify_execution_plan", drift)
     with pytest.raises(ValueError):
         run_study(protocol_path, pinned, review, root, model_root, evidence_root)
     assert not calls
@@ -335,7 +337,7 @@ def test_failed_primary_receipt_hash_retained(
         raw = capture(*params)
         raw["status"] = "session_failed"
         raw["error"] = "synthetic-failure"
-        params[-1].write_bytes(admission._canonical(raw))
+        params[-1].write_bytes(admission.canonical_bytes(raw))
         return raw
 
     monkeypatch.setattr(controller.primary, "run_primary", failure)
@@ -346,7 +348,9 @@ def test_failed_primary_receipt_hash_retained(
         json.loads(row)["event"] for row in (directory / "journal.jsonl").read_bytes().splitlines()
     ]
     failed = next(row for row in events if row["type"] == "slot_failed")
-    assert failed["receipt_sha256"] == admission._sha((directory / "slot-1.json").read_bytes())
+    assert failed["receipt_sha256"] == admission.sha256_bytes(
+        (directory / "slot-1.json").read_bytes()
+    )
     assert list(mapping(result["dispositions"]).values()) == [
         "failed-receipt-retained",
         "not-attempted",
@@ -358,7 +362,7 @@ def test_final_persistence_never_returns_positive_on_failure(
     capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch, damage: str
 ) -> None:
     args, _, _ = capture_fixture
-    original = controller._write_result
+    original = controller.write_result_exclusively
 
     def write(path: Path, parent: tuple[int, int], result: Mapping[str, object]) -> None:
         if damage == "failure-persistence":
@@ -367,16 +371,16 @@ def test_final_persistence_never_returns_positive_on_failure(
         if damage == "result-change":
             path.write_bytes(b"{}")
 
-    monkeypatch.setattr(controller, "_write_result", write)
+    monkeypatch.setattr(controller, "write_result_exclusively", write)
     if damage == "final-sync":
-        sync = controller._sync_directory
+        sync = controller.sync_private_directory
 
         def fail_after_result(path: Path, parent: tuple[int, int]) -> None:
             if (path / "admission.json").exists():
                 raise OSError("fixture")
             sync(path, parent)
 
-        monkeypatch.setattr(controller, "_sync_directory", fail_after_result)
+        monkeypatch.setattr(controller, "sync_private_directory", fail_after_result)
     result = run_study(*args)
     assert result["admitted"] is False
     assert result["failure_stage"] == "persistence"
@@ -390,7 +394,7 @@ def test_directory_identity_checks_reject_changes(
 ) -> None:
     args, _, _ = capture_fixture
     directory = args[-1]
-    expected = session._directory(directory)
+    expected = session.private_directory_identity(directory)
     if point in (1, 3):
         calls = 0
 
@@ -399,7 +403,7 @@ def test_directory_identity_checks_reject_changes(
             calls += 1
             return (0, 0) if calls == (1 if point == 1 else 2) else expected
 
-        monkeypatch.setattr(session, "_directory", identity)
+        monkeypatch.setattr(session, "private_directory_identity", identity)
     else:
         original = os.fstat
         from types import SimpleNamespace
@@ -413,7 +417,7 @@ def test_directory_identity_checks_reject_changes(
 
         monkeypatch.setattr(os, "fstat", changed_stat)
     with pytest.raises(ValueError, match="owned_directory_changed"):
-        controller._sync_directory(directory, expected)
+        controller.sync_private_directory(directory, expected)
 
 
 def test_journal_size_bound_prevents_launch(
@@ -444,7 +448,7 @@ def test_health_evidence_required_before_second_slot(
             health = sequence(result["health"])
             health *= session.HEALTH_ATTEMPTS + 1
             result["health"] = health
-        params[-1].write_bytes(admission._canonical(result))
+        params[-1].write_bytes(admission.canonical_bytes(result))
         return result
 
     monkeypatch.setattr(controller.primary, "run_primary", damaged)
@@ -482,7 +486,7 @@ def test_fresh_gate_drift_during_consume_persists_locked_failure(
     capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     args, calls, _ = capture_fixture
-    verify = gate._verify
+    verify = gate.verify_execution_plan
 
     def drift_after_both_captures(*parameters: *VerifyArgs) -> Plan:
         plan = verify(*parameters)
@@ -490,10 +494,10 @@ def test_fresh_gate_drift_during_consume_persists_locked_failure(
         if journals and b'"capture_complete"' in journals[0].read_bytes():
             value = mapping(plan.value())
             mapping(value["admission"])["admission_sha256"] = "0" * 64
-            return gate._Plan(gate._canonical(value))
+            return gate.ExecutionPlan(gate.canonical_bytes(value))
         return plan
 
-    monkeypatch.setattr(gate, "_verify", drift_after_both_captures)
+    monkeypatch.setattr(gate, "verify_execution_plan", drift_after_both_captures)
     result = run_study(*args)
     assert len(calls) == 2
     assert result["admitted"] is False
@@ -510,7 +514,7 @@ def test_changed_evidence_root_prevents_journal_and_primary(
     capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch, stage: str
 ) -> None:
     args, calls, _ = capture_fixture
-    original = session._directory
+    original = session.private_directory_identity
     checks = 0
 
     def changed(path: Path) -> tuple[int, int]:
@@ -522,7 +526,7 @@ def test_changed_evidence_root_prevents_journal_and_primary(
                 return (0, 0)
         return identity
 
-    monkeypatch.setattr(session, "_directory", changed)
+    monkeypatch.setattr(session, "private_directory_identity", changed)
     with pytest.raises(ValueError, match="evidence_root_changed"):
         run_study(*args)
     assert not calls
@@ -534,9 +538,9 @@ def test_owned_directory_identity_drift_blocks_launch(
     capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch, stage: str
 ) -> None:
     args, calls, _ = capture_fixture
-    original = session._directory
+    original = session.private_directory_identity
     appended = False
-    append = controller._append
+    append = controller.append_journal
 
     def record(
         stream: controller.JournalStream,
@@ -558,8 +562,8 @@ def test_owned_directory_identity_drift_blocks_launch(
             return (0, 0)
         return identity
 
-    monkeypatch.setattr(controller, "_append", record)
-    monkeypatch.setattr(session, "_directory", changed)
+    monkeypatch.setattr(controller, "append_journal", record)
+    monkeypatch.setattr(session, "private_directory_identity", changed)
     result = run_study(*args)
     assert result["admitted"] is False
     assert not calls
@@ -607,10 +611,12 @@ def test_short_write_is_never_success(
         assert result["admitted"] is False
         assert not calls
     else:
-        parent = session._directory(args[-1])
+        parent = session.private_directory_identity(args[-1])
         monkeypatch.setattr(os, "fdopen", opened)
         with pytest.raises(OSError, match="short_admission_write"):
-            controller._write_result(args[-1] / "result.json", parent, {"admitted": False})
+            controller.write_result_exclusively(
+                args[-1] / "result.json", parent, {"admitted": False}
+            )
 
 
 @pytest.mark.parametrize("point", ["append-readback", "sealed-readback"])
@@ -618,7 +624,7 @@ def test_journal_readback_corruption_fails_closed(
     capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch, point: str
 ) -> None:
     args, calls, _ = capture_fixture
-    read = admission._read
+    read = admission.read_owned_receipt
     complete_reads = 0
 
     def changed(
@@ -640,7 +646,7 @@ def test_journal_readback_corruption_fails_closed(
                     return b"corrupt", identity
         return raw, identity
 
-    monkeypatch.setattr(admission, "_read", changed)
+    monkeypatch.setattr(admission, "read_owned_receipt", changed)
     result = run_study(*args)
     assert result["admitted"] is False
     assert len(calls) == (0 if point == "append-readback" else 2)
@@ -650,7 +656,7 @@ def test_controller_defensive_denominator_guard(
     capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     args, calls, _ = capture_fixture
-    validate = controller.native._validated_candidate
+    validate = controller.native.validated_candidate
 
     def one_slot(path: Path, expected_sha256: str) -> tuple[ObjectMap, ObjectMap]:
         raw_value, raw_candidate = validate(path, expected_sha256)
@@ -659,13 +665,13 @@ def test_controller_defensive_denominator_guard(
         return value, candidate
 
     # Isolate the controller guard: the actual native validator already rejects this.
-    plans = controller._plans(args[0], args[1], args[2], args[3], args[4])[2]
-    monkeypatch.setattr(controller.native, "_validated_candidate", one_slot)
+    plans = controller.prepare_execution_plans(args[0], args[1], args[2], args[3], args[4])[2]
+    monkeypatch.setattr(controller.native, "validated_candidate", one_slot)
 
     def first_plan(*parameters: *VerifyArgs) -> Plan:
         return plans[0]
 
-    monkeypatch.setattr(gate, "_verify", first_plan)
+    monkeypatch.setattr(gate, "verify_execution_plan", first_plan)
     with pytest.raises(ValueError, match="invalid_controller_denominator"):
         run_study(*args)
     assert not calls
@@ -677,7 +683,7 @@ def test_each_raw_directory_sync_precedes_completion_and_next_slot(
     capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch, failed_receipt: bool
 ) -> None:
     args, calls, capture = capture_fixture
-    sync = controller._sync_directory
+    sync = controller.sync_private_directory
     reached = False
 
     def returned(*parameters: *PrimaryArgs) -> ObjectMap:
@@ -685,7 +691,7 @@ def test_each_raw_directory_sync_precedes_completion_and_next_slot(
         if failed_receipt:
             result["status"] = "session_failed"
             result["error"] = "synthetic_failure"
-            parameters[-1].write_bytes(admission._canonical(result))
+            parameters[-1].write_bytes(admission.canonical_bytes(result))
         return result
 
     def fail_first_receipt_sync(path: Path, expected: tuple[int, int]) -> None:
@@ -702,7 +708,7 @@ def test_each_raw_directory_sync_precedes_completion_and_next_slot(
         sync(path, expected)
 
     monkeypatch.setattr(controller.primary, "run_primary", returned)
-    monkeypatch.setattr(controller, "_sync_directory", fail_first_receipt_sync)
+    monkeypatch.setattr(controller, "sync_private_directory", fail_first_receipt_sync)
     result = run_study(*args)
     assert reached
     assert len(calls) == 1

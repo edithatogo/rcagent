@@ -99,7 +99,7 @@ class _StreamResult(TypedDict):
     sha256: str | None
 
 
-def _cleanup(process: ProcessControl, grace: float) -> CleanupResult:
+def cleanup_child(process: ProcessControl, grace: float) -> CleanupResult:
     result: CleanupResult = {
         "reaped": False,
         "terminate_sent": False,
@@ -198,7 +198,7 @@ def _validate(
     )
 
 
-def _finish_stop(
+def finish_child_stop(
     process: ReapableProcess,
     deadline: float,
     terminate_sent: bool,
@@ -386,7 +386,7 @@ def capture_child(
     finally:
         if process is not None:
             if stop_started:
-                cleanup = _finish_stop(
+                cleanup = finish_child_stop(
                     process,
                     stop_final_deadline,
                     stop_term_sent,
@@ -395,7 +395,7 @@ def capture_child(
                     stop_errors,
                 )
             else:
-                cleanup = _cleanup(process, cleanup_grace)
+                cleanup = cleanup_child(process, cleanup_grace)
             for stream in (process.stdout, process.stderr):
                 if stream is not None:
                     try:

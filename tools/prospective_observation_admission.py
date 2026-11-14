@@ -22,17 +22,17 @@ from typing import Literal, Never, TypeAlias, TypedDict
 from tools import prospective_execution_gate as gate
 from tools import prospective_runner_contract as runner
 from tools import prospective_server_session as session
-from tools.evaluation_preflight import _unique
+from tools.evaluation_preflight import unique_object_pairs
 from tools.json_shapes import JsonObject, is_array, is_object
 
 MAX_RECEIPT = 32 * 1024 * 1024
 MAX_JOURNAL = 256 * 1024
 MAX_STREAM = 1024 * 1024
 _ORIGIN = object()
-_LIVE: weakref.WeakSet[_OwnedRun] = weakref.WeakSet()
+_LIVE: weakref.WeakSet[OwnedCapture] = weakref.WeakSet()
 
 IssuerContext: TypeAlias = tuple[Path, str, str, Path, Path]
-Plans: TypeAlias = tuple[gate._Plan, ...]
+Plans: TypeAlias = tuple[gate.ExecutionPlan, ...]
 
 
 class JournalHeader(TypedDict):
@@ -83,20 +83,20 @@ class AdmissionResult(TypedDict):
     limitations: list[str]
 
 
-def _sha(raw: bytes) -> str:
+def sha256_bytes(raw: bytes) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
-def _canonical(value: object) -> bytes:
-    return gate._canonical(value)
+def canonical_bytes(value: object) -> bytes:
+    return gate.canonical_bytes(value)
 
 
-def _parse(raw: bytes) -> JsonObject:
+def parse_owned_receipt(raw: bytes) -> JsonObject:
     try:
-        result: object = json.loads(raw, object_pairs_hook=_unique)
+        result: object = json.loads(raw, object_pairs_hook=unique_object_pairs)
         if not is_object(result) or type(result) is not dict:
             raise ValueError("invalid_owned_receipt")
-        _canonical(result)
+        canonical_bytes(result)
         return result
     except (ValueError, UnicodeError, RecursionError):
         raise ValueError("invalid_owned_receipt") from None
@@ -109,7 +109,7 @@ def _capture_object(value: object) -> JsonObject:
     return value
 
 
-def _read(
+def read_owned_receipt(
     path: Path,
     parent: tuple[int, int],
     maximum: int,
@@ -125,7 +125,7 @@ def _read(
     descriptor = os.open(path, flags)
     with os.fdopen(descriptor, "rb") as stream:
         descriptor = stream.fileno()
-        session._reserved(path, descriptor, parent)
+        session.verify_reserved_receipt(path, descriptor, parent)
         info = os.fstat(descriptor)
         getuid = getattr(os, "getuid", None)
         if (
@@ -143,7 +143,7 @@ def _read(
         raw = stream.read(maximum + 1)
         if len(raw) > maximum:
             raise ValueError("owned_receipt_byte_limit")
-        session._reserved(path, descriptor, parent)
+        session.verify_reserved_receipt(path, descriptor, parent)
         after = os.fstat(descriptor)
         if not stat.S_ISREG(after.st_mode) or after.st_nlink != 1 or after.st_uid != getuid():
             raise ValueError("unsafe_owned_receipt")
@@ -151,7 +151,7 @@ def _read(
 
 
 @dataclass(frozen=True)
-class _Receipt:
+class CaptureReceipt:
     slot: str
     name: str
     identity: tuple[int, int]
@@ -160,7 +160,7 @@ class _Receipt:
 
 
 @dataclass(frozen=True, eq=False, slots=True, weakref_slot=True)
-class _OwnedRun:
+class OwnedCapture:
     origin: object
     context: IssuerContext
     plans: Plans
@@ -169,7 +169,7 @@ class _OwnedRun:
     journal_fd: int
     journal_identity: tuple[int, int]
     journal: bytes
-    receipts: tuple[_Receipt, ...]
+    receipts: tuple[CaptureReceipt, ...]
 
     def __post_init__(self) -> None:
         if self.origin is not _ORIGIN:
@@ -186,7 +186,7 @@ class _OwnedRun:
         raise TypeError("capture_capability_not_copyable")
 
 
-def _issue(
+def issue_controller_capture(
     context: IssuerContext,
     plans: Plans,
     directory: Path,
@@ -194,9 +194,14 @@ def _issue(
     journal_fd: int,
     journal_identity: tuple[int, int],
     journal: bytes,
-    receipts: tuple[_Receipt, ...],
-) -> _OwnedRun:
-    result = _OwnedRun(
+    receipts: tuple[CaptureReceipt, ...],
+) -> OwnedCapture:
+    """Issue only inside the trusted controller; persisted JSON cannot call this path.
+
+    This package interface is not a hostile-Python security boundary. The live
+    witness set remains private and consumption removes authority before checks.
+    """
+    result = OwnedCapture(
         _ORIGIN,
         context,
         plans,
@@ -211,7 +216,18 @@ def _issue(
     return result
 
 
-def _header(plans: Plans) -> JournalHeader:
+def revoke_capture(owned: object) -> None:
+    """Discard a live capture capability without creating or restoring one."""
+    if type(owned) is OwnedCapture:
+        _LIVE.discard(owned)
+
+
+def capture_is_live(owned: object) -> bool:
+    """Inspect nominal liveness without exposing the mutable witness registry."""
+    return type(owned) is OwnedCapture and owned in _LIVE
+
+
+def journal_header(plans: Plans) -> JournalHeader:
     evidence = plans[0].value()["evidence"]
     return {
         "type": "run_started",
@@ -226,35 +242,35 @@ def _header(plans: Plans) -> JournalHeader:
     }
 
 
-def _start(slot: str, name: str) -> SlotStarted:
+def slot_started_record(slot: str, name: str) -> SlotStarted:
     return {"type": "slot_started", "slot_id": slot, "receipt_name": name}
 
 
-def _complete(receipt: _Receipt) -> SlotCaptured:
+def slot_captured_record(receipt: CaptureReceipt) -> SlotCaptured:
     return {
         "type": "slot_captured",
         "slot_id": receipt.slot,
         "receipt_name": receipt.name,
-        "receipt_sha256": _sha(receipt.raw),
+        "receipt_sha256": sha256_bytes(receipt.raw),
         "receipt_bytes": len(receipt.raw),
     }
 
 
-def _line(event: Mapping[str, object], index: int, previous: str) -> bytes:
-    return _canonical({"sequence": index, "previous_sha256": previous, "event": event}) + b"\n"
+def encode_journal_line(event: Mapping[str, object], index: int, previous: str) -> bytes:
+    return canonical_bytes({"sequence": index, "previous_sha256": previous, "event": event}) + b"\n"
 
 
-def _journal(events: Sequence[Mapping[str, object]]) -> bytes:
+def encode_journal(events: Sequence[Mapping[str, object]]) -> bytes:
     previous = "0" * 64
     lines: list[bytes] = []
     for index, event in enumerate(events):
-        line = _line(event, index, previous)
+        line = encode_journal_line(event, index, previous)
         lines.append(line)
-        previous = _sha(line)
+        previous = sha256_bytes(line)
     return b"".join(lines)
 
 
-def _body(value: Mapping[str, object], prefix: str, maximum: int) -> bytes:
+def verified_bounded_body(value: Mapping[str, object], prefix: str, maximum: int) -> bytes:
     encoded = value[prefix]
     if type(encoded) is not str or len(encoded) > 4 * ((maximum + 2) // 3):
         raise ValueError("invalid_capture_bytes")
@@ -264,8 +280,8 @@ def _body(value: Mapping[str, object], prefix: str, maximum: int) -> bytes:
     return raw
 
 
-def _validate_receipt(raw: bytes, plan: gate._Plan) -> ObservationSummary:
-    value = _parse(raw)
+def validate_captured_receipt(raw: bytes, plan: gate.ExecutionPlan) -> ObservationSummary:
+    value = parse_owned_receipt(raw)
     if (
         value.get("purpose") not in (None, "primary-observation")
         or "fixture" in value
@@ -280,14 +296,14 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> ObservationSummary:
     ):
         raise ValueError("capture_not_admissible")
     expected = plan.value()
-    if _canonical(value["primary_gate"]) != _canonical(expected["evidence"]) or _canonical(
-        value["admission"]
-    ) != _canonical(expected["admission"]):
+    if canonical_bytes(value["primary_gate"]) != canonical_bytes(
+        expected["evidence"]
+    ) or canonical_bytes(value["admission"]) != canonical_bytes(expected["admission"]):
         raise ValueError("capture_gate_mismatch")
-    request = _body(value, "request_base64", runner.native.MAX_BYTES)
-    if _sha(request) != expected["request"]["request"]["sha256"] or value["request_sha256"] != _sha(
-        request
-    ):
+    request = verified_bounded_body(value, "request_base64", runner.native.MAX_BYTES)
+    if sha256_bytes(request) != expected["request"]["request"]["sha256"] or value[
+        "request_sha256"
+    ] != sha256_bytes(request):
         raise ValueError("capture_request_mismatch")
     completion = value["completion"]
     health = value.get("health")
@@ -298,7 +314,7 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> ObservationSummary:
     ):
         raise ValueError("capture_health_incomplete")
     final_health = _capture_object(health[-1])
-    health_body = _body(final_health, "body_base64", session.HEALTH_BYTES)
+    health_body = verified_bounded_body(final_health, "body_base64", session.HEALTH_BYTES)
     if (
         final_health.get("status") != "http_response_captured"
         or final_health.get("error") != "none"
@@ -307,8 +323,8 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> ObservationSummary:
         or final_health.get("body_complete") is not True
         or type(final_health.get("body_bytes")) is not int
         or final_health["body_bytes"] != len(health_body)
-        or final_health.get("body_sha256") != _sha(health_body)
-        or _parse(health_body) != {"status": "ok"}
+        or final_health.get("body_sha256") != sha256_bytes(health_body)
+        or parse_owned_receipt(health_body) != {"status": "ok"}
     ):
         raise ValueError("capture_health_incomplete")
     completion = _capture_object(completion)
@@ -321,14 +337,14 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> ObservationSummary:
         or completion["http_status"] != 200
         or completion["method"] != "POST"
         or completion["route"] != "/completion"
-        or completion["request_body_sha256"] != _sha(request)
+        or completion["request_body_sha256"] != sha256_bytes(request)
     ):
         raise ValueError("capture_http_incomplete")
-    body = _body(completion, "body_base64", runner.native.MAX_BYTES)
+    body = verified_bounded_body(completion, "body_base64", runner.native.MAX_BYTES)
     if (
         type(completion["body_bytes"]) is not int
         or completion["body_bytes"] != len(body)
-        or completion["body_sha256"] != _sha(body)
+        or completion["body_sha256"] != sha256_bytes(body)
     ):
         raise ValueError("capture_body_mismatch")
     normalized = runner.normalize_candidate(
@@ -338,9 +354,9 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> ObservationSummary:
         expected_slot_id=expected["evidence"]["slot_id"],
         expected_model=expected["admission"]["model_id"],
     )
-    if _canonical(value["candidate"]) != _canonical(normalized) or _canonical(
+    if canonical_bytes(value["candidate"]) != canonical_bytes(normalized) or canonical_bytes(
         value["decoded"]
-    ) != _canonical(normalized["decoded"]):
+    ) != canonical_bytes(normalized["decoded"]):
         raise ValueError("capture_normalization_mismatch")
     child = _capture_object(value["process"])
     if (
@@ -357,7 +373,7 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> ObservationSummary:
         raise ValueError("capture_process_incomplete")
     streams: dict[str, bytes] = {}
     for name in ("stdout", "stderr"):
-        data = _body(child, f"raw_{name}_base64", MAX_STREAM)
+        data = verified_bounded_body(child, f"raw_{name}_base64", MAX_STREAM)
         if (
             child[f"{name}_complete"] is not True
             or child[f"{name}_truncated"] is not False
@@ -365,8 +381,8 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> ObservationSummary:
                 type(child[key]) is not int or child[key] != len(data)
                 for key in (f"{name}_bytes_observed", f"{name}_bytes_retained")
             )
-            or child[f"{name}_sha256"] != _sha(data)
-            or child[f"{name}_retained_sha256"] != _sha(data)
+            or child[f"{name}_sha256"] != sha256_bytes(data)
+            or child[f"{name}_retained_sha256"] != sha256_bytes(data)
         ):
             raise ValueError("capture_stream_incomplete")
         streams[name] = data
@@ -386,7 +402,9 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> ObservationSummary:
     socket_path = value["socket_path"]
     if not isinstance(socket_path, str):
         raise TypeError("invalid_capture_socket_path")
-    if value["arguments"] != session._fixed_arguments(expected["admission"], Path(socket_path)):
+    if value["arguments"] != session.fixed_server_arguments(
+        expected["admission"], Path(socket_path)
+    ):
         raise ValueError("capture_arguments_mismatch")
     environment = session.profile.profile_environment()
     if value["environment_sha256"] != hashlib.sha256(
@@ -395,14 +413,14 @@ def _validate_receipt(raw: bytes, plan: gate._Plan) -> ObservationSummary:
         raise ValueError("capture_environment_mismatch")
     return {
         "slot_id": normalized["slot_id"],
-        "receipt_sha256": _sha(raw),
-        "response_sha256": _sha(body),
+        "receipt_sha256": sha256_bytes(raw),
+        "response_sha256": sha256_bytes(body),
         "content_sha256": normalized["decoded"]["content_sha256"],
     }
 
 
-def _consume(owned: object) -> AdmissionResult:
-    if type(owned) is not _OwnedRun or owned not in _LIVE:
+def consume_controller_capture(owned: object) -> AdmissionResult:
+    if type(owned) is not OwnedCapture or owned not in _LIVE:
         raise ValueError("invalid_or_consumed_capture_capability")
     _LIVE.remove(owned)
     try:
@@ -413,30 +431,39 @@ def _consume(owned: object) -> AdmissionResult:
             raise ValueError("incomplete_capture_denominator")
         protocol, pin, review, root, model_root = owned.context
         for slot, plan in zip(slots, owned.plans, strict=True):
-            if gate._verify(protocol, pin, slot, review, root, model_root).payload != plan.payload:
+            if (
+                gate.verify_execution_plan(protocol, pin, slot, review, root, model_root).payload
+                != plan.payload
+            ):
                 raise ValueError("admission_gate_changed")
-        directory = session._directory(owned.directory)
+        directory = session.private_directory_identity(owned.directory)
         if directory != owned.parent_identity:
             raise ValueError("owned_directory_changed")
         journal_path = owned.directory / "journal.jsonl"
-        session._reserved(journal_path, owned.journal_fd, directory)
-        raw, _identity = _read(journal_path, directory, MAX_JOURNAL, owned.journal_identity)
+        session.verify_reserved_receipt(journal_path, owned.journal_fd, directory)
+        raw, _identity = read_owned_receipt(
+            journal_path, directory, MAX_JOURNAL, owned.journal_identity
+        )
         if raw != owned.journal:
             raise ValueError("owned_journal_changed")
-        events: list[Mapping[str, object]] = [_header(owned.plans)]
+        events: list[Mapping[str, object]] = [journal_header(owned.plans)]
         rows: list[ObservationSummary] = []
         for index, (receipt, plan) in enumerate(zip(owned.receipts, owned.plans, strict=True)):
             if receipt.name != f"slot-{index + 1}.json":
                 raise ValueError("invalid_owned_receipt_name")
-            raw, _ = _read(owned.directory / receipt.name, directory, MAX_RECEIPT, receipt.identity)
-            if raw != receipt.raw or _canonical(_parse(raw)) != receipt.returned:
+            raw, _ = read_owned_receipt(
+                owned.directory / receipt.name, directory, MAX_RECEIPT, receipt.identity
+            )
+            if raw != receipt.raw or canonical_bytes(parse_owned_receipt(raw)) != receipt.returned:
                 raise ValueError("owned_receipt_changed")
-            rows.append(_validate_receipt(raw, plan))
-            events.extend((_start(receipt.slot, receipt.name), _complete(receipt)))
+            rows.append(validate_captured_receipt(raw, plan))
+            events.extend(
+                (slot_started_record(receipt.slot, receipt.name), slot_captured_record(receipt))
+            )
         events.append(
             {"type": "capture_complete", "dispositions": dict.fromkeys(slots, "captured")}
         )
-        if _journal(events) != owned.journal:
+        if encode_journal(events) != owned.journal:
             raise ValueError("owned_journal_chain_mismatch")
         evidence = owned.plans[0].value()["evidence"]
         return {
@@ -449,7 +476,7 @@ def _consume(owned: object) -> AdmissionResult:
             "review_commit": review,
             "source_commit": evidence["source_commit"],
             "study_id": evidence["study_id"],
-            "journal_sha256": _sha(owned.journal),
+            "journal_sha256": sha256_bytes(owned.journal),
             "observations": rows,
             "limitations": [
                 "immediate-controller-owned-capture-only",

@@ -300,11 +300,11 @@ def test_bandit_baseline_change_requires_revalidation(tmp_path: Path) -> None:
         quality_gate.check_security_baseline(tmp_path)
 
 
-@pytest.mark.parametrize("changed", quality_gate.FROZEN_SCAN_SOURCES)
+@pytest.mark.parametrize("changed", quality_gate.REVIEWED_SCAN_SOURCES)
 def test_bandit_source_change_cannot_reuse_older_exception(tmp_path: Path, changed: str) -> None:
     (tmp_path / "quality").mkdir()
     (tmp_path / "tools").mkdir()
-    for name in (quality_gate.BANDIT_BASELINE, *quality_gate.FROZEN_SCAN_SOURCES):
+    for name in (quality_gate.BANDIT_BASELINE, *quality_gate.REVIEWED_SCAN_SOURCES):
         (tmp_path / name).write_bytes((quality_gate.ROOT / name).read_bytes())
     with (tmp_path / changed).open("ab") as stream:
         stream.write(b"\n# changed source cannot silently inherit an exception\n")

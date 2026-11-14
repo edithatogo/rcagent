@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Literal, TypedDict, TypeGuard
 
 from tools import json_shapes
-from tools.evaluation_preflight import _digest
+from tools.evaluation_preflight import is_sha256
 from tools.prospective_inventory import REF, artifact, identifier, obj, read_json, validate
 
 
@@ -234,13 +234,13 @@ SCHEMA = json_shapes.require_object(
 )
 
 
-def _validate_candidate(
+def validate_candidate(
     path: Path, expected_sha256: str, schema: json_shapes.JsonObject
 ) -> tuple[ProtocolCandidate, ProtocolDocument, dict[str, bytes]]:
     """Share existing checks and retain the exact reference bytes already validated."""
     path = path.absolute()
     value, pin = read_json(path)
-    if not _digest(expected_sha256) or pin != expected_sha256:
+    if not is_sha256(expected_sha256) or pin != expected_sha256:
         raise ValueError("protocol_pin_mismatch")
     validate(value, schema)
     if not json_shapes.is_object(value):
@@ -260,7 +260,7 @@ def _validate_candidate(
         r"[0-9a-f]{40}", condition["model_revision"]
     ):
         raise ValueError("invalid_model_identity")
-    if any(not _digest(item) for key, item in condition.items() if key.endswith("_sha256")):
+    if any(not is_sha256(item) for key, item in condition.items() if key.endswith("_sha256")):
         raise ValueError("invalid_condition_digest")
     case_ids = {case["id"] for case in value["cases"]}
     if len(case_ids) != 2:
@@ -303,7 +303,7 @@ def _validate_candidate(
 
 def validate_protocol(path: Path, expected_sha256: str) -> ProtocolCandidate:
     """Validate candidate declarations and referenced text, not primary evidence."""
-    return _validate_candidate(path, expected_sha256, SCHEMA)[0]
+    return validate_candidate(path, expected_sha256, SCHEMA)[0]
 
 
 def main(argv: list[str] | None = None) -> int:

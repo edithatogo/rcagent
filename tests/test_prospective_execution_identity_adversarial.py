@@ -176,7 +176,7 @@ def test_file_reader_is_bounded_even_if_file_grows(
 
     monkeypatch.setattr(Path, "open", open_growing)
     with pytest.raises(ValueError, match="identity_file_changed"):
-        identity._files([path], path.parent)
+        identity.relative_source_files([path], path.parent)
     assert reads == [5]
 
 
@@ -188,9 +188,9 @@ def test_file_budget_accumulates_between_calls(
         path.write_bytes(b"123")
     monkeypatch.setattr(identity, "MAX_TOTAL", 5)
     budget = [0, 0]
-    identity._files(paths[:1], tmp_path.resolve(), budget)
+    identity.relative_source_files(paths[:1], tmp_path.resolve(), budget)
     with pytest.raises(ValueError, match="identity_byte_limit"):
-        identity._files(paths[1:], tmp_path.resolve(), budget)
+        identity.relative_source_files(paths[1:], tmp_path.resolve(), budget)
 
 
 def test_environment_budget_includes_packages_executable_and_stdlib(
@@ -424,7 +424,7 @@ def test_oversized_file_rejected_before_read(
 
     monkeypatch.setattr(Path, "open", forbidden_open)
     with pytest.raises(ValueError, match="identity_byte_limit"):
-        identity._files([path], path.parent)
+        identity.relative_source_files([path], path.parent)
 
 
 @pytest.mark.parametrize(
@@ -513,7 +513,7 @@ def test_file_count_limit_precedes_file_access(
 ) -> None:
     monkeypatch.setattr(identity, "MAX_FILES", 1)
     with pytest.raises(ValueError, match="identity_file_limit"):
-        identity._files([tmp_path / "absent-a", tmp_path / "absent-b"], tmp_path)
+        identity.relative_source_files([tmp_path / "absent-a", tmp_path / "absent-b"], tmp_path)
 
 
 def test_stdlib_walk_entry_limit(

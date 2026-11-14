@@ -10,7 +10,7 @@ import stat
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import TypedDict
 
 from tools.release_source import (
     require_release_version,
@@ -24,12 +24,42 @@ _SAFE_VERSION = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9._+-]{0,127})\Z")
 _REVISION = re.compile(r"[0-9a-f]{40}\Z")
 
 
+class FileRecord(TypedDict):
+    path: str
+    sha256: str
+    size: int
+
+
+class InternalManifest(TypedDict):
+    schema_version: str
+    name: str
+    version: str
+    licence: str
+    source: str
+    source_revision: str
+    build_state: str
+    distribution_intent: str
+    publication_observation: str
+    network_required: bool
+    telemetry: str
+    data_classification: str
+    third_party_content: str
+    approval_boundaries: list[str]
+    template_admission_sha256: str
+    template_admission_scope: str
+    files: list[FileRecord]
+
+
+class DistributionManifest(InternalManifest):
+    archive: FileRecord
+
+
 @dataclass(frozen=True)
 class DistributionResult:
     archive: Path
     manifest_path: Path
     sbom_path: Path
-    manifest: dict[str, Any]
+    manifest: DistributionManifest
 
 
 def _json_bytes(value: object) -> bytes:
@@ -118,10 +148,10 @@ def build_distribution(
         )
         verify_release_payloads(repository, source_revision, captured)
 
-    file_records = [
+    file_records: list[FileRecord] = [
         {"path": name, "sha256": _sha256(payload), "size": len(payload)} for name, payload in files
     ]
-    internal_manifest: dict[str, Any] = {
+    internal_manifest: InternalManifest = {
         "schema_version": "1.0",
         "name": "rca-investigation",
         "version": version,
@@ -171,11 +201,13 @@ def build_distribution(
         _write_zip_member(archive, "rca-investigation/sbom.cdx.json", _json_bytes(sbom))
 
     archive_payload = archive_path.read_bytes()
-    external_manifest: dict[str, Any] = dict(internal_manifest)
-    external_manifest["archive"] = {
-        "path": archive_path.name,
-        "sha256": _sha256(archive_payload),
-        "size": len(archive_payload),
+    external_manifest: DistributionManifest = {
+        **internal_manifest,
+        "archive": {
+            "path": archive_path.name,
+            "sha256": _sha256(archive_payload),
+            "size": len(archive_payload),
+        },
     }
     manifest_path = destination / "distribution-manifest.json"
     sbom_path = destination / "sbom.cdx.json"

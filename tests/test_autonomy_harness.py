@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from datetime import UTC, datetime, timedelta
 
 import pytest
@@ -146,7 +147,7 @@ def test_explicit_empty_lane_limits_disable_dispatch() -> None:
         {"independent": 1.5},
     ],
 )
-def test_lane_limits_cannot_expand_policy(limits) -> None:
+def test_lane_limits_cannot_expand_policy(limits: Mapping[str, object]) -> None:
     with pytest.raises(ValueError, match="lane limits"):
         select_next_ready([item("ready")], completed=set(), lane_limits=limits)
 

@@ -4,6 +4,7 @@ import hashlib
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -19,7 +20,9 @@ ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL = ROOT / "evaluation/prospective/prospective-agent-text-20260830/protocol.json"
 
 
-def test_actual_protocol_references_and_declared_condition_remain_consistent() -> None:
+def test_actual_protocol_references_and_declared_condition_remain_consistent(
+    tmp_path: Path,
+) -> None:
     raw = PROTOCOL.read_bytes()
     value = require_object(json.loads(raw), context="historical protocol")
     raw_result: object = native.validate_protocol(PROTOCOL, hashlib.sha256(raw).hexdigest())
@@ -33,8 +36,6 @@ def test_actual_protocol_references_and_declared_condition_remain_consistent() -
     condition = require_object(value["condition"], context="condition")
     assert condition["model_id"] == MODEL_ID
     assert condition["registry_sha256"] == REGISTRY_PIN
-    assert condition["profile_sha256"] == profile.profile_digest()
-    assert condition["runtime_sha256"] == profile.PINNED_FILES[profile.EXECUTABLE]
     review = require_object(
         json.loads((ROOT / gate.REVIEW_PATH).read_bytes()), context="historical review"
     )
@@ -42,6 +43,47 @@ def test_actual_protocol_references_and_declared_condition_remain_consistent() -
     assert isinstance(source_commit, str)
     assert re.fullmatch(r"[0-9a-f]{40}", source_commit)
     assert review["protocol_sha256"] == hashlib.sha256(raw).hexdigest()
+    # Evaluate the trusted repository's historical declarations in an isolated
+    # interpreter with no site packages. No verification, subprocess runtime or
+    # model execution is requested. The current engineering identity is separate.
+    package = tmp_path / "tools"
+    package.mkdir()
+    (package / "__init__.py").write_text("", encoding="utf-8")
+    for name in (
+        "darwin_runtime_profile.py",
+        "darwin_runtime_v030.py",
+        "darwin_server_v030.py",
+        "local_model_comparator.py",
+    ):
+        historical_source = subprocess.run(
+            ["git", "show", f"{source_commit}:tools/{name}"],
+            cwd=ROOT,
+            capture_output=True,
+            check=True,
+        ).stdout
+        (package / name).write_bytes(historical_source)
+    declaration = subprocess.run(
+        [
+            sys.executable,
+            "-I",
+            "-S",
+            "-c",
+            (
+                "import sys, json; sys.path.insert(0, sys.argv[1]); "
+                "from tools import darwin_server_v030 as p; "
+                "print(json.dumps({'profile_sha256': p.profile_digest(), "
+                "'runtime_sha256': p.PINNED_FILES[p.EXECUTABLE]}))"
+            ),
+            str(tmp_path),
+        ],
+        capture_output=True,
+        check=True,
+    ).stdout
+    historical_profile = require_object(json.loads(declaration), context="historical profile")
+    assert condition["profile_sha256"] == historical_profile["profile_sha256"]
+    assert condition["runtime_sha256"] == historical_profile["runtime_sha256"]
+    assert profile.PROFILE_ID == "darwin-llama-server-0.3.0-typing-20261114"
+    assert profile.profile_digest() != historical_profile["profile_sha256"]
     # A consumed protocol binds its reviewed source revision. Current engineering
     # changes require fresh execution review; they do not rewrite this old pin.
     historical_adapter = subprocess.run(

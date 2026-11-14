@@ -18,7 +18,7 @@ from tools import prospective_native_protocol as native
 from tools import prospective_observation_admission as admission
 from tools import prospective_primary_session as primary
 from tools import prospective_server_session as session
-from tools.prospective_observation_admission import _Receipt
+from tools.prospective_observation_admission import CaptureReceipt
 
 Disposition: TypeAlias = Literal[
     "not-attempted", "attempted-outcome-unknown", "failed-receipt-retained", "captured"
@@ -70,16 +70,19 @@ def _plan_value(plan: session.PrimaryPlan) -> json_shapes.JsonObject:
     return json_shapes.require_object(plan.value(), context="controller plan")
 
 
-def _plans(protocol_path: Path, pin: str, review: str, root: Path, model_root: Path):
+def prepare_execution_plans(
+    protocol_path: Path, pin: str, review: str, root: Path, model_root: Path
+):
     if ".." in protocol_path.parts or type(review) is not str:
         raise ValueError("invalid_controller_context")
-    root, protocol_path, _ = gate.freeze._repository(protocol_path, review, root)
+    root, protocol_path, _ = gate.freeze.resolve_repository(protocol_path, review, root)
     value = json_shapes.require_object(
-        native._validated_candidate(protocol_path, pin)[0], context="controller protocol"
+        native.validated_candidate(protocol_path, pin)[0], context="controller protocol"
     )
     slots = _strings(value["expected_slots"])
     plans = tuple(
-        gate._verify(protocol_path, pin, slot, review, root, model_root) for slot in slots
+        gate.verify_execution_plan(protocol_path, pin, slot, review, root, model_root)
+        for slot in slots
     )
     if len(plans) != 2:
         raise ValueError("invalid_controller_denominator")
@@ -91,60 +94,62 @@ def _plans(protocol_path: Path, pin: str, review: str, root: Path, model_root: P
         )
         evidence.pop("slot_id")
         common.append(
-            admission._canonical({"admission": current["admission"], "evidence": evidence})
+            admission.canonical_bytes({"admission": current["admission"], "evidence": evidence})
         )
     if common[0] != common[1]:
         raise ValueError("controller_gate_disagreement")
     return protocol_path, root, (plans[0], plans[1])
 
 
-def _append(
+def append_journal(
     stream: JournalStream,
     path: Path,
     parent: tuple[int, int],
     events: list[json_shapes.JsonObject],
     event: json_shapes.JsonObject,
 ) -> None:
-    if session._directory(path.parent) != parent:
+    if session.private_directory_identity(path.parent) != parent:
         raise ValueError("owned_directory_changed")
-    existing, _ = admission._read(path, parent, admission.MAX_JOURNAL)
-    if existing != admission._journal(events):
+    existing, _ = admission.read_owned_receipt(path, parent, admission.MAX_JOURNAL)
+    if existing != admission.encode_journal(events):
         raise ValueError("journal_changed")
     # The journal is tiny and bounded; rebuilding avoids a mutable chain-head token.
     previous = (
-        admission._sha(admission._journal(events).splitlines(keepends=True)[-1])
+        admission.sha256_bytes(admission.encode_journal(events).splitlines(keepends=True)[-1])
         if events
         else "0" * 64
     )
-    raw = admission._line(event, len(events), previous)
-    if len(admission._journal(events)) + len(raw) > admission.MAX_JOURNAL:
+    raw = admission.encode_journal_line(event, len(events), previous)
+    if len(admission.encode_journal(events)) + len(raw) > admission.MAX_JOURNAL:
         raise ValueError("journal_byte_limit")
-    session._reserved(path, stream.fileno(), parent)
+    session.verify_reserved_receipt(path, stream.fileno(), parent)
     if stream.write(raw) != len(raw):
         raise OSError("short_journal_write")
     stream.flush()
     os.fsync(stream.fileno())
-    session._reserved(path, stream.fileno(), parent)
-    persisted, _ = admission._read(path, parent, admission.MAX_JOURNAL)
+    session.verify_reserved_receipt(path, stream.fileno(), parent)
+    persisted, _ = admission.read_owned_receipt(path, parent, admission.MAX_JOURNAL)
     if persisted != existing + raw:
         raise ValueError("journal_readback_mismatch")
     events.append(event)
 
 
-def _write_result(path: Path, parent: tuple[int, int], result: Mapping[str, object]) -> None:
+def write_result_exclusively(
+    path: Path, parent: tuple[int, int], result: Mapping[str, object]
+) -> None:
     descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     with os.fdopen(descriptor, "wb") as stream:
-        session._reserved(path, descriptor, parent)
-        raw = admission._canonical(result) + b"\n"
+        session.verify_reserved_receipt(path, descriptor, parent)
+        raw = admission.canonical_bytes(result) + b"\n"
         if stream.write(raw) != len(raw):
             raise OSError("short_admission_write")
         stream.flush()
         os.fsync(descriptor)
-        session._reserved(path, descriptor, parent)
+        session.verify_reserved_receipt(path, descriptor, parent)
 
 
-def _sync_directory(path: Path, expected: tuple[int, int]) -> None:
-    if session._directory(path) != expected:
+def sync_private_directory(path: Path, expected: tuple[int, int]) -> None:
+    if session.private_directory_identity(path) != expected:
         raise ValueError("owned_directory_changed")
     descriptor = os.open(
         path,
@@ -160,7 +165,7 @@ def _sync_directory(path: Path, expected: tuple[int, int]) -> None:
         os.fsync(descriptor)
     finally:
         os.close(descriptor)
-    if session._directory(path) != expected:
+    if session.private_directory_identity(path) != expected:
         raise ValueError("owned_directory_changed")
 
 
@@ -173,15 +178,19 @@ def run_study(
     evidence_root: Path,
 ) -> ControllerResult:
     """Own two once-only captures and consume immediate admission internally."""
-    protocol_path, root, plans = _plans(protocol_path, pin, review_commit, root, model_root)
+    protocol_path, root, plans = prepare_execution_plans(
+        protocol_path, pin, review_commit, root, model_root
+    )
     if ".." in evidence_root.parts:
         raise ValueError("unsafe_evidence_root")
     evidence_root = evidence_root.absolute()
-    parent_identity = session._directory(evidence_root)
-    header = json_shapes.require_object(admission._header(plans), context="controller header")
+    parent_identity = session.private_directory_identity(evidence_root)
+    header = json_shapes.require_object(
+        admission.journal_header(plans), context="controller header"
+    )
     slots = _strings(header["slots"])
-    run_id = admission._sha(
-        admission._canonical(
+    run_id = admission.sha256_bytes(
+        admission.canonical_bytes(
             {key: header[key] for key in ("study_id", "protocol_sha256", "review_commit")}
         )
     )
@@ -195,20 +204,22 @@ def run_study(
         if not isinstance(slot, str):
             raise ValueError("invalid_controller_context")
         if (
-            gate._verify(protocol_path, pin, slot, review_commit, root, model_root).payload
+            gate.verify_execution_plan(
+                protocol_path, pin, slot, review_commit, root, model_root
+            ).payload
             != plan.payload
         ):
             raise ValueError("controller_gate_changed")
-    if session._directory(evidence_root) != parent_identity:
+    if session.private_directory_identity(evidence_root) != parent_identity:
         raise ValueError("evidence_root_changed")
     directory.mkdir(mode=0o700)
-    if session._directory(evidence_root) != parent_identity:
+    if session.private_directory_identity(evidence_root) != parent_identity:
         raise ValueError("evidence_root_changed")
-    owned_parent = session._directory(directory)
+    owned_parent = session.private_directory_identity(directory)
     journal_path = directory / "journal.jsonl"
     descriptor = os.open(journal_path, os.O_CREAT | os.O_EXCL | os.O_RDWR, 0o600)
     events: list[json_shapes.JsonObject] = []
-    receipts: list[_Receipt] = []
+    receipts: list[CaptureReceipt] = []
     dispositions: dict[str, Disposition] = dict.fromkeys(slots, "not-attempted")
     result: ControllerResult = {
         "status": "controller_failed",
@@ -230,25 +241,25 @@ def run_study(
     with os.fdopen(descriptor, "w+b") as stream:
         stage: FailureStage = "persistence"
         try:
-            _append(stream, journal_path, owned_parent, events, header)
+            append_journal(stream, journal_path, owned_parent, events, header)
             # Persist the newly reserved directory entry before any child attempt.
-            _sync_directory(directory, owned_parent)
-            _sync_directory(evidence_root, parent_identity)
+            sync_private_directory(directory, owned_parent)
+            sync_private_directory(evidence_root, parent_identity)
             for index, plan in enumerate(plans):
                 slot, name = slots[index], f"slot-{index + 1}.json"
                 receipt_path = directory / name
                 if receipt_path.exists() or receipt_path.is_symlink():
                     raise ValueError("existing_slot_receipt")
-                _append(
+                append_journal(
                     stream,
                     journal_path,
                     owned_parent,
                     events,
                     json_shapes.require_object(
-                        admission._start(slot, name), context="controller start event"
+                        admission.slot_started_record(slot, name), context="controller start event"
                     ),
                 )
-                if session._directory(directory) != owned_parent:
+                if session.private_directory_identity(directory) != owned_parent:
                     raise ValueError("owned_directory_changed")
                 dispositions[slot] = "attempted-outcome-unknown"
                 stage = "capture"
@@ -256,52 +267,52 @@ def run_study(
                     protocol_path, pin, slot, review_commit, root, model_root, receipt_path
                 )
                 stage = "readback"
-                raw, identity = admission._read(
+                raw, identity = admission.read_owned_receipt(
                     receipt_path, owned_parent, admission.MAX_RECEIPT, synchronize=True
                 )
-                _sync_directory(directory, owned_parent)
-                returned_bytes = admission._canonical(returned)
-                if admission._canonical(admission._parse(raw)) != returned_bytes:
+                sync_private_directory(directory, owned_parent)
+                returned_bytes = admission.canonical_bytes(returned)
+                if admission.canonical_bytes(admission.parse_owned_receipt(raw)) != returned_bytes:
                     raise ValueError("primary_return_receipt_mismatch")
-                row = _Receipt(slot, name, identity, raw, returned_bytes)
+                row = CaptureReceipt(slot, name, identity, raw, returned_bytes)
                 if (
                     returned.get("status") != "primary_session_captured"
                     or returned.get("error") != "none"
                 ):
                     dispositions[slot] = "failed-receipt-retained"
                     failed = json_shapes.require_object(
-                        admission._complete(row), context="controller failed event"
+                        admission.slot_captured_record(row), context="controller failed event"
                     )
                     failed["type"] = "slot_failed"
-                    _append(stream, journal_path, owned_parent, events, failed)
+                    append_journal(stream, journal_path, owned_parent, events, failed)
                     raise ValueError("primary_capture_failed")
                 stage = "capture_validation"
-                admission._validate_receipt(raw, plan)
+                admission.validate_captured_receipt(raw, plan)
                 receipts.append(row)
                 dispositions[slot] = "captured"
-                _append(
+                append_journal(
                     stream,
                     journal_path,
                     owned_parent,
                     events,
                     json_shapes.require_object(
-                        admission._complete(row), context="controller complete event"
+                        admission.slot_captured_record(row), context="controller complete event"
                     ),
                 )
-            _sync_directory(directory, owned_parent)
-            _append(
+            sync_private_directory(directory, owned_parent)
+            append_journal(
                 stream,
                 journal_path,
                 owned_parent,
                 events,
                 {"type": "capture_complete", "dispositions": dict(dispositions)},
             )
-            journal, journal_identity = admission._read(
+            journal, journal_identity = admission.read_owned_receipt(
                 journal_path, owned_parent, admission.MAX_JOURNAL
             )
-            if journal != admission._journal(events):
+            if journal != admission.encode_journal(events):
                 raise ValueError("journal_readback_mismatch")
-            owned = admission._issue(
+            owned = admission.issue_controller_capture(
                 (protocol_path, pin, review_commit, root, model_root),
                 plans,
                 directory,
@@ -313,23 +324,25 @@ def run_study(
             )
             stage = "admission"
             admitted = json_shapes.require_object(
-                admission._consume(owned), context="controller admission"
+                admission.consume_controller_capture(owned), context="controller admission"
             )
             stage = "persistence"
-            _write_result(directory / "admission.json", owned_parent, admitted)
-            _sync_directory(directory, owned_parent)
-            persisted, _ = admission._read(
+            write_result_exclusively(directory / "admission.json", owned_parent, admitted)
+            sync_private_directory(directory, owned_parent)
+            persisted, _ = admission.read_owned_receipt(
                 directory / "admission.json", owned_parent, admission.MAX_JOURNAL
             )
-            if admission._canonical(admission._parse(persisted)) != admission._canonical(admitted):
+            if admission.canonical_bytes(
+                admission.parse_owned_receipt(persisted)
+            ) != admission.canonical_bytes(admitted):
                 raise ValueError("admission_readback_mismatch")
             return {
                 **result,
                 "status": "controller_admitted_before_blinding",
                 "admitted": True,
                 "admission_before_blinding": True,
-                "journal_sha256": admission._sha(journal),
-                "admission_sha256": admission._sha(persisted),
+                "journal_sha256": admission.sha256_bytes(journal),
+                "admission_sha256": admission.sha256_bytes(persisted),
             }
         except (
             ValueError,
@@ -345,15 +358,17 @@ def run_study(
             result["failure_stage"] = stage
             if events and events[-1]["type"] == "capture_complete":
                 try:
-                    result["journal_sha256"] = admission._sha(admission._journal(events))
-                    _write_result(directory / "failure.json", owned_parent, result)
-                    _sync_directory(directory, owned_parent)
+                    result["journal_sha256"] = admission.sha256_bytes(
+                        admission.encode_journal(events)
+                    )
+                    write_result_exclusively(directory / "failure.json", owned_parent, result)
+                    sync_private_directory(directory, owned_parent)
                 except (ValueError, OSError):
                     result["outcome_persistence_error"] = "failure_outcome_persistence_failed"
             # A terminal sealed journal is never reopened or altered after admission starts.
             if not events or events[-1]["type"] != "capture_complete":
                 try:
-                    _append(
+                    append_journal(
                         stream,
                         journal_path,
                         owned_parent,

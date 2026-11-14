@@ -137,7 +137,9 @@ def project_closure(root: Path, sources: tuple[str, ...], expected: dict[str, st
                 raise ValueError("incomplete_project_closure")
 
 
-def _files(paths: list[Path], base: Path, budget: list[int] | None = None) -> list[IdentityFile]:
+def relative_source_files(
+    paths: list[Path], base: Path, budget: list[int] | None = None
+) -> list[IdentityFile]:
     if len(paths) > MAX_FILES:
         raise ValueError("identity_file_limit")
     result: list[IdentityFile] = []
@@ -213,7 +215,7 @@ def environment_identity() -> EnvironmentIdentity:
                 # Installed console wrappers are not imported; record package code only.
                 continue
             members.append(base / member)
-        records = _files(members, base, budget)
+        records = relative_source_files(members, base, budget)
         roots = ("attr", "attrs") if name == "attrs" else (MODULES[name],)
         loaded = [
             module
@@ -259,7 +261,7 @@ def environment_identity() -> EnvironmentIdentity:
         if not library_dir or not library_name:
             raise ValueError("interpreter_library_unavailable")
         library = (Path(str(library_dir)) / str(library_name)).resolve(strict=True)
-        libraries = _files([library], library.parent, budget)
+        libraries = relative_source_files([library], library.parent, budget)
     return {
         "path_bindings": {
             "executable_alias": sys.executable,
@@ -272,9 +274,9 @@ def environment_identity() -> EnvironmentIdentity:
         "implementation": sys.implementation.name,
         "cache_tag": sys.implementation.cache_tag,
         "platform": sys.platform,
-        "executable": _files([executable], executable.parent, budget),
+        "executable": relative_source_files([executable], executable.parent, budget),
         "interpreter_library": libraries,
-        "stdlib": _files(paths, stdlib, budget),
+        "stdlib": relative_source_files(paths, stdlib, budget),
         "distributions": packages,
         "limitations": [
             "on-disk-files-only",

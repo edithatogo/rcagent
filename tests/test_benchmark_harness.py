@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+from tests.prospective_fixture_types import ObjectMap, mapping, sequence, text_value
 from tools import benchmark_harness
 from tools.benchmark_harness import (
     ROOT,
@@ -18,33 +19,38 @@ from tools.benchmark_harness import (
     validate_registry,
     verify_result,
 )
+from tools.json_shapes import object_rows
 
 
 def test_registry_is_valid_and_legacy_estate_is_preserved() -> None:
     registry = load_registry()
     assert validate_registry(registry) == []
-    assert {item["condition"] for item in registry["legacy_map"]} == {
+    assert {text_value(item["condition"]) for item in object_rows(registry["legacy_map"])} == {
         f"H{number}" for number in range(9)
     }
-    assert all(item["mapping_status"] != "mapped" for item in registry["legacy_map"])
+    assert all(item["mapping_status"] != "mapped" for item in object_rows(registry["legacy_map"]))
 
 
 def test_active_under_review_nsw_case_remains_non_promotion_eligible() -> None:
     registry = load_registry()
-    case = next(item for item in registry["cases"] if item["id"] == "nsw-policy-drift")
+    case = next(item for item in object_rows(registry["cases"]) if item["id"] == "nsw-policy-drift")
     assert case["activation_status"] == "active"
     assert case["promotion_eligible"] is False
-    regression = next(suite for suite in registry["suites"] if suite["id"] == "regression")
-    assert case["id"] in regression["case_ids"]
+    regression = next(
+        suite for suite in object_rows(registry["suites"]) if suite["id"] == "regression"
+    )
+    assert case["id"] in sequence(regression["case_ids"])
 
 
 def test_fixture_checksum_and_pending_decision_fail_closed() -> None:
     registry = load_registry()
-    registry["cases"][0]["sha256"] = "0" * 64
+    mapping(sequence(registry["cases"])[0])["sha256"] = "0" * 64
     assert any("checksum mismatch" in error for error in validate_registry(registry))
 
     registry = load_registry()
-    nsw_case = next(item for item in registry["cases"] if item["id"] == "nsw-policy-drift")
+    nsw_case = next(
+        item for item in object_rows(registry["cases"]) if item["id"] == "nsw-policy-drift"
+    )
     nsw_case["activation_status"] = "pending_owner_decision"
     nsw_case.pop("decision_id")
     assert any("requires decision_id" in error for error in validate_registry(registry))
@@ -52,11 +58,13 @@ def test_fixture_checksum_and_pending_decision_fail_closed() -> None:
 
 def test_fixture_paths_and_modality_claims_fail_closed() -> None:
     registry = load_registry()
-    registry["cases"][0]["path"] = "evaluation/benchmark/fixtures/../registry.json"
+    mapping(sequence(registry["cases"])[0])["path"] = (
+        "evaluation/benchmark/fixtures/../registry.json"
+    )
     assert any("escapes the fixture directory" in error for error in validate_registry(registry))
 
     registry = load_registry()
-    registry["cases"][0]["modalities"] = ["audio"]
+    mapping(sequence(registry["cases"])[0])["modalities"] = ["audio"]
     assert any("modality mismatch" in error for error in validate_registry(registry))
 
 
@@ -75,11 +83,14 @@ def test_deterministic_baseline_passes_structural_and_hard_gates() -> None:
 
 
 def test_every_hard_gate_blocks_a_case() -> None:
-    fixture = load_registry()["cases"][0]["path"]
-    case = json.loads((ROOT / fixture).read_text(encoding="utf-8"))["cases"][0]
-    for category in case["candidate"]["gate_violations"]:
+    fixture = text_value(mapping(sequence(load_registry()["cases"])[0])["path"])
+    fixture_data = mapping(json.loads((ROOT / fixture).read_text(encoding="utf-8")))
+    case = mapping(sequence(fixture_data["cases"])[0])
+    for category in mapping(mapping(case["candidate"])["gate_violations"]):
         changed = deepcopy(case)
-        changed["candidate"]["gate_violations"][category] = ["synthetic violation"]
+        mapping(mapping(changed["candidate"])["gate_violations"])[category] = [
+            "synthetic violation"
+        ]
         assert score_case(changed)["passed"] is False
 
 
@@ -136,7 +147,11 @@ def test_benchmark_cli_validate_failure(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     monkeypatch.setattr(sys, "argv", ["benchmark", "validate"])
-    monkeypatch.setattr(benchmark_harness, "validate_registry", lambda registry: ["bad registry"])
+
+    def invalid_registry(registry: ObjectMap) -> list[str]:
+        return ["bad registry"]
+
+    monkeypatch.setattr(benchmark_harness, "validate_registry", invalid_registry)
     assert benchmark_harness.main() == 1
     assert "ERROR: bad registry" in capsys.readouterr().out
 
@@ -153,13 +168,13 @@ def test_benchmark_cli_rejects_invalid_report(
 
 def test_registry_and_result_validation_cover_fail_closed_edges(tmp_path: Path) -> None:
     registry = load_registry()
-    registry["cases"].append("malformed")
-    registry["suites"].append("malformed")
-    registry["legacy_map"].append("malformed")
+    sequence(registry["cases"]).append("malformed")
+    sequence(registry["suites"]).append("malformed")
+    sequence(registry["legacy_map"]).append("malformed")
     registry["hard_gates"] = []
     assert any("missing" in error for error in validate_registry(registry))
 
-    result = run_suite(load_registry(), "smoke")
+    result = mapping(run_suite(load_registry(), "smoke"))
     result["registry_sha256"] = "0" * 64
     result["runner"] = "wrong"
     result["results"] = ["malformed"]
@@ -175,9 +190,41 @@ def test_registry_and_result_validation_cover_fail_closed_edges(tmp_path: Path) 
     unknown["suite_id"] = "missing"
     assert "result suite is unknown" in verify_result(unknown)
 
-    missing_results = run_suite(load_registry(), "smoke")
+    missing_results = mapping(run_suite(load_registry(), "smoke"))
     missing_results["results"] = None
     missing_results["fixture_sha256"] = None
     errors = verify_result(missing_results)
     assert "result observations are missing" in errors
     assert "result fixture hashes are missing" in errors
+
+
+@pytest.mark.parametrize(
+    "field", ["dependencies", "metrics", "hard_gates", "cases", "suites", "legacy_map"]
+)
+def test_registry_non_array_collections_return_schema_errors(field: str) -> None:
+    registry = load_registry()
+    registry[field] = None
+    assert any(
+        f"{field}: None is not of type 'array'" in error for error in validate_registry(registry)
+    )
+
+
+MALFORMED_REGISTRY_VALUES: list[tuple[str, str, object]] = [
+    ("cases", "id", {}),
+    ("suites", "case_ids", [{}]),
+    ("hard_gates", "category", []),
+    ("legacy_map", "source_paths", None),
+]
+
+
+@pytest.mark.parametrize(("collection", "field", "value"), MALFORMED_REGISTRY_VALUES)
+def test_registry_malformed_nested_values_return_diagnostics(
+    collection: str, field: str, value: object
+) -> None:
+    registry = load_registry()
+    mapping(sequence(registry[collection])[0])[field] = value
+    errors = validate_registry(registry)
+    assert any(
+        error.startswith((f"{collection}.0.{field}:", f"{collection}.0.{field}."))
+        for error in errors
+    )

@@ -5,11 +5,13 @@ from __future__ import annotations
 import hashlib
 import json
 import unicodedata
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import PurePosixPath
-from typing import Any
+from typing import TypeVar
+
+DecisionPacket = TypeVar("DecisionPacket", bound=Mapping[str, object])
 
 READY = "ready"
 TERMINAL = {"complete"}
@@ -66,7 +68,7 @@ def deterministic_run_id(track_id: str, task_id: str, base_revision: str) -> str
     return hashlib.sha256(value.encode()).hexdigest()[:20]
 
 
-def _normalise_path(value: str) -> PurePosixPath:
+def _normalise_path(value: object) -> PurePosixPath:
     if (
         not isinstance(value, str)
         or not value
@@ -96,15 +98,15 @@ def select_next_ready(
     *,
     completed: set[str],
     active: Iterable[WorkItem] = (),
-    lane_limits: dict[str, int] | None = None,
+    lane_limits: Mapping[str, object] | None = None,
 ) -> WorkItem | None:
     """Select the highest-value ready item without exceeding lanes or paths."""
-    limits = LANE_CAPS if lane_limits is None else lane_limits
-    if any(
-        lane not in LANE_CAPS or type(limit) is not int or not 0 <= limit <= LANE_CAPS[lane]
-        for lane, limit in limits.items()
-    ):
-        raise ValueError("lane limits must respect the integration and independent caps")
+    configured = LANE_CAPS if lane_limits is None else lane_limits
+    limits: dict[str, int] = {}
+    for lane, limit in configured.items():
+        if lane not in LANE_CAPS or type(limit) is not int or not 0 <= limit <= LANE_CAPS[lane]:
+            raise ValueError("lane limits must respect the integration and independent caps")
+        limits[lane] = limit
     queued_items = tuple(items)
     active_items = tuple(active)
     # Validate ownership even when there are no active peers to compare with.
@@ -134,6 +136,12 @@ def select_next_ready(
     return min(candidates, key=lambda item: (-item.criticality, -item.priority, item.id))
 
 
+def _aware_timestamp(value: object) -> bool:
+    return (
+        isinstance(value, datetime) and value.tzinfo is not None and value.utcoffset() is not None
+    )
+
+
 def classify_lease(
     lease: Lease | None,
     *,
@@ -146,8 +154,7 @@ def classify_lease(
         return "off"
     observed = now or datetime.now(UTC)
     if any(
-        not isinstance(value, datetime) or value.tzinfo is None or value.utcoffset() is None
-        for value in (observed, lease.expires_at, lease.heartbeat_at)
+        not _aware_timestamp(value) for value in (observed, lease.expires_at, lease.heartbeat_at)
     ):
         raise ValueError("lease timestamps and now must be timezone-aware")
     if (
@@ -184,23 +191,23 @@ def recovery_action(kind: str, attempts: int) -> str:
     raise ValueError(f"unknown recovery kind: {kind}")
 
 
-def validate_decision_packet(packet: dict[str, Any]) -> list[str]:
+def validate_decision_packet(packet: Mapping[str, object]) -> list[str]:
     """Return missing or empty required decision fields."""
     return sorted(
         field
         for field in DECISION_REQUIRED_FIELDS
         if field not in packet
-        or packet[field] in (None, "", [], {})
-        or (isinstance(packet[field], str) and not packet[field].strip())
+        or (value := packet[field]) in (None, "", [], {})
+        or (isinstance(value, str) and not value.strip())
     )
 
 
-def select_decision(packets: Iterable[dict[str, Any]]) -> dict[str, Any] | None:
+def select_decision(packets: Iterable[DecisionPacket]) -> DecisionPacket | None:
     """Deduplicate open decisions and return one deterministic engagement."""
-    unique: dict[str, dict[str, Any]] = {}
+    unique: dict[str, DecisionPacket] = {}
     for packet in packets:
         decision_id = str(packet.get("decision_id", ""))
-        if not decision_id or packet.get("status") not in {"proposed", "decision_needed"}:
+        if not decision_id or packet.get("status") not in ("proposed", "decision_needed"):
             continue
         unique.setdefault(decision_id, packet)
     if not unique:
@@ -210,10 +217,7 @@ def select_decision(packets: Iterable[dict[str, Any]]) -> dict[str, Any] | None:
 
 def freshness_status(retrieved_at: datetime, max_age: timedelta, *, now: datetime) -> str:
     """Classify authoritative context without silently accepting stale state."""
-    if any(
-        not isinstance(value, datetime) or value.tzinfo is None or value.utcoffset() is None
-        for value in (retrieved_at, now)
-    ):
+    if any(not _aware_timestamp(value) for value in (retrieved_at, now)):
         raise ValueError("timestamps must be timezone-aware")
     if max_age.total_seconds() < 0:
         raise ValueError("max_age cannot be negative")

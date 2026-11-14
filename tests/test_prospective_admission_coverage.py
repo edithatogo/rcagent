@@ -19,22 +19,22 @@ from tests.test_prospective_execution_gate import synthetic as synthetic
 from tests.test_prospective_study_controller import capture_fixture as capture_fixture
 from tools import prospective_observation_admission as admission
 from tools import prospective_study_controller as controller
-from tools.prospective_execution_gate import _Plan
-from tools.prospective_observation_admission import _OwnedRun, _Receipt
+from tools.prospective_execution_gate import ExecutionPlan
+from tools.prospective_observation_admission import CaptureReceipt, OwnedCapture
 
 
 class WitnessOverrides(TypedDict, total=False):
     parent_identity: tuple[int, int]
     journal: bytes
-    receipts: tuple[_Receipt, ...]
+    receipts: tuple[CaptureReceipt, ...]
 
 
 run_study = mapping_call(controller.run_study)
 
 
-def reissue_for_test(owned: _OwnedRun, changes: WitnessOverrides) -> _OwnedRun:
+def reissue_for_test(owned: OwnedCapture, changes: WitnessOverrides) -> OwnedCapture:
     """Explicit fixture injection, never an offline/public capability constructor."""
-    return admission._issue(
+    return admission.issue_controller_capture(
         context=owned.context,
         plans=owned.plans,
         directory=owned.directory,
@@ -47,10 +47,10 @@ def reissue_for_test(owned: _OwnedRun, changes: WitnessOverrides) -> _OwnedRun:
 
 
 def test_untrusted_origin_cannot_construct_capture_witness(tmp_path: Path) -> None:
-    plan = _Plan(b"{}")
-    receipt = _Receipt("synthetic-slot", "slot.json", (1, 3), b"{}", b"{}")
+    plan = ExecutionPlan(b"{}")
+    receipt = CaptureReceipt("synthetic-slot", "slot.json", (1, 3), b"{}", b"{}")
     with pytest.raises(ValueError, match="invalid_capture_capability"):
-        _OwnedRun(
+        OwnedCapture(
             object(),
             (tmp_path, "a" * 64, "b" * 40, tmp_path, tmp_path),
             (plan, plan),
@@ -80,23 +80,23 @@ def test_request_source_and_arguments_bound_before_next_capture(
     reason: str,
 ) -> None:
     args, calls, capture = capture_fixture
-    original_validate = admission._validate_receipt
+    original_validate = admission.validate_captured_receipt
     observed: list[str] = []
 
     def changed(*parameters: *PrimaryArgs) -> ObjectMap:
         result = capture(*parameters)
         result[field] = value
-        parameters[-1].write_bytes(admission._canonical(result) + b"\n")
+        parameters[-1].write_bytes(admission.canonical_bytes(result) + b"\n")
         return result
 
-    def validate(raw: bytes, plan: _Plan) -> Never:
+    def validate(raw: bytes, plan: ExecutionPlan) -> Never:
         with pytest.raises(ValueError, match=reason) as rejected:
             original_validate(raw, plan)
         observed.append(str(rejected.value))
         raise rejected.value
 
     monkeypatch.setattr(controller.primary, "run_primary", changed)
-    monkeypatch.setattr(admission, "_validate_receipt", validate)
+    monkeypatch.setattr(admission, "validate_captured_receipt", validate)
     result = run_study(*args)
     assert result["admitted"] is False
     assert len(calls) == 1
@@ -123,11 +123,11 @@ def test_postcapture_owned_evidence_rejection_consumes_witness(
     reason: str,
 ) -> None:
     args, calls, _ = capture_fixture
-    original_consume = admission._consume
+    original_consume = admission.consume_controller_capture
     observed: list[str] = []
 
     def corrupted(owned: object) -> Never:
-        assert isinstance(owned, _OwnedRun)
+        assert isinstance(owned, OwnedCapture)
         changes: WitnessOverrides = {}
         receipts = owned.receipts
         first = receipts[0]
@@ -148,20 +148,20 @@ def test_postcapture_owned_evidence_rejection_consumes_witness(
                 mapping(mapping(json.loads(line))["event"]) for line in owned.journal.splitlines()
             ]
             events.append({"type": "untrusted-extra-event"})
-            journal = admission._journal(events)
+            journal = admission.encode_journal(events)
             (owned.directory / "journal.jsonl").write_bytes(journal)
             changes["journal"] = journal
         else:
-            value = admission._parse(first.raw)
+            value = admission.parse_owned_receipt(first.raw)
             del value["primary_gate"]
-            raw = admission._canonical(value) + b"\n"
+            raw = admission.canonical_bytes(value) + b"\n"
             (owned.directory / first.name).write_bytes(raw)
             changes["receipts"] = (
-                dataclasses.replace(first, raw=raw, returned=admission._canonical(value)),
+                dataclasses.replace(first, raw=raw, returned=admission.canonical_bytes(value)),
                 receipts[1],
             )
         mutated = reissue_for_test(owned, changes)
-        admission._LIVE.discard(owned)
+        admission.revoke_capture(owned)
         with pytest.raises(ValueError, match=reason) as rejected:
             original_consume(mutated)
         with pytest.raises(ValueError, match="invalid_or_consumed_capture_capability"):
@@ -169,7 +169,7 @@ def test_postcapture_owned_evidence_rejection_consumes_witness(
         observed.append(str(rejected.value))
         raise rejected.value
 
-    monkeypatch.setattr(admission, "_consume", corrupted)
+    monkeypatch.setattr(admission, "consume_controller_capture", corrupted)
     result = run_study(*args)
     assert len(calls) == 2
     assert result["admitted"] is result["scoring_start"] is False
@@ -185,23 +185,23 @@ def test_gate_drift_during_immediate_admission_rejects_capture(
     capture_fixture: CaptureFixture, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     args, calls, _ = capture_fixture
-    original_consume = admission._consume
-    original_verify = admission.gate._verify
+    original_consume = admission.consume_controller_capture
+    original_verify = admission.gate.verify_execution_plan
     observed: list[str] = []
 
-    def changed_verify(*parameters: *VerifyArgs) -> _Plan:
+    def changed_verify(*parameters: *VerifyArgs) -> ExecutionPlan:
         plan = original_verify(*parameters)
-        return _Plan(plan.payload + b" ")
+        return ExecutionPlan(plan.payload + b" ")
 
     def consume(owned: object) -> Never:
         with monkeypatch.context() as patch:
-            patch.setattr(admission.gate, "_verify", changed_verify)
+            patch.setattr(admission.gate, "verify_execution_plan", changed_verify)
             with pytest.raises(ValueError, match="admission_gate_changed") as rejected:
                 original_consume(owned)
         observed.append(str(rejected.value))
         raise rejected.value
 
-    monkeypatch.setattr(admission, "_consume", consume)
+    monkeypatch.setattr(admission, "consume_controller_capture", consume)
     result = run_study(*args)
     assert len(calls) == 2
     assert result["admitted"] is False

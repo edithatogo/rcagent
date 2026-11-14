@@ -8,21 +8,22 @@ import math
 import re
 import unicodedata
 from collections.abc import Iterable
+from collections.abc import Set as AbstractSet
 from copy import deepcopy
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Protocol, cast
+from typing import Literal, Protocol, TypedDict, TypeGuard, cast
 
 from jsonschema import Draft202012Validator
 from jsonschema.exceptions import ValidationError
 
-from tools.json_shapes import is_array, is_object
+from tools.json_shapes import JsonObject, is_array, is_object
 
 
 class _SchemaValidator(Protocol):
     """The object-validation method used from jsonschema's overloaded API."""
 
-    def iter_errors(self, instance: object) -> Iterable[ValidationError]: ...
+    def iter_errors(self, _instance: object) -> Iterable[ValidationError]: ...
 
 
 SCHEMA_VERSION = "1.0"
@@ -71,6 +72,76 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 SENSITIVE_VALUE_RE = re.compile(
     r"(?i)(?:\bMRN[- :]*\d+|\bemployee[- _]?id\b|(?:token|password|secret|api[_ -]?key)\s*[=:]|\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b|\b(?:\+?61|0)\d{8,9}\b)"
 )
+
+
+class MethodGuidance(TypedDict):
+    selected: list[str]
+    reasons: dict[str, str]
+    rejected: list[str]
+    stop_rule: str
+    forced_method: Literal[False]
+    abstain: bool
+    limitations: list[str]
+
+
+class AdapterReceiptBody(TypedDict):
+    status: Literal["rejected", "dry_run_validated"]
+    reasons: list[str]
+    operation: str | None
+    data_class: object
+    request_sha256: str
+    registry_sha256: str
+    source_revision: object
+    executed: Literal[False]
+    external_action: Literal[False]
+    enterprise_mutation: Literal[False]
+    message_sent: Literal[False]
+    system_of_record_updated: Literal[False]
+
+
+class AdapterReceipt(AdapterReceiptBody):
+    receipt_sha256: str
+
+
+class AuditEventBody(TypedDict):
+    schema_version: str
+    event: JsonObject
+    previous_sha256: str | None
+    append_only_contract: Literal[True]
+    persisted: Literal[False]
+
+
+class AuditEvent(AuditEventBody):
+    event_sha256: str
+
+
+class JourneyCase(TypedDict):
+    id: object
+    assertion: str
+    passed: bool
+
+
+class JourneyMetrics(TypedDict):
+    unsafe_certainty: None
+    missed_required_disclosures: None
+    external_actions: Literal[0]
+    review_burden: str
+
+
+class JourneyReceiptBody(TypedDict):
+    schema_version: str
+    scope: Literal["generated_synthetic_non_operational"]
+    cases: list[JourneyCase]
+    metrics: JourneyMetrics
+    limitations: list[str]
+
+
+class JourneyReceipt(JourneyReceiptBody):
+    receipt_sha256: str
+
+
+def _is_choice(value: object, choices: AbstractSet[str]) -> TypeGuard[str]:
+    return isinstance(value, str) and value in choices
 
 
 def canonical_hash(value: object) -> str:
@@ -122,7 +193,7 @@ def validate_registry(registry: object) -> list[str]:
             if is_object(item) and isinstance(item.get("role"), str)
         ]
         covered = set(roles)
-        if covered != AUDIENCES or len(roles) != len(covered):
+        if len(roles) != len(journeys) or covered != AUDIENCES or len(roles) != len(covered):
             errors.append("journeys do not cover every required role")
         for index, journey in enumerate(journeys):
             if not is_object(journey) or set(journey) != {
@@ -292,7 +363,7 @@ def method_guidance(
     open_questions: list[str] | None = None,
     evidence_signals: list[str] | None = None,
     method_budget: int = 2,
-) -> dict[str, Any]:
+) -> MethodGuidance:
     del evidence_state  # Compatibility input; selection uses declared questions and signals.
     signal_map = {
         "human_factors": "SEIPS",
@@ -327,7 +398,7 @@ def method_guidance(
     }
 
 
-def dry_run_adapter(request: object, registry: dict[str, Any]) -> dict[str, Any]:
+def dry_run_adapter(request: object, registry: object) -> AdapterReceipt:
     reasons: list[str] = []
     if validate_registry(registry):
         reasons.append("registry is invalid")
@@ -341,9 +412,11 @@ def dry_run_adapter(request: object, registry: dict[str, Any]) -> dict[str, Any]
     if any(any(secret in field.casefold() for secret in SECRET_FIELDS) for field in request):
         reasons.append("credential-like fields are forbidden")
     operation = request.get("operation")
-    if operation in EXTERNAL_OPERATIONS or operation not in SAFE_ADAPTER_OPERATIONS:
+    if _is_choice(operation, EXTERNAL_OPERATIONS) or not _is_choice(
+        operation, SAFE_ADAPTER_OPERATIONS
+    ):
         reasons.append("operation is not permitted")
-    if request.get("data_class") not in {"synthetic", "public"}:
+    if not _is_choice(request.get("data_class"), {"synthetic", "public"}):
         reasons.append("data class is not admitted")
     if request.get("dry_run") is not True:
         reasons.append("dry_run must be true")
@@ -357,7 +430,7 @@ def dry_run_adapter(request: object, registry: dict[str, Any]) -> dict[str, Any]
         safe_request = sanitize_export(request)
     except ValueError:
         reasons.append("request contains unsafe content")
-    receipt = {
+    receipt: AdapterReceiptBody = {
         "status": "rejected" if reasons else "dry_run_validated",
         "reasons": sorted(reasons),
         "operation": operation if isinstance(operation, str) else None,
@@ -371,8 +444,7 @@ def dry_run_adapter(request: object, registry: dict[str, Any]) -> dict[str, Any]
         "message_sent": False,
         "system_of_record_updated": False,
     }
-    receipt["receipt_sha256"] = canonical_hash(receipt)
-    return receipt
+    return {**receipt, "receipt_sha256": canonical_hash(receipt)}
 
 
 def validate_communication_draft(draft: object) -> list[str]:
@@ -392,12 +464,15 @@ def validate_communication_draft(draft: object) -> list[str]:
         errors.append("communication fields are invalid")
     if draft.get("status") != "preparation_only":
         errors.append("communication must remain preparation_only")
-    if draft.get("recipient") not in {
-        "[Consumer B]",
-        "[Family Representative]",
-        "[Staff Member]",
-        "unresolved",
-    }:
+    if not _is_choice(
+        draft.get("recipient"),
+        {
+            "[Consumer B]",
+            "[Family Representative]",
+            "[Staff Member]",
+            "unresolved",
+        },
+    ):
         errors.append("recipient must be synthetic or unresolved")
     if draft.get("delivery_channel") != "none":
         errors.append("delivery channel must be none")
@@ -493,22 +568,28 @@ def validate_approval(approval: object, *, artefact_sha256: object, evaluated_at
         errors.append("approval is not bound to the exact artefact")
     if approval.get("actor_class") != "accountable_human":
         errors.append("actor class cannot provide accountable approval")
-    if approval.get("authority_class") not in {
-        "human_organisational",
-        "human_clinical",
-        "human_policy",
-        "human_legal",
-    }:
+    if not _is_choice(
+        approval.get("authority_class"),
+        {
+            "human_organisational",
+            "human_clinical",
+            "human_policy",
+            "human_legal",
+        },
+    ):
         errors.append("authority class is invalid")
-    if approval.get("decision") not in {"approved", "rejected", "returned"}:
+    if not _is_choice(approval.get("decision"), {"approved", "rejected", "returned"}):
         errors.append("decision is invalid")
-    if approval.get("scope") not in {
-        "finding",
-        "action",
-        "effectiveness",
-        "closure",
-        "communication",
-    }:
+    if not _is_choice(
+        approval.get("scope"),
+        {
+            "finding",
+            "action",
+            "effectiveness",
+            "closure",
+            "communication",
+        },
+    ):
         errors.append("scope is invalid")
     if approval.get("actor_role_id") == approval.get("author_role_id"):
         errors.append("self approval is forbidden")
@@ -519,32 +600,36 @@ def validate_approval(approval: object, *, artefact_sha256: object, evaluated_at
         errors.append("approval timestamps must be UTC ISO timestamps")
     elif not issued <= evaluated < expires:
         errors.append("approval is not current at evaluation time")
-    if approval.get("scope") == "effectiveness" and approval.get("authority_class") not in {
-        "human_clinical",
-        "human_organisational",
-    }:
+    if approval.get("scope") == "effectiveness" and not _is_choice(
+        approval.get("authority_class"),
+        {
+            "human_clinical",
+            "human_organisational",
+        },
+    ):
         errors.append("authority class is incompatible with effectiveness scope")
     if approval.get("conflict_declared") is not True:
         errors.append("conflict declaration is required")
     return sorted(errors)
 
 
-def build_audit_event(*, event: object, previous_sha256: str | None) -> dict[str, Any]:
+def build_audit_event(*, event: object, previous_sha256: str | None) -> AuditEvent:
     """Create a deterministic append-only event envelope without claiming persistence."""
     if not is_object(event) or not event:
         raise ValueError("event must be a non-empty object")
     if previous_sha256 is not None and not SHA256_RE.fullmatch(previous_sha256):
         raise ValueError("previous_sha256 must be null or sha256")
     safe_event = sanitize_export(event)
-    envelope: dict[str, Any] = {
+    if not is_object(safe_event):
+        raise ValueError("invalid_validated_object_type")
+    envelope: AuditEventBody = {
         "schema_version": SCHEMA_VERSION,
         "event": safe_event,
         "previous_sha256": previous_sha256,
         "append_only_contract": True,
         "persisted": False,
     }
-    envelope["event_sha256"] = canonical_hash(envelope)
-    return envelope
+    return {**envelope, "event_sha256": canonical_hash(envelope)}
 
 
 def verify_audit_chain(events: object) -> list[str]:
@@ -610,29 +695,39 @@ def validate_participation(record: object) -> list[str]:
     account_id = record.get("account_id")
     if not isinstance(account_id, str) or not re.fullmatch(r"syn-[a-z0-9-]+", account_id):
         errors.append("account_id must be an opaque synthetic identifier")
-    if record.get("consent_state") not in {"provided_synthetic", "withdrawn", "not_provided"}:
+    if not _is_choice(
+        record.get("consent_state"), {"provided_synthetic", "withdrawn", "not_provided"}
+    ):
         errors.append("consent state is invalid")
-    if record.get("contact_preference") not in {"none", "human_contact_requested_synthetic"}:
+    if not _is_choice(
+        record.get("contact_preference"), {"none", "human_contact_requested_synthetic"}
+    ):
         errors.append("contact preference is invalid")
     if record.get("access") != "local_restricted":
         errors.append("access must be local_restricted")
     if (
-        record.get("consent_state") in {"withdrawn", "not_provided"}
+        _is_choice(record.get("consent_state"), {"withdrawn", "not_provided"})
         and record.get("export_allowed") is not False
     ):
         errors.append("withdrawn or absent consent forbids contact export")
-    if record.get("cultural_authority_status") not in {
-        "not_requested",
-        "pending_human_referral",
-        "declined",
-        "external_only",
-    }:
+    if not _is_choice(
+        record.get("cultural_authority_status"),
+        {
+            "not_requested",
+            "pending_human_referral",
+            "declined",
+            "external_only",
+        },
+    ):
         errors.append("cultural authority cannot be inferred or completed here")
-    if record.get("cultural_need") not in {
-        "not_expressed",
-        "expressed_synthetic",
-        "declined_to_record",
-    }:
+    if not _is_choice(
+        record.get("cultural_need"),
+        {
+            "not_expressed",
+            "expressed_synthetic",
+            "declined_to_record",
+        },
+    ):
         errors.append("cultural need must not be inferred")
     expected_account_hash = canonical_hash(
         {key: value for key, value in record.items() if key != "account_sha256"}
@@ -683,23 +778,31 @@ def validate_recommendation(
         for field in sorted(required)
         if recommendation.get(field) in (None, "", [])
     ]
-    if recommendation.get("status") not in {"proposed", "approved", "in_progress", "implemented"}:
+    if not _is_choice(
+        recommendation.get("status"), {"proposed", "approved", "in_progress", "implemented"}
+    ):
         errors.append("status is invalid")
-    if recommendation.get("effectiveness_state") not in {
-        "not_due",
-        "pending_evidence",
-        "effective",
-        "partly_effective",
-        "ineffective",
-        "harm_detected",
-    }:
+    if not _is_choice(
+        recommendation.get("effectiveness_state"),
+        {
+            "not_due",
+            "pending_evidence",
+            "effective",
+            "partly_effective",
+            "ineffective",
+            "harm_detected",
+        },
+    ):
         errors.append("effectiveness_state is invalid")
-    if recommendation.get("effectiveness_state") in {
-        "effective",
-        "partly_effective",
-        "ineffective",
-        "harm_detected",
-    }:
+    if _is_choice(
+        recommendation.get("effectiveness_state"),
+        {
+            "effective",
+            "partly_effective",
+            "ineffective",
+            "harm_detected",
+        },
+    ):
         effectiveness = recommendation.get("effectiveness_evidence")
         required_effectiveness = {
             "outcome_evidence_id",
@@ -812,23 +915,26 @@ def validate_recommendation(
                 or effectiveness.get("approval_sha256") != canonical_hash(effectiveness_approval)
             ):
                 errors.append("valid exact effectiveness approval is required")
-        if recommendation.get("effectiveness_authority") not in {
-            "human_clinical",
-            "human_organisational",
-            "human_policy",
-        }:
+        if not _is_choice(
+            recommendation.get("effectiveness_authority"),
+            {
+                "human_clinical",
+                "human_organisational",
+                "human_policy",
+            },
+        ):
             errors.append("effectiveness state requires accountable human authority")
     return sorted(errors)
 
 
 def transition_action(
-    action: dict[str, Any],
+    action: object,
     *,
     status: str,
     evidence: object = None,
     approval: object | None = None,
     evaluated_at: str = "2026-08-29T00:00:00Z",
-) -> dict[str, Any]:
+) -> JsonObject:
     allowed: dict[str, set[str]] = {
         "proposed": {"approved", "withdrawn"},
         "approved": {"in_progress", "withdrawn"},
@@ -836,8 +942,10 @@ def transition_action(
         "implemented": set(),
         "withdrawn": set(),
     }
+    if not is_object(action):
+        raise ValueError("action status transition is invalid")
     current = action.get("status")
-    if current not in allowed or status not in allowed[current]:
+    if not isinstance(current, str) or current not in allowed or status not in allowed[current]:
         raise ValueError("action status transition is invalid")
     if validate_recommendation(action):
         raise ValueError("action contract is invalid")
@@ -880,16 +988,19 @@ def validate_specialist_referral(referral: object) -> list[str]:
     if not is_object(referral):
         return ["referral must be an object"]
     errors: list[str] = []
-    if referral.get("pathway") not in SPECIALIST_PATHWAYS:
+    if not _is_choice(referral.get("pathway"), SPECIALIST_PATHWAYS):
         errors.append("pathway is invalid")
     if referral.get("merged_with_incident_finding") is not False:
         errors.append("specialist pathway must remain separate")
-    if referral.get("status") not in {
-        "proposed",
-        "requested",
-        "declined_local",
-        "reported_unverified",
-    }:
+    if not _is_choice(
+        referral.get("status"),
+        {
+            "proposed",
+            "requested",
+            "declined_local",
+            "reported_unverified",
+        },
+    ):
         errors.append("referral status is invalid")
     if referral.get("external_authority_verified") is not False:
         errors.append("repository cannot verify external authority")
@@ -898,7 +1009,7 @@ def validate_specialist_referral(referral: object) -> list[str]:
 
 def render_view(
     record: object, *, audience: str, data_class: str, view_context: object
-) -> dict[str, Any]:
+) -> JsonObject:
     if not is_object(record):
         raise ValueError("record must be an object")
     if audience not in AUDIENCES:
@@ -919,9 +1030,11 @@ def render_view(
     if not isinstance(source_hash, str) or not SHA256_RE.fullmatch(source_hash):
         raise ValueError("canonical source hash is invalid")
     source_payload = {key: value for key, value in record.items() if key != "source_sha256"}
-    schema = json.loads(
+    schema: object = json.loads(
         (Path(__file__).parents[1] / "conductor/schemas/safety-work.schema.json").read_text()
     )
+    if not is_object(schema):
+        raise ValueError("canonical source schema must be an object")
     # jsonschema accepts arbitrary instances; its deprecated overload has an
     # incomplete annotation. Adapt that method, without asserting payload validity.
     validator = cast(_SchemaValidator, Draft202012Validator(schema))
@@ -1008,7 +1121,7 @@ def render_view(
         output["statements"] = [
             item
             for item in statements
-            if is_object(item) and item.get("kind") in allowed_statement_kinds
+            if is_object(item) and _is_choice(item.get("kind"), allowed_statement_kinds)
         ]
     output["audience"] = audience
     output["external_action"] = False
@@ -1074,9 +1187,11 @@ def _method_request_abstains(payload: dict[str, object]) -> bool:
     )
 
 
-def evaluate_synthetic_journeys(registry: dict[str, Any], scenarios: object) -> dict[str, Any]:
+def evaluate_synthetic_journeys(registry: object, scenarios: object) -> JourneyReceipt:
     errors = validate_registry(registry)
-    cases: list[dict[str, object]] = []
+    cases: list[JourneyCase] = []
+    raw_journeys = registry.get("journeys") if is_object(registry) else None
+    journeys = raw_journeys if is_array(raw_journeys) else []
     if not is_array(scenarios):
         errors.append("scenarios must be an array")
         scenarios = []
@@ -1091,7 +1206,8 @@ def evaluate_synthetic_journeys(registry: dict[str, Any], scenarios: object) -> 
                 role = payload.get("role") if is_object(payload) else None
                 passed = any(
                     item.get("role") == role and item.get("failure_recovery")
-                    for item in registry.get("journeys", [])
+                    for item in journeys
+                    if is_object(item)
                 )
                 assertion = "role has explicit recovery"
             elif kind == "unsafe_export":
@@ -1112,7 +1228,7 @@ def evaluate_synthetic_journeys(registry: dict[str, Any], scenarios: object) -> 
                 passed = _method_request_abstains(payload)
                 assertion = "unsupported method request abstains"
             cases.append({"id": identifier, "assertion": assertion, "passed": passed})
-    result = {
+    result: JourneyReceiptBody = {
         "schema_version": SCHEMA_VERSION,
         "scope": "generated_synthetic_non_operational",
         "cases": [{**item, "passed": bool(item["passed"]) and not errors} for item in cases],
@@ -1127,5 +1243,4 @@ def evaluate_synthetic_journeys(registry: dict[str, Any], scenarios: object) -> 
             "No clinical deployment, policy applicability or cultural-safety validation.",
         ],
     }
-    result["receipt_sha256"] = canonical_hash(result)
-    return result
+    return {**result, "receipt_sha256": canonical_hash(result)}

@@ -43,11 +43,11 @@ def _is_native_document(value: legacy.ProtocolDocument) -> TypeGuard[NativeProto
     return isinstance(fields.get("runner_contract_version"), str)
 
 
-def _validated_candidate(
+def validated_candidate(
     path: Path, expected_sha256: str
 ) -> tuple[NativeProtocolDocument, NativeProtocolCandidate]:
     """Construct two candidate requests using only pinned bytes read by shared checks."""
-    result, value, artifacts = legacy._validate_candidate(path, expected_sha256, SCHEMA)
+    result, value, artifacts = legacy.validate_candidate(path, expected_sha256, SCHEMA)
     if not _is_native_document(value):
         raise ValueError("invalid_validated_object_type")
     template = artifacts[value["prompt_template"]["path"]]
@@ -80,4 +80,4 @@ def _validated_candidate(
 
 def validate_protocol(path: Path, expected_sha256: str) -> NativeProtocolCandidate:
     """Return the unchanged public candidate without rereading its references."""
-    return _validated_candidate(path, expected_sha256)[1]
+    return validated_candidate(path, expected_sha256)[1]

@@ -303,7 +303,7 @@ def test_cleanup_escalation_preserves_errors() -> None:
         def kill(self) -> None:
             raise OSError("private")
 
-    receipt = subject._cleanup(Fake(), 0.1)
+    receipt = subject.cleanup_child(Fake(), 0.1)
     assert receipt["reaped"] is False
     assert receipt["cleanup_errors"] == ["terminate_failed", "kill_failed", "reap_timeout"]
 
@@ -338,14 +338,14 @@ def test_nonzero_exit_can_have_complete_streams(child: ChildRunner) -> None:
 def test_cleanup_failure_never_masks_primary_error(
     child: ChildRunner, monkeypatch: pytest.MonkeyPatch, primary: str
 ) -> None:
-    real_cleanup = subject._cleanup
+    real_cleanup = subject.cleanup_child
 
     def cleanup(process: subject.ProcessControl, grace: float) -> subject.CleanupResult:
         result = real_cleanup(process, grace)
         result["cleanup_errors"].append("synthetic_cleanup_error")
         return result
 
-    monkeypatch.setattr(subject, "_cleanup", cleanup)
+    monkeypatch.setattr(subject, "cleanup_child", cleanup)
     receipt = child(
         "pass" if primary == "none" else "import time; time.sleep(20)",
         timeout=5 if primary == "none" else 0.2,
@@ -420,7 +420,7 @@ def test_cleanup_system_errors_are_safe(failure: str) -> None:
         def kill(self) -> None:
             pass
 
-    receipt = subject._cleanup(Fake(), 0.1)
+    receipt = subject.cleanup_child(Fake(), 0.1)
     assert receipt["cleanup_errors"] == [
         {"poll": "poll_failed", "wait": "wait_failed", "reap": "reap_failed"}[failure]
     ]

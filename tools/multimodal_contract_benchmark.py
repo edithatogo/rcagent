@@ -8,8 +8,9 @@ import json
 import time
 import tracemalloc
 from pathlib import Path
-from typing import Any
+from typing import Literal, TypedDict
 
+from tools import json_shapes
 from tools.multimodal_fabric import execution_disclosure, load_registry
 
 ROOT = Path(__file__).parents[1]
@@ -18,10 +19,38 @@ THRESHOLD_MS = 2000.0
 THRESHOLD_BYTES = 1_000_000
 
 
-def run() -> dict[str, Any]:
+class BenchmarkResult(TypedDict):
+    profile_id: str
+    device_class: Literal["ci-contract"]
+    elapsed_ms: float
+    allocation_peak_bytes: int
+    threshold_ms: float
+    threshold_bytes: int
+    passed: bool
+    scope: str
+
+
+class BenchmarkSummary(TypedDict):
+    profiles: int
+    passed: int
+
+
+class ReceiptBody(TypedDict):
+    schema_version: Literal["1.0"]
+    benchmark_scope: Literal["conservative_non_operational_ci_contract"]
+    results: list[BenchmarkResult]
+    summary: BenchmarkSummary
+    limitations: list[str]
+
+
+class BenchmarkReceipt(ReceiptBody):
+    receipt_sha256: str
+
+
+def run() -> BenchmarkReceipt:
     registry = load_registry()
     fixtures = {item["profile_id"]: item["id"] for item in registry["fixtures"]}
-    results = []
+    results: list[BenchmarkResult] = []
     for profile in registry["profiles"]:
         started = time.perf_counter()
         tracemalloc.start()
@@ -43,7 +72,7 @@ def run() -> dict[str, Any]:
                 "scope": "deterministic disclosure contract only; not adapter quality or runtime performance",
             }
         )
-    receipt: dict[str, Any] = {
+    receipt: ReceiptBody = {
         "schema_version": "1.0",
         "benchmark_scope": "conservative_non_operational_ci_contract",
         "results": results,
@@ -58,11 +87,12 @@ def run() -> dict[str, Any]:
         ],
     }
     payload = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
-    receipt["receipt_sha256"] = hashlib.sha256(payload).hexdigest()
-    return receipt
+    return {**receipt, "receipt_sha256": hashlib.sha256(payload).hexdigest()}
 
 
-def verify(receipt: dict[str, Any]) -> list[str]:
+def verify(receipt: object) -> list[str]:
+    if not json_shapes.is_object(receipt):
+        return ["receipt must be an object"]
     errors: list[str] = []
     unsigned = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
     digest = hashlib.sha256(
@@ -71,11 +101,17 @@ def verify(receipt: dict[str, Any]) -> list[str]:
     if receipt.get("receipt_sha256") != digest:
         errors.append("receipt hash mismatch")
     results = receipt.get("results", [])
-    if {item.get("profile_id") for item in results} != {
-        item["id"] for item in load_registry()["profiles"]
-    }:
+    if not json_shapes.is_array(results):
+        return [*errors, "results must be an array"]
+    profile_ids = [item.get("profile_id") for item in json_shapes.object_rows(results)]
+    if any(not isinstance(profile_id, str) for profile_id in profile_ids) or {
+        profile_id for profile_id in profile_ids if isinstance(profile_id, str)
+    } != {item["id"] for item in load_registry()["profiles"]}:
         errors.append("profile coverage mismatch")
     for item in results:
+        if not json_shapes.is_object(item):
+            errors.append("benchmark result must be an object")
+            continue
         elapsed = item.get("elapsed_ms")
         allocation = item.get("allocation_peak_bytes")
         valid = (

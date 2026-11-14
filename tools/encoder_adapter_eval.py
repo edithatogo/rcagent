@@ -14,7 +14,9 @@ import math
 import platform
 import time
 from pathlib import Path
-from typing import Any
+from typing import Literal, TypedDict, TypeGuard
+
+from tools import json_shapes
 
 ROOT = Path(__file__).parents[1]
 FIXTURE_PATH = ROOT / "evaluation/multimodal/encoder-contract-fixtures.json"
@@ -33,9 +35,66 @@ MODEL_TASKS = (
 )
 
 
-def _read_fixture(path: Path = FIXTURE_PATH) -> dict[str, Any]:
-    value = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(value, dict) or not isinstance(value.get("pairs"), list):
+class Pair(TypedDict):
+    id: str
+    language: str
+    domain: str
+    left: str
+    right: str
+
+
+class Measurement(TypedDict):
+    id: str
+    language: str
+    domain: str
+    left_tokens: int
+    right_tokens: int
+    truncated: bool
+    contract_oracle_cosine: float
+    int8_oracle_max_abs_error: float
+
+
+class BackendObservation(TypedDict):
+    backend: str
+    distribution: str
+    observed_version: str | None
+    contract_status: Literal["observed_unadmitted", "unavailable"]
+    model_executed: Literal[False]
+    remote_code: Literal["prohibited"]
+    network: Literal["disabled"]
+    tasks: dict[str, str]
+
+
+class ReceiptBody(TypedDict):
+    schema_version: Literal["1.0"]
+    profile_id: Literal["encoders-local"]
+    data_class: Literal["generated_synthetic_only"]
+    runtime: str
+    execution_mode: Literal["offline_contract_oracle_no_model"]
+    network: Literal["disabled_no_network_api_used"]
+    telemetry: Literal["none"]
+    remote_code: Literal["prohibited"]
+    external_inference: Literal[False]
+    backends: list[BackendObservation]
+    measurements: list[Measurement]
+    effects: dict[str, str]
+    limitations: list[str]
+    elapsed_ms: float
+
+
+class EncoderReceipt(ReceiptBody):
+    receipt_sha256: str
+
+
+def _is_pair(value: object) -> TypeGuard[Pair]:
+    return json_shapes.is_object(value) and all(
+        isinstance(value.get(key), str) for key in ("id", "language", "domain", "left", "right")
+    )
+
+
+def _read_fixture(path: Path = FIXTURE_PATH) -> json_shapes.JsonObject:
+    value: object = json.loads(path.read_text(encoding="utf-8"))
+    if not json_shapes.is_object(value) or not json_shapes.is_array(value.get("pairs")):
         raise ValueError("encoder fixture must be an object containing pairs")
     return value
 
@@ -67,15 +126,20 @@ def _cosine(left: list[float], right: list[float]) -> float:
     return sum(a * b for a, b in zip(left, right, strict=True))
 
 
-def evaluate(path: Path = FIXTURE_PATH) -> dict[str, Any]:
+def evaluate(path: Path = FIXTURE_PATH) -> EncoderReceipt:
     started = time.perf_counter()
     fixture = _read_fixture(path)
     limit = fixture.get("max_tokens")
-    if not isinstance(limit, int) or limit < 1:
+    if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:
         raise ValueError("max_tokens must be a positive integer")
 
-    measurements = []
-    for pair in fixture["pairs"]:
+    pairs = fixture["pairs"]
+    if not json_shapes.is_array(pairs):
+        raise ValueError("encoder fixture must be an object containing pairs")
+    measurements: list[Measurement] = []
+    for pair in pairs:
+        if not _is_pair(pair):
+            raise ValueError("encoder pairs require string id, language, domain, left and right")
         left, left_truncated = _contract_vector(pair["left"], limit)
         right, right_truncated = _contract_vector(pair["right"], limit)
         quantised_left = [max(-127, min(127, round(value * 127))) for value in left]
@@ -95,7 +159,7 @@ def evaluate(path: Path = FIXTURE_PATH) -> dict[str, Any]:
             }
         )
 
-    backends = []
+    backends: list[BackendObservation] = []
     for backend, distribution in BACKENDS.items():
         version = _distribution_version(distribution)
         backends.append(
@@ -111,7 +175,7 @@ def evaluate(path: Path = FIXTURE_PATH) -> dict[str, Any]:
             }
         )
 
-    result: dict[str, Any] = {
+    result: ReceiptBody = {
         "schema_version": "1.0",
         "profile_id": "encoders-local",
         "data_class": "generated_synthetic_only",
@@ -140,11 +204,12 @@ def evaluate(path: Path = FIXTURE_PATH) -> dict[str, Any]:
         "elapsed_ms": round((time.perf_counter() - started) * 1000, 3),
     }
     canonical = json.dumps(result, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    result["receipt_sha256"] = hashlib.sha256(canonical).hexdigest()
-    return result
+    return {**result, "receipt_sha256": hashlib.sha256(canonical).hexdigest()}
 
 
-def verify(result: dict[str, Any]) -> list[str]:
+def verify(result: object) -> list[str]:
+    if not json_shapes.is_object(result):
+        return ["receipt must be an object"]
     errors: list[str] = []
     unsigned = {key: value for key, value in result.items() if key != "receipt_sha256"}
     digest = hashlib.sha256(
@@ -154,7 +219,13 @@ def verify(result: dict[str, Any]) -> list[str]:
         errors.append("receipt hash mismatch")
     if result.get("data_class") != "generated_synthetic_only":
         errors.append("data class is not synthetic")
-    for backend in result.get("backends", []):
+    backends = result.get("backends", [])
+    if not json_shapes.is_array(backends):
+        return [*errors, "backends must be an array"]
+    for backend in backends:
+        if not json_shapes.is_object(backend):
+            errors.append("backend must be an object")
+            continue
         if backend.get("model_executed") is not False or backend.get("remote_code") != "prohibited":
             errors.append(f"backend boundary invalid: {backend.get('backend')!r}")
     return errors

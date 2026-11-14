@@ -20,8 +20,8 @@ ROOT = Path(__file__).parents[1]
 BASELINE = ".basedpyright/baseline.json"
 BUDGET = "quality/typing-debt.json"
 BANDIT_BASELINE = "quality/bandit-reviewed.json"
-BANDIT_BASELINE_SHA256 = "550bd037fc3580d1081f294bf50f06ecb36fd83859c4ec68e55717a32b78e647"
-FROZEN_SCAN_SOURCES = ("tools/darwin_runtime_profile.py", "tools/local_model_comparator.py")
+BANDIT_BASELINE_SHA256 = "fe1dbcc8e0ba35b659e648889757cc8eded387ce2d78c7807627538892adaa9a"
+REVIEWED_SCAN_SOURCES = ("tools/darwin_runtime_profile.py", "tools/local_model_comparator.py")
 MUTATION_TARGET = "tools/release_admission.py"
 STATUSES = ("zapped", "survived", "timeout", "error", "pardoned")
 PROFILE_TARGET = "tools/profile_workload.py"
@@ -143,7 +143,7 @@ def check_mutation_report(value: object, *, root: Path) -> tuple[int, int]:
 
 
 def check_security_baseline(root: Path) -> None:
-    """Bind two native Bandit exceptions to reviewed, historically frozen bytes.
+    """Bind two native Bandit exceptions to reviewed current engineering bytes.
 
     Bandit's baseline matching does not compare source text or line numbers.
     Refuse any baseline/source drift before using those narrow exceptions.
@@ -154,7 +154,7 @@ def check_security_baseline(root: Path) -> None:
     baseline = _object(json.loads(payload), "Bandit baseline")
     review = _object(baseline.get("review"), "Bandit review")
     sources = _object(review.get("sources"), "reviewed sources")
-    for name in FROZEN_SCAN_SOURCES:
+    for name in REVIEWED_SCAN_SOURCES:
         record = _object(sources.get(name), "reviewed source")
         if hashlib.sha256((root / name).read_bytes()).hexdigest() != record.get("sha256"):
             raise ValueError(f"reviewed Bandit source changed; revalidation required: {name}")
@@ -172,7 +172,7 @@ def run_security_scan(root: Path) -> int:
     for raw in _array(baseline.get("results"), "Bandit findings"):
         finding = _object(raw, "Bandit finding")
         filename = finding.get("filename")
-        if not isinstance(filename, str) or filename not in FROZEN_SCAN_SOURCES:
+        if not isinstance(filename, str) or filename not in REVIEWED_SCAN_SOURCES:
             raise ValueError("Bandit exception is outside the reviewed source scope")
         finding["filename"] = str(Path(filename))
     with TemporaryDirectory(prefix="rcagent-bandit-") as directory:
@@ -291,7 +291,9 @@ def main() -> int:
             )
         elif args.command == "security-baseline":
             check_security_baseline(ROOT)
-            print("Bandit exceptions: exactly two reviewed findings bound to frozen source bytes")
+            print(
+                "Bandit exceptions: exactly two reviewed findings bound to reviewed current source bytes"
+            )
         elif args.command == "security":
             return run_security_scan(ROOT)
         elif args.command == "mutation":

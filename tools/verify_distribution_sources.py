@@ -9,8 +9,32 @@ import urllib.request
 from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import TypedDict
 
-SOURCES = [
+
+class SourceSpec(TypedDict):
+    id: str
+    url: str
+    markers: list[str]
+
+
+class SourceRecord(TypedDict):
+    id: str
+    requested_url: str
+    final_url: str
+    content_sha256: str
+    markers: list[str]
+    status: str
+
+
+class SourceVerification(TypedDict):
+    schema_version: str
+    retrieved_at: str
+    normative_scope: str
+    sources: list[SourceRecord]
+
+
+SOURCES: list[SourceSpec] = [
     {
         "id": "agent-skills",
         "url": "https://agentskills.io/specification",
@@ -89,16 +113,16 @@ SOURCES = [
 ]
 
 
-def _fetch(url: str) -> tuple[str, bytes]:
+def fetch_source(url: str) -> tuple[str, bytes]:
     request = urllib.request.Request(url, headers={"User-Agent": "rcagent-source-verifier/0.1"})
     with urllib.request.urlopen(request, timeout=20) as response:  # nosec B310 # fixed HTTPS source allowlist; final scheme is checked
         return response.geturl(), response.read()
 
 
 def verify_sources(
-    *, fetch: Callable[[str], tuple[str, bytes]] = _fetch, retrieved_at: str | None = None
-) -> dict[str, object]:
-    records: list[dict[str, object]] = []
+    *, fetch: Callable[[str], tuple[str, bytes]] = fetch_source, retrieved_at: str | None = None
+) -> SourceVerification:
+    records: list[SourceRecord] = []
     for source in SOURCES:
         try:
             final_url, payload = fetch(str(source["url"]))

@@ -5,19 +5,23 @@ from __future__ import annotations
 import json
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, cast
 
 import pytest
 from hypothesis import example, given, settings
 from hypothesis import strategies as st
 
+from tests.prospective_fixture_types import ObjectMap, mapping, sequence
 from tools.evidence_core import export_record, validate_record
 
 FIXTURE = Path(__file__).parent / "fixtures/safety-work/valid-case.json"
 
 
-def _record() -> dict[str, Any]:
-    return cast(dict[str, Any], json.loads(FIXTURE.read_text(encoding="utf-8")))
+def _row(value: ObjectMap, collection: str, index: int = 0) -> ObjectMap:
+    return mapping(sequence(value[collection])[index])
+
+
+def _record() -> ObjectMap:
+    return mapping(json.loads(FIXTURE.read_text(encoding="utf-8")))
 
 
 # These properties parse and validate the full schema under branch coverage.
@@ -73,7 +77,7 @@ def test_cross_kind_reference_substitution_is_rejected(
         "referrals": "referral-policy-01",
     }
     identifier = identifiers[replacement_kind]
-    value[collection][0][field] = [identifier] if field.endswith("_ids") else identifier
+    _row(value, collection)[field] = [identifier] if field.endswith("_ids") else identifier
     errors = validate_record(value)
     if replacement_kind == required_kind:
         assert errors == []
@@ -89,12 +93,12 @@ def test_public_summary_is_independent_of_source_and_narrative_content(narrative
     value = _record()
     value["privacy_mode"] = "public_remote"
     before = export_record(value, profile="public")
-    value["statements"][0]["text"] = narrative
-    value["statements"][1]["uncertainty"] = narrative
-    value["sources"][0]["title"] = narrative
-    value["sources"][0]["authority"] = narrative
-    value["evidence"][0]["content"] = narrative
-    value["relationships"][0]["rationale"] = narrative
+    _row(value, "statements")["text"] = narrative
+    _row(value, "statements", 1)["uncertainty"] = narrative
+    _row(value, "sources")["title"] = narrative
+    _row(value, "sources")["authority"] = narrative
+    _row(value, "evidence")["content"] = narrative
+    _row(value, "relationships")["rationale"] = narrative
     value["jurisdiction"] = narrative
     value["authority"] = narrative
     unchanged = deepcopy(value)
@@ -110,13 +114,13 @@ def test_public_summary_is_independent_of_source_and_narrative_content(narrative
 def test_private_records_never_become_public_through_export(mode: str, narrative: str) -> None:
     value = _record()
     value["privacy_mode"] = mode
-    value["statements"][0]["text"] = narrative
+    _row(value, "statements")["text"] = narrative
     unchanged = deepcopy(value)
     with pytest.raises(ValueError, match="private-mode conversion is prohibited"):
         export_record(value, profile="public")
     assert value == unchanged
     governed = export_record(value, profile="governed")
-    assert governed["statements"][0]["text"] == narrative
+    assert _row(governed, "statements")["text"] == narrative
     assert governed["privacy_mode"] == mode
 
 

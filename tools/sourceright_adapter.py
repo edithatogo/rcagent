@@ -10,6 +10,7 @@ from collections.abc import Callable, Sequence
 from pathlib import Path
 
 from tools.evidence_ports import Capability, Operation, OperationResult
+from tools.json_shapes import is_object
 
 Runner = Callable[..., subprocess.CompletedProcess[str]]
 READ_ONLY_COMMANDS = {"bench", "report", "validate-csl", "citations", "provenance"}
@@ -67,12 +68,12 @@ class SourceRightAdapter:
                 "failed", {}, retryable=False, diagnostic=completed.stderr.strip()[:500]
             )
         try:
-            payload = json.loads(completed.stdout)
+            payload: object = json.loads(completed.stdout)
         except json.JSONDecodeError:
             return OperationResult(
                 "failed", {}, retryable=False, diagnostic="invalid SourceRight JSON"
             )
-        if not isinstance(payload, dict):
+        if not is_object(payload):
             return OperationResult(
                 "failed", {}, retryable=False, diagnostic="unexpected SourceRight payload"
             )

@@ -1,9 +1,12 @@
 """Synthetic-only server profile checks without process or network execution."""
 
+from __future__ import annotations
+
 import hashlib
 import json
 import sys
 from pathlib import Path
+from types import ModuleType
 
 import pytest
 
@@ -12,7 +15,7 @@ from tools import darwin_server_v030 as server
 
 
 @pytest.fixture
-def files(tmp_path, monkeypatch):
+def files(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[Path, Path, list[ModuleType]]:
     source = tmp_path / "source.py"
     source.write_bytes(b"source")
     evidence = tmp_path / "LICENSE"
@@ -26,12 +29,12 @@ def files(tmp_path, monkeypatch):
         "EVIDENCE_FILES",
         {str(evidence.resolve()): hashlib.sha256(b"synthetic licence").hexdigest()},
     )
-    calls = []
-    monkeypatch.setattr(server.core, "verify_files", lambda config: calls.append(config))
+    calls: list[ModuleType] = []
+    monkeypatch.setattr(server.core, "verify_files", calls.append)
     return source, evidence, calls
 
 
-def test_server_is_distinct_without_mutating_cli():
+def test_server_is_distinct_without_mutating_cli() -> None:
     assert server.EXECUTABLE.endswith("/0.3.0/bin/llama-server")
     assert (
         server.PINNED_FILES[server.EXECUTABLE]
@@ -50,10 +53,13 @@ def test_server_is_distinct_without_mutating_cli():
         "darwin_runtime_profile.py",
         "darwin_runtime_v030.py",
         "local_model_comparator.py",
+        "json_shapes.py",
     }
 
 
-def test_profile_digest_covers_pins_sources_evidence_and_version(monkeypatch):
+def test_profile_digest_covers_pins_sources_evidence_and_version(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     original = server.profile_digest()
     assert len(original) == 64
     assert original != cli.profile_digest()
@@ -71,7 +77,9 @@ def test_profile_digest_covers_pins_sources_evidence_and_version(monkeypatch):
             assert server.profile_digest() != original
 
 
-def test_verify_sources_and_rights_before_runtime(files):
+def test_verify_sources_and_rights_before_runtime(
+    files: tuple[Path, Path, list[ModuleType]],
+) -> None:
     _, _, calls = files
     assert server.verify_files() is None
     assert calls == [sys.modules[server.__name__]]
@@ -79,7 +87,9 @@ def test_verify_sources_and_rights_before_runtime(files):
 
 @pytest.mark.parametrize("target", ["source", "evidence"])
 @pytest.mark.parametrize("damage", ["missing", "changed", "symlink", "directory"])
-def test_missing_or_changed_sources_and_rights_fail_closed(files, target, damage):
+def test_missing_or_changed_sources_and_rights_fail_closed(
+    files: tuple[Path, Path, list[ModuleType]], target: str, damage: str
+) -> None:
     source, evidence, calls = files
     path = source if target == "source" else evidence
     original = path.read_bytes()
@@ -97,8 +107,10 @@ def test_missing_or_changed_sources_and_rights_fail_closed(files, target, damage
     assert calls == []
 
 
-def test_runtime_failure_propagates(files, monkeypatch):
-    def fail(config):
+def test_runtime_failure_propagates(
+    files: tuple[Path, Path, list[ModuleType]], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def fail(config: ModuleType) -> None:
         raise ValueError("profile_backend_inventory_mismatch")
 
     monkeypatch.setattr(server.core, "verify_files", fail)
@@ -106,7 +118,7 @@ def test_runtime_failure_propagates(files, monkeypatch):
         server.verify_files()
 
 
-def test_environment_does_not_inherit_secrets(monkeypatch):
+def test_environment_does_not_inherit_secrets(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("SECRET_TOKEN", "private")
     assert server.profile_environment() == {
         "PATH": "/usr/bin:/bin",
@@ -116,7 +128,7 @@ def test_environment_does_not_inherit_secrets(monkeypatch):
     }
 
 
-def test_loader_uses_server_identity_not_cli(monkeypatch):
+def test_loader_uses_server_identity_not_cli(monkeypatch: pytest.MonkeyPatch) -> None:
     paths = {"/synthetic/llama-server": "a" * 64, "/synthetic/libserver.dylib": "b" * 64}
     monkeypatch.setattr(server, "PINNED_FILES", paths)
     monkeypatch.setattr(server, "REQUIRED_IMAGES", set(paths))
@@ -130,7 +142,7 @@ def test_loader_uses_server_identity_not_cli(monkeypatch):
         )
 
 
-def test_source_pins_match_reviewed_repository_bytes():
+def test_source_pins_match_reviewed_repository_bytes() -> None:
     for name, digest in server.SOURCE_FILES.items():
         assert (
             hashlib.sha256((Path(server.__file__).parent / name).read_bytes()).hexdigest() == digest
@@ -141,11 +153,17 @@ def test_source_pins_match_reviewed_repository_bytes():
 @pytest.mark.parametrize(
     "status", ["runtime_profile_observed", "profile_failed", "unsupported_platform"]
 )
-def test_diagnostic_cli_reserves_before_capture(tmp_path, monkeypatch, capsys, diagnostic, status):
+def test_diagnostic_cli_reserves_before_capture(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    diagnostic: str,
+    status: str,
+) -> None:
     destination = tmp_path.resolve() / "receipt.json"
-    calls = []
+    calls: list[tuple[ModuleType, str]] = []
 
-    def capture(config, diagnostic):
+    def capture(config: ModuleType, diagnostic: str) -> dict[str, object]:
         assert destination.read_bytes() == b""
         calls.append((config, diagnostic))
         return {"status": status, "admitted": False, "study_unlocked": False}
@@ -168,8 +186,8 @@ def test_diagnostic_cli_reserves_before_capture(tmp_path, monkeypatch, capsys, d
     "kind", ["existing", "missing-parent", "symlink-file", "symlink-parent", "parent-traversal"]
 )
 def test_diagnostic_cli_refuses_unsafe_destination_before_capture(
-    tmp_path, monkeypatch, capsys, kind
-):
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], kind: str
+) -> None:
     root = tmp_path.resolve()
     destination = root / "receipt.json"
     if kind == "existing":
@@ -187,7 +205,7 @@ def test_diagnostic_cli_refuses_unsafe_destination_before_capture(
         nested.mkdir()
         destination = nested / ".." / "receipt.json"
 
-    def forbidden(*args, **kwargs):
+    def forbidden(*args: object, **kwargs: object) -> None:
         raise AssertionError("capture must not run")
 
     monkeypatch.setattr(server.core, "capture_version", forbidden)
@@ -197,10 +215,12 @@ def test_diagnostic_cli_refuses_unsafe_destination_before_capture(
         assert destination.read_bytes() == b"preserve"
 
 
-def test_diagnostic_cli_default_and_capture_error(tmp_path, monkeypatch, capsys):
+def test_diagnostic_cli_default_and_capture_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
     destination = tmp_path.resolve() / "receipt.json"
 
-    def fail(config, diagnostic):
+    def fail(config: ModuleType, diagnostic: str) -> None:
         assert diagnostic == "version"
         raise OSError("private-error-path")
 
@@ -211,21 +231,23 @@ def test_diagnostic_cli_default_and_capture_error(tmp_path, monkeypatch, capsys)
     assert destination.read_bytes() == b""
 
 
-def test_diagnostic_cli_rejects_other_modes(tmp_path):
+def test_diagnostic_cli_rejects_other_modes(tmp_path: Path) -> None:
     with pytest.raises(SystemExit):
         server.main(["--receipt", str(tmp_path / "receipt.json"), "--diagnostic", "serve"])
 
 
-def test_diagnostic_cli_rejects_parent_resolution_change(tmp_path, monkeypatch):
+def test_diagnostic_cli_rejects_parent_resolution_change(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     destination = tmp_path.resolve() / "receipt.json"
 
-    def changed(path, strict=False):
+    def changed(path: Path, strict: bool = False) -> Path:
         del strict
         return path / "changed"
 
     monkeypatch.setattr(Path, "resolve", changed)
 
-    def forbidden(*args, **kwargs):
+    def forbidden(*args: object, **kwargs: object) -> None:
         raise AssertionError("capture must not run")
 
     monkeypatch.setattr(server.core, "capture_version", forbidden)

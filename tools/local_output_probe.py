@@ -13,8 +13,9 @@ import tempfile
 import time
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Literal, TypeAlias, TypedDict
 
-from tools import darwin_runtime_profile, local_model_comparator, prospective_model
+from tools import darwin_runtime_profile, json_shapes, local_model_comparator, prospective_model
 from tools import darwin_runtime_v030 as profile
 from tools.local_model_comparator import _sha256
 from tools.prospective_model import admit_model
@@ -24,9 +25,67 @@ TIMEOUT = 60
 MAX_OUTPUT = 1024 * 1024
 
 
+class _ProbeFields(TypedDict):
+    schema_version: Literal["1.0"]
+    purpose: Literal["output-mode-probe-only"]
+    admitted: Literal[False]
+    study_unlocked: Literal[False]
+    execution_observed: bool
+    response_only_verified: Literal[False]
+
+
+class EarlyProbeResult(_ProbeFields):
+    status: Literal["unsupported_platform", "admission_failed"]
+
+
+class ProbeDevice(TypedDict):
+    system: str
+    release: str
+    machine: str
+    python: str
+
+
+class CapturedProbeResult(_ProbeFields):
+    status: Literal["process_completed", "probe_failed"]
+    reason: str
+    exit_state: int | Literal["timeout", "launch_failed"]
+    started_at: str
+    finished_at: str
+    elapsed_ns: int
+    model_admission: prospective_model.CLIModelAdmission
+    source_sha256: dict[str, str]
+    profile_sha256: str
+    pins_unchanged_after: bool
+    loaded_non_system_images: list[str]
+    prompt: str
+    prompt_sha256: str
+    arguments: list[str]
+    arguments_without_local_paths: list[str]
+    environment: dict[str, str]
+    timeout_seconds: int
+    device: ProbeDevice
+    stdout_bytes: int
+    stderr_bytes: int
+    output_complete: bool
+    raw_stdout_base64: str | None
+    raw_stderr_base64: str | None
+    stdout_sha256: str | None
+    stderr_sha256: str | None
+    limitations: list[str]
+
+
+ProbeResult: TypeAlias = EarlyProbeResult | CapturedProbeResult
+
+
 def source_pins() -> dict[str, str]:
     paths = [Path(__file__)]
-    for module in (profile, darwin_runtime_profile, prospective_model, local_model_comparator):
+    for module in (
+        profile,
+        darwin_runtime_profile,
+        prospective_model,
+        local_model_comparator,
+        json_shapes,
+    ):
         name = module.__file__
         if not isinstance(name, str):
             raise ValueError("source_file_unavailable")
@@ -34,8 +93,8 @@ def source_pins() -> dict[str, str]:
     return {path.name: _sha256(path) for path in paths}
 
 
-def run_probe(model_root: Path) -> dict:
-    receipt: dict = {
+def run_probe(model_root: Path) -> ProbeResult:
+    receipt: _ProbeFields = {
         "schema_version": "1.0",
         "purpose": "output-mode-probe-only",
         "admitted": False,
@@ -81,7 +140,7 @@ def run_probe(model_root: Path) -> dict:
     ]
     start = datetime.now(UTC).isoformat()
     clock = time.monotonic_ns()
-    exit_state: int | str
+    exit_state: int | Literal["timeout", "launch_failed"]
     with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
         try:
             process = subprocess.run(  # nosec B603 # admitted executable/model and fixed synthetic argv; no shell
@@ -142,56 +201,54 @@ def run_probe(model_root: Path) -> dict:
             }
             else "post_execution_validation_failed"
         )
-    receipt.update(
-        {
-            "status": "process_completed" if reason == "none" else "probe_failed",
-            "reason": reason,
-            "exit_state": exit_state,
-            "started_at": start,
-            "finished_at": finish,
-            "elapsed_ns": elapsed,
-            "model_admission": admission,
-            "source_sha256": sources,
-            "profile_sha256": profile_pin,
-            "pins_unchanged_after": unchanged,
-            "loaded_non_system_images": images,
-            "prompt": PROMPT,
-            "prompt_sha256": hashlib.sha256(PROMPT.encode()).hexdigest(),
-            "arguments": args,
-            "arguments_without_local_paths": [
-                "<pinned-runtime>",
-                "-m",
-                "<pinned-model>",
-                *args[3:],
-            ],
-            "environment": environment,
-            "timeout_seconds": TIMEOUT,
-            "device": {
-                "system": platform.system(),
-                "release": platform.release(),
-                "machine": platform.machine(),
-                "python": platform.python_version(),
-            },
-            "stdout_bytes": sizes[0],
-            "stderr_bytes": sizes[1],
-            "output_complete": complete,
-            "raw_stdout_base64": base64.b64encode(out).decode() if complete else None,
-            "raw_stderr_base64": base64.b64encode(err).decode() if complete else None,
-            "stdout_sha256": hashlib.sha256(out).hexdigest() if complete else None,
-            "stderr_sha256": hashlib.sha256(err).hexdigest() if complete else None,
-            "limitations": [
-                "not a study observation, admission or normalisation result",
-                "suppression flags do not prove response-only output",
-                "trusted process diagnostics, not tamper-proof provenance",
-                "OS/driver bytes and unreported dynamic loads are not attested",
-                "no atomic protection against concurrent replacement",
-                "network egress is not independently monitored or sandboxed",
-                "temporary output storage is not a disk quota",
-                "raw local paths may appear; inspect before publication",
-            ],
-        }
-    )
-    return receipt
+    return {
+        **receipt,
+        "status": "process_completed" if reason == "none" else "probe_failed",
+        "reason": reason,
+        "exit_state": exit_state,
+        "started_at": start,
+        "finished_at": finish,
+        "elapsed_ns": elapsed,
+        "model_admission": admission,
+        "source_sha256": sources,
+        "profile_sha256": profile_pin,
+        "pins_unchanged_after": unchanged,
+        "loaded_non_system_images": images,
+        "prompt": PROMPT,
+        "prompt_sha256": hashlib.sha256(PROMPT.encode()).hexdigest(),
+        "arguments": args,
+        "arguments_without_local_paths": [
+            "<pinned-runtime>",
+            "-m",
+            "<pinned-model>",
+            *args[3:],
+        ],
+        "environment": environment,
+        "timeout_seconds": TIMEOUT,
+        "device": {
+            "system": platform.system(),
+            "release": platform.release(),
+            "machine": platform.machine(),
+            "python": platform.python_version(),
+        },
+        "stdout_bytes": sizes[0],
+        "stderr_bytes": sizes[1],
+        "output_complete": complete,
+        "raw_stdout_base64": base64.b64encode(out).decode() if complete else None,
+        "raw_stderr_base64": base64.b64encode(err).decode() if complete else None,
+        "stdout_sha256": hashlib.sha256(out).hexdigest() if complete else None,
+        "stderr_sha256": hashlib.sha256(err).hexdigest() if complete else None,
+        "limitations": [
+            "not a study observation, admission or normalisation result",
+            "suppression flags do not prove response-only output",
+            "trusted process diagnostics, not tamper-proof provenance",
+            "OS/driver bytes and unreported dynamic loads are not attested",
+            "no atomic protection against concurrent replacement",
+            "network egress is not independently monitored or sandboxed",
+            "temporary output storage is not a disk quota",
+            "raw local paths may appear; inspect before publication",
+        ],
+    }
 
 
 def main(argv: list[str] | None = None) -> int:

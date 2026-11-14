@@ -104,7 +104,7 @@ def test_untrusted_shapes_are_rejected_without_serializing_them(
         mapping(package["prompt"])["base64"] = "A" * (2 * subject.native.MAX_BYTES)
     else:
         package["prompt"] = package
-    original = subject._json
+    original = subject.canonical_json
 
     def generated_only(value: object) -> bytes:
         generated = mapping(value)
@@ -120,7 +120,7 @@ def test_untrusted_shapes_are_rejected_without_serializing_them(
         }
         return original(generated)
 
-    monkeypatch.setattr(subject, "_json", generated_only)
+    monkeypatch.setattr(subject, "canonical_json", generated_only)
     with pytest.raises(ValueError, match="invalid_request_package"):
         normalize(package)
 

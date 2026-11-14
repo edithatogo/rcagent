@@ -1,0 +1,749 @@
+{
+  "base_commit": "e6d95394241661db117dc429976aaa6204a1128b",
+  "captured_utc": "2026-11-14T03:40:04.470145+00:00",
+  "case_count": 43,
+  "cases": {
+    "comparator.admission_policy_null": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "admission_policy must be a string-keyed object"
+        ]
+      },
+      "before": {
+        "exception": "AttributeError",
+        "kind": "raised",
+        "message": "'NoneType' object has no attribute 'get'"
+      },
+      "same": false
+    },
+    "comparator.file_row_null": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "model-small: model.files: expected an array of objects"
+        ]
+      },
+      "before": {
+        "exception": "AttributeError",
+        "kind": "raised",
+        "message": "'NoneType' object has no attribute 'get'"
+      },
+      "same": false
+    },
+    "comparator.malformed_scoring_fixture": {
+      "after": {
+        "exception": "ValueError",
+        "kind": "raised",
+        "message": "case.expected has invalid scoring fields",
+        "process_launch_attempts": 0
+      },
+      "before": {
+        "exception": "AssertionError",
+        "kind": "raised",
+        "message": "synthetic interception: process launch blocked",
+        "process_launch_attempts": 1
+      },
+      "same": false
+    },
+    "comparator.model_row_null": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "models: expected an array of objects"
+        ]
+      },
+      "before": {
+        "exception": "AttributeError",
+        "kind": "raised",
+        "message": "'NoneType' object has no attribute 'get'"
+      },
+      "same": false
+    },
+    "comparator.models_null": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "models: expected an array of objects"
+        ]
+      },
+      "before": {
+        "exception": "TypeError",
+        "kind": "raised",
+        "message": "'NoneType' object is not iterable"
+      },
+      "same": false
+    },
+    "comparator.runtime_null": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "runtime must be a string-keyed object"
+        ]
+      },
+      "before": {
+        "exception": "AttributeError",
+        "kind": "raised",
+        "message": "'NoneType' object has no attribute 'get'"
+      },
+      "same": false
+    },
+    "comparator.valid_admission": {
+      "after": {
+        "kind": "returned",
+        "value": []
+      },
+      "before": {
+        "kind": "returned",
+        "value": []
+      },
+      "same": true
+    },
+    "comparator.valid_score": {
+      "after": {
+        "kind": "returned",
+        "value": {
+          "abstention_correct": true,
+          "claim_types_exact": true,
+          "evidence_exact": true,
+          "passed": true,
+          "schema_valid": true
+        }
+      },
+      "before": {
+        "kind": "returned",
+        "value": {
+          "abstention_correct": true,
+          "claim_types_exact": true,
+          "evidence_exact": true,
+          "passed": true,
+          "schema_valid": true
+        }
+      },
+      "same": true
+    },
+    "output.bad_usage": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          null,
+          null,
+          true
+        ]
+      },
+      "before": {
+        "kind": "returned",
+        "value": [
+          null,
+          {
+            "input_tokens": true
+          },
+          true
+        ]
+      },
+      "same": false
+    },
+    "output.empty_cases": {
+      "after": {
+        "exception": "ValueError",
+        "installation_attempts": 0,
+        "kind": "raised",
+        "message": "output cases must be a nonempty array",
+        "output_directory_created": false,
+        "process_launch_attempts": 0
+      },
+      "before": {
+        "installation_attempts": 1,
+        "kind": "returned",
+        "output_directory_created": true,
+        "process_launch_attempts": 0,
+        "value": {
+          "case_count": 0,
+          "exit_code": 0,
+          "generation_complete": true
+        }
+      },
+      "same": false
+    },
+    "output.nonobject_event": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          null,
+          null,
+          false
+        ]
+      },
+      "before": {
+        "exception": "AttributeError",
+        "kind": "raised",
+        "message": "'list' object has no attribute 'get'"
+      },
+      "same": false
+    },
+    "output.null_cases": {
+      "after": {
+        "exception": "ValueError",
+        "installation_attempts": 0,
+        "kind": "raised",
+        "message": "output cases must be a nonempty array",
+        "output_directory_created": false,
+        "process_launch_attempts": 0
+      },
+      "before": {
+        "exception": "TypeError",
+        "installation_attempts": 1,
+        "kind": "raised",
+        "message": "'NoneType' object is not iterable",
+        "output_directory_created": true,
+        "process_launch_attempts": 0
+      },
+      "same": false
+    },
+    "output.null_item": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          null,
+          null,
+          false
+        ]
+      },
+      "before": {
+        "exception": "AttributeError",
+        "kind": "raised",
+        "message": "'NoneType' object has no attribute 'get'"
+      },
+      "same": false
+    },
+    "output.unsafe_path": {
+      "after": {
+        "exception": "ValueError",
+        "installation_attempts": 0,
+        "kind": "raised",
+        "message": "invalid output case fields or identifier",
+        "output_directory_created": false,
+        "process_launch_attempts": 0
+      },
+      "before": {
+        "exception": "AssertionError",
+        "installation_attempts": 1,
+        "kind": "raised",
+        "message": "synthetic interception: process launch blocked",
+        "output_directory_created": true,
+        "process_launch_attempts": 1
+      },
+      "same": false
+    },
+    "output.valid_event": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "Synthetic response.",
+          {
+            "input_tokens": 2,
+            "output_tokens": 1
+          },
+          true
+        ]
+      },
+      "before": {
+        "kind": "returned",
+        "value": [
+          "Synthetic response.",
+          {
+            "input_tokens": 2,
+            "output_tokens": 1
+          },
+          true
+        ]
+      },
+      "same": true
+    },
+    "panel.criteria_null": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "ratings.0.criteria: None is not of type 'object'",
+          "small: criteria do not match the canonical rubric"
+        ]
+      },
+      "before": {
+        "exception": "TypeError",
+        "kind": "raised",
+        "message": "'NoneType' object is not iterable"
+      },
+      "same": false
+    },
+    "panel.extra_model_id_array": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "ratings.3.model_id: [] is not of type 'string'",
+          "ratings: [{'model_id': 'small', 'criteria': {'evidence_coverage': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'fact_analysis_decision_separation': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'uncertainty': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'systems_thinking': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'recommendation_mechanism': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'privacy': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'cultural_safety': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'clinical_safety': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'authority_boundaries': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}}, 'abstain': False, 'uncertainty': 'none', 'hard_gate_flags': []}, {'model_id': 'medium', 'criteria': {'evidence_coverage': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'fact_analysis_decision_separation': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'uncertainty': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'systems_thinking': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'recommendation_mechanism': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'privacy': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'cultural_safety': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'clinical_safety': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'authority_boundaries': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}}, 'abstain': False, 'uncertainty': 'none', 'hard_gate_flags': []}, {'model_id': 'large', 'criteria': {'evidence_coverage': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'fact_analysis_decision_separation': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'uncertainty': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'systems_thinking': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'recommendation_mechanism': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'privacy': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'cultural_safety': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'clinical_safety': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'authority_boundaries': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}}, 'abstain': False, 'uncertainty': 'none', 'hard_gate_flags': []}, {'model_id': [], 'criteria': {'evidence_coverage': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'fact_analysis_decision_separation': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'uncertainty': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'systems_thinking': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'recommendation_mechanism': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'privacy': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'cultural_safety': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'clinical_safety': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}, 'authority_boundaries': {'score': 2, 'evidence': ['incomplete-evidence'], 'rationale': 'Synthetic evidence.'}}, 'abstain': False, 'uncertainty': 'none', 'hard_gate_flags': []}] is too long"
+        ]
+      },
+      "before": {
+        "exception": "TypeError",
+        "kind": "raised",
+        "message": "unhashable type: 'list'"
+      },
+      "same": false
+    },
+    "panel.hard_gate_flags_null": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "ratings.0.hard_gate_flags: None is not of type 'array'",
+          "small: hard_gate_flags omit zero scores"
+        ]
+      },
+      "before": {
+        "exception": "TypeError",
+        "kind": "raised",
+        "message": "'NoneType' object is not iterable"
+      },
+      "same": false
+    },
+    "panel.input_hashes_null": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "input_hashes.comparator_file_sha256: does not match evaluation/benchmark/results/local-comparators-v1.json",
+          "input_hashes.comparator_receipt_sha256: does not match comparator receipt",
+          "input_hashes.fixtures_sha256: does not match evaluation/benchmark/fixtures/synthetic-cases.json",
+          "input_hashes.rubric_sha256: does not match evaluation/benchmark/agent-panel-rubric.md",
+          "input_hashes: None is not of type 'object'"
+        ]
+      },
+      "before": {
+        "exception": "AttributeError",
+        "kind": "raised",
+        "message": "'NoneType' object has no attribute 'get'"
+      },
+      "same": false
+    },
+    "panel.ratings_null": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "ratings: None is not of type 'array'"
+        ]
+      },
+      "before": {
+        "exception": "TypeError",
+        "kind": "raised",
+        "message": "'NoneType' object is not iterable"
+      },
+      "same": false
+    },
+    "panel.valid_aggregate": {
+      "after": {
+        "kind": "returned",
+        "value": {
+          "agreement": {
+            "majority_items": 27,
+            "ordinal_krippendorff_alpha": 1.0,
+            "pairwise_weighted_kappa": {
+              "a__b": 1.0,
+              "a__c": 1.0,
+              "b__c": 1.0
+            },
+            "rated_items": 27,
+            "raw_exact_agreement": 1.0,
+            "unanimous_items": 27
+          },
+          "panel_gate_coverage_complete": false,
+          "receipt_sha256": "3a8c3c41c848f405b69a46808ad46af651208e79f83c973f3a5cedd3624cc661",
+          "threshold_pass": false
+        }
+      },
+      "before": {
+        "kind": "returned",
+        "value": {
+          "agreement": {
+            "majority_items": 27,
+            "ordinal_krippendorff_alpha": 1.0,
+            "pairwise_weighted_kappa": {
+              "a__b": 1.0,
+              "a__c": 1.0,
+              "b__c": 1.0
+            },
+            "rated_items": 27,
+            "raw_exact_agreement": 1.0,
+            "unanimous_items": 27
+          },
+          "panel_gate_coverage_complete": false,
+          "receipt_sha256": "3a8c3c41c848f405b69a46808ad46af651208e79f83c973f3a5cedd3624cc661",
+          "threshold_pass": false
+        }
+      },
+      "same": true
+    },
+    "panel.valid_submission": {
+      "after": {
+        "kind": "returned",
+        "value": []
+      },
+      "before": {
+        "kind": "returned",
+        "value": []
+      },
+      "same": true
+    },
+    "privacy.extra_control_id_array": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "assurance controls require object rows with string identifiers"
+        ]
+      },
+      "before": {
+        "exception": "TypeError",
+        "kind": "raised",
+        "message": "unhashable type: 'list'"
+      },
+      "same": false
+    },
+    "privacy.extra_control_status_array": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "assurance control status invalid: unused-extra-control"
+        ]
+      },
+      "before": {
+        "exception": "TypeError",
+        "kind": "raised",
+        "message": "unhashable type: 'list'"
+      },
+      "same": false
+    },
+    "privacy.extra_control_status_unknown": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "assurance control status invalid: unused-extra-control"
+        ]
+      },
+      "before": {
+        "kind": "returned",
+        "value": []
+      },
+      "same": false
+    },
+    "privacy.mode_array": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "invalid disclosure mode"
+        ]
+      },
+      "before": {
+        "exception": "TypeError",
+        "kind": "raised",
+        "message": "unhashable type: 'list'"
+      },
+      "same": false
+    },
+    "privacy.recordable_out_of_scope": {
+      "after": {
+        "kind": "returned",
+        "value": []
+      },
+      "before": {
+        "kind": "returned",
+        "value": []
+      },
+      "same": true
+    },
+    "privacy.recordable_unavailable": {
+      "after": {
+        "kind": "returned",
+        "value": []
+      },
+      "before": {
+        "kind": "returned",
+        "value": []
+      },
+      "same": true
+    },
+    "privacy.review_array": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "human review must be explicit"
+        ]
+      },
+      "before": {
+        "exception": "TypeError",
+        "kind": "raised",
+        "message": "unhashable type: 'list'"
+      },
+      "same": false
+    },
+    "privacy.review_numeric": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "human review must be explicit"
+        ]
+      },
+      "before": {
+        "kind": "returned",
+        "value": []
+      },
+      "same": false
+    },
+    "privacy.review_whitespace": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          "human review must be explicit"
+        ]
+      },
+      "before": {
+        "kind": "returned",
+        "value": []
+      },
+      "same": false
+    },
+    "privacy.valid_assurance": {
+      "after": {
+        "kind": "returned",
+        "value": []
+      },
+      "before": {
+        "kind": "returned",
+        "value": []
+      },
+      "same": true
+    },
+    "privacy.valid_disclosure": {
+      "after": {
+        "kind": "returned",
+        "value": []
+      },
+      "before": {
+        "kind": "returned",
+        "value": []
+      },
+      "same": true
+    },
+    "trigger.bad_usage": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          false,
+          null,
+          null,
+          true
+        ]
+      },
+      "before": {
+        "kind": "returned",
+        "value": [
+          false,
+          true,
+          -1,
+          true
+        ]
+      },
+      "same": false
+    },
+    "trigger.boolean_trials": {
+      "after": {
+        "exception": "ValueError",
+        "installation_attempts": 0,
+        "kind": "raised",
+        "message": "invalid trigger thresholds",
+        "output_directory_created": false,
+        "process_launch_attempts": 0
+      },
+      "before": {
+        "exception": "AssertionError",
+        "installation_attempts": 1,
+        "kind": "raised",
+        "message": "synthetic interception: process launch blocked",
+        "output_directory_created": true,
+        "process_launch_attempts": 1
+      },
+      "same": false
+    },
+    "trigger.duplicate": {
+      "after": {
+        "exception": "ValueError",
+        "installation_attempts": 0,
+        "kind": "raised",
+        "message": "trigger case identifiers must be unique",
+        "output_directory_created": false,
+        "process_launch_attempts": 0
+      },
+      "before": {
+        "exception": "AssertionError",
+        "installation_attempts": 1,
+        "kind": "raised",
+        "message": "synthetic interception: process launch blocked",
+        "output_directory_created": true,
+        "process_launch_attempts": 1
+      },
+      "same": false
+    },
+    "trigger.empty_cases": {
+      "after": {
+        "exception": "ValueError",
+        "installation_attempts": 0,
+        "kind": "raised",
+        "message": "trigger cases must be a nonempty array",
+        "output_directory_created": false,
+        "process_launch_attempts": 0
+      },
+      "before": {
+        "installation_attempts": 1,
+        "kind": "returned",
+        "output_directory_created": true,
+        "process_launch_attempts": 0,
+        "value": {
+          "case_count": 0,
+          "exit_code": 0,
+          "passed": true
+        }
+      },
+      "same": false
+    },
+    "trigger.nonobject_event": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          false,
+          null,
+          null,
+          false
+        ]
+      },
+      "before": {
+        "exception": "AttributeError",
+        "kind": "raised",
+        "message": "'list' object has no attribute 'get'"
+      },
+      "same": false
+    },
+    "trigger.null_cases": {
+      "after": {
+        "exception": "ValueError",
+        "installation_attempts": 0,
+        "kind": "raised",
+        "message": "trigger cases must be a nonempty array",
+        "output_directory_created": false,
+        "process_launch_attempts": 0
+      },
+      "before": {
+        "exception": "TypeError",
+        "installation_attempts": 1,
+        "kind": "raised",
+        "message": "'NoneType' object is not iterable",
+        "output_directory_created": true,
+        "process_launch_attempts": 0
+      },
+      "same": false
+    },
+    "trigger.null_item": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          false,
+          null,
+          null,
+          false
+        ]
+      },
+      "before": {
+        "exception": "AttributeError",
+        "kind": "raised",
+        "message": "'NoneType' object has no attribute 'get'"
+      },
+      "same": false
+    },
+    "trigger.object_command": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          false,
+          null,
+          null,
+          false
+        ]
+      },
+      "before": {
+        "kind": "returned",
+        "value": [
+          true,
+          null,
+          null,
+          false
+        ]
+      },
+      "same": false
+    },
+    "trigger.unsafe_path": {
+      "after": {
+        "exception": "ValueError",
+        "installation_attempts": 0,
+        "kind": "raised",
+        "message": "invalid trigger case fields or identifier",
+        "output_directory_created": false,
+        "process_launch_attempts": 0
+      },
+      "before": {
+        "exception": "AssertionError",
+        "installation_attempts": 1,
+        "kind": "raised",
+        "message": "synthetic interception: process launch blocked",
+        "output_directory_created": true,
+        "process_launch_attempts": 1
+      },
+      "same": false
+    },
+    "trigger.valid_event": {
+      "after": {
+        "kind": "returned",
+        "value": [
+          true,
+          2,
+          1,
+          true
+        ]
+      },
+      "before": {
+        "kind": "returned",
+        "value": [
+          true,
+          2,
+          1,
+          true
+        ]
+      },
+      "same": true
+    }
+  },
+  "changed_case_count": 33,
+  "current_worktree": "/workspace/scratch/ea571a0ab38c/rcagent-faw06",
+  "scope": "Synthetic-only exact-base source execution in isolated local interpreters. Hosted/model/native runtime launch attempts are intercepted; no such process executes. No repository files changed.",
+  "source_sha256": {
+    "after": {
+      "tools/agent_panel_review.py": "dd5b5fef586761e9bdf2d34715535985ca7ff7ff13dcd11dd23cec147594b973",
+      "tools/local_model_comparator.py": "f27bf6dcf890887bf30112982ba78843828d58ce00b8a1b3481f23a1c2a49074",
+      "tools/privacy_assurance.py": "1c5f3ef1b4d9fce6906d7c328e67704668fc2509be4775eda5f42af6270c0e96",
+      "tools/run_skill_output_eval.py": "6d5887e640d56ce9f9b18c0c3914d407c9b9670128fc8abbdd9b2678140c6256",
+      "tools/run_skill_trigger_eval.py": "fd477299d0583dcd927e1fa761720a27c22b646f2084438c9abcf2011050a532"
+    },
+    "before": {
+      "tools/agent_panel_review.py": "5fbbcf3137d07556e544c129827a8b80147b852e4ee0512778d265dad6a242f8",
+      "tools/local_model_comparator.py": "429ae531533c5a90f618c3eb2f4d8f04c745c06ebf993159603710cefd25b090",
+      "tools/privacy_assurance.py": "06b29105a4ec0a71ca1623c459caf1bd351f7ff17355781af4b054f2f2823bd3",
+      "tools/run_skill_output_eval.py": "4d2d585986d43556edc8cbbb92ed082e4228c1030e12553e64fa1bfab93dbaa5",
+      "tools/run_skill_trigger_eval.py": "e823a20a7ba0054b9d4af2e7997673356373aa51fc93a21a3e0f07a4eb47671e"
+    }
+  },
+  "unchanged_case_count": 10
+}

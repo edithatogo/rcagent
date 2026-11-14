@@ -5,6 +5,7 @@ import json
 import sys
 import zipfile
 from pathlib import Path
+from unittest.mock import Mock
 
 import pytest
 
@@ -112,12 +113,8 @@ def test_distribution_rejects_missing_inputs_and_symlinks(tmp_path: Path) -> Non
 def test_distribution_binds_exact_release_revision(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(
-        distribution_module, "verify_release_source", lambda *_args, **_kwargs: None
-    )
-    monkeypatch.setattr(
-        distribution_module, "verify_release_payloads", lambda *_args, **_kwargs: None
-    )
+    monkeypatch.setattr(distribution_module, "verify_release_source", Mock(return_value=None))
+    monkeypatch.setattr(distribution_module, "verify_release_payloads", Mock(return_value=None))
     result = build_distribution(ROOT, tmp_path / "valid", version="0.1.1", source_revision="a" * 40)
     assert result.manifest["source_revision"] == "a" * 40
     assert result.manifest["source"] == "https://github.com/edithatogo/rcagent"

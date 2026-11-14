@@ -1,6 +1,6 @@
 # Track 13: Frontier assurance and incremental capability evidence
 
-Status: FAW06 typing remains the user-directed priority. [PR #130](https://github.com/edithatogo/rcagent/pull/130) continues from PR #129, merged at `388a4c6` after complete hosted acceptance. The new verified reduction is 4,431 to 3,198 diagnostics, with checked producer/admission contracts and twelve boundary regressions. The publication receipt requires final-head hosted CI before merge. Component demonstrations and comparative research remain planned until their receipts exist.
+Status: FAW06 implementation and local verification are complete; exact-head hosted acceptance and protected merge remain pending. The final 3,198 diagnostics are removed: all 153 active Python files pass strict checking with an empty baseline, zero allowances and explicit `Any` rejected. The full local suite adds 177 passing cases and retains only the base's 52 socket-environment failures. Component demonstrations and comparative research remain planned until their receipts exist.
 
 - [Specification and MoSCoW requirements](./spec.md)
 - [Executable work packages and acceptance](./plan.md)
@@ -19,6 +19,7 @@ Status: FAW06 typing remains the user-directed priority. [PR #130](https://githu
 - [Process/session typing and resource cleanup receipt](./typing-contracts-evidence.md)
 - [Native-contract typing and enum-boundary repair receipt](./typing-native-evidence.md)
 - [Producer/admission typing and boundary verification receipt](./typing-producers-evidence.md)
+- [Typing completion and final acceptance receipt](./typing-completion-evidence.md)
 - [Agent review and resolved findings](./review.md)
 - [GitHub issue 125](https://github.com/edithatogo/rcagent/issues/125)
 

@@ -9,9 +9,82 @@ import subprocess
 import tempfile
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any
+from typing import TypedDict, TypeGuard
 
 from tools.install_skill_adapter import install_adapter
+from tools.json_shapes import is_array, is_object, require_object
+
+
+class TriggerCase(TypedDict):
+    id: str
+    partition: str
+    expected: str
+    prompt: str
+
+
+class TriggerThresholds(TypedDict):
+    minimum_trials: int
+    positive_rate: float
+    negative_rate: float
+
+
+class CaseResult(TypedDict):
+    id: str
+    partition: str
+    expected: str
+    completed_trials: int
+    activation_rate: float | None
+    required_rate: float
+    passed: bool
+
+
+class TriggerSummary(TypedDict):
+    schema_version: str
+    client: str
+    client_version: str
+    isolation: dict[str, bool | str]
+    trials_per_case: int
+    partitions: list[str]
+    case_selection: list[str]
+    passed: bool
+    cases: list[CaseResult]
+    observations: list[dict[str, object]]
+
+
+def safe_case_id(value: object) -> TypeGuard[str]:
+    """Case identifiers become local filenames, never caller-selected paths."""
+    return (
+        isinstance(value, str)
+        and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}", value) is not None
+    )
+
+
+def _is_trigger_case(value: object) -> TypeGuard[TriggerCase]:
+    return (
+        is_object(value)
+        and safe_case_id(value.get("id"))
+        and all(isinstance(value.get(key), str) for key in ("partition", "expected", "prompt"))
+        and value.get("expected") in ("trigger", "no_trigger")
+    )
+
+
+def _is_rate(value: object) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and 0 <= value <= 1
+
+
+def _is_thresholds(value: object) -> TypeGuard[TriggerThresholds]:
+    if not is_object(value):
+        return False
+    minimum = value.get("minimum_trials")
+    return (
+        type(minimum) is int
+        and minimum > 0
+        and all(_is_rate(value.get(key)) for key in ("positive_rate", "negative_rate"))
+    )
+
+
+def token_count(value: object) -> int | None:
+    return value if type(value) is int and value >= 0 else None
 
 
 @dataclass(frozen=True)
@@ -33,20 +106,27 @@ def parse_events(raw: str) -> tuple[bool, int | None, int | None, bool]:
     completed = False
     for line in raw.splitlines():
         try:
-            event = json.loads(line)
+            event: object = json.loads(line)
         except json.JSONDecodeError:
             continue
+        if not is_object(event):
+            continue
         item = event.get("item", {})
-        if item.get("type") == "command_execution":
-            command = str(item.get("command", "")).replace("\\", "/").casefold()
+        command_value = item.get("command") if is_object(item) else None
+        if (
+            is_object(item)
+            and item.get("type") == "command_execution"
+            and isinstance(command_value, str)
+        ):
+            command = command_value.replace("\\", "/").casefold()
             command = re.sub(r"/+", "/", command)
             if "/rca-investigation/skill.md" in command:
                 activated = True
         if event.get("type") == "turn.completed":
             completed = True
             usage = event.get("usage", {})
-            input_tokens = usage.get("input_tokens")
-            output_tokens = usage.get("output_tokens")
+            input_tokens = token_count(usage.get("input_tokens")) if is_object(usage) else None
+            output_tokens = token_count(usage.get("output_tokens")) if is_object(usage) else None
     return activated, input_tokens, output_tokens, completed
 
 
@@ -77,9 +157,20 @@ def run_evaluation(
     timeout: int,
     partitions: set[str] | None = None,
     case_ids: set[str] | None = None,
-) -> tuple[int, dict[str, Any]]:
-    cases_document = json.loads(cases_path.read_text(encoding="utf-8"))
-    cases = cases_document["cases"]
+) -> tuple[int, TriggerSummary]:
+    cases_document = require_object(
+        json.loads(cases_path.read_text(encoding="utf-8")), context="trigger document"
+    )
+    raw_cases = cases_document.get("cases")
+    if not is_array(raw_cases) or not raw_cases:
+        raise ValueError("trigger cases must be a nonempty array")
+    cases: list[TriggerCase] = []
+    for raw_case in raw_cases:
+        if not _is_trigger_case(raw_case):
+            raise ValueError("invalid trigger case fields or identifier")
+        cases.append(raw_case)
+    if len({case["id"] for case in cases}) != len(cases):
+        raise ValueError("trigger case identifiers must be unique")
     if partitions:
         cases = [case for case in cases if case["partition"] in partitions]
         if not cases:
@@ -88,7 +179,9 @@ def run_evaluation(
         cases = [case for case in cases if case["id"] in case_ids]
         if {case["id"] for case in cases} != case_ids:
             raise ValueError("case selection contains an unknown or excluded id")
-    thresholds = cases_document["thresholds"]
+    thresholds = cases_document.get("thresholds")
+    if not _is_thresholds(thresholds):
+        raise ValueError("invalid trigger thresholds")
     if trials < thresholds["minimum_trials"]:
         raise ValueError(f"at least {thresholds['minimum_trials']} trials are required")
 
@@ -159,7 +252,7 @@ def run_evaluation(
                     )
                 )
 
-    case_results: list[dict[str, object]] = []
+    case_results: list[CaseResult] = []
     passed = True
     for case in cases:
         relevant = [item for item in observations if item.case_id == case["id"]]
@@ -188,7 +281,7 @@ def run_evaluation(
             }
         )
 
-    summary = {
+    summary: TriggerSummary = {
         "schema_version": "1.0",
         "client": "codex",
         "client_version": "0.145.0",

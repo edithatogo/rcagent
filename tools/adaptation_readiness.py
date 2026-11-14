@@ -11,7 +11,7 @@ import hashlib
 import json
 import re
 from pathlib import Path, PurePosixPath, PureWindowsPath
-from typing import Any
+from typing import Literal, TypedDict, TypeGuard
 
 from tools.json_shapes import is_array, is_object
 
@@ -29,13 +29,61 @@ LEVELS = {
 STATUS = {"unavailable", "contract_only", "rejected"}
 
 
+class ReadinessBody(TypedDict):
+    schema_version: str
+    decision: Literal["not_ready_reject_weight_adaptation"]
+    ready: Literal[False]
+    allowed_levels: list[str]
+    blocked_levels: list[str]
+    reasons: list[str]
+    registry_sha256: str
+    dataset_contract_sha256: str
+    # A negative assessment retains the supplied value even for invalid inputs;
+    # receipt validation must separately establish this binding's validity.
+    dependency_manifest_sha256: object
+    model_downloaded: Literal[False]
+    training_executed: Literal[False]
+    weights_created: Literal[False]
+    private_data_used: Literal[False]
+    external_inference: Literal[False]
+    release_performed: Literal[False]
+
+
+class ReadinessReceipt(ReadinessBody):
+    receipt_sha256: str
+
+
+class RejectionCardBody(TypedDict):
+    schema_version: str
+    artefact_status: Literal["no_adapted_artefact_created"]
+    decision: Literal["rejected"]
+    readiness_sha256: str
+    dataset_manifest_sha256: str
+    registry_sha256: str
+    dependency_manifest_sha256: str
+    evidence_matrix_sha256: str
+    licence: str
+    intended_use: str
+    out_of_scope: list[str]
+    rollback: str
+    maintenance: str
+    model_downloaded: Literal[False]
+    training_executed: Literal[False]
+    weights_created: Literal[False]
+    release_performed: Literal[False]
+
+
+class RejectionCard(RejectionCardBody):
+    receipt_sha256: str
+
+
 def canonical_hash(value: object) -> str:
     return hashlib.sha256(
         json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
     ).hexdigest()
 
 
-def _is_sha(value: object) -> bool:
+def _is_sha(value: object) -> TypeGuard[str]:
     return isinstance(value, str) and SHA256_RE.fullmatch(value) is not None
 
 
@@ -347,7 +395,7 @@ def validate_dataset_manifest(manifest: object) -> list[str]:
 
 def assess_readiness(
     registry: object, dataset: object, dependencies: object, root: Path
-) -> dict[str, Any]:
+) -> ReadinessReceipt:
     reasons: list[str] = []
     if validate_registry(registry):
         reasons.append("adaptation registry is invalid")
@@ -364,7 +412,7 @@ def assess_readiness(
             "no current Track10 artefact-bound approval exists for a new eligible comparator, training, private data, or release",
         ]
     )
-    result = {
+    result: ReadinessBody = {
         "schema_version": SCHEMA_VERSION,
         "decision": "not_ready_reject_weight_adaptation",
         "ready": False,
@@ -383,8 +431,7 @@ def assess_readiness(
         "external_inference": False,
         "release_performed": False,
     }
-    result["receipt_sha256"] = canonical_hash(result)
-    return result
+    return {**result, "receipt_sha256": canonical_hash(result)}
 
 
 def validate_readiness_receipt(
@@ -528,33 +575,40 @@ def validate_experiment_proposal(
 
 
 def build_rejection_card(
-    readiness: dict[str, Any],
-    dataset: dict[str, Any],
+    readiness: object,
+    dataset: object,
     *,
     registry: object,
     dependencies: object,
-    evidence_matrix: dict[str, Any],
+    evidence_matrix: object,
     root: Path,
-) -> dict[str, Any]:
-    if validate_dataset_manifest(dataset):
+) -> RejectionCard:
+    if validate_dataset_manifest(dataset) or not is_object(dataset):
         raise ValueError("rejection card requires a valid generated-synthetic manifest")
     if validate_readiness_receipt(
         readiness, registry=registry, dataset=dataset, dependencies=dependencies, root=root
-    ):
+    ) or not is_object(readiness):
         raise ValueError("rejection card requires a negative readiness receipt")
-    if validate_evidence_matrix(evidence_matrix, readiness):
+    if validate_evidence_matrix(evidence_matrix, readiness) or not is_object(evidence_matrix):
         raise ValueError("rejection card requires a valid negative evidence matrix")
-    card = {
+    readiness_hash, dataset_hash = readiness["receipt_sha256"], dataset["manifest_sha256"]
+    dependency_hash = dependencies.get("manifest_sha256") if is_object(dependencies) else None
+    matrix_hash = evidence_matrix.get("receipt_sha256")
+    if not _is_sha(dataset_hash):
+        raise ValueError("rejection card requires a valid generated-synthetic manifest")
+    if not _is_sha(readiness_hash) or not _is_sha(dependency_hash):
+        raise ValueError("rejection card requires a negative readiness receipt")
+    if not _is_sha(matrix_hash):
+        raise ValueError("rejection card requires a valid negative evidence matrix")
+    card: RejectionCardBody = {
         "schema_version": SCHEMA_VERSION,
         "artefact_status": "no_adapted_artefact_created",
         "decision": "rejected",
-        "readiness_sha256": readiness["receipt_sha256"],
-        "dataset_manifest_sha256": dataset["manifest_sha256"],
+        "readiness_sha256": readiness_hash,
+        "dataset_manifest_sha256": dataset_hash,
         "registry_sha256": canonical_hash(registry),
-        "dependency_manifest_sha256": dependencies.get("manifest_sha256")
-        if is_object(dependencies)
-        else None,
-        "evidence_matrix_sha256": evidence_matrix.get("receipt_sha256"),
+        "dependency_manifest_sha256": dependency_hash,
+        "evidence_matrix_sha256": matrix_hash,
         "licence": "Apache-2.0 repository code only; no model or weight licence attached",
         "intended_use": "research readiness governance only",
         "out_of_scope": ["clinical use", "private data", "medical-device claims", "distribution"],
@@ -565,8 +619,7 @@ def build_rejection_card(
         "weights_created": False,
         "release_performed": False,
     }
-    card["receipt_sha256"] = canonical_hash(card)
-    return card
+    return {**card, "receipt_sha256": canonical_hash(card)}
 
 
 def validate_evidence_matrix(matrix: object, readiness: object) -> list[str]:

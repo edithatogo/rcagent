@@ -6,12 +6,13 @@ import shutil
 import zipfile
 from collections.abc import Mapping
 from pathlib import Path
-from typing import Any, cast
 
 import pytest
 
+from tests.prospective_fixture_types import mapping, sequence, text_value
 from tools import build_client_plugins as plugin_module
 from tools import build_distribution as distribution_module
+from tools.json_shapes import JsonObject
 from tools.template_admission import CONTRACT_PATH, MANIFEST_PATH, validate_template_admission
 
 ROOT = Path(__file__).parents[1]
@@ -27,11 +28,11 @@ def _files() -> dict[str, bytes]:
     }
 
 
-def _manifest(files: Mapping[str, bytes]) -> dict[str, Any]:
-    return cast(dict[str, Any], json.loads(files[MANIFEST_PATH]))
+def _manifest(files: Mapping[str, bytes]) -> JsonObject:
+    return mapping(json.loads(files[MANIFEST_PATH]))
 
 
-def _write_manifest(files: dict[str, bytes], manifest: dict[str, Any]) -> None:
+def _write_manifest(files: dict[str, bytes], manifest: JsonObject) -> None:
     files[MANIFEST_PATH] = json.dumps(manifest).encode()
 
 
@@ -69,13 +70,16 @@ def test_current_rendering_assets_have_exact_draft_admission() -> None:
     files = _files()
     assert validate_template_admission(files) == hashlib.sha256(files[MANIFEST_PATH]).hexdigest()
     manifest = _manifest(files)
-    assert manifest["historical_quarantine"]["status"] == "quarantined_legacy_not_supported"
-    assert manifest["historical_quarantine"]["unchanged"] is True
     assert (
-        len(manifest["files"]) >= 40
+        mapping(manifest["historical_quarantine"])["status"] == "quarantined_legacy_not_supported"
+    )
+    assert mapping(manifest["historical_quarantine"])["unchanged"] is True
+    assert (
+        len(sequence(manifest["files"])) >= 40
     )  # 36 revised templates, two styles, use contract and supporting guide.
-    for entry in manifest["files"]:
-        payload = files[entry["path"]].decode()
+    for raw_entry in sequence(manifest["files"]):
+        entry = mapping(raw_entry)
+        payload = files[text_value(entry["path"])].decode()
         assert "CONFIDENTIAL: QUALITY IMPROVEMENT" not in payload
         assert "protected as Quality Improvement" not in payload
         assert "within 24 hours" not in payload
@@ -137,7 +141,7 @@ def test_non_admitted_manifest_is_rejected(field: str, value: str) -> None:
 def test_manifest_paths_cannot_escape_asset_scope(path: str) -> None:
     files = _files()
     manifest = _manifest(files)
-    manifest["files"][0]["path"] = path
+    mapping(sequence(manifest["files"])[0])["path"] = path
     _write_manifest(files, manifest)
     with pytest.raises(ValueError, match="canonical asset scope"):
         validate_template_admission(files)
@@ -159,13 +163,17 @@ def test_invalid_admission_entries_fail_closed(mutation: str) -> None:
     files = _files()
     manifest = _manifest(files)
     if mutation == "duplicate":
-        manifest["files"].append(manifest["files"][0])
+        sequence(manifest["files"]).append(sequence(manifest["files"])[0])
     elif mutation == "quarantined":
-        manifest["files"][0]["status"] = "quarantined"
+        mapping(sequence(manifest["files"])[0])["status"] = "quarantined"
     elif mutation == "invalid_hash":
-        manifest["files"][0]["sha256"] = "not-a-digest"
+        mapping(sequence(manifest["files"])[0])["sha256"] = "not-a-digest"
     elif mutation == "missing_contract":
-        manifest["files"] = [entry for entry in manifest["files"] if entry["path"] != CONTRACT_PATH]
+        manifest["files"] = [
+            entry
+            for entry in sequence(manifest["files"])
+            if mapping(entry)["path"] != CONTRACT_PATH
+        ]
         del files[CONTRACT_PATH]
     elif mutation == "missing_revision":
         del manifest["revision"]

@@ -1,4 +1,4 @@
-# Bandit review for frozen prospective source
+# Bandit review for versioned prospective source
 
 The historical `prospective-agent-text-20260830` protocol was actually frozen
 and consumed. Its [execution freeze](../conductor/tracks/eval-blocker-remediation_20260803/prospective-execution-freeze-20260831.md)
@@ -10,7 +10,7 @@ records zero admitted observations out of two slots and forbids recovery under
 the consumed protocol. Historical declarations and negative evidence must not
 be rewritten to accommodate a scanner comment.
 
-## Exact reviewed exceptions
+## Historical exact-source review
 
 Bandit 1.9.4 reports B603 for these argument-vector subprocess calls. The calls
 do not invoke a shell. The first uses a verified executable and a fixed
@@ -32,7 +32,7 @@ The restored server profile SHA-256 remains
 No protocol, condition, frozen input, historical receipt, outcome or execution
 permission is changed. No model or study execution was performed.
 
-## Enforcement and revalidation
+## Historical enforcement and revalidation
 
 `quality/bandit-reviewed.json` is a native Bandit baseline containing exactly
 these two observed findings and their review metadata. Its reviewed SHA-256 is
@@ -60,3 +60,32 @@ Tests cover altered baseline bytes and altered bytes in each source. Existing
 Darwin source-pin tests and prospective protocol consistency tests remain
 enabled and must pass. This is agent engineering review with shared project
 context, not independent clinical or research validation.
+
+## FAW06 current engineering revalidation — 14 November 2026
+
+The active implementation now has checked comparator boundaries and explicit
+runtime receipt types. CLI and server profiles have distinct current engineering
+identities `darwin-llama-0.3.0-typing-20261114` and
+`darwin-llama-server-0.3.0-typing-20261114`. The server source inventory additionally
+binds the existing `json_shapes.py` runtime dependency. Historical source S, the
+consumed protocol, review and zero-admission result above remain unchanged.
+The historical consistency test reconstructs declarations from S in an isolated
+interpreter; current source-pin tests independently check the active files.
+
+The actual current Bandit scan still reports exactly the following two B603
+findings. Each call keeps argv separation, no shell and the existing process
+limits. Runtime capture keeps pre/post source checks, and comparator admission
+now rejects malformed collections and scoring fixtures before their execution.
+This is ordinary current-source engineering revalidation, not runtime/model
+qualification or permission to reuse the consumed protocol.
+
+| Current source | Line | Rule | SHA-256 |
+| --- | --- | --- | --- |
+| `tools/darwin_runtime_profile.py` | 242 | B603 | `31f0627bd3386a164872f1c14640e14b26a5551b7f61c6c23795ce2427a5c3ee` |
+| `tools/local_model_comparator.py` | 336 | B603 | `f27bf6dcf890887bf30112982ba78843828d58ce00b8a1b3481f23a1c2a49074` |
+
+The current native two-finding baseline is SHA-256 `fe1dbcc8e0ba35b659e648889757cc8eded387ce2d78c7807627538892adaa9a`.
+`tools.quality_gate security` checks this digest and both reviewed source hashes
+before invoking Bandit; the previous fixity/tamper and cross-platform path tests
+remain enforced. No other finding is admitted. The prior baseline and source
+bytes remain available at the immutable historical revisions described above.

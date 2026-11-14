@@ -3,8 +3,8 @@
 Start with `conductor/index.md`, then load only the selected track's specification, plan, metadata, dependencies, and bounded context pack. Treat `conductor/product-guidelines.md` as the safety and content boundary and `conductor/workflow.md` as the delivery contract.
 
 Read `CONSTRAINTS.md` for the executable quality contract. Preserve the strict
-typing baseline as visible legacy debt; do not grow it or add new modules to
-it to pass CI. Track 13 coordinates current assurance and staged demonstrations;
+typing baseline and policy caps at zero; do not introduce allowances or explicit
+`Any` annotations to pass CI. Track 13 coordinates current assurance and staged demonstrations;
 Track 12 owns scientific components and Track 14 owns death-review profiles.
 
 Do not infer completion from checkboxes, issue state, or a green focused test. Preserve private data, credentials, source rights, human authority, licence choices, external actions, and release decisions as explicit gates. Keep the portable skill core client-neutral; client behaviour belongs in adapters.

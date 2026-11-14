@@ -10,7 +10,7 @@ from pathlib import Path
 
 from tools import darwin_runtime_profile as core
 
-PROFILE_ID = "darwin-llama-0.3.0-20260830"
+PROFILE_ID = "darwin-llama-0.3.0-typing-20261114"
 EXECUTABLE = "/opt/homebrew/Cellar/llama.cpp/0.3.0/bin/llama-cli"
 LIBRARY_DIRS = (
     "/opt/homebrew/Cellar/llama.cpp/0.3.0/lib",

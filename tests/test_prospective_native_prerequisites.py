@@ -1,6 +1,10 @@
 """Synthetic Git consistency checks are never a study freeze or admission."""
 
+from __future__ import annotations
+
 import json
+from pathlib import Path
+from typing import TypedDict, Unpack
 
 import pytest
 
@@ -9,9 +13,19 @@ from tests.test_prospective_native_protocol import fixture as native_fixture
 from tests.test_prospective_protocol import pin
 from tools import prospective_native_prerequisites as subject
 
+Synthetic = tuple[Path, Path, subject.native.NativeProtocolDocument, str]
+
+
+class VerifyOptions(TypedDict, total=False):
+    path: Path
+    pin: str
+    slot: object
+    commit: object
+    root: Path
+
 
 @pytest.fixture
-def synthetic(tmp_path):
+def synthetic(tmp_path: Path) -> Synthetic:
     root = tmp_path.resolve()
     path, value = native_fixture(root)
     git(root, "init", "-q")
@@ -31,7 +45,7 @@ def synthetic(tmp_path):
     return root, path, value, git(root, "rev-parse", "HEAD")
 
 
-def verify(fixture, **kwargs):
+def verify(fixture: Synthetic, **kwargs: Unpack[VerifyOptions]) -> subject.NativePrerequisites:
     root, path, value, commit = fixture
     return subject.verify_native_prerequisites(
         kwargs.get("path", path),
@@ -42,11 +56,11 @@ def verify(fixture, **kwargs):
     )
 
 
-def test_fixed_source_inventory_exists():
+def test_fixed_source_inventory_exists() -> None:
     assert "tools/prospective_native_prerequisites.py" in subject.KNOWN_NATIVE_SOURCES
 
 
-def test_enumerated_consistency_never_permits_execution(synthetic):
+def test_enumerated_consistency_never_permits_execution(synthetic: Synthetic) -> None:
     result = verify(synthetic)
     root, path, value, commit = synthetic
     assert result["status"] == "native_prerequisites_consistent"
@@ -71,17 +85,19 @@ def test_enumerated_consistency_never_permits_execution(synthetic):
 
 
 @pytest.mark.parametrize("slot", [None, [], "unknown", "x" * 151])
-def test_slot_rejected_before_git(synthetic, monkeypatch, slot):
-    def forbidden(*args):
+def test_slot_rejected_before_git(
+    synthetic: Synthetic, monkeypatch: pytest.MonkeyPatch, slot: object
+) -> None:
+    def forbidden(*args: object) -> None:
         raise AssertionError("Git must not run for invalid slot")
 
-    monkeypatch.setattr(subject.freeze, "_git", forbidden)
+    monkeypatch.setattr(subject.freeze, "git_bytes", forbidden)
     with pytest.raises(ValueError, match="slot_not_in_protocol"):
         verify(synthetic, slot=slot)
 
 
 @pytest.mark.parametrize("source", subject.KNOWN_NATIVE_SOURCES)
-def test_each_fixed_source_drift_rejected(synthetic, source):
+def test_each_fixed_source_drift_rejected(synthetic: Synthetic, source: str) -> None:
     root, _, _, _ = synthetic
     (root / source).write_bytes(b"changed")
     with pytest.raises(ValueError, match="freeze_bytes_mismatch"):
@@ -89,31 +105,35 @@ def test_each_fixed_source_drift_rejected(synthetic, source):
 
 
 @pytest.mark.parametrize("kind", ["protocol", "input", "template", "rubric"])
-def test_original_pins_retained_after_native_parse(synthetic, monkeypatch, kind):
+def test_original_pins_retained_after_native_parse(
+    synthetic: Synthetic, monkeypatch: pytest.MonkeyPatch, kind: str
+) -> None:
     root, path, value, _ = synthetic
-    original = subject.native._validated_candidate
+    original = subject.native.validated_candidate
     selected = {
         "protocol": path,
         "input": root / value["cases"][0]["input"]["path"],
         "template": root / value["prompt_template"]["path"],
         "rubric": root / value["rubric"]["path"],
     }[kind]
-    calls = []
+    calls: list[tuple[Path, str]] = []
 
-    def changed(*args):
+    def changed(
+        *args: *tuple[Path, str],
+    ) -> tuple[subject.native.NativeProtocolDocument, subject.native.NativeProtocolCandidate]:
         calls.append(args)
         result = original(*args)
         selected.write_bytes(b"changed after validation")
         return result
 
-    monkeypatch.setattr(subject.native, "_validated_candidate", changed)
+    monkeypatch.setattr(subject.native, "validated_candidate", changed)
     with pytest.raises(ValueError, match="artifact_changed_during_verification"):
         verify(synthetic)
     assert len(calls) == 1
 
 
 @pytest.mark.parametrize("damage", ["missing", "untracked", "symlink"])
-def test_missing_untracked_and_symlink_sources_rejected(synthetic, damage):
+def test_missing_untracked_and_symlink_sources_rejected(synthetic: Synthetic, damage: str) -> None:
     root, _, _, _ = synthetic
     file = root / subject.KNOWN_NATIVE_SOURCES[0]
     if damage == "missing":
@@ -135,12 +155,12 @@ def test_missing_untracked_and_symlink_sources_rejected(synthetic, damage):
 
 
 @pytest.mark.parametrize("commit", ["HEAD", "a" * 39, "a" * 40 + "\n", "0" * 40])
-def test_invalid_or_absent_commit(synthetic, commit):
+def test_invalid_or_absent_commit(synthetic: Synthetic, commit: str) -> None:
     with pytest.raises(ValueError):
         verify(synthetic, commit=commit)
 
 
-def test_protocol_outside_repository_rejected(synthetic, tmp_path):
+def test_protocol_outside_repository_rejected(synthetic: Synthetic, tmp_path: Path) -> None:
     outside = tmp_path / "outside"
     outside.mkdir()
     path, _ = native_fixture(outside)
@@ -152,36 +172,42 @@ def test_protocol_outside_repository_rejected(synthetic, tmp_path):
         )
 
 
-def test_original_ref_tamper_rejected_before_committed_checks(synthetic, monkeypatch):
+def test_original_ref_tamper_rejected_before_committed_checks(
+    synthetic: Synthetic, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, _, value, _ = synthetic
     (root / value["cases"][0]["input"]["path"]).write_bytes(b"changed")
 
-    def forbidden(*args):
+    def forbidden(*args: object) -> None:
         raise AssertionError("Git must not run for invalid reference")
 
-    monkeypatch.setattr(subject.freeze, "_committed_files", forbidden)
+    monkeypatch.setattr(subject.freeze, "committed_files", forbidden)
     with pytest.raises(ValueError, match="artifact_hash_mismatch"):
         verify(synthetic)
 
 
-def test_well_formed_unknown_slot_rejected_before_file_checks(synthetic, monkeypatch):
-    def forbidden(*args):
+def test_well_formed_unknown_slot_rejected_before_file_checks(
+    synthetic: Synthetic, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def forbidden(*args: object) -> None:
         raise AssertionError("No committed checks for undeclared slot")
 
-    monkeypatch.setattr(subject.freeze, "_committed_files", forbidden)
+    monkeypatch.setattr(subject.freeze, "committed_files", forbidden)
     with pytest.raises(ValueError, match="slot_not_in_protocol"):
         verify(synthetic, slot="case-unknown__condition-local-text__r1")
 
 
 @pytest.mark.parametrize("damage", ["traversal", "outside", "noncanonical-root", "commit-type"])
-def test_boundary_rejected_before_protocol_parse(synthetic, monkeypatch, damage):
+def test_boundary_rejected_before_protocol_parse(
+    synthetic: Synthetic, monkeypatch: pytest.MonkeyPatch, damage: str
+) -> None:
     root, path, _, _ = synthetic
 
-    def forbidden(*args):
+    def forbidden(*args: object) -> None:
         raise AssertionError("Unconfined bytes must not be read")
 
-    monkeypatch.setattr(subject.native, "_validated_candidate", forbidden)
-    kwargs: dict = {"pin": pin(path)}
+    monkeypatch.setattr(subject.native, "validated_candidate", forbidden)
+    kwargs: VerifyOptions = {"pin": pin(path)}
     if damage == "traversal":
         kwargs["path"] = root / "tools" / ".." / path.name
     elif damage == "outside":
@@ -191,10 +217,16 @@ def test_boundary_rejected_before_protocol_parse(synthetic, monkeypatch, damage)
     else:
         kwargs["commit"] = None
     with pytest.raises(ValueError):
-        verify(synthetic, **kwargs)
+        verify(
+            synthetic,
+            path=kwargs.get("path", path),
+            pin=kwargs.get("pin", pin(path)),
+            root=kwargs.get("root", root),
+            commit=kwargs.get("commit", synthetic[3]),
+        )
 
 
-def test_different_committed_protocol_rejected_even_if_current_valid(synthetic):
+def test_different_committed_protocol_rejected_even_if_current_valid(synthetic: Synthetic) -> None:
     _, path, value, _ = synthetic
     value["study_id"] = "prospective-another"
     path.write_text(json.dumps(value), encoding="utf-8")

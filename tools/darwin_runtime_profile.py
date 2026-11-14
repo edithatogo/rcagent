@@ -16,8 +16,55 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
 from types import ModuleType
+from typing import Required, TypedDict
 
-from tools.local_model_comparator import _sha256
+from tools.local_model_comparator import _sha256 as _sha256
+
+# Compatibility export for the versioned profile modules' byte-fixity checks.
+__all__ = [
+    "ProfileReceipt",
+    "_sha256",
+    "capture_version",
+    "main",
+    "profile_digest",
+    "profile_environment",
+    "verify_files",
+    "verify_loaded_images",
+]
+
+
+class ProfileReceipt(TypedDict, total=False):
+    schema_version: Required[str]
+    purpose: Required[str]
+    admitted: Required[bool]
+    study_unlocked: Required[bool]
+    execution_observed: Required[bool]
+    status: Required[str]
+    diagnostic: str
+    reason: str
+    exit_state: int | str
+    started_at: str
+    finished_at: str
+    elapsed_ns: int
+    profile_sha256: str
+    adapter_sha256: str
+    pins_unchanged_after: bool
+    loaded_non_system_images: list[str]
+    environment: dict[str, str]
+    arguments: list[str]
+    device: dict[str, str]
+    stdout_bytes: int
+    stderr_bytes: int
+    output_complete: bool
+    raw_stdout_base64: str | None
+    raw_stderr_base64: str | None
+    stdout_sha256: str | None
+    stderr_sha256: str | None
+    limitations: list[str]
+    profile_module_sha256: str
+    shared_helper_sha256: str
+    version_markers_base64: list[str]
+
 
 EXECUTABLE = "/opt/homebrew/Cellar/llama.cpp/0.2.0/bin/llama-cli"
 LIBRARY_DIRS = (
@@ -156,18 +203,21 @@ def verify_loaded_images(stderr: bytes, config: ModuleType | None = None) -> lis
     return sorted(images)
 
 
-def capture_version(config: ModuleType | None = None, diagnostic: str = "version") -> dict:
+def capture_version(
+    config: ModuleType | None = None, diagnostic: str = "version"
+) -> ProfileReceipt:
     """Capture fixed version/help diagnostics; explicit profiles bind both sources."""
     if diagnostic not in {"version", "help"}:
         raise ValueError("unsupported_diagnostic")
     cfg = config or sys.modules[__name__]
     explicit = cfg is not sys.modules[__name__]
-    receipt: dict = {
+    receipt: ProfileReceipt = {
         "schema_version": "1.0",
         "purpose": "runtime-profile-observation-only",
         "admitted": False,
         "study_unlocked": False,
         "execution_observed": False,
+        "status": "unsupported_platform",
     }
     if explicit or diagnostic != "version":
         receipt["purpose"] = "runtime-profile-diagnostic-only"
@@ -236,6 +286,14 @@ def capture_version(config: ModuleType | None = None, diagnostic: str = "version
         images = cfg.verify_loaded_images(err)
     except (ValueError, OSError) as exc:
         reason = str(exc) if isinstance(exc, ValueError) else "profile_file_unavailable"
+    limitations: list[str] = [
+        "not a study observation or model-inference compatibility test",
+        "OS shared cache and driver bytes are not hash-attested",
+        "loader reports are trusted process diagnostics, not tamper-proof attestation",
+        "no protection against concurrent replacement or unreported dynamic loads",
+        "network egress not independently monitored or sandboxed",
+        "temporary output storage is not a disk quota",
+    ]
     receipt.update(
         {
             "status": "runtime_profile_observed" if reason == "none" else "profile_failed",
@@ -262,14 +320,7 @@ def capture_version(config: ModuleType | None = None, diagnostic: str = "version
             "raw_stderr_base64": base64.b64encode(err).decode() if complete else None,
             "stdout_sha256": hashlib.sha256(out).hexdigest() if complete else None,
             "stderr_sha256": hashlib.sha256(err).hexdigest() if complete else None,
-            "limitations": [
-                "not a study observation or model-inference compatibility test",
-                "OS shared cache and driver bytes are not hash-attested",
-                "loader reports are trusted process diagnostics, not tamper-proof attestation",
-                "no protection against concurrent replacement or unreported dynamic loads",
-                "network egress not independently monitored or sandboxed",
-                "temporary output storage is not a disk quota",
-            ],
+            "limitations": limitations,
         }
     )
     if explicit:
@@ -285,7 +336,7 @@ def capture_version(config: ModuleType | None = None, diagnostic: str = "version
             }
         )
     else:
-        receipt["limitations"].append(
+        limitations.append(
             "OpenSSL package 3.6.3 revision 0 bottle rebuild 1; historical label differs"
         )
     return receipt

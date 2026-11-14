@@ -55,7 +55,7 @@ class DecodedCompletion(TypedDict):
     limitations: list[str]
 
 
-def _pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
+def unique_json_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
     result: dict[str, object] = {}
     for key, value in pairs:
         if key in result:
@@ -64,7 +64,7 @@ def _pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
     return result
 
 
-def _constant(value: str) -> object:
+def reject_json_constant(value: str) -> object:
     raise ValueError("nonfinite_json_number")
 
 
@@ -86,7 +86,9 @@ def decode_completion(raw: object, *, expected_model: object) -> DecodedCompleti
     try:
         expected_model.encode("utf-8")
         value: object = json.loads(
-            raw.decode("utf-8"), object_pairs_hook=_pairs, parse_constant=_constant
+            raw.decode("utf-8"),
+            object_pairs_hook=unique_json_pairs,
+            parse_constant=reject_json_constant,
         )
         # Also reject lone surrogates and numeric overflow in ignored metadata.
         json.dumps(value, ensure_ascii=False, allow_nan=False).encode("utf-8")

@@ -3,27 +3,35 @@
 import hashlib
 import json
 from copy import deepcopy
+from pathlib import Path
+from typing import TypeAlias
 
 import pytest
 
+from tests.prospective_fixture_types import ObjectMap, mapping, sequence, text_value
 from tools import prospective_model as model
+
+AdmittedFixture: TypeAlias = tuple[Path, Path, ObjectMap]
 
 
 @pytest.fixture
-def admitted(tmp_path, monkeypatch):
+def admitted(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> AdmittedFixture:
     root = tmp_path / "models"
     root.mkdir()
     runtime = tmp_path / "runtime"
     runtime.write_bytes(b"runtime")
-    manifest = json.loads(model.MANIFEST_PATH.read_bytes())
-    for item in manifest["models"]:
-        directory = root / item["cache_subdirectory"]
+    manifest = mapping(json.loads(model.MANIFEST_PATH.read_bytes()))
+    for raw_item in sequence(manifest["models"]):
+        item = mapping(raw_item)
+        directory = root / text_value(item["cache_subdirectory"])
         directory.mkdir()
         (directory / "LICENSE").write_bytes(b"synthetic licence")
         item["license_sha256"] = hashlib.sha256(b"synthetic licence").hexdigest()
-        for file in item["files"]:
-            data = file["path"].encode()
-            (directory / file["path"]).write_bytes(data)
+        for raw_file in sequence(item["files"]):
+            file = mapping(raw_file)
+            name = text_value(file["path"])
+            data = name.encode()
+            (directory / name).write_bytes(data)
             file.update(sha256=hashlib.sha256(data).hexdigest(), bytes=len(data))
     source = tmp_path / "registry.json"
     source.write_text(json.dumps(manifest))
@@ -37,13 +45,17 @@ def admitted(tmp_path, monkeypatch):
     return root, source, manifest
 
 
-def test_overlay_preserves_registry_and_all_model_checks(admitted):
+def test_overlay_preserves_registry_and_all_model_checks(admitted: AdmittedFixture) -> None:
     root, source, original = admitted
     before = source.read_bytes()
     result = model.admit_model(root)
     assert source.read_bytes() == before
     assert json.loads(before) == original
-    assert result["runtime_overlay"]["version"] != original["runtime"]["version"]
+    assert result["runtime_overlay"]["version"] != mapping(original["runtime"])["version"]
+    assert (
+        result["runtime_overlay"]["distribution"]
+        == f"Homebrew installed bytes; explicit {model.profile.PROFILE_ID} profile"
+    )
     assert result["registry_sha256"] == hashlib.sha256(before).hexdigest()
     assert result["model_id"] == model.MODEL_ID
     assert result["original_runtime"] == original["runtime"]
@@ -58,18 +70,20 @@ def test_overlay_preserves_registry_and_all_model_checks(admitted):
 @pytest.mark.parametrize(
     "damage", ["registry", "licence", "other_model", "runtime", "profile", "root"]
 )
-def test_admission_rejects_drift(admitted, monkeypatch, damage):
+def test_admission_rejects_drift(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch, damage: str
+) -> None:
     root, source, manifest = admitted
     if damage == "registry":
         source.write_bytes(b"{}")
     elif damage == "licence":
-        (root / manifest["models"][0]["cache_subdirectory"] / "LICENSE").write_bytes(b"changed")
+        first = mapping(sequence(manifest["models"])[0])
+        (root / text_value(first["cache_subdirectory"]) / "LICENSE").write_bytes(b"changed")
     elif damage == "other_model":
-        item = manifest["models"][-1]
-        (root / item["cache_subdirectory"] / item["files"][0]["path"]).unlink()
+        item = mapping(sequence(manifest["models"])[-1])
+        file = mapping(sequence(item["files"])[0])
+        (root / text_value(item["cache_subdirectory"]) / text_value(file["path"])).unlink()
     elif damage == "runtime":
-        from pathlib import Path
-
         Path(model.profile.EXECUTABLE).write_bytes(b"changed")
     elif damage == "profile":
         monkeypatch.setattr(
@@ -83,10 +97,12 @@ def test_admission_rejects_drift(admitted, monkeypatch, damage):
         model.admit_model(root)
 
 
-def test_registry_drift_during_validation(admitted, monkeypatch):
+def test_registry_drift_during_validation(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
     root, source, _ = admitted
 
-    def validate(*args):
+    def validate(*args: object) -> list[str]:
         source.write_bytes(b"changed")
         return []
 
@@ -95,7 +111,7 @@ def test_registry_drift_during_validation(admitted, monkeypatch):
         model.admit_model(root)
 
 
-def test_missing_selected_model(admitted, monkeypatch):
+def test_missing_selected_model(admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch) -> None:
     root, _, _ = admitted
     monkeypatch.setattr(model, "MODEL_ID", "absent")
     with pytest.raises(ValueError):
@@ -104,13 +120,16 @@ def test_missing_selected_model(admitted, monkeypatch):
 
 @pytest.mark.parametrize("which", ["model", "licence"])
 @pytest.mark.parametrize("damage", ["missing", "changed"])
-def test_selected_file_disappears_after_validation(admitted, monkeypatch, which, damage):
+def test_selected_file_disappears_after_validation(
+    admitted: AdmittedFixture, monkeypatch: pytest.MonkeyPatch, which: str, damage: str
+) -> None:
     root, _, manifest = admitted
-    selected = manifest["models"][0]
+    selected = mapping(sequence(manifest["models"])[0])
 
-    def validate(*args):
-        name = selected["files"][0]["path"] if which == "model" else "LICENSE"
-        path = root / selected["cache_subdirectory"] / name
+    def validate(*args: object) -> list[str]:
+        file = mapping(sequence(selected["files"])[0])
+        name = text_value(file["path"]) if which == "model" else "LICENSE"
+        path = root / text_value(selected["cache_subdirectory"]) / name
         if damage == "missing":
             path.unlink()
         else:
@@ -122,7 +141,7 @@ def test_selected_file_disappears_after_validation(admitted, monkeypatch, which,
         model.admit_model(root)
 
 
-def test_overlay_identity_is_complete_and_separate(admitted):
+def test_overlay_identity_is_complete_and_separate(admitted: AdmittedFixture) -> None:
     root, _, manifest = admitted
     copy = deepcopy(manifest)
     result = model.admit_model(root)
@@ -132,7 +151,7 @@ def test_overlay_identity_is_complete_and_separate(admitted):
 
 
 @pytest.mark.parametrize("kind", ["missing", "file"])
-def test_unavailable_root_is_rejected(tmp_path, kind):
+def test_unavailable_root_is_rejected(tmp_path: Path, kind: str) -> None:
     root = tmp_path / "root"
     if kind == "file":
         root.write_bytes(b"not a directory")

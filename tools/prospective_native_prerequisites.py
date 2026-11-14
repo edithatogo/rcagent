@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Literal, TypedDict
 
 from tools import prospective_freeze as freeze
 from tools import prospective_native_protocol as native
@@ -21,9 +22,24 @@ KNOWN_NATIVE_SOURCES = (
 )
 
 
+class NativePrerequisites(TypedDict):
+    status: Literal["native_prerequisites_consistent"]
+    commit: str
+    protocol_sha256: str
+    study_id: str
+    slot_id: str
+    files: list[freeze.CommittedFile]
+    execution_permitted: Literal[False]
+    execution_observed: Literal[False]
+    admitted: Literal[False]
+    study_unlocked: Literal[False]
+    pending: list[str]
+    limitations: list[str]
+
+
 def verify_native_prerequisites(
-    protocol_path: Path, expected_protocol_sha256: str, slot_id: str, commit: str, root: Path
-) -> dict:
+    protocol_path: Path, expected_protocol_sha256: str, slot_id: object, commit: object, root: Path
+) -> NativePrerequisites:
     """Check a fixed subset of committed bytes; never issue execution permission."""
     if (
         type(slot_id) is not str
@@ -35,8 +51,8 @@ def verify_native_prerequisites(
         raise ValueError("invalid_protocol_path")
     if type(commit) is not str:
         raise ValueError("invalid_freeze_commit")
-    root, protocol_path, relative = freeze._repository(protocol_path, commit, root)
-    value, candidate = native._validated_candidate(protocol_path, expected_protocol_sha256)
+    root, protocol_path, relative = freeze.resolve_repository(protocol_path, commit, root)
+    value, candidate = native.validated_candidate(protocol_path, expected_protocol_sha256)
     if slot_id not in candidate["requests"]:
         raise ValueError("slot_not_in_protocol")
     refs = [case["input"] for case in value["cases"]]
@@ -50,7 +66,7 @@ def verify_native_prerequisites(
         *((protocol_path.parent / ref["path"]).relative_to(root).as_posix() for ref in refs),
         *KNOWN_NATIVE_SOURCES,
     ]
-    files = freeze._committed_files(root, commit, paths, expected)
+    files = freeze.committed_files(root, commit, paths, expected)
     return {
         "status": "native_prerequisites_consistent",
         "commit": commit,

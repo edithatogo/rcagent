@@ -23,7 +23,7 @@ class _Context:
     model_root: Path
 
     def verify(self) -> None:
-        current = gate._verify(
+        current = gate.verify_execution_plan(
             self.protocol_path,
             self.pin,
             self.slot_id,
@@ -90,6 +90,6 @@ def run_primary(
     receipt: Path,
 ) -> session.SessionResult:
     """Verify before all session resources, recheck under shared lock, then capture."""
-    plan = gate._verify(protocol_path, pin, slot_id, review_commit, root, model_root)
+    plan = gate.verify_execution_plan(protocol_path, pin, slot_id, review_commit, root, model_root)
     context = _Context(plan, protocol_path, pin, slot_id, review_commit, root, model_root)
     return session._capture_session(model_root, receipt, context)

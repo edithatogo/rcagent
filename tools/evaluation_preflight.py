@@ -7,6 +7,9 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from typing import Literal, TypedDict
+
+from tools.json_shapes import is_array, is_object
 
 ROLES = {
     "admission": {"protocol", "manifest", "raw", "normalized", "metadata", "attestation"},
@@ -16,7 +19,13 @@ ROLES = {
 MAX_BYTES = 4 * 1024 * 1024
 
 
-def _unique(pairs: list[tuple[str, object]]) -> dict[str, object]:
+class EnvelopeReceipt(TypedDict):
+    status: Literal["fixture_pass"]
+    stage: str
+    study_unlocked: Literal[False]
+
+
+def unique_object_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
     result: dict[str, object] = {}
     for key, value in pairs:
         if key in result:
@@ -25,7 +34,7 @@ def _unique(pairs: list[tuple[str, object]]) -> dict[str, object]:
     return result
 
 
-def _bytes(path: Path) -> bytes:
+def read_artifact_bytes(path: Path) -> bytes:
     try:
         if any(part.is_symlink() for part in (path, *path.parents)) or not path.is_file():
             raise ValueError("non_regular_or_symlink_artifact")
@@ -38,21 +47,21 @@ def _bytes(path: Path) -> bytes:
     return value
 
 
-def _digest(value: object) -> bool:
+def is_sha256(value: object) -> bool:
     return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
 
 
-def check_envelope(receipt: Path, expected_sha256: str, stage: str) -> dict:
+def check_envelope(receipt: Path, expected_sha256: str, stage: str) -> EnvelopeReceipt:
     """Check fixture structure and byte identity; this never admits a study."""
-    data = _bytes(receipt.absolute())
-    if not _digest(expected_sha256) or hashlib.sha256(data).hexdigest() != expected_sha256:
+    data = read_artifact_bytes(receipt.absolute())
+    if not is_sha256(expected_sha256) or hashlib.sha256(data).hexdigest() != expected_sha256:
         raise ValueError("receipt_pin_mismatch")
     try:
-        value = json.loads(data, object_pairs_hook=_unique)
+        value: object = json.loads(data, object_pairs_hook=unique_object_pairs)
     except (UnicodeError, json.JSONDecodeError, RecursionError) as exc:
         raise ValueError("invalid_json") from exc
     fields = {"schema_version", "purpose", "study_id", "revision", "stage", "files"}
-    if not isinstance(value, dict) or set(value) != fields:
+    if not is_object(value) or set(value) != fields:
         raise ValueError("invalid_envelope_fields")
     if value["schema_version"] != "1.0" or value["purpose"] != "contract-fixture":
         raise ValueError("unsupported_schema_or_purpose")
@@ -67,13 +76,13 @@ def check_envelope(receipt: Path, expected_sha256: str, stage: str) -> dict:
     ):
         raise ValueError("invalid_revision")
     entries = value["files"]
-    if not isinstance(entries, list) or len(entries) != len(ROLES[stage]):
+    if not is_array(entries) or len(entries) != len(ROLES[stage]):
         raise ValueError("invalid_artifact_count")
     roles: set[str] = set()
     paths: set[str] = set()
     root = receipt.absolute().parent
     for entry in entries:
-        if not isinstance(entry, dict) or set(entry) != {"role", "path", "sha256"}:
+        if not is_object(entry) or set(entry) != {"role", "path", "sha256"}:
             raise ValueError("invalid_artifact_fields")
         role, relative = entry["role"], entry["path"]
         if not isinstance(role, str) or role not in ROLES[stage] or role in roles:
@@ -91,8 +100,8 @@ def check_envelope(receipt: Path, expected_sha256: str, stage: str) -> dict:
             raise ValueError("invalid_artifact_path")
         if relative.casefold() in paths:
             raise ValueError("duplicate_artifact_path")
-        content = _bytes(root.joinpath(*parts))
-        if not _digest(entry["sha256"]) or hashlib.sha256(content).hexdigest() != entry["sha256"]:
+        content = read_artifact_bytes(root.joinpath(*parts))
+        if not is_sha256(entry["sha256"]) or hashlib.sha256(content).hexdigest() != entry["sha256"]:
             raise ValueError("artifact_hash_mismatch")
         roles.add(role)
         paths.add(relative.casefold())

@@ -9,7 +9,7 @@ import stat
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import NotRequired, TypedDict
 
 from tools.release_source import (
     require_release_version,
@@ -24,10 +24,33 @@ _REVISION = re.compile(r"[0-9a-f]{40}\Z")
 _CLIENTS = {"codex", "claude-code"}
 
 
+class PluginInterface(TypedDict):
+    displayName: str
+    shortDescription: str
+    longDescription: str
+    developerName: str
+    category: str
+    capabilities: list[str]
+    defaultPrompt: list[str]
+
+
+class PluginManifest(TypedDict):
+    name: str
+    version: str
+    description: str
+    author: dict[str, str]
+    homepage: str
+    repository: str
+    license: str
+    keywords: list[str]
+    skills: str
+    interface: NotRequired[PluginInterface]
+
+
 @dataclass(frozen=True)
 class ClientPluginResult:
     archive: Path
-    manifest: dict[str, Any]
+    manifest: PluginManifest
     sha256: str
 
 
@@ -46,8 +69,8 @@ def _member(archive: zipfile.ZipFile, name: str, payload: bytes) -> None:
     archive.writestr(info, payload)
 
 
-def _manifest(client: str, version: str) -> tuple[str, dict[str, Any]]:
-    common: dict[str, Any] = {
+def _manifest(client: str, version: str) -> tuple[str, PluginManifest]:
+    common: PluginManifest = {
         "name": "rca-investigation",
         "version": version,
         "description": "Evidence-grounded healthcare safety investigation support for accountable human teams.",

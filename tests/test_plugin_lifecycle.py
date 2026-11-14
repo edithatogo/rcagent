@@ -4,6 +4,7 @@ import json
 import stat
 import zipfile
 from pathlib import Path
+from unittest.mock import Mock
 
 import pytest
 
@@ -16,8 +17,8 @@ ROOT = Path(__file__).parents[1]
 
 @pytest.fixture(autouse=True)
 def _unit_release_source(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(plugin_module, "verify_release_source", lambda *_args, **_kwargs: None)
-    monkeypatch.setattr(plugin_module, "verify_release_payloads", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(plugin_module, "verify_release_source", Mock(return_value=None))
+    monkeypatch.setattr(plugin_module, "verify_release_payloads", Mock(return_value=None))
 
 
 @pytest.mark.parametrize(

@@ -8,17 +8,103 @@ import json
 import re
 import subprocess
 import time
+from collections.abc import Mapping
 from pathlib import Path
-from typing import Any
+from typing import TypedDict, TypeGuard
+
+from tools import json_shapes
+
+# These two compatibility names are already shared by the admission modules.
+# Their contracts inspect bytes and paths only; they confer no execution authority.
+__all__ = [
+    "ComparatorReceipt",
+    "ModelSummary",
+    "Observation",
+    "Score",
+    "_admitted_file",
+    "_sha256",
+    "build_prompt",
+    "extract_response",
+    "main",
+    "read_object",
+    "run",
+    "score_response",
+    "validate_admission",
+]
 
 ROOT = Path(__file__).parents[1]
 MANIFEST_PATH = ROOT / "evaluation/benchmark/comparators.json"
 FIXTURE_PATH = ROOT / "evaluation/benchmark/fixtures/synthetic-cases.json"
 
 
-def _read_object(path: Path) -> dict[str, Any]:
-    value = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(value, dict):
+class Score(TypedDict):
+    schema_valid: bool
+    evidence_exact: bool
+    claim_types_exact: bool
+    abstention_correct: bool
+    passed: bool
+
+
+class Observation(TypedDict):
+    model_id: str
+    size_class: str
+    case_id: str
+    repeat: int
+    seed: int
+    exit_code: int | str
+    latency_ms: float
+    response: json_shapes.JsonObject | None
+    raw_output_sha256: str
+    score: Score
+
+
+class ModelSummary(TypedDict):
+    observations: int
+    passed: int
+    schema_valid: int
+    latency_ms_min: float
+    latency_ms_max: float
+    latency_ms_mean: float
+
+
+class _ReceiptFields(TypedDict):
+    schema_version: str
+    scope: str
+    manifest_sha256: str
+    fixture_sha256: str
+    prompt_contract_id: str
+    repeats: int
+    temperature: int
+    network: str
+    observations: list[Observation]
+    summary: dict[str, ModelSummary]
+    agent_panel_agreement: dict[str, str]
+    limitations: list[str]
+
+
+class ComparatorReceipt(_ReceiptFields):
+    receipt_sha256: str
+
+
+def _strings(value: object) -> TypeGuard[list[str]]:
+    return json_shapes.is_array(value) and all(isinstance(item, str) for item in value)
+
+
+def _string(value: object, context: str) -> str:
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"{context}: expected a nonempty string")
+    return value
+
+
+def _objects(value: object, context: str) -> list[json_shapes.JsonObject]:
+    if not json_shapes.is_array(value) or not all(json_shapes.is_object(item) for item in value):
+        raise ValueError(f"{context}: expected an array of objects")
+    return [json_shapes.require_object(item, context=context) for item in value]
+
+
+def read_object(path: Path) -> json_shapes.JsonObject:
+    value: object = json.loads(path.read_text(encoding="utf-8"))
+    if not json_shapes.is_object(value):
         raise ValueError(f"{path}: expected a JSON object")
     return value
 
@@ -31,7 +117,7 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _admitted_file(directory: Path, relative: Any) -> Path | None:
+def _admitted_file(directory: Path, relative: object) -> Path | None:
     """Return a regular, non-symlinked file contained by ``directory``."""
     if not isinstance(relative, str) or not relative:
         return None
@@ -52,9 +138,16 @@ def _admitted_file(directory: Path, relative: Any) -> Path | None:
     return resolved if resolved.is_file() else None
 
 
-def validate_admission(manifest: dict[str, Any], model_root: Path) -> list[str]:
+def validate_admission(manifest: Mapping[str, object], model_root: Path) -> list[str]:
     errors: list[str] = []
-    policy = manifest.get("admission_policy", {})
+    try:
+        policy = json_shapes.require_object(
+            manifest.get("admission_policy", {}), context="admission_policy"
+        )
+        runtime = json_shapes.require_object(manifest.get("runtime", {}), context="runtime")
+        models = _objects(manifest.get("models", []), "models")
+    except ValueError as exc:
+        return [str(exc)]
     required = {
         "data_class": "synthetic_only",
         "network": "disabled",
@@ -68,14 +161,13 @@ def validate_admission(manifest: dict[str, Any], model_root: Path) -> list[str]:
     for key, expected in required.items():
         if policy.get(key) != expected:
             errors.append(f"admission_policy.{key}: must be {expected!r}")
-    runtime = manifest.get("runtime", {})
     executable = Path(str(runtime.get("executable", "")))
     if runtime.get("license") != "MIT":
         errors.append("runtime: licence is not MIT")
     if not executable.is_file() or _sha256(executable) != runtime.get("executable_sha256"):
         errors.append("runtime: executable is missing or hash mismatched")
     classes: set[str] = set()
-    for model in manifest.get("models", []):
+    for model in models:
         classes.add(str(model.get("size_class")))
         if model.get("license") != "Apache-2.0":
             errors.append(f"{model.get('id')}: licence is not Apache-2.0")
@@ -107,7 +199,12 @@ def validate_admission(manifest: dict[str, Any], model_root: Path) -> list[str]:
         license_path = _admitted_file(directory, "LICENSE")
         if license_path is None or _sha256(license_path) != model.get("license_sha256"):
             errors.append(f"{model.get('id')}: licence file is missing or mismatched")
-        for item in model.get("files", []):
+        try:
+            files = _objects(model.get("files", []), "model.files")
+        except ValueError as exc:
+            errors.append(f"{model.get('id')}: {exc}")
+            continue
+        for item in files:
             declared_path = item.get("path")
             path = _admitted_file(directory, declared_path)
             display_name = Path(str(declared_path)).name
@@ -120,26 +217,26 @@ def validate_admission(manifest: dict[str, Any], model_root: Path) -> list[str]:
     return sorted(errors)
 
 
-def _extract_object(output: str) -> dict[str, Any] | None:
+def extract_response(output: str) -> json_shapes.JsonObject | None:
     fenced = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", output, re.DOTALL)
     candidates = [fenced.group(1)] if fenced else []
     candidates.extend(re.findall(r"\{.*?\}", output, re.DOTALL))
     for candidate in candidates:
         try:
-            value = json.loads(candidate)
+            value: object = json.loads(candidate)
         except json.JSONDecodeError:
             continue
-        if isinstance(value, dict):
+        if json_shapes.is_object(value):
             return value
     return None
 
 
-def _score(
-    expected: dict[str, Any],
-    response: dict[str, Any] | None,
+def score_response(
+    expected: Mapping[str, object],
+    response: Mapping[str, object] | None,
     *,
     execution_succeeded: bool = True,
-) -> dict[str, Any]:
+) -> Score:
     if response is None or not execution_succeeded:
         return {
             "schema_valid": False,
@@ -148,17 +245,23 @@ def _score(
             "abstention_correct": False,
             "passed": False,
         }
+    evidence_ids = response.get("evidence_ids")
+    claim_types = response.get("claim_types")
+    expected_evidence = expected.get("evidence_ids")
+    expected_claims = expected.get("claim_types")
+    if not _strings(expected_evidence) or not _strings(expected_claims):
+        raise ValueError("expected evidence_ids and claim_types must be string arrays")
     schema_valid = (
-        isinstance(response.get("evidence_ids"), list)
-        and all(isinstance(value, str) for value in response["evidence_ids"])
-        and isinstance(response.get("claim_types"), list)
-        and all(isinstance(value, str) for value in response["claim_types"])
+        _strings(evidence_ids)
+        and _strings(claim_types)
         and isinstance(response.get("abstained"), bool)
         and isinstance(response.get("rationale"), str)
     )
-    evidence_exact = schema_valid and set(response["evidence_ids"]) == set(expected["evidence_ids"])
-    claim_types_exact = schema_valid and set(response["claim_types"]) == set(
-        expected["claim_types"]
+    evidence_exact = (
+        schema_valid and _strings(evidence_ids) and set(evidence_ids) == set(expected_evidence)
+    )
+    claim_types_exact = (
+        schema_valid and _strings(claim_types) and set(claim_types) == set(expected_claims)
     )
     abstention_correct = schema_valid and response["abstained"] is expected["must_abstain"]
     return {
@@ -170,8 +273,12 @@ def _score(
     }
 
 
-def _prompt(case: dict[str, Any]) -> str:
-    evidence = ", ".join(case["expected"]["evidence_ids"])
+def build_prompt(case: Mapping[str, object]) -> str:
+    expected = json_shapes.require_object(case.get("expected"), context="case.expected")
+    evidence_ids = expected.get("evidence_ids")
+    if not _strings(evidence_ids):
+        raise ValueError("case.expected.evidence_ids must be a string array")
+    evidence = ", ".join(evidence_ids)
     return (
         "You are evaluating a wholly synthetic incident-analysis case. Return only one compact JSON object "
         "with keys evidence_ids (string array), claim_types (string array), abstained (boolean), and rationale "
@@ -187,16 +294,42 @@ def _prompt(case: dict[str, Any]) -> str:
     )
 
 
-def run(manifest: dict[str, Any], model_root: Path, repeats: int, timeout: int) -> dict[str, Any]:
+def run(
+    manifest: Mapping[str, object], model_root: Path, repeats: int, timeout: int
+) -> ComparatorReceipt:
     errors = validate_admission(manifest, model_root)
     if errors:
         raise ValueError("invalid comparator admission: " + "; ".join(errors))
-    fixtures = _read_object(FIXTURE_PATH)
-    executable = manifest["runtime"]["executable"]
-    observations: list[dict[str, Any]] = []
-    for model in manifest["models"]:
-        model_path = model_root / model["cache_subdirectory"] / model["files"][0]["path"]
-        for case in fixtures["cases"]:
+    if repeats < 1 or timeout < 1:
+        raise ValueError("repeats and timeout must be positive")
+    fixtures = read_object(FIXTURE_PATH)
+    runtime = json_shapes.require_object(manifest.get("runtime"), context="runtime")
+    executable = _string(runtime.get("executable"), "runtime.executable")
+    models = _objects(manifest.get("models"), "models")
+    cases = _objects(fixtures.get("cases"), "cases")
+    observations: list[Observation] = []
+    for model in models:
+        model_id = _string(model.get("id"), "model.id")
+        size_class = _string(model.get("size_class"), "model.size_class")
+        files = _objects(model.get("files"), "model.files")
+        if not files:
+            raise ValueError("model.files must not be empty")
+        model_path = (
+            model_root
+            / _string(model.get("cache_subdirectory"), "model.cache_subdirectory")
+            / _string(files[0].get("path"), "model.files.path")
+        )
+        for case in cases:
+            case_id = _string(case.get("id"), "case.id")
+            expected = json_shapes.require_object(case.get("expected"), context="case.expected")
+            if (
+                not _strings(expected.get("evidence_ids"))
+                or not _strings(expected.get("claim_types"))
+                or not isinstance(expected.get("must_abstain"), bool)
+            ):
+                raise ValueError("case.expected has invalid scoring fields")
+            _string(case.get("summary"), "case.summary")
+            prompt = build_prompt(case)
             for repeat in range(repeats):
                 started = time.perf_counter()
                 try:
@@ -206,7 +339,7 @@ def run(manifest: dict[str, Any], model_root: Path, repeats: int, timeout: int) 
                             "-m",
                             str(model_path),
                             "-p",
-                            _prompt(case),
+                            prompt,
                             "-n",
                             "128",
                             "--seed",
@@ -234,29 +367,32 @@ def run(manifest: dict[str, Any], model_root: Path, repeats: int, timeout: int) 
                     exit_code = "timeout"
                     execution_succeeded = False
                 elapsed = time.perf_counter() - started
-                response = _extract_object(output)
+                response = extract_response(output)
                 observations.append(
                     {
-                        "model_id": model["id"],
-                        "size_class": model["size_class"],
-                        "case_id": case["id"],
+                        "model_id": model_id,
+                        "size_class": size_class,
+                        "case_id": case_id,
                         "repeat": repeat + 1,
                         "seed": 42 + repeat,
                         "exit_code": exit_code,
                         "latency_ms": round(elapsed * 1000, 3),
                         "response": response,
                         "raw_output_sha256": hashlib.sha256(output.encode()).hexdigest(),
-                        "score": _score(
-                            case["expected"],
+                        "score": score_response(
+                            expected,
                             response,
                             execution_succeeded=execution_succeeded,
                         ),
                     }
                 )
-    by_model: dict[str, dict[str, Any]] = {}
-    for model in manifest["models"]:
-        rows = [row for row in observations if row["model_id"] == model["id"]]
-        by_model[model["id"]] = {
+    by_model: dict[str, ModelSummary] = {}
+    for model in models:
+        model_id = _string(model.get("id"), "model.id")
+        rows = [row for row in observations if row["model_id"] == model_id]
+        if not rows:
+            raise ValueError("comparator fixtures must not be empty")
+        by_model[model_id] = {
             "observations": len(rows),
             "passed": sum(row["score"]["passed"] for row in rows),
             "schema_valid": sum(row["score"]["schema_valid"] for row in rows),
@@ -264,7 +400,7 @@ def run(manifest: dict[str, Any], model_root: Path, repeats: int, timeout: int) 
             "latency_ms_max": max(row["latency_ms"] for row in rows),
             "latency_ms_mean": round(sum(row["latency_ms"] for row in rows) / len(rows), 3),
         }
-    receipt: dict[str, Any] = {
+    receipt: _ReceiptFields = {
         "schema_version": "1.0",
         "scope": "internal_nonpromotion_synthetic_comparator",
         "manifest_sha256": _sha256(MANIFEST_PATH),
@@ -288,8 +424,7 @@ def run(manifest: dict[str, Any], model_root: Path, repeats: int, timeout: int) 
         ],
     }
     unsigned = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
-    receipt["receipt_sha256"] = hashlib.sha256(unsigned).hexdigest()
-    return receipt
+    return {**receipt, "receipt_sha256": hashlib.sha256(unsigned).hexdigest()}
 
 
 def main() -> int:
@@ -300,7 +435,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path)
     parser.add_argument("--validate-only", action="store_true")
     args = parser.parse_args()
-    manifest = _read_object(MANIFEST_PATH)
+    manifest = read_object(MANIFEST_PATH)
     errors = validate_admission(manifest, args.model_root)
     if errors:
         print("\n".join(f"ERROR: {error}" for error in errors))

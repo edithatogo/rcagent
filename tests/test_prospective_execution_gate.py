@@ -17,8 +17,8 @@ from tools import prospective_execution_gate as gate
 from tools import prospective_freeze
 
 S, R = "a" * 40, "b" * 40
-REAL_GIT = prospective_freeze._git
-REAL_FILES = prospective_freeze._committed_files
+REAL_GIT = prospective_freeze.git_bytes
+REAL_FILES = prospective_freeze.committed_files
 
 
 class VerifyOptions(TypedDict, total=False):
@@ -107,11 +107,11 @@ def synthetic(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> GateFixture:
     def project_closure(*args: object) -> None:
         return None
 
-    monkeypatch.setattr(gate.freeze, "_git", git)
-    monkeypatch.setattr(gate.freeze, "_committed_files", committed_files)
+    monkeypatch.setattr(gate.freeze, "git_bytes", git)
+    monkeypatch.setattr(gate.freeze, "committed_files", committed_files)
     monkeypatch.setattr(gate.identity, "project_closure", project_closure)
     monkeypatch.setattr(gate.identity, "environment_identity", lambda: copy.deepcopy(environment))
-    _, candidate = gate.native._validated_candidate(path, pin(path))
+    _, candidate = gate.native.validated_candidate(path, pin(path))
     condition = value["condition"]
     admission: gate.model.ModelAdmission = {
         "purpose": "local-artefact-eligibility-only",
@@ -160,7 +160,7 @@ def synthetic(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> GateFixture:
 
 def verify(data: GateFixture, **kwargs: Unpack[VerifyOptions]):
     root, path, value, *_ = data
-    return gate._verify(
+    return gate.verify_execution_plan(
         kwargs.get("path", path),
         kwargs.get("pin", pin(path)),
         kwargs.get("slot", text_value(sequence(value["expected_slots"])[0])),
@@ -209,15 +209,15 @@ def test_review_blob_rejects_traversal_and_empty_content(
     synthetic: GateFixture, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     with pytest.raises(ValueError, match="invalid_review_path"):
-        gate._blob(synthetic[0], R, "conductor/../private.json")
-    git = gate.freeze._git
+        gate.committed_blob(synthetic[0], R, "conductor/../private.json")
+    git = gate.freeze.git_bytes
 
     def empty_blob(root: Path, *args: str) -> bytes:
         return b"" if args[0] == "cat-file" else git(root, *args)
 
-    monkeypatch.setattr(gate.freeze, "_git", empty_blob)
+    monkeypatch.setattr(gate.freeze, "git_bytes", empty_blob)
     with pytest.raises(ValueError, match="empty_review_evidence"):
-        gate._blob(synthetic[0], R, gate.REVIEW_PATH)
+        gate.committed_blob(synthetic[0], R, gate.REVIEW_PATH)
 
 
 def test_reviewed_fixture_plan_is_immutable_not_admission(synthetic: GateFixture) -> None:
@@ -350,7 +350,7 @@ def test_gate_identity_and_confinement_failures(
         def different_files(root: Path, commit: str, *args: object) -> list[ObjectMap]:
             return synthetic[5] if commit == S else []
 
-        monkeypatch.setattr(gate.freeze, "_committed_files", different_files)
+        monkeypatch.setattr(gate.freeze, "committed_files", different_files)
     elif damage == "environment":
         synthetic[6]["changed"] = True
     elif damage == "admission":
@@ -378,9 +378,9 @@ def test_review_record_must_be_regular_blob(
     def invalid_entry(*args: object) -> bytes:
         return entry
 
-    monkeypatch.setattr(gate.freeze, "_git", invalid_entry)
+    monkeypatch.setattr(gate.freeze, "git_bytes", invalid_entry)
     with pytest.raises(ValueError, match="review_not_regular_blob"):
-        gate._blob(synthetic[0], R, gate.REVIEW_PATH)
+        gate.committed_blob(synthetic[0], R, gate.REVIEW_PATH)
 
 
 def test_review_envelopes_bind_environment_not_only_outer_record(synthetic: GateFixture) -> None:
@@ -398,7 +398,7 @@ def test_unsupported_platform_rejected_before_repository(
     def forbidden(*args: object) -> None:
         pytest.fail("No repository lookup")
 
-    monkeypatch.setattr(gate.freeze, "_repository", forbidden)
+    monkeypatch.setattr(gate.freeze, "resolve_repository", forbidden)
     with pytest.raises(ValueError, match="unsupported_primary_platform"):
         verify(synthetic)
 
@@ -466,8 +466,8 @@ def test_real_git_source_review_and_evidence_integration(
     synthetic: GateFixture, monkeypatch: pytest.MonkeyPatch, damage: str
 ) -> None:
     source, review = commit_review(synthetic, damage)
-    monkeypatch.setattr(gate.freeze, "_git", REAL_GIT)
-    monkeypatch.setattr(gate.freeze, "_committed_files", REAL_FILES)
+    monkeypatch.setattr(gate.freeze, "git_bytes", REAL_GIT)
+    monkeypatch.setattr(gate.freeze, "committed_files", REAL_FILES)
     if damage != "none":
         with pytest.raises(ValueError):
             verify(synthetic, review=review)

@@ -8,11 +8,14 @@ from pathlib import Path
 import jsonschema
 import pytest
 
+from tests.prospective_fixture_types import sequence
+from tools.json_shapes import JsonObject
+
 ROOT = Path(__file__).parents[1]
 SCHEMA = ROOT / "conductor/schemas/safety-work.schema.json"
 
 
-def _load_sample() -> dict:
+def _load_sample() -> JsonObject:
     """A minimal but complete valid record exercising every top-level section."""
     return {
         "schema_version": "1.1",
@@ -79,7 +82,7 @@ def test_complete_sample_record_validates() -> None:
 def test_evidence_withdrawal_event_may_retain_state() -> None:
     schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
     record = _load_sample()
-    record["events"].append(
+    sequence(record["events"]).append(
         {
             "event_id": "event-withdraw-evidence",
             "event_type": "evidence_withdrawn",

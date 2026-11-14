@@ -270,7 +270,7 @@ def test_shared_directory_rejected(server: Server) -> None:
 
 def test_expired_remaining_time() -> None:
     with pytest.raises(TimeoutError):
-        subject._remaining(time.monotonic() - 1)
+        subject.remaining_seconds(time.monotonic() - 1)
 
 
 def test_connection_setup_expiry_returns_receipt(
@@ -299,7 +299,7 @@ def test_connect_failure_returns_receipt() -> None:
 
 def test_socket_replacement_rejected(server: Server, monkeypatch: pytest.MonkeyPatch) -> None:
     path = server(wire())
-    real = subject._path_identity
+    real = subject.socket_identity
     calls: list[tuple[int, int, int, int]] = []
 
     def identity(path: Path) -> tuple[int, int, int, int]:
@@ -307,7 +307,7 @@ def test_socket_replacement_rejected(server: Server, monkeypatch: pytest.MonkeyP
         calls.append(value)
         return value if len(calls) == 1 else (0, 0, 0, 0)
 
-    monkeypatch.setattr(subject, "_path_identity", identity)
+    monkeypatch.setattr(subject, "socket_identity", identity)
     result = capture(path)
     assert result["error"] == "socket_changed"
     assert result["body_complete"] is True
@@ -341,7 +341,7 @@ def test_absent_unix_capabilities_never_fall_back(
 ) -> None:
     monkeypatch.setattr(socket, "AF_UNIX", None)
     with pytest.raises(ValueError, match="unix_socket_unavailable"):
-        subject._DeadlineSocket(time.monotonic() + 1)
+        subject.DeadlineSocket(time.monotonic() + 1)
     monkeypatch.setattr(os, "getuid", None)
     with pytest.raises(ValueError, match="unix_identity_unavailable"):
-        subject._path_identity(tmp_path / "missing.sock")
+        subject.socket_identity(tmp_path / "missing.sock")

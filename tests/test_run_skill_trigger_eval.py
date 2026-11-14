@@ -2,6 +2,7 @@ import json
 import subprocess
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import Mock
 
 import pytest
 
@@ -65,7 +66,7 @@ def _cases(path: Path) -> Path:
 def test_run_evaluation_is_fail_closed_and_preserves_raw(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    def fake_run(command, **kwargs):
+    def fake_run(command: list[str], **kwargs: object) -> SimpleNamespace:
         activated = command[-1] == "positive prompt"
         command_event = (
             '{"type":"item.completed","item":{"type":"command_execution",'
@@ -92,8 +93,8 @@ def test_run_evaluation_is_fail_closed_and_preserves_raw(
 
 
 def test_timeout_cannot_pass(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    def timeout(*args, **kwargs):
-        raise subprocess.TimeoutExpired(args[0], 1, output="")
+    def timeout(command: list[str], **kwargs: object) -> None:
+        raise subprocess.TimeoutExpired(command, 1, output="")
 
     monkeypatch.setattr(subprocess, "run", timeout)
     code, summary = run_evaluation(
@@ -111,8 +112,8 @@ def test_minimum_trial_contract_is_enforced(tmp_path: Path) -> None:
         )
 
 
-def test_partition_selection_is_explicit(tmp_path: Path, monkeypatch) -> None:
-    def fake_run(command, **kwargs):
+def test_partition_selection_is_explicit(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    def fake_run(command: list[str], **kwargs: object) -> SimpleNamespace:
         raw = '{"type":"turn.completed","usage":{"input_tokens":1,"output_tokens":1}}\n'
         return SimpleNamespace(returncode=0, stdout=raw)
 
@@ -140,3 +141,44 @@ def test_case_selection_rejects_unknown_id(tmp_path: Path) -> None:
             timeout=1,
             case_ids={"missing"},
         )
+
+
+def test_events_do_not_coerce_commands_or_invalid_token_counts() -> None:
+    values: tuple[object, ...] = (
+        [],
+        None,
+        {"item": None},
+        {
+            "item": {
+                "type": "command_execution",
+                "command": {"path": "/rca-investigation/SKILL.md"},
+            }
+        },
+        {"type": "turn.completed", "usage": {"input_tokens": True, "output_tokens": -1}},
+    )
+    raw = "\n".join(json.dumps(item) for item in values)
+    assert parse_events(raw) == (False, None, None, True)
+
+
+@pytest.mark.parametrize("damage", ["path", "duplicate", "boolean-trials", "missing-cases"])
+def test_invalid_case_contract_never_starts_evaluation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, damage: str
+) -> None:
+    path = _cases(tmp_path / "cases.json")
+    document = json.loads(path.read_text())
+    if damage == "path":
+        document["cases"][0]["id"] = "../escape"
+    elif damage == "duplicate":
+        document["cases"][1]["id"] = document["cases"][0]["id"]
+    elif damage == "boolean-trials":
+        document["thresholds"]["minimum_trials"] = True
+    else:
+        document["cases"] = None
+    path.write_text(json.dumps(document))
+    launch = Mock(side_effect=AssertionError("must not execute"))
+    monkeypatch.setattr(subprocess, "run", launch)
+    output = tmp_path / "runs"
+    with pytest.raises(ValueError, match="trigger"):
+        run_evaluation(ROOT, path, output, trials=1, timeout=1)
+    launch.assert_not_called()
+    assert not output.exists()

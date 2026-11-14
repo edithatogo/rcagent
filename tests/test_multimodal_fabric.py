@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from tools import multimodal_fabric
+from tools import json_shapes, multimodal_fabric
 from tools.multimodal_fabric import execution_disclosure, load_registry, validate_registry
 
 
@@ -65,11 +65,69 @@ def test_duplicate_and_unknown_identifiers_are_rejected() -> None:
     assert any("unknown profile" in error for error in validate_registry(registry))
 
 
-def test_read_rejects_non_object_and_invalid_registry_blocks_disclosure(tmp_path: Path) -> None:
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("profiles", None),
+        ("fixtures", {}),
+        ("privacy", None),
+        ("profile-id", []),
+        ("fixture-profile-id", []),
+        ("modality", []),
+        ("device-classes", 42),
+    ],
+)
+def test_malformed_registry_shapes_return_errors_and_block_disclosure(
+    field: str, value: object
+) -> None:
+    parsed: object = json.loads(multimodal_fabric.REGISTRY_PATH.read_text(encoding="utf-8"))
+    registry = json_shapes.require_object(parsed, context="synthetic registry")
+    if field in {"profiles", "fixtures"}:
+        registry[field] = value
+    else:
+        profiles, fixtures = registry["profiles"], registry["fixtures"]
+        assert json_shapes.is_array(profiles)
+        assert json_shapes.is_array(fixtures)
+        profile = json_shapes.require_object(profiles[0], context="synthetic profile")
+        fixture = json_shapes.require_object(fixtures[0], context="synthetic fixture")
+        if field == "fixture-profile-id":
+            fixture["profile_id"] = value
+        elif field == "device-classes":
+            limits = json_shapes.require_object(profile["limits"], context="synthetic limits")
+            limits["device_classes"] = value
+        else:
+            profile["id" if field == "profile-id" else field] = value
+    errors = validate_registry(registry)
+    assert errors
+    assert errors == sorted(errors)
+    with pytest.raises(ValueError, match="invalid registry"):
+        execution_disclosure(registry, "documents-ocr", "doc-coordinate")
+
+
+def test_extra_malformed_matrix_profile_is_not_hidden_by_complete_coverage(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    parsed: object = json.loads(multimodal_fabric.SUPPORT_MATRIX_PATH.read_text(encoding="utf-8"))
+    matrix = json_shapes.require_object(parsed, context="support matrix")
+    profiles = matrix["profiles"]
+    assert json_shapes.is_array(profiles)
+    profiles.append({"profile_id": []})
+    path = tmp_path / "matrix.json"
+    path.write_text(json.dumps(matrix), encoding="utf-8")
+    monkeypatch.setattr(multimodal_fabric, "SUPPORT_MATRIX_PATH", path)
+    errors = validate_registry(load_registry())
+    assert "support matrix profile identifiers must match the registry" in errors
+
+
+def test_read_rejects_non_object_and_invalid_registry_blocks_disclosure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     path = tmp_path / "array.json"
     path.write_text("[]", encoding="utf-8")
-    with pytest.raises(ValueError, match="expected an object"):
-        multimodal_fabric._read(path)
+    with monkeypatch.context() as patch:
+        patch.setattr(multimodal_fabric, "REGISTRY_PATH", path)
+        with pytest.raises(ValueError, match="expected an object"):
+            load_registry()
     registry = load_registry()
     registry["profiles"][0]["privacy"]["remote_code"] = "allowed"
     with pytest.raises(ValueError, match="invalid registry"):

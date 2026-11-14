@@ -389,7 +389,7 @@ def test_signal_error_is_preserved_without_leaking_child(
 def test_cleanup_error_cannot_become_successful_stop(
     ready_child: ReadyChildRunner, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    original = subject._finish_stop
+    original = subject.finish_child_stop
 
     def finish(
         process: subject.ReapableProcess,
@@ -403,7 +403,7 @@ def test_cleanup_error_cannot_become_successful_stop(
         result["cleanup_errors"].append("synthetic_reap_error")
         return result
 
-    monkeypatch.setattr(subject, "_finish_stop", finish)
+    monkeypatch.setattr(subject, "finish_child_stop", finish)
     result = ready_child("pass")
     assert result["error"] == "cleanup_failed"
     assert result["status"] == "capture_failed"
@@ -438,7 +438,7 @@ def test_finish_stop_errors_and_budget_are_bounded(failure: str) -> None:
                 raise subprocess.TimeoutExpired("private", timeout)
             return -9
 
-    result = subject._finish_stop(
+    result = subject.finish_child_stop(
         Fake(), time.monotonic() + 0.1, True, failure == "already-attempted", False, ["original"]
     )
     assert result["cleanup_errors"][0] == "original"

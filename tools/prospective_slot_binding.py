@@ -10,7 +10,7 @@ from tools import json_shapes
 from tools import prospective_native_protocol as protocol
 from tools import prospective_runner_contract as runner
 from tools import prospective_server_model as model
-from tools.evaluation_preflight import _digest
+from tools.evaluation_preflight import is_sha256
 
 
 class SlotEligibility(TypedDict):
@@ -43,7 +43,7 @@ def bind_slot(
     protocol_path: Path, expected_protocol_sha256: str, slot_id: object, model_root: Path
 ) -> SlotBinding:
     """Select a declared slot before checking fresh local artefact eligibility."""
-    value, candidate = protocol._validated_candidate(protocol_path, expected_protocol_sha256)
+    value, candidate = protocol.validated_candidate(protocol_path, expected_protocol_sha256)
     if type(slot_id) is not str or len(slot_id) > 150 or slot_id not in candidate["requests"]:
         raise ValueError("slot_not_in_protocol")
     returned: object = model.admit_model(model_root)
@@ -72,7 +72,7 @@ def bind_slot(
             raise ValueError("invalid_eligibility_receipt")
         pin = receipt["admission_sha256"]
         unsigned = {key: item for key, item in receipt.items() if key != "admission_sha256"}
-        if not isinstance(pin, str) or not _digest(pin) or model.digest(unsigned) != pin:
+        if not isinstance(pin, str) or not is_sha256(pin) or model.digest(unsigned) != pin:
             raise ValueError("invalid_eligibility_receipt")
         observed = {
             key: receipt[key]

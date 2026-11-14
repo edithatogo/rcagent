@@ -7,27 +7,77 @@ import json
 import subprocess
 import tempfile
 from pathlib import Path
-from typing import Any
+from typing import TypedDict, TypeGuard
 
 from tools.install_skill_adapter import install_adapter
-from tools.run_skill_trigger_eval import redact_workspace
+from tools.json_shapes import is_array, is_object, require_object
+from tools.run_skill_trigger_eval import redact_workspace, safe_case_id
+
+
+class OutputCase(TypedDict):
+    id: str
+    mode: str
+    prompt: str
+    assertions: list[str]
+
+
+class OutputResult(TypedDict):
+    id: str
+    mode: str
+    status: str
+    assertions: list[str]
+    response: str | None
+    usage: dict[str, int] | None
+    raw_path: str
+
+
+class OutputSummary(TypedDict):
+    schema_version: str
+    client: str
+    client_version: str
+    generation_complete: bool
+    scoring_status: str
+    cases: list[OutputResult]
+
+
+def _is_case(value: object) -> TypeGuard[OutputCase]:
+    if (
+        not is_object(value)
+        or not safe_case_id(value.get("id"))
+        or not all(isinstance(value.get(key), str) for key in ("mode", "prompt"))
+    ):
+        return False
+    assertions = value.get("assertions")
+    return (
+        is_array(assertions)
+        and bool(assertions)
+        and all(isinstance(item, str) and bool(item) for item in assertions)
+    )
+
+
+def _is_usage(value: object) -> TypeGuard[dict[str, int]]:
+    return is_object(value) and all(type(count) is int and count >= 0 for count in value.values())
 
 
 def parse_response(raw: str) -> tuple[str | None, dict[str, int] | None, bool]:
     messages: list[str] = []
-    usage = None
+    usage: dict[str, int] | None = None
     completed = False
     for line in raw.splitlines():
         try:
-            event = json.loads(line)
+            event: object = json.loads(line)
         except json.JSONDecodeError:
             continue
+        if not is_object(event):
+            continue
         item = event.get("item", {})
-        if item.get("type") == "agent_message" and isinstance(item.get("text"), str):
-            messages.append(item["text"])
+        text = item.get("text") if is_object(item) else None
+        if is_object(item) and item.get("type") == "agent_message" and isinstance(text, str):
+            messages.append(text)
         if event.get("type") == "turn.completed":
             completed = True
-            usage = event.get("usage")
+            raw_usage = event.get("usage")
+            usage = raw_usage if _is_usage(raw_usage) else None
     return (messages[-1] if messages else None), usage, completed
 
 
@@ -37,14 +87,26 @@ def run_outputs(
     output_dir: Path,
     *,
     timeout: int,
-) -> tuple[int, dict[str, Any]]:
-    document = json.loads(cases_path.read_text(encoding="utf-8"))
+) -> tuple[int, OutputSummary]:
+    document = require_object(
+        json.loads(cases_path.read_text(encoding="utf-8")), context="output document"
+    )
+    raw_cases = document.get("cases")
+    if not is_array(raw_cases) or not raw_cases:
+        raise ValueError("output cases must be a nonempty array")
+    cases: list[OutputCase] = []
+    for raw_case in raw_cases:
+        if not _is_case(raw_case):
+            raise ValueError("invalid output case fields or identifier")
+        cases.append(raw_case)
+    if len({case["id"] for case in cases}) != len(cases):
+        raise ValueError("output case identifiers must be unique")
     output_dir.mkdir(parents=True, exist_ok=True)
-    results: list[dict[str, object]] = []
+    results: list[OutputResult] = []
     with tempfile.TemporaryDirectory(prefix="rca-output-eval-") as workspace_text:
         workspace = Path(workspace_text)
         install_adapter(repository, "codex", workspace)
-        for case in document["cases"]:
+        for case in cases:
             command = [
                 "codex",
                 "exec",
@@ -107,7 +169,7 @@ def run_outputs(
             )
 
     passed_generation = all(result["status"] == "completed" for result in results)
-    summary = {
+    summary: OutputSummary = {
         "schema_version": "1.0",
         "client": "codex",
         "client_version": "0.145.0",
