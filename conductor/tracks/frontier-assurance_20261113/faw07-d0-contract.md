@@ -193,10 +193,14 @@ Only a transparent representation adapter is needed:
 The adapter preserves incorrect/missing values. It must not repair forged
 digests, infer missing hashes, change byte coordinates, remove duplicate sources
 or discard cross-case sources to obtain a pass. For an isolated claim case,
-select its declared source identity/version transparently, then retain the
-source's original `case_id`; collection checks exercise the declared source
-list including duplicates. Wrong-kind references and missing identities remain
-negative cases. Error labels may be mapped to the documented production error
+retain the requested source ID's available revisions and original `case_id`.
+For an unknown source ID, include an explicit known control source in the case
+so rejection tests the unresolved reference rather than an empty source array.
+Collection checks preserve all declared duplicates and revisions within each
+case. Partition a legitimate multi-case collection by its literal source
+`case_id` for the per-case entry point; never relabel or move an individual
+cross-case claim to make it valid. Wrong-kind references and missing identities
+remain negative cases. Error labels may be mapped to the documented production error
 category, but a generic exception is not equivalent to the intended rejection.
 
 Acceptance exercises the actual production seam **and** the workbench subprocess
