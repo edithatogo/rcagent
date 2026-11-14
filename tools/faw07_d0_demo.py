@@ -159,12 +159,14 @@ def _require_offset(row: dict[str, object], key: str) -> int:
 
 
 def _rows(value: object, *, label: str) -> list[dict[str, object]]:
-    if not isinstance(value, list) or not all(
-        isinstance(item, dict) and all(isinstance(key, str) for key in item)
-        for item in value
-    ):
+    if not isinstance(value, list):
         raise ValueError(f"{label} must contain objects")
-    return value
+    rows: list[dict[str, object]] = []
+    for item in value:
+        if not isinstance(item, dict) or not all(isinstance(key, str) for key in item):
+            raise ValueError(f"{label} must contain objects")
+        rows.append(item)
+    return rows
 
 
 def inspect_case(case: dict[str, object]) -> CaseObservation:
@@ -192,7 +194,8 @@ def inspect_case(case: dict[str, object]) -> CaseObservation:
             )
         elif state == "present" and isinstance(row.get("content"), str):
             content = row["content"]
-            assert isinstance(content, str)
+            if not isinstance(content, str):
+                raise ValueError("present source content must be text")
             raw = content.encode("utf-8")
             index[identity] = raw
             sources.append(
@@ -277,7 +280,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
     receipt = generate_receipt()
-    content = canonical_bytes(receipt) + b"\\n"
+    content = canonical_bytes(receipt) + b"\n"
     if args.output is not None:
         # No input paths or external data are accepted; output is explicit.
         args.output.write_bytes(content)
