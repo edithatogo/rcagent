@@ -40,7 +40,7 @@ qualification or Rust work. Existing later-stage plans remain pending.
 | --- | --- | --- |
 | Integration | This coordinator | This contract; `faw07-d0-coordination.json`; shared Conductor index, plan, metadata, context and evidence; CI, locks, baselines, shared schemas; integration branch and all merges |
 | Implementation | rcagent — FAW07 demo and receipts | `tools/faw07_d0_demo.py`; `tests/test_faw07_d0_demo.py`; only the D0 import, parser and output hook in `tools/workbench.py` |
-| Independent verification | rcagent — Independent verification and synthetic cases | `tests/fixtures/faw07_independent/**` including its existing `verification-receipt.md`; `tests/test_faw07_independent_oracle.py`; `tests/test_faw07_d0_independent.py` if separate production integration tests are needed |
+| Independent verification | rcagent — Independent verification and synthetic cases | `tests/fixtures/faw07_independent/**` including its existing receipts; `tests/test_faw07_independent_oracle.py`; `tests/test_faw07_independent_d0_integration.py` |
 
 The workers are running according to the owner's report. Their existing GitHub
 branches have been observed independently. A branch is not a completed handoff.
@@ -51,9 +51,12 @@ standing in for either ordinary chat.
 [PR #132](https://github.com/edithatogo/rcagent/pull/132) is the implementation
 handoff and [PR #133](https://github.com/edithatogo/rcagent/pull/133) is the
 verifier handoff. Both are drafts. The verifier's existing oracle test and
-receipt paths are retained; this supersedes the initially suggested extra
-`quality/` receipt path in the coordinator's first issue comment. Do not create
-a duplicate receipt merely to match that initial suggestion.
+receipt paths, including its subsequently observed production integration test,
+are retained. This supersedes the initially suggested `quality/` receipt and
+`tests/test_faw07_d0_independent.py` paths in coordinator comments. Do not rename
+or duplicate the worker's existing files to match those provisional suggestions.
+PR #133 is currently based on the implementation branch for combined CI; its
+head contains verifier-owned changes, not a standalone production checkout.
 
 Both workers keep their existing branches. Each posts a draft PR and a handoff
 with exact base/head, paths, commands, outcomes and unresolved findings. The
@@ -241,6 +244,12 @@ profiling workload retains 300 completed synthetic iterations. Existing scope
 is preserved; these gates do not become D0-specific mutation or performance
 qualification by association. No bypass, reduced coverage, new skip, allowance,
 disabled rule or additional routine human approval is introduced.
+
+Official conformance keeps its existing workflow path filters. If no PR
+conformance run is triggered, record `not_triggered`, verify that the filtered
+inputs are unchanged, run the pinned official validator locally and inspect the
+automatic master conformance run after merge before claiming final delivery.
+Neither an absent run nor a queued offline-security run is a successful scan.
 
 First merge the coordinator's contract-only PR after its required checks.
 Workers then reconcile their branches with that master. The verifier exercises

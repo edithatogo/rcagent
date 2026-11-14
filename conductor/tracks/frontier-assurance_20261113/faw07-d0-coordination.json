@@ -64,7 +64,7 @@
       "draft": true,
       "base": "419c04d7e1c0a16e924e0b7058604671855625a2",
       "first_observed_head": "0b276ea23f8ca3c5a99a21e587198ec6782cd542",
-      "observed_head": "e7e23f7cab8f84a4796fbccf9778c69e0cc0a4d1",
+      "observed_head": "de32f9cd27867c2488b78c66e1bcf0ba24e79151",
       "owned_files": [
         "tools/faw07_d0_demo.py",
         "tests/test_faw07_d0_demo.py"
@@ -72,8 +72,12 @@
       "owned_regions": {
         "tools/workbench.py": "D0 import/parser/output hook only"
       },
-      "handoff": "PR #132 body",
-      "acceptance": "pending"
+      "handoff": "https://github.com/edithatogo/rcagent/pull/132#issuecomment-6873107757",
+      "acceptance": "pending",
+      "previous_observed_heads": [
+        "0b276ea23f8ca3c5a99a21e587198ec6782cd542",
+        "e7e23f7cab8f84a4796fbccf9778c69e0cc0a4d1"
+      ]
     },
     {
       "role": "independent_verification",
@@ -84,17 +88,23 @@
       "draft": true,
       "base": "419c04d7e1c0a16e924e0b7058604671855625a2",
       "first_observed_head": "6f0b3f909704f5779fb6002cd7a59a5ecc51257e",
-      "observed_head": "e8e0de6af2923f6724aacb2816ead636cc3703b5",
+      "observed_head": "4057512f23a2301d6ffe4649e42fb055eeb83937",
       "owned_files": [
         "tests/fixtures/faw07_independent/**",
         "tests/test_faw07_independent_oracle.py",
-        "tests/test_faw07_d0_independent.py"
+        "tests/test_faw07_independent_d0_integration.py"
       ],
       "receipt": "tests/fixtures/faw07_independent/verification-receipt.md",
-      "receipt_path_decision": "Retain existing receipt; supersedes initially suggested duplicate quality JSON path.",
-      "handoff": "PR #133 body and provisional receipt",
-      "implementation_execution": "not_yet_observed",
-      "acceptance": "oracle_preparation_only"
+      "receipt_path_decision": "Retain actual oracle, integration test and fixture receipt paths; supersedes provisional extra quality receipt and alternate integration test path.",
+      "handoff": "https://github.com/edithatogo/rcagent/pull/133#issuecomment-6873096660",
+      "implementation_execution": "coordinator assembled both observed heads and executed the supplied tests; cross-case regression fails",
+      "acceptance": "withheld_due_to_strict_cross_case_failure",
+      "previous_observed_heads": [
+        "6f0b3f909704f5779fb6002cd7a59a5ecc51257e",
+        "e8e0de6af2923f6724aacb2816ead636cc3703b5"
+      ],
+      "pull_request_base_branch": "feat/faw07-d0-demo-receipt-20261114",
+      "pull_request_base_at_observation": "671cbbbd448b66380e31c1f52a103ad3765f5929"
     }
   ],
   "coordinator_owned": [
@@ -199,6 +209,52 @@
       },
       "production_validation": "not_performed_by_this_oracle",
       "acceptance": "preparation_only"
+    },
+    {
+      "implementation_head": "de32f9cd27867c2488b78c66e1bcf0ba24e79151",
+      "verification_head": "4057512f23a2301d6ffe4649e42fb055eeb83937",
+      "kind": "coordinator assembled integration review",
+      "combined_tree": "72d382f6364c1f2a5b927675b5a23dc5fea0c6ef",
+      "committed_or_published": false,
+      "assembly": "Clean detached implementation checkout plus no-commit merge of verifier head; worker files unedited.",
+      "command": "python -m pytest -q tests/test_faw07_independent_oracle.py tests/test_faw07_independent_d0_integration.py tests/test_faw07_d0_demo.py",
+      "tests": {
+        "passed": 35,
+        "failed": 1,
+        "failure": "test_independent_cross_case_provenance_fails_closed",
+        "expected": "rejected",
+        "observed": "accepted"
+      },
+      "independent_subset": {
+        "passed": 25,
+        "failed": 1
+      },
+      "implementation_unit_tests": {
+        "passed": 10,
+        "failed": 0
+      },
+      "implementation_ruff_format": "failed: tools/faw07_d0_demo.py, tools/workbench.py and tests/test_faw07_d0_demo.py",
+      "verifier_ruff_format": "passed",
+      "basedpyright": {
+        "filesAnalyzed": 157,
+        "errorCount": 0,
+        "warningCount": 0,
+        "informationCount": 0,
+        "timeInSec": 7.135
+      },
+      "scope_note": "The verifier-only head lacks production code; a direct unassembled checkout failed collection. The assembled tree supplies the declared implementation and is the actual execution evidence.",
+      "acceptance": "withheld"
+    },
+    {
+      "kind": "official conformance on coordinator contract tree",
+      "source_tree": "e21f8cfc2566c711d7364da0dccef995d9dafd16",
+      "current_conformance": true,
+      "validator_revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+      "python": "3.12.14",
+      "platform": "Linux",
+      "upstream_drift": "live; only unmonitored paths changed",
+      "hosted_pr_conformance": "not_triggered_by_existing_path_filters",
+      "post_merge_conformance": "required before final delivery claim"
     }
   ],
   "open_findings": [
@@ -217,13 +273,13 @@
     {
       "id": "D0-I03",
       "owner": "implementation",
-      "finding": "Receipt lacks exact synthetic inputs/input fingerprint and rule/generator/lock/implementation-file identities.",
+      "finding": "Latest receipt adds an input fingerprint and built-in expected/actual outcomes, but omits inspectable input bytes, lock digest and implementation-file identities; contract version/view fields still need alignment.",
       "gate": "A1/A2"
     },
     {
       "id": "D0-I04",
       "owner": "implementation",
-      "finding": "Ruff format still fails at the observed current head; preserve the zero-debt ratchet during repairs.",
+      "finding": "At de32f9c Ruff format fails in all three implementation-owned files; prior zero-typing results remain preserved and combined typing is recorded separately.",
       "gate": "A3"
     },
     {
@@ -235,7 +291,7 @@
     {
       "id": "D0-V01",
       "owner": "independent_verification",
-      "finding": "Oracle self-tests do not yet execute inspect_case or the real workbench command against an exact implementation revision.",
+      "finding": "Production integration tests now exist and were executed by the coordinator: 25 independent tests pass and the strict cross-case test fails. Complete contract adapter/digest/unit checks, bounded properties and final execution receipt remain outstanding.",
       "gate": "A2"
     },
     {
@@ -285,11 +341,12 @@
   "acceptance": {
     "A0": "contract_ready_acknowledgement_pending",
     "A1": "pending_repairs",
-    "A2": "production_execution_pending",
-    "A3": "candidate_not_yet_clean",
+    "A2": "supplied_production_regression_fails_cross_case",
+    "A3": "formatting_failure_at_current_candidate",
     "A4": "pending_integrated_final_head",
     "A5": "pending",
     "faw07_complete": false,
     "clinical_or_model_qualification": false
-  }
+  },
+  "refreshed_at": "2026-11-14T16:35:38.298964+10:00"
 }
