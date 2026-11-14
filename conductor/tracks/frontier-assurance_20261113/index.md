@@ -1,10 +1,12 @@
 # Track 13: Frontier assurance and incremental capability evidence
 
-Status: FAW06 typing migration and source acceptance are complete. All 153 active Python files pass with zero diagnostics, an empty baseline, zero allowances and explicit `Any` rejected. Source `c3d26b0c70a65f06dcab9f878db99d351de7b758` passed the full nine-job hosted Quality run, dependency review, privacy/secrets and official conformance. [PR #131](https://github.com/edithatogo/rcagent/pull/131) will record the exact final documented-head checks and protected delivery. The completion receipt distinguishes observed source acceptance from publication-time delivery state. FAW07 / D0 is the next work package; the wider track remains in progress.
+Status: FAW06 is delivered through [PR #131](https://github.com/edithatogo/rcagent/pull/131), merged as `419c04d7e1c0a16e924e0b7058604671855625a2`. Its exact final head and merged master both passed all nine hosted Quality jobs. The zero-diagnostic typing baseline and allowances remain empty; explicit `Any` is rejected. FAW07 / D0 is in progress under one coordinator and the two owner-confirmed ordinary ChatGPT workers. [Implementation PR #132](https://github.com/edithatogo/rcagent/pull/132) and [verification PR #133](https://github.com/edithatogo/rcagent/pull/133) are draft handoffs, not accepted capability evidence. The wider track remains open.
 
 - [Specification and MoSCoW requirements](./spec.md)
 - [Executable work packages and acceptance](./plan.md)
 - [Metadata](./metadata.json)
+- [FAW07 / D0 acceptance and exclusive file ownership](./faw07-d0-contract.md)
+- [FAW07 / D0 live reconciliation and handoff record](./faw07-d0-coordination.json)
 - [Evidence ledger](./evidence.jsonl)
 - [Capability demonstration ladder](../../research/frontier-assurance/capability-ladder.md)
 - [Programmatic, multi-model and multimodal triangulation](../../research/frontier-assurance/triangulation.md)

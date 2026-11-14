@@ -37,6 +37,7 @@ When these disagree, preserve the conflict and reconcile it before claiming comp
 ## Current assurance and demonstration programme
 
 - [Track 13 — frontier assurance](./tracks/frontier-assurance_20261113/index.md), [#125](https://github.com/edithatogo/rcagent/issues/125): repair evidence/export/template defects, strengthen CI, then demonstrate source-linked extraction, timelines and decision-time packets before comparative model research.
+- Current increment: [FAW07 / D0 contract and ownership](./tracks/frontier-assurance_20261113/faw07-d0-contract.md), with one integration coordinator and the two existing ordinary ChatGPT workers. FAW06 is delivered; D0 acceptance is pending and later stages remain outside this increment.
 - [Track 14 — death reviews](./tracks/death-review_20261113/index.md), [#126](https://github.com/edithatogo/rcagent/issues/126): NSW/Queensland mortality-learning profiles and source transitions, composed from the same qualified components.
 - [Capability ladder](./research/frontier-assurance/capability-ladder.md), [triangulation](./research/frontier-assurance/triangulation.md), [claim admission](./research/frontier-assurance/claim-admission.md), [engineering](./research/frontier-assurance/engineering.md) and [selective Rust assessment](./architecture/0013-selective-rust-evidence-core.md).
 

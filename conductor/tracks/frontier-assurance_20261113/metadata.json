@@ -6,14 +6,16 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-12T20:10:44Z",
-  "updated_at": "2026-11-14T04:10:58.945174+00:00",
+  "updated_at": "2026-11-14T16:35:38.298964+10:00",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/125",
     "parent_issue": "https://github.com/edithatogo/rcagent/issues/2",
-    "pull_request": "https://github.com/edithatogo/rcagent/pull/131",
-    "implementation_commit": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
-    "delivery_branch": "codex/faw06-complete-20261114"
+    "last_accepted_pull_request": "https://github.com/edithatogo/rcagent/pull/131",
+    "last_accepted_master": "419c04d7e1c0a16e924e0b7058604671855625a2",
+    "coordination_branch": "coordination/faw07-d0-contract-20261114",
+    "implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/132",
+    "verification_pull_request": "https://github.com/edithatogo/rcagent/pull/133"
   },
   "autonomy": "continuous-autonomy-with-owner-decision-gates",
   "autonomy_contract": "../../autonomy.json",
@@ -27,8 +29,8 @@
   ],
   "description": "Repair confirmed integrity, public-export and template defects; implement strict quality tooling; coordinate staged source/timeline/decision demonstrations, triangulation, hallucination reduction and prospective frontier comparison.",
   "verification": {
-    "status": "faw06_source_accepted_final_delivery_gated",
-    "scope": "zero_active_typing_debt_checked_boundaries_and_runtime_source_revalidation",
+    "status": "faw07_contract_ready_worker_acceptance_pending",
+    "scope": "accepted_faw06_engineering_and_in_progress_faw07_d0_coordination",
     "receipt": "./delivery-evidence.md",
     "model_runs": 0,
     "qualified_capabilities": 0,
@@ -36,16 +38,16 @@
     "agent_review": "./review.md",
     "integrated_quality_receipt": "../../../quality/verification-integrated-20261113.json",
     "hosted_ci": {
-      "status": "source_head_passed",
-      "observed_source_commit": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
-      "quality_run": 43553845148,
+      "status": "faw06_final_head_and_merged_master_passed",
+      "final_head": "d974f78700e75ce9b266dbdf1cb1a435b03d036a",
+      "final_head_quality_run": 43555675618,
+      "merged_master": "419c04d7e1c0a16e924e0b7058604671855625a2",
+      "master_quality_run": 43556852077,
       "quality_jobs_passed": 9,
-      "pass_claim": true,
-      "dependency_review": "success",
       "privacy_secrets": "success",
       "skill_conformance": "success",
       "offline_security": "queued_not_a_completed_scan",
-      "final_delivery": "Exact final documentation head must pass required checks and protected merge; observed acceptance will be recorded on PR #131."
+      "faw07": "not_yet_accepted"
     },
     "typing_receipt": "./typing-completion-evidence.md",
     "typing_measurement": "../../../quality/typing-completion-verification-20261114.json",
@@ -69,8 +71,23 @@
       "./typing-contracts-evidence.md",
       "./typing-evidence.md"
     ],
-    "next_work_package": "FAW07 / D0 deterministic demonstration command and receipt",
-    "delivery_acceptance_record": "https://github.com/edithatogo/rcagent/pull/131"
+    "next_work_package": "Complete bounded FAW07 / D0 gates A0–A5; later stages remain pending",
+    "delivery_acceptance_record": "https://github.com/edithatogo/rcagent/pull/131",
+    "faw06_source_publication": {
+      "status": "source_head_passed",
+      "observed_source_commit": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "quality_run": 43553845148,
+      "quality_jobs_passed": 9,
+      "pass_claim": true,
+      "dependency_review": "success",
+      "privacy_secrets": "success",
+      "skill_conformance": "success",
+      "offline_security": "queued_not_a_completed_scan",
+      "final_delivery": "Exact final documentation head must pass required checks and protected merge; observed acceptance will be recorded on PR #131."
+    },
+    "current_work_package": "FAW07 / D0",
+    "d0_contract": "./faw07-d0-contract.md",
+    "d0_coordination": "./faw07-d0-coordination.json"
   },
   "decisions": [
     "../../decisions/20261113-001-frontier-assurance.md"
@@ -82,5 +99,12 @@
     "Only genuinely new data access, spend, publication, deployment or irreversible scope beyond existing authority"
   ],
   "bounded_work_packages": 24,
-  "demonstration_stages": 9
+  "demonstration_stages": 9,
+  "previous_delivery": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/125",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/2",
+    "pull_request": "https://github.com/edithatogo/rcagent/pull/131",
+    "implementation_commit": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+    "delivery_branch": "codex/faw06-complete-20261114"
+  }
 }
