@@ -12,6 +12,7 @@ from typing import Literal, NotRequired, TypedDict, TypeGuard
 
 from tools.autonomy_harness import WorkItem, paths_conflict, select_next_ready
 from tools.autonomy_state import StateStore, next_action
+from tools.faw07_d0_demo import generate_receipt
 from tools.json_shapes import JsonObject, is_array, is_object
 from tools.validate_repository import validate
 
@@ -254,6 +255,7 @@ def _main(argv: list[str] | None = None) -> int:
     subparsers.add_parser("validate").add_argument("--root", type=Path, default=Path.cwd())
     subparsers.add_parser("reconcile").add_argument("--root", type=Path, default=Path.cwd())
     subparsers.add_parser("evaluate")
+    subparsers.add_parser("d0-demo")
     state_parser = subparsers.add_parser("state")
     state_parser.add_argument(
         "operation", choices=("initialise", "next", "advance", "resume", "recover")
@@ -306,6 +308,12 @@ def _main(argv: list[str] | None = None) -> int:
     elif args.command == "receipt":
         errors = validate_receipt(_read_object(args.input))
         result = {"status": "pass" if not errors else "fail", "errors": errors}
+    elif args.command == "d0-demo":
+        receipt = generate_receipt()
+        print(
+            json.dumps(receipt, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+        )
+        return 1 if receipt["oracle_mismatches"] else 0
     elif args.command == "evaluate":
         result = {
             "status": "unavailable",
