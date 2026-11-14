@@ -6,7 +6,6 @@ The byte/offset contract uses UTF-8 byte positions, never character positions.
 
 from __future__ import annotations
 
-import json
 from hashlib import sha256
 from typing import Literal, TypedDict
 
