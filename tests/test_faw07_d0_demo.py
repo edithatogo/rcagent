@@ -16,8 +16,14 @@ def _case(content: str = "Café 12 mg") -> dict[str, object]:
         "case_id": "case-a",
         "sources": [{"id": "source-a", "version": 1, "state": "present", "content": content}],
         "evidence": [
-            {"id": "evidence-a", "source_id": "source-a", "source_version": 1,
-             "start_byte": 6, "end_byte": 11, "text": "12 mg"}
+            {
+                "id": "evidence-a",
+                "source_id": "source-a",
+                "source_version": 1,
+                "start_byte": 6,
+                "end_byte": 11,
+                "text": "12 mg",
+            }
         ],
     }
 
