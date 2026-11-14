@@ -309,7 +309,8 @@ def _main(argv: list[str] | None = None) -> int:
         errors = validate_receipt(_read_object(args.input))
         result = {"status": "pass" if not errors else "fail", "errors": errors}
     elif args.command == "d0-demo":
-        result = generate_receipt()
+        print(json.dumps(generate_receipt(), sort_keys=True, separators=(",", ":"), ensure_ascii=False))
+        return 0
     elif args.command == "evaluate":
         result = {
             "status": "unavailable",
