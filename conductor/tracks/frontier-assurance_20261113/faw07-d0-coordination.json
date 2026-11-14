@@ -1,0 +1,295 @@
+{
+  "schema_version": "faw07-d0-coordination-1.0",
+  "observed_at": "2026-11-14T16:25:06.420337+10:00",
+  "contract": "./faw07-d0-contract.md",
+  "contract_version": "faw07-d0-contract-1.0",
+  "status": "contract_ready_worker_acceptance_pending",
+  "issue": "https://github.com/edithatogo/rcagent/issues/125",
+  "coordination_comment": "https://github.com/edithatogo/rcagent/issues/125#issuecomment-6872993577",
+  "authority": {
+    "source": "Owner instructions of 14 November 2026",
+    "execution": "ordinary ChatGPT chats in GitHub project only",
+    "synthetic_inputs_only": true,
+    "agy_credits": false,
+    "work_or_codex_chats": false,
+    "new_workers_created": 0,
+    "models_or_private_data": false,
+    "d1_d3_or_rust_expansion": false,
+    "sole_merge_owner": "existing integration coordinator"
+  },
+  "baseline": {
+    "master": "419c04d7e1c0a16e924e0b7058604671855625a2",
+    "tree": "c0ff3fa9ce5cc78232d3987431ff857c43d1aa68",
+    "accepted_pr": 131,
+    "final_pr_head": "d974f78700e75ce9b266dbdf1cb1a435b03d036a",
+    "final_pr_quality_run": 43555675618,
+    "master_quality_run": 43556852077,
+    "master_quality_jobs_passed": 9,
+    "master_privacy_run": 43556852070,
+    "master_conformance_run": 43556852074,
+    "master_dependency_graph_run": 43556885568,
+    "offline_security": "queued_not_a_completed_scan",
+    "typing_active_files": 153,
+    "typing_diagnostics": 0,
+    "typing_baseline_entries": 0,
+    "typing_allowances": 0,
+    "explicit_any": "error"
+  },
+  "reconciliation": {
+    "initial_open_prs": [],
+    "subsequently_observed_open_prs": [
+      132,
+      133
+    ],
+    "visible_local_agents": [
+      "integration coordinator only"
+    ],
+    "old_worktrees": "All existing accessible worktrees were clean at observation; missing historical temporary worktree left untouched. Neither ordinary worker is a local subagent.",
+    "legacy_remote_branch": {
+      "name": "codex/typing-native-conformance-20261113",
+      "head": "ad594e4e0003ce8d7ace8a9a124a52f10fead544",
+      "action": "preserved; not a registered D0 lane"
+    },
+    "direct_chat_access": "sign_in_required_in_available_browser",
+    "communication_channel": "issue #125 and existing worker PRs",
+    "worker_acknowledgement": "not_yet_observed"
+  },
+  "lanes": [
+    {
+      "role": "implementation",
+      "worker": "rcagent — FAW07 demo and receipts",
+      "owner_reported_state": "running",
+      "branch": "feat/faw07-d0-demo-receipt-20261114",
+      "pull_request": 132,
+      "draft": true,
+      "base": "419c04d7e1c0a16e924e0b7058604671855625a2",
+      "first_observed_head": "0b276ea23f8ca3c5a99a21e587198ec6782cd542",
+      "observed_head": "e7e23f7cab8f84a4796fbccf9778c69e0cc0a4d1",
+      "owned_files": [
+        "tools/faw07_d0_demo.py",
+        "tests/test_faw07_d0_demo.py"
+      ],
+      "owned_regions": {
+        "tools/workbench.py": "D0 import/parser/output hook only"
+      },
+      "handoff": "PR #132 body",
+      "acceptance": "pending"
+    },
+    {
+      "role": "independent_verification",
+      "worker": "rcagent — Independent verification and synthetic cases",
+      "owner_reported_state": "running",
+      "branch": "test/faw07-d0-independent-verification-20261114",
+      "pull_request": 133,
+      "draft": true,
+      "base": "419c04d7e1c0a16e924e0b7058604671855625a2",
+      "first_observed_head": "6f0b3f909704f5779fb6002cd7a59a5ecc51257e",
+      "observed_head": "e8e0de6af2923f6724aacb2816ead636cc3703b5",
+      "owned_files": [
+        "tests/fixtures/faw07_independent/**",
+        "tests/test_faw07_independent_oracle.py",
+        "tests/test_faw07_d0_independent.py"
+      ],
+      "receipt": "tests/fixtures/faw07_independent/verification-receipt.md",
+      "receipt_path_decision": "Retain existing receipt; supersedes initially suggested duplicate quality JSON path.",
+      "handoff": "PR #133 body and provisional receipt",
+      "implementation_execution": "not_yet_observed",
+      "acceptance": "oracle_preparation_only"
+    }
+  ],
+  "coordinator_owned": [
+    "conductor/tracks/frontier-assurance_20261113/faw07-d0-contract.md",
+    "conductor/tracks/frontier-assurance_20261113/faw07-d0-coordination.json",
+    "shared Conductor index/plan/metadata/context/evidence",
+    "CI/configuration/locks/baselines/shared schemas",
+    "integration branch and merges"
+  ],
+  "file_overlap": {
+    "implementation_vs_verification": [],
+    "shared_hook": "tools/workbench.py D0 region assigned to implementation; remaining file retained by coordinator",
+    "contract_or_ci_changes_by_workers": []
+  },
+  "reviews": [
+    {
+      "head": "0b276ea23f8ca3c5a99a21e587198ec6782cd542",
+      "kind": "coordinator implementation review",
+      "unit_tests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "ruff_lint": "failed: unused json import and import sorting",
+      "ruff_format": "failed: 3 files",
+      "basedpyright": {
+        "files": 155,
+        "errors": 9,
+        "warnings": 0,
+        "information": 0,
+        "environment": "explicit locked interpreter; initial run without interpreter selection had unrelated missing coverage diagnostics and is not the source measurement"
+      },
+      "superseded_by": "e7e23f7cab8f84a4796fbccf9778c69e0cc0a4d1",
+      "negative_evidence_retained": true
+    },
+    {
+      "head": "e7e23f7cab8f84a4796fbccf9778c69e0cc0a4d1",
+      "kind": "coordinator implementation review",
+      "unit_tests": {
+        "passed": 10,
+        "failed": 0
+      },
+      "ruff_lint": "passed",
+      "ruff_format": "failed: generated source list formatting in tools/faw07_d0_demo.py",
+      "basedpyright": {
+        "files": 155,
+        "errors": 0,
+        "warnings": 0,
+        "information": 0
+      },
+      "source_fingerprint_check": "added since initial review",
+      "acceptance": "not_accepted",
+      "synthetic_review_probes": {
+        "cross_case": {
+          "status": "accepted",
+          "admitted_spans": 1,
+          "errors": []
+        },
+        "forged_claim_digest": {
+          "status": "accepted",
+          "admitted_spans": 1,
+          "errors": []
+        },
+        "duplicate_evidence": {
+          "status": "rejected",
+          "admitted_spans": 1,
+          "errors": [
+            "duplicate evidence identity: evidence-a"
+          ]
+        },
+        "empty_case": {
+          "status": "accepted",
+          "admitted_spans": 0,
+          "errors": []
+        },
+        "standalone_unknown_argument": {
+          "exit_code": 0,
+          "emitted_receipt": true,
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "head": "e8e0de6af2923f6724aacb2816ead636cc3703b5",
+      "kind": "coordinator verifier handoff review",
+      "oracle_tests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "oracle_denominators": {
+        "accepted_claims": 5,
+        "rejected_claims": 14,
+        "collection_checks": 3
+      },
+      "positive_literal_hash_and_span_checks": 5,
+      "ruff_lint": "passed",
+      "ruff_format": "passed",
+      "basedpyright": {
+        "files": 154,
+        "errors": 0,
+        "warnings": 0,
+        "information": 0
+      },
+      "production_validation": "not_performed_by_this_oracle",
+      "acceptance": "preparation_only"
+    }
+  ],
+  "open_findings": [
+    {
+      "id": "D0-I01",
+      "owner": "implementation",
+      "finding": "Explicit source/evidence case binding and evidence-level claimed digest/coordinate checks are absent from the observed candidate.",
+      "gate": "A1/A2"
+    },
+    {
+      "id": "D0-I02",
+      "owner": "implementation",
+      "finding": "Rejected duplicate-evidence case retains a verified span; empty collections are accepted. Require no admitted spans on any case error and nonempty accepted evidence.",
+      "gate": "A1/A2"
+    },
+    {
+      "id": "D0-I03",
+      "owner": "implementation",
+      "finding": "Receipt lacks exact synthetic inputs/input fingerprint and rule/generator/lock/implementation-file identities.",
+      "gate": "A1/A2"
+    },
+    {
+      "id": "D0-I04",
+      "owner": "implementation",
+      "finding": "Ruff format still fails at the observed current head; preserve the zero-debt ratchet during repairs.",
+      "gate": "A3"
+    },
+    {
+      "id": "D0-I05",
+      "owner": "implementation",
+      "finding": "Standalone module entry point ignores sys.argv: an unsupported argument exits zero and emits a receipt. The workbench argparse command is separate.",
+      "gate": "A1/A2"
+    },
+    {
+      "id": "D0-V01",
+      "owner": "independent_verification",
+      "finding": "Oracle self-tests do not yet execute inspect_case or the real workbench command against an exact implementation revision.",
+      "gate": "A2"
+    },
+    {
+      "id": "D0-C01",
+      "owner": "coordinator",
+      "finding": "No direct cross-chat inbox is accessible; issue/PR comments are published but worker acknowledgement is not yet observed.",
+      "gate": "A0"
+    }
+  ],
+  "required_contexts": [
+    "dependency-review",
+    "validate (ubuntu-latest)",
+    "validate (macos-latest)",
+    "validate (windows-latest)"
+  ],
+  "ruleset": {
+    "id": 21834601,
+    "enforcement": "active",
+    "strict_base": true,
+    "new_approval_requirements": false,
+    "bypass_permitted_for_this_work": false
+  },
+  "preserved_gates": {
+    "linux_and_macos_branch_coverage_floor": 90,
+    "combined_branch_coverage_floor": 90,
+    "combined_inputs": 4,
+    "release_mutation_real_kills": 24,
+    "scalene_synthetic_iterations": 300,
+    "privacy_secrets_and_official_conformance": "required for coordinator acceptance"
+  },
+  "historical_negative_evidence": {
+    "consumed_source": "e6c1453d68b562829b99f40b925de6d287496601",
+    "review": "cd09dba47704f3c87b95975a216a9a5be98158bd",
+    "protocol_sha256": "650186fd54dd832532ea995c954862026203b848bb520e8e0cae7a4af8c80628",
+    "profile_sha256": "c5bdd37eb8391baedd191c482996210ebdfbd43888ab8afb578092fafd8896c1",
+    "admitted_observations": 0,
+    "attempted_observations": 2,
+    "current_engineering_identity": "typing-20261114",
+    "requalification": false
+  },
+  "next_actions": [
+    "Publish and validate coordinator contract-only PR; merge normally after exact-head checks.",
+    "Workers reconcile with contract and repair their owned files; acknowledge the contract on issue #125 or their PR.",
+    "Verifier executes the exact implementation candidate and appends an honest execution receipt.",
+    "Coordinator combines both worker diffs, validates final integration head, then merges and records acceptance only if every gate passes."
+  ],
+  "acceptance": {
+    "A0": "contract_ready_acknowledgement_pending",
+    "A1": "pending_repairs",
+    "A2": "production_execution_pending",
+    "A3": "candidate_not_yet_clean",
+    "A4": "pending_integrated_final_head",
+    "A5": "pending",
+    "faw07_complete": false,
+    "clinical_or_model_qualification": false
+  }
+}
