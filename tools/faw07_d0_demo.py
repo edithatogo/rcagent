@@ -47,6 +47,13 @@ class D0Receipt(TypedDict):
     command: str
     byte_coordinate_system: Literal["utf8-zero-based-half-open"]
     source_hash_algorithm: Literal["sha256"]
+    input_fingerprint: str
+    engine_version: Literal["faw07-d0-1.0"]
+    permitted_view: Literal["synthetic-only"]
+    privacy_mode: Literal["fully_local"]
+    dependency_lock: Literal["uv.lock"]
+    expected_outcomes: dict[str, str]
+    oracle_mismatches: list[str]
     case_count: int
     accepted: int
     rejected: int
@@ -291,7 +298,20 @@ def inspect_case(case: dict[str, object]) -> CaseObservation:
 
 
 def generate_receipt() -> D0Receipt:
-    cases = [inspect_case(case) for case in _synthetic_cases()]
+    inputs = _synthetic_cases()
+    cases = [inspect_case(case) for case in inputs]
+    expected: dict[str, str] = {
+        "d0-valid-span": "accepted",
+        "d0-revised-source": "accepted",
+        "d0-unknown-source": "rejected",
+        "d0-cross-version": "rejected",
+        "d0-duplicate-evidence": "rejected",
+    }
+    oracle_mismatches = [
+        case["case_id"]
+        for case in cases
+        if case["status"] != expected.get(case["case_id"])
+    ]
     base: D0Receipt = {
         "schema_version": "faw07-d0-receipt-1.0",
         "task": "FAW07/D0",
@@ -299,6 +319,13 @@ def generate_receipt() -> D0Receipt:
         "command": "python -m tools.workbench d0-demo",
         "byte_coordinate_system": "utf8-zero-based-half-open",
         "source_hash_algorithm": "sha256",
+        "input_fingerprint": fingerprint(inputs),
+        "engine_version": "faw07-d0-1.0",
+        "permitted_view": "synthetic-only",
+        "privacy_mode": "fully_local",
+        "dependency_lock": "uv.lock",
+        "expected_outcomes": expected,
+        "oracle_mismatches": oracle_mismatches,
         "case_count": len(cases),
         "accepted": sum(case["status"] == "accepted" for case in cases),
         "rejected": sum(case["status"] == "rejected" for case in cases),
@@ -323,7 +350,7 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError("D0 accepts no external inputs")
     receipt = generate_receipt()
     print(canonical_bytes(receipt).decode("utf-8"))
-    return 0
+    return 1 if receipt["oracle_mismatches"] else 0
 
 
 if __name__ == "__main__":
