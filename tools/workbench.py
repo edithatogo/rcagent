@@ -11,8 +11,8 @@ from pathlib import Path
 from typing import Literal, NotRequired, TypedDict, TypeGuard
 
 from tools.autonomy_harness import WorkItem, paths_conflict, select_next_ready
-from tools.faw07_d0_demo import generate_receipt
 from tools.autonomy_state import StateStore, next_action
+from tools.faw07_d0_demo import generate_receipt
 from tools.json_shapes import JsonObject, is_array, is_object
 from tools.validate_repository import validate
 
