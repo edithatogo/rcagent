@@ -1,0 +1,472 @@
+{
+  "artifacts": [
+    {
+      "api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/artifacts/14097567188",
+      "digest_verified": true,
+      "downloaded_zip_sha256": "b9ec10de9d39b36bcf0ba89359bb4cf1847e4dc4121a81d974144e72c529c1b2",
+      "github_sha256": "b9ec10de9d39b36bcf0ba89359bb4cf1847e4dc4121a81d974144e72c529c1b2",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 14097567188,
+      "name": "coverage-data-ubuntu-latest-py3.11",
+      "run_id": 43553845148
+    },
+    {
+      "api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/artifacts/14097198088",
+      "digest_verified": true,
+      "downloaded_zip_sha256": "1863835ccc56532317e33b39da32ccfe92225e1ce8c61db95ab2de1894c1ced6",
+      "github_sha256": "1863835ccc56532317e33b39da32ccfe92225e1ce8c61db95ab2de1894c1ced6",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 14097198088,
+      "name": "coverage-data-ubuntu-latest-py3.15.2",
+      "run_id": 43553845148
+    },
+    {
+      "api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/artifacts/14097327833",
+      "digest_verified": true,
+      "downloaded_zip_sha256": "2328a5717f38ec0e66737e91871a0e0c18891a35fdbdadbfee455e287e121be1",
+      "github_sha256": "2328a5717f38ec0e66737e91871a0e0c18891a35fdbdadbfee455e287e121be1",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 14097327833,
+      "name": "coverage-data-macos-latest-py3.15.2",
+      "run_id": 43553845148
+    },
+    {
+      "api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/artifacts/14097552364",
+      "digest_verified": true,
+      "downloaded_zip_sha256": "f462e72ee481b51ee906970af68432c61d4d643d82f0db83c6fb1bc6198d5517",
+      "github_sha256": "f462e72ee481b51ee906970af68432c61d4d643d82f0db83c6fb1bc6198d5517",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 14097552364,
+      "name": "coverage-data-windows-latest-py3.15.2",
+      "run_id": 43553845148
+    },
+    {
+      "api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/artifacts/14096934153",
+      "digest_verified": true,
+      "downloaded_zip_sha256": "b4c598939aa5aa9638b2934b99ab2b23ed521750d2fc7d847eb623f7aec6705e",
+      "github_sha256": "b4c598939aa5aa9638b2934b99ab2b23ed521750d2fc7d847eb623f7aec6705e",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 14096934153,
+      "name": "release-boundary-mutation",
+      "run_id": 43553845148
+    },
+    {
+      "api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/artifacts/14097272423",
+      "digest_verified": true,
+      "downloaded_zip_sha256": "e24269e4264d10e56888c492205ab6ce46238d17a969ecebf43abd9d3e423dfd",
+      "github_sha256": "e24269e4264d10e56888c492205ab6ce46238d17a969ecebf43abd9d3e423dfd",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 14097272423,
+      "name": "synthetic-scalene-profile",
+      "run_id": 43553845148
+    }
+  ],
+  "blocking_failures": [],
+  "captured_at_utc": "2026-11-14T04:13:02.668213+00:00",
+  "combined_coverage": {
+    "combined_input_count": 4,
+    "conclusion": "success",
+    "evidence_basis": "Parent independently fetched completed hosted job logs: four validated inputs, four combined inputs, 95% rounded coverage, required 90% floor.",
+    "floor_satisfied": true,
+    "input_artifact_ids": [
+      14097567188,
+      14097198088,
+      14097327833,
+      14097552364
+    ],
+    "job_id": 132323602908,
+    "job_url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132323602908",
+    "precision_limit": "Combined XML artifact identity was observed in hosted upload logs. Exact combined percentage beyond the rounded hosted report and its output ZIP digest were not independently collected.",
+    "reported_branch_inclusive_percent": 95,
+    "reported_decimal_places": 0,
+    "required_floor_percent": 90,
+    "result_artifact_id": 14097876081,
+    "result_artifact_name": "combined-branch-coverage",
+    "result_artifact_sha256": null,
+    "validated_input_count": 4,
+    "result_artifact_url": "https://api.github.com/repos/edithatogo/rcagent/actions/artifacts/14097876081"
+  },
+  "jobs": [
+    {
+      "conclusion": "success",
+      "evidence_basis": "Reviewer independently fetched completed job status and logs",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 132322112886,
+      "name": "Prose lint (Vale)",
+      "status": "completed",
+      "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322112886"
+    },
+    {
+      "conclusion": "success",
+      "evidence_basis": "Reviewer independently fetched completed job status and logs",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 132322113047,
+      "name": "Python validation (3.11)",
+      "status": "completed",
+      "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113047"
+    },
+    {
+      "conclusion": "success",
+      "evidence_basis": "Reviewer independently fetched completed job status and logs",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 132322113092,
+      "name": "Python validation (3.15.2)",
+      "status": "completed",
+      "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113092"
+    },
+    {
+      "conclusion": "success",
+      "evidence_basis": "Reviewer independently fetched completed job status and logs",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 132322113099,
+      "name": "Release boundary mutation gate",
+      "status": "completed",
+      "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113099"
+    },
+    {
+      "conclusion": "success",
+      "evidence_basis": "Reviewer independently fetched completed job status and logs",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 132322113108,
+      "name": "validate (windows-latest)",
+      "status": "completed",
+      "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113108"
+    },
+    {
+      "conclusion": "success",
+      "evidence_basis": "Reviewer independently fetched completed job status and logs",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 132322113112,
+      "name": "validate (macos-latest)",
+      "status": "completed",
+      "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113112"
+    },
+    {
+      "conclusion": "success",
+      "evidence_basis": "Reviewer independently fetched completed job status and logs",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 132322113136,
+      "name": "Synthetic CPU and memory profile",
+      "status": "completed",
+      "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113136"
+    },
+    {
+      "conclusion": "success",
+      "evidence_basis": "Parent independently fetched completed final job logs",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 132323602908,
+      "name": "Complete matrix branch coverage",
+      "status": "completed",
+      "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132323602908"
+    },
+    {
+      "conclusion": "success",
+      "evidence_basis": "Integration independently fetched all nine completed job results and exact-head run success.",
+      "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+      "id": 132325174511,
+      "name": "validate (ubuntu-latest)",
+      "status": "completed",
+      "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132325174511"
+    }
+  ],
+  "mutation": {
+    "artifact_id": 14096934153,
+    "conclusion": "success",
+    "evidence": {
+      "decoded_log_sha256": "2e7827b4d10a0015f152dac3f14ea6c1685910564955d8c033f504fc550e31ce",
+      "log_api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/jobs/132322113099/logs",
+      "observed_lines": [
+        "2026-11-14T03:56:19.0734304Z 15 passed in 0.78s",
+        "2026-11-14T03:56:28.0386893Z Zapped: 24 gremlins (100%)",
+        "2026-11-14T03:56:28.0387271Z Survived: 0 gremlins (0%)",
+        "2026-11-14T03:56:28.0388748Z 15 passed in 8.57s",
+        "2026-11-14T03:56:28.3172947Z Mutation gate: 24/24 killed (100%); no excluded verdicts"
+      ]
+    },
+    "job_id": 132322113099,
+    "job_url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113099",
+    "raw_ids_unique": true,
+    "raw_result_count": 24,
+    "raw_status_counts": {
+      "error": 0,
+      "pardoned": 0,
+      "survived": 0,
+      "timeout": 0,
+      "zapped": 24
+    },
+    "summary": {
+      "error": 0,
+      "pardoned": 0,
+      "percentage": 100.0,
+      "survived": 0,
+      "timeout": 0,
+      "total": 24,
+      "zapped": 24
+    },
+    "target": "tools/release_admission.py"
+  },
+  "platform_validation": [
+    {
+      "conclusion": "success",
+      "coverage": {
+        "analysis_method": "Coverage 7.15.2 combine with configured relative_files and JSON reporting against unchanged source; native archive preserved.",
+        "artifact_id": 14097567188,
+        "branch_inclusive_percent_from_native_data": 94.54062159214831,
+        "floor_percent": 90,
+        "floor_scope": "platform job",
+        "hosted_decimal_places": 2,
+        "hosted_reported_percent": 94.54,
+        "totals_from_native_data": {
+          "covered_branches": 3550,
+          "covered_lines": 10321,
+          "excluded_lines": 144,
+          "missing_branches": 358,
+          "missing_lines": 443,
+          "num_branches": 3908,
+          "num_partial_branches": 334,
+          "num_statements": 10764,
+          "percent_branches_covered": 90.83930399181166,
+          "percent_branches_covered_display": "91",
+          "percent_covered": 94.54062159214831,
+          "percent_covered_display": "95",
+          "percent_statements_covered": 95.88442958008176,
+          "percent_statements_covered_display": "96"
+        }
+      },
+      "evidence": {
+        "decoded_log_sha256": "ed3460596c0d0d49ae5ea9225faefdf1b63532bcfb916ed090124bf4fdbc3af2",
+        "log_api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/jobs/132322113047/logs",
+        "observed_lines": [
+          "2026-11-14T03:56:17.9928828Z 0 errors, 0 warnings, 0 notes",
+          "2026-11-14T03:56:25.7336795Z collected 2246 items",
+          "2026-11-14T03:57:54.0707538Z TOTAL                                        10764    443   3908    334    95%",
+          "2026-11-14T03:57:54.0708549Z Required test coverage of 90.0% reached. Total coverage: 94.54%",
+          "2026-11-14T03:57:54.0708963Z ======================= 2246 passed in 91.89s (0:01:31) ========================"
+        ]
+      },
+      "job_id": 132322113047,
+      "job_url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113047",
+      "os": "Linux",
+      "python": "3.11.18",
+      "tests": {
+        "collected": 2246,
+        "errors": 0,
+        "failed": 0,
+        "passed": 2246,
+        "seconds": 91.89,
+        "skipped": 0
+      }
+    },
+    {
+      "conclusion": "success",
+      "coverage": {
+        "analysis_method": "Coverage 7.15.2 combine with configured relative_files and JSON reporting against unchanged source; native archive preserved.",
+        "artifact_id": 14097198088,
+        "branch_inclusive_percent_from_native_data": 94.54062159214831,
+        "floor_percent": 90,
+        "floor_scope": "platform job",
+        "hosted_decimal_places": 2,
+        "hosted_reported_percent": 94.54,
+        "totals_from_native_data": {
+          "covered_branches": 3550,
+          "covered_lines": 10321,
+          "excluded_lines": 144,
+          "missing_branches": 358,
+          "missing_lines": 443,
+          "num_branches": 3908,
+          "num_partial_branches": 334,
+          "num_statements": 10764,
+          "percent_branches_covered": 90.83930399181166,
+          "percent_branches_covered_display": "91",
+          "percent_covered": 94.54062159214831,
+          "percent_covered_display": "95",
+          "percent_statements_covered": 95.88442958008176,
+          "percent_statements_covered_display": "96"
+        }
+      },
+      "evidence": {
+        "decoded_log_sha256": "b9b60dcd6fa89b89abf74d16974d48db285f7aa22967f396fb0bf22d455418ed",
+        "log_api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/jobs/132322113092/logs",
+        "observed_lines": [
+          "2026-11-14T03:56:36.1872889Z 0 errors, 0 warnings, 0 notes",
+          "2026-11-14T03:56:46.2841038Z collected 2246 items",
+          "2026-11-14T03:58:01.2091919Z TOTAL                                        10764    443   3908    334    95%",
+          "2026-11-14T03:58:01.2093581Z Required test coverage of 90.0% reached. Total coverage: 94.54%",
+          "2026-11-14T03:58:01.2094178Z ======================= 2246 passed in 78.11s (0:01:18) ========================"
+        ]
+      },
+      "job_id": 132322113092,
+      "job_url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113092",
+      "os": "Linux",
+      "python": "3.15.2",
+      "tests": {
+        "collected": 2246,
+        "errors": 0,
+        "failed": 0,
+        "passed": 2246,
+        "seconds": 78.11,
+        "skipped": 0
+      }
+    },
+    {
+      "conclusion": "success",
+      "coverage": {
+        "analysis_method": "Coverage 7.15.2 combine with configured relative_files and JSON reporting against unchanged source; native archive preserved.",
+        "artifact_id": 14097327833,
+        "branch_inclusive_percent_from_native_data": 94.56788440567067,
+        "floor_percent": 90,
+        "floor_scope": "platform job",
+        "hosted_decimal_places": 2,
+        "hosted_reported_percent": 94.57,
+        "totals_from_native_data": {
+          "covered_branches": 3551,
+          "covered_lines": 10324,
+          "excluded_lines": 144,
+          "missing_branches": 357,
+          "missing_lines": 440,
+          "num_branches": 3908,
+          "num_partial_branches": 333,
+          "num_statements": 10764,
+          "percent_branches_covered": 90.8648925281474,
+          "percent_branches_covered_display": "91",
+          "percent_covered": 94.56788440567067,
+          "percent_covered_display": "95",
+          "percent_statements_covered": 95.91230026012634,
+          "percent_statements_covered_display": "96"
+        }
+      },
+      "evidence": {
+        "decoded_log_sha256": "83cbf8422f7e055d9c4f73c4b66ef215d769c4f41bef3aa424238afe42865122",
+        "log_api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/jobs/132322113112/logs",
+        "observed_lines": [
+          "2026-11-14T03:56:52.8973320Z 0 errors, 0 warnings, 0 notes",
+          "2026-11-14T03:57:03.6046870Z collected 2246 items",
+          "2026-11-14T03:58:28.8178160Z TOTAL                                        10764    440   3908    333    95%",
+          "2026-11-14T03:58:28.8179960Z Required test coverage of 90.0% reached. Total coverage: 94.57%",
+          "2026-11-14T03:58:28.8180330Z ======================= 2246 passed in 87.67s (0:01:27) ========================"
+        ]
+      },
+      "job_id": 132322113112,
+      "job_url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113112",
+      "os": "macOS",
+      "python": "3.15.2",
+      "tests": {
+        "collected": 2246,
+        "errors": 0,
+        "failed": 0,
+        "passed": 2246,
+        "seconds": 87.67,
+        "skipped": 0
+      }
+    },
+    {
+      "conclusion": "success",
+      "coverage": {
+        "analysis_method": "Coverage 7.15.2 combine with configured relative_files and JSON reporting against unchanged source; native archive preserved.",
+        "artifact_id": 14097552364,
+        "branch_inclusive_percent_from_native_data": 86.92066521264995,
+        "floor_percent": 90,
+        "floor_scope": "required combined matrix gate; per-Windows floor deferred",
+        "hosted_decimal_places": 0,
+        "hosted_reported_percent": 87.0,
+        "totals_from_native_data": {
+          "covered_branches": 3217,
+          "covered_lines": 9536,
+          "excluded_lines": 144,
+          "missing_branches": 691,
+          "missing_lines": 1228,
+          "num_branches": 3908,
+          "num_partial_branches": 323,
+          "num_statements": 10764,
+          "percent_branches_covered": 82.31832139201637,
+          "percent_branches_covered_display": "82",
+          "percent_covered": 86.92066521264995,
+          "percent_covered_display": "87",
+          "percent_statements_covered": 88.5916016350799,
+          "percent_statements_covered_display": "89"
+        }
+      },
+      "evidence": {
+        "decoded_log_sha256": "2e4d39ef6c4a332c83c3d36a2bb11966abd8e00f1a72303781facadad976c3aa",
+        "log_api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/jobs/132322113108/logs",
+        "observed_lines": [
+          "2026-11-14T03:56:28.1207122Z 0 errors, 0 warnings, 0 notes",
+          "2026-11-14T03:56:36.4177239Z collected 2246 items",
+          "2026-11-14T03:58:38.0257769Z TOTAL                                        10764   1228   3908    323    87%",
+          "2026-11-14T03:58:38.0259358Z ================ 1986 passed, 260 skipped in 124.23s (0:02:04) ================"
+        ]
+      },
+      "job_id": 132322113108,
+      "job_url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113108",
+      "os": "Windows",
+      "python": "3.15.2",
+      "tests": {
+        "collected": 2246,
+        "errors": 0,
+        "failed": 0,
+        "passed": 1986,
+        "seconds": 124.23,
+        "skipped": 260
+      }
+    }
+  ],
+  "repository": "edithatogo/rcagent",
+  "run": {
+    "api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/runs/43553845148",
+    "conclusion": "success",
+    "event": "pull_request",
+    "final_status_evidence": "Parent independently verified final exact-head run success and all nine successful jobs.",
+    "head_sha": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
+    "id": 43553845148,
+    "name": "Quality",
+    "pull_request": 131,
+    "run_attempt": 1,
+    "run_number": 395,
+    "status": "completed",
+    "updated_at": "2026-11-14T04:07:55Z",
+    "url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148"
+  },
+  "scalene": {
+    "allocation_samples": 30,
+    "artifact_id": 14097272423,
+    "conclusion": "success",
+    "data_class": "synthetic",
+    "evidence": {
+      "decoded_log_sha256": "2fd12f2d054008d188ad570fa25369224895b3beda0c0ccd644da5c258bac984",
+      "log_api_url": "https://api.github.com/repos/edithatogo/rcagent/actions/jobs/132322113136/logs",
+      "observed_lines": [
+        "2026-11-14T03:56:44.2659883Z {\"data_class\": \"synthetic\", \"fixture_sha256\": \"sha256:25f159bebf270234e21ba3bba6efd13a6bf522157eb323cacef4511b53345f88\", \"iterations\": 300, \"schema_version\": \"1.0\", \"wall_seconds\": 21.42615, \"workload\": \"schema-validation-and-provenance-round-trip\"}",
+        "2026-11-14T03:56:44.6038336Z Scalene measurement: 300 completed synthetic round-trips; 22.455s; reported allocation footprint 5.033 MB"
+      ]
+    },
+    "evidence_core_percent_cpu_time": 98.44244610421174,
+    "evidence_core_profile_line_count": 431,
+    "fixture_sha256": "sha256:25f159bebf270234e21ba3bba6efd13a6bf522157eb323cacef4511b53345f88",
+    "iterations": 300,
+    "job_id": 132322113136,
+    "job_url": "https://github.com/edithatogo/rcagent/actions/runs/43553845148/job/132322113136",
+    "measured_file_count": 2,
+    "measurement_limit": "Sampled allocation footprint is not process RSS, a memory ceiling or a production/model-inference performance result.",
+    "memory_measurement_enabled": true,
+    "process_rss_mb": null,
+    "profiler_elapsed_seconds": 22.455020427703857,
+    "python": "3.12.14",
+    "sampled_allocation_footprint_mb": 5.032926559448242,
+    "workload": "schema-validation-and-provenance-round-trip",
+    "workload_wall_seconds": 21.42615
+  },
+  "schema_version": "1.0",
+  "scope": "FAW06 source implementation hosted Quality acceptance",
+  "unavailable_details": [
+    "Exact combined percentage beyond the rounded hosted report and combined output ZIP digest were not independently collected.",
+    "Process RSS was not reported by the Scalene artifact."
+  ],
+  "integration_supplement": {
+    "verified_at_utc": "2026-11-14T04:13:58.855851+00:00",
+    "original_reviewer_receipt_sha256": "1287d1ebeb0700db7a49ffdd4e897cfecdb2162708d02358dfd445a16e42111b",
+    "source_run_and_all_nine_jobs": "independently observed completed success",
+    "aggregate_job_id": 132325174511,
+    "combined_artifact_id_observed_in_upload_log": 14097876081,
+    "code_changes_after_source_acceptance": []
+  }
+}

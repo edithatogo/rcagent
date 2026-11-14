@@ -1,8 +1,8 @@
 # Bounded context: frontier assurance
 
-- Purpose: prioritise Track 13 FAW06 typing repairs under the user's latest direction; retain the Track 14 death-review plan for later implementation.
+- Purpose: hand off completed FAW06 source acceptance and select FAW07 / D0 after final protected delivery; retain the Track 14 death-review plan for its existing stages.
 - Initial integration revision: 50c8a81; assessment reference: a895d42a8738d2937f849b65e3b892042f64b979.
-- Current typing base: PR #130 merged at e6d95394241661db117dc429976aaa6204a1128b after exact-head Quality43529164806, dependency/privacy/conformance success. FAW06 has removed all 3,198 remaining diagnostics across 153 active files; the baseline and caps are empty, and explicit Any is an error. Local verification preserves the base's 52 socket-denied failures and adds 177 passing cases. Require exact final-head hosted acceptance before closure.
+- Current typing base: PR #130 merged at e6d95394241661db117dc429976aaa6204a1128b after exact-head Quality43529164806, dependency/privacy/conformance success. FAW06 has removed all 3,198 remaining diagnostics across 153 active files; the baseline and caps are empty, and explicit Any is an error. Local verification preserves the base's 52 socket-denied failures and adds 177 passing cases. Current source `c3d26b0c70a65f06dcab9f878db99d351de7b758` passed Quality43553845148 (all nine jobs) and dependency/privacy/conformance. Final documented-head checks and protected merge will be recorded on PR #131.
 - Authority: user request of 13 November 2026; existing autonomous workflow and agent-panel decisions.
 - Start: AGENTS.md, CONSTRAINTS.md, conductor/index.md, selected spec/plan/metadata, and the exact capability/claim/triangulation document needed by that task.
 - Budget: prefer 20,000 input tokens; fetch only relevant source/schema/tests and receipts. This is a planning budget, not permission to omit a material safety dependency.
@@ -12,7 +12,7 @@
 - Worktree runtime: use the selected worktree's interpreter with `python -m pytest` and verify imported module origins; a reused editable environment's pytest console script can import a different checkout.
 - Checks: locked environment; relevant tests first, then tools.full_validation and hosted required checks. Socket-denied environments must record unavailable integration evidence; never skip it silently in CI.
 - Safety: generated synthetic fixtures; preserve source/view hashes; no cloud fallback or new publication. Agent agreement is labelled and does not supply clinical authority.
-- Handoff: selected FAW/CAW ID, exact commit/worktree, dirty files, tests and failures, baseline/debt delta, unresolved source questions, next command and rollback path.
+- Handoff: FAW06 source acceptance is complete; retain zero baseline/caps and the completion receipt. After PR #131 final-head gates and protected merge, FAW07 / D0 is ready for its bounded deterministic command/receipt design. No model, hardware or private-case admission is implied. Record the next exact base, owned files, commands and rollback path.
 - Freshness: refresh GitHub head, policy/source versions and applicable tool APIs before acting on a new session; do not re-request standing approvals.
 
 Canonical task records: [Track 13](../tracks/frontier-assurance_20261113/index.md), [Track 12](../tracks/cognitive-autopsy_20261107/index.md), [Track 14](../tracks/death-review_20261113/index.md).

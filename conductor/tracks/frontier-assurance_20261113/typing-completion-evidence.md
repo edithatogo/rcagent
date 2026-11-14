@@ -2,9 +2,16 @@
 
 Date: 14 November 2026 UTC. This increment completes the active typing migration
 from PR #130's merged base `e6d95394241661db117dc429976aaa6204a1128b`.
-Local verification is complete; engineering acceptance remains pending exact-head
-hosted checks and protected merge. This is synthetic engineering evidence, with no clinical or
+Local verification and exact source-head hosted acceptance are complete.
+The final documentation head remains gated by its own checks and protected merge. This is synthetic engineering evidence, with no clinical or
 model qualification.
+
+[PR #131](https://github.com/edithatogo/rcagent/pull/131) publishes source commit
+`c3d26b0c70a65f06dcab9f878db99d351de7b758`, tree
+`2e7c36c831a4f92e78d508e8b15d28f554536ccb`, exactly matching local source commit
+`fd9623a211e18a679e68730776af2f71ac48865f`. This final documentation update
+records observed source-head acceptance. Its own exact-head checks and protected
+merge will be recorded on the PR, separately from this immutable publication snapshot.
 
 ## Measured typing result
 
@@ -118,11 +125,37 @@ failure parity, not a passing full local suite. Hosted tests retain those paths.
 The final AST comparison also retains all 1,004 original test functions and adds
 61. The collection adds 177 cases, including parametrized regressions.
 
-Final hosted Quality must verify Linux Python 3.11 and 3.15.2, macOS, Windows,
-the four-input branch-coverage union, all release-admission mutation kills and
-the validated 300-iteration Scalene workload. Dependency review, privacy/secrets
-and official conformance must pass. A queued offline-security workflow is not
-a completed scan. FAW06 remains active until hosted acceptance is observed.
+## Hosted source acceptance
+
+[Quality run43553845148](https://github.com/edithatogo/rcagent/actions/runs/43553845148) completed successfully for exact source
+`c3d26b0c70a65f06dcab9f878db99d351de7b758`. All nine jobs passed. The
+[hosted source receipt](../../../quality/typing-completion-hosted-source-20261114.json)
+records jobs, verified artifacts, exact measurements and limitations.
+
+| Hosted check | Observed result |
+| --- | --- |
+| Linux Python 3.11 | 2,246 passed; 94.54% coverage |
+| Linux Python 3.15.2 | 2,246 passed; 94.54% coverage |
+| macOS Python 3.15.2 | 2,246 passed; 94.57% coverage |
+| Windows Python 3.15.2 | 1,986 passed, 260 platform skips; its floor is deferred to the combined gate |
+| Complete matrix coverage | All four branch databases validated and combined; 95% rounded, above the 90% floor |
+| Release-admission mutation | 24/24 real kills; zero survivors, timeouts, errors or pardons |
+| Scalene synthetic workload | 300 completed iterations; 21.42615 seconds workload wall time, 22.455020427703857 seconds profiler elapsed time |
+| Profiling validity | Actual CPU and allocation samples; 5.032926559448242 MB reported sampled allocation footprint |
+| Dependency, privacy/secrets, official conformance | Passed for this exact source head |
+
+The profile is one synthetic instrumented observation, not process peak RSS,
+a performance budget, a comparative speed claim or evidence for Rust migration.
+The dedicated offline-security runs remain queued and supply no completed scan.
+
+## Final delivery boundary
+
+FAW06's typing migration and engineering source acceptance are complete. The
+final documentation commit records that observed result; it is not claimed to
+have already passed its own future checks. Normal protected delivery requires
+that exact final head to pass the required checks before merge. The final head,
+its observed CI runs and merge commit will be recorded on [PR #131](https://github.com/edithatogo/rcagent/pull/131).
+Historical receipts retain their original publication-time observations.
 
 ## Review, rollback and next work
 

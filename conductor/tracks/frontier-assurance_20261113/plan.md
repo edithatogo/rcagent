@@ -9,8 +9,8 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
 - [x] FAW03: correct portable templates, hash-bind current admission and enforce selection/package invariants; preserve historical quarantine (FA03; accepted with PR127).
 - [x] FAW04: lock CI installation; broad Ruff plus format; strict basedpyright and measured legacy baseline with no growth (FA04; accepted with PR127, remaining debt belongs to FAW06).
 - [x] FAW05: add Hypothesis, pytest-gremlins, Scalene, Bandit and Vulture with real invocations and meaningful failure behaviour (FA05; accepted with PR127).
-- [~] FAW06: complete the remaining legacy unknown/Any migration with zero empty-baseline diagnostics in active source and tests, checked raw inputs, typed producers and reviewed package/test APIs. PR #130 is merged as `e6d95394241661db117dc429976aaa6204a1128b`; exact-head Quality43529164806 and dependency/privacy/conformance passed. This completion removes all 3,198 remaining diagnostics across 153 files, with empty baseline/caps and an explicit Any ban. All 177 added test cases pass locally; the same 52 socket-environment failures remain as in the unchanged base. Each implementation batch is reviewed and preserves rejection ordering and single-use witnesses. Current runtime source revalidation uses a new engineering identity, with unchanged consumed protocol, historical source/review and negative evidence. Final completion requires local checks, exact-head hosted gates and protected merge evidence.
-- [ ] Checkpoint A: run applicable local/hosted gates, three-role agent review, merge evidence and rollback notes; mark only verified leaves complete.
+- [x] FAW06: complete active source/test typing migration. All 3,198 remaining diagnostics are removed across 153 Python files; the baseline and allowances are empty, and explicit Any is an error. Checked raw boundaries, typed receipts and reviewed package/lifecycle APIs preserve rejection ordering and single-use witnesses. Source `c3d26b0c70a65f06dcab9f878db99d351de7b758` passed all nine Quality jobs in [run43553845148](https://github.com/edithatogo/rcagent/actions/runs/43553845148), plus dependency/privacy/conformance. Current runtime identities are distinct from unchanged consumed research source/protocol/review/results. See [completion evidence](./typing-completion-evidence.md); final documented-head checks and protected delivery remain required and will be recorded on [PR #131](https://github.com/edithatogo/rcagent/pull/131).
+- [x] Checkpoint A: source engineering acceptance verified by local/hosted gates and three-role agent review, with rollback notes and immutable receipts. Final publication requires the exact documented-head gates and protected merge on [PR #131](https://github.com/edithatogo/rcagent/pull/131); the receipt distinguishes that delivery step from observed source acceptance.
 
 ## Phase B: Incremental component demonstrations
 
@@ -52,7 +52,8 @@ Phase A may run in parallel with public-source planning and fixture design. B co
 
 FAW01–05 are accepted in merged PR127 after complete hosted Quality, dependency,
 privacy/secrets and official conformance success. The user's current
-priority is FAW06: verify zero active typing debt before starting new capability
+priority FAW06 now has zero-debt source acceptance. The final documented head
+remains subject to normal CI and protected merge before starting capability
 demonstrations. The implementation now has distinct CLI/server admission and
 phase-dependent probe receipts, checked optional/native output, typed autonomy,
 evidence, retrieval, benchmark, privacy, panel and evaluator contracts, and

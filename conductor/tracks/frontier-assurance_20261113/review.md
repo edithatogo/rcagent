@@ -157,3 +157,18 @@ See the [completion receipt](./typing-completion-evidence.md) for exact source
 hashes, commands, counts and subsequent hosted acceptance. These are shared-context
 agent engineering reviews; they do not establish independent model agreement,
 clinical validation or completion of an unexecuted offline-security scan.
+
+
+### Hosted acceptance and publication review
+
+Exact source `c3d26b0c70a65f06dcab9f878db99d351de7b758` passed all nine jobs in
+[Quality43553845148](https://github.com/edithatogo/rcagent/actions/runs/43553845148), plus dependency review,
+privacy/secrets and official conformance. All supported socket paths execute in
+the hosted platform matrix; source-head tests pass in every matrix member.
+The four branch databases are validated and combined, all 24 release mutants
+are killed, and the real 300-iteration Scalene workload passes artifact checks.
+The dedicated offline-security queue is explicitly not a completed scan.
+
+The final documentation commit changes acceptance records only. Its exact-head
+checks and protected merge remain required for delivery and will be recorded on
+[PR #131](https://github.com/edithatogo/rcagent/pull/131); this source acceptance does not predict future CI results.

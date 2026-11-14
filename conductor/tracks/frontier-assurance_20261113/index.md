@@ -1,6 +1,6 @@
 # Track 13: Frontier assurance and incremental capability evidence
 
-Status: FAW06 implementation and local verification are complete; exact-head hosted acceptance and protected merge remain pending. The final 3,198 diagnostics are removed: all 153 active Python files pass strict checking with an empty baseline, zero allowances and explicit `Any` rejected. The full local suite adds 177 passing cases and retains only the base's 52 socket-environment failures. Component demonstrations and comparative research remain planned until their receipts exist.
+Status: FAW06 typing migration and source acceptance are complete. All 153 active Python files pass with zero diagnostics, an empty baseline, zero allowances and explicit `Any` rejected. Source `c3d26b0c70a65f06dcab9f878db99d351de7b758` passed the full nine-job hosted Quality run, dependency review, privacy/secrets and official conformance. [PR #131](https://github.com/edithatogo/rcagent/pull/131) will record the exact final documented-head checks and protected delivery. The completion receipt distinguishes observed source acceptance from publication-time delivery state. FAW07 / D0 is the next work package; the wider track remains in progress.
 
 - [Specification and MoSCoW requirements](./spec.md)
 - [Executable work packages and acceptance](./plan.md)
