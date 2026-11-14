@@ -15,7 +15,15 @@ from tools.workbench import main
 def _case(content: str = "Café 12 mg") -> dict[str, object]:
     return {
         "case_id": "case-a",
-        "sources": [{"id": "source-a", "version": 1, "state": "present", "content": content}],
+        "sources": [
+            {
+                "id": "source-a",
+                "version": 1,
+                "state": "present",
+                "content": content,
+                "fingerprint": "sha256:" + hashlib.sha256(content.encode()).hexdigest(),
+            }
+        ],
         "evidence": [
             {
                 "id": "evidence-a",
@@ -61,6 +69,19 @@ def test_unaligned_utf8_and_forged_span_reject() -> None:
     row["start_byte"] = 6
     row["text"] = "12 ml"
     assert "mismatch" in " ".join(inspect_case(bad)["errors"])
+
+
+def test_forged_source_fingerprint_is_rejected() -> None:
+    bad = _case()
+    sources = bad["sources"]
+    assert is_array(sources)
+    row = sources[0]
+    assert is_object(row)
+    row["fingerprint"] = "sha256:" + "0" * 64
+    result = inspect_case(bad)
+    assert result["status"] == "rejected"
+    assert "source fingerprint mismatch" in " ".join(result["errors"])
+    assert result["spans"] == []
 
 
 def test_missing_version_unknown_bytes_and_duplicates_reject() -> None:
