@@ -45,6 +45,12 @@ def test_receipt_is_deterministic_and_inspectable() -> None:
     assert first["rejected"] == 3
     assert first["accepted"] + first["rejected"] == first["case_count"]
     assert first["output_fingerprint"].startswith("sha256:")
+    assert first["input_fingerprint"].startswith("sha256:")
+    assert first["oracle_mismatches"] == []
+    assert all(
+        case["status"] == first["expected_outcomes"][case["case_id"]]
+        for case in first["cases"]
+    )
     assert all(case["sources"] for case in first["cases"])
     assert all(case["errors"] for case in first["cases"] if case["status"] == "rejected")
 
