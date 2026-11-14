@@ -71,9 +71,7 @@ def _synthetic_cases() -> list[dict[str, object]]:
     return [
         {
             "case_id": "d0-valid-span",
-            "sources": [
-                _generated_source("src-a", 1, "Café: 12 mg.")
-            ],
+            "sources": [_generated_source("src-a", 1, "Café: 12 mg.")],
             "evidence": [
                 {
                     "id": "ev-a",
