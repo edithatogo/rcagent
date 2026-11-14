@@ -40,6 +40,7 @@ def _source_for(claim: ObjectMap, *, state: str | None = None) -> ObjectMap:
             "version": 1,
             "state": "present",
             "content": "[Patient A] synthetic evidence: pulse 72.\n",
+            "fingerprint": "sha256:1c37d6acd3d6fbf91c3c65581d2c2ed3e662627199de212fa319231ce35f7445",
         }
     source = candidates[0]
     return {
@@ -50,7 +51,7 @@ def _source_for(claim: ObjectMap, *, state: str | None = None) -> ObjectMap:
         ),
         "content": source["text"],
         "case_id": source["case_id"],
-        "sha256": source["sha256"],
+        "fingerprint": "sha256:" + text_value(source["sha256"]),
     }
 
 
@@ -139,7 +140,17 @@ def test_independent_source_byte_tampering_invalidates_span() -> None:
     source["content"] = original.replace("pulse 72.", "pulse 99.")
     result = inspect_case(_payload(claim, source=source))
     assert result["status"] == "rejected"
-    assert any("source span mismatch" in error for error in result["errors"])
+    assert any("source fingerprint mismatch" in error for error in result["errors"])
+
+
+def test_independent_forged_digest_is_rejected() -> None:
+    claim = mapping(mapping(sequence(_fixture()["cases"])[0])["claim"])
+    source = deepcopy(_source_for(claim))
+    source["fingerprint"] = "sha256:" + "0" * 64
+    result = inspect_case(_payload(claim, source=source))
+    assert result["status"] == "rejected"
+    assert result["spans"] == []
+    assert any("source fingerprint mismatch" in error for error in result["errors"])
 
 
 def test_independent_receipt_hash_and_repeatability() -> None:
