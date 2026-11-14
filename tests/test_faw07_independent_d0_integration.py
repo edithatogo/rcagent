@@ -46,9 +46,9 @@ def _source_for(claim: ObjectMap, *, state: str | None = None) -> ObjectMap:
     return {
         "id": source["id"],
         "version": source["revision"],
-        "state": state if state is not None else (
-            "present" if source["state"] == "admitted" else source["state"]
-        ),
+        "state": state
+        if state is not None
+        else ("present" if source["state"] == "admitted" else source["state"]),
         "content": source["text"],
         "case_id": source["case_id"],
         "fingerprint": "sha256:" + text_value(source["sha256"]),
@@ -79,9 +79,7 @@ def _payload(claim: ObjectMap, *, source: ObjectMap | None = None) -> ObjectMap:
 )
 def test_independent_valid_byte_spans(case_id: str) -> None:
     item = next(
-        mapping(row)
-        for row in sequence(_fixture()["cases"])
-        if mapping(row)["id"] == case_id
+        mapping(row) for row in sequence(_fixture()["cases"]) if mapping(row)["id"] == case_id
     )
     claim = mapping(item["claim"])
     result = inspect_case(_payload(claim))
@@ -111,9 +109,7 @@ def test_independent_valid_byte_spans(case_id: str) -> None:
 )
 def test_independent_adversarial_rejections(case_id: str) -> None:
     item = next(
-        mapping(row)
-        for row in sequence(_fixture()["cases"])
-        if mapping(row)["id"] == case_id
+        mapping(row) for row in sequence(_fixture()["cases"]) if mapping(row)["id"] == case_id
     )
     result = inspect_case(_payload(mapping(item["claim"])))
     assert result["status"] == "rejected", case_id
@@ -124,9 +120,7 @@ def test_independent_adversarial_rejections(case_id: str) -> None:
 @pytest.mark.parametrize("case_id", ["R06-negative-offset", "R13-malformed-offset"])
 def test_independent_malformed_offsets_fail_without_acceptance(case_id: str) -> None:
     item = next(
-        mapping(row)
-        for row in sequence(_fixture()["cases"])
-        if mapping(row)["id"] == case_id
+        mapping(row) for row in sequence(_fixture()["cases"]) if mapping(row)["id"] == case_id
     )
     with pytest.raises(ValueError, match="start_byte must be a nonnegative integer"):
         inspect_case(_payload(mapping(item["claim"])))
