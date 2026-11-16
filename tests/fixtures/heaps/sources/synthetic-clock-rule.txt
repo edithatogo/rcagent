@@ -1,0 +1,4 @@
+GENERATED SYNTHETIC CLOCK RULE — not Queensland Health policy or a legal obligation.
+For this bounded fixture, awareness is assigned 2030-01-07T00:00:00Z.
+The fictional target is one business day after awareness. The named calendar syn-calendar-weekdays-no-holidays counts Monday to Friday in UTC with no holidays.
+The literal illustrative target is 2030-01-08T00:00:00Z. Applicability and actual authority are unverified.

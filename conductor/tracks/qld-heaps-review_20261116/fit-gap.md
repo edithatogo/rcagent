@@ -15,20 +15,20 @@ The existing organisational incident system remains the record of reporting and 
 | Optional diagram | Active AcciMap #139 | Thin mapping only after its interface is accepted |
 | Validation and tests | jsonschema, PyYAML, standard library, pytest and Hypothesis already declared | HEAPS-specific schemas/fixtures/assertions |
 
-No dependency adoption, manifest change or new runtime is required. The declared compatibility baseline is the existing Python >=3.11 project and exact committed dependency lock at the implementation revision; this plan has not executed a new compatibility matrix. Preserve strict typing and quality gates.
+H2/H3 add no dependency or runtime module. H2 updates the existing template-admission inventory for the reviewed original asset; dependency/package manifests and lock remain unchanged relative to reconciled master. The declared compatibility baseline is the existing Python >=3.11 project and exact committed dependency lock at the implementation revision; this plan has not executed a new compatibility matrix. Preserve strict typing and quality gates.
 
 ## Ownership, replacement and fallback
 
-H3/H4 own only the new HEAPS profile contract and thin adapter after assignment. Shared schema, serialization, source verification, method heuristics, workbench and policy code remain with existing owners. Generic defects go to the owner with a synthetic reproducer; do not fork or copy the component.
+The explicit H2/H3 instruction authorises the new guidance, profile contracts and independent fixtures in this branch. H4 remains the separate thin-adapter increment. Shared canonical schema, serialization, source verification, workbench and policy code remain with existing owners; the branch prepares the H2 method/navigation/admission changes for coordinator integration. Generic defects go to the owner with a synthetic reproducer; do not fork or copy the component.
 
 The exit path is removal/reversion of the HEAPS adapter and mapping while retaining canonical case records, source history and prior receipts. The safe fallback is an original draft packet and explicit unanswered questions. Missing official-template access withholds conformity claims; missing optional model/graph support removes that feature. A failed reference/hash invariant rejects the affected packet.
 
-## Shared corrections proposed
+## H2 shared content corrections prepared
 
-The generic method matrix's mandatory SAC bundles and indicative timings conflict with its own advisory context. Its London/Yorkshire combination guidance also disagrees across files. The coordinator should make jurisdiction/local process selection primary and keep analytical heuristics source-labelled and advisory. This planning PR does not edit those shared files or the active AcciMap guide.
+H2 replaces the generic method matrix's mandatory SAC bundles and unsupported turnaround times and reconciles the conflicting London/Yorkshire guidance. Local process selection precedes question-driven, explicitly advisory analytical heuristics. Navigation and exact-byte original-template admission are prepared on the same branch for coordinator integration. The active AcciMap guide is unchanged.
 
 Current report-view and participation functions deliberately admit generated_synthetic only. Preserve that boundary. A future live pathway is a separately assessed change, not a permissive HEAPS configuration value.
 
 ## H1 observed consumption gaps
 
-The [H1 diagnostic](./h1.md) reproduces PR #143's renderer/domain-validation mismatch and an absent date-time checker in the unchanged lock. It also establishes separate Unicode hash domains and the lack of a heaps_packet approval scope. These are concrete interface/qualification inputs, not a reason to fork the core. The coordinator owns generic validator/renderer/dependency repairs and approval-contract changes; H3 freezes explicit bindings and H4 qualifies the actual composition after allocation.
+The [H1 diagnostic](./h1.md) reproduces PR #143's renderer/domain-validation mismatch and an absent date-time checker in the unchanged lock. It also establishes separate Unicode hash domains and the lack of a heaps_packet approval scope. These are concrete interface/qualification inputs, not a reason to fork the core. The coordinator owns generic validator/renderer/dependency repairs and approval-contract changes; H3 freezes explicit bindings and a distinct synthetic-draft packet decision without changing shared approval scopes. H4 qualifies the actual composition. D0 is now accepted upstream, but no HEAPS span composition is implemented by H3.

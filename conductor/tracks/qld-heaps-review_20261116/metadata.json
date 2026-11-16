@@ -3,9 +3,9 @@
   "title": "Queensland HEAPS Review Profile and Staged Qualification",
   "type": "feature",
   "evidence_schema": "1.0",
-  "status": "blocked",
+  "status": "in_progress",
   "created_at": "2026-11-16T07:34:21+00:00",
-  "updated_at": "2026-11-16T11:07:47+00:00",
+  "updated_at": "2026-11-16T13:46:50.724297+00:00",
   "workstream": "product-interfaces-distribution",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/140",
@@ -21,14 +21,20 @@
   "dependency_semantics": "Only actually consumed capabilities gate dependent claims; no whole-track completion prerequisite. AcciMap and death review are optional partners.",
   "delivery_plan": "./delivery-plan.json",
   "source_inventory": "./sources.json",
-  "description": "Plan a Queensland HEAPS profile over existing evidence/actions, source-aware local template mapping, deterministic synthetic packet and staged qualification.",
+  "description": "Queensland HEAPS profile: H1 source/interface receipt, H2 portable guidance/report mapping and H3 closed contracts/independent fixtures delivered on branch; H4 synthetic assembly next.",
   "owners": {
     "planning_scope": "current HEAPS planning task / issue140",
     "shared_integrator": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
-    "implementation": "current HEAPS lane: H1 source and interface preparation within dedicated track only; runtime namespaces unassigned"
+    "implementation": "current HEAPS lane: user-authorised H2/H3; dedicated guidance/contracts/fixtures and reviewable shared content integration"
   },
   "owned_paths": [
-    "conductor/tracks/qld-heaps-review_20261116/**"
+    "conductor/tracks/qld-heaps-review_20261116/**",
+    "evaluation/heaps/**",
+    "tests/fixtures/heaps/**",
+    "tests/test_heaps_profile_contract.py",
+    "tests/test_heaps_fixture_design.py",
+    "skills/rca-investigation/references/methods/heaps.md",
+    "skills/rca-investigation/assets/templates/markdown/15-heaps-review-draft.md"
   ],
   "registration": {
     "status": "pending_coordinator_integration",
@@ -36,24 +42,13 @@
     "proposal": "./registration-proposal.json"
   },
   "verification": {
-    "status": "planning_checks_and_agent_review_passed",
-    "scope": "documentation_and_planning_contracts_only",
-    "receipt": "./planning-evidence.md",
-    "agent_review": "./review.md",
-    "runtime_implementation": "not_started",
-    "heaps_tests_executed": 0,
-    "model_runs": 0,
-    "real_cases_processed": 0,
-    "qualified_clinical_capabilities": 0,
-    "official_template_conformity": "unverified",
-    "json_documents": 5,
-    "work_packages": 6,
-    "acceptance_design_cases": 25,
-    "local_link_errors": 0,
-    "repository_governance_validation": "passed",
-    "agent_review_status": "two_agent_reviews_findings_remediated",
-    "hosted_checks": "not_claimed_by_local_planning_receipt",
-    "shared_registration": "pending_coordinator_integration",
+    "status": "h2_h3_phase_checks_passed_full_local_gate_failed",
+    "scope": "portable_guidance_schema_and_fixture_design",
+    "receipt": "./h2-h3-review.md",
+    "input_manifest": "./h2-h3-input-manifest.json",
+    "h2_receipt": "./h2.md",
+    "h3_receipt": "./h3.md",
+    "planning_receipt": "./planning-evidence.md",
     "h1": {
       "review": "independent_checkpoint_complete_no_new_blocking_increment_findings",
       "receipt": "./h1.md",
@@ -67,28 +62,60 @@
       "full_validation": "failed_53_failed_2182_passed_11_skipped",
       "branch_coverage_percent": 93.27,
       "full_gate_not_passed": true
-    }
+    },
+    "runtime_implementation": "not_started",
+    "h3_structural_tests_passed": 52,
+    "h3_independent_design_tests_passed": 49,
+    "h3_combined_tests_passed": 101,
+    "existing_template_adapter_tests_passed": 69,
+    "canonical_variant_inputs_admitted": 38,
+    "acceptance_design_cases": 25,
+    "acceptance_design_variants": 38,
+    "heaps_runtime_acceptance_cases_executed": 0,
+    "full_local_validation": {
+      "exit_code": 1,
+      "passed": 2414,
+      "failed": 52,
+      "skipped": 11,
+      "branch_coverage_percent": 93.39,
+      "failure_scope": "existing_socket_session_controller_tests_in_restricted_local_environment",
+      "prior_stages_passed": true
+    },
+    "skill_current_conformance": true,
+    "conformance_receipt": "./h2-conformance.json",
+    "typing_diagnostics": 0,
+    "typing_baseline_allowances": 0,
+    "model_runs": 0,
+    "real_cases_processed": 0,
+    "qualified_clinical_capabilities": 0,
+    "official_template_conformity": "unverified",
+    "hosted_checks": "observe_publication_head_in_PR142_not_preclaimed_by_local_receipt",
+    "shared_registration": "pending_coordinator_integration"
   },
   "decision_gates": [
     "Only genuinely new data use, rights, external action, spend or operational scope beyond existing authority",
     "Case-specific clinical/legal/cultural/organisational decisions remain with authorised people"
   ],
-  "observed_base": "c6892497aa0b03555d5145242c04965471eccc1d",
+  "observed_base": "d11548357baba6a1e20163139a366c6367a05432",
   "current_increment": {
-    "id": "H1",
-    "status": "bounded_h1_work_complete_receiving_and_allocation_pending",
-    "authority": "user instruction: Proceed with the next implementation step.",
-    "scope": "public_source_applicability_and_minimal_interface_preparation",
+    "id": "H2-H3",
+    "status": "h2_h3_implemented_reviewed_on_branch",
+    "authority": "user instruction: Proceed with implementing H2 and H3",
+    "scope": "portable guidance, original draft mapping, closed profile contracts and independent synthetic fixture design",
     "runtime_implementation_started": false,
-    "receipt": "./h1.md",
-    "receiving_agreement": "not_observed",
-    "shared_allocation": "not_observed",
-    "h1_diagnostic_cases": 13,
-    "h1_diagnostic_unmet_safety_expectations": 4,
-    "checkpoint_review": "complete_with_negative_evidence",
+    "shared_integration": "coordinator retains registration, acceptance and merge",
     "next_tasks": [
-      "H1.3 receiving interface agreement",
-      "H1.4 shared registration and path allocation"
-    ]
-  }
+      "coordinator registration and integration reconciliation",
+      "H4 deterministic synthetic validator/assembler",
+      "H5 independent actual-interface qualification",
+      "H6 authorised local instrument alignment and conditional practice evaluation"
+    ],
+    "receipt": "./h2-h3-review.md"
+  },
+  "shared_candidate_paths": [
+    "skills/rca-investigation/SKILL.md",
+    "skills/rca-investigation/references/method-selection-matrix.md",
+    "skills/rca-investigation/references/method-combination-guide.md",
+    "skills/rca-investigation/assets/template-admission.json"
+  ]
 }

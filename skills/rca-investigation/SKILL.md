@@ -1,6 +1,6 @@
 ---
 name: rca-investigation
-description: Conduct evidence-grounded systems analysis for a healthcare safety investigation. Use only when a request explicitly asks to perform AU/NZ RCA, SAE or healthcare death/mortality review of past care by scoping the review, building its chronology, analysing system contributors or barriers, developing evidence-backed findings and actions, or verifying action effectiveness. Activation requires investigation-workflow intent, not merely a healthcare topic or review document.
+description: Conduct evidence-grounded systems analysis for a healthcare safety investigation. Use only when a request explicitly asks to perform AU/NZ RCA, SAE, Queensland HEAPS or healthcare death/mortality review of past care by scoping the review, building its chronology, analysing system contributors or barriers, developing evidence-backed findings and actions, or verifying action effectiveness. Activation requires investigation-workflow intent, not merely a healthcare topic or review document.
 license: Apache-2.0
 compatibility: Requires an Agent Skills client that can read bundled Markdown files.
 metadata:
@@ -35,6 +35,14 @@ screening and learning from incident, certification and coronial pathways;
 these may proceed in parallel under different authorities. A death alone
 does not establish preventability, unsafe care or reportability.
 
+For Queensland Human Error and Patient Safety (HEAPS) Review, also read
+`references/methods/heaps.md`. Apply that review profile across the four modes,
+record the applicable local process, and keep analytical tools separate from
+the chosen review process. Use
+`assets/templates/markdown/15-heaps-review-draft.md` for original draft
+preparation. The current official local HEAPS instrument remains unverified;
+this profile does not establish template conformity or statutory protection.
+
 ## Apply gates before analysis
 
 1. Establish the jurisdiction, organisation, investigation authority, intended
@@ -60,8 +68,10 @@ records, disclosure, and privilege markings under applicable law and policy.
 ## Select methods
 
 Read `references/method-selection-matrix.md` when choosing methods and
-`references/method-combination-guide.md` when combining them. Treat any
-severity examples as prompts rather than jurisdiction-independent rules.
+`references/method-combination-guide.md` when combining them. Establish the
+applicable local review process and its authority before selecting analytical
+tools. Severity classification does not itself prescribe a method bundle,
+method count or turnaround time in this skill.
 
 Default sequence:
 
@@ -73,9 +83,9 @@ Default sequence:
 6. Define implementation, effectiveness, balancing, and residual-risk checks.
 
 Load only the relevant method file under `references/methods/`. Apply the
-selection heuristics in the matrix: escalate only on evidence signals, respect
-the SAC method budget and stop rules, and never stack overlapping methods to
-appear thorough.
+selection heuristics in the matrix: state the unanswered question, the evidence
+needed and the expected contribution before adding a method. Use its stop rules
+and avoid repeating equivalent analyses.
 
 ## Produce bounded outputs
 

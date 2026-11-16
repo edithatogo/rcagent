@@ -1,0 +1,322 @@
+{
+  "schema_version": "1.1",
+  "case_id": "syn-heaps-orthogonal-01",
+  "version": 1,
+  "state": "investigation",
+  "jurisdiction": "Queensland; fictional fixture applicability only",
+  "privacy_mode": "fully_local",
+  "authority": "Generated synthetic fixture; no clinical, organisational or statutory authority.",
+  "roles": [
+    {
+      "role_id": "syn-role-recorder",
+      "role_type": "synthetic_recorder",
+      "authority": "Fixture role only; no clinical, statutory or organisational authority."
+    },
+    {
+      "role_id": "syn-role-facilitator",
+      "role_type": "synthetic_facilitator",
+      "authority": "Fixture role only; no clinical, statutory or organisational authority."
+    },
+    {
+      "role_id": "syn-role-staff",
+      "role_type": "synthetic_staff",
+      "authority": "Fixture role only; no clinical, statutory or organisational authority."
+    },
+    {
+      "role_id": "syn-role-consumer",
+      "role_type": "synthetic_consumer",
+      "authority": "Fixture role only; no clinical, statutory or organisational authority."
+    },
+    {
+      "role_id": "syn-role-reviewer",
+      "role_type": "synthetic_reviewer",
+      "authority": "Fixture role only; no clinical, statutory or organisational authority."
+    },
+    {
+      "role_id": "syn-role-owner",
+      "role_type": "synthetic_owner",
+      "authority": "Fixture role only; no clinical, statutory or organisational authority."
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "syn-src-record",
+      "source_type": "record",
+      "title": "Synthetic sources/record.txt",
+      "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+      "acquired_at": "2030-01-07T09:30:00+10:00",
+      "authority": "Original synthetic text; not an official policy or form.",
+      "citation": "sources/record.txt",
+      "screening_state": "included",
+      "late": false
+    },
+    {
+      "source_id": "syn-src-staff",
+      "source_type": "account",
+      "title": "Synthetic sources/staff-account.txt",
+      "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+      "acquired_at": "2030-01-07T09:30:00+10:00",
+      "authority": "Original synthetic text; not an official policy or form.",
+      "citation": "sources/staff-account.txt",
+      "screening_state": "included",
+      "late": false
+    },
+    {
+      "source_id": "syn-src-consumer",
+      "source_type": "account",
+      "title": "Synthetic sources/consumer-account.txt",
+      "fingerprint": "sha256:5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+      "acquired_at": "2030-01-07T09:30:00+10:00",
+      "authority": "Original synthetic text; not an official policy or form.",
+      "citation": "sources/consumer-account.txt",
+      "screening_state": "included",
+      "late": false
+    },
+    {
+      "source_id": "syn-src-clock",
+      "source_type": "other",
+      "title": "Fictional fixture clock rule",
+      "fingerprint": "sha256:cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02",
+      "acquired_at": "2030-01-07T09:30:00+10:00",
+      "authority": "Original synthetic rule; not an official policy, obligation or form.",
+      "citation": "sources/synthetic-clock-rule.txt",
+      "screening_state": "included",
+      "late": false
+    }
+  ],
+  "artefacts": [
+    {
+      "artefact_id": "syn-artefact-record",
+      "kind": "document",
+      "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+      "media_type": "text/plain; charset=utf-8",
+      "source_id": "syn-src-record"
+    },
+    {
+      "artefact_id": "syn-artefact-staff",
+      "kind": "document",
+      "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+      "media_type": "text/plain; charset=utf-8",
+      "source_id": "syn-src-staff"
+    },
+    {
+      "artefact_id": "syn-artefact-consumer",
+      "kind": "document",
+      "fingerprint": "sha256:5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+      "media_type": "text/plain; charset=utf-8",
+      "source_id": "syn-src-consumer"
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "syn-evidence-record",
+      "source_id": "syn-src-record",
+      "artefact_id": "syn-artefact-record",
+      "content": "GENERATED SYNTHETIC FIXTURE — no real person, care event or official form.\n[Ward X] handover document: the acknowledgement heading is present and its value is blank.\nThe reproduced heading reads «révision µ». This document does not establish whether a prompt was visible during the handover.\nThe blank value does not establish that care, communication or acknowledgement was omitted.\n",
+      "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+      "custody_state": "acquired",
+      "redacted": false
+    },
+    {
+      "evidence_id": "syn-evidence-staff",
+      "source_id": "syn-src-staff",
+      "artefact_id": "syn-artefact-staff",
+      "content": "GENERATED SYNTHETIC ACCOUNT — no real person or care event.\n[RN B] recalls that the acknowledgement prompt was visible during the stated handover at [Ward X].\nThis is a reported recollection; the account does not establish agreement with another participant or a verified finding.\n",
+      "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+      "custody_state": "acquired",
+      "redacted": false
+    },
+    {
+      "evidence_id": "syn-evidence-consumer",
+      "source_id": "syn-src-consumer",
+      "artefact_id": "syn-artefact-consumer",
+      "content": "GENERATED SYNTHETIC ACCOUNT — no real person or care event.\n[Carer C] recalls that the acknowledgement prompt was not visible during the same stated handover at [Ward X].\nThis recollection conflicts with [RN B] on prompt visibility. Neither account resolves the conflict.\n",
+      "fingerprint": "sha256:5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+      "custody_state": "acquired",
+      "redacted": false
+    }
+  ],
+  "statements": [
+    {
+      "statement_id": "syn-stmt-document",
+      "kind": "observed_fact",
+      "text": "The synthetic handover document contains an acknowledgement heading with a blank value.",
+      "provenance": {
+        "source_id": "syn-src-record",
+        "author_role_id": "syn-role-recorder",
+        "recorded_at": "2030-01-07T10:00:00+10:00",
+        "review_state": "unreviewed",
+        "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+        "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+      },
+      "uncertainty": "Describes the supplied synthetic document only; care and prompt visibility are not established."
+    },
+    {
+      "statement_id": "syn-stmt-staff",
+      "kind": "reported_account",
+      "text": "[RN B] recalls that the acknowledgement prompt was visible during the synthetic handover.",
+      "provenance": {
+        "source_id": "syn-src-staff",
+        "author_role_id": "syn-role-staff",
+        "recorded_at": "2030-01-07T10:00:00+10:00",
+        "review_state": "unreviewed",
+        "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+        "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+      },
+      "uncertainty": "Unverified recollection; conflicts with syn-stmt-consumer."
+    },
+    {
+      "statement_id": "syn-stmt-consumer",
+      "kind": "reported_account",
+      "text": "[Carer C] recalls that the acknowledgement prompt was not visible during the same synthetic handover.",
+      "provenance": {
+        "source_id": "syn-src-consumer",
+        "author_role_id": "syn-role-consumer",
+        "recorded_at": "2030-01-07T10:00:00+10:00",
+        "review_state": "unreviewed",
+        "fingerprint": "sha256:5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+        "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+      },
+      "uncertainty": "Unverified recollection; conflicts with syn-stmt-staff."
+    },
+    {
+      "statement_id": "syn-stmt-document-gap",
+      "kind": "hypothesis",
+      "text": "Prompt visibility may have varied in the synthetic exercise.",
+      "provenance": {
+        "source_id": "syn-src-record",
+        "author_role_id": "syn-role-facilitator",
+        "recorded_at": "2030-01-07T10:00:00+10:00",
+        "review_state": "unreviewed",
+        "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+        "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+      },
+      "uncertainty": "Candidate explanation only; a blank field does not establish a care omission or cause."
+    },
+    {
+      "statement_id": "syn-stmt-recall",
+      "kind": "hypothesis",
+      "text": "The different reported recollections may explain the unresolved visibility accounts.",
+      "provenance": {
+        "source_id": "syn-src-staff",
+        "author_role_id": "syn-role-facilitator",
+        "recorded_at": "2030-01-07T10:00:00+10:00",
+        "review_state": "unreviewed",
+        "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+        "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+      },
+      "uncertainty": "Alternative explanation retained without adjudication."
+    },
+    {
+      "statement_id": "syn-stmt-finding",
+      "kind": "finding",
+      "text": "Draft documentation finding: the supplied synthetic record leaves acknowledgement unresolved.",
+      "provenance": {
+        "source_id": "syn-src-record",
+        "author_role_id": "syn-role-facilitator",
+        "recorded_at": "2030-01-07T10:00:00+10:00",
+        "review_state": "unreviewed",
+        "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+        "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+      },
+      "uncertainty": "Proposed finding only; no authorised acceptance and no inference of omitted care."
+    },
+    {
+      "statement_id": "syn-stmt-recommendation",
+      "kind": "recommendation",
+      "text": "Test acknowledgement prompt visibility in a synthetic mockup before proposing any operational change.",
+      "provenance": {
+        "source_id": "syn-src-record",
+        "author_role_id": "syn-role-facilitator",
+        "recorded_at": "2030-01-07T10:00:00+10:00",
+        "review_state": "unreviewed",
+        "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+        "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+      },
+      "uncertainty": "Draft recommendation; no clinical or organisational approval."
+    }
+  ],
+  "factors": [
+    {
+      "factor_id": "syn-factor-prompt",
+      "kind": "system_condition",
+      "statement_id": "syn-stmt-document-gap",
+      "status": "candidate"
+    }
+  ],
+  "relationships": [
+    {
+      "from_id": "syn-stmt-staff",
+      "relation": "contradicts",
+      "to_id": "syn-stmt-consumer",
+      "rationale": "Different recollections of the same synthetic prompt; conflict is unresolved."
+    },
+    {
+      "from_id": "syn-stmt-document",
+      "relation": "supports",
+      "to_id": "syn-stmt-finding",
+      "rationale": "Supports only the draft documentation finding, not a care omission."
+    },
+    {
+      "from_id": "syn-stmt-document-gap",
+      "relation": "relevant_to",
+      "to_id": "syn-stmt-recall",
+      "rationale": "Alternative explanations; neither is established."
+    },
+    {
+      "from_id": "syn-factor-prompt",
+      "relation": "relevant_to",
+      "to_id": "syn-stmt-recommendation",
+      "rationale": "Proposed synthetic investigation of the candidate condition."
+    }
+  ],
+  "events": [
+    {
+      "event_id": "syn-event-investigation",
+      "event_type": "investigation_started",
+      "occurred_at": "2030-01-07T10:05:00+10:00",
+      "actor_role_id": "syn-role-facilitator",
+      "from_state": "review",
+      "to_state": "investigation",
+      "authority": "Synthetic exercise only.",
+      "evidence_ids": [
+        "syn-evidence-record"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "syn-action-mockup",
+      "recommendation_id": "syn-stmt-recommendation",
+      "owner_role_id": "syn-role-owner",
+      "status": "proposed",
+      "effectiveness_state": "pending_evidence",
+      "implementation_evidence_ids": [],
+      "residual_risk": "No operational action, outcome evidence or clinical effectiveness is asserted."
+    }
+  ],
+  "reviews": [
+    {
+      "review_id": "syn-review-consultation",
+      "review_type": "consultation",
+      "reviewer_role_ids": [
+        "syn-role-reviewer"
+      ],
+      "status": "in_progress",
+      "statement_ids": [
+        "syn-stmt-staff",
+        "syn-stmt-consumer",
+        "syn-stmt-finding"
+      ]
+    }
+  ],
+  "outcomes": [
+    {
+      "outcome_id": "syn-outcome-mockup",
+      "kind": "effectiveness",
+      "status": "pending",
+      "evidence_ids": []
+    }
+  ],
+  "referrals": []
+}

@@ -1,6 +1,6 @@
-# Proposed HEAPS profile contract
+# HEAPS profile design rationale
 
-Status: design input for H3; no implemented schema or official HEAPS template is claimed.
+Historical P0/H1 design rationale. The implemented H3 boundary is frozen in [h3-contract.md](./h3-contract.md) and its linked schemas; that contract governs field names and exact rules. This rationale is retained for provenance. No official HEAPS template is claimed.
 
 ## Core and profile ownership
 

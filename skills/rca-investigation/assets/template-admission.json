@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
-  "revision": "2026-11-13.1",
+  "revision": "2026-11-16.1",
   "admission": "portable_draft_only",
   "scope": "templates-and-support",
-  "review_scope": "Engineering repair of draft prompts, evidence distinctions, authority placeholders and rendering instructions; no institutional template or clinical/legal determination.",
+  "review_scope": "Engineering repair of draft prompts, evidence distinctions, authority placeholders and rendering instructions, plus original HEAPS synthetic preparation outline reviewed against the frozen H3 field mappings; no institutional template or clinical/legal determination.",
   "historical_quarantine": {
     "status": "quarantined_legacy_not_supported",
     "manifest_sha256": "745f9c51014671fc7f2c8e344949947db926c6379eead5189766d3a06d2ac8b8",
@@ -134,6 +134,11 @@
     {
       "path": "assets/templates/markdown/14-just-culture-assessment.md",
       "sha256": "a16ed7b5c2dc6d8175d7fa0b49ed7e1ab434bf5a1f81f3cdbdfe5ba9bd486c7a",
+      "status": "admitted_portable_draft"
+    },
+    {
+      "path": "assets/templates/markdown/15-heaps-review-draft.md",
+      "sha256": "2fa4e705bd9f271b6aaf1d0c06caa904724d8cb7630c644c1597a31671ee63ec",
       "status": "admitted_portable_draft"
     },
     {

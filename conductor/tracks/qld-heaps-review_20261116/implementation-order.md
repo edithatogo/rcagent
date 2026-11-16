@@ -24,7 +24,7 @@ flowchart TD
     A["Accepted AcciMap view"] -.-> H4
 ```
 
-The graph is a logical dependency plan, not a claim that new workers have started. Respect the repository limit of one integration lane and at most two independent implementation lanes. D0 production and verification already have owners; the AcciMap issue also reserves its namespace. The coordinator reconciles actual available capacity before any HEAPS implementation claim. Source reading, plan review and fixture design do not establish a separate runtime owner.
+The graph is a logical dependency plan, not a claim that new workers have started. Respect the repository limit of one integration lane and at most two independent implementation lanes. D0 is now accepted at the reconciled master d115483; its implementation remains owned by Track 13. AcciMap reserves its separate namespace. The user has explicitly authorised H2/H3, which proceed in separate content and contract/fixture files. This is one bounded HEAPS implementation increment with independent review; no H4 runtime lane, shared merge ownership or later-stage capability is inferred.
 
 ## Capability-specific dependencies
 

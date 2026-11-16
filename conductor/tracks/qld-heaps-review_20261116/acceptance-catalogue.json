@@ -1,7 +1,7 @@
 {
   "schema_version": "heaps-acceptance-design-1.0",
   "track_id": "qld-heaps-review_20261116",
-  "status": "design_only_not_executed",
+  "status": "independent_design_frozen_not_runtime_executed",
   "data_class": "generated_synthetic_design",
   "cases": [
     {
@@ -161,5 +161,10 @@
     "Positive and negative denominators retained",
     "Exact-head input/output/component evidence",
     "No fabricated clinical findings or template conformity"
-  ]
+  ],
+  "independent_oracle": "../../../tests/fixtures/heaps/oracle.json",
+  "h3_receipt": "./h3.md",
+  "case_count": 25,
+  "variant_count": 38,
+  "runtime_cases_executed": 0
 }

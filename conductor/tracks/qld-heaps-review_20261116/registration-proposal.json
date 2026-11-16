@@ -4,10 +4,10 @@
   "track_id": "qld-heaps-review_20261116",
   "issue": 140,
   "owner": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
-  "observed_base": "c6892497aa0b03555d5145242c04965471eccc1d",
+  "observed_base": "d11548357baba6a1e20163139a366c6367a05432",
   "track_number": null,
   "numbering_rule": "Allocate after reconciling active AcciMap139 and other current tracks; do not reserve 15 implicitly.",
-  "registry_row_template": "| [!] | [<assigned number> Queensland HEAPS](./tracks/qld-heaps-review_20261116/index.md) | [#140](https://github.com/edithatogo/rcagent/issues/140) | Source-aware HEAPS profile, synthetic packet and staged qualification; H1 source/interface appraisal delivered; agreement/allocation pending |",
+  "registry_row_template": "| [~] | [<assigned number> Queensland HEAPS](./tracks/qld-heaps-review_20261116/index.md) | [#140](https://github.com/edithatogo/rcagent/issues/140) | H1 source/interface receipt; H2 portable guidance and H3 profile/fixture contracts prepared; H4 runtime and shared integration next |",
   "index_entry": "[Queensland HEAPS review profile](./tracks/qld-heaps-review_20261116/index.md): H1 sources/scope, H2 guidance and H3 contract in parallel, H4 synthetic packet, H5 independent qualification, H6 conditional local alignment.",
   "roadmap_record_template": {
     "number": "COORDINATOR_ASSIGN",
@@ -18,7 +18,7 @@
       "frontier-assurance_20261113",
       "cognitive-autopsy_20261107"
     ],
-    "status": "blocked"
+    "status": "in_progress"
   },
   "requested_changes": [
     {
@@ -41,14 +41,14 @@
         "skills/rca-investigation/references/method-selection-matrix.md",
         "skills/rca-investigation/references/method-combination-guide.md"
       ],
-      "action": "Assign one shared owner to reconcile advisory method heuristics and timing with jurisdiction/local process; avoid mandatory bundles and contradictory combinations."
+      "action": "Review and integrate the H2 branch changes: local process first, question-driven method selection, consistent overlap rules, no unsupported mandatory SAC bundles or turnaround times. The separately owned AcciMap guide is unchanged."
     },
     {
       "paths": [
         "skills/rca-investigation/SKILL.md",
         "skills/rca-investigation/assets/template-admission.json"
       ],
-      "action": "Add HEAPS navigation and admitted original asset only after H2 assets exist and pass review."
+      "action": "Review and integrate the implemented H2 navigation and original HEAPS asset admission at exact reviewed bytes, retaining portable-draft-only status and historical quarantine."
     },
     {
       "paths": [
@@ -63,7 +63,7 @@
     "shared canonical schemas",
     "tools/workbench.py",
     "CI",
-    "manifests and dependency lock",
+    "dependency/package/release manifests and dependency lock",
     "quality allowances",
     "historical studies"
   ],
@@ -102,7 +102,9 @@
         "tools/interface_actions.py"
       ],
       "requirement": "Agree whole-packet approval representation and exact hash domains. Existing scopes exclude heaps_packet; communication scope is not approval of all substantive findings/actions. Do not silently extend the public interface.",
-      "status": "receiving_interface_agreement_pending"
+      "status": "synthetic_draft_scope_frozen_in_h3_operational_mapping_unaccepted",
+      "h3_disposition": "Separate heaps-synthetic-draft-packet decision and detached manifest; shared approval scope is not extended or silently mapped. Actual authority/substantive approval remain unverified/not_established."
     }
-  ]
+  ],
+  "h2_h3_authority": "User explicitly instructed: Proceed with implementing H2 and H3. Dedicated content/schema/fixture paths and necessary reviewable H2 content integration are prepared in PR142; coordinator registration and merge remain separate."
 }

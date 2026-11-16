@@ -1,7 +1,7 @@
 {
   "schema_version": "heaps-planning-1.0",
   "track_id": "qld-heaps-review_20261116",
-  "status": "h1_receiving_pending",
+  "status": "h2_h3_implemented_integration_pending",
   "issue": 140,
   "hard_dependencies": [],
   "work_packages": [
@@ -45,10 +45,19 @@
       "parallel_with": [
         "H3"
       ],
-      "owned_scope": "new HEAPS guidance/template after allocation; shared files by coordinator",
-      "status": "planned",
-      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
-      "acceptance_ref": "./plan.md"
+      "owned_scope": "dedicated original HEAPS guide/template plus reviewed shared content/navigation/admission candidates",
+      "status": "completed_on_branch",
+      "implementation_owner": "current HEAPS lane; coordinator retains shared acceptance and merge",
+      "acceptance_ref": "./plan.md",
+      "entry_evidence": "H1 technical receipt, current-master reconciliation and explicit H2/H3 instruction; runtime consumer gaps reserved for H4/H5",
+      "entry_requires": [
+        "H1 source applicability receipt",
+        "H1 technical interface appraisal",
+        "explicit H2/H3 implementation authority",
+        "fresh master and path-ownership reconciliation"
+      ],
+      "receipt": "./h2.md",
+      "integration_state": "pending_coordinator_acceptance_and_merge"
     },
     {
       "id": "H3",
@@ -64,10 +73,19 @@
       "parallel_with": [
         "H2"
       ],
-      "owned_scope": "new HEAPS contract/fixture namespace after allocation",
-      "status": "planned",
-      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
-      "acceptance_ref": "./plan.md"
+      "owned_scope": "dedicated evaluation/heaps schemas, normative contract, independent fixtures and tests",
+      "status": "completed_on_branch",
+      "implementation_owner": "current HEAPS lane; coordinator retains shared acceptance and merge",
+      "acceptance_ref": "./plan.md",
+      "entry_evidence": "H1 technical receipt, current-master reconciliation and explicit H2/H3 instruction; runtime consumer gaps reserved for H4/H5",
+      "entry_requires": [
+        "H1 source applicability receipt",
+        "H1 technical interface appraisal",
+        "explicit H2/H3 implementation authority",
+        "fresh master and path-ownership reconciliation"
+      ],
+      "receipt": "./h3.md",
+      "integration_state": "pending_coordinator_acceptance_and_merge"
     },
     {
       "id": "H4",
@@ -138,7 +156,8 @@
       "prerequisite": "Track13 D0 acceptance",
       "kind": "conditional",
       "fallback": "record/reference integrity only; no byte-span claim",
-      "state": "not_accepted_by_this_plan"
+      "state": "upstream_d0_accepted_composition_not_implemented",
+      "evidence": "../frontier-assurance_20261113/faw07-d0-acceptance-20261116.md"
     },
     {
       "id": "automatic-extraction",
@@ -216,7 +235,7 @@
     "accimap-workflow_20261116",
     "death-review_20261113"
   ],
-  "implementation_authority": "user_authorised_next_step_h1_within_existing_owned_track",
+  "implementation_authority": "user_explicitly_authorised_h2_and_h3",
   "order": [
     "H1",
     [

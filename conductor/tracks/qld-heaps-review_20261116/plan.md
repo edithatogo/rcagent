@@ -1,6 +1,6 @@
 # HEAPS implementation plan
 
-When implementation is authorised, continue automatically through ready, owned tasks, agent review and bounded rework; do not ask for routine approval. Record each recommendation and its evidence. The safe default is a synthetic preparation packet with unresolved authority and unsupported claims visible. The initial planning increment is published in PR #142. The user has now authorised the next implementation step, H1. Source/interface work stays inside this dedicated track; shared allocation and runtime ownership remain separate.
+When implementation is authorised, continue automatically through ready, owned tasks, agent review and bounded rework; do not ask for routine approval. Record each recommendation and its evidence. The safe default is a synthetic preparation packet with unresolved authority and unsupported claims visible. The initial planning increment and H1 are published in PR #142. The user has explicitly authorised implementing H2 and H3. This increment prepares their dedicated guidance/schema/fixture paths and the necessary shared navigation/method/admission changes on the HEAPS branch; shared integration, registration and merge remain with the coordinator. No H4 runtime assembler is claimed.
 
 ## P0 — Planning increment
 
@@ -22,25 +22,29 @@ H1 evidence: [source/interface receipt](./h1.md), [reproducible diagnostic](./h1
 
 ## H2 — Portable workflow and original report mapping
 
-Entry: H1 receipt. H2 and H3 may proceed in parallel in disjoint files after H1.3.
+Entry: H1 technical receipt and the user's explicit H2/H3 instruction. The current master is reconciled at d115483; H2/H3 use disjoint dedicated files. Existing shared API gaps are frozen as consumer requirements, with runtime qualification deferred to H4/H5. Receiving/portfolio integration remains a separate coordinator task.
 
-- [ ] H2.1: write HEAPS guidance across triage, investigate, report and track, preserving system conditions, alternative explanations and accountable review.
-- [ ] H2.2: draft an original synthetic report/meeting outline mapping evidence, accounts, factors, findings, actions and unresolved questions to canonical IDs.
-- [ ] H2.3: specify participation trace, staff involvement versus review responsibilities, plain-language presentation and optional diagram prompts; local policy determines team requirements.
-- [ ] H2.4: coordinator reconciles shared method-selection/combination guidance: remove unsupported mandatory SAC bundles/timeframes, resolve overlap contradictions, and make local process selection precede analytical heuristics.
-- [ ] H2.5: coordinator updates portable-skill navigation and template admission only after review; do not edit the AcciMap owner's guide.
-- [ ] H2.6: checkpoint: review all source/authority statements and synthetic report mappings; record unresolved official-template fidelity and guidance receipt.
+- [x] H2.1: write HEAPS guidance across triage, investigate, report and track, preserving system conditions, alternative explanations and accountable review.
+- [x] H2.2: draft an original synthetic report/meeting outline mapping evidence, accounts, factors, findings, actions and unresolved questions to canonical IDs.
+- [x] H2.3: specify participation trace, staff involvement versus review responsibilities, plain-language presentation and optional diagram prompts; local policy determines team requirements.
+- [x] H2.4: reconcile shared method-selection/combination guidance in the reviewable branch for coordinator integration: remove unsupported mandatory SAC bundles/timeframes, resolve overlap contradictions, and make local process selection precede analytical heuristics.
+- [x] H2.5: update portable-skill navigation and exact-byte template admission after review for coordinator integration; do not edit the AcciMap owner's guide.
+- [x] H2.6: checkpoint: review all source/authority statements and synthetic report mappings; record unresolved official-template fidelity and guidance receipt.
+
+H2 evidence: [phase receipt](./h2.md), [integrated review](./h2-h3-review.md), [conformance](./h2-conformance.json). Implementation and content admission are complete on this branch; shared portfolio integration and merge remain separate.
 
 ## H3 — Versioned profile contract and independent fixture design
 
 Entry: H1 receipt. No production assembly code is needed to design expected results.
 
-- [ ] H3.1: freeze the smallest profile schema/envelope referencing safety-work v1.1 without extending that schema's closed objects.
-- [ ] H3.2: define identity, typed reference, taxonomy mapping, whole-packet manifest/hash and stale-approval rules; preserve source-family identity and contrary evidence.
-- [ ] H3.3: define evidence-preparation, structural-validation, template-mapping, authorised-review and external-submission states independently.
-- [ ] H3.4: specify clock trigger/source/calendar semantics; business-day computation needs the applicable calendar and missing inputs stay unresolved.
-- [ ] H3.5: an independent verifier freezes synthetic source records and expected positive/negative/revision outcomes, including all catalogue cases and an explicit finite denominator.
-- [ ] H3.6: checkpoint: agent review of schema compatibility, migration/rollback, empty/all-abstain behaviour and fixtures; record H3 contract/fixture hashes.
+- [x] H3.1: freeze the smallest profile schema/envelope referencing safety-work v1.1 without extending that schema's closed objects.
+- [x] H3.2: define identity, typed reference, taxonomy mapping, whole-packet manifest/hash and stale-approval rules; preserve source-family identity and contrary evidence.
+- [x] H3.3: define evidence-preparation, structural-validation, template-mapping, authorised-review and external-submission states independently.
+- [x] H3.4: specify clock trigger/source/calendar semantics; business-day computation needs the applicable calendar and missing inputs stay unresolved.
+- [x] H3.5: an independent verifier freezes synthetic source records and expected positive/negative/revision outcomes, including all catalogue cases and an explicit finite denominator.
+- [x] H3.6: checkpoint: agent review of schema compatibility, migration/rollback, empty/all-abstain behaviour and fixtures; record H3 contract/fixture hashes.
+
+H3 evidence: [frozen contract](./h3-contract.md), [phase receipt](./h3.md), [independent oracle](../../../tests/fixtures/heaps/oracle.json) and [integrated review](./h2-h3-review.md). All 25 catalogue cases have 38 frozen variants; 101 structural/design tests passed. H4/H5 execution remains not_run. The full local repository gate remains failed with the documented socket restriction.
 
 ## H4 — Deterministic synthetic review packet
 
@@ -83,4 +87,4 @@ H6.1 source preparation can run after H1, in parallel with engineering, using an
 
 ## Rollback and resume
 
-Revert only the affected profile/adapter change through a normal commit; preserve original cases, sources and failed receipts. A material source or template change invalidates the affected mapping/approval, not unrelated evidence preparation. A failed optional component falls back to the last qualified deterministic packet. The current cursor is H1.3 receiving agreement and H1.4 coordinator registration/allocation after the H1 checkpoint. H2/H3 remain unstarted; no new runtime implementation lane is launched by this increment.
+Revert only the affected profile/adapter change through a normal commit; preserve original cases, sources and failed receipts. A material source or template change invalidates the affected mapping/approval, not unrelated evidence preparation. A failed optional component falls back to the last qualified deterministic packet. H2/H3 implementation is complete on the reconciled HEAPS branch. The resume cursor is coordinator integration/registration and H4 deterministic synthetic validator/assembler, using the frozen H3 contract and independent expectations. H1 receiving issues remain explicit consumer obligations; no shared runtime repair, H4 execution, merge or operational authority is inferred.

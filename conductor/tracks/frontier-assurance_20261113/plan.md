@@ -14,7 +14,13 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
 
 ## Phase B: Incremental component demonstrations
 
-- [~] FAW07 / D0: publish one deterministic demonstration command and receipt format over generated synthetic cases; inspect actual output, not status text (CAW02/08, FA06). The [bounded acceptance and ownership contract](./faw07-d0-contract.md) assigns the existing implementation PR #132 and independent verification PR #133; the coordinator alone owns shared contracts, CI and merges. [Reconciliation](./faw07-d0-coordination.json) records exact observed heads and outstanding gates. D0 is not yet accepted.
+- [x] FAW07 / D0: deterministic synthetic evidence demonstration and inspectable receipts (CAW02/08, FA06) delivered in [PR #144](https://github.com/edithatogo/rcagent/pull/144), merged as `d3c10d607470c9a50c5410030b80aeab2cfa5430`. The [observed acceptance receipt](./faw07-d0-acceptance-20261116.md) records all nine successful source-head Quality jobs, dependency/privacy success, automatic master conformance and contract gates A0–A5. Original worker heads, oracle labels and failed observations are preserved. D0 qualifies synthetic identity and byte-span inspection only.
+
+  The [16 November source record](./faw07-d0-completion-20261116.md) retains
+  the direct owner authority, contract repairs, 130 focused passing tests and
+  three-role agent review. [Coordination](./faw07-d0-coordination.json) records
+  actual merge acceptance and the superseded worker handoffs. Later stages were
+  not started under this D0 assignment.
 - [ ] FAW08 / D1: demonstrate bounded dates/times/units/negation and exact source-span extraction, including invalid/ambiguous expressions (CAW02/04/08).
 - [ ] FAW09 / D2: demonstrate timeline/partial-order assembly with event, recording and recipient-availability clocks; preserve disagreement and unknown order (CAW10, CS03).
 - [ ] FAW10 / D3: demonstrate decision-time packets and patient/family concern traceability; hide future outcome/appraisal through every retrieval/verification/rendering path (CAW10/20).
@@ -56,8 +62,9 @@ PR #131 at `419c04d7e1c0a16e924e0b7058604671855625a2`; final-head Quality4355567
 and merged-master Quality43556852077 both passed all nine jobs, with
 privacy/secrets and official conformance success. This updates the Phase A
 publication-time statements above without rewriting their source receipts.
-Current authorised work is FAW07 / D0 only, using the two named ordinary ChatGPT
-workers and the sole integration coordinator. The implementation has distinct CLI/server admission and
+The 16 November bounded D0 completion assignment is delivered and accepted;
+FAW08 / D1 remains planned. Original worker history and the direct completion
+authority are retained in the D0 receipts. The implementation has distinct CLI/server admission and
 phase-dependent probe receipts, checked optional/native output, typed autonomy,
 evidence, retrieval, benchmark, privacy, panel and evaluator contracts, and
 reviewed package/test APIs. Preserve early rejection, oversized-stream hash
@@ -67,7 +74,7 @@ values. Current engineering source revalidation does not revise historical
 study declarations or revive consumed protocols. The next
 staged capability programme maps into existing CAW02/04/08/10/20 rather than
 creating duplicate implementation counters. FAW08–10, model/modality work and
-Rust remain outside the current D0 increment. Model/hardware/data-dependent
+Rust remain outside the completed D0 increment. Model/hardware/data-dependent
 leaves may wait while software work continues. No elapsed research-time promise
 is inferred from coding-agent speed.
 
