@@ -40,6 +40,14 @@ No task authorises private data in cloud coding contexts, arbitrary model-trigge
 
 ## Practical sequencing and estimates
 
+Use the [16 November recommendation map](../frontier-assurance_20261113/recommendations-20261116.md)
+for dependency selection and cross-track acceptance. R04 strengthens CAW01's
+adapter admission; R09 strengthens CAW03/21/22's matched comparisons, severe
+errors, false blocking, item-level rubric reliability and useful coverage; R11
+prioritises the existing CAW12 experiment. Generic evidence correction and
+renderer admission are FAW14/16 responsibilities, not a new CAW19 prerequisite.
+The 25 leaves and their historical planning evidence remain intact.
+
 - Days 1–2 of coding-agent work after input access: record/schema/splits and exact source-verification fixtures.
 - Days 2–5: conventional baselines, untuned local adapter, availability checks and calibrated component scoring.
 - Days 5–10: small development pilot, controlled outcome/availability comparison and case-level analysis, subject to hardware and necessary annotation.

@@ -198,6 +198,25 @@ otherwise it remains an integrated module using the shared contracts.
 
 ## Maximal Harness and Context Strategy
 
+### 16 November refinement: product first, comparative evidence next
+
+The [repository recommendation map](./tracks/frontier-assurance_20261113/recommendations-20261116.md)
+and [machine-readable planning view](./tracks/frontier-assurance_20261113/execution-order-20261116.json)
+make the current Tracks 12–14 sequence explicit: finish the owned D0 increment,
+repair the renderer admission follow-up, deliver D1 extraction → D2 uncertain
+chronology → D3 decision-time evidence/concerns, qualify included components and
+final output, compose selected D6 profiles, then run D7 comparisons and selected
+D8 research. D6 preparation can start after D3; acceptance consumes only its
+included qualified components, not every optional model, OCR or process study.
+
+Source/rights, corpus splits, dependency fit-gap, death-review applicability and
+the existing AcciMap #139 / HEAPS #140 owner work may prepare in bounded parallel
+scopes. Maintain one shared integrator and at most two active implementation
+lanes. No new top-level track or package counter is created by this refinement;
+parallel-profile numbering and merge acceptance remain with the coordinator.
+
+### Shared harness contract
+
 Track 01 creates the shared delivery harness. Every later track must consume it rather than inventing a private workflow.
 
 The target command surface is:

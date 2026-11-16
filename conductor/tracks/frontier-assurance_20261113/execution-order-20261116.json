@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "kind": "planning_view_not_scheduler",
+  "date": "2026-11-16",
+  "timezone": "Australia/Brisbane",
+  "reviewed_base": "c6892497aa0b03555d5145242c04965471eccc1d",
+  "authority": "Owner requested incorporation of repository-review recommendations and implementation order; pending implementation ownership is unchanged.",
+  "narrative": "./recommendations-20261116.md",
+  "receipt": "./recommendations-evidence-20261116.md",
+  "canonical_plans": {
+    "FAW": "./plan.md",
+    "CAW": "../cognitive-autopsy_20261107/work-packages.md",
+    "DR": "../death-review_20261113/plan.md"
+  },
+  "preserve_work_package_counts": {"FAW": 24, "CAW": 25},
+  "current_work_package": "FAW07 / D0",
+  "d0_accepted": false,
+  "integration_owner": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
+  "max_implementation_lanes": 2,
+  "dependency_semantics": "Acceptance prerequisites for the listed output, not hard-start dependencies between entire tracks; preparation may proceed within an assigned scope. Canonical per-arm prerequisites still apply.",
+  "steps": [
+    {
+      "id": "renderer-follow-up",
+      "packages": ["FAW01", "FAW14", "FAW16"],
+      "recommendations": ["R01", "R02"],
+      "status": "pending_follow_up_not_reopening_historical_acceptance",
+      "after": [],
+      "exit": "Canonical validator and renderer agree on valid, unknown-source, duplicate-ID and illegal-transition fixtures; compatibility and view controls preserved."
+    },
+    {
+      "id": "d0",
+      "packages": ["FAW07", "CAW02", "CAW08"],
+      "recommendations": ["R03"],
+      "status": "existing_owned_work_in_progress_not_accepted",
+      "after": [],
+      "owner_pull_requests": [132, 133],
+      "exit": "Current D0 contract A0-A5 accepted by the existing coordinator with fresh worker-head evidence."
+    },
+    {
+      "id": "d1",
+      "packages": ["FAW08", "CAW01", "CAW02", "CAW03", "CAW04", "CAW08"],
+      "recommendations": ["R02", "R03", "R04"],
+      "status": "planned",
+      "after": ["d0"],
+      "exit": "Bounded extraction preserves offsets, identity, polarity, units and ambiguity; exact source and grouped-split contracts pass."
+    },
+    {
+      "id": "d2",
+      "packages": ["FAW09", "CAW10"],
+      "recommendations": ["R03", "R05"],
+      "status": "planned",
+      "after": ["d1"],
+      "exit": "Event, recording and recipient-availability intervals preserve conflicts, unknowns and partial order."
+    },
+    {
+      "id": "d3",
+      "packages": ["FAW10", "CAW20"],
+      "recommendations": ["R03", "R05"],
+      "status": "planned",
+      "after": ["d2"],
+      "exit": "Decision-time packet and concern trace pass permitted-view tests across retrieval, caches, verification and rendering."
+    },
+    {
+      "id": "comparative-components",
+      "packages": ["FAW11", "FAW13", "FAW18", "CAW05", "CAW07", "CAW09", "CAW11", "CAW12", "CAW21", "CAW22"],
+      "recommendations": ["R04", "R07", "R09", "R11"],
+      "status": "planned",
+      "after": ["d3"],
+      "exit": "Relevant D4 arms, availability study and scoring have frozen family splits, matched comparisons, failures and case-clustered uncertainty; no all-abstain winner."
+    },
+    {
+      "id": "output-admission",
+      "packages": ["FAW14", "FAW15", "CAW08", "CAW10", "CAW20"],
+      "recommendations": ["R05", "R08"],
+      "status": "planned",
+      "after": ["d3", "renderer-follow-up"],
+      "exit": "Included components pass claim, omission, correction propagation and final-render checks; actual isolation evidence precedes sensitive execution. Generative arms additionally require their semantic-verifier and model qualification."
+    },
+    {
+      "id": "d6",
+      "packages": ["FAW16", "DR-04", "DR-05", "DR-06", "DR-07", "DR-08", "DR-09", "DR-10", "DR-11", "DR-12"],
+      "recommendations": ["R06", "R08"],
+      "status": "planned",
+      "after": ["d3", "output-admission"],
+      "additional_conditions": ["Qualification of every included component", "Applicable profile and source contract", "Current owner handoffs for any AcciMap or HEAPS view included"],
+      "not_universal_prerequisites": ["All model arms in D4", "D5", "CAW14", "CAW15", "CAW17", "CAW18", "CAW19"],
+      "exit": "Selected packet reproduces complete, incomplete and conflicting cases and preserves evidence changes, concerns, actions, unsupported items and correction burden."
+    },
+    {
+      "id": "d7",
+      "packages": ["FAW17", "FAW18", "FAW19", "CAW03", "CAW21", "CAW22", "CAW25", "DR-13", "DR-14", "DR-15", "DR-16", "DR-20", "DR-21"],
+      "recommendations": ["R09", "R10", "R11"],
+      "status": "planned",
+      "after": ["comparative-components", "d6"],
+      "additional_conditions": ["Frozen eligible external or temporal holdout", "Current relevant baseline review", "Appropriate observations for each claimed workflow outcome"],
+      "exit": "Publish exact-task qualification or rejection with useful coverage, material/severe errors, omissions, false blocking, resource cost and clustered uncertainty."
+    },
+    {
+      "id": "selected-extensions",
+      "packages": ["FAW20", "FAW21", "FAW22", "FAW23", "FAW24", "CAW16", "CAW17", "CAW18", "CAW19", "CAW23", "CAW24", "DR-22", "DR-23"],
+      "recommendations": ["R12"],
+      "status": "conditional",
+      "after": [],
+      "preferred_investment_order": "Larger empirical extensions follow promising comparative evidence; this is not a universal D7 acceptance gate.",
+      "additional_conditions": ["Each selected arm consumes its canonical leaf prerequisites; independent adapters may be implemented and accepted earlier", "CAW16 needs accepted CAW02/04/08/10; CAW17 consumes CAW16; CAW19 also needs CAW07", "FAW20 requires a measured bottleneck and parity/resource evidence, not completed D7", "CAW23 requires its conventional/untuned/verifier comparisons and residual error evidence", "CAW24 consumes CAW14/22; formal value of information additionally needs an admitted decision model", "Action-effectiveness and replication claims require their own data, follow-up and reference-result evidence"],
+      "exit": "Accept or reject the bounded process, evidence-acquisition, action-effectiveness, replication or adaptation hypothesis without blocking the simpler product."
+    }
+  ],
+  "parallel_owner_handoffs": [
+    {
+      "track_id": "accimap-workflow_20261116",
+      "issue": "https://github.com/edithatogo/rcagent/issues/139",
+      "track_number": null,
+      "status": "existing_owner_scope_no_acceptance_inferred",
+      "condition": "Synthetic structural graph independent of automatic extraction; stronger claims consume relevant accepted D1-D3 components."
+    },
+    {
+      "track_id": "qld-heaps-review_20261116",
+      "issue": "https://github.com/edithatogo/rcagent/issues/140",
+      "track_number": null,
+      "status": "existing_owner_planning_scope",
+      "order": ["H1", "H2 and H3 in parallel", "H4", "H5", "H6 conditional"],
+      "condition": "Local-template conformity unresolved until evidenced; public/synthetic work may proceed; AcciMap optional."
+    },
+    {
+      "track_id": "death-review_20261113",
+      "packages": ["DR-01", "DR-02", "DR-03", "DR-04"],
+      "status": "planned_under_existing_owner",
+      "condition": "Source reconciliation and fixture design may proceed; unresolved authority blocks only affected profile rules."
+    }
+  ],
+  "optional_paths": [
+    {"packages": ["FAW12"], "trigger": "Demonstrated document/OCR/modality need; qualification required only when included."},
+    {"packages": ["CAW06", "CAW13", "CAW14", "CAW15"], "trigger": "Distinct predeclared study question and admitted resources; no blanket dependency for the deterministic product."}
+  ],
+  "candidate_dependency_status_changed": false,
+  "model_runs_performed_by_incorporation": 0,
+  "runtime_capabilities_accepted_by_incorporation": 0,
+  "historical_negative_evidence_preserved": true
+}

@@ -6,6 +6,7 @@ Status: planned research and implementation; no model or clinical capability is 
 
 - [Specification](./spec.md)
 - [Implementation plan](./plan.md)
+- [16 November recommendations, reuse decisions and cross-track order](../frontier-assurance_20261113/recommendations-20261116.md)
 - [Metadata](./metadata.json)
 - [Evidence ledger](./evidence.jsonl)
 - [Component matrix](../../research/cognitive-autopsy/component-matrix.md)

@@ -2,6 +2,28 @@
 
 Continue automatically through ready tasks, review and bounded rework. Do not ask for routine approval. Record the recommendation and supporting evidence; the safe default is a bounded synthetic/local result with unqualified capabilities withheld. No failure authorises relaxing a gate or reusing a contaminated holdout.
 
+## Repository-review incorporation — 16 November 2026
+
+The [recommendation map and implementation order](./recommendations-20261116.md)
+and [machine-readable planning view](./execution-order-20261116.json) refine the
+existing 24 work packages; they do not add a parallel queue. The
+[incorporation receipt](./recommendations-evidence-20261116.md) distinguishes
+documentation delivery from pending implementation. D0 ownership and acceptance
+remain unchanged. AcciMap #139 and HEAPS #140 retain their separate owners and
+track namespaces; the coordinator reconciles their shared registration.
+
+- [ ] Follow-up to accepted FAW01 (R01): make `interface_actions.render_view` consume the canonical domain validator; reproduce and reject unknown-source, duplicate-ID and invalid-transition records at the rendering boundary. Preserve valid-record, hash, audience and privacy behaviour. This follow-up does not rewrite historical FAW01 acceptance and can run alongside D0 only in a separately assigned, non-overlapping scope.
+- [ ] FAW06 maintenance / CAW02/08 (R02): measure validator construction and duplicate-ID checks; reuse cached immutable validators and `collections.Counter` where justified, preserve versioned hash contracts, and refactor only bounded responsibilities. The completed typing migration remains accepted.
+- [ ] FAW18 / FA12–13 delivery metadata (R07): derive a capability/status view from existing registries and receipts, separating release, implementation, synthetic testing, benchmark, workflow and operational evidence. No duplicate manual registry or model qualification is introduced.
+
+Priority: finish owned D0 and the renderer follow-up, then D1 → D2 → D3;
+qualified component comparisons and final-output admission support selected D6
+composition, then D7 evidence and conditional D8 extensions. Source/rights,
+profile and dependency preparation may run in assigned parallel scopes. A
+text-only deterministic D6 need not wait for every optional model, OCR or process
+experiment. Later implementation remains pending coordinator file-scope
+assignment under existing authority, rather than being claimed by this plan.
+
 ## Phase A: Repair and strict engineering
 
 - [x] FAW01: repair typed entity/relationship references and add adversarial regression tests (FA01; evidence core and its tests; PR127 merged, hosted Quality43400688051 passed).
@@ -23,18 +45,18 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
 ## Phase C: Measured triangulation and hallucination reduction
 
 - [ ] FAW11 / D4: compare regex, token/section/ConText NLP, conventional classifiers and structured local generation with the same case-family split and labelled resources (CAW04–09/21).
-- [ ] FAW12 / D5: test document text/layout/OCR and structured event-log agreement; differentiate duplicated source representations from independent evidence (CAW15/16).
+- [ ] FAW12 / D5: conditionally test document text/layout/OCR and structured event-log agreement; differentiate duplicated source representations from independent evidence. CAW15 applies only to the optional synthetic-world rendering experiment, CAW16 to source-to-trace work; neither is a universal prerequisite for a source-native text packet. Admit Docling or another maintained parser only for a measured ingestion need (R04).
 - [ ] FAW13: compare single model, same-model critic, diverse-model verifier and independent rule/NLP checks; score joint failures and useful disagreement (CAW21/22).
-- [ ] FAW14: freeze and test claim admission, opposing-evidence retrieval, critical-omission audit, calibrated abstention and bounded repair; reverify final prose (CAW08–12/20/21).
+- [ ] FAW14: freeze and test claim admission, opposing-evidence retrieval, critical-omission audit, calibrated abstention and bounded repair; reverify final prose. Test correction/withdrawal propagation to dependent claims, views, exports and action justifications while retaining unaffected outputs and immutable history (R05/R08; CAW08/10/20, with CAW09/21 for included generative arms). Controlled experiments CAW11/12 are research comparisons, not prerequisites for every deterministic renderer.
 - [ ] FAW15: validate actual local data/egress/log/cache isolation with canaries and adversarial traffic; isolated-host tests remain external-environment work, not paper evidence.
 - [ ] Checkpoint C: retain a simpler arm if additional models/modalities fail the predeclared error/coverage/burden contrast. No majority vote overrides a failed deterministic boundary.
 
 ## Phase D: Frontier evidence and death-review composition
 
-- [ ] FAW16 / D6: compose individually qualified components into a reproducible investigation/death-review packet; test propagated errors and reviewer corrections (Track 14; CAW19/21).
+- [ ] FAW16 / D6: compose individually qualified components into a reproducible investigation/death-review packet; test propagated errors, source corrections/withdrawals and reviewer corrections (R06/R08; Track 14 DR-04–12 and CA08–CA12). Prepare packet fixtures after D3; acceptance requires the renderer follow-up, FAW14 final-output checks and qualification of every included component. CAW19 applies only to included process studies and CAW21 to included generative arms; optional D4/D5/process experiments do not block a qualified text-only packet. Consume AcciMap/HEAPS handoffs through their existing owners.
 - [ ] FAW17 / D7: execute a frozen external/temporal holdout against a competent same-model prompt, portable skill, strongest conventional baseline and staged system (CAW22).
-- [ ] FAW18: report case-clustered uncertainty, material-error/omission/coverage metrics, model costs, hardware resources, correlated judges and failure denominators; refresh comparator literature at freeze.
-- [ ] FAW19: observe appropriate users/reviewers only for claims requiring workflow, judgement or patient-benefit evidence; agent engineering review continues independently.
+- [ ] FAW18: report case-clustered uncertainty, material-error/omission/coverage metrics, severe errors, concern fidelity, false blocking, model costs, hardware resources, correlated judges and failure denominators; refresh comparator literature at freeze. Admit applicable LRRT/IGZ rubric items with source/version/rights and rating-reliability evidence; derive capability cards from existing receipts (R07/R09).
+- [ ] FAW19: observe appropriate users/reviewers only for claims requiring workflow, judgement or patient-benefit evidence; agent engineering review continues independently. Consider ordinary review versus a deterministic viewer versus viewer plus generated assistance, with randomised/counterbalanced allocation, unsupported-claim detection, correction time and reliance measured where feasible (R10).
 - [ ] Checkpoint D: publish a research qualification or rejection card for an exact task/configuration. A frontier claim requires useful improvement over current relevant baselines, not just a new architecture.
 
 ## Phase E: Beyond-frontier hypotheses and selective Rust
@@ -56,8 +78,10 @@ PR #131 at `419c04d7e1c0a16e924e0b7058604671855625a2`; final-head Quality4355567
 and merged-master Quality43556852077 both passed all nine jobs, with
 privacy/secrets and official conformance success. This updates the Phase A
 publication-time statements above without rewriting their source receipts.
-Current authorised work is FAW07 / D0 only, using the two named ordinary ChatGPT
-workers and the sole integration coordinator. The implementation has distinct CLI/server admission and
+The current bounded D0 implementation increment remains FAW07 / D0 only, using
+the two named ordinary ChatGPT workers and the sole integration coordinator.
+The separately authorised 16 November planning refinement and AcciMap/HEAPS
+owner lanes do not expand those workers' file scopes. The implementation has distinct CLI/server admission and
 phase-dependent probe receipts, checked optional/native output, typed autonomy,
 evidence, retrieval, benchmark, privacy, panel and evaluator contracts, and
 reviewed package/test APIs. Preserve early rejection, oversized-stream hash
