@@ -180,3 +180,7 @@ A normal revert of this bounded increment removes the D2 modules, dispatcher
 and related tests without altering D0/D1 or other owners' work. No model or
 clinical capability is qualified. The next planned increment is FAW10 / D3:
 recipient/cutoff-scoped decision-time packets and concern traceability.
+
+## Subsequent observed acceptance
+
+The [D2 acceptance record](./faw09-d2-acceptance-20261117.md) now records successful final-head checks on `89425a12c15b4d533fb8610baed764fb429c86dc`, normal PR #150 merge as `8bf94873af22730e445fcbb1b7fb748cfd16ed25`, identical tested/merged tree and successful automatic master conformance. This supersedes pending-delivery statements in this source-stage record while preserving every earlier failure and observation. FAW09 is accepted; FAW10 / D3 and wider qualification remain planned.

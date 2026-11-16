@@ -6,13 +6,13 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-12T20:10:44Z",
-  "updated_at": "2026-11-16T21:12:23+00:00",
+  "updated_at": "2026-11-17T07:26:10+10:00",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/125",
     "parent_issue": "https://github.com/edithatogo/rcagent/issues/2",
-    "last_accepted_pull_request": "https://github.com/edithatogo/rcagent/pull/148",
-    "last_accepted_master": "33ab6d20f294fd86de2b39659aea53b0941e80e9",
+    "last_accepted_pull_request": "https://github.com/edithatogo/rcagent/pull/150",
+    "last_accepted_master": "8bf94873af22730e445fcbb1b7fb748cfd16ed25",
     "coordination_branch": "coordination/faw07-d0-contract-20261114",
     "implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/132",
     "verification_pull_request": "https://github.com/edithatogo/rcagent/pull/133",
@@ -22,7 +22,8 @@
     "d1_implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/148",
     "d1_acceptance_branch": "docs/faw08-d1-acceptance-20261117",
     "d2_branch": "feat/faw09-d2-timeline-20261117",
-    "d2_implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/150"
+    "d2_implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/150",
+    "d2_acceptance_branch": "docs/faw09-d2-acceptance-20261117"
   },
   "autonomy": "continuous-autonomy-with-owner-decision-gates",
   "autonomy_contract": "../../autonomy.json",
@@ -36,8 +37,8 @@
   ],
   "description": "Repair confirmed integrity, public-export and template defects; implement strict quality tooling; coordinate staged source/timeline/decision demonstrations, triangulation, hallucination reduction and prospective frontier comparison.",
   "verification": {
-    "status": "faw09_d2_in_progress",
-    "scope": "accepted_faw06_and_bounded_synthetic_d0_d1",
+    "status": "faw09_d2_delivered_and_accepted",
+    "scope": "accepted_faw06_and_bounded_synthetic_d0_d1_d2",
     "receipt": "./delivery-evidence.md",
     "model_runs": 0,
     "qualified_capabilities": 0,
@@ -55,7 +56,8 @@
       "skill_conformance": "success",
       "offline_security": "queued_not_a_completed_scan",
       "faw07": "accepted_see_d0_hosted_ci",
-      "faw08": "accepted_see_d1_hosted_ci"
+      "faw08": "accepted_see_d1_hosted_ci",
+      "faw09": "accepted_see_d2_hosted_ci"
     },
     "typing_receipt": "./typing-completion-evidence.md",
     "typing_measurement": "../../../quality/typing-completion-verification-20261114.json",
@@ -79,8 +81,8 @@
       "./typing-contracts-evidence.md",
       "./typing-evidence.md"
     ],
-    "next_work_package": "FAW09 / D2: timeline and partial-order assembly with distinct event, recording and recipient-availability clocks",
-    "delivery_acceptance_record": "https://github.com/edithatogo/rcagent/pull/148",
+    "next_work_package": "FAW10 / D3: recipient/cutoff-scoped decision-time packets and patient/family concern traceability",
+    "delivery_acceptance_record": "https://github.com/edithatogo/rcagent/pull/150",
     "faw06_source_publication": {
       "status": "source_head_passed",
       "observed_source_commit": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
@@ -93,7 +95,7 @@
       "offline_security": "queued_not_a_completed_scan",
       "final_delivery": "Exact final documentation head must pass required checks and protected merge; observed acceptance will be recorded on PR #131."
     },
-    "current_work_package": "FAW09 / D2 (source verified; hosted acceptance pending)",
+    "current_work_package": "FAW10 / D3 (planned; not started)",
     "d0_contract": "./faw07-d0-contract.md",
     "d0_coordination": "./faw07-d0-coordination.json",
     "d0_completion_receipt": "./faw07-d0-completion-20261116.md",
@@ -134,7 +136,22 @@
     "d2_conformance_receipt": "./faw09-d2-conformance-20261117.json",
     "d2_execution_receipt": "../../../tests/fixtures/faw09_independent/verification-receipt.json",
     "d2_local_engineering_receipt": "./faw09-d2-local-engineering-20261117.json",
-    "d2_publication_attempts": "./faw09-d2-publication-attempts-20261117.json"
+    "d2_publication_attempts": "./faw09-d2-publication-attempts-20261117.json",
+    "d2_acceptance_receipt": "./faw09-d2-acceptance-20261117.md",
+    "d2_hosted_ci": {
+      "status": "passed_and_merged",
+      "source_head": "89425a12c15b4d533fb8610baed764fb429c86dc",
+      "merged_master": "8bf94873af22730e445fcbb1b7fb748cfd16ed25",
+      "quality_run": 43957854760,
+      "quality_jobs_passed": 9,
+      "dependency_review_run": 43957855067,
+      "privacy_secrets_run": 43957854773,
+      "master_conformance_run": 43958804476,
+      "observation": "./faw09-d2-acceptance-20261117.json",
+      "master_quality_run": 43958804573,
+      "master_quality_jobs_passed": 9,
+      "master_privacy_run": 43958804670
+    }
   },
   "decisions": [
     "../../decisions/20261113-001-frontier-assurance.md"

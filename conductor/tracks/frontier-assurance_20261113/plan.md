@@ -23,8 +23,8 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
   not started under this D0 assignment.
 - [x] FAW08 / D1: bounded dates/times/units/negation and exact source-span extraction, including invalid/ambiguous expressions (CAW02/04/08), delivered through [PR #148](https://github.com/edithatogo/rcagent/pull/148), merged as `33ab6d20f294fd86de2b39659aea53b0941e80e9`.
   The [observed D1 acceptance](./faw08-d1-acceptance-20261117.md) records all nine source-head Quality successes, dependency/privacy success, protected merge and automatic master conformance. The [source completion record](./faw08-d1-completion-20261116.md) preserves 195 focused passing tests, the unchanged 28-case independent oracle, three-role agent review and failed observations. This contributes to CAW02/04/08; Checkpoint B and wider clinical/model qualification remain open.
-- [~] FAW09 / D2: demonstrate timeline/partial-order assembly with event, recording and recipient-availability clocks; preserve disagreement and unknown order (CAW10, CS03).
-  The [D2 contract](./faw09-d2-contract.md) freezes explicit synthetic linkage, three clocks, conservative partial orders, amendments and independent verification before production. The [source completion record](./faw09-d2-completion-20261117.md) records 212 passing D2 tests, the unchanged 34-case oracle, three-role review and the full local engineering observation. Hosted acceptance remains pending.
+- [x] FAW09 / D2: demonstrate timeline/partial-order assembly with event, recording and recipient-availability clocks; preserve disagreement and unknown order (CAW10, CS03).
+  Delivered through [PR #150](https://github.com/edithatogo/rcagent/pull/150), merged as `8bf94873af22730e445fcbb1b7fb748cfd16ed25`. The [observed D2 acceptance](./faw09-d2-acceptance-20261117.md) records all nine final-head Quality successes, dependency/privacy success, normal protected merge and automatic master conformance. The [source completion record](./faw09-d2-completion-20261117.md) preserves 212 passing D2 tests, the unchanged 34-case oracle, three-role review, local socket failures and the corrected timestamp false positive. The [contract](./faw09-d2-contract.md) retains caller-declared linkage and bounded uncertainty; D3, Checkpoint B and wider qualification remain open.
 - [ ] FAW10 / D3: demonstrate decision-time packets and patient/family concern traceability; hide future outcome/appraisal through every retrieval/verification/rendering path (CAW10/20).
 - [ ] Checkpoint B: pass the finite oracle suite and property/metamorphic tests; publish precision/recall and abstention on held-out component examples without calling them clinical validation.
 
@@ -65,7 +65,7 @@ and merged-master Quality43556852077 both passed all nine jobs, with
 privacy/secrets and official conformance success. This updates the Phase A
 publication-time statements above without rewriting their source receipts.
 The 16 November bounded D0 completion assignment is delivered and accepted;
-FAW08 / D1 is accepted through PR #148 under the subsequent explicit D1 assignment; FAW09 / D2 is active under the subsequent explicit D2 assignment. Original worker history and the direct completion
+FAW08 / D1 is accepted through PR #148 under the subsequent explicit D1 assignment; FAW09 / D2 is accepted through PR #150 under the subsequent explicit D2 assignment; FAW10 / D3 remains planned. Original worker history and the direct completion
 authority are retained in the D0 receipts. The implementation has distinct CLI/server admission and
 phase-dependent probe receipts, checked optional/native output, typed autonomy,
 evidence, retrieval, benchmark, privacy, panel and evaluator contracts, and

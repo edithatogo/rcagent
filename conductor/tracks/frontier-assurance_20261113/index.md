@@ -1,6 +1,6 @@
 # Track 13: Frontier assurance and incremental capability evidence
 
-Status: FAW06 remains delivered through [PR #131](https://github.com/edithatogo/rcagent/pull/131) with zero typing debt. FAW07 / D0 remains accepted through [PR #144](https://github.com/edithatogo/rcagent/pull/144); its [receipt](./faw07-d0-acceptance-20261116.md) preserves original worker heads and failed observations. FAW08 / D1 is now accepted through [PR #148](https://github.com/edithatogo/rcagent/pull/148), merged as `33ab6d20f294fd86de2b39659aea53b0941e80e9` after all nine source-head Quality jobs and dependency/privacy checks passed, followed by successful automatic master conformance. The [D1 acceptance receipt](./faw08-d1-acceptance-20261117.md) records the exact identities. FAW09 / D2 is active under the new explicit implementation, PR, checks and merge assignment; the wider track is open, with no model or clinical qualification.
+Status: FAW06, FAW07 / D0 and FAW08 / D1 remain delivered with their original acceptance records. FAW09 / D2 is accepted through [PR #150](https://github.com/edithatogo/rcagent/pull/150), merged as `8bf94873af22730e445fcbb1b7fb748cfd16ed25` after all nine final-head Quality jobs and dependency/privacy checks passed, followed by successful automatic master conformance. The [D2 acceptance receipt](./faw09-d2-acceptance-20261117.md) records actual identities, independent verification and the retained timestamp correction. FAW10 / D3 is next and remains planned; the wider track is open, with no model or clinical qualification.
 
 - [Specification and MoSCoW requirements](./spec.md)
 - [Executable work packages and acceptance](./plan.md)
@@ -14,6 +14,7 @@ Status: FAW06 remains delivered through [PR #131](https://github.com/edithatogo/
 - [17 November D1 observed merge and acceptance](./faw08-d1-acceptance-20261117.md)
 - [FAW09 / D2 bounded partial-chronology contract](./faw09-d2-contract.md)
 - [D2 source completion and verification](./faw09-d2-completion-20261117.md)
+- [D2 observed merge and acceptance](./faw09-d2-acceptance-20261117.md)
 - [Evidence ledger](./evidence.jsonl)
 - [Capability demonstration ladder](../../research/frontier-assurance/capability-ladder.md)
 - [Programmatic, multi-model and multimodal triangulation](../../research/frontier-assurance/triangulation.md)
