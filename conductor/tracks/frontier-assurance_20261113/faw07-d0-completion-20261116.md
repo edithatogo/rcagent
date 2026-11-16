@@ -1,5 +1,10 @@
 # FAW07 / D0 completion and integration record
 
+This document retains the **premerge source observation**. The later
+[observed acceptance receipt](./faw07-d0-acceptance-20261116.md) records the actual
+protected merge and hosted/master-conformance results; pending statements below
+describe the original source-verification time.
+
 ## Bounded authority and source reconciliation
 
 On 16 November 2026 Dylan instructed this conversation: **"Implement D0, open a
@@ -143,3 +148,11 @@ FAW06, the earlier contract, independent negative observations or unrelated
 method/profile work. D0 qualifies only the demonstrated synthetic identity and
 byte-span contract; it establishes no semantic truth, clinical/model validity,
 operational isolation or release.
+
+## Subsequent observed acceptance
+
+PR #144 was merged as `d3c10d607470c9a50c5410030b80aeab2cfa5430` after its exact source head passed every
+Quality job, dependency review and privacy/secrets. Automatic master conformance
+run 43857726512 passed before acceptance. See the [acceptance receipt](./faw07-d0-acceptance-20261116.md)
+for actual identities and worker reconciliation. The failed local full-gate
+observation and all earlier evidence above remain unchanged.
