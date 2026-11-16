@@ -1,0 +1,565 @@
+{
+  "schema_version": "heaps-profile-1.0",
+  "profile_id": "syn-heaps-profile-01",
+  "profile_version": 1,
+  "data_class": "generated_synthetic",
+  "privacy_mode": "fully_local",
+  "case_binding": {
+    "schema_version": "1.1",
+    "case_id": "syn-heaps-orthogonal-01",
+    "version": 1,
+    "fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+    "hash_domain": "evidence-core-json-utf8-v1"
+  },
+  "applicability": {
+    "jurisdiction": "AU-QLD",
+    "purpose": "Prepare a generated synthetic review draft for contract tests.",
+    "scope": "No clinical use, statutory protection, operational policy applicability or local form conformity is established.",
+    "procedure_snapshot_id": null,
+    "obligation_snapshot_ids": [
+      "syn-snapshot-clock"
+    ],
+    "commissioning_role_ref": null,
+    "commissioning_status": "unverified",
+    "protection_status": "not_established"
+  },
+  "selection": {
+    "process": "HEAPS",
+    "selected_by": {
+      "kind": "role",
+      "id": "syn-role-facilitator"
+    },
+    "decision_ref": null,
+    "analytical_tools": [
+      {
+        "tool": "timeline-review",
+        "question": "What timing and documentation remain unresolved in the fictional exercise?",
+        "status": "selected_synthetic"
+      }
+    ]
+  },
+  "source_snapshots": [
+    {
+      "snapshot_id": "syn-snapshot-record",
+      "source_id": "syn-src-record",
+      "source_family_id": "syn-family-record",
+      "state": "available",
+      "raw_sha256": "1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+      "rights_status": "original_synthetic",
+      "authority_status": "unverified",
+      "version": "1",
+      "locator": "synthetic:sources/record.txt",
+      "source_kind": "generated_synthetic",
+      "purposes": [
+        "incident_evidence"
+      ],
+      "applicability": "applies_synthetic"
+    },
+    {
+      "snapshot_id": "syn-snapshot-staff",
+      "source_id": "syn-src-staff",
+      "source_family_id": "syn-family-staff",
+      "state": "available",
+      "raw_sha256": "84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+      "rights_status": "original_synthetic",
+      "authority_status": "unverified",
+      "version": "1",
+      "locator": "synthetic:sources/staff-account.txt",
+      "source_kind": "generated_synthetic",
+      "purposes": [
+        "incident_evidence"
+      ],
+      "applicability": "applies_synthetic"
+    },
+    {
+      "snapshot_id": "syn-snapshot-consumer",
+      "source_id": "syn-src-consumer",
+      "source_family_id": "syn-family-consumer",
+      "state": "available",
+      "raw_sha256": "5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+      "rights_status": "original_synthetic",
+      "authority_status": "unverified",
+      "version": "1",
+      "locator": "synthetic:sources/consumer-account.txt",
+      "source_kind": "generated_synthetic",
+      "purposes": [
+        "incident_evidence"
+      ],
+      "applicability": "applies_synthetic"
+    },
+    {
+      "snapshot_id": "syn-snapshot-clock",
+      "source_id": "syn-src-clock",
+      "source_family_id": "syn-family-clock",
+      "state": "available",
+      "raw_sha256": "cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02",
+      "rights_status": "original_synthetic",
+      "authority_status": "unverified",
+      "version": "1",
+      "locator": "synthetic:sources/synthetic-clock-rule.txt",
+      "source_kind": "generated_synthetic",
+      "purposes": [
+        "obligation",
+        "calendar"
+      ],
+      "applicability": "applies_synthetic"
+    }
+  ],
+  "source_families": [
+    {
+      "source_ref": {
+        "kind": "source",
+        "id": "syn-src-record"
+      },
+      "family_id": "syn-family-record",
+      "derived_from": [],
+      "independence": "not_established"
+    },
+    {
+      "source_ref": {
+        "kind": "source",
+        "id": "syn-src-staff"
+      },
+      "family_id": "syn-family-staff",
+      "derived_from": [],
+      "independence": "not_established"
+    },
+    {
+      "source_ref": {
+        "kind": "source",
+        "id": "syn-src-consumer"
+      },
+      "family_id": "syn-family-consumer",
+      "derived_from": [],
+      "independence": "not_established"
+    },
+    {
+      "source_ref": {
+        "kind": "source",
+        "id": "syn-src-clock"
+      },
+      "family_id": "syn-family-clock",
+      "derived_from": [],
+      "independence": "not_established"
+    }
+  ],
+  "roles": [
+    {
+      "role_ref": {
+        "kind": "role",
+        "id": "syn-role-recorder"
+      },
+      "responsibilities": [
+        "recorder"
+      ],
+      "authority_status": "unverified",
+      "incident_involvement": "unknown"
+    },
+    {
+      "role_ref": {
+        "kind": "role",
+        "id": "syn-role-facilitator"
+      },
+      "responsibilities": [
+        "facilitator"
+      ],
+      "authority_status": "unverified",
+      "incident_involvement": "not_involved"
+    },
+    {
+      "role_ref": {
+        "kind": "role",
+        "id": "syn-role-staff"
+      },
+      "responsibilities": [
+        "participant"
+      ],
+      "authority_status": "unverified",
+      "incident_involvement": "involved"
+    },
+    {
+      "role_ref": {
+        "kind": "role",
+        "id": "syn-role-consumer"
+      },
+      "responsibilities": [
+        "participant"
+      ],
+      "authority_status": "unverified",
+      "incident_involvement": "involved"
+    },
+    {
+      "role_ref": {
+        "kind": "role",
+        "id": "syn-role-reviewer"
+      },
+      "responsibilities": [
+        "independent_challenger",
+        "packet_reviewer"
+      ],
+      "authority_status": "unverified",
+      "incident_involvement": "not_involved"
+    },
+    {
+      "role_ref": {
+        "kind": "role",
+        "id": "syn-role-owner"
+      },
+      "responsibilities": [
+        "action_owner"
+      ],
+      "authority_status": "unverified",
+      "incident_involvement": "unknown"
+    }
+  ],
+  "participation": [
+    {
+      "role_ref": {
+        "kind": "role",
+        "id": "syn-role-staff"
+      },
+      "state": "provided",
+      "account_refs": [
+        {
+          "kind": "reported_account",
+          "id": "syn-stmt-staff"
+        }
+      ],
+      "response_refs": [],
+      "disagreement_refs": [
+        {
+          "kind": "reported_account",
+          "id": "syn-stmt-consumer"
+        }
+      ],
+      "needs": [],
+      "confirmation": "pending",
+      "state_note": "A synthetic account is supplied; verification, agreement and authorised consultation are not established.",
+      "state_basis_refs": [
+        {
+          "kind": "reported_account",
+          "id": "syn-stmt-staff"
+        }
+      ]
+    },
+    {
+      "role_ref": {
+        "kind": "role",
+        "id": "syn-role-consumer"
+      },
+      "state": "provided",
+      "account_refs": [
+        {
+          "kind": "reported_account",
+          "id": "syn-stmt-consumer"
+        }
+      ],
+      "response_refs": [],
+      "disagreement_refs": [
+        {
+          "kind": "reported_account",
+          "id": "syn-stmt-staff"
+        }
+      ],
+      "needs": [
+        "Ask about access and communication preferences; none are inferred."
+      ],
+      "confirmation": "pending",
+      "state_note": "A synthetic account is supplied; verification, agreement and authorised consultation are not established.",
+      "state_basis_refs": [
+        {
+          "kind": "reported_account",
+          "id": "syn-stmt-consumer"
+        }
+      ]
+    }
+  ],
+  "chronology": [
+    {
+      "statement_ref": {
+        "kind": "observed_fact",
+        "id": "syn-stmt-document"
+      },
+      "event_time": {
+        "state": "unknown",
+        "value": null,
+        "precision": "unknown",
+        "basis_refs": [],
+        "uncertainty": "Event time is not established by this account or document."
+      },
+      "document_time": {
+        "state": "unknown",
+        "value": null,
+        "precision": "unknown",
+        "basis_refs": [],
+        "uncertainty": "A precise document creation time is unavailable."
+      },
+      "available_time": {
+        "state": "known",
+        "value": "2030-01-06T23:30:00Z",
+        "precision": "second",
+        "basis_refs": [
+          {
+            "kind": "source",
+            "id": "syn-src-record"
+          }
+        ],
+        "uncertainty": "Fictional fixture value only; no operational or legal timing claim."
+      },
+      "ordering_note": "Availability, document creation and event occurrence are separate; no ordering inference is made."
+    },
+    {
+      "statement_ref": {
+        "kind": "reported_account",
+        "id": "syn-stmt-staff"
+      },
+      "event_time": {
+        "state": "unknown",
+        "value": null,
+        "precision": "unknown",
+        "basis_refs": [],
+        "uncertainty": "Event time is not established by this account or document."
+      },
+      "document_time": {
+        "state": "unknown",
+        "value": null,
+        "precision": "unknown",
+        "basis_refs": [],
+        "uncertainty": "A precise document creation time is unavailable."
+      },
+      "available_time": {
+        "state": "known",
+        "value": "2030-01-06T23:30:00Z",
+        "precision": "second",
+        "basis_refs": [
+          {
+            "kind": "source",
+            "id": "syn-src-staff"
+          }
+        ],
+        "uncertainty": "Fictional fixture value only; no operational or legal timing claim."
+      },
+      "ordering_note": "Availability, document creation and event occurrence are separate; no ordering inference is made."
+    },
+    {
+      "statement_ref": {
+        "kind": "reported_account",
+        "id": "syn-stmt-consumer"
+      },
+      "event_time": {
+        "state": "unknown",
+        "value": null,
+        "precision": "unknown",
+        "basis_refs": [],
+        "uncertainty": "Event time is not established by this account or document."
+      },
+      "document_time": {
+        "state": "unknown",
+        "value": null,
+        "precision": "unknown",
+        "basis_refs": [],
+        "uncertainty": "A precise document creation time is unavailable."
+      },
+      "available_time": {
+        "state": "known",
+        "value": "2030-01-06T23:30:00Z",
+        "precision": "second",
+        "basis_refs": [
+          {
+            "kind": "source",
+            "id": "syn-src-consumer"
+          }
+        ],
+        "uncertainty": "Fictional fixture value only; no operational or legal timing claim."
+      },
+      "ordering_note": "Availability, document creation and event occurrence are separate; no ordering inference is made."
+    }
+  ],
+  "clocks": {
+    "awareness": {
+      "state": "known",
+      "value": "2030-01-07T00:00:00Z",
+      "precision": "second",
+      "basis_refs": [
+        {
+          "kind": "source",
+          "id": "syn-src-clock"
+        }
+      ],
+      "uncertainty": "Fictional fixture value only; no operational or legal timing claim."
+    },
+    "sac1_reporting": {
+      "state": "unknown",
+      "value": null,
+      "precision": "unknown",
+      "basis_refs": [],
+      "uncertainty": "No SAC1 reporting event or reportability decision is asserted."
+    },
+    "review_submission": {
+      "state": "unknown",
+      "value": null,
+      "precision": "unknown",
+      "basis_refs": [],
+      "uncertainty": "No system-of-record submission receipt is present."
+    }
+  },
+  "deadlines": [
+    {
+      "deadline_id": "syn-deadline-training",
+      "state": "specified_unverified",
+      "trigger_clock": "awareness",
+      "source_snapshot_id": "syn-snapshot-clock",
+      "counting_rule": "business_days",
+      "calendar_snapshot_id": "syn-snapshot-clock",
+      "time_zone": "UTC",
+      "counting_convention": "Exclude the trigger day; count the next Monday-to-Friday day at the same UTC time; the fictional calendar has no holidays.",
+      "offset": 1,
+      "due": {
+        "state": "known",
+        "value": "2030-01-08T00:00:00Z",
+        "precision": "second",
+        "basis_refs": [
+          {
+            "kind": "source",
+            "id": "syn-src-clock"
+          }
+        ],
+        "uncertainty": "Fictional fixture value only; no operational or legal timing claim."
+      },
+      "note": "Literal fictional training target, not a computed or applicable Queensland Health obligation."
+    }
+  ],
+  "factor_assignments": [
+    {
+      "factor_ref": {
+        "kind": "factor",
+        "id": "syn-factor-prompt"
+      },
+      "state": "unmapped",
+      "taxonomy_id": null,
+      "taxonomy_version": null,
+      "taxonomy_authority": "local_unverified",
+      "categories": [],
+      "rationale": "A candidate system condition is not a taxonomy category. No local taxonomy is admitted."
+    }
+  ],
+  "finding_context": [
+    {
+      "finding_ref": {
+        "kind": "finding",
+        "id": "syn-stmt-finding"
+      },
+      "supporting_refs": [
+        {
+          "kind": "observed_fact",
+          "id": "syn-stmt-document"
+        }
+      ],
+      "contrary_refs": [
+        {
+          "kind": "reported_account",
+          "id": "syn-stmt-staff"
+        },
+        {
+          "kind": "reported_account",
+          "id": "syn-stmt-consumer"
+        }
+      ],
+      "alternative_refs": [
+        {
+          "kind": "hypothesis",
+          "id": "syn-stmt-document-gap"
+        },
+        {
+          "kind": "hypothesis",
+          "id": "syn-stmt-recall"
+        }
+      ],
+      "uncertainty": "Proposed documentation finding only; preserve both accounts, both alternatives and the unresolved gap. No authorised acceptance."
+    }
+  ],
+  "action_context": [
+    {
+      "action_ref": {
+        "kind": "action",
+        "id": "syn-action-mockup"
+      },
+      "recommendation_ref": {
+        "kind": "recommendation",
+        "id": "syn-stmt-recommendation"
+      },
+      "finding_refs": [
+        {
+          "kind": "finding",
+          "id": "syn-stmt-finding"
+        }
+      ],
+      "condition_refs": [
+        {
+          "kind": "hypothesis",
+          "id": "syn-stmt-document-gap"
+        }
+      ],
+      "hazard": "Possible misunderstanding of a fictional acknowledgement prompt; not a verified clinical hazard.",
+      "intended_mechanism": "Explore prompt visibility in a synthetic mockup without deploying a change.",
+      "resources": [
+        "Synthetic mockup and fixture reviewer time."
+      ],
+      "dependency_refs": [],
+      "deadline_id": null,
+      "process_measure": "Record whether the mockup test was performed.",
+      "outcome_measure": "Retain observations and disagreements from the fictional test.",
+      "balancing_measure": "Record additional mockup interaction steps.",
+      "unintended_consequences": "A clearer label could add confusing duplicate prompts; untested.",
+      "residual_risk": "No operational risk assessment or acceptance.",
+      "evaluation_at": "2030-01-14T00:00:00Z"
+    }
+  ],
+  "template_mapping": {
+    "state": "original",
+    "template_id": "syn-template-outline",
+    "template_version": "fixture-1",
+    "template_raw_sha256": "bd0b370bb21b5736ef560943c77a4bc356b8c864040cc3cb3d29f2eb93426928",
+    "rights_status": "original_synthetic",
+    "source_snapshot_id": null,
+    "field_mappings": [
+      {
+        "field_id": "accounts",
+        "refs": [
+          {
+            "kind": "reported_account",
+            "id": "syn-stmt-staff"
+          },
+          {
+            "kind": "reported_account",
+            "id": "syn-stmt-consumer"
+          }
+        ],
+        "gap": null
+      },
+      {
+        "field_id": "proposed-findings",
+        "refs": [
+          {
+            "kind": "finding",
+            "id": "syn-stmt-finding"
+          }
+        ],
+        "gap": "Authorised findings acceptance and current local template conformity are unavailable."
+      }
+    ],
+    "gaps": [
+      "The current local Queensland Health/HHS form has not been supplied or inspected.",
+      "This original outline does not assert official template conformity."
+    ]
+  },
+  "open_route_questions": [
+    {
+      "route": "incident",
+      "question": "Which local incident review procedure would apply if this were a real event?",
+      "state": "open",
+      "references": []
+    }
+  ],
+  "optional_components": []
+}

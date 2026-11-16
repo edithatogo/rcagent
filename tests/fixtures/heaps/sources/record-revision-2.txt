@@ -1,0 +1,4 @@
+GENERATED SYNTHETIC FIXTURE — no real person, care event or official form.
+[Ward X] handover document, revision 2: the acknowledgement heading is present and its value is blank.
+The corrected reproduced heading reads «révision µ 2». This document does not establish whether a prompt was visible during the handover.
+The blank value does not establish that care, communication or acknowledgement was omitted.

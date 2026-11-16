@@ -1,0 +1,118 @@
+{
+  "schema_version": "heaps-registration-proposal-1.0",
+  "status": "proposal_not_applied",
+  "track_id": "qld-heaps-review_20261116",
+  "issue": 140,
+  "owner": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
+  "observed_base": "6f9cd9627adc52782a67fa6693f1cdb90c3c84a7",
+  "track_number": null,
+  "numbering_rule": "Allocate after reconciling active AcciMap139 and other current tracks; do not reserve 15 implicitly.",
+  "registry_row_template": "| [~] | [<assigned number> Queensland HEAPS](./tracks/qld-heaps-review_20261116/index.md) | [#140](https://github.com/edithatogo/rcagent/issues/140) | H2/H3/H4 integrated; H5 independent qualification next; H6 conditional local alignment remains separate |",
+  "index_entry": "[Queensland HEAPS review profile](./tracks/qld-heaps-review_20261116/index.md): H1 sources/scope, H2 guidance and H3 contract in parallel, H4 synthetic packet, H5 independent qualification, H6 conditional local alignment.",
+  "roadmap_record_template": {
+    "number": "COORDINATOR_ASSIGN",
+    "id": "qld-heaps-review_20261116",
+    "issue": 140,
+    "hard_dependencies": [],
+    "phase_dependencies": [
+      "frontier-assurance_20261113",
+      "cognitive-autopsy_20261107"
+    ],
+    "status": "in_progress"
+  },
+  "requested_changes": [
+    {
+      "paths": [
+        "conductor/index.md",
+        "conductor/tracks.md",
+        "conductor/roadmap.md",
+        "conductor/roadmap.json"
+      ],
+      "action": "Register stable track and assigned number with bounded phase dependency semantics after exact-head review; append the ID to workstreams[id=product-interfaces-distribution].tracks and populate this track metadata.track_number with the assigned number."
+    },
+    {
+      "paths": [
+        "conductor/jurisdictions/registry.json"
+      ],
+      "action": "Reference existing QLD authority; add reviewed HEAPS index/local instrument mapping and distinct public-index versus restricted-template availability only as needed."
+    },
+    {
+      "paths": [
+        "skills/rca-investigation/references/method-selection-matrix.md",
+        "skills/rca-investigation/references/method-combination-guide.md"
+      ],
+      "action": "Review and integrate the H2 branch changes: local process first, question-driven method selection, consistent overlap rules, no unsupported mandatory SAC bundles or turnaround times. The separately owned AcciMap guide is unchanged."
+    },
+    {
+      "paths": [
+        "skills/rca-investigation/SKILL.md",
+        "skills/rca-investigation/assets/template-admission.json"
+      ],
+      "action": "Review and integrate the implemented H2 navigation and original HEAPS asset admission at exact reviewed bytes, retaining portable-draft-only status and historical quarantine."
+    },
+    {
+      "paths": [
+        "conductor/capability-profiles.json",
+        "conductor/capability-profiles.md"
+      ],
+      "action": "Only if the coordinator chooses a separately registered capability, mark planned/synthetic scope; do not imply a supported runtime or add an unsupported profile class."
+    }
+  ],
+  "excluded_mutations": [
+    "existing D0 and AcciMap files",
+    "shared canonical schemas",
+    "tools/workbench.py",
+    "CI",
+    "dependency/package/release manifests and dependency lock",
+    "quality allowances",
+    "historical studies"
+  ],
+  "acceptance": "Coordinator records explicit acceptance/return, shared registration and exact-head required checks; no merge authorised by this proposal.",
+  "workstream_membership": {
+    "workstream_id": "product-interfaces-distribution",
+    "parent_issue": 4,
+    "append_track_id": "qld-heaps-review_20261116",
+    "target": "conductor/roadmap.json workstreams[id=product-interfaces-distribution].tracks"
+  },
+  "numbering_application": "After allocation, set the roadmap number and this track metadata.json track_number consistently; preserve null/unassigned proposal status until then.",
+  "h1_shared_interface_intake": [
+    {
+      "id": "H1-IF1",
+      "existing_work": "PR143 R01 shared renderer follow-up",
+      "paths": [
+        "tools/interface_actions.py",
+        "tests/test_interface_actions.py"
+      ],
+      "requirement": "Reject unknown typed source references, duplicate identifiers and invalid canonical transitions before rendering; consume the canonical domain gate and qualify the composed boundary.",
+      "status": "receiving_and_owner_assignment_pending"
+    },
+    {
+      "id": "H1-IF2",
+      "paths": [
+        "tools/evidence_core.py",
+        "pyproject.toml",
+        "uv.lock"
+      ],
+      "requirement": "Reconcile missing date-time enforcement in the unchanged lock. Verify actual checker capability and rejection of invalid source/record times; choose the shared fix without weakening validation or duplicating a parser.",
+      "status": "receiving_and_owner_assignment_pending"
+    },
+    {
+      "id": "H1-IF3",
+      "paths": [
+        "tools/interface_actions.py"
+      ],
+      "requirement": "Agree whole-packet approval representation and exact hash domains. Existing scopes exclude heaps_packet; communication scope is not approval of all substantive findings/actions. Do not silently extend the public interface.",
+      "status": "synthetic_draft_scope_frozen_in_h3_operational_mapping_unaccepted",
+      "h3_disposition": "Separate heaps-synthetic-draft-packet decision and detached manifest; shared approval scope is not extended or silently mapped. Actual authority/substantive approval remain unverified/not_established."
+    }
+  ],
+  "h2_h3_authority": "User explicitly instructed: Proceed with implementing H2 and H3. Dedicated content/schema/fixture paths and necessary reviewable H2 content integration are prepared in PR142; coordinator registration and merge remain separate.",
+  "h4_authority": "User explicitly instructed: Implement H4, open a PR, check actions pass, then merge. This authorises the HEAPS PR integration after actual passing required checks; portfolio number allocation remains a separate shared task.",
+  "applied_content_integration": {
+    "pr": 142,
+    "source": "05975675467684f033e5d4df7320984a4c9eb3a1",
+    "merge": "006d98cb60c72143b0517f0e7a446641642ddd5a",
+    "receipt": "./h4-acceptance-20261117.md",
+    "scope": "H2 shared content/navigation/admission and H3/H4 delivery; portfolio registration remains pending"
+  }
+}

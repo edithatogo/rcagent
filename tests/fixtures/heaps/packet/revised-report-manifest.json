@@ -1,0 +1,72 @@
+{
+  "schema_version": "heaps-packet-manifest-1.0",
+  "manifest_id": "syn-manifest-02",
+  "data_class": "generated_synthetic",
+  "privacy_mode": "fully_local",
+  "case_id": "syn-heaps-orthogonal-01",
+  "profile_id": "syn-heaps-profile-01",
+  "profile_version": 1,
+  "hash_domain": "sha256-raw-bytes-v1",
+  "ordering": "fixed-groups-path-ascending-v1",
+  "components": {
+    "case": {
+      "artifact_id": "syn-artifact-case",
+      "path": "canonical/base-case.json",
+      "sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "bytes": 13206
+    },
+    "profile": {
+      "artifact_id": "syn-artifact-profile",
+      "path": "packet/base-profile.json",
+      "sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+      "bytes": 16221
+    },
+    "sources": [
+      {
+        "artifact_id": "syn-src-consumer",
+        "path": "sources/consumer-account.txt",
+        "sha256": "5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+        "bytes": 274
+      },
+      {
+        "artifact_id": "syn-src-record",
+        "path": "sources/record.txt",
+        "sha256": "1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+        "bytes": 390
+      },
+      {
+        "artifact_id": "syn-src-staff",
+        "path": "sources/staff-account.txt",
+        "sha256": "84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+        "bytes": 283
+      },
+      {
+        "artifact_id": "syn-src-clock",
+        "path": "sources/synthetic-clock-rule.txt",
+        "sha256": "cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02",
+        "bytes": 425
+      }
+    ],
+    "mapping": {
+      "artifact_id": "syn-artifact-mapping",
+      "path": "packet/base-mapping.json",
+      "sha256": "ef5a4e651d78d85c590d9e0c852ecc177bad3b65c34b4c50b86c3a9c63155d29",
+      "bytes": 949
+    },
+    "template": {
+      "artifact_id": "syn-artifact-template",
+      "path": "packet/template-v1.md",
+      "sha256": "bd0b370bb21b5736ef560943c77a4bc356b8c864040cc3cb3d29f2eb93426928",
+      "bytes": 616
+    },
+    "reports": [
+      {
+        "artifact_id": "syn-artifact-report",
+        "path": "packet/revised-report.md",
+        "sha256": "ab79cb7b02300b3eca9f429b8ee5584c067d59ad1f073e7e6a84fa7ffe12df5f",
+        "bytes": 939
+      }
+    ],
+    "supporting_artifacts": []
+  }
+}

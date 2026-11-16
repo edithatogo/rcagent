@@ -1,0 +1,176 @@
+{
+  "approval_case_count": 3,
+  "approval_cases": [
+    {
+      "case_id": "communication_declaration",
+      "expectations_met": true,
+      "expected_errors": [],
+      "observed_errors": [],
+      "real_authority_established": false
+    },
+    {
+      "case_id": "wrong_approval_artefact",
+      "expectations_met": true,
+      "expected_errors": [
+        "approval is not bound to the exact artefact"
+      ],
+      "observed_errors": [
+        "approval is not bound to the exact artefact"
+      ],
+      "real_authority_established": false
+    },
+    {
+      "case_id": "unsupported_packet_scope",
+      "expectations_met": true,
+      "expected_errors": [
+        "scope is invalid"
+      ],
+      "observed_errors": [
+        "scope is invalid"
+      ],
+      "real_authority_established": false
+    }
+  ],
+  "case_count": 13,
+  "cases": [
+    {
+      "case_id": "valid_ascii",
+      "core_errors": [],
+      "expectations_met": true,
+      "expected_core_admission": true,
+      "expected_render_admission": true,
+      "observed_core_admission": true,
+      "observed_render_admission": true,
+      "render_error": null
+    },
+    {
+      "case_id": "valid_unicode",
+      "core_errors": [],
+      "expectations_met": true,
+      "expected_core_admission": true,
+      "expected_render_admission": true,
+      "observed_core_admission": true,
+      "observed_render_admission": true,
+      "render_error": null
+    },
+    {
+      "case_id": "unknown_source",
+      "core_errors": [
+        "evidence: unknown source_id 'source-missing-synthetic'"
+      ],
+      "expectations_met": false,
+      "expected_core_admission": false,
+      "expected_render_admission": false,
+      "observed_core_admission": false,
+      "observed_render_admission": true,
+      "render_error": null
+    },
+    {
+      "case_id": "duplicate_identifier",
+      "core_errors": [
+        "identifiers: duplicate 'source-synthetic-01'"
+      ],
+      "expectations_met": false,
+      "expected_core_admission": false,
+      "expected_render_admission": false,
+      "observed_core_admission": false,
+      "observed_render_admission": true,
+      "render_error": null
+    },
+    {
+      "case_id": "invalid_transition",
+      "core_errors": [
+        "events: invalid transition 'intake' -> 'investigation'"
+      ],
+      "expectations_met": false,
+      "expected_core_admission": false,
+      "expected_render_admission": false,
+      "observed_core_admission": false,
+      "observed_render_admission": true,
+      "render_error": null
+    },
+    {
+      "case_id": "invalid_timestamp",
+      "core_errors": [],
+      "expectations_met": false,
+      "expected_core_admission": false,
+      "expected_render_admission": false,
+      "observed_core_admission": true,
+      "observed_render_admission": true,
+      "render_error": null
+    },
+    {
+      "case_id": "unicode_wrong_hash_domain",
+      "core_errors": [],
+      "expectations_met": true,
+      "expected_core_admission": true,
+      "expected_render_admission": false,
+      "observed_core_admission": true,
+      "observed_render_admission": false,
+      "render_error": "canonical source hash does not match record"
+    },
+    {
+      "case_id": "non_synthetic_render",
+      "core_errors": [],
+      "expectations_met": true,
+      "expected_core_admission": true,
+      "expected_render_admission": false,
+      "observed_core_admission": true,
+      "observed_render_admission": false,
+      "render_error": "only generated_synthetic records are admitted"
+    },
+    {
+      "case_id": "unknown_profile_field",
+      "core_errors": [
+        ": Additional properties are not allowed ('heaps_profile' was unexpected)"
+      ],
+      "expectations_met": true,
+      "expected_core_admission": false,
+      "expected_render_admission": false,
+      "observed_core_admission": false,
+      "observed_render_admission": false,
+      "render_error": "canonical source record is invalid"
+    },
+    {
+      "case_id": "stale_render_hash",
+      "core_errors": [],
+      "expectations_met": true,
+      "expected_core_admission": true,
+      "expected_render_admission": false,
+      "observed_core_admission": true,
+      "observed_render_admission": false,
+      "render_error": "canonical source hash does not match record"
+    }
+  ],
+  "cases_meeting_safety_expectations": 9,
+  "cases_with_unmet_safety_expectations": 4,
+  "component_sha256": {
+    "conductor/jurisdictions/registry.json": "9b6b94e02c370b5937b929a3a04dc1334351d05d0ff80ec1403c96b5ea1333ce",
+    "conductor/schemas/safety-work.schema.json": "ccf454138863d98af6337703a874f8e8a90f819e1fbdeb1f4f97c684d36f53d5",
+    "pyproject.toml": "eff6a7cac25fca489b3f1fb96cfe83a650bcf171c7e91ba212dbd8e3e6b7d73c",
+    "tests/fixtures/safety-work/valid-case.json": "3a39c9137e69a9d563f6289aeacec5e5980a879498e40433eaa1c2343c3e3fce",
+    "tools/evidence_core.py": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+    "tools/interface_actions.py": "32ec06ec5b7659f0613dc29d6db146b17ef3ff5bed18b1948ba8c9a44c0b3bbf",
+    "tools/json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+    "tools/jurisdiction_pack.py": "3b70f914a23e89eb1405d9da19d36541eaffd8423a01db23ea0200b411b2d0f4",
+    "tools/template_admission.py": "b6577045bbfe6811da3627c06b2087c8be19a56427e2a0513b2ea43f499305aa",
+    "uv.lock": "324be4a444b386c39e795b62acc1de9470736d524e07c529dfc92a4cc0679025"
+  },
+  "diagnostic_exit_code": 2,
+  "environment": {
+    "date_time_checker_registered": false,
+    "jsonschema": "4.26.0",
+    "platform": "Linux",
+    "python": "3.15.2"
+  },
+  "hash_domains": {
+    "core_fingerprint_utf8": "sha256:6fc65ff84f75dd0cfec18f99f09f3de3b06917e1011ef500125209aa216613e1",
+    "independent_hash_controls_match": true,
+    "interchangeable_by_prefix_removal": false,
+    "renderer_hash_ascii_escaped": "0dd33b14ba40acb0392606d8229e42ce819125b3eea3c21d95b8e4fb6146e4e9"
+  },
+  "qualification": "not_a_heaps_runtime_or_clinical_acceptance",
+  "record_case_count": 10,
+  "schema_version": "heaps-h1-interface-observation-1.0",
+  "scope": "existing_interfaces_generated_synthetic_only"
+}

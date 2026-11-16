@@ -1,0 +1,117 @@
+{
+  "schema_version": "heaps-fixture-lock-1.0",
+  "scope": "Independent H3 design inputs only; not H4/H5 execution or approval.",
+  "artifact_count": 22,
+  "artifacts": [
+    {
+      "path": "README.md",
+      "sha256": "767bc43ae2de74dd3bbd296a18578552d3e410b059c79b2959a096013081220c",
+      "bytes": 10671
+    },
+    {
+      "path": "canonical/base-case.json",
+      "sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "bytes": 13206
+    },
+    {
+      "path": "oracle.json",
+      "sha256": "fd38b4844220f6ea702ee6c6ffde25ab9d912f8d4eb02f7ab57999eed7e57556",
+      "bytes": 152442
+    },
+    {
+      "path": "packet/base-manifest.json",
+      "sha256": "2c8f273aaa5664eb0624172cdef7472a2e667af9ddf10117e353addcea8cbd08",
+      "bytes": 2359
+    },
+    {
+      "path": "packet/base-mapping.json",
+      "sha256": "ef5a4e651d78d85c590d9e0c852ecc177bad3b65c34b4c50b86c3a9c63155d29",
+      "bytes": 949
+    },
+    {
+      "path": "packet/base-profile.json",
+      "sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+      "bytes": 16221
+    },
+    {
+      "path": "packet/base-report.md",
+      "sha256": "80784972356123bc9eab546a1a990f84b4618d1fb1e7cc884f0816c3cf5458d1",
+      "bytes": 872
+    },
+    {
+      "path": "packet/design-status.json",
+      "sha256": "0a04824281b2921a517a44da979e1b3721fb91f325d2a358e2ab854ac9e4c7ba",
+      "bytes": 1093
+    },
+    {
+      "path": "packet/revised-report-manifest.json",
+      "sha256": "4d226517c00d3839ee000b0e45dd41ff77ac4f21ba889d73f5d38f8a56ed0ebe",
+      "bytes": 2362
+    },
+    {
+      "path": "packet/revised-report.md",
+      "sha256": "ab79cb7b02300b3eca9f429b8ee5584c067d59ad1f073e7e6a84fa7ffe12df5f",
+      "bytes": 939
+    },
+    {
+      "path": "packet/simulated-approved-decision.json",
+      "sha256": "0724f4322eca7b6ab5dd8d2c2f2f7a3384c323d7d1bd8a092de82c6f15a1d107",
+      "bytes": 973
+    },
+    {
+      "path": "packet/template-v1.md",
+      "sha256": "bd0b370bb21b5736ef560943c77a4bc356b8c864040cc3cb3d29f2eb93426928",
+      "bytes": 616
+    },
+    {
+      "path": "packet/template-v2.md",
+      "sha256": "ab8335a01aac035bf27b98f087d26f7e72c217e263f071042b7d7e38afa87ed2",
+      "bytes": 759
+    },
+    {
+      "path": "packet/unqualified-component.json",
+      "sha256": "85cac5dc9590285051a0b53d9c8c9e2076299bd06627994abe0f4071dff0055b",
+      "bytes": 273
+    },
+    {
+      "path": "source-manifest.json",
+      "sha256": "e7e02930fb8f0a9bafc1915e463c2f11db8f414198e02489dcdb89373b095bb5",
+      "bytes": 3811
+    },
+    {
+      "path": "sources/consumer-account.txt",
+      "sha256": "5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+      "bytes": 274
+    },
+    {
+      "path": "sources/method-handover.txt",
+      "sha256": "2af4d88b05c55d04919bfa98fb25bde50bb2ee92ba2700ec25c1da3337c3e137",
+      "bytes": 593
+    },
+    {
+      "path": "sources/record-revision-2.txt",
+      "sha256": "710935c135e8a9da34f012d1a4be111cb5bc9c18838d1fa7c56cd654e51f4d61",
+      "bytes": 414
+    },
+    {
+      "path": "sources/record-summary.txt",
+      "sha256": "a7926952e4e757a3b5773eb8ee915cb9373b02885dc13a0effc6a0a6ebb0eec0",
+      "bytes": 293
+    },
+    {
+      "path": "sources/record.txt",
+      "sha256": "1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+      "bytes": 390
+    },
+    {
+      "path": "sources/staff-account.txt",
+      "sha256": "84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+      "bytes": 283
+    },
+    {
+      "path": "sources/synthetic-clock-rule.txt",
+      "sha256": "cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02",
+      "bytes": 425
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+GENERATED SYNTHETIC METHOD HANDOVER — no real review, appointment or organisational decision.
+A fictional earlier review process named synthetic-preliminary-review is replaced by HEAPS for this exercise.
+[Facilitator A] records the fictional selection after the existing awareness trigger 2030-01-07T00:00:00Z.
+The awareness clock is retained. SAC1 reporting and review submission times remain unknown; no reportability or submission is inferred.
+The previously supplied fictional one-business-day target remains 2030-01-08T00:00:00Z. Selection does not reset it or establish applicability.

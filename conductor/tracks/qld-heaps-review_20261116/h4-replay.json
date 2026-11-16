@@ -1,0 +1,222 @@
+{
+  "schema_version": "heaps-h4-replay-observation-1.0",
+  "observed_at": "2026-11-16T21:03:33.240179+00:00",
+  "scope": "two_clean_actual_cli_runs_of_generated_synthetic_fixture",
+  "base_master": "6f9cd9627adc52782a67fa6693f1cdb90c3c84a7",
+  "evaluated_at": "2030-01-07T00:00:00Z",
+  "command_template": [
+    "uv",
+    "run",
+    "--no-sync",
+    "python",
+    "-m",
+    "tools.heaps",
+    "--case",
+    "tests/fixtures/heaps/canonical/base-case.json",
+    "--profile",
+    "tests/fixtures/heaps/packet/base-profile.json",
+    "--artifacts",
+    "tests/fixtures/heaps",
+    "--template",
+    "packet/template-v1.md",
+    "--evaluated-at",
+    "2030-01-07T00:00:00Z",
+    "--output",
+    "NEW_OUTPUT_DIRECTORY"
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "identical_files": true,
+  "file_count": 16,
+  "total_output_bytes": 94722,
+  "output_inventory_digest_algorithm": "sha256 of UTF-8 path-sorted sha256 + two spaces + path + LF",
+  "output_inventory_sha256": "b3e28fac0a5067151bae0a7d9a20d10e82bcddc4a7b46a71be46a8c60cda8172",
+  "outputs": [
+    {
+      "path": "actions.md",
+      "bytes": 2332,
+      "sha256": "5d11fb582cdd9d68e604038a48395e9d16d58928601c88370d87e2ee83e9cf91"
+    },
+    {
+      "path": "case.json",
+      "bytes": 13206,
+      "sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a"
+    },
+    {
+      "path": "chronology.md",
+      "bytes": 2750,
+      "sha256": "2efb3a2169ace0d980a16041d3ae70bce8ab63fd8355473e3c54b568ecc2e1c4"
+    },
+    {
+      "path": "ingress/case.json",
+      "bytes": 13206,
+      "sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e"
+    },
+    {
+      "path": "ingress/profile.json",
+      "bytes": 16221,
+      "sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 3204,
+      "sha256": "82033516da3eabbd365952c04d6a7689130729470247c616d9c4952fe09ab4ca"
+    },
+    {
+      "path": "mapping.json",
+      "bytes": 1005,
+      "sha256": "81bbf820bc4df74b200999648e4bcc53abc7e1dccf6274d1b2876308242da593"
+    },
+    {
+      "path": "profile.json",
+      "bytes": 16221,
+      "sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+    },
+    {
+      "path": "report.md",
+      "bytes": 21840,
+      "sha256": "4d61d32f7771e103cc57b89a6b0bf4461157c3a57d45b6a29a9465745db92e89"
+    },
+    {
+      "path": "sources/consumer-account.txt",
+      "bytes": 274,
+      "sha256": "5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32"
+    },
+    {
+      "path": "sources/record.txt",
+      "bytes": 390,
+      "sha256": "1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693"
+    },
+    {
+      "path": "sources/staff-account.txt",
+      "bytes": 283,
+      "sha256": "84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70"
+    },
+    {
+      "path": "sources/synthetic-clock-rule.txt",
+      "bytes": 425,
+      "sha256": "cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02"
+    },
+    {
+      "path": "status.json",
+      "bytes": 2183,
+      "sha256": "b14c9cf4d40488edc02df8814f4057927f64e66a1ccda7df61c7714f705f5033"
+    },
+    {
+      "path": "template.md",
+      "bytes": 616,
+      "sha256": "bd0b370bb21b5736ef560943c77a4bc356b8c864040cc3cb3d29f2eb93426928"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 566,
+      "sha256": "402a55b9edfe511b51c0af81e6bb262b180426e18c12a277642ac08994e4625a"
+    }
+  ],
+  "components": [
+    {
+      "path": "tools/heaps.py",
+      "bytes": 37550,
+      "sha256": "ea9fe374ae7f387d92d11ab7800bd2c636d947f5e62a03e88d5ed75c504dd55b"
+    },
+    {
+      "path": "tools/heaps_validation.py",
+      "bytes": 22243,
+      "sha256": "d3bbcffdcfc88f5e453ea6863e22ae5f40727b0425bb3da4be8226ef4ea9a7ae"
+    },
+    {
+      "path": "tests/test_heaps.py",
+      "bytes": 59397,
+      "sha256": "5b794df73241730efca79cc3d5863b7fd765969e2955dfa2fd7c1081da36ffcb"
+    },
+    {
+      "path": "tools/evidence_core.py",
+      "bytes": 17161,
+      "sha256": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee"
+    },
+    {
+      "path": "tools/interface_actions.py",
+      "bytes": 48353,
+      "sha256": "32ec06ec5b7659f0613dc29d6db146b17ef3ff5bed18b1948ba8c9a44c0b3bbf"
+    },
+    {
+      "path": "conductor/schemas/safety-work.schema.json",
+      "bytes": 11085,
+      "sha256": "ccf454138863d98af6337703a874f8e8a90f819e1fbdeb1f4f97c684d36f53d5"
+    },
+    {
+      "path": "uv.lock",
+      "bytes": 271085,
+      "sha256": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c"
+    }
+  ],
+  "status": {
+    "actual_authority": "unverified",
+    "clinical_review": "not_established",
+    "counts": {
+      "abstained_items": 0,
+      "input_items": 7,
+      "usable_items": 7
+    },
+    "data_class": "generated_synthetic",
+    "decision_binding": null,
+    "errors": [],
+    "evaluated_at": "2030-01-07T00:00:00Z",
+    "limitations": [
+      "Generated synthetic preparation only; labels and input checks do not establish actual synthetic origin.",
+      "This bounded consumer admits UTF-8 synthetic text and the shared safe-export subset; active links/HTTPS locators and unsafe values are rejected, not silently removed.",
+      "Clinical review, substantive findings/actions approval, legal protection and actual organisational authority are not established.",
+      "Record/reference integrity and raw artifact hashes do not prove source truth, causal support, independent corroboration or exact source spans.",
+      "Current local HEAPS instrument conformity is not established; no system-of-record submission or case closure is performed.",
+      "D0 byte-span and AcciMap composition are omitted and unqualified in this consumer.",
+      "Chronology preserves supplied order and time precision; missing times remain unknown. Deadline assertions remain unverified and are not calculated.",
+      "Action implementation and effectiveness are separate; completed actions do not prove outcomes."
+    ],
+    "manifest_binding": {
+      "hash_domain": "sha256-raw-bytes-v1",
+      "manifest_id": "heaps-manifest-355e69424d1226f5ce35c27c",
+      "raw_sha256": "82033516da3eabbd365952c04d6a7689130729470247c616d9c4952fe09ab4ca"
+    },
+    "preparation": "prepared",
+    "privacy_mode": "fully_local",
+    "profile_binding": {
+      "hash_domain": "sha256-raw-bytes-v1",
+      "profile_id": "syn-heaps-profile-01",
+      "profile_version": 1,
+      "raw_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+    },
+    "receipt_id": "heaps-status-82033516da3eabbd365952c0",
+    "review": "not_requested",
+    "schema_version": "heaps-status-receipt-1.0",
+    "source_check": "passed",
+    "source_check_scope": "record_reference_integrity",
+    "structural_check": "passed",
+    "submission": "not_submitted",
+    "template_mapping": "original"
+  },
+  "verification": {
+    "actual_authority": "unverified",
+    "clinical_review": "not_established",
+    "data_class": "generated_synthetic",
+    "evaluated_at": "2030-01-07T00:00:00Z",
+    "generated_manifest_sha256": "82033516da3eabbd365952c04d6a7689130729470247c616d9c4952fe09ab4ca",
+    "input_manifest_sha256": null,
+    "input_status_sha256": null,
+    "privacy_mode": "fully_local",
+    "schema_version": "heaps-verification-1.0",
+    "scope": "synthetic_packet_verification",
+    "status_sha256": "b14c9cf4d40488edc02df8814f4057927f64e66a1ccda7df61c7714f705f5033",
+    "submission": "not_submitted"
+  },
+  "qualifications": {
+    "h5_complete": false,
+    "clinical_review": "not_established",
+    "actual_authority": "unverified",
+    "official_template_conformity": "unverified",
+    "submission": "not_submitted",
+    "d0_span_composition": "omitted_unqualified",
+    "accimap_composition": "omitted_unqualified"
+  }
+}

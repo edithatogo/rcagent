@@ -1,0 +1,129 @@
+{
+  "schema_version": "faw08-d1-agent-review-1.0",
+  "observed_at": "2026-11-16T23:51:15.496611+10:00",
+  "scope": "bounded synthetic FAW08/D1 source review; hosted delivery separate",
+  "source_sha256": "e03eeaa2ab5d235bdc8f20048c3bd9d15c7369a324f4575d865a7d893551e119",
+  "workbench_sha256": "79c40c57e75d6c3fe2fb39f6d50d6a4a40616ff561d87e45d1c4748dab1aed92",
+  "contract_sha256": "402d01b52aaccbf5a0181aec1cc30d815f8c3386652cc4fc982e5b666741efb0",
+  "reviewers": [
+    {
+      "agent": "frontier_research",
+      "role": "independent frozen oracle and verifier",
+      "disposition": "accepted",
+      "tests_passed": 140,
+      "literal_cases": 28,
+      "families": 14,
+      "expected_observations": 54,
+      "exact_span_kind_tp": 54,
+      "false_positive": 0,
+      "false_negative": 0,
+      "field_errors": 0,
+      "expected_lexically_resolved": 37,
+      "correct_lexically_resolved": 37,
+      "expected_unresolved": 17,
+      "correct_unresolved": 17,
+      "receipt": "../../../tests/fixtures/faw08_independent/verification-receipt.json",
+      "oracle_labels_revised": false
+    },
+    {
+      "agent": "plan_gap_review",
+      "role": "independent semantic and scope review",
+      "disposition": "accepted",
+      "supplementary_checks_passed": 27,
+      "verified": [
+        "later direct and unsupported actor relations",
+        "postposed conditional scope",
+        "unsupported Unicode/spaced signs",
+        "OCR case variants",
+        "T-separated atomic date and clock mentions",
+        "compound assertion uncertainty",
+        "exact UTF-8 spans",
+        "unknown clocks and event linkage retained"
+      ],
+      "no_files_edited": true
+    },
+    {
+      "agent": "dependency_audit",
+      "role": "independent reuse, provenance and resource review",
+      "disposition": "accepted",
+      "lexical_regressions_passed": 33,
+      "resource_probes_completed": 9,
+      "source_case_anchor_corruptions_rejected": 12,
+      "malformed_or_tampered_replays_rejected": 6,
+      "identical_cli_processes": 3,
+      "unsupported_cli_input_runs_rejected": 2,
+      "large_negation_observation": {
+        "input_characters": 60008,
+        "elapsed_seconds": 0.0237
+      },
+      "large_malformed_input_observations": {
+        "count": 5,
+        "approximate_bytes_per_input": 65000,
+        "elapsed_seconds_min": 0.0137,
+        "elapsed_seconds_max": 0.036
+      },
+      "verified": [
+        "D0 full-source admission excludes observation counts",
+        "same-source explicit anchor admission",
+        "calendar lower and upper bound rejection",
+        "distinct source identities for identical content",
+        "source/lock/input/output hash calculations",
+        "no new dependencies"
+      ],
+      "no_files_edited": true
+    }
+  ],
+  "resolved_findings": [
+    "broad OCR quantity word false positive",
+    "ambiguity reason mismatch",
+    "compound negation scope",
+    "internal assertions rejected by Bandit",
+    "T-date-time atomic mention omission",
+    "stale reporter and actor attribution",
+    "postposed conditional scope",
+    "unsupported signs donating positive scalar suffixes",
+    "unsupported unit denominator loss",
+    "comma relative number donating integer suffix",
+    "OCR recognition and conversion mismatch",
+    "quadratic repeated-negation scan",
+    "compound assertion falsely affirmed"
+  ],
+  "root_regression_history": [
+    {
+      "phase": "pre-implementation",
+      "outcome": "collection failure: missing producer module"
+    },
+    {
+      "phase": "first producer unit run",
+      "passed": 26,
+      "failed": 1
+    },
+    {
+      "phase": "first semantic review regressions",
+      "passed": 0,
+      "failed": 3
+    },
+    {
+      "phase": "adversarial lexical/resource regressions",
+      "passed": 1,
+      "failed": 19
+    },
+    {
+      "phase": "compound assertion regression baseline",
+      "passed": 0,
+      "failed": 3
+    },
+    {
+      "phase": "final focused suite",
+      "passed": 195,
+      "failed": 0
+    }
+  ],
+  "limitations": [
+    "agent reviews may share correlated errors",
+    "supplementary probes are not pooled into frozen-oracle metrics",
+    "observed runtimes are not portable performance guarantees",
+    "no held-out clinical or model qualification",
+    "actual hosted results and merge remain separate gates"
+  ]
+}

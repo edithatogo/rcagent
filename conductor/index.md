@@ -37,7 +37,7 @@ When these disagree, preserve the conflict and reconcile it before claiming comp
 ## Current assurance and demonstration programme
 
 - [Track 13 — frontier assurance](./tracks/frontier-assurance_20261113/index.md), [#125](https://github.com/edithatogo/rcagent/issues/125): repair evidence/export/template defects, strengthen CI, then demonstrate source-linked extraction, timelines and decision-time packets before comparative model research.
-- Current delivery: [FAW07 / D0 accepted](./tracks/frontier-assurance_20261113/faw07-d0-acceptance-20261116.md) through PR #144 at `d3c10d6` after verified hosted checks and protected merge. FAW06 remains delivered; FAW08 / D1 is planned and was not started under the D0 assignment.
+- Current delivery: [FAW09 / D2 accepted](./tracks/frontier-assurance_20261113/faw09-d2-acceptance-20261117.md) through PR #150 at `8bf9487` after all nine final-head Quality jobs, dependency/privacy checks, normal protected merge and automatic master conformance passed. FAW06, D0 and D1 remain delivered with their historical receipts. FAW10 / D3 decision-time packets are next and remain planned.
 - [Track 14 — death reviews](./tracks/death-review_20261113/index.md), [#126](https://github.com/edithatogo/rcagent/issues/126): NSW/Queensland mortality-learning profiles and source transitions, composed from the same qualified components.
 - [Capability ladder](./research/frontier-assurance/capability-ladder.md), [triangulation](./research/frontier-assurance/triangulation.md), [claim admission](./research/frontier-assurance/claim-admission.md), [engineering](./research/frontier-assurance/engineering.md) and [selective Rust assessment](./architecture/0013-selective-rust-evidence-core.md).
 

@@ -1,0 +1,265 @@
+{
+  "schema_version": "heaps-planning-1.0",
+  "track_id": "qld-heaps-review_20261116",
+  "status": "h4_accepted_h5_next",
+  "issue": 140,
+  "hard_dependencies": [],
+  "work_packages": [
+    {
+      "id": "H1",
+      "title": "Source applicability and review scope",
+      "depends_on": [],
+      "deliverables": [
+        "source applicability receipt",
+        "minimal interface agreement",
+        "coordinator ownership allocation"
+      ],
+      "owned_scope": "dedicated source/profile planning; shared changes by coordinator",
+      "status": "blocked",
+      "implementation_owner": "current HEAPS lane within dedicated track; shared coordinator allocation pending",
+      "acceptance_ref": "./plan.md",
+      "receipt": "./h1.md",
+      "deliverable_states": {
+        "source_applicability_receipt": "complete",
+        "minimal_interface_appraisal": "complete",
+        "minimal_interface_agreement": "pending_receiving_owner",
+        "coordinator_ownership_allocation": "pending",
+        "independent_checkpoint": "complete_with_negative_evidence"
+      },
+      "blocked_on": [
+        "H1.3 receiving interface agreement",
+        "H1.4 coordinator allocation and registration"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Portable workflow and original report mapping",
+      "depends_on": [
+        "H1"
+      ],
+      "deliverables": [
+        "HEAPS four-mode guidance",
+        "original report mapping",
+        "coordinated method/navigation corrections"
+      ],
+      "parallel_with": [
+        "H3"
+      ],
+      "owned_scope": "dedicated original HEAPS guide/template plus reviewed shared content/navigation/admission candidates",
+      "status": "integrated",
+      "implementation_owner": "HEAPS lane; prerequisite content integrated under explicit H4 user merge authority; portfolio registration remains separate",
+      "acceptance_ref": "./plan.md",
+      "entry_evidence": "H1 technical receipt, current-master reconciliation and explicit H2/H3 instruction; runtime consumer gaps reserved for H4/H5",
+      "entry_requires": [
+        "H1 source applicability receipt",
+        "H1 technical interface appraisal",
+        "explicit H2/H3 implementation authority",
+        "fresh master and path-ownership reconciliation"
+      ],
+      "receipt": "./h2.md",
+      "integration_state": "merged_through_PR142_after_required_hosted_success",
+      "integration_receipt": "./h4-acceptance-20261117.md",
+      "integration_commit": "006d98cb60c72143b0517f0e7a446641642ddd5a"
+    },
+    {
+      "id": "H3",
+      "title": "Versioned profile and independent fixture design",
+      "depends_on": [
+        "H1"
+      ],
+      "deliverables": [
+        "profile schema contract",
+        "packet manifest/approval semantics",
+        "independent synthetic expected outcomes"
+      ],
+      "parallel_with": [
+        "H2"
+      ],
+      "owned_scope": "dedicated evaluation/heaps schemas, normative contract, independent fixtures and tests",
+      "status": "integrated",
+      "implementation_owner": "HEAPS lane; prerequisite content integrated under explicit H4 user merge authority; portfolio registration remains separate",
+      "acceptance_ref": "./plan.md",
+      "entry_evidence": "H1 technical receipt, current-master reconciliation and explicit H2/H3 instruction; runtime consumer gaps reserved for H4/H5",
+      "entry_requires": [
+        "H1 source applicability receipt",
+        "H1 technical interface appraisal",
+        "explicit H2/H3 implementation authority",
+        "fresh master and path-ownership reconciliation"
+      ],
+      "receipt": "./h3.md",
+      "integration_state": "merged_through_PR142_after_required_hosted_success",
+      "integration_receipt": "./h4-acceptance-20261117.md",
+      "integration_commit": "006d98cb60c72143b0517f0e7a446641642ddd5a"
+    },
+    {
+      "id": "H4",
+      "title": "Deterministic synthetic review packet",
+      "depends_on": [
+        "H2",
+        "H3"
+      ],
+      "deliverables": [
+        "thin validator/assembler",
+        "original report/action views",
+        "deterministic receipt"
+      ],
+      "owned_scope": "new HEAPS consumer, independent tests and this PR integration; canonical/schema/shared dispatch owners unchanged",
+      "status": "integrated",
+      "implementation_owner": "current HEAPS lane under explicit user implementation and merge instruction",
+      "acceptance_ref": "./plan.md",
+      "entry_evidence": "H2/H3 receipts, immutable oracle and normal reconciliation with master8bf94873; D2 upstream implementation remains uncomposed in HEAPS",
+      "receipt": "./h4.md",
+      "integration_state": "merged_through_PR142_after_required_hosted_success",
+      "optional_features": {
+        "H4.4": "omitted_unqualified",
+        "H4.5": "omitted_unqualified"
+      },
+      "revision_verification": "./h4-revision-validation.json",
+      "integration_receipt": "./h4-acceptance-20261117.md",
+      "integration_commit": "006d98cb60c72143b0517f0e7a446641642ddd5a"
+    },
+    {
+      "id": "H5",
+      "title": "Independent engineering qualification and integration",
+      "depends_on": [
+        "H4"
+      ],
+      "deliverables": [
+        "actual-interface negative/positive/revision results",
+        "exact-head quality checks",
+        "coordinator acceptance"
+      ],
+      "owned_scope": "independent HEAPS verification plus coordinator integration",
+      "status": "planned",
+      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
+      "acceptance_ref": "./plan.md"
+    },
+    {
+      "id": "H6",
+      "title": "Local instrument alignment and conditional practice evaluation",
+      "depends_on": [
+        "H5"
+      ],
+      "deliverables": [
+        "authorised current instrument mapping",
+        "local conformity disposition",
+        "authorised bounded shadow evaluation"
+      ],
+      "preparatory_task": "H6.1",
+      "preparation_depends_on": [
+        "H1"
+      ],
+      "owned_scope": "local authorised source/process owners; engineering changes through coordinator",
+      "status": "planned",
+      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
+      "acceptance_ref": "./plan.md"
+    }
+  ],
+  "capability_gates": [
+    {
+      "id": "canonical-structure",
+      "consumer": "H4",
+      "prerequisite": "existing safety-work v1.1 and selected core interfaces",
+      "kind": "required",
+      "fallback": "validate structure/references only; do not infer clinical truth",
+      "state": "h4_dedicated_consumer_admission_verified",
+      "evidence": "./h4.md"
+    },
+    {
+      "id": "exact-byte-spans",
+      "consumer": "H4",
+      "prerequisite": "Track13 D0 acceptance",
+      "kind": "conditional",
+      "fallback": "record/reference integrity only; no byte-span claim",
+      "state": "upstream_d0_accepted_composition_not_implemented",
+      "evidence": "../frontier-assurance_20261113/faw07-d0-acceptance-20261116.md"
+    },
+    {
+      "id": "automatic-extraction",
+      "consumer": "optional_later",
+      "prerequisite": "Track13 D1 acceptance",
+      "kind": "conditional",
+      "fallback": "prestructured synthetic observations",
+      "state": "upstream_d1_accepted_heaps_composition_omitted",
+      "evidence": "../frontier-assurance_20261113/faw08-d1-acceptance-20261117.md"
+    },
+    {
+      "id": "uncertain-chronology",
+      "consumer": "optional_later",
+      "prerequisite": "Track13 D2 acceptance",
+      "kind": "conditional",
+      "fallback": "preserve supplied partial ordering",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "decision-time",
+      "consumer": "optional_later",
+      "prerequisite": "Track13 D3 acceptance",
+      "kind": "conditional",
+      "fallback": "no actor/cutoff reconstruction claim",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "model-suggestions",
+      "consumer": "optional_later",
+      "prerequisite": "applicable Track12 component and Track13 D4 acceptance",
+      "kind": "conditional",
+      "fallback": "deterministic preparation and questions",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "accimap-view",
+      "consumer": "H4",
+      "prerequisite": "accepted issue139 graph contract and explicit review question",
+      "kind": "optional",
+      "fallback": "omit graph view",
+      "state": "omitted_unqualified_in_h4"
+    },
+    {
+      "id": "composed-d6-claim",
+      "consumer": "optional_later",
+      "prerequisite": "Track13 D6 and consumed component receipts",
+      "kind": "conditional",
+      "fallback": "bounded synthetic packet only",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "local-conformity",
+      "consumer": "H6",
+      "prerequisite": "current authorised local instrument and mapping acceptance",
+      "kind": "required_for_claim",
+      "fallback": "original draft; conformity unverified",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "live-use",
+      "consumer": "H6",
+      "prerequisite": "applicable data/organisational authority and practice evidence",
+      "kind": "required_for_claim",
+      "fallback": "synthetic-only",
+      "state": "not_accepted_by_this_plan"
+    }
+  ],
+  "parallelism": {
+    "integration_lanes_max": 1,
+    "implementation_lanes_max": 2,
+    "starts_new_workers": false,
+    "capacity_owner": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
+    "note": "One HEAPS integration lane, two disjoint producer/test lanes and read-only agent review; existing D0/D1/AcciMap owners and files preserved."
+  },
+  "optional_partner_tracks": [
+    "accimap-workflow_20261116",
+    "death-review_20261113"
+  ],
+  "implementation_authority": "user_explicitly_authorised_h4_pr_actions_and_merge",
+  "order": [
+    "H1",
+    [
+      "H2",
+      "H3"
+    ],
+    "H4",
+    "H5",
+    "H6"
+  ]
+}

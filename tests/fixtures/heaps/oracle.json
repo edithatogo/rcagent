@@ -1,0 +1,4309 @@
+{
+  "schema_version": "heaps-fixture-oracle-1.0",
+  "status": "frozen_independent_design",
+  "data_class": "generated_synthetic",
+  "authorship": "Independent fixture/oracle lane, separate from production schema author.",
+  "acceptance_catalogue": "conductor/tracks/qld-heaps-review_20261116/acceptance-catalogue.json",
+  "denominator": {
+    "acceptance_cases": 25,
+    "variants": 38,
+    "positive_controls": 4,
+    "adversarial_or_boundary_variants": 34,
+    "expected_prepare_draft": 22,
+    "expected_reject_input": 14,
+    "expected_abstain": 2,
+    "expected_review_not_established": 31,
+    "expected_review_stale": 5,
+    "expected_review_withheld": 2,
+    "per_acceptance_case": {
+      "HP01": 1,
+      "HP02": 1,
+      "HP03": 2,
+      "HP04": 2,
+      "HP05": 1,
+      "HP06": 2,
+      "HP07": 1,
+      "HP08": 1,
+      "HP09": 3,
+      "HP10": 1,
+      "HP11": 1,
+      "HP12": 2,
+      "HP13": 2,
+      "HP14": 1,
+      "HP15": 1,
+      "HP16": 1,
+      "HP17": 1,
+      "HP18": 1,
+      "HP19": 1,
+      "HP20": 2,
+      "HP21": 3,
+      "HP22": 2,
+      "HP23": 1,
+      "HP24": 2,
+      "HP25": 2
+    }
+  },
+  "vocabulary": {
+    "preparation_dispositions": [
+      "prepare_draft",
+      "reject_input",
+      "abstain"
+    ],
+    "review_dispositions": [
+      "not_established",
+      "stale",
+      "withheld"
+    ],
+    "rule_ids": [
+      "account.conflict",
+      "action.effectiveness",
+      "artifact.raw_byte_identity",
+      "authority.no_inferred_protection",
+      "boundary.synthetic_only",
+      "canonical.array_identity",
+      "canonical.content_identity",
+      "canonical.object_key_order",
+      "canonical.replay",
+      "canonical.round_trip",
+      "case_binding.case_id",
+      "case_binding.fingerprint",
+      "case_binding.version",
+      "clock.method_independence",
+      "completion.nonempty",
+      "component.optional",
+      "deadline.calendar",
+      "deadline.trigger",
+      "documentation.gap_only",
+      "factor.promotion",
+      "packet.approval_stale",
+      "participation.no_inferred_agreement",
+      "recommendation.support",
+      "reference.kind",
+      "reference.unresolved",
+      "revision.source",
+      "revision.template",
+      "route.concurrent",
+      "schema.closed",
+      "schema.malformed",
+      "scope.synthetic_draft",
+      "source.family_identity",
+      "submission.receipt_required",
+      "template.conformity_withheld"
+    ]
+  },
+  "execution_boundary": {
+    "h3": "Design integrity, source bytes, schema specimens and literal input identities only.",
+    "h4": "not_run",
+    "h5": "not_run",
+    "clinical_validation": "not_established",
+    "actual_human_or_organisational_acceptance": "not_established",
+    "runtime_error_code_mapping": "not_implemented",
+    "parser_adversarial_inputs": "Not included in this 38-variant denominator; future H4 tests must separately exercise duplicate keys, malformed UTF-8, nonfinite values and surrogates.",
+    "status_specimens": "Documents marked illustrative_expected_status_not_input are schema examples and never authority for consumer disposition or counts."
+  },
+  "hash_domains": {
+    "case_canonical": "json.dumps(sort_keys=True,separators=(comma,colon),ensure_ascii=False,allow_nan=False), UTF-8, no final newline; sha256: prefix.",
+    "ingress_raw": "Exact generated presentation bytes; SHA-256 without prefix.",
+    "normalized_json": "json.dumps(sort_keys=True,indent=2,ensure_ascii=False,allow_nan=False), UTF-8 plus exactly one LF; SHA-256 without prefix.",
+    "manifest": "Exact captured or emitted bytes, not semantic equality; detached from final decisions."
+  },
+  "variants": [
+    {
+      "id": "HP01-valid",
+      "acceptance_id": "HP01",
+      "control_kind": "positive_control",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "scope.synthetic_draft"
+        ],
+        "required_states": {
+          "draft_scope": "generated_synthetic",
+          "authorised_findings": "not_established",
+          "local_template_conformity": "not_established"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP02-wrong-case-id",
+      "acceptance_id": "HP02",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "case_id"
+          ],
+          "value": "syn-heaps-other-case"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "case_binding.case_id"
+        ],
+        "required_states": {
+          "binding": "rejected"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "0ef02a1246d7620a5550c07bced3b74a71bc22d9275010d529766f893ba57c2d",
+          "normalized_profile_sha256": "e0a285565456332a221f8282cad90e33f654d778e5c1c2cc2437cd3f4d42becc"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP03-stale-version",
+      "acceptance_id": "HP03",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "version"
+          ],
+          "value": 2
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "case_binding.version"
+        ],
+        "required_states": {
+          "binding": "stale"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "d8ff03a26e7de28e06842599b746a94e8275d4cadd1f4c9d184aad442542c97e",
+          "normalized_profile_sha256": "668dab4ba4d2433d33b7f21d53a609248dd8fb118b6c43bb22e7ae31eb197a4a"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP03-stale-hash",
+      "acceptance_id": "HP03",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "fingerprint"
+          ],
+          "value": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "case_binding.fingerprint"
+        ],
+        "required_states": {
+          "binding": "stale"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "74f23b06a53efcc5d6604489cc0d35cd809039a3b0c8ca7cefe044cb4b3d06b9",
+          "normalized_profile_sha256": "72266c2f04b9d2fffcc1cac16ca55099224d73faa506ef70b251a3eed8ef0d41"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP04-wrong-kind",
+      "acceptance_id": "HP04",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "participation",
+            0,
+            "account_refs",
+            0,
+            "id"
+          ],
+          "value": "syn-factor-prompt"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "reference.kind"
+        ],
+        "required_states": {
+          "reference": "kind_mismatch"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "86de5735653f01433b591f72748de8a9f5fd11144db4c33c3819433a67e0c9ee",
+          "normalized_profile_sha256": "68e5a684c55140b238b33015d377750e22a99169dd289a8290489403831d82ba"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP04-unresolved-reference",
+      "acceptance_id": "HP04",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "participation",
+            0,
+            "account_refs",
+            0,
+            "id"
+          ],
+          "value": "syn-stmt-missing"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "reference.unresolved"
+        ],
+        "required_states": {
+          "reference": "unresolved"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "1a85db17a42e6ebe0cc51e9e435ff87813bda77016890d983edec389b4981271",
+          "normalized_profile_sha256": "c960c234e1765fb3df0e67424b28cc5cdd3a1930e11b13e8f762308b775ab8bb"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP05-unsupported-recommendation",
+      "acceptance_id": "HP05",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "relationships"
+          ],
+          "value": [
+            {
+              "from_id": "syn-stmt-staff",
+              "relation": "contradicts",
+              "to_id": "syn-stmt-consumer",
+              "rationale": "Different recollections of the same synthetic prompt; conflict is unresolved."
+            },
+            {
+              "from_id": "syn-stmt-document",
+              "relation": "supports",
+              "to_id": "syn-stmt-finding",
+              "rationale": "Supports only the draft documentation finding, not a care omission."
+            },
+            {
+              "from_id": "syn-stmt-document-gap",
+              "relation": "relevant_to",
+              "to_id": "syn-stmt-recall",
+              "rationale": "Alternative explanations; neither is established."
+            }
+          ]
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "action_context",
+            0,
+            "finding_refs"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "action_context",
+            0,
+            "condition_refs"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "fingerprint"
+          ],
+          "value": "sha256:f69412d0b1a64c86c3c3dc6558f1c6d9c5bf8c5791ad539aa86b79a74560800d"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "recommendation.support"
+        ],
+        "required_states": {
+          "recommendation_support": "incomplete",
+          "accepted_recommendations": 0
+        },
+        "retained_ids": [
+          "syn-stmt-recommendation"
+        ],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:f69412d0b1a64c86c3c3dc6558f1c6d9c5bf8c5791ad539aa86b79a74560800d",
+          "case_ingress_raw_sha256": "60040db2a678c2d2494c4325c6758cbe3b7f621bc0126eced2f162ab9f6aed47",
+          "normalized_case_sha256": "c3b1b924c1a7be4e29062ac33fe02c5a4a4b1b44eda041d7b87493d0c7a1af0e",
+          "profile_ingress_raw_sha256": "13cc34091371e7c79aeb7b8e49d96bfa0df4a9661e1d98d4bc4bf9b547a811f1",
+          "normalized_profile_sha256": "c55384ce9049bf8dcdd3e710e8fa449cbdedd56017f5890abe92f834fbb19d29"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP06-withdrawn-factor",
+      "acceptance_id": "HP06",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "factors",
+            0,
+            "status"
+          ],
+          "value": "withdrawn"
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "statements",
+            5,
+            "provenance",
+            "review_state"
+          ],
+          "value": "accepted"
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "finding_context",
+            0,
+            "supporting_refs"
+          ],
+          "value": [
+            {
+              "kind": "factor",
+              "id": "syn-factor-prompt"
+            }
+          ]
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "fingerprint"
+          ],
+          "value": "sha256:9ccc92a983cefd42240029ccce836ec449d42842013895959efe156d780c2f6c"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "An adversarial accepted finding references an ineligible factor; retain the original status and reject promotion. A synthetic packet decision cannot confer substantive authority.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "factor.promotion"
+        ],
+        "required_states": {
+          "factor_status": "withdrawn",
+          "finding_promotion": "rejected",
+          "authorised_findings": "not_established"
+        },
+        "retained_ids": [
+          "syn-factor-prompt"
+        ],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:9ccc92a983cefd42240029ccce836ec449d42842013895959efe156d780c2f6c",
+          "case_ingress_raw_sha256": "17fea509db9f40be5e2a9f374a742640a9291d8b12923727416d695d185275c6",
+          "normalized_case_sha256": "8cf59c50ae49f76dd023ed2eda821ff2eef7c3374151e3f3ab282e3d1dba61a7",
+          "profile_ingress_raw_sha256": "6ffca95f0dc36e71b58c56fc41f734bf680d6c21d91bf159b0a813f500f560ec",
+          "normalized_profile_sha256": "5fa9bef697acbb416f7d926d01356fdd7f770e8611854b1f94b5288b55c362ec"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP06-rejected-factor",
+      "acceptance_id": "HP06",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "factors",
+            0,
+            "status"
+          ],
+          "value": "rejected"
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "statements",
+            5,
+            "provenance",
+            "review_state"
+          ],
+          "value": "accepted"
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "finding_context",
+            0,
+            "supporting_refs"
+          ],
+          "value": [
+            {
+              "kind": "factor",
+              "id": "syn-factor-prompt"
+            }
+          ]
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "fingerprint"
+          ],
+          "value": "sha256:d28c7874f1bd45a6db0ca5e67e065ccf4958254de6320e1c4d3601f78418e138"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "An adversarial accepted finding references an ineligible factor; retain the original status and reject promotion. A synthetic packet decision cannot confer substantive authority.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "factor.promotion"
+        ],
+        "required_states": {
+          "factor_status": "rejected",
+          "finding_promotion": "rejected",
+          "authorised_findings": "not_established"
+        },
+        "retained_ids": [
+          "syn-factor-prompt"
+        ],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:d28c7874f1bd45a6db0ca5e67e065ccf4958254de6320e1c4d3601f78418e138",
+          "case_ingress_raw_sha256": "ebfe10422e64edf2ad0d5f6c689f954fc42e7c225bfe491b3b9b1b7a7eeae409",
+          "normalized_case_sha256": "3a13c2f435ebe8c58e26c6ad615c8a6c4a80412f0639742094cad42395d1bee3",
+          "profile_ingress_raw_sha256": "26568e685de6aa9e6913bfc9b528022407fd9d8f88e6f0aa80f1d04965236aa5",
+          "normalized_profile_sha256": "e5a13e23f902deacba35a215e3468a27e9ae6c891958d69005bdc1e1723fac3b"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP07-report-after-approval",
+      "acceptance_id": "HP07",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json",
+        "manifest": "packet/revised-report-manifest.json",
+        "decision": "packet/simulated-approved-decision.json"
+      },
+      "mutations": [],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "The revised manifest correctly binds the revised report; the detached simulated decision remains bound to the original manifest. Only the prior review is stale; preparation of the draft remains possible.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true,
+          "manifest": true,
+          "decision": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "stale",
+        "rule_ids": [
+          "packet.approval_stale"
+        ],
+        "required_states": {
+          "current_report_bytes": "changed",
+          "prior_decision": "stale",
+          "substantive_approval": "not_established"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": [],
+          "manifest": [],
+          "decision": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input",
+        "manifest": "consumer_input",
+        "decision": "consumer_input"
+      }
+    },
+    {
+      "id": "HP08-conflicting-accounts",
+      "acceptance_id": "HP08",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "account.conflict"
+        ],
+        "required_states": {
+          "account_conflict": "unresolved",
+          "alternatives": "retained"
+        },
+        "retained_ids": [
+          "syn-stmt-staff",
+          "syn-stmt-consumer",
+          "syn-stmt-document-gap",
+          "syn-stmt-recall"
+        ],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP09-participation-missing",
+      "acceptance_id": "HP09",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "participation",
+            1
+          ],
+          "value": {
+            "role_ref": {
+              "kind": "role",
+              "id": "syn-role-consumer"
+            },
+            "state": "unknown",
+            "account_refs": [],
+            "response_refs": [],
+            "disagreement_refs": [],
+            "needs": [
+              "Ask about access and communication preferences; none are inferred."
+            ],
+            "confirmation": "not_requested",
+            "state_note": "No consultation or agreement is established by this missing participation state.",
+            "state_basis_refs": []
+          }
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "The previously supplied synthetic account remains in the canonical record; the current participation state does not establish present consultation or agreement.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "participation.no_inferred_agreement"
+        ],
+        "required_states": {
+          "consumer_participation": "unknown",
+          "consultation_completed": false,
+          "agreement_established": false
+        },
+        "retained_ids": [
+          "syn-stmt-consumer"
+        ],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "d5635c5f8791a50bdaf0ad96ed0dcebc4a403e587d0a51732f7f0b56ba6fc82d",
+          "normalized_profile_sha256": "446262723bcd6575c404b23448a60859e17989351ef57eb0209be7b7bb7b3367"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP09-participation-declined",
+      "acceptance_id": "HP09",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "participation",
+            1
+          ],
+          "value": {
+            "role_ref": {
+              "kind": "role",
+              "id": "syn-role-consumer"
+            },
+            "state": "declined",
+            "account_refs": [],
+            "response_refs": [],
+            "disagreement_refs": [],
+            "needs": [
+              "Ask about access and communication preferences; none are inferred."
+            ],
+            "confirmation": "not_requested",
+            "state_note": "No consultation or agreement is established by this declined participation state.",
+            "state_basis_refs": []
+          }
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "The previously supplied synthetic account remains in the canonical record; the current participation state does not establish present consultation or agreement.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "participation.no_inferred_agreement"
+        ],
+        "required_states": {
+          "consumer_participation": "declined",
+          "consultation_completed": false,
+          "agreement_established": false
+        },
+        "retained_ids": [
+          "syn-stmt-consumer"
+        ],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "c4037185870c61096c7659f2089e9578573de2d180a7bb2dc5184ed98146966a",
+          "normalized_profile_sha256": "03794ba39f7aa4ac649f8c224e0b5945123e0b672fd40259c8813c42a272c7c4"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP09-participation-unavailable",
+      "acceptance_id": "HP09",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "participation",
+            1
+          ],
+          "value": {
+            "role_ref": {
+              "kind": "role",
+              "id": "syn-role-consumer"
+            },
+            "state": "unavailable",
+            "account_refs": [],
+            "response_refs": [],
+            "disagreement_refs": [],
+            "needs": [
+              "Ask about access and communication preferences; none are inferred."
+            ],
+            "confirmation": "not_requested",
+            "state_note": "No consultation or agreement is established by this unavailable participation state.",
+            "state_basis_refs": []
+          }
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "The previously supplied synthetic account remains in the canonical record; the current participation state does not establish present consultation or agreement.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "participation.no_inferred_agreement"
+        ],
+        "required_states": {
+          "consumer_participation": "unavailable",
+          "consultation_completed": false,
+          "agreement_established": false
+        },
+        "retained_ids": [
+          "syn-stmt-consumer"
+        ],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f1c9ef07daac9725cd005b0a277e7ea7a72d73d409abcb02b75edf2b8418dc3a",
+          "normalized_profile_sha256": "7ecb0bc1e75cb1c2fb27db0d21cce79e98ae12d751ba0214dddfbcdf6136afe9"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP10-no-statutory-authority",
+      "acceptance_id": "HP10",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "authority.no_inferred_protection"
+        ],
+        "required_states": {
+          "protection": "not_established",
+          "severity": "not_inferred",
+          "reportability": "not_inferred"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP11-unavailable-local-template",
+      "acceptance_id": "HP11",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "template_mapping"
+          ],
+          "value": {
+            "state": "unavailable",
+            "template_id": null,
+            "template_version": null,
+            "template_raw_sha256": null,
+            "rights_status": "not_available",
+            "source_snapshot_id": null,
+            "field_mappings": [],
+            "gaps": [
+              "The current local Queensland Health/HHS form has not been supplied or inspected.",
+              "This original outline does not assert official template conformity."
+            ]
+          }
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "template.conformity_withheld"
+        ],
+        "required_states": {
+          "local_template_conformity": "not_established",
+          "draft_preparation": "available"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "d091141898a0d62c2d05001f27c0ca012725b2a944f6d4458fab336991f799bc",
+          "normalized_profile_sha256": "30d5a4bbd40bbaaef20aad79a33175db6e46ece376616a2de006637078f08797"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP12-template-revision",
+      "acceptance_id": "HP12",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json",
+        "manifest": "packet/base-manifest.json",
+        "decision": "packet/simulated-approved-decision.json"
+      },
+      "mutations": [],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {
+        "packet/template-v1.md": "packet/template-v2.md"
+      },
+      "arrangement_note": "Replacement template bytes are presented under old profile/manifest bindings. This is an integrity failure and must be rejected before rendering. A legitimate newly bound revision could later be prepared with an explicitly stale mapping, but that different arrangement is not silently created by this test.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true,
+          "manifest": true,
+          "decision": true
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "stale",
+        "rule_ids": [
+          "revision.template",
+          "packet.approval_stale"
+        ],
+        "required_states": {
+          "template_mapping": "stale",
+          "prior_decision": "stale",
+          "revalidation_required": true,
+          "template_byte_binding": "stale"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": [],
+          "manifest": [],
+          "decision": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input",
+        "manifest": "consumer_input",
+        "decision": "consumer_input"
+      }
+    },
+    {
+      "id": "HP12-source-revision",
+      "acceptance_id": "HP12",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json",
+        "manifest": "packet/base-manifest.json",
+        "decision": "packet/simulated-approved-decision.json"
+      },
+      "mutations": [],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {
+        "sources/record.txt": "sources/record-revision-2.txt"
+      },
+      "arrangement_note": "The same source identity has new revision bytes; retain the previous family but reject old byte bindings. A new source must be explicitly admitted before rebuilding.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true,
+          "manifest": true,
+          "decision": true
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "stale",
+        "rule_ids": [
+          "revision.source",
+          "packet.approval_stale"
+        ],
+        "required_states": {
+          "source_binding": "stale",
+          "template_mapping": "requires_revalidation",
+          "prior_decision": "stale",
+          "revalidation_required": true
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": [],
+          "manifest": [],
+          "decision": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input",
+        "manifest": "consumer_input",
+        "decision": "consumer_input"
+      }
+    },
+    {
+      "id": "HP13-missing-trigger",
+      "acceptance_id": "HP13",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "clocks",
+            "awareness"
+          ],
+          "value": {
+            "state": "unknown",
+            "value": null,
+            "precision": "unknown",
+            "basis_refs": [],
+            "uncertainty": "The awareness trigger date is missing."
+          }
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "deadlines",
+            0,
+            "state"
+          ],
+          "value": "unresolved"
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "deadlines",
+            0,
+            "due"
+          ],
+          "value": {
+            "state": "unknown",
+            "value": null,
+            "precision": "unknown",
+            "basis_refs": [],
+            "uncertainty": "No due timestamp can be established without the trigger date."
+          }
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "deadline.trigger"
+        ],
+        "required_states": {
+          "deadline": "unresolved",
+          "due_timestamp": null
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "d09805188dfbc46a4b7e63a35b9724bb6d7e708767b61342e56518f372787279",
+          "normalized_profile_sha256": "705ad187f39d828a7d747855b060fbffa03fa732a848d0a88c1ec4c68abdfa9d"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP13-missing-calendar",
+      "acceptance_id": "HP13",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "deadlines",
+            0,
+            "calendar_snapshot_id"
+          ],
+          "value": null
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "deadlines",
+            0,
+            "state"
+          ],
+          "value": "unresolved"
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "deadlines",
+            0,
+            "due"
+          ],
+          "value": {
+            "state": "unknown",
+            "value": null,
+            "precision": "unknown",
+            "basis_refs": [],
+            "uncertainty": "No applicable calendar snapshot is selected."
+          }
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "deadline.calendar"
+        ],
+        "required_states": {
+          "deadline": "unresolved",
+          "due_timestamp": null
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "c6758a0621d95fd1dc7bf7014e0bd5bd1e5219e8e5c3001456d0213156f6189a",
+          "normalized_profile_sha256": "fe09af5ae81e28c0095a0cbcfbcf9f63ede6b35712be35472ff89bf868af4aea"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP14-method-change",
+      "acceptance_id": "HP14",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "sources"
+          ],
+          "value": [
+            {
+              "source_id": "syn-src-record",
+              "source_type": "record",
+              "title": "Synthetic sources/record.txt",
+              "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic text; not an official policy or form.",
+              "citation": "sources/record.txt",
+              "screening_state": "included",
+              "late": false
+            },
+            {
+              "source_id": "syn-src-staff",
+              "source_type": "account",
+              "title": "Synthetic sources/staff-account.txt",
+              "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic text; not an official policy or form.",
+              "citation": "sources/staff-account.txt",
+              "screening_state": "included",
+              "late": false
+            },
+            {
+              "source_id": "syn-src-consumer",
+              "source_type": "account",
+              "title": "Synthetic sources/consumer-account.txt",
+              "fingerprint": "sha256:5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic text; not an official policy or form.",
+              "citation": "sources/consumer-account.txt",
+              "screening_state": "included",
+              "late": false
+            },
+            {
+              "source_id": "syn-src-clock",
+              "source_type": "other",
+              "title": "Fictional fixture clock rule",
+              "fingerprint": "sha256:cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic rule; not an official policy, obligation or form.",
+              "citation": "sources/synthetic-clock-rule.txt",
+              "screening_state": "included",
+              "late": false
+            },
+            {
+              "source_id": "syn-src-method-handover",
+              "source_type": "other",
+              "title": "Synthetic prior-process to HEAPS selection record",
+              "fingerprint": "sha256:2af4d88b05c55d04919bfa98fb25bde50bb2ee92ba2700ec25c1da3337c3e137",
+              "acquired_at": "2030-01-07T10:30:00+10:00",
+              "authority": "Fictional selection only; no clinical, statutory or organisational authority.",
+              "citation": "sources/method-handover.txt",
+              "screening_state": "included",
+              "late": false
+            }
+          ]
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "statements"
+          ],
+          "value": [
+            {
+              "statement_id": "syn-stmt-document",
+              "kind": "observed_fact",
+              "text": "The synthetic handover document contains an acknowledgement heading with a blank value.",
+              "provenance": {
+                "source_id": "syn-src-record",
+                "author_role_id": "syn-role-recorder",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "unreviewed",
+                "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Describes the supplied synthetic document only; care and prompt visibility are not established."
+            },
+            {
+              "statement_id": "syn-stmt-staff",
+              "kind": "reported_account",
+              "text": "[RN B] recalls that the acknowledgement prompt was visible during the synthetic handover.",
+              "provenance": {
+                "source_id": "syn-src-staff",
+                "author_role_id": "syn-role-staff",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "unreviewed",
+                "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Unverified recollection; conflicts with syn-stmt-consumer."
+            },
+            {
+              "statement_id": "syn-stmt-consumer",
+              "kind": "reported_account",
+              "text": "[Carer C] recalls that the acknowledgement prompt was not visible during the same synthetic handover.",
+              "provenance": {
+                "source_id": "syn-src-consumer",
+                "author_role_id": "syn-role-consumer",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "unreviewed",
+                "fingerprint": "sha256:5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Unverified recollection; conflicts with syn-stmt-staff."
+            },
+            {
+              "statement_id": "syn-stmt-document-gap",
+              "kind": "hypothesis",
+              "text": "Prompt visibility may have varied in the synthetic exercise.",
+              "provenance": {
+                "source_id": "syn-src-record",
+                "author_role_id": "syn-role-facilitator",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "unreviewed",
+                "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Candidate explanation only; a blank field does not establish a care omission or cause."
+            },
+            {
+              "statement_id": "syn-stmt-recall",
+              "kind": "hypothesis",
+              "text": "The different reported recollections may explain the unresolved visibility accounts.",
+              "provenance": {
+                "source_id": "syn-src-staff",
+                "author_role_id": "syn-role-facilitator",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "unreviewed",
+                "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Alternative explanation retained without adjudication."
+            },
+            {
+              "statement_id": "syn-stmt-finding",
+              "kind": "finding",
+              "text": "Draft documentation finding: the supplied synthetic record leaves acknowledgement unresolved.",
+              "provenance": {
+                "source_id": "syn-src-record",
+                "author_role_id": "syn-role-facilitator",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "unreviewed",
+                "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Proposed finding only; no authorised acceptance and no inference of omitted care."
+            },
+            {
+              "statement_id": "syn-stmt-recommendation",
+              "kind": "recommendation",
+              "text": "Test acknowledgement prompt visibility in a synthetic mockup before proposing any operational change.",
+              "provenance": {
+                "source_id": "syn-src-record",
+                "author_role_id": "syn-role-facilitator",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "unreviewed",
+                "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Draft recommendation; no clinical or organisational approval."
+            },
+            {
+              "statement_id": "syn-stmt-method-handover",
+              "kind": "decision",
+              "text": "In this synthetic exercise, synthetic-preliminary-review is replaced by HEAPS; preserve the existing awareness clock and leave reporting/submission clocks unknown.",
+              "provenance": {
+                "source_id": "syn-src-method-handover",
+                "author_role_id": "syn-role-facilitator",
+                "recorded_at": "2030-01-07T10:30:00+10:00",
+                "review_state": "unreviewed",
+                "fingerprint": "sha256:2af4d88b05c55d04919bfa98fb25bde50bb2ee92ba2700ec25c1da3337c3e137",
+                "model_involvement": "Independently authored synthetic selection record; no actual authority."
+              },
+              "uncertainty": "The decision is fictional and does not establish statutory protection, severity, reportability, procedure applicability or organisational approval."
+            }
+          ]
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "source_snapshots"
+          ],
+          "value": [
+            {
+              "snapshot_id": "syn-snapshot-record",
+              "source_id": "syn-src-record",
+              "source_family_id": "syn-family-record",
+              "state": "available",
+              "raw_sha256": "1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+              "rights_status": "original_synthetic",
+              "authority_status": "unverified",
+              "version": "1",
+              "locator": "synthetic:sources/record.txt",
+              "source_kind": "generated_synthetic",
+              "purposes": [
+                "incident_evidence"
+              ],
+              "applicability": "applies_synthetic"
+            },
+            {
+              "snapshot_id": "syn-snapshot-staff",
+              "source_id": "syn-src-staff",
+              "source_family_id": "syn-family-staff",
+              "state": "available",
+              "raw_sha256": "84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+              "rights_status": "original_synthetic",
+              "authority_status": "unverified",
+              "version": "1",
+              "locator": "synthetic:sources/staff-account.txt",
+              "source_kind": "generated_synthetic",
+              "purposes": [
+                "incident_evidence"
+              ],
+              "applicability": "applies_synthetic"
+            },
+            {
+              "snapshot_id": "syn-snapshot-consumer",
+              "source_id": "syn-src-consumer",
+              "source_family_id": "syn-family-consumer",
+              "state": "available",
+              "raw_sha256": "5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+              "rights_status": "original_synthetic",
+              "authority_status": "unverified",
+              "version": "1",
+              "locator": "synthetic:sources/consumer-account.txt",
+              "source_kind": "generated_synthetic",
+              "purposes": [
+                "incident_evidence"
+              ],
+              "applicability": "applies_synthetic"
+            },
+            {
+              "snapshot_id": "syn-snapshot-clock",
+              "source_id": "syn-src-clock",
+              "source_family_id": "syn-family-clock",
+              "state": "available",
+              "raw_sha256": "cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02",
+              "rights_status": "original_synthetic",
+              "authority_status": "unverified",
+              "version": "1",
+              "locator": "synthetic:sources/synthetic-clock-rule.txt",
+              "source_kind": "generated_synthetic",
+              "purposes": [
+                "obligation",
+                "calendar"
+              ],
+              "applicability": "applies_synthetic"
+            },
+            {
+              "snapshot_id": "syn-snapshot-method-handover",
+              "source_id": "syn-src-method-handover",
+              "source_family_id": "syn-family-method-handover",
+              "state": "available",
+              "raw_sha256": "2af4d88b05c55d04919bfa98fb25bde50bb2ee92ba2700ec25c1da3337c3e137",
+              "rights_status": "original_synthetic",
+              "authority_status": "unverified",
+              "version": "1",
+              "locator": "synthetic:sources/method-handover.txt",
+              "source_kind": "generated_synthetic",
+              "purposes": [
+                "context"
+              ],
+              "applicability": "applies_synthetic"
+            }
+          ]
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "source_families"
+          ],
+          "value": [
+            {
+              "source_ref": {
+                "kind": "source",
+                "id": "syn-src-record"
+              },
+              "family_id": "syn-family-record",
+              "derived_from": [],
+              "independence": "not_established"
+            },
+            {
+              "source_ref": {
+                "kind": "source",
+                "id": "syn-src-staff"
+              },
+              "family_id": "syn-family-staff",
+              "derived_from": [],
+              "independence": "not_established"
+            },
+            {
+              "source_ref": {
+                "kind": "source",
+                "id": "syn-src-consumer"
+              },
+              "family_id": "syn-family-consumer",
+              "derived_from": [],
+              "independence": "not_established"
+            },
+            {
+              "source_ref": {
+                "kind": "source",
+                "id": "syn-src-clock"
+              },
+              "family_id": "syn-family-clock",
+              "derived_from": [],
+              "independence": "not_established"
+            },
+            {
+              "source_ref": {
+                "kind": "source",
+                "id": "syn-src-method-handover"
+              },
+              "family_id": "syn-family-method-handover",
+              "derived_from": [],
+              "independence": "not_established"
+            }
+          ]
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "selection",
+            "decision_ref"
+          ],
+          "value": {
+            "kind": "decision",
+            "id": "syn-stmt-method-handover"
+          }
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "fingerprint"
+          ],
+          "value": "sha256:ee445d1956e7ee4726722e994085c466d8736966922b187d6ee830ff7e36952a"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "An original synthetic source and canonical decision record a handover from the fictional synthetic-preliminary-review process to HEAPS. The profile binds that decision and the updated case. Existing awareness, unknown reporting/submission clocks and the literal unverified target remain unchanged. This does not qualify loading or migrating another production review-profile implementation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "clock.method_independence"
+        ],
+        "required_states": {
+          "awareness": "2030-01-07T00:00:00Z",
+          "due_timestamp": "2030-01-08T00:00:00Z",
+          "clock_reset": false,
+          "prior_process": "synthetic-preliminary-review",
+          "selected_process": "HEAPS",
+          "sac1_reporting_time": null,
+          "review_submission_time": null,
+          "external_profile_migration": "not_covered"
+        },
+        "retained_ids": [
+          "syn-stmt-method-handover",
+          "syn-src-method-handover"
+        ],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:ee445d1956e7ee4726722e994085c466d8736966922b187d6ee830ff7e36952a",
+          "case_ingress_raw_sha256": "4700c9ab99b254720386890c006929e97b9fa08ac4fc4f90e6961371642ff763",
+          "normalized_case_sha256": "c200adba9216de9753f878ada8d5edebc86a6444b232d50ebe86d4998980257d",
+          "profile_ingress_raw_sha256": "b7a81a1a90179f5210ae9c894fb5eb25a8d1e52235c1f8a08fc7e380a99f008c",
+          "normalized_profile_sha256": "a2be81da5a7a77c19e72ec70efe82985e7f342733c33d3da4c5cc6e8cf1bb7c7"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP15-implemented-without-outcomes",
+      "acceptance_id": "HP15",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "actions",
+            0,
+            "status"
+          ],
+          "value": "implemented"
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "fingerprint"
+          ],
+          "value": "sha256:d768e3b57c9decae42a0541eddaaa0bee66e2fc18a29b47ac919256b4e60b598"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "The action-status label alone is not implementation evidence or an outcome. No effective/partly-effective conclusion is permitted.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "action.effectiveness"
+        ],
+        "required_states": {
+          "implementation": "implemented",
+          "effectiveness": "pending_evidence",
+          "outcome_status": "pending"
+        },
+        "retained_ids": [
+          "syn-action-mockup",
+          "syn-outcome-mockup"
+        ],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:d768e3b57c9decae42a0541eddaaa0bee66e2fc18a29b47ac919256b4e60b598",
+          "case_ingress_raw_sha256": "9e5d43b46ca4515cefd12a58b55f1a4266bb76d7dc6cf38ad8908a84bb622493",
+          "normalized_case_sha256": "613e930d4e556887a4e3908a1a783c3bd67423eab0088cbe8b6ef0b16515b666",
+          "profile_ingress_raw_sha256": "9612c168a9ef86cf2fe163824fbac0cc92ceac91cc6b8dbcecde2136ddf43e6e",
+          "normalized_profile_sha256": "745aa17c3268f33ffbbf44c3d0a5e4fa57b8d08b90d41ff7e30065f23942ff4d"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP16-no-submission-receipt",
+      "acceptance_id": "HP16",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json",
+        "manifest": "packet/base-manifest.json"
+      },
+      "mutations": [],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true,
+          "manifest": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "submission.receipt_required"
+        ],
+        "required_states": {
+          "submission": "not_submitted",
+          "case_closed": false,
+          "system_of_record_receipt": null
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": [],
+          "manifest": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input",
+        "manifest": "consumer_input"
+      }
+    },
+    {
+      "id": "HP17-non-synthetic-label",
+      "acceptance_id": "HP17",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "data_class"
+          ],
+          "value": "non_synthetic_simulated"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Only the label is adversarial. Every actual byte remains generated synthetic; no real data is supplied.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": false
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "boundary.synthetic_only"
+        ],
+        "required_states": {
+          "synthetic_pathway": "rejected"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "64d2cc525247d50eb5846d82e1bbbf0d0b82c1612b80107360a037c9bae30af4",
+          "normalized_profile_sha256": "774c1d28e999ba9e71180f9d60fd1a3ec14ce258a90bfd87b3ec415f7611e9bf"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": [
+            "const"
+          ]
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP18-duplicate-source-family",
+      "acceptance_id": "HP18",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "sources"
+          ],
+          "value": [
+            {
+              "source_id": "syn-src-record",
+              "source_type": "record",
+              "title": "Synthetic sources/record.txt",
+              "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic text; not an official policy or form.",
+              "citation": "sources/record.txt",
+              "screening_state": "included",
+              "late": false
+            },
+            {
+              "source_id": "syn-src-staff",
+              "source_type": "account",
+              "title": "Synthetic sources/staff-account.txt",
+              "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic text; not an official policy or form.",
+              "citation": "sources/staff-account.txt",
+              "screening_state": "included",
+              "late": false
+            },
+            {
+              "source_id": "syn-src-consumer",
+              "source_type": "account",
+              "title": "Synthetic sources/consumer-account.txt",
+              "fingerprint": "sha256:5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic text; not an official policy or form.",
+              "citation": "sources/consumer-account.txt",
+              "screening_state": "included",
+              "late": false
+            },
+            {
+              "source_id": "syn-src-clock",
+              "source_type": "other",
+              "title": "Fictional fixture clock rule",
+              "fingerprint": "sha256:cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic rule; not an official policy, obligation or form.",
+              "citation": "sources/synthetic-clock-rule.txt",
+              "screening_state": "included",
+              "late": false
+            },
+            {
+              "source_id": "syn-src-record-summary",
+              "source_type": "other",
+              "title": "Synthetic summary of the existing record",
+              "fingerprint": "sha256:a7926952e4e757a3b5773eb8ee915cb9373b02885dc13a0effc6a0a6ebb0eec0",
+              "acquired_at": "2030-01-07T10:10:00+10:00",
+              "authority": "Original synthetic derivative; not independent evidence.",
+              "citation": "sources/record-summary.txt",
+              "screening_state": "included",
+              "late": false
+            }
+          ]
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "evidence"
+          ],
+          "value": [
+            {
+              "evidence_id": "syn-evidence-record",
+              "source_id": "syn-src-record",
+              "artefact_id": "syn-artefact-record",
+              "content": "GENERATED SYNTHETIC FIXTURE — no real person, care event or official form.\n[Ward X] handover document: the acknowledgement heading is present and its value is blank.\nThe reproduced heading reads «révision µ». This document does not establish whether a prompt was visible during the handover.\nThe blank value does not establish that care, communication or acknowledgement was omitted.\n",
+              "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+              "custody_state": "acquired",
+              "redacted": false
+            },
+            {
+              "evidence_id": "syn-evidence-staff",
+              "source_id": "syn-src-staff",
+              "artefact_id": "syn-artefact-staff",
+              "content": "GENERATED SYNTHETIC ACCOUNT — no real person or care event.\n[RN B] recalls that the acknowledgement prompt was visible during the stated handover at [Ward X].\nThis is a reported recollection; the account does not establish agreement with another participant or a verified finding.\n",
+              "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+              "custody_state": "acquired",
+              "redacted": false
+            },
+            {
+              "evidence_id": "syn-evidence-consumer",
+              "source_id": "syn-src-consumer",
+              "artefact_id": "syn-artefact-consumer",
+              "content": "GENERATED SYNTHETIC ACCOUNT — no real person or care event.\n[Carer C] recalls that the acknowledgement prompt was not visible during the same stated handover at [Ward X].\nThis recollection conflicts with [RN B] on prompt visibility. Neither account resolves the conflict.\n",
+              "fingerprint": "sha256:5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+              "custody_state": "acquired",
+              "redacted": false
+            },
+            {
+              "evidence_id": "syn-evidence-record-summary",
+              "source_id": "syn-src-record-summary",
+              "content": "GENERATED SYNTHETIC DERIVATIVE — summary of record.txt only.\nThe synthetic handover document has an acknowledgement heading and a blank value. Prompt visibility during the handover remains unknown.\nThis summary is not an independent observation or an additional corroborating source family.\n",
+              "fingerprint": "sha256:a7926952e4e757a3b5773eb8ee915cb9373b02885dc13a0effc6a0a6ebb0eec0",
+              "custody_state": "transformed",
+              "original_fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+              "transformation": "Synthetic summary of syn-src-record only; same source family.",
+              "redacted": false
+            }
+          ]
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "source_snapshots"
+          ],
+          "value": [
+            {
+              "snapshot_id": "syn-snapshot-record",
+              "source_id": "syn-src-record",
+              "source_family_id": "syn-family-record",
+              "state": "available",
+              "raw_sha256": "1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+              "rights_status": "original_synthetic",
+              "authority_status": "unverified",
+              "version": "1",
+              "locator": "synthetic:sources/record.txt",
+              "source_kind": "generated_synthetic",
+              "purposes": [
+                "incident_evidence"
+              ],
+              "applicability": "applies_synthetic"
+            },
+            {
+              "snapshot_id": "syn-snapshot-staff",
+              "source_id": "syn-src-staff",
+              "source_family_id": "syn-family-staff",
+              "state": "available",
+              "raw_sha256": "84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+              "rights_status": "original_synthetic",
+              "authority_status": "unverified",
+              "version": "1",
+              "locator": "synthetic:sources/staff-account.txt",
+              "source_kind": "generated_synthetic",
+              "purposes": [
+                "incident_evidence"
+              ],
+              "applicability": "applies_synthetic"
+            },
+            {
+              "snapshot_id": "syn-snapshot-consumer",
+              "source_id": "syn-src-consumer",
+              "source_family_id": "syn-family-consumer",
+              "state": "available",
+              "raw_sha256": "5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+              "rights_status": "original_synthetic",
+              "authority_status": "unverified",
+              "version": "1",
+              "locator": "synthetic:sources/consumer-account.txt",
+              "source_kind": "generated_synthetic",
+              "purposes": [
+                "incident_evidence"
+              ],
+              "applicability": "applies_synthetic"
+            },
+            {
+              "snapshot_id": "syn-snapshot-clock",
+              "source_id": "syn-src-clock",
+              "source_family_id": "syn-family-clock",
+              "state": "available",
+              "raw_sha256": "cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02",
+              "rights_status": "original_synthetic",
+              "authority_status": "unverified",
+              "version": "1",
+              "locator": "synthetic:sources/synthetic-clock-rule.txt",
+              "source_kind": "generated_synthetic",
+              "purposes": [
+                "obligation",
+                "calendar"
+              ],
+              "applicability": "applies_synthetic"
+            },
+            {
+              "snapshot_id": "syn-snapshot-record-summary",
+              "source_id": "syn-src-record-summary",
+              "source_family_id": "syn-family-record",
+              "state": "available",
+              "raw_sha256": "a7926952e4e757a3b5773eb8ee915cb9373b02885dc13a0effc6a0a6ebb0eec0",
+              "rights_status": "original_synthetic",
+              "authority_status": "unverified",
+              "version": "1",
+              "locator": "synthetic:sources/record-summary.txt",
+              "source_kind": "generated_synthetic",
+              "purposes": [
+                "incident_evidence"
+              ],
+              "applicability": "applies_synthetic"
+            }
+          ]
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "source_families"
+          ],
+          "value": [
+            {
+              "source_ref": {
+                "kind": "source",
+                "id": "syn-src-record"
+              },
+              "family_id": "syn-family-record",
+              "derived_from": [],
+              "independence": "not_established"
+            },
+            {
+              "source_ref": {
+                "kind": "source",
+                "id": "syn-src-staff"
+              },
+              "family_id": "syn-family-staff",
+              "derived_from": [],
+              "independence": "not_established"
+            },
+            {
+              "source_ref": {
+                "kind": "source",
+                "id": "syn-src-consumer"
+              },
+              "family_id": "syn-family-consumer",
+              "derived_from": [],
+              "independence": "not_established"
+            },
+            {
+              "source_ref": {
+                "kind": "source",
+                "id": "syn-src-clock"
+              },
+              "family_id": "syn-family-clock",
+              "derived_from": [],
+              "independence": "not_established"
+            },
+            {
+              "source_ref": {
+                "kind": "source",
+                "id": "syn-src-record-summary"
+              },
+              "family_id": "syn-family-record",
+              "derived_from": [
+                {
+                  "kind": "source",
+                  "id": "syn-src-record"
+                }
+              ],
+              "independence": "not_established"
+            }
+          ]
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "fingerprint"
+          ],
+          "value": "sha256:c88bfa71a22caf97f59f7f343e23b2b2299b6e35e7c4d01f22c1b8c74777b198"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "source.family_identity"
+        ],
+        "required_states": {
+          "incident_source_count": 4,
+          "incident_source_family_count": 3,
+          "independent_corroboration": "not_established"
+        },
+        "retained_ids": [
+          "syn-src-record",
+          "syn-src-record-summary",
+          "syn-family-record"
+        ],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:c88bfa71a22caf97f59f7f343e23b2b2299b6e35e7c4d01f22c1b8c74777b198",
+          "case_ingress_raw_sha256": "b3adfc98ec233a551f082d4e9efaf1f1ff65c922047890e6181bafbc675e5bb4",
+          "normalized_case_sha256": "5ba7b24049f637197b7655c5337bde8685f37da43f5cbc515f6e38a96256242d",
+          "profile_ingress_raw_sha256": "de4eb2731113450e4845d58bd8f22ff23cdd3bfaa3607e05cbbe34e456ccbc89",
+          "normalized_profile_sha256": "707611594d6b4d3dffcdc9a42619e65ed35316fb9ffb1cc3c46db68e72f7a871"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP19-missing-documentation",
+      "acceptance_id": "HP19",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "documentation.gap_only"
+        ],
+        "required_states": {
+          "documentation_gap": "unresolved",
+          "care_omission_finding": "not_established"
+        },
+        "retained_ids": [
+          "syn-stmt-document",
+          "syn-stmt-document-gap",
+          "syn-stmt-finding"
+        ],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP20-empty",
+      "acceptance_id": "HP20",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json",
+        "status": "packet/design-status.json"
+      },
+      "mutations": [
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "state"
+          ],
+          "value": "intake"
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "roles"
+          ],
+          "value": []
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "sources"
+          ],
+          "value": []
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "artefacts"
+          ],
+          "value": []
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "evidence"
+          ],
+          "value": []
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "statements"
+          ],
+          "value": []
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "factors"
+          ],
+          "value": []
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "relationships"
+          ],
+          "value": []
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "events"
+          ],
+          "value": []
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "actions"
+          ],
+          "value": []
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "reviews"
+          ],
+          "value": []
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "outcomes"
+          ],
+          "value": []
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "referrals"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "source_snapshots"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "source_families"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "roles"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "participation"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "chronology"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "deadlines"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "factor_assignments"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "finding_context"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "action_context"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "open_route_questions"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "optional_components"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "selection",
+            "selected_by"
+          ],
+          "value": null
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "selection",
+            "analytical_tools"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "applicability",
+            "obligation_snapshot_ids"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "template_mapping",
+            "field_mappings"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "clocks"
+          ],
+          "value": {
+            "awareness": {
+              "state": "unknown",
+              "value": null,
+              "precision": "unknown",
+              "basis_refs": [],
+              "uncertainty": "No items or trigger evidence are supplied."
+            },
+            "sac1_reporting": {
+              "state": "unknown",
+              "value": null,
+              "precision": "unknown",
+              "basis_refs": [],
+              "uncertainty": "No items or trigger evidence are supplied."
+            },
+            "review_submission": {
+              "state": "unknown",
+              "value": null,
+              "precision": "unknown",
+              "basis_refs": [],
+              "uncertainty": "No items or trigger evidence are supplied."
+            }
+          }
+        },
+        {
+          "document": "status",
+          "operation": "replace",
+          "path": [
+            "preparation"
+          ],
+          "value": "empty"
+        },
+        {
+          "document": "status",
+          "operation": "replace",
+          "path": [
+            "counts"
+          ],
+          "value": {
+            "input_items": 0,
+            "usable_items": 0,
+            "abstained_items": 0
+          }
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "fingerprint"
+          ],
+          "value": "sha256:294c6977bc0b2a3bec74b378b8370e26ebef43e9a34a0ca8ff283b40321f5801"
+        },
+        {
+          "document": "status",
+          "operation": "replace",
+          "path": [
+            "profile_binding",
+            "raw_sha256"
+          ],
+          "value": "c7c4f74bcc4e495afa35eb2bba7e513307633d4155663a558f9621c14574b5c1"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "The case contains zero canonical statements and no substantive referenced entities; the profile is rebound. The supplied illustrative status is not a trusted consumer input. Empty means denominator zero, never a successful completed review.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true,
+          "status": true
+        },
+        "preparation_disposition": "abstain",
+        "review_disposition": "withheld",
+        "rule_ids": [
+          "completion.nonempty"
+        ],
+        "required_states": {
+          "preparation": "empty",
+          "counts": {
+            "input_items": 0,
+            "usable_items": 0,
+            "abstained_items": 0
+          },
+          "completed_review": false,
+          "count_unit": "canonical_statement"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:294c6977bc0b2a3bec74b378b8370e26ebef43e9a34a0ca8ff283b40321f5801",
+          "case_ingress_raw_sha256": "844487467ef75ad40a72fc75299d3ef7c6059e9620a8ee7f94aeffe1b97e3922",
+          "normalized_case_sha256": "e7291f0412660c48a48f08a9cd67728fa3c43f13860c37114a6048cdd964e92e",
+          "profile_ingress_raw_sha256": "c7c4f74bcc4e495afa35eb2bba7e513307633d4155663a558f9621c14574b5c1",
+          "normalized_profile_sha256": "dc44307ef4f849c8e88df2b31f3048e5254ba68e30b159bf1ec5e5d33a60dccf"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": [],
+          "status": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input",
+        "status": "illustrative_expected_status_not_input"
+      }
+    },
+    {
+      "id": "HP20-all-abstain",
+      "acceptance_id": "HP20",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json",
+        "status": "packet/design-status.json"
+      },
+      "mutations": [
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "statements"
+          ],
+          "value": [
+            {
+              "statement_id": "syn-stmt-document",
+              "kind": "observed_fact",
+              "text": "The synthetic handover document contains an acknowledgement heading with a blank value.",
+              "provenance": {
+                "source_id": "syn-src-record",
+                "author_role_id": "syn-role-recorder",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "withdrawn",
+                "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Explicitly withdrawn synthetic statement; retained for history and excluded from usable draft items.",
+              "withdrawn": true
+            },
+            {
+              "statement_id": "syn-stmt-staff",
+              "kind": "reported_account",
+              "text": "[RN B] recalls that the acknowledgement prompt was visible during the synthetic handover.",
+              "provenance": {
+                "source_id": "syn-src-staff",
+                "author_role_id": "syn-role-staff",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "withdrawn",
+                "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Explicitly withdrawn synthetic statement; retained for history and excluded from usable draft items.",
+              "withdrawn": true
+            },
+            {
+              "statement_id": "syn-stmt-consumer",
+              "kind": "reported_account",
+              "text": "[Carer C] recalls that the acknowledgement prompt was not visible during the same synthetic handover.",
+              "provenance": {
+                "source_id": "syn-src-consumer",
+                "author_role_id": "syn-role-consumer",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "withdrawn",
+                "fingerprint": "sha256:5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Explicitly withdrawn synthetic statement; retained for history and excluded from usable draft items.",
+              "withdrawn": true
+            },
+            {
+              "statement_id": "syn-stmt-document-gap",
+              "kind": "hypothesis",
+              "text": "Prompt visibility may have varied in the synthetic exercise.",
+              "provenance": {
+                "source_id": "syn-src-record",
+                "author_role_id": "syn-role-facilitator",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "withdrawn",
+                "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Explicitly withdrawn synthetic statement; retained for history and excluded from usable draft items.",
+              "withdrawn": true
+            },
+            {
+              "statement_id": "syn-stmt-recall",
+              "kind": "hypothesis",
+              "text": "The different reported recollections may explain the unresolved visibility accounts.",
+              "provenance": {
+                "source_id": "syn-src-staff",
+                "author_role_id": "syn-role-facilitator",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "withdrawn",
+                "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Explicitly withdrawn synthetic statement; retained for history and excluded from usable draft items.",
+              "withdrawn": true
+            },
+            {
+              "statement_id": "syn-stmt-finding",
+              "kind": "finding",
+              "text": "Draft documentation finding: the supplied synthetic record leaves acknowledgement unresolved.",
+              "provenance": {
+                "source_id": "syn-src-record",
+                "author_role_id": "syn-role-facilitator",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "withdrawn",
+                "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Explicitly withdrawn synthetic statement; retained for history and excluded from usable draft items.",
+              "withdrawn": true
+            },
+            {
+              "statement_id": "syn-stmt-recommendation",
+              "kind": "recommendation",
+              "text": "Test acknowledgement prompt visibility in a synthetic mockup before proposing any operational change.",
+              "provenance": {
+                "source_id": "syn-src-record",
+                "author_role_id": "syn-role-facilitator",
+                "recorded_at": "2030-01-07T10:00:00+10:00",
+                "review_state": "withdrawn",
+                "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+                "model_involvement": "Independently authored synthetic fixture; no clinical inference."
+              },
+              "uncertainty": "Explicitly withdrawn synthetic statement; retained for history and excluded from usable draft items.",
+              "withdrawn": true
+            }
+          ]
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "factors"
+          ],
+          "value": [
+            {
+              "factor_id": "syn-factor-prompt",
+              "kind": "system_condition",
+              "statement_id": "syn-stmt-document-gap",
+              "status": "withdrawn"
+            }
+          ]
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "actions"
+          ],
+          "value": [
+            {
+              "action_id": "syn-action-mockup",
+              "recommendation_id": "syn-stmt-recommendation",
+              "owner_role_id": "syn-role-owner",
+              "status": "withdrawn",
+              "effectiveness_state": "pending_evidence",
+              "implementation_evidence_ids": [],
+              "residual_risk": "No operational action, outcome evidence or clinical effectiveness is asserted."
+            }
+          ]
+        },
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "reviews"
+          ],
+          "value": [
+            {
+              "review_id": "syn-review-consultation",
+              "review_type": "consultation",
+              "reviewer_role_ids": [
+                "syn-role-reviewer"
+              ],
+              "status": "withdrawn",
+              "statement_ids": [
+                "syn-stmt-staff",
+                "syn-stmt-consumer",
+                "syn-stmt-finding"
+              ]
+            }
+          ]
+        },
+        {
+          "document": "status",
+          "operation": "replace",
+          "path": [
+            "preparation"
+          ],
+          "value": "all_abstain"
+        },
+        {
+          "document": "status",
+          "operation": "replace",
+          "path": [
+            "counts"
+          ],
+          "value": {
+            "input_items": 7,
+            "usable_items": 0,
+            "abstained_items": 7
+          }
+        },
+        {
+          "document": "status",
+          "operation": "replace",
+          "path": [
+            "limitations"
+          ],
+          "value": [
+            "All seven synthetic items are explicitly abstained from; no successful completed draft or review is established.",
+            "Literal design specimen only; H4/H5 runtime execution remains not_run."
+          ]
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "finding_context"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "action_context"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "chronology"
+          ],
+          "value": []
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "version"
+          ],
+          "value": 2
+        },
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "case_binding",
+            "fingerprint"
+          ],
+          "value": "sha256:d60ed28774378dcce05015ad18e22c881f3dfa2dd8f87e24c0c4d87ae50d4bd3"
+        },
+        {
+          "document": "status",
+          "operation": "replace",
+          "path": [
+            "profile_binding",
+            "raw_sha256"
+          ],
+          "value": "bbacf3abd30a96b0930879e55ac125af207300daae62dc284f59f75691fbbfa7"
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "All seven canonical statements explicitly carry withdrawn=true and provenance.review_state=withdrawn; the linked factor, action and consultation are withdrawn. Original source bytes and historical records remain available. The count unit is canonical statements, not source files or report sections. Zero statements are eligible for a substantive draft; supplied status is only an illustrative non-input specimen.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true,
+          "status": true
+        },
+        "preparation_disposition": "abstain",
+        "review_disposition": "withheld",
+        "rule_ids": [
+          "completion.nonempty"
+        ],
+        "required_states": {
+          "preparation": "all_abstain",
+          "counts": {
+            "input_items": 7,
+            "usable_items": 0,
+            "abstained_items": 7
+          },
+          "completed_review": false,
+          "abstention_basis": "seven_explicitly_withdrawn_canonical_statements",
+          "count_unit": "canonical_statement"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:d60ed28774378dcce05015ad18e22c881f3dfa2dd8f87e24c0c4d87ae50d4bd3",
+          "case_ingress_raw_sha256": "e7247586dc085bd06135e4cc7873897279c2c1c541170637160d54de1ba6923c",
+          "normalized_case_sha256": "65a0976d73ccaff62f2bcbe7e04514a6d56c8c66fdbe5c056fb43b55713c8b6d",
+          "profile_ingress_raw_sha256": "bbacf3abd30a96b0930879e55ac125af207300daae62dc284f59f75691fbbfa7",
+          "normalized_profile_sha256": "8142722bf5f0869c37aead3f97235391ceda98cdde2897d410216af98cb2db3d"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": [],
+          "status": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input",
+        "status": "illustrative_expected_status_not_input"
+      }
+    },
+    {
+      "id": "HP21-identical-replay",
+      "acceptance_id": "HP21",
+      "control_kind": "positive_control",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [],
+      "case_presentation": "identical_replay",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "canonical.replay"
+        ],
+        "required_states": {
+          "canonical_identity": "unchanged",
+          "normalized_payload_identity": "unchanged",
+          "uncertainty": "retained",
+          "semantic_verdict": "unchanged",
+          "replay_count": 2
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP21-round-trip",
+      "acceptance_id": "HP21",
+      "control_kind": "positive_control",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [],
+      "case_presentation": "round_trip",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "canonical.round_trip",
+          "artifact.raw_byte_identity"
+        ],
+        "required_states": {
+          "canonical_identity": "unchanged",
+          "normalized_payload_identity": "unchanged",
+          "ingress_raw_identity": "changed",
+          "raw_ingress_manifest_identity": "not_presumed_unchanged",
+          "uncertainty": "retained",
+          "semantic_verdict": "unchanged"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "b9534ad81bba4447f07bd439cf7edbd422963aebffc727fc82d11b8ae7636ce2",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP21-object-key-reorder",
+      "acceptance_id": "HP21",
+      "control_kind": "positive_control",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [],
+      "case_presentation": "object_key_reorder",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "canonical.object_key_order",
+          "artifact.raw_byte_identity"
+        ],
+        "required_states": {
+          "canonical_identity": "unchanged",
+          "normalized_payload_identity": "unchanged",
+          "ingress_raw_identity": "changed",
+          "raw_ingress_manifest_identity": "not_presumed_unchanged",
+          "uncertainty": "retained",
+          "semantic_verdict": "unchanged"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "e34bc7001982408740898d37c62ca2d98e97431553a68a62f7abaeb3141f69d1",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP22-accimap-absent",
+      "acceptance_id": "HP22",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "component.optional"
+        ],
+        "required_states": {
+          "accimap": "absent",
+          "graph_qualification": "not_established",
+          "core_draft": "available"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP22-accimap-unqualified",
+      "acceptance_id": "HP22",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "optional_components"
+          ],
+          "value": [
+            {
+              "component": "accimap",
+              "contract_version": "synthetic-unqualified-placeholder",
+              "artifact": {
+                "artifact_id": "syn-unqualified-accimap",
+                "path": "packet/unqualified-component.json",
+                "sha256": "85cac5dc9590285051a0b53d9c8c9e2076299bd06627994abe0f4071dff0055b",
+                "bytes": 273
+              },
+              "evidence_refs": [],
+              "question": "Would a separately qualified graph help examine multilevel questions?",
+              "admission": "not_established_by_profile"
+            }
+          ]
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "The optional object is explicitly not graph data. It cannot inherit admission from an unrelated AcciMap track or block an otherwise usable core draft.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "component.optional"
+        ],
+        "required_states": {
+          "accimap": "unqualified",
+          "graph_qualification": "not_established",
+          "core_draft": "available"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "c94f003fd45b461fbfe9b0ea3c29346652ba2563e7ceb4af1edcdf187959c1db",
+          "normalized_profile_sha256": "bbffc7638b9ded8843d1708208471b3189f1c922a3d69920d9065811b5f036e4"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP23-concurrent-routes",
+      "acceptance_id": "HP23",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "open_route_questions"
+          ],
+          "value": [
+            {
+              "route": "incident",
+              "question": "Which incident review route would be applicable?",
+              "state": "open",
+              "references": []
+            },
+            {
+              "route": "death_review",
+              "question": "Would a separate death review be required in this hypothetical scenario?",
+              "state": "open",
+              "references": []
+            },
+            {
+              "route": "coronial",
+              "question": "Would a competent authority identify a coronial requirement?",
+              "state": "open",
+              "references": []
+            }
+          ]
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true
+        },
+        "preparation_disposition": "prepare_draft",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "route.concurrent"
+        ],
+        "required_states": {
+          "open_routes": [
+            "incident",
+            "death_review",
+            "coronial"
+          ],
+          "route_resolution": "not_established"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "c06ebe38a6240f139b121df4a827b8b3276b5fa70adb17da9f58810037c3ca80",
+          "normalized_profile_sha256": "66969bae4523f707622b441c209b6cc89fe5e958ccb319ac36a049278fe5e06c"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP24-unknown-field",
+      "acceptance_id": "HP24",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "add",
+          "path": [
+            "automatic_approval"
+          ],
+          "value": true
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": false
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "schema.closed"
+        ],
+        "required_states": {
+          "silent_repair": false
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "0f23ded0e28e10c86c57ca7e9b9f211b4dbf16156202f96dcb5531f8c2e9274b",
+          "normalized_profile_sha256": "bf80cf6efd7a23fa4c01c0a3f5785bb5c494aefc736ff35c7e9b33c0063290cb"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": [
+            "additionalProperties"
+          ]
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP24-malformed-version",
+      "acceptance_id": "HP24",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json"
+      },
+      "mutations": [
+        {
+          "document": "profile",
+          "operation": "replace",
+          "path": [
+            "profile_version"
+          ],
+          "value": 0
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": false
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "not_established",
+        "rule_ids": [
+          "schema.malformed"
+        ],
+        "required_states": {
+          "silent_repair": false
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:139a0e48af7dcd504935a9fac3146380873832bd621be972fcf93eb3d3e2ba35",
+          "case_ingress_raw_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+          "normalized_case_sha256": "cd6be65f14dcaf41ed9879ca8cd08726d2d4a661812311b4bb2cf6ef33d7853a",
+          "profile_ingress_raw_sha256": "14fd8e219c592a7ab941640ccceadab7c2046080bafd5ee63a54df17400c9eaa",
+          "normalized_profile_sha256": "32086129a3475154faf8db8ed3c9ed20b9f4e80d852402a429e3e219812bcebc"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": [
+            "minimum"
+          ]
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input"
+      }
+    },
+    {
+      "id": "HP25-array-permutation",
+      "acceptance_id": "HP25",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json",
+        "manifest": "packet/base-manifest.json",
+        "decision": "packet/simulated-approved-decision.json"
+      },
+      "mutations": [
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "sources"
+          ],
+          "value": [
+            {
+              "source_id": "syn-src-clock",
+              "source_type": "other",
+              "title": "Fictional fixture clock rule",
+              "fingerprint": "sha256:cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic rule; not an official policy, obligation or form.",
+              "citation": "sources/synthetic-clock-rule.txt",
+              "screening_state": "included",
+              "late": false
+            },
+            {
+              "source_id": "syn-src-consumer",
+              "source_type": "account",
+              "title": "Synthetic sources/consumer-account.txt",
+              "fingerprint": "sha256:5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic text; not an official policy or form.",
+              "citation": "sources/consumer-account.txt",
+              "screening_state": "included",
+              "late": false
+            },
+            {
+              "source_id": "syn-src-staff",
+              "source_type": "account",
+              "title": "Synthetic sources/staff-account.txt",
+              "fingerprint": "sha256:84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic text; not an official policy or form.",
+              "citation": "sources/staff-account.txt",
+              "screening_state": "included",
+              "late": false
+            },
+            {
+              "source_id": "syn-src-record",
+              "source_type": "record",
+              "title": "Synthetic sources/record.txt",
+              "fingerprint": "sha256:1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+              "acquired_at": "2030-01-07T09:30:00+10:00",
+              "authority": "Original synthetic text; not an official policy or form.",
+              "citation": "sources/record.txt",
+              "screening_state": "included",
+              "late": false
+            }
+          ]
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Source array order is preserved by canonicalisation. No collection is declared semantically unordered by this fixture; equality of semantic verdicts is not assumed.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true,
+          "manifest": true,
+          "decision": true
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "stale",
+        "rule_ids": [
+          "canonical.array_identity",
+          "packet.approval_stale"
+        ],
+        "required_states": {
+          "canonical_identity": "changed",
+          "profile_binding": "stale",
+          "prior_decision": "stale",
+          "semantic_equivalence": "not_asserted"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:48d4b6d631ac3ca78adc9fb42d41931107e508f2298d2eef3ee74ba17550c869",
+          "case_ingress_raw_sha256": "70d95a023433f8448db3a1aae18d5bdfba4b9a78f4dd52bcee03fa304647867f",
+          "normalized_case_sha256": "95c628d17b31568d2d093087daab3e01606341af702676848bf29bb2cccd45a0",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": [],
+          "manifest": [],
+          "decision": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input",
+        "manifest": "consumer_input",
+        "decision": "consumer_input"
+      }
+    },
+    {
+      "id": "HP25-canonical-content-change",
+      "acceptance_id": "HP25",
+      "control_kind": "boundary",
+      "documents": {
+        "case": "canonical/base-case.json",
+        "profile": "packet/base-profile.json",
+        "manifest": "packet/base-manifest.json",
+        "decision": "packet/simulated-approved-decision.json"
+      },
+      "mutations": [
+        {
+          "document": "case",
+          "operation": "replace",
+          "path": [
+            "statements",
+            0,
+            "uncertainty"
+          ],
+          "value": "The revised documentation description still does not establish prompt visibility or omitted care."
+        }
+      ],
+      "case_presentation": "stored",
+      "raw_artifact_overrides": {},
+      "arrangement_note": "Independent synthetic fixture; its expected result is not an execution observation.",
+      "expected": {
+        "schema_validity": {
+          "case": true,
+          "profile": true,
+          "manifest": true,
+          "decision": true
+        },
+        "preparation_disposition": "reject_input",
+        "review_disposition": "stale",
+        "rule_ids": [
+          "canonical.content_identity",
+          "packet.approval_stale"
+        ],
+        "required_states": {
+          "canonical_identity": "changed",
+          "profile_binding": "stale",
+          "prior_decision": "stale",
+          "semantic_equivalence": "not_asserted"
+        },
+        "retained_ids": [],
+        "prohibited_claims": [
+          "clinical_review_completed",
+          "statutory_rca_protection",
+          "severity_inferred_from_method",
+          "reportability_inferred_from_method",
+          "official_template_conformity",
+          "external_submission",
+          "case_closed",
+          "independent_human_validation"
+        ],
+        "input_identity": {
+          "case_canonical_fingerprint": "sha256:ddd2f1ed4700e19af8fafcb0b5f474e3411fb7b3e875da9a55e830cfd1367a2f",
+          "case_ingress_raw_sha256": "0f5f0de190576819d90deeaa40997baa9b33b6c869ca6a7226d084593d49160e",
+          "normalized_case_sha256": "7baa383a269b13d79a0c6c0d4536c01d4fe067bb069b7d29b29c0f98db840176",
+          "profile_ingress_raw_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d",
+          "normalized_profile_sha256": "355e69424d1226f5ce35c27cf79a695bc62f1e94a3c4b87e62e06602900d9764"
+        },
+        "schema_error_keywords": {
+          "case": [],
+          "profile": [],
+          "manifest": [],
+          "decision": []
+        }
+      },
+      "execution": {
+        "h4": "not_run",
+        "h5": "not_run"
+      },
+      "document_roles": {
+        "case": "consumer_input",
+        "profile": "consumer_input",
+        "manifest": "consumer_input",
+        "decision": "consumer_input"
+      }
+    }
+  ],
+  "count_contract": {
+    "unit": "canonical_statement",
+    "input_items": "Number of canonical statements in the bound case, including withdrawn/rejected statements retained for history.",
+    "usable_items": "Statements eligible for draft representation as their recorded epistemic kind; excludes withdrawn=true or provenance.review_state in rejected/withdrawn. Eligibility never establishes a clinical finding or actual authority.",
+    "abstained_items": "Input statements excluded from draft representation, with explicit retained exclusion reasons. In this finite corpus all-abstain has seven explicit withdrawals.",
+    "source_of_counts": "Derive from canonical input records. Supplied status specimens are illustrative and never trusted inputs.",
+    "conservation": "input_items = usable_items + abstained_items for these classified fixtures; no omitted items."
+  }
+}

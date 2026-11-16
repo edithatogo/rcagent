@@ -1,8 +1,8 @@
 # Decision models implementation and verification plan
 
-Status: **planned; implementation not authorised by this request**. The current deliverable is the specification, this plan, metadata and registry entry. Every task below remains `[ ]`. Planning checks are recorded separately in [planning-evidence.md](./planning-evidence.md).
+Status: **DM01 documentation and agent verification complete; exact-head hosted checks and the authorised merge are recorded separately in PR #147**. The earlier specification-only delivery is preserved in [planning-evidence.md](./planning-evidence.md). The 17 November 2026 bounded increment delivers the context, source-admission and frozen study-definition package; DM02–DM11 remain pending.
 
-After a later instruction authorises implementation, continue automatically across ready in-scope tasks, review and bounded rework; do not ask for routine approval. Record the recommendation, supporting evidence and safe default. Retain owner decision gates for genuinely new data/rights, spend, egress, deployment and irreversible actions. This paragraph does not override the present planning-only instruction.
+Continue automatically through DM01, review, bounded rework, exact-head checks and the authorised merge. Record the recommendation, supporting evidence and safe default. Retain owner decision gates for genuinely new data/rights, spend, egress, deployment and irreversible actions. Stop after DM01; the named increment does not start DM02 or execute a model.
 
 ## Execution and ownership contract
 
@@ -16,7 +16,7 @@ Do not duplicate generic engines. Reuse JSON Schema/typed ports/SQLite FTS5, opt
 
 | Package | Depends on | May proceed independently | Existing receiving scope |
 |---|---|---|---|
-| DM01 Context, sources and study definition | Later implementation authority | Source/rights inventory and protocol preparation | CAW01–03, CAW22 |
+| DM01 Context, sources and study definition | User authority received 17 November 2026 | Source/rights inventory and protocol preparation | CAW01–03, CAW22 |
 | DM02 Contract and file-allocation checkpoint | DM01 | Model-free schemas and independent fixture design | CAW02/08; Track 13 shared contracts |
 | DM03 One admitted text decision adapter | DM02 | Parallel with DM04; no need for ontology/audio | CAW07/09; runtime measurement/isolation |
 | DM04 References, baselines and benchmark plumbing | DM02 | Parallel with DM03, using synthetic/mock observations | CAW03–06/08/20–22 |
@@ -32,10 +32,13 @@ The first useful sequence is **DM01 → DM02 → (DM03 and DM04) → DM05 → DM
 
 ## Phase A: Admit the question and freeze contracts
 
-- [ ] **DM01.1 — Reconcile current context.** Refresh master, open PRs, Track 12/13/14 state, the renderer/domain-validation repair and D1–D3 receiving contracts. Reserve only accepted owned files; record base/tree and shared-coordinator acknowledgement. Accept when the bounded context pack and dependency map distinguish ready from blocked leaves.
-- [ ] **DM01.2 — Admit candidate sources and rights.** Pin current model/code/tokenizer/processor/licence/runtime/API documentation and exact terminology/data releases. Record remote-code and hosted-boundary conflicts. Use the source register as discovery input, not an immutable model manifest. Accept when unavailable or rights-uncertain candidates are explicitly excluded from execution rather than silently substituted.
-- [ ] **DM01.3 — Freeze the first research task.** Select a bounded public/synthetic text task, intended user, target hardware, primary material-error contrast, useful-coverage floor, severe-event endpoint and annotation protocol. Fix numerical margins, precision/sample-size plan, threshold selection, split lineage and stopping rules before holdout access; label pilot estimates as exploratory. Preserve existing HDC authority only within its established scope.
-- [ ] **Checkpoint A1.** Agent reviewers examine acceptance, evidence integrity and safety/privacy. Publish a source/fit-gap receipt, decision log and ready/blocked map. Do not mark model/runtime or clinical capability supported.
+- [x] **DM01.1 — Reconcile current context.** Refresh master, open PRs, Track 12/13/14 state, the renderer/domain-validation repair and D1–D3 receiving contracts. Reserve only owned files; record base/tree and the current user's explicit DM01/merge authority. Shared production-contract allocation still requires its receiving agreement in DM02; no coordinator acknowledgement is inferred. Accept when the bounded context pack and dependency map distinguish ready from blocked leaves.
+- [x] **DM01.2 — Admit candidate sources and rights.** Pin current model/code/tokenizer/processor/licence/runtime/API documentation and exact terminology/data releases. Record remote-code and hosted-boundary conflicts. Use the source register as discovery input, not an immutable model manifest. Accept when unavailable or rights-uncertain candidates are explicitly excluded from execution rather than silently substituted.
+- [x] **DM01.3 — Freeze the first research task.** Select a bounded public/synthetic text task, intended user, target hardware, primary material-error contrast, useful-coverage floor, severe-event endpoint and annotation protocol. Fix numerical margins, precision/sample-size plan, threshold selection, split lineage and stopping rules before holdout access; label pilot estimates as exploratory. Preserve existing HDC authority only within its established scope.
+- [x] **Checkpoint A1.** Agent reviewers examine acceptance, evidence integrity and safety/privacy. Publish a source/fit-gap receipt, decision log and ready/blocked map. Do not mark model/runtime or clinical capability supported.
+
+DM01 acceptance: [context and receiving map](./dm01/context-pack.md), [source admission](./dm01/source-admission.md), [frozen study](./dm01/study-protocol.md) and [verification/review receipt](./dm01/verification.md). The original and integrated local full gates retain their environment failures; final-head hosted checks are required before merge. DM02 has not started.
+
 - [ ] **DM02.1 — Complete request/output schemas.** Convert the documented primitive/envelope design into versioned JSON Schema and checked Python types in coordinator-allocated files. Freeze provider-native versus canonical semantics, status/error precedence, source/view/hash domains, limits, calibration and thresholds. Keep Pydantic optional and avoid changing canonical safety-work records without receiving agreement.
 - [ ] **DM02.2 — Write independent contract fixtures first.** Cover C01–C42 in the contract appendix, including missing versus null, `found` just below/equal/above 0.5, exclusive/multi-label probabilities, score direction, unit/date/box validation, unsupported runtime features, timeouts and privacy/authority vetoes. Add Hypothesis combinations that exercise real boundary risks.
 - [ ] **DM02.3 — Agree shared mappings and rollback.** Obtain coordinator acceptance of ports, statuses, registry mapping, paths and exact existing validators to consume; supply proposed changes through that owner. Define backwards compatibility, invalidation and adapter-disable behaviour. Do not treat document existence as interface acceptance.
@@ -93,9 +96,9 @@ The first useful sequence is **DM01 → DM02 → (DM03 and DM04) → DM05 → DM
 
 ## Verification commands and receipts
 
-During this planning change, use the existing repository validator, JSON/schema-fragment and link/path checks, source/ownership review and `git diff --check`. No model call, installation, feature implementation or empirical test is part of planning verification.
+The original planning change used the repository validator, JSON/schema-fragment and link/path checks, source/ownership review and `git diff --check`. DM01 additionally verifies immutable source identifiers, protocol arithmetic and cross-file consistency, uses the locked repository checks, and requires exact-head hosted checks before the authorised merge. No model call or empirical performance result is part of DM01 verification.
 
-For future implementation, use the repository's locked commands:
+For DM01 and future implementation, use the repository's locked commands:
 
 ```bash
 uv sync --locked --extra validate --extra test --extra lint --extra assurance

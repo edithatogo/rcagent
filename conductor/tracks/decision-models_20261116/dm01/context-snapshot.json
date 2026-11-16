@@ -1,0 +1,162 @@
+{
+  "format_version": "1.0",
+  "package": "DM01",
+  "observed_client_date": "2026-11-17",
+  "date_basis": "Australia/Brisbane",
+  "repository": "edithatogo/rcagent",
+  "base_commit": "8a564826a3f51765f177f0d9823194718bacb7d9",
+  "base_tree": "47543fabfbfa8e6682f5b088b56e6982ae5af82d",
+  "planning_pr_head": "d837836b42cd2dc53a2e3e7188afb6e56b60da0f",
+  "receiving_coordinator_acknowledgement": "not_observed_not_required_for_owned_DM01_documents",
+  "shared_production_interface_allocation": "pending_DM02",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "git_blob": "c8de7227303058f9cf10b0bec65ef5d20d4f989b",
+      "sha256": "ec07713cf0ee333d76fc59cb53aa3c31c5bf2ceb5297c22c7454830419487850",
+      "bytes": 1530
+    },
+    {
+      "path": "CONSTRAINTS.md",
+      "git_blob": "e3c6e88995a3b6cbd8a34fd944d7305b5f39e18a",
+      "sha256": "83905795d87bb84978fba65b635ba4655c2e18b38d66ca513c4995d8fecd0e11",
+      "bytes": 6971
+    },
+    {
+      "path": "conductor/workflow.md",
+      "git_blob": "9414b010ba4791c44871901ee69fa2bee17a9f6b",
+      "sha256": "1af826d7878da119f7b9c0182c3f717d12560e006b528d59d416eececf2cafb7",
+      "bytes": 18187
+    },
+    {
+      "path": "conductor/product-guidelines.md",
+      "git_blob": "40482997ee45886e49ae9ee2d66fb44cbb9e3e92",
+      "sha256": "ab96f4c214de2e75511d7f7ee45fe4ac3b38059118033e91161e7f93cc766a1e",
+      "bytes": 7648
+    },
+    {
+      "path": "conductor/tracks/cognitive-autopsy_20261107/index.md",
+      "git_blob": "b8ea7fc0fecece2185fce445e1c8614eedc4aeae",
+      "sha256": "f5e645e5a624d3b78d656de969d41f8396f70a64b33eda5b6a79b81997e4c744",
+      "bytes": 2757
+    },
+    {
+      "path": "conductor/decisions/20261107-001-cognitive-autopsy-programme.md",
+      "git_blob": "2bdbfbaf9ca9a93399ed8cef737e2d41438c2a4e",
+      "sha256": "6348978d95a83bed46c896fb66124bb1a3750132ff811f82a7b56b95b4a3d1e7",
+      "bytes": 2360
+    },
+    {
+      "path": "conductor/tracks/frontier-assurance_20261113/plan.md",
+      "git_blob": "4f303f18ba4a94ebc1228ba5223db51d92145c29",
+      "sha256": "15a5629f4692d1a5620a715bde82f6b315cc75da6cac51a749b9ad16fb08ec9c",
+      "bytes": 11122
+    },
+    {
+      "path": "conductor/tracks/frontier-assurance_20261113/faw08-d1-contract.md",
+      "git_blob": "cb3158bb2c98925ad15888e3fd66e79f8ead4b1a",
+      "sha256": "402d01b52aaccbf5a0181aec1cc30d815f8c3386652cc4fc982e5b666741efb0",
+      "bytes": 14440
+    },
+    {
+      "path": "conductor/tracks/frontier-assurance_20261113/faw08-d1-acceptance-20261117.md",
+      "git_blob": "4ca57ff9fff2a846157fdf655488e1c0bb9908c5",
+      "sha256": "b062db0ea99dbdc25a57fe0437ab51c06f728cbd421691d44d26e1d458944c7a",
+      "bytes": 6359
+    },
+    {
+      "path": "conductor/tracks/frontier-assurance_20261113/faw09-d2-contract.md",
+      "git_blob": "ee04f58a56f3e926a6e58376fba15857ba4fa551",
+      "sha256": "ca535c7a6e5ccdf3d2dcc150d3c7b7043579f89732f6375335df15a58119879b",
+      "bytes": 12664
+    },
+    {
+      "path": "conductor/tracks/frontier-assurance_20261113/faw09-d2-acceptance-20261117.md",
+      "git_blob": "92029ac5ca5760cbea6de080bb5c7706056399bb",
+      "sha256": "8db5235b4419ef69b267d8d872a98afd7ccdfa9863faec6daef9384781c63efe",
+      "bytes": 8606
+    },
+    {
+      "path": "conductor/tracks/death-review_20261113/index.md",
+      "git_blob": "92a6820685e9052ad10b969b57dc365c5efb1755",
+      "sha256": "7e721fb94d496a8ac429fdf21a35698fc65e6907dbcb52307ffa9713f0586472",
+      "bytes": 1601
+    },
+    {
+      "path": "tools/evidence_core.py",
+      "git_blob": "e2e6b61d5217b30023f48009e98c30b578a63b36",
+      "sha256": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+      "bytes": 17161
+    },
+    {
+      "path": "tools/faw07_d0_demo.py",
+      "git_blob": "b81d98a676ac4d8ca41bee095ada2bc659c0ce89",
+      "sha256": "4aeafc70fb9149ce2d1068a27aa948fafd801c43c0786d22292bb130b7f47b5b",
+      "bytes": 15279
+    },
+    {
+      "path": "tools/faw08_d1_extraction.py",
+      "git_blob": "d955035f90d4dff8254799229dc600afea7fdd52",
+      "sha256": "e03eeaa2ab5d235bdc8f20048c3bd9d15c7369a324f4575d865a7d893551e119",
+      "bytes": 31834
+    },
+    {
+      "path": "tools/faw09_d2_timeline.py",
+      "git_blob": "4e689a9145e1b25fc68b521aa052508d078f195b",
+      "sha256": "254ea0ab87c30ab8ce568b1c892ae1c01c31ef46c8c6bc88778e92507b4eb020",
+      "bytes": 34040
+    },
+    {
+      "path": "tools/faw09_d2_clock.py",
+      "git_blob": "7c29b3a6e0ce2dbe1fd75ccbe869f7aaab1a435b",
+      "sha256": "b0e24b747cba8a6947cfeab39f22a8103c3251db6aa48cfcbe63269464e84855",
+      "bytes": 6007
+    },
+    {
+      "path": "tools/interface_actions.py",
+      "git_blob": "7b12a672cdbc5f4b0fcabbf77f3677d187b00980",
+      "sha256": "32ec06ec5b7659f0613dc29d6db146b17ef3ff5bed18b1948ba8c9a44c0b3bbf",
+      "bytes": 48353
+    },
+    {
+      "path": "tools/runtime_lab.py",
+      "git_blob": "5f9bbc599562986ab8dc173d014437facefb4c1f",
+      "sha256": "c11c53d0fd12cba858a8e4be2374673f83f9059536b26d19fc5a94b28198336f",
+      "bytes": 32593
+    },
+    {
+      "path": "tools/retrieval_system.py",
+      "git_blob": "a1ab09eec9cf4bea6f8560fed23d51949e11d5c8",
+      "sha256": "93a43db5466772204e2b73d3f20259a121cf07df9998c452441a44bbd7f80a2e",
+      "bytes": 44999
+    },
+    {
+      "path": "tools/encoder_adapter_eval.py",
+      "git_blob": "6b39b5171cf9ec9e59fff53a0cef07db3afe0d27",
+      "sha256": "0a2062a633cf09f260f281c5cb98a2061b4bdf381db73ae1b7d0042f32e8695e",
+      "bytes": 8936
+    },
+    {
+      "path": ".github/workflows/quality.yml",
+      "git_blob": "57bb4ddbf4b8b15d588d5d4705f9c5fc9a97c3e9",
+      "sha256": "79f48bb6363efcf10d230802134bec34c39bd3d083e63189c082f6f83d3a8d6a",
+      "bytes": 8139
+    },
+    {
+      "path": ".github/workflows/offline-ai-security.yml",
+      "git_blob": "27006fd66c483e2a324d0a4314948270c414608f",
+      "sha256": "ec14e7236b2ba4dc5a675b23426bfd4da7b39d0e5a5aae926eca5c31257c610f",
+      "bytes": 336
+    }
+  ],
+  "new_model_runs": 0,
+  "real_cases_processed": 0,
+  "qualified_capabilities": 0,
+  "integration_refresh": {
+    "commit": "006d98cb60c72143b0517f0e7a446641642ddd5a",
+    "tree": "5c55fde1cbe324973b71413f63367c773391d523",
+    "reason": "PR142 H4/HEAPS merged while DM01 was authored",
+    "all_23_input_files_byte_identical": true,
+    "new_shared_production_edits_by_DM01": false
+  }
+}

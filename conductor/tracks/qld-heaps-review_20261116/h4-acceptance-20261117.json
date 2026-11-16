@@ -1,0 +1,348 @@
+{
+  "schema_version": "heaps-h4-acceptance-1.0",
+  "status": "accepted",
+  "scope": "bounded synthetic H4 engineering delivery; H2/H3 prerequisites integrated; H5/H6 unaccepted",
+  "source_pr": 142,
+  "source_commit": "05975675467684f033e5d4df7320984a4c9eb3a1",
+  "source_tree": "5c55fde1cbe324973b71413f63367c773391d523",
+  "base_before_merge": "8a564826a3f51765f177f0d9823194718bacb7d9",
+  "merge_commit": "006d98cb60c72143b0517f0e7a446641642ddd5a",
+  "merge_tree": "5c55fde1cbe324973b71413f63367c773391d523",
+  "merged": true,
+  "merged_at": "2026-11-16T21:39:59Z",
+  "observed_at": "2026-11-17T07:40:19+10:00",
+  "merge_response": {
+    "sha": "006d98cb60c72143b0517f0e7a446641642ddd5a",
+    "merged": true,
+    "message": "Pull Request successfully merged"
+  },
+  "normal_expected_head_merge": true,
+  "bypass_used": false,
+  "source_head_checks_preceded_merge": true,
+  "merged_tree_equals_tested_tree": true,
+  "ruleset": {
+    "id": 21834601,
+    "name": "master-stable-automated-checks",
+    "enforcement": "active",
+    "strict_required_status_checks_policy": true,
+    "required_contexts": [
+      "dependency-review",
+      "validate (ubuntu-latest)",
+      "validate (macos-latest)",
+      "validate (windows-latest)"
+    ]
+  },
+  "required_checks": [
+    {
+      "id": 133632634096,
+      "name": "validate (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:39:37Z",
+      "completed_at": "2026-11-16T21:39:39Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133632634096",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133632634096",
+      "summary": null
+    },
+    {
+      "id": 133629494388,
+      "name": "validate (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:34:19Z",
+      "completed_at": "2026-11-16T21:39:18Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494388",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494388",
+      "summary": null
+    },
+    {
+      "id": 133629494070,
+      "name": "validate (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:34:18Z",
+      "completed_at": "2026-11-16T21:39:04Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494070",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494070",
+      "summary": null
+    },
+    {
+      "id": 133629212105,
+      "name": "dependency-review",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:33:50Z",
+      "completed_at": "2026-11-16T21:33:57Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334352/job/133629212105",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334352/job/133629212105",
+      "summary": null
+    }
+  ],
+  "completed_checks": [
+    {
+      "id": 133632634096,
+      "name": "validate (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:39:37Z",
+      "completed_at": "2026-11-16T21:39:39Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133632634096",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133632634096",
+      "summary": null
+    },
+    {
+      "id": 133632471377,
+      "name": "Complete matrix branch coverage",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:39:20Z",
+      "completed_at": "2026-11-16T21:39:35Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133632471377",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133632471377",
+      "summary": null
+    },
+    {
+      "id": 133631069347,
+      "name": "codecov/patch",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:36:54Z",
+      "completed_at": "2026-11-16T21:36:55Z",
+      "html_url": "https://github.com/edithatogo/rcagent/runs/133631069347",
+      "details_url": "https://app.codecov.io/gh/edithatogo/rcagent/pull/142",
+      "summary": "93.63% of diff hit (target 90.00%)"
+    },
+    {
+      "id": 133629494424,
+      "name": "Synthetic CPU and memory profile",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:34:18Z",
+      "completed_at": "2026-11-16T21:34:53Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494424",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494424",
+      "summary": null
+    },
+    {
+      "id": 133629494388,
+      "name": "validate (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:34:19Z",
+      "completed_at": "2026-11-16T21:39:18Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494388",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494388",
+      "summary": null
+    },
+    {
+      "id": 133629494242,
+      "name": "Release boundary mutation gate",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:34:18Z",
+      "completed_at": "2026-11-16T21:34:47Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494242",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494242",
+      "summary": null
+    },
+    {
+      "id": 133629494070,
+      "name": "validate (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:34:18Z",
+      "completed_at": "2026-11-16T21:39:04Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494070",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494070",
+      "summary": null
+    },
+    {
+      "id": 133629494042,
+      "name": "Python validation (3.15.2)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:34:18Z",
+      "completed_at": "2026-11-16T21:36:33Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494042",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494042",
+      "summary": null
+    },
+    {
+      "id": 133629494036,
+      "name": "Python validation (3.11)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:34:18Z",
+      "completed_at": "2026-11-16T21:37:14Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494036",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494036",
+      "summary": null
+    },
+    {
+      "id": 133629493477,
+      "name": "Prose lint (Vale)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:34:18Z",
+      "completed_at": "2026-11-16T21:34:26Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629493477",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629493477",
+      "summary": null
+    },
+    {
+      "id": 133629213611,
+      "name": "privacy-and-secrets",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:33:50Z",
+      "completed_at": "2026-11-16T21:34:22Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334303/job/133629213611",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334303/job/133629213611",
+      "summary": null
+    },
+    {
+      "id": 133629212303,
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:33:49Z",
+      "completed_at": "2026-11-16T21:35:35Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334300/job/133629212303",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334300/job/133629212303",
+      "summary": null
+    },
+    {
+      "id": 133629212105,
+      "name": "dependency-review",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-16T21:33:50Z",
+      "completed_at": "2026-11-16T21:33:57Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334352/job/133629212105",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334352/job/133629212105",
+      "summary": null
+    }
+  ],
+  "pending_nonrequired_checks": [
+    {
+      "id": 133629214431,
+      "name": "offline-ai-security / offline-security",
+      "status": "queued",
+      "conclusion": null,
+      "started_at": "2026-11-16T21:33:48Z",
+      "completed_at": null,
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334893/job/133629214431",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334893/job/133629214431",
+      "summary": null
+    },
+    {
+      "id": 133629180703,
+      "name": "offline-ai-security / offline-security",
+      "status": "queued",
+      "conclusion": null,
+      "started_at": "2026-11-16T21:33:44Z",
+      "completed_at": null,
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43961324498/job/133629180703",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961324498/job/133629180703",
+      "summary": null
+    }
+  ],
+  "quality_run": 43961334353,
+  "codecov_patch_percent": 93.63,
+  "codecov_patch_target_percent": 90,
+  "input_count": 46,
+  "input_aggregate_sha256": "b43c35b0b8ffafa38fcfc07d9c6cd0f01b99b8c19b9c735f11c0e3af02ae461e",
+  "h4_tests": 304,
+  "oracle_cases": 25,
+  "oracle_variants": 38,
+  "oracle_matching": 38,
+  "replay_files": 16,
+  "replay_bytes": 94722,
+  "replay_inventory_sha256": "b3e28fac0a5067151bae0a7d9a20d10e82bcddc4a7b46a71be46a8c60cda8172",
+  "source_verification": "./h4-revision-validation.json",
+  "review_receipt": "./h4-hosted-review-repair.md",
+  "master_checks_at_observation": [
+    {
+      "id": 133632894723,
+      "name": "offline-ai-security / offline-security",
+      "status": "queued",
+      "conclusion": null,
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43962377690/job/133632894723"
+    },
+    {
+      "id": 133632892467,
+      "name": "Release boundary mutation gate",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43962376766/job/133632892467"
+    },
+    {
+      "id": 133632892305,
+      "name": "privacy-and-secrets",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43962376919/job/133632892305"
+    },
+    {
+      "id": 133632892178,
+      "name": "Python validation (3.15.2)",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43962376766/job/133632892178"
+    },
+    {
+      "id": 133632892044,
+      "name": "validate (windows-latest)",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43962376766/job/133632892044"
+    },
+    {
+      "id": 133632892013,
+      "name": "Python validation (3.11)",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43962376766/job/133632892013"
+    },
+    {
+      "id": 133632891908,
+      "name": "validate (macos-latest)",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43962376766/job/133632891908"
+    },
+    {
+      "id": 133632891871,
+      "name": "Prose lint (Vale)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43962376766/job/133632891871"
+    },
+    {
+      "id": 133632891755,
+      "name": "validate",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43962376908/job/133632891755"
+    },
+    {
+      "id": 133632891532,
+      "name": "Synthetic CPU and memory profile",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43962376766/job/133632891532"
+    }
+  ],
+  "master_checks_used_as_source_merge_gate": false,
+  "h5_accepted": false,
+  "clinical_review": "not_established",
+  "actual_authority": "unverified",
+  "official_template_conformity": "unverified",
+  "submission": "not_submitted",
+  "release_or_deployment": false,
+  "next_stage": "H5 independent engineering qualification and handoff",
+  "portfolio_registration": "pending_coordinator; number unassigned",
+  "hosted_metrics_receipt": "./h4-hosted-ci-20261117.json",
+  "hosted_metrics_sha256": "ddf5784a2e820ac420f859e9ca66bc186a01ca640b2c8fdf94afb2e7254ed775",
+  "combined_coverage_percent": 94.6851862480629
+}

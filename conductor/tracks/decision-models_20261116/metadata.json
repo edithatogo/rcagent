@@ -2,13 +2,15 @@
   "track_id": "decision-models_20261116",
   "title": "Decision Models: Optional Adapters, Triangulation and Qualification",
   "type": "research",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-16",
-  "updated_at": "2026-11-16",
+  "updated_at": "2026-11-17",
   "date_basis": "requested_client_date_Australia_Brisbane",
-  "description": "Planning-only specification for decision-model and encoder/linking candidates, provider-neutral primitive contracts, evidence-preserving cascades and matched empirical qualification within Tracks 12 and 13.",
+  "description": "Decision-model and encoder/linking research track; DM01 implements bounded context, source admission and a frozen synthetic study definition. Later model and adapter packages remain pending.",
   "workstream": "data-models-evaluation",
-  "repositories": ["edithatogo/rcagent"],
+  "repositories": [
+    "edithatogo/rcagent"
+  ],
   "repository_resolution": {
     "requested": "edithagoto/recagent",
     "requested_result": "not_found_404",
@@ -29,19 +31,24 @@
     "parent_issue": "https://github.com/edithatogo/rcagent/issues/3",
     "coordination_issue": "https://github.com/edithatogo/rcagent/issues/125",
     "branch": "docs/decision-models-spec-plan-20261116",
-    "registration_state": "draft_track_and_additive_registry_entry_for_coordinator"
+    "registration_state": "dm01_completed_pending_exact_head_checks_and_merge",
+    "pull_request": "https://github.com/edithatogo/rcagent/pull/147"
   },
   "portfolio_number": {
     "status": "unallocated_pending_coordinator_reconciliation",
     "reason": "Preserve pending AcciMap and HEAPS registration and shared integration ownership."
   },
   "authorisation": {
-    "current_scope": "context_specification_plan_and_repository_documentation_only",
-    "implementation": "not_authorised_by_this_request",
+    "date": "2026-11-17",
+    "date_basis": "Australia/Brisbane",
+    "instruction": "Implement DM01, open a PR, check actions pass, then merge.",
+    "current_scope": "DM01_context_sources_study_definition_review_checks_and_merge",
+    "implementation": "DM01_only",
     "model_execution": false,
-    "dependency_installation": false,
+    "dependency_installation": "existing_locked_quality_environment_only",
     "deployment": false,
-    "merge": "existing_coordinator_only"
+    "merge": "user_authorised_bounded_PR147_after_checks",
+    "shared_contract_acceptance": "existing_coordinator_retained"
   },
   "owners": {
     "shared_integration": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
@@ -49,7 +56,7 @@
     "assurance": "frontier-assurance_20261113",
     "death_review_applicability": "death-review_20261113"
   },
-  "autonomy": "planning_only_until_later_implementation_instruction",
+  "autonomy": "complete_DM01_review_checks_and_merge_then_stop_at_named_scope",
   "autonomy_contract": "../../autonomy.json",
   "hard_dependencies": [],
   "phase_dependencies": [
@@ -64,24 +71,131 @@
     "local-runtime-model-lab_20260731"
   ],
   "planned_packages": [
-    {"id": "DM01", "depends_on": [], "status": "pending"},
-    {"id": "DM02", "depends_on": ["DM01"], "status": "pending"},
-    {"id": "DM03", "depends_on": ["DM02"], "status": "pending"},
-    {"id": "DM04", "depends_on": ["DM02"], "status": "pending"},
-    {"id": "DM05", "depends_on": ["DM03", "DM04"], "status": "pending"},
-    {"id": "DM06", "depends_on": ["DM03", "DM04"], "status": "pending", "optional": true},
-    {"id": "DM07", "depends_on": ["DM03", "DM04"], "status": "pending", "optional": true},
-    {"id": "DM08", "depends_on": ["DM04"], "status": "pending", "observation_dependencies": ["DM03", "DM05"]},
-    {"id": "DM09", "depends_on": ["DM05", "DM08"], "status": "pending", "conditional_dependencies": ["DM06", "DM07"]},
-    {"id": "DM10", "depends_on": ["DM09"], "status": "pending", "optional": true},
-    {"id": "DM11", "depends_on": ["DM09"], "status": "pending", "conditional_dependencies": ["DM10"]}
+    {
+      "id": "DM01",
+      "depends_on": [],
+      "status": "completed",
+      "evidence": "./dm01/verification.md"
+    },
+    {
+      "id": "DM02",
+      "depends_on": [
+        "DM01"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "DM03",
+      "depends_on": [
+        "DM02"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "DM04",
+      "depends_on": [
+        "DM02"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "DM05",
+      "depends_on": [
+        "DM03",
+        "DM04"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "DM06",
+      "depends_on": [
+        "DM03",
+        "DM04"
+      ],
+      "status": "pending",
+      "optional": true
+    },
+    {
+      "id": "DM07",
+      "depends_on": [
+        "DM03",
+        "DM04"
+      ],
+      "status": "pending",
+      "optional": true
+    },
+    {
+      "id": "DM08",
+      "depends_on": [
+        "DM04"
+      ],
+      "status": "pending",
+      "observation_dependencies": [
+        "DM03",
+        "DM05"
+      ]
+    },
+    {
+      "id": "DM09",
+      "depends_on": [
+        "DM05",
+        "DM08"
+      ],
+      "status": "pending",
+      "conditional_dependencies": [
+        "DM06",
+        "DM07"
+      ]
+    },
+    {
+      "id": "DM10",
+      "depends_on": [
+        "DM09"
+      ],
+      "status": "pending",
+      "optional": true
+    },
+    {
+      "id": "DM11",
+      "depends_on": [
+        "DM09"
+      ],
+      "status": "pending",
+      "conditional_dependencies": [
+        "DM10"
+      ]
+    }
   ],
   "decision_gates": [
-    "Later user instruction to begin implementation; current request explicitly excludes it",
+    "DM02 and later packages remain outside the current named DM01 increment",
     "Shared-contract and file-allocation receiving agreement with the existing coordinator",
     "Only genuinely new data, rights, licence, egress, spend, deployment or residual-risk scope beyond established authority"
   ],
   "verification": {
+    "status": "dm01_documentation_and_agent_checks_passed_hosted_pending",
+    "scope": "context_source_admission_and_synthetic_protocol_only",
+    "receipt": "./dm01/verification.md",
+    "model_runs": 0,
+    "qualified_capabilities": 0,
+    "real_cases_processed": 0,
+    "clinical_validation": "not_performed",
+    "implementation_tasks_completed": 3,
+    "checkpoints_completed": 1,
+    "pending_task_and_checkpoint_markers": 39,
+    "agent_review": "./dm01/verification.json",
+    "full_validation": "local_failed_existing_socket_restriction; exact-head hosted evidence required",
+    "hosted_ci": "actual_observations_recorded_in_PR147_after_publication"
+  },
+  "sources": "./sources.md",
+  "contract_proposal": "./contracts.md",
+  "authorisation_history": [
+    {
+      "date": "2026-11-16",
+      "scope": "context_specification_plan_and_repository_documentation_only",
+      "evidence": "./planning-evidence.md"
+    }
+  ],
+  "planning_verification": {
     "status": "planning_checks_passed",
     "scope": "documentation_only",
     "receipt": "./planning-evidence.md",
@@ -109,6 +223,22 @@
     "full_validation": "not_run_for_documentation_only_scope",
     "hosted_ci": "publication_state_is_reported_separately_in_draft_pull_request"
   },
-  "sources": "./sources.md",
-  "contract_proposal": "./contracts.md"
+  "dm01": {
+    "base_commit": "8a564826a3f51765f177f0d9823194718bacb7d9",
+    "base_tree": "47543fabfbfa8e6682f5b088b56e6982ae5af82d",
+    "context": "./dm01/context-pack.md",
+    "candidate_admission": "./dm01/candidate-admission.json",
+    "study_protocol": "./dm01/study-protocol.json",
+    "decisions": "./dm01/decisions.md",
+    "receiving_scope": "documentation_only; no shared production interface allocated",
+    "integration_base_commit": "006d98cb60c72143b0517f0e7a446641642ddd5a",
+    "integration_base_tree": "5c55fde1cbe324973b71413f63367c773391d523",
+    "status": "completed_context_sources_and_procedural_freeze",
+    "next_package": "DM02_pending_outside_current_named_scope",
+    "publication_base": {
+      "commit": "5d00ce255cdb5dcabc7d4c749d568c1b9861c47e",
+      "tree": "e6706fc1b2406810c726cbe3cdbd24320d837758",
+      "delta_from_integrated_quality_input": "H4 acceptance documentation only; no implementation/test/dependency/workflow changes"
+    }
+  }
 }

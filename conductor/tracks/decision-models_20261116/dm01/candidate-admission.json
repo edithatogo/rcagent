@@ -1,0 +1,1060 @@
+{
+  "schema_version": "rcagent.dm01.candidate-admission.v1",
+  "record_kind": "source_identification_record_not_runtime_registry",
+  "track_id": "decision-models_20261116",
+  "task_id": "DM01.2",
+  "recorded_date": "2026-11-17",
+  "recorded_timezone": "Australia/Brisbane",
+  "query_window_utc": {
+    "start": "2026-11-16T21:33:04+00:00",
+    "end": "2026-11-16T21:38:07+00:00",
+    "start_microsecond": 12430,
+    "end_microsecond": 77693
+  },
+  "status": "candidate_sources_identified_execution_not_admitted",
+  "first_study": {
+    "protocol": "./study-protocol.json",
+    "input": "Original synthetic text incident packets only; no private or clinical records.",
+    "procedure": "Six separate usable-field/completeness Noul predicates and one synthetic escalation-required Noul predicate on the same source-bound packet.",
+    "primitive": "noul",
+    "question_ids_and_wording_owner": "./study-protocol.json",
+    "arms": {
+      "D": "d1-2B-q8_0-llama-b11960-candidate",
+      "G": "deferred_before_model_freeze",
+      "H": "same_admitted_D_and_G_required"
+    },
+    "scope_excludes": [
+      "ontology coding",
+      "statutory reportability",
+      "ISR/SAC/P1-P4 adjudication",
+      "images",
+      "audio",
+      "video",
+      "typed extraction",
+      "Choice",
+      "Score",
+      "production incident disposition"
+    ],
+    "protocol_id": "dm01-synthetic-intake-v1"
+  },
+  "actions_performed": {
+    "public_metadata_queries": true,
+    "small_text_files_retrieved_and_hash_verified": 22,
+    "source_inspection": "Selected interface/configuration/licence passages; not a comprehensive code or security audit.",
+    "weight_files_downloaded": 0,
+    "large_tokenizer_files_downloaded": 0,
+    "inference_calls": 0,
+    "upstream_code_executed": false,
+    "dependencies_installed_or_changed": false,
+    "runtime_registry_changed": false
+  },
+  "evidence_semantics": {
+    "documentation": "Capability descriptions identify candidate experiments; they are not measured runtime qualification, calibrated performance or institutional rights acceptance.",
+    "immutable_identity": "Use full repository commits and individual publisher blob/LFS identities; floating tags/main are discovery references only.",
+    "small_file_verification": "SHA-256 calculated over retrieved raw bytes; Git SHA-1 calculated over blob header plus raw bytes and compared to primary publisher metadata.",
+    "lfs_verification": "publisher_lfs_sha256 is metadata from the publisher. Weight and large-tokenizer bytes were not downloaded or independently hash verified.",
+    "metadata_receipts": "response_sha256 identifies the JSON bytes observed at query time. API counters and response formatting may change; it is not a claim that future API responses will be byte-identical.",
+    "substitution": "No other model, precision, processor, runtime, endpoint or hosted alias is an automatic substitute.",
+    "timestamps": "UTC timestamps use whole seconds plus the adjacent <field>_microsecond integer. Together they preserve the observed instant without a decimal timestamp that the repository privacy scanner misidentifies as a phone number."
+  },
+  "reference_model": {
+    "role": "Pinned current source/configuration/licence reference; not an admitted Transformers execution path and not proven converter input for the older GGUF.",
+    "repository": "LiquidAI/d1-2B",
+    "revision": "a6bce774e6dde338dcc3036ceb5d91f78bf4c19e",
+    "immutable_metadata_url": "https://huggingface.co/api/models/LiquidAI/d1-2B/revision/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e?blobs=true",
+    "last_modified_utc": "2026-11-14T08:49:46Z",
+    "publisher_gated": false,
+    "publisher_licence_label": "lfm1.0",
+    "files": [
+      {
+        "path": "LICENSE",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/LICENSE",
+        "bytes": 10574,
+        "publisher_git_blob_sha1": "25e731c697c4fe4c52ee654cedf7106a827748d2",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "4d28ca14dedc0b3d0fcc2b3339f0e79931faa33874f3d24f522183a8fc70068c",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:33:48+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 706701
+      },
+      {
+        "path": "README.md",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/README.md",
+        "bytes": 43457,
+        "publisher_git_blob_sha1": "5ec3bfb9468a02750731e16c4f66936e1904f198",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "6db5f6609c1d5d72dccdc8de4718d72e73962a2825fc72f53dcd2e369bddd9cd",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:33:48+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 743438
+      },
+      {
+        "path": "api.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/api.py",
+        "bytes": 11734,
+        "publisher_git_blob_sha1": "265c7ccddf1afbf029853b7bc71b9ece1f474271",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "d57845b414b6766cd0410f0437080244320adebd4f9f031a03777acbec243d2a",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:33:48+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 703092
+      },
+      {
+        "path": "attention.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/attention.py",
+        "bytes": 19450,
+        "publisher_git_blob_sha1": "e32bcb395c0f78d5504edc9965fbedbea4dc74de",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "box.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/box.py",
+        "bytes": 7747,
+        "publisher_git_blob_sha1": "557c2383a9f5283fa1f6af0b28ea3fadf1a3576a",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "calibration.json",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/calibration.json",
+        "bytes": 4924,
+        "publisher_git_blob_sha1": "2f8209e2d018aa686b3b421db0e8e3ca2c68335e",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "e534464458f485d800fe6cc896ac241590bbc8cd54f5af08f7b3064b0d884d69",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:33:48+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 698464
+      },
+      {
+        "path": "calibration.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/calibration.py",
+        "bytes": 2867,
+        "publisher_git_blob_sha1": "d073c97bb22912def140abc6992b6d72bec80768",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "chat_template.jinja",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/chat_template.jinja",
+        "bytes": 12748,
+        "publisher_git_blob_sha1": "621a9586b77a73ae2fbb0dec1f528263c14f8901",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "config.json",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/config.json",
+        "bytes": 2903,
+        "publisher_git_blob_sha1": "b931aa74238ea7f53329de2852031348073b87c8",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "ffdc4c996152d23dbe8a2659a8c6aabe2992aa3fa3a41601dd0fca8771d6f332",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:33:48+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 658211
+      },
+      {
+        "path": "configuration_lfm3.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/configuration_lfm3.py",
+        "bytes": 7136,
+        "publisher_git_blob_sha1": "b819fbc141cfc5fce395796ed11909566ae8dc06",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "configuration_lfm3_vl.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/configuration_lfm3_vl.py",
+        "bytes": 9892,
+        "publisher_git_blob_sha1": "94d3b91a89c7f6f3cb7e56b9a02e7e547bea11b5",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "depthwise.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/depthwise.py",
+        "bytes": 3119,
+        "publisher_git_blob_sha1": "e4e71ba9c7f1e8e5c33a67fc3b41bbc0477b6dc5",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "grid.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/grid.py",
+        "bytes": 1714,
+        "publisher_git_blob_sha1": "6c0dffb4312df2ac08367fb22f89cf04454ae6e6",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "image_processing_lfm3_vl.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/image_processing_lfm3_vl.py",
+        "bytes": 13085,
+        "publisher_git_blob_sha1": "c7d532fe5e6270c4f21f1dc8e60192750ff40860",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "integrations_lfm3.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/integrations_lfm3.py",
+        "bytes": 8739,
+        "publisher_git_blob_sha1": "d94304387f0293940fc43301453d5150450b21d2",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "json_spans.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/json_spans.py",
+        "bytes": 2060,
+        "publisher_git_blob_sha1": "6c1beb857264514e4254084892c8a071c8136b37",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "lfm3.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/lfm3.py",
+        "bytes": 11046,
+        "publisher_git_blob_sha1": "12d62822cf168d3d2253ef6dc3638ba8e2622818",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "media.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/media.py",
+        "bytes": 13064,
+        "publisher_git_blob_sha1": "b04bda21bb89e56289570a3f87f15f9283ae1d15",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "model.safetensors",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/model.safetensors",
+        "bytes": 3836417920,
+        "publisher_git_blob_sha1": "6bdba6ff34ca3bb7fe7b8518b2ce252c4e585f59",
+        "git_blob_kind": "lfs_pointer",
+        "publisher_lfs_sha256": "b5e573687315e82ea80f4f7dd8d76b5cec3b6ee97e3509fd0493cfebb203719f",
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "modeling_d1.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/modeling_d1.py",
+        "bytes": 3914,
+        "publisher_git_blob_sha1": "ac833b12e5dcccfd88b0c972a3a0c2fe8aea7cbf",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "214d3477cef38e7831f2b4fb0250ace7fb1aeac5b02066fcfd5cc030c541fd72",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:33:48+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 704963
+      },
+      {
+        "path": "modeling_d1_lfm3_vl.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/modeling_d1_lfm3_vl.py",
+        "bytes": 369,
+        "publisher_git_blob_sha1": "9b04189d6998523dd31b5a300dd9ae6fef656e5f",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "68d71f38188f07d11ad8af7cb557c8edc87536eb0db20870b7c5e6ae58fe5f30",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:34:01+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 133083
+      },
+      {
+        "path": "modeling_lfm3.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/modeling_lfm3.py",
+        "bytes": 43385,
+        "publisher_git_blob_sha1": "39c7bd1df17762c4d4dde4e099bf8b18725f41f9",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "modeling_lfm3_vl.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/modeling_lfm3_vl.py",
+        "bytes": 46052,
+        "publisher_git_blob_sha1": "645e76a12f9a68aa339d050ac20d925f70ef9137",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "native_lfm3.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/native_lfm3.py",
+        "bytes": 1573,
+        "publisher_git_blob_sha1": "3e843ca86c41e4722175c2685f9df0b8b8fdc5e0",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "native_lfm3_vl.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/native_lfm3_vl.py",
+        "bytes": 1383,
+        "publisher_git_blob_sha1": "d8e16a161eab6d0b7f6bfb85e6f958436cb3a6e0",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "parsing.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/parsing.py",
+        "bytes": 16157,
+        "publisher_git_blob_sha1": "374585e9c1e04682e2c54b025913812c70da6e55",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "pointer.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/pointer.py",
+        "bytes": 7700,
+        "publisher_git_blob_sha1": "32050b50c1dbf0b4174f2421bbe39ed088d9acfd",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "processing_lfm3_vl.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/processing_lfm3_vl.py",
+        "bytes": 13012,
+        "publisher_git_blob_sha1": "4ada79babf0080d4e16fae915253058cadf0a3cd",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "f4198f935ff6474cb1f44d5bdf02248f800a11eb7fc782dc1a168889b0b53da8",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:34:01+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 133727
+      },
+      {
+        "path": "processor_config.json",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/processor_config.json",
+        "bytes": 1254,
+        "publisher_git_blob_sha1": "95b03f77cb9ad9011e33cb17bed765cb393d219c",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "37396ef3370083a04381ef25f9e1b50dec184b8cdcf08cf718feb8944ad8f3bc",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:34:01+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 89447
+      },
+      {
+        "path": "prompt.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/prompt.py",
+        "bytes": 34780,
+        "publisher_git_blob_sha1": "2aee9fac7bf269fac5968f321c461143aaff622a",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "e9d40f98c36ab68b8e3c33fd00a77e58218460fdc88c96b5edeef793a260d20b",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:34:01+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 133774
+      },
+      {
+        "path": "runner.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/runner.py",
+        "bytes": 22950,
+        "publisher_git_blob_sha1": "681ed9b38f15dc19143c27496d454804b0f46bb2",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "4c3ba0678df6b6176444a9280683f3b46275e741bd4c2fbbb4150f6d85dacf22",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:34:01+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 133051
+      },
+      {
+        "path": "slots.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/slots.py",
+        "bytes": 2463,
+        "publisher_git_blob_sha1": "1e679ec6811531261bcb2bccfd296840f878c9e9",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "tokenizer.json",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/tokenizer.json",
+        "bytes": 17908258,
+        "publisher_git_blob_sha1": "2ad6ecfda312be128ac878a61f3ee84dfe1134f8",
+        "git_blob_kind": "lfs_pointer",
+        "publisher_lfs_sha256": "a39eed58008cbcbc09e5b629b81338a654269c64cd13348aaa6090f4db75c7e7",
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      },
+      {
+        "path": "tokenizer_config.json",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/tokenizer_config.json",
+        "bytes": 623,
+        "publisher_git_blob_sha1": "42a71ec485fb54bdaa97a7088ed4c548029fbd5a",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "594a96e4caedd07536a595b48f5dc84655bd672b715b6ac891ca3d503d439f76",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:34:01+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 112255
+      },
+      {
+        "path": "video_processing_lfm3_vl.py",
+        "url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/video_processing_lfm3_vl.py",
+        "bytes": 18210,
+        "publisher_git_blob_sha1": "ad34d7061b7c0ee31574fd06ab307781ba5a81ea",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      }
+    ],
+    "tokenizer": {
+      "reference_path": "tokenizer.json",
+      "configuration_path": "tokenizer_config.json",
+      "chat_template_path": "chat_template.jinja",
+      "large_tokenizer_content_verified": false,
+      "selected_GGUF_embedded_tokenizer_equivalence_verified": false
+    },
+    "processor": {
+      "configuration_path": "processor_config.json",
+      "implementation_path": "processing_lfm3_vl.py",
+      "class": "Lfm3VlProcessor",
+      "media_processor_selected_for_study": false
+    },
+    "remote_code_route": {
+      "status": "excluded_from_execution",
+      "config_auto_map": {
+        "AutoModel": "modeling_d1_lfm3_vl.D1Model",
+        "AutoConfig": "native_lfm3_vl.Lfm3VlConfig"
+      },
+      "config_transformers_version": "5.19.0",
+      "exact_Transformers_environment_pinned": false,
+      "reason": "The documented Transformers route requires custom repository code/trust_remote_code=True, conflicting with the present remote_code=false policy. A version field or a code hash does not grant execution permission or establish compatibility.",
+      "resolution_rule": "Do not enable remote code, silently vendor it, or change policy to make this source-identification task pass. Any separately admitted execution route requires its actual code/security/rights/runtime evidence."
+    },
+    "calibration_source": {
+      "path": "calibration.json",
+      "locally_verified_sha256": "e534464458f485d800fe6cc896ac241590bbc8cd54f5af08f7b3064b0d884d69",
+      "scope": "Publisher reference tables only; no recagent task calibration and no verified match to embedded Q8_0 parameters."
+    },
+    "last_modified_utc_microsecond": 0
+  },
+  "selected_decision_candidate": {
+    "candidate_id": "d1-2B-q8_0-llama-b11960-candidate",
+    "status": "source_identified_not_admitted_for_execution",
+    "repository": "LiquidAI/d1-2B-GGUF",
+    "revision": "4a181094d1b6addfaa3a0956f78e7ab2aa406a0c",
+    "immutable_metadata_url": "https://huggingface.co/api/models/LiquidAI/d1-2B-GGUF/revision/4a181094d1b6addfaa3a0956f78e7ab2aa406a0c?blobs=true",
+    "last_modified_utc": "2026-11-04T18:33:23Z",
+    "weight_path": "d1-2B-Q8_0.gguf",
+    "precision": "Q8_0",
+    "files": [
+      {
+        "path": "LICENSE",
+        "url": "https://huggingface.co/LiquidAI/d1-2B-GGUF/resolve/4a181094d1b6addfaa3a0956f78e7ab2aa406a0c/LICENSE",
+        "bytes": 10574,
+        "publisher_git_blob_sha1": "25e731c697c4fe4c52ee654cedf7106a827748d2",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "4d28ca14dedc0b3d0fcc2b3339f0e79931faa33874f3d24f522183a8fc70068c",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:34:14+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 381572
+      },
+      {
+        "path": "README.md",
+        "url": "https://huggingface.co/LiquidAI/d1-2B-GGUF/resolve/4a181094d1b6addfaa3a0956f78e7ab2aa406a0c/README.md",
+        "bytes": 6994,
+        "publisher_git_blob_sha1": "78b682fba047d7c95f0f7a5990a88c58bbe2014e",
+        "git_blob_kind": "file",
+        "publisher_lfs_sha256": null,
+        "content_retrieved": true,
+        "locally_verified_sha256": "db8542637373daff8b62130125265616bf14ac63b26d996716ddcb91d7a24eb4",
+        "publisher_git_blob_verified": true,
+        "queried_at_utc": "2026-11-16T21:34:14+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 379345
+      },
+      {
+        "path": "d1-2B-Q8_0.gguf",
+        "url": "https://huggingface.co/LiquidAI/d1-2B-GGUF/resolve/4a181094d1b6addfaa3a0956f78e7ab2aa406a0c/d1-2B-Q8_0.gguf",
+        "bytes": 1846240576,
+        "publisher_git_blob_sha1": "49f77dd184a0a5e1261eaba0e839770c4aaa3989",
+        "git_blob_kind": "lfs_pointer",
+        "publisher_lfs_sha256": "073313d92b53b0ac8193db6e906cb3c78a98183d244b15b7b8f5426115c6738c",
+        "content_retrieved": false,
+        "locally_verified_sha256": null,
+        "publisher_git_blob_verified": false,
+        "queried_at_utc": null,
+        "executed": false
+      }
+    ],
+    "tokenizer": {
+      "location": "Embedded in the selected GGUF",
+      "content_inspected": false,
+      "source_conversion_and_equivalence_verified": false
+    },
+    "multimodal_projector": null,
+    "conversion_lineage": {
+      "verified_base_model_label": "LiquidAI/d1-2B",
+      "exact_converter_input_revision": null,
+      "exact_converter_build": null,
+      "status": "unverified; current reference source snapshot must not be represented as the source of this older conversion"
+    },
+    "calibration_lineage": {
+      "embedded_parameters_inspected": false,
+      "reference_table_equivalence_verified": false,
+      "task_calibrator": null,
+      "rule": "Later calibration binds exact weights, tokenizer/template, runtime/build, precision, question/rubric, evidence-view procedure and study population. No calibration transfer is claimed from full precision or another runtime."
+    },
+    "selection_reason": "An official local GGUF artefact and an upstream Noul code path provide a concrete bounded candidate without executing repository-supplied Python code. This is a feasibility rationale, not measured compatibility or quality.",
+    "last_modified_utc_microsecond": 0
+  },
+  "runtime_candidate": {
+    "repository": "ggml-org/llama.cpp",
+    "discovery_tag": "b11960",
+    "tag_object_type": "commit",
+    "revision": "8642541b255bfb5dc39cd351a178be09013a55d6",
+    "tree": "10602a4338fd3d7eafb4144463f78ed35fe2a8f0",
+    "version_label": "0.8.0",
+    "immutable_commit_url": "https://api.github.com/repos/ggml-org/llama.cpp/git/commits/8642541b255bfb5dc39cd351a178be09013a55d6",
+    "tree_listing_truncated": false,
+    "github_reported_commit_signature_valid": true,
+    "signature_independently_verified": false,
+    "files": [
+      {
+        "path": "LICENSE",
+        "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/8642541b255bfb5dc39cd351a178be09013a55d6/LICENSE",
+        "bytes": 1078,
+        "publisher_git_blob_sha1": "e7dca554bcb802f98408383a864404e3aa4eacca",
+        "locally_verified_sha256": "94f29bbed6a22c35b992c5c6ebf0e7c92f13b836b90f36f461c9cf2f0f1d010d",
+        "publisher_git_blob_verified": true,
+        "content_retrieved": true,
+        "queried_at_utc": "2026-11-16T21:34:06+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 99309
+      },
+      {
+        "path": "CMakeLists.txt",
+        "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/8642541b255bfb5dc39cd351a178be09013a55d6/CMakeLists.txt",
+        "bytes": 11073,
+        "publisher_git_blob_sha1": "0cf2dc8158c3538889df9be149f839e8b9a9f804",
+        "locally_verified_sha256": "90852822e547bf0f9156f6ce538a50bd0c831bff83b8f4e40b0d91ae66a7d6cc",
+        "publisher_git_blob_verified": true,
+        "content_retrieved": true,
+        "queried_at_utc": "2026-11-16T21:34:06+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 144562
+      },
+      {
+        "path": "tools/server/README.md",
+        "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/8642541b255bfb5dc39cd351a178be09013a55d6/tools/server/README.md",
+        "bytes": 135608,
+        "publisher_git_blob_sha1": "6188a084bc0ce659237dfaef2bae87d5258c0af7",
+        "locally_verified_sha256": "8fd5abde2fb52de3b30f30a170631d4c0d92febecc8da44d0541e48b132b35c6",
+        "publisher_git_blob_verified": true,
+        "content_retrieved": true,
+        "queried_at_utc": "2026-11-16T21:34:06+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 400378
+      },
+      {
+        "path": "tools/server/server-decision.cpp",
+        "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/8642541b255bfb5dc39cd351a178be09013a55d6/tools/server/server-decision.cpp",
+        "bytes": 75235,
+        "publisher_git_blob_sha1": "8b9911f64752492f75a73cf9c84a9bd4ac111ed7",
+        "locally_verified_sha256": "86379ffbf753cbe4ae90cebd60d5df62cda44cf37459e4e1de2db081fec8652b",
+        "publisher_git_blob_verified": true,
+        "content_retrieved": true,
+        "queried_at_utc": "2026-11-16T21:34:06+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 209094
+      },
+      {
+        "path": "tools/server/server-decision.h",
+        "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/8642541b255bfb5dc39cd351a178be09013a55d6/tools/server/server-decision.h",
+        "bytes": 8931,
+        "publisher_git_blob_sha1": "82af98ca14ef3df8a8e90a40a1c25875195283c8",
+        "locally_verified_sha256": "b2badfb6dfa7514208875bdaa2fb52061d65e313bfc6c1c586cafbb2560a1710",
+        "publisher_git_blob_verified": true,
+        "content_retrieved": true,
+        "queried_at_utc": "2026-11-16T21:34:09+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 676061
+      },
+      {
+        "path": "tools/server/tests/unit/test_systemone.py",
+        "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/8642541b255bfb5dc39cd351a178be09013a55d6/tools/server/tests/unit/test_systemone.py",
+        "bytes": 10049,
+        "publisher_git_blob_sha1": "67e128e11e883543f6dc72d7c365887c0c89d659",
+        "locally_verified_sha256": "f738a5cd7cfb2631dfe7555002757f1c3fd64a88277459a114393d4877200310",
+        "publisher_git_blob_verified": true,
+        "content_retrieved": true,
+        "queried_at_utc": "2026-11-16T21:34:09+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 740311
+      },
+      {
+        "path": "src/models/lfm3.cpp",
+        "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/8642541b255bfb5dc39cd351a178be09013a55d6/src/models/lfm3.cpp",
+        "bytes": 9892,
+        "publisher_git_blob_sha1": "174ce9cf7e386efef742a7e33edf378db48a2bff",
+        "locally_verified_sha256": "eeefe3629ecefb868a78490c722722fe9d83835142a077ca10ac9cd928385ff9",
+        "publisher_git_blob_verified": true,
+        "content_retrieved": true,
+        "queried_at_utc": "2026-11-16T21:34:09+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 674088
+      },
+      {
+        "path": "conversion/lfm3.py",
+        "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/8642541b255bfb5dc39cd351a178be09013a55d6/conversion/lfm3.py",
+        "bytes": 32462,
+        "publisher_git_blob_sha1": "435edd3ded5283899bde0e0decc39fd97d5244a9",
+        "locally_verified_sha256": "f8475c12d9b31cd1c185529e2542ed0453938b319cbace6e0692ce77380facf7",
+        "publisher_git_blob_verified": true,
+        "content_retrieved": true,
+        "queried_at_utc": "2026-11-16T21:34:09+00:00",
+        "executed": false,
+        "queried_at_utc_microsecond": 683842
+      }
+    ],
+    "licence": {
+      "identifier": "MIT",
+      "path": "LICENSE",
+      "locally_verified_sha256": "94f29bbed6a22c35b992c5c6ebf0e7c92f13b836b90f36f461c9cf2f0f1d010d"
+    },
+    "api": {
+      "method": "POST",
+      "path": "/v1/systemone",
+      "network_binding": "Local-only loopback is the intended later execution boundary; not started or isolation-tested in DM01.",
+      "request": "One source-bound text state; seven named Noul questions using the canonical protocol predicates. No files/images or hosted endpoint.",
+      "response": "answers[question_id].noul is the model-reported probability of true; preserve failure/missingness outside that probability.",
+      "multiple_question_semantics": "Pinned documentation says questions are evaluated independently. Seven Noul questions in one HTTP request must not be reported as a demonstrated single physical forward pass.",
+      "output_tokens": "Pinned endpoint documentation reports output_tokens=0. This is an endpoint accounting claim, not measured latency, total resource use or zero overhead.",
+      "probability_status": "Publisher temperature scaling is not validation of calibration on this study.",
+      "Score_discrepancy": "Generic server documentation describes an expected index; the pinned LFM3 d1 branch returns the first level reaching cumulative probability 0.5. Score is excluded from this study; any future adapter must preserve the native distribution and verified readout semantics.",
+      "Typed_Answers": "Not selected or admitted for this runtime. Reference Python api.py gates a found value below 0.5 to missing; this does not establish an extraction endpoint in the selected GGUF path."
+    },
+    "executable_sha256": null,
+    "compiler_and_flags": null,
+    "resolved_build_dependencies": null,
+    "target_device_receipt": null,
+    "network_and_telemetry_isolation_receipt": null,
+    "runtime_probe_receipt": null,
+    "execution_status": "unbuilt_unmeasured_unadmitted"
+  },
+  "model_licence": {
+    "name": "LFM Open License v1.0",
+    "publisher_label": "lfm1.0",
+    "reference_licence_url": "https://huggingface.co/LiquidAI/d1-2B/resolve/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e/LICENSE",
+    "selected_artefact_licence_url": "https://huggingface.co/LiquidAI/d1-2B-GGUF/resolve/4a181094d1b6addfaa3a0956f78e7ab2aa406a0c/LICENSE",
+    "locally_verified_sha256": "4d28ca14dedc0b3d0fcc2b3339f0e79931faa33874f3d24f522183a8fc70068c",
+    "identical_text_verified_between_repositories": true,
+    "scope": "Model/use/distribution conditions are separate from the repository licence and runtime MIT licence.",
+    "terms_requiring_applicability_decision": [
+      "Commercial-use/revenue conditions in section 5 and definitions",
+      "Qualified Non-Profit/non-commercial or research conditions",
+      "Attribution/retention/redistribution requirements in section 4"
+    ],
+    "actual_legal_entity_and_use_applicability": "not established by DM01",
+    "execution_rights_status": "unresolved; not inferred from public access or open-weight description",
+    "redistribution_admitted": false
+  },
+  "generative_comparator": {
+    "status": "explicitly_deferred_to_DM03_before_model_manifest_freeze",
+    "model_id": null,
+    "model_revision": null,
+    "weight_sha256": null,
+    "runtime_revision": null,
+    "rights_status": "not selected or admitted",
+    "required_before_execution": "Use the bounded training-only G selection rule in study-protocol.json. Pin the chosen model/tokenizer/template/processor-as-applicable/licence/runtime/build provenance and measured isolation before probability-calibration, threshold-selection or holdout data access; H reuses the same chosen G and D. Freeze the complete model/analysis manifest after calibration and before holdout access.",
+    "failure_policy": "If G or D cannot be admitted, G/H and the planned comparison remain blocked. Do not replace G with a floating hosted alias or relabel D-only as the planned study. No model selection or replacement may use probability-calibration, threshold-selection or holdout outcomes; bounded training-only selection is allowed exactly as prespecified."
+  },
+  "existing_runtime_registry": {
+    "path": "evaluation/runtime-lab/registry.json",
+    "observed_sha256": "23ede14db831ec84cbb078f1cf41ad6ea432a6e6dc8eeb5e2add75613ec9e806",
+    "observed_models_count": 0,
+    "observed_policy": {
+      "downloads": false,
+      "external_inference": false,
+      "remote_code": false,
+      "promotion": false,
+      "redistribution": false
+    },
+    "llama_cpp_support_state": "installed_unmeasured",
+    "llama_cpp_registered_interface": "generation",
+    "new_entry_added": false,
+    "interpretation": "The existing generation adapter is not a qualified System One endpoint. This document is not a model-support registry or permission to download weights."
+  },
+  "excluded_from_first_study": [
+    {
+      "items": [
+        "LiquidAI/d1-Omni-2B",
+        "LiquidAI/d1-omni-600M"
+      ],
+      "reason": "Audio and other multimodal tasks are outside the first text-only Noul procedure.",
+      "immutable_revision_and_rights": "Not selected or admitted; model-specific licence, processor/media limits and runtime remain unqualified.",
+      "discovery_sources": [
+        "../sources.md"
+      ]
+    },
+    {
+      "items": [
+        "Liquid d1.1",
+        "Liquid d1-ultra",
+        "Liquid hosted API",
+        "OpenRouter",
+        "Vercel AI Gateway"
+      ],
+      "reason": "Hosted processing is outside the local-only study and present external-inference policy.",
+      "immutable_revision_and_rights": "No immutable served model revision, endpoint/version-specific contract, data terms or egress admission is established; no automatic hosted fallback.",
+      "discovery_sources": [
+        "https://docs.liquid.ai/lfm/models/d1"
+      ]
+    },
+    {
+      "items": [
+        "TypeSafe Jev",
+        "Cloudflare Clef"
+      ],
+      "reason": "Optional alternative decision families are not needed to answer the bounded first research question.",
+      "immutable_revision_and_rights": "No exact variant/revision, weight/tokenizer/licence/runtime tuple selected. Hosted and open-weight variants are not interchangeable.",
+      "discovery_sources": [
+        "https://docs.typesafe.ai/models",
+        "https://developers.cloudflare.com/changelog/post/2026-10-01-clef-workers-ai/"
+      ]
+    },
+    {
+      "items": [
+        "GLiNER",
+        "ModernBERT",
+        "DeBERTa",
+        "SapBERT",
+        "KRISSBERT",
+        "BioClinicalBERT",
+        "MedCAT"
+      ],
+      "reason": "No NER or ontology-linking condition is in the first study.",
+      "immutable_revision_and_rights": "No exact checkpoint/code/modelpack/tokenizer or task corpus has been selected; toolkit, checkpoint, modelpack and terminology rights must be admitted independently for a later condition.",
+      "discovery_sources": [
+        "../sources.md"
+      ]
+    },
+    {
+      "items": [
+        "FAISS",
+        "Qdrant"
+      ],
+      "reason": "No vector retrieval/index service is required by seven text predicates.",
+      "immutable_revision_and_rights": "No package/container/index artefact selected or dependency added.",
+      "discovery_sources": [
+        "../spec.md"
+      ]
+    },
+    {
+      "items": [
+        "SNOMED CT",
+        "SNOMED CT-AU",
+        "UMLS",
+        "ICD-10",
+        "ICD-10-AM/ACHI/ACS"
+      ],
+      "reason": "No terminology content or coding reference is consumed in this study.",
+      "immutable_revision_and_rights": "No edition/release, mapping, access, permitted-use or redistribution entitlement is selected. These are distinct terminologies; public descriptions and model licences do not confer content rights.",
+      "discovery_sources": [
+        "https://implementer.digitalhealth.gov.au/ncts/licensing",
+        "https://www.nlm.nih.gov/research/umls/license.html",
+        "https://www.ihacpa.gov.au/health-care/products-and-licenses"
+      ]
+    },
+    {
+      "items": [
+        "ICPS",
+        "HFACS"
+      ],
+      "reason": "No local taxonomy profile or causal-factor classification is consumed in this study.",
+      "immutable_revision_and_rights": "No locally versioned code profile, healthcare adaptation, mapping or task-validation/rights packet is admitted. ICPS framework descriptions are not a ready-made universal coding system.",
+      "discovery_sources": [
+        "https://www.who.int/publications-detail-redirect/WHO-IER-PSP-2010.2",
+        "https://www.faa.gov/data_research/research/med_humanfacs/oamtechreports/2000s/2000/0007"
+      ]
+    },
+    {
+      "items": [
+        "HDC",
+        "MedMentions",
+        "When2Call",
+        "Artificial Analysis Decision Index",
+        "AA-Symmetry"
+      ],
+      "reason": "First-study corpus is original synthetic incident text; these datasets/benchmarks are not imported.",
+      "immutable_revision_and_rights": "HDC prior authority is not extended. No external dataset release/split/terminology entitlement is selected. When2Call is inspiration, not an installed safety controller. AA-Symmetry is private; no official reproduction or access entitlement is claimed.",
+      "discovery_sources": [
+        "../spec.md",
+        "https://github.com/chanzuckerberg/MedMentions",
+        "https://github.com/NVIDIA/When2Call",
+        "https://artificialanalysis.ai/evaluations/aa-symmetry"
+      ]
+    },
+    {
+      "items": [
+        "Transformers execution",
+        "mlx-vlm",
+        "Ollama /v1/systemone",
+        "ONNX",
+        "FastAPI service",
+        "Power Automate"
+      ],
+      "reason": "Only the pinned upstream llama.cpp source route is the first D candidate; no alternative runtime, deployment service or connector is instantiated.",
+      "immutable_revision_and_rights": "No alternative binary/build/conversion/API/service isolation tuple selected. Transformers custom-code conflict remains explicit; names and shared endpoint spelling do not prove parity.",
+      "discovery_sources": [
+        "../sources.md",
+        "../spec.md"
+      ]
+    }
+  ],
+  "execution_blockers": [
+    {
+      "id": "DM01-SB01",
+      "scope": "D and H execution",
+      "condition": "No verified local model bytes, admitted executable/build dependencies, hardware/resource or actual isolation/capability receipt.",
+      "closure": "DM03 must lawfully obtain and hash the exact selected artefacts, bind the actual build/device and verify local-only Noul capability before model execution is reported."
+    },
+    {
+      "id": "DM01-SB02",
+      "scope": "Any selected model use or redistribution",
+      "condition": "LFM licence text is pinned, but actual entity/use applicability is unresolved and redistribution is not admitted.",
+      "closure": "Record the actual scoped rights decision; do not infer it from public availability, a model card or runtime MIT licence."
+    },
+    {
+      "id": "DM01-SB03",
+      "scope": "D equivalence/calibration claims",
+      "condition": "Exact conversion inputs and embedded GGUF tokenizer/template/calibration metadata have not been inspected or reconciled with the current source snapshot.",
+      "closure": "Verify the selected file internals, document provenance/parity limits and create task-specific calibration lineage. A missing reference-conversion link remains a declared limitation; it cannot be represented as proven equivalence."
+    },
+    {
+      "id": "DM01-SB04",
+      "scope": "G, H and the planned G/D/H comparison",
+      "condition": "No exact local generative comparator has been selected or admitted.",
+      "closure": "DM03 pins one local G tuple before the model manifest/holdout freeze; H uses the same G and D. Failure blocks the comparison without silent substitution."
+    },
+    {
+      "id": "DM01-SB05",
+      "scope": "Study integration and thresholded use",
+      "condition": "The seven-question adapter, native probability handling, bounds/missing/timeout behaviour and calibrator do not exist.",
+      "closure": "DM02/DM03/DM08 supply accepted contracts, model-free discriminating controls and measured task calibration; source presence is not a passing runtime test."
+    },
+    {
+      "id": "DM01-SB06",
+      "scope": "Empirical study claims",
+      "condition": "The protocol defines future synthetic corpus construction; no authored corpus, references, partition manifest or observations have been produced in DM01.",
+      "closure": "DM04 and later freeze actual authorised artefacts and analysis before holdout access, then execute and retain complete attempt/resource denominators."
+    }
+  ],
+  "completion_boundary": "DM01.2 completes a finite source/rights disposition, with one concrete D candidate and explicit exclusions/deferred G. It grants no runtime qualification, model execution, empirical result, hosted fallback, deployment or subsequent work-package completion.",
+  "metadata_query_receipts": [
+    {
+      "name": "d1_reference",
+      "url": "https://huggingface.co/api/models/LiquidAI/d1-2B?blobs=true",
+      "final_url": "https://huggingface.co/api/models/LiquidAI/d1-2B?blobs=true",
+      "queried_at_utc": "2026-11-16T21:33:05+00:00",
+      "response_sha256": "563b7ea220d38c2941fc8a3617285ebaabfcef1b4a952ce5a4118fa4cd00e346",
+      "bytes": 19929,
+      "id": "LiquidAI/d1-2B",
+      "sha": "a6bce774e6dde338dcc3036ceb5d91f78bf4c19e",
+      "lastModified": "2026-11-14T08:49:46Z",
+      "gated": false,
+      "disabled": false,
+      "queried_at_utc_microsecond": 372121,
+      "lastModified_microsecond": 0
+    },
+    {
+      "name": "d1_gguf",
+      "url": "https://huggingface.co/api/models/LiquidAI/d1-2B-GGUF/revision/4a181094d1b6addfaa3a0956f78e7ab2aa406a0c?blobs=true",
+      "final_url": "https://huggingface.co/api/models/LiquidAI/d1-2B-GGUF/revision/4a181094d1b6addfaa3a0956f78e7ab2aa406a0c?blobs=true",
+      "queried_at_utc": "2026-11-16T21:33:05+00:00",
+      "response_sha256": "b1ef2c9a8489d45309209cfcb859c42f62c3d1c9dd6deb87c4d8e354473604a1",
+      "bytes": 17056,
+      "id": "LiquidAI/d1-2B-GGUF",
+      "sha": "4a181094d1b6addfaa3a0956f78e7ab2aa406a0c",
+      "lastModified": "2026-11-04T18:33:23Z",
+      "gated": false,
+      "disabled": false,
+      "queried_at_utc_microsecond": 371208,
+      "lastModified_microsecond": 0
+    },
+    {
+      "name": "llama_tree",
+      "url": "https://api.github.com/repos/ggml-org/llama.cpp/git/trees/10602a4338fd3d7eafb4144463f78ed35fe2a8f0?recursive=1",
+      "final_url": "https://api.github.com/repos/ggml-org/llama.cpp/git/trees/10602a4338fd3d7eafb4144463f78ed35fe2a8f0?recursive=1",
+      "queried_at_utc": "2026-11-16T21:33:04+00:00",
+      "response_sha256": "179f7388bdf4fcf3af233855547d5099111e2e1320cf7cfd915ce63509766615",
+      "bytes": 1085923,
+      "sha": "10602a4338fd3d7eafb4144463f78ed35fe2a8f0",
+      "truncated": false,
+      "queried_at_utc_microsecond": 12430
+    },
+    {
+      "name": "llama_tag",
+      "url": "https://api.github.com/repos/ggml-org/llama.cpp/git/ref/tags/b11960",
+      "final_url": "https://api.github.com/repos/ggml-org/llama.cpp/git/ref/tags/b11960",
+      "queried_at_utc": "2026-11-16T21:38:07+00:00",
+      "bytes": 337,
+      "response_sha256": "b79a192cdb47ad391ed404c94abfeec3841b1d9dd4d7f3b1516c4c8e7d1fe54d",
+      "resolved_commit": "8642541b255bfb5dc39cd351a178be09013a55d6",
+      "object_type": "commit",
+      "queried_at_utc_microsecond": 65778
+    },
+    {
+      "name": "llama_commit",
+      "url": "https://api.github.com/repos/ggml-org/llama.cpp/git/commits/8642541b255bfb5dc39cd351a178be09013a55d6",
+      "final_url": "https://api.github.com/repos/ggml-org/llama.cpp/git/commits/8642541b255bfb5dc39cd351a178be09013a55d6",
+      "queried_at_utc": "2026-11-16T21:38:07+00:00",
+      "bytes": 2329,
+      "response_sha256": "5a5f8deafb4331021b8ad843dbcc4498d301b5083e00b9bd9580818e14959d85",
+      "commit": "8642541b255bfb5dc39cd351a178be09013a55d6",
+      "tree": "10602a4338fd3d7eafb4144463f78ed35fe2a8f0",
+      "github_reported_verification": true,
+      "queried_at_utc_microsecond": 77693
+    },
+    {
+      "name": "d1_pinned",
+      "url": "https://huggingface.co/api/models/LiquidAI/d1-2B/revision/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e?blobs=true",
+      "final_url": "https://huggingface.co/api/models/LiquidAI/d1-2B/revision/a6bce774e6dde338dcc3036ceb5d91f78bf4c19e?blobs=true",
+      "queried_at_utc": "2026-11-16T21:38:04+00:00",
+      "bytes": 19929,
+      "response_sha256": "563b7ea220d38c2941fc8a3617285ebaabfcef1b4a952ce5a4118fa4cd00e346",
+      "revision": "a6bce774e6dde338dcc3036ceb5d91f78bf4c19e",
+      "queried_at_utc_microsecond": 515005
+    }
+  ]
+}

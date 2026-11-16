@@ -1,0 +1,228 @@
+{
+  "schema_version": "heaps-h4-hosted-ci-observation-1.0",
+  "observed_at_utc": "2026-11-16 21:41:54 UTC",
+  "repository": "edithatogo/rcagent",
+  "source": {
+    "head": "05975675467684f033e5d4df7320984a4c9eb3a1",
+    "tree": "5c55fde1cbe324973b71413f63367c773391d523",
+    "base_head": "8a564826a3f51765f177f0d9823194718bacb7d9"
+  },
+  "pull_request": {
+    "number": 142,
+    "url": "https://github.com/edithatogo/rcagent/pull/142",
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-11-16T21:39:59Z",
+    "merge_commit_sha": "006d98cb60c72143b0517f0e7a446641642ddd5a"
+  },
+  "workflow": {
+    "id": 43961334353,
+    "url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353",
+    "attempt": 1,
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-11-16T21:39:39Z"
+  },
+  "validation_jobs": [
+    {
+      "job_id": 133629494036,
+      "name": "Python validation (3.11)",
+      "status": "completed",
+      "conclusion": "success",
+      "job_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494036",
+      "tests_passed": 3188,
+      "tests_skipped": 0,
+      "tests_failed": 0,
+      "pytest_seconds": 145.62,
+      "coverage": {
+        "statement_count": 12759,
+        "statements_missed": 523,
+        "branch_count": 4664,
+        "partial_branches": 387,
+        "reported_percent": 94.6,
+        "reported_precision": "two-decimal coverage gate summary"
+      }
+    },
+    {
+      "job_id": 133629494042,
+      "name": "Python validation (3.15.2)",
+      "status": "completed",
+      "conclusion": "success",
+      "job_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494042",
+      "tests_passed": 3188,
+      "tests_skipped": 0,
+      "tests_failed": 0,
+      "pytest_seconds": 92.99,
+      "coverage": {
+        "statement_count": 12759,
+        "statements_missed": 523,
+        "branch_count": 4664,
+        "partial_branches": 387,
+        "reported_percent": 94.6,
+        "reported_precision": "two-decimal coverage gate summary"
+      }
+    },
+    {
+      "job_id": 133629494070,
+      "name": "validate (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "job_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494070",
+      "tests_passed": 2927,
+      "tests_skipped": 261,
+      "tests_failed": 0,
+      "pytest_seconds": 207.61,
+      "coverage": {
+        "statement_count": 12759,
+        "statements_missed": 1308,
+        "branch_count": 4664,
+        "partial_branches": 376,
+        "reported_percent": 88,
+        "reported_precision": "whole-percent coverage table"
+      }
+    },
+    {
+      "job_id": 133629494388,
+      "name": "validate (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "job_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629494388",
+      "tests_passed": 3188,
+      "tests_skipped": 0,
+      "tests_failed": 0,
+      "pytest_seconds": 178.19,
+      "coverage": {
+        "statement_count": 12759,
+        "statements_missed": 520,
+        "branch_count": 4664,
+        "partial_branches": 386,
+        "reported_percent": 94.63,
+        "reported_precision": "two-decimal coverage gate summary"
+      }
+    }
+  ],
+  "combined_coverage": {
+    "job_id": 133632471377,
+    "conclusion": "success",
+    "required_matrix_members": 4,
+    "fail_under_percent": 90,
+    "reported_percent_rounded": 95,
+    "statement_plus_branch_percent": 94.6851862480629,
+    "rounded_to_two_decimals_percent": 94.69,
+    "calculation": "100 * (lines_covered + branches_covered) / (lines_valid + branches_valid), calculated from the hosted combined coverage XML",
+    "artifact": {
+      "id": 14274052408,
+      "name": "combined-branch-coverage",
+      "size_in_bytes": 33022,
+      "github_sha256": "sha256:3e172b1a26ce3ee8a553e858ccbc47cb8bd8063a493eac1248db4cc30a001c2d",
+      "downloaded_zip_sha256": "3e172b1a26ce3ee8a553e858ccbc47cb8bd8063a493eac1248db4cc30a001c2d",
+      "zip_digest_matches": true,
+      "xml_sha256": "61a7c2afd4b7c1ada7ae14b674e074aaca392dc7ffd5654538e80bfb4a1b7222",
+      "xml_bytes": 585525,
+      "created_at": "2026-11-16T21:39:32Z",
+      "expires_at": "2026-11-30T21:39:31Z",
+      "workflow_head_sha": "05975675467684f033e5d4df7320984a4c9eb3a1"
+    },
+    "counts": {
+      "lines_valid": 12759,
+      "lines_covered": 12243,
+      "branches_valid": 4664,
+      "branches_covered": 4254
+    }
+  },
+  "codecov_patch": [
+    {
+      "id": 133631069347,
+      "status": "completed",
+      "conclusion": "success",
+      "coverage_percent": 93.63,
+      "target_percent": 90,
+      "details_url": "https://app.codecov.io/gh/edithatogo/rcagent/pull/142",
+      "title": "93.63% of diff hit (target 90.00%)"
+    }
+  ],
+  "mutation": {
+    "job_id": 133629494242,
+    "conclusion": "success",
+    "killed": 24,
+    "total_mutants": 24,
+    "survived": 0,
+    "killed_percent": 100,
+    "excluded_verdicts": 0
+  },
+  "profile": {
+    "job_id": 133629494424,
+    "conclusion": "success",
+    "workload": {
+      "data_class": "synthetic",
+      "fixture_sha256": "sha256:25f159bebf270234e21ba3bba6efd13a6bf522157eb323cacef4511b53345f88",
+      "iterations": 300,
+      "schema_version": "1.0",
+      "wall_seconds": 13.053707,
+      "workload": "schema-validation-and-provenance-round-trip"
+    },
+    "scalene_measurement": {
+      "completed_synthetic_round_trips": 300,
+      "seconds": 13.787,
+      "reported_allocation_footprint_mb": 5.02
+    }
+  },
+  "aggregate": {
+    "job_id": 133632634096,
+    "conclusion": "success"
+  },
+  "prose_lint": {
+    "id": 133629493477,
+    "name": "Prose lint (Vale)",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/edithatogo/rcagent/actions/runs/43961334353/job/133629493477"
+  },
+  "additional_completed_checks": [
+    {
+      "id": 133629213611,
+      "name": "privacy-and-secrets",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334303/job/133629213611"
+    },
+    {
+      "id": 133629212303,
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334300/job/133629212303"
+    },
+    {
+      "id": 133629212105,
+      "name": "dependency-review",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334352/job/133629212105"
+    }
+  ],
+  "other_queued_checks_at_observation": [
+    {
+      "id": 133629214431,
+      "name": "offline-ai-security / offline-security",
+      "status": "queued",
+      "conclusion": null,
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961334893/job/133629214431"
+    },
+    {
+      "id": 133629180703,
+      "name": "offline-ai-security / offline-security",
+      "status": "queued",
+      "conclusion": null,
+      "details_url": "https://github.com/edithatogo/rcagent/actions/runs/43961324498/job/133629180703"
+    }
+  ],
+  "provenance": {
+    "metric_sources": "Actual completed GitHub job logs; combined coverage from downloaded XML with ZIP SHA-256 verified against GitHub artifact metadata.",
+    "scope": "Hosted engineering checks only; no H5 qualification or clinical authority claim.",
+    "test_count_note": "Counts are per job, not distinct tests to sum.",
+    "windows_note": "Windows coverage is the rounded table value; the required combined matrix coverage gate passed at 90% minimum.",
+    "queued_note": "Other queued offline security checks are separate from the successful Quality run; not retried or awaited."
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "schema_version": "faw09-independent-verification-1.0",
+  "observed_utc": "2026-11-16T21:02:01.389240+00:00",
+  "disposition": "accepted-for-bounded-synthetic-D2-contract-at-these-file-hashes",
+  "oracle_sha256": "dd3947ac70d54ccb5436040b1a190e19bba4f5b657a7b4781574eac76be13b92",
+  "verified_files_sha256": {
+    "tools/faw09_d2_timeline.py": "254ea0ab87c30ab8ce568b1c892ae1c01c31ef46c8c6bc88778e92507b4eb020",
+    "tools/faw09_d2_clock.py": "b0e24b747cba8a6947cfeab39f22a8103c3251db6aa48cfcbe63269464e84855",
+    "tools/workbench.py": "122152d01584ff72749c8f3ce3f2e6f0efaafdeddd1699b72a55418ed05a9dd2",
+    "tools/faw07_d0_demo.py": "4aeafc70fb9149ce2d1068a27aa948fafd801c43c0786d22292bb130b7f47b5b",
+    "tools/evidence_core.py": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+    "tools/json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+    "uv.lock": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c",
+    "tests/test_faw09_independent_timeline.py": "3daab366f7092291c1f756e5f41ca95adb16e1db2a3adc373d526f06afbf8941",
+    "tests/fixtures/faw09_independent/d2_oracle.json": "dd3947ac70d54ccb5436040b1a190e19bba4f5b657a7b4781574eac76be13b92"
+  },
+  "corpus": {
+    "cases": 34,
+    "families": 15,
+    "events": 73,
+    "clock_assertions": 74,
+    "unordered_pairs": 46,
+    "full_implied_strict_orders": 12,
+    "consistent_cases": 29,
+    "inconsistent_cases": 5,
+    "clock_status_counts": {
+      "ambiguous": 3,
+      "invalid": 3,
+      "resolved": 58,
+      "unknown": 7,
+      "unsupported": 3
+    },
+    "qualification": "Independently authored, frozen and development-visible synthetic annotations; not a held-out or clinical/model assessment."
+  },
+  "metrics": {
+    "expected_events": 73,
+    "retained_events": 73,
+    "extra_events": 0,
+    "expected_clocks": 74,
+    "retained_clocks": 74,
+    "extra_clocks": 0,
+    "expected_pairs": 46,
+    "correct_pairs": 46,
+    "expected_strict_orders": 12,
+    "strict_order_true_positive": 12,
+    "strict_order_false_positive": 0,
+    "strict_order_false_negative": 0,
+    "expected_normalizable_clocks": 61,
+    "correct_normalizable_clocks": 61,
+    "expected_unresolved_clocks": 13,
+    "correct_unresolved_clocks": 13,
+    "expected_summaries": 158,
+    "correct_summaries": 158,
+    "expected_unknown_summaries": 105,
+    "correct_unknown_summaries": 105,
+    "expected_disagreements": 3,
+    "correct_disagreements": 3,
+    "expected_unknown_orders": 19,
+    "correct_unknown_orders": 19,
+    "expected_consistent_cases": 29,
+    "expected_inconsistent_cases": 5,
+    "correct_consistency_cases": 34,
+    "false_blocking": 0,
+    "false_acceptance": 0,
+    "execution_failures": 0,
+    "case_count": 34,
+    "family_count": 15,
+    "strict_order_precision": 1.0,
+    "strict_order_recall": 1.0,
+    "clock_normalization_recall": 1.0,
+    "unresolved_clock_preservation": 1.0,
+    "unknown_summary_preservation": 1.0,
+    "disagreement_preservation": 1.0,
+    "field_error_count": 0,
+    "field_errors": {}
+  },
+  "independent_tests": {
+    "passed": 166,
+    "failed": 0,
+    "pytest_reported_seconds": 2.57,
+    "outer_process_seconds": 3.0608888030110393,
+    "record": "attempts/attempt-003.json",
+    "raw_stdout": "attempts/attempt-003.stdout.txt",
+    "raw_stderr": "attempts/attempt-003.stderr.txt",
+    "hypothesis_configuration": {
+      "permutation_scenarios": 3,
+      "max_examples_per_scenario": 30
+    }
+  },
+  "static_checks": {
+    "ruff_correctness": "passed",
+    "ruff_format": "passed",
+    "ty": "zero diagnostics",
+    "basedpyright": "zero errors/warnings/notes",
+    "scope": "tests/test_faw09_independent_timeline.py"
+  },
+  "cli": {
+    "schema_version": "faw09-independent-cli-execution-1.0",
+    "execution_utc": "2026-11-16T21:02:01.179912+00:00",
+    "command": [
+      "/workspace/scratch/a739cac856a2/rcagent-review/.venv/bin/python",
+      "-m",
+      "tools.workbench",
+      "d2-demo"
+    ],
+    "reproduction_command": "uv run --no-sync python -m tools.workbench d2-demo",
+    "runtime": {
+      "python": "3.15.2 (main, Oct 26 2026, 14:06:56) [Clang 23.1.3 ]",
+      "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+      "machine": "x86_64",
+      "stdout_encoding_environment": "ascii"
+    },
+    "exit_code": 0,
+    "artifact": "tests/fixtures/faw09_independent/d2-demo-receipt-20261117.json",
+    "stdout_bytes": 96602,
+    "stdout_sha256_including_lf": "30228ca7a438bda9327f1e6bbf3e6f8c7d4b78d8aad7e06a3ff19e0543ad3760",
+    "stderr_bytes": 0,
+    "output_fingerprint": "sha256:79119822b52815dc00bf34e373c44e3a50de5f251dfde4517769399088b04ddd",
+    "input_fingerprint": "sha256:cb6624fafce593ccdba8705f53cb397527cef47c216c1df1e6485208a38c6335",
+    "hashes_before": {
+      "tools/faw09_d2_timeline.py": "254ea0ab87c30ab8ce568b1c892ae1c01c31ef46c8c6bc88778e92507b4eb020",
+      "tools/faw09_d2_clock.py": "b0e24b747cba8a6947cfeab39f22a8103c3251db6aa48cfcbe63269464e84855",
+      "tools/workbench.py": "122152d01584ff72749c8f3ce3f2e6f0efaafdeddd1699b72a55418ed05a9dd2",
+      "tools/faw07_d0_demo.py": "4aeafc70fb9149ce2d1068a27aa948fafd801c43c0786d22292bb130b7f47b5b",
+      "tools/evidence_core.py": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+      "tools/json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+      "uv.lock": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c",
+      "tests/test_faw09_independent_timeline.py": "3daab366f7092291c1f756e5f41ca95adb16e1db2a3adc373d526f06afbf8941",
+      "tests/fixtures/faw09_independent/d2_oracle.json": "dd3947ac70d54ccb5436040b1a190e19bba4f5b657a7b4781574eac76be13b92"
+    },
+    "hashes_after": {
+      "tools/faw09_d2_timeline.py": "254ea0ab87c30ab8ce568b1c892ae1c01c31ef46c8c6bc88778e92507b4eb020",
+      "tools/faw09_d2_clock.py": "b0e24b747cba8a6947cfeab39f22a8103c3251db6aa48cfcbe63269464e84855",
+      "tools/workbench.py": "122152d01584ff72749c8f3ce3f2e6f0efaafdeddd1699b72a55418ed05a9dd2",
+      "tools/faw07_d0_demo.py": "4aeafc70fb9149ce2d1068a27aa948fafd801c43c0786d22292bb130b7f47b5b",
+      "tools/evidence_core.py": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+      "tools/json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+      "uv.lock": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c",
+      "tests/test_faw09_independent_timeline.py": "3daab366f7092291c1f756e5f41ca95adb16e1db2a3adc373d526f06afbf8941",
+      "tests/fixtures/faw09_independent/d2_oracle.json": "dd3947ac70d54ccb5436040b1a190e19bba4f5b657a7b4781574eac76be13b92"
+    },
+    "measurements": {
+      "wall_seconds_single_process": 0.19329197498154826,
+      "child_user_cpu_seconds": 0.142007,
+      "child_system_cpu_seconds": 0.050310999999999995,
+      "peak_child_resident_memory": 25280,
+      "peak_child_resident_memory_unit": "KiB on Linux",
+      "memory_method": "resource.getrusage(RUSAGE_CHILDREN) in a fresh measurement parent with exactly one child process"
+    },
+    "qualifications": [
+      "One fixed synthetic CLI execution, not a latency distribution or clinical workload estimate.",
+      "No GPU, energy, model or network-egress measurement is claimed."
+    ]
+  },
+  "observations_record": "attempts/attempt-004-observations.json",
+  "retained_attempts": [
+    {
+      "attempt": 1,
+      "record": "attempts/attempt-001-observations.json",
+      "result": "All 34 assembly calls returned results at stable initial source 93038528; initial comparison adapter used clocks rather than clock_assertions and recorded harness-only KeyErrors. Raw outputs retained."
+    },
+    {
+      "attempt": 2,
+      "record": "attempts/attempt-002-comparison.json",
+      "result": "Corrected public-key mapping compared the same saved results; all frozen temporal fields matched without new executions or oracle edits."
+    },
+    {
+      "attempt": 3,
+      "record": "attempts/attempt-003.json",
+      "result": "166 independent tests passed at stable final source 254ea0ab and unchanged frozen oracle."
+    },
+    {
+      "attempt": 4,
+      "record": "attempts/attempt-004-observations.json",
+      "result": "All expected events, clocks, summaries, pairs, consistency states and full implied strict orders matched; zero false blocking, false acceptance or field errors."
+    }
+  ],
+  "limits": [
+    "Declared event and clock links remain caller-declared synthetic annotations, not semantically verified associations.",
+    "Second-resolution windows describe uncertainty about one occurrence, not activity duration or physical simultaneity.",
+    "Named zones remain unresolved; no host timezone database is consulted or validated.",
+    "Feasibility rejects impossible precedence but does not publish selected point times or infer extra pair ordering by pruning alternatives.",
+    "Injected corruption and metamorphic probes are separate from the literal corpus metrics.",
+    "Replay checks consistency; independent labels supply the semantic oracle.",
+    "D3, broader component studies, clinical/model qualification and complete repository/hosted merge gates are not closed by this receipt."
+  ]
+}

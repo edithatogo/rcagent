@@ -1,0 +1,21 @@
+{
+  "schema_version": "faw09-independent-comparison-1.0",
+  "attempt": 2,
+  "observed_utc": "2026-11-16T20:55:39.075123+00:00",
+  "source_observations": "attempt-001-observations.json",
+  "source_hashes": {
+    "tools/faw09_d2_timeline.py": "93038528bdad2a9c9c53f2797c2768d849e5e3ce8db4901eca57e217fa91e8f1",
+    "tools/faw09_d2_clock.py": "b0e24b747cba8a6947cfeab39f22a8103c3251db6aa48cfcbe63269464e84855",
+    "tools/workbench.py": "122152d01584ff72749c8f3ce3f2e6f0efaafdeddd1699b72a55418ed05a9dd2",
+    "tools/faw07_d0_demo.py": "4aeafc70fb9149ce2d1068a27aa948fafd801c43c0786d22292bb130b7f47b5b",
+    "tools/evidence_core.py": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+    "tools/json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+    "uv.lock": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c"
+  },
+  "oracle_sha256": "dd3947ac70d54ccb5436040b1a190e19bba4f5b657a7b4781574eac76be13b92",
+  "new_production_executions": 0,
+  "adapter_correction": "Map internal oracle expected.clocks to public result.clock_assertions; no semantic or input labels changed.",
+  "case_count": 34,
+  "failed_cases": 0,
+  "failures": []
+}
