@@ -15,6 +15,13 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
 ## Phase B: Incremental component demonstrations
 
 - [~] FAW07 / D0: publish one deterministic demonstration command and receipt format over generated synthetic cases; inspect actual output, not status text (CAW02/08, FA06). The [bounded acceptance and ownership contract](./faw07-d0-contract.md) assigns the existing implementation PR #132 and independent verification PR #133; the coordinator alone owns shared contracts, CI and merges. [Reconciliation](./faw07-d0-coordination.json) records exact observed heads and outstanding gates. D0 is not yet accepted.
+
+  The [16 November completion record](./faw07-d0-completion-20261116.md) records
+  the owner's direct instruction to finish D0, open a PR, verify Actions and
+  merge this bounded increment. Both original worker heads are incorporated;
+  the contract repairs and 130 focused tests pass with three-role agent review.
+  Exact-head hosted delivery and actual merge remain pending; historical worker
+  receipts and oracle labels are preserved.
 - [ ] FAW08 / D1: demonstrate bounded dates/times/units/negation and exact source-span extraction, including invalid/ambiguous expressions (CAW02/04/08).
 - [ ] FAW09 / D2: demonstrate timeline/partial-order assembly with event, recording and recipient-availability clocks; preserve disagreement and unknown order (CAW10, CS03).
 - [ ] FAW10 / D3: demonstrate decision-time packets and patient/family concern traceability; hide future outcome/appraisal through every retrieval/verification/rendering path (CAW10/20).

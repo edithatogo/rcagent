@@ -7,6 +7,7 @@ Status: FAW06 is delivered through [PR #131](https://github.com/edithatogo/rcage
 - [Metadata](./metadata.json)
 - [FAW07 / D0 acceptance and exclusive file ownership](./faw07-d0-contract.md)
 - [FAW07 / D0 live reconciliation and handoff record](./faw07-d0-coordination.json)
+- [16 November D0 completion, independent verification and integration record](./faw07-d0-completion-20261116.md)
 - [Evidence ledger](./evidence.jsonl)
 - [Capability demonstration ladder](../../research/frontier-assurance/capability-ladder.md)
 - [Programmatic, multi-model and multimodal triangulation](../../research/frontier-assurance/triangulation.md)

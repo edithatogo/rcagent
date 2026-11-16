@@ -1,0 +1,78 @@
+{
+  "schema_version": "faw07-d0-execution-observation-1.0",
+  "observed_at": "2026-11-16T11:02:07.842711+00:00",
+  "scope": "generated-synthetic-only; source/test evidence, hosted delivery and merge pending",
+  "base_commit": "c6892497aa0b03555d5145242c04965471eccc1d",
+  "input_worker_heads": {
+    "implementation": "4746027c7de6cd4e0ed1518241f847146d79faef",
+    "verification": "4057512f23a2301d6ffe4649e42fb055eeb83937"
+  },
+  "command": [
+    "python",
+    "-m",
+    "tools.workbench",
+    "d0-demo"
+  ],
+  "runtime": {
+    "python": "3.15.2",
+    "implementation": "CPython",
+    "os": "Linux",
+    "machine": "x86_64"
+  },
+  "implementation_files": {
+    "tools/evidence_core.py": "sha256:b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+    "tools/faw07_d0_demo.py": "sha256:4aeafc70fb9149ce2d1068a27aa948fafd801c43c0786d22292bb130b7f47b5b",
+    "tools/json_shapes.py": "sha256:85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+    "tools/workbench.py": "sha256:db570e5a05648f5f44323f00f69445a3ae557dac0d8576783c8b63c12c6baddb"
+  },
+  "dependency_lock_sha256": "sha256:324be4a444b386c39e795b62acc1de9470736d524e07c529dfc92a4cc0679025",
+  "oracle_sha256": "sha256:580a4d6d735ad10911d7c5efcdccdbe6d9e2e32d24c3d6d7b4cbbacde9bf3a6f",
+  "test_files": {
+    "tests/test_faw07_d0_demo.py": "sha256:aa2b8e0f5af68cbf2f0b309793120047108e44d2649c345708a09c87e117800d",
+    "tests/test_faw07_independent_d0_integration.py": "sha256:917d5b2b72559ca88288e3c93d8a61161f148b0b450c6e17c8705a0e90a771ab",
+    "tests/test_faw07_independent_oracle.py": "sha256:59f11ceb795ffc138aa5210937032c30d210a03e3a0eabad18b27e8bcfcb371c"
+  },
+  "two_clean_process_runs": [
+    {
+      "exit_code": 0,
+      "elapsed_seconds": 0.13762031600344926,
+      "stdout_bytes": 6835,
+      "stdout_sha256": "sha256:4a97ca2a6998dece2fdb6ac10ce20fdca81d722d49073771985bb0e09af62c89",
+      "stderr_bytes": 0
+    },
+    {
+      "exit_code": 0,
+      "elapsed_seconds": 0.10615172800316941,
+      "stdout_bytes": 6835,
+      "stdout_sha256": "sha256:4a97ca2a6998dece2fdb6ac10ce20fdca81d722d49073771985bb0e09af62c89",
+      "stderr_bytes": 0
+    }
+  ],
+  "byte_identical": true,
+  "demo_cases": {
+    "accepted": 2,
+    "rejected": 3,
+    "total": 5
+  },
+  "independent_oracle_denominators": {
+    "accepted_claims": 5,
+    "rejected_claims": 14,
+    "collection_checks": 3
+  },
+  "focused_tests": {
+    "command": "python -m pytest -q tests/test_faw07_independent_oracle.py tests/test_faw07_independent_d0_integration.py tests/test_faw07_d0_demo.py",
+    "passed": 130,
+    "failed": 0
+  },
+  "resource_observations": {
+    "wall_time_seconds": [
+      0.13762031600344926,
+      0.10615172800316941
+    ],
+    "artifact_bytes": 6835,
+    "peak_resident_memory": "not_measured",
+    "latency_quantile_claim": false
+  },
+  "historical_records": "unchanged; source hashes bind this later execution without rewriting earlier failures",
+  "clinical_or_model_qualification": false
+}
