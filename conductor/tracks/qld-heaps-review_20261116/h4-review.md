@@ -72,3 +72,7 @@ UTC calendar assertions, bound taxonomy declarations, detached verification
 channels and unchanged export restrictions. D0/AcciMap composition, current
 local instrument conformity, actual identity/authority and clinical performance
 remain unqualified. This closes the H4 implementation review, not H5 or H6.
+
+## Hosted portability follow-up
+
+The first publication exposed a Windows static-type error in the Unix FIFO test. A separate read-only review accepted the minimal capability-guard repair; production bytes and POSIX rejection assertions are unchanged. The failed job, exact old/new test identities and independent checks are retained in [h4-hosted-repair.md](./h4-hosted-repair.md). This does not replace the requirement for a fresh hosted Windows pass.

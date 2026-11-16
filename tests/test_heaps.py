@@ -1409,13 +1409,15 @@ def test_real_cli_rejects_output_through_symlink_parent(tmp_path: Path) -> None:
     assert not list(actual.iterdir())
 
 
-@pytest.mark.skipif(os.name == "nt", reason="Named pipes use a separate Windows API")
 def test_real_cli_rejects_nonregular_source_without_waiting_for_a_writer(tmp_path: Path) -> None:
+    mkfifo = getattr(os, "mkfifo", None)
+    if not callable(mkfifo):
+        pytest.skip("host does not support synthetic FIFOs")
     directory = tmp_path / "input"
     _write_cli_inputs(_inputs(), directory)
     source = directory / "artifacts/sources/record.txt"
     source.unlink()
-    os.mkfifo(source)
+    mkfifo(source, 0o600)
     result = _run_cli(directory, tmp_path / "output")
     assert result.returncode == 2
 

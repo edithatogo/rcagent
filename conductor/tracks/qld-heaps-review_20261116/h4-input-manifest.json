@@ -1,12 +1,12 @@
 {
   "schema_version": "heaps-h4-input-manifest-1.0",
-  "recorded_at": "2026-11-16T21:06:48.643232+00:00",
+  "recorded_at": "2026-11-16T21:12:58.957610+00:00",
   "base_master": "6f9cd9627adc52782a67fa6693f1cdb90c3c84a7",
-  "previous_heaps_head": "8adcff03d7f33baf0110fbb198661b01db0754b0",
+  "previous_heaps_head": "a9df9ba581eeeeae9a777546125225fae2c88b25",
   "scope": "production, independent tests, frozen normative inputs, declared runtime dependencies and usage; excludes this manifest and mutable administrative receipts",
   "count": 45,
   "aggregate_algorithm": "sha256 of UTF-8 path-sorted sha256 + two spaces + repository-relative path + LF",
-  "aggregate_sha256": "fd4481173ebeebfc490ccea24e6b370229b7256a41329ad834ba5cf7665f9e85",
+  "aggregate_sha256": "483c252214c3559211357faa4c05c68af793555e8024d2c4f1827c619aa7a995",
   "files": [
     {
       "path": "conductor/schemas/safety-work.schema.json",
@@ -190,8 +190,8 @@
     },
     {
       "path": "tests/test_heaps.py",
-      "bytes": 59397,
-      "sha256": "5b794df73241730efca79cc3d5863b7fd765969e2955dfa2fd7c1081da36ffcb"
+      "bytes": 59446,
+      "sha256": "03a83edfea642163de6e4f058df8abb68262e16af3586b78bca5f72eff161dfa"
     },
     {
       "path": "tests/test_heaps_fixture_design.py",
@@ -233,5 +233,6 @@
       "bytes": 271085,
       "sha256": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c"
     }
-  ]
+  ],
+  "previous_input_manifest": "https://github.com/edithatogo/rcagent/blob/a9df9ba581eeeeae9a777546125225fae2c88b25/conductor/tracks/qld-heaps-review_20261116/h4-input-manifest.json"
 }

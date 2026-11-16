@@ -5,7 +5,7 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-16T07:34:21+00:00",
-  "updated_at": "2026-11-16T21:07:21.389339+00:00",
+  "updated_at": "2026-11-16T21:12:58.967424+00:00",
   "workstream": "product-interfaces-distribution",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/140",
@@ -101,7 +101,15 @@
     "h4_execution": "./h4-execution.json",
     "h4_replay": "./h4-replay.json",
     "h4_review": "./h4-review.md",
-    "h5_phase_accepted": false
+    "h5_phase_accepted": false,
+    "hosted_first_attempt": {
+      "source_head": "a9df9ba581eeeeae9a777546125225fae2c88b25",
+      "state": "failed_windows_test_typing",
+      "quality_run": 43957189042,
+      "job": 133614737639,
+      "repair_receipt": "./h4-hosted-repair.md"
+    },
+    "current_h4_test_sha256": "03a83edfea642163de6e4f058df8abb68262e16af3586b78bca5f72eff161dfa"
   },
   "decision_gates": [
     "Only genuinely new data use, rights, external action, spend or operational scope beyond existing authority",
