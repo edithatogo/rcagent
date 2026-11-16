@@ -27,3 +27,7 @@ This docs-only planning PR can be reviewed independently of D0 or AcciMap implem
 Planning delivery includes source crosswalk, specification, profile contract, executable-work breakdown, machine-readable dependencies and acceptance design. It includes no implemented HEAPS validator/report generator, executed HEAPS tests, current CHHHS template, local conformity or clinical evidence. Existing rendering/participation remain synthetic-only. Public source snapshots lack fabricated checksums; unavailable sources retain explicit gaps.
 
 Rollback: revert this dedicated planning commit/PR and any separately accepted shared registration together as needed; preserve prior engineering/scientific evidence and unrelated owners' work.
+
+## H1 receiving request
+
+The user authorised the next step after planning. [H1](./h1.md) now supplies refreshed public-source applicability, exact interface hashes and thirteen reproducible controls; four preserve unsafe-admission observations. H1.3 receiving agreement and H1.4 allocation remain pending. Please reconcile the PR #143 renderer repair, missing locked date-time validation, distinct Unicode hash domains and the absent heaps_packet approval scope before accepting the affected consumption contract. The requests and scoped reproducer are in H1; no shared runtime, schema, dependency, registry or CI file was edited here. H2/H3 entry still requires the existing ownership/interface agreement rather than another routine user confirmation.

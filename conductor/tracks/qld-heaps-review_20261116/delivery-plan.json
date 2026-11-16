@@ -1,7 +1,7 @@
 {
   "schema_version": "heaps-planning-1.0",
   "track_id": "qld-heaps-review_20261116",
-  "status": "planning_only",
+  "status": "h1_receiving_pending",
   "issue": 140,
   "hard_dependencies": [],
   "work_packages": [
@@ -15,9 +15,21 @@
         "coordinator ownership allocation"
       ],
       "owned_scope": "dedicated source/profile planning; shared changes by coordinator",
-      "status": "planned",
-      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
-      "acceptance_ref": "./plan.md"
+      "status": "blocked",
+      "implementation_owner": "current HEAPS lane within dedicated track; shared coordinator allocation pending",
+      "acceptance_ref": "./plan.md",
+      "receipt": "./h1.md",
+      "deliverable_states": {
+        "source_applicability_receipt": "complete",
+        "minimal_interface_appraisal": "complete",
+        "minimal_interface_agreement": "pending_receiving_owner",
+        "coordinator_ownership_allocation": "pending",
+        "independent_checkpoint": "complete_with_negative_evidence"
+      },
+      "blocked_on": [
+        "H1.3 receiving interface agreement",
+        "H1.4 coordinator allocation and registration"
+      ]
     },
     {
       "id": "H2",
@@ -204,7 +216,7 @@
     "accimap-workflow_20261116",
     "death-review_20261113"
   ],
-  "implementation_authority": "not_exercised_by_this_planning_request",
+  "implementation_authority": "user_authorised_next_step_h1_within_existing_owned_track",
   "order": [
     "H1",
     [

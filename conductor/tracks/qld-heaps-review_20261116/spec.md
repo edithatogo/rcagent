@@ -46,6 +46,6 @@ Conformity with the current CHHHS instrument requires an authorised blank templa
 
 ## Non-goals and open questions
 
-This planning increment does not implement runtime code, copy official forms, import clinical cases, activate RiskMan, choose a legal protection, alter shared schemas/CI, merge, deploy or release. Optional model studies are outside the initial deterministic implementation.
+The current H1 increment adds source/interface evidence and a synthetic diagnostic. It does not implement the HEAPS runtime, copy official forms, import clinical cases, activate RiskMan, choose a legal protection, alter shared schemas/CI, merge, deploy or release. Optional model studies are outside the initial deterministic implementation.
 
 Open questions: current local instrument and rights; exact local roles and approval route; unresolved Queensland guideline date metadata; accepted upstream capability revisions; optional AcciMap interface; coordinator assignment of shared edits and portfolio number. Resolve only the affected scope. Preserve failed evidence and enable safe independent work.

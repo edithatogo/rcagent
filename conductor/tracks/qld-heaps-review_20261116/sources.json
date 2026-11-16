@@ -237,5 +237,53 @@
       "Local clinical, legal, records, disclosure or deployment approval"
     ],
     "independent_work_permitted": "Public-source planning, original contracts, synthetic fixtures and non-operational quality checks may proceed without implying that the local-source gaps are resolved."
+  },
+  "h1_refresh": {
+    "reviewed_at": "2026-11-16T11:03:02+00:00",
+    "timezone": "Australia/Brisbane",
+    "scope": "public_source_applicability_only",
+    "current_sources_rechecked": [
+      "qld-qh-hsd-032",
+      "qld-qh-hsdgdl-032-2",
+      "heaps-qld-sqep-template-index"
+    ],
+    "disposition": "applicability_classification_retained_with_guideline_metadata_conflict_and_local_instrument_gap",
+    "guide_retrieval_attempts": [
+      {
+        "url": "https://clinicalexcellence.qld.gov.au/sites/default/files/2018-01/clinicalincidentguide.pdf",
+        "outcome": "web_retrieval_reported_http_404"
+      },
+      {
+        "url": "https://clinicalexcellence.qld.gov.au/sites/default/files/docs/resources/clinicalincidentguide.pdf",
+        "outcome": "inaccessible_via_web_retrieval_tool"
+      },
+      {
+        "url": "https://clinicalexcellence.qld.gov.au/sites/default/files/docs/resourses/clinicalincidentguide.pdf",
+        "outcome": "web_retrieval_reported_http_404"
+      }
+    ],
+    "supporting_discovery_sources": [
+      {
+        "url": "https://sqep.csds.qld.edu.au/clinical-incident-management/",
+        "pinpoint": "Guides and other tools: QHEPS links",
+        "observation": "The public page states that QHEPS links require a QH-networked computer.",
+        "role": "access_boundary_evidence_only"
+      },
+      {
+        "url": "https://www.health.qld.gov.au/system-governance/policies-standards/guidelines/patient-safety-net",
+        "pinpoint": "Section 9 Supporting documents; effective 12 October 2026",
+        "observation": "The guideline still cites the second edition, January 2023 clinical incident management guide.",
+        "role": "guide_reference_evidence_only_not_heaps_rules_or_full_guide_retrieval"
+      }
+    ],
+    "historical_sources_not_freshly_retrieved": [
+      "heaps-qld-learning-action-2010",
+      "heaps-metro-north-governance-2021",
+      "heaps-oho-incident-management-2024"
+    ],
+    "source_bytes_captured": false,
+    "official_template_inspected": false,
+    "runtime_rules_activated": false,
+    "receipt": "./h1.md"
   }
 }

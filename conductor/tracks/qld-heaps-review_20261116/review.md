@@ -1,5 +1,7 @@
 # Independent planning review
 
+This is the historical P0 planning review. The subsequent H1 checkpoint is recorded separately in [h1-review.md](./h1-review.md).
+
 Reviewed on 16 November 2026. Two read-only agent reviewers inspected the actual planning files and the relevant existing contracts. They shared conversation context; this is an agent engineering panel, not an independent human clinical review, organisational approval or empirical qualification.
 
 ## Reviewer scopes and disposition

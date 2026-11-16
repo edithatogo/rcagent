@@ -2,7 +2,7 @@
 
 ## Goal and resume cursor
 
-Deliver the six-stage HEAPS profile plan, then implement only when that work is authorised and owned. Current increment is planning. Next cursor: reconcile issue #140 and the coordinator registration proposal, then H1. Read this index, spec, plan, contract, delivery-plan and source-map; load individual sources/components only when required.
+The user authorised H1 after the published plan. Public-source refresh, interface appraisal and independent checkpoint review are recorded in h1.md and h1-review.md. The full local gate is failed with a separately diagnosed environment/history limitation; it is not relabelled as a pass. Next cursor: H1.3 receiving agreement and H1.4 coordinator registration/allocation. H2/H3 are not yet ready. Read the H1 receipt and diagnostic before consuming any existing renderer, timestamp or hash contract.
 
 ## Baseline and owners
 
@@ -12,7 +12,7 @@ AcciMap #139 owns tools/accimap.py, evaluation/accimap/**, tests/test_accimap.py
 
 ## Current owned files and exclusions
 
-Only conductor/tracks/qld-heaps-review_20261116/** belongs to this planning change. Shared index/registry/roadmap, jurisdiction registry, skill navigation, method heuristics, schemas, workbench, CI, manifests, locks, current worker files and historical studies are excluded. The coordinator receives concrete proposals in integration-handoff.md and registration-proposal.json.
+Only conductor/tracks/qld-heaps-review_20261116/** belongs to this planning/H1 increment, including the diagnostic. No runtime namespace is claimed. Shared index/registry/roadmap, jurisdiction registry, skill navigation, method heuristics, schemas, workbench, CI, manifests, locks, current worker files and historical studies are excluded. The coordinator receives concrete proposals in integration-handoff.md and registration-proposal.json.
 
 ## Key invariants
 
@@ -27,7 +27,7 @@ Only conductor/tracks/qld-heaps-review_20261116/** belongs to this planning chan
 
 ## Commands and evidence
 
-For this documentation increment: python -m tools.validate_repository; parse planning JSON/JSONL; validate dependency DAG/source references and local links; git diff --check; inspect path scope; independent agent review. These do not qualify runtime behaviour. Future implementation inherits the existing locked full quality commands from CONSTRAINTS.md. Use planning-evidence.md for actual commands/results, not planned commands as pass claims.
+For H1: locked sync, the dedicated interface diagnostic (exit 2 records four unsafe-admission observations), focused strict code checks and independent checkpoint review. For planning records: python -m tools.validate_repository; parse planning JSON/JSONL; validate dependency DAG/source references and local links; git diff --check; inspect path scope; independent agent review. These do not qualify runtime behaviour. Future implementation inherits the existing locked full quality commands from CONSTRAINTS.md. Use planning-evidence.md for actual commands/results, not planned commands as pass claims.
 
 ## Data and authority
 

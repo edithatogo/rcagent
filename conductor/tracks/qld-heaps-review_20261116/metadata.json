@@ -3,9 +3,9 @@
   "title": "Queensland HEAPS Review Profile and Staged Qualification",
   "type": "feature",
   "evidence_schema": "1.0",
-  "status": "new",
+  "status": "blocked",
   "created_at": "2026-11-16T07:34:21+00:00",
-  "updated_at": "2026-11-16T07:37:57+00:00",
+  "updated_at": "2026-11-16T11:07:47+00:00",
   "workstream": "product-interfaces-distribution",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/140",
@@ -25,7 +25,7 @@
   "owners": {
     "planning_scope": "current HEAPS planning task / issue140",
     "shared_integrator": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
-    "implementation": "unassigned; reconcile capacity and paths before execution"
+    "implementation": "current HEAPS lane: H1 source and interface preparation within dedicated track only; runtime namespaces unassigned"
   },
   "owned_paths": [
     "conductor/tracks/qld-heaps-review_20261116/**"
@@ -53,11 +53,42 @@
     "repository_governance_validation": "passed",
     "agent_review_status": "two_agent_reviews_findings_remediated",
     "hosted_checks": "not_claimed_by_local_planning_receipt",
-    "shared_registration": "pending_coordinator_integration"
+    "shared_registration": "pending_coordinator_integration",
+    "h1": {
+      "review": "independent_checkpoint_complete_no_new_blocking_increment_findings",
+      "receipt": "./h1.md",
+      "diagnostic": "./h1-interface-observation.json",
+      "diagnostic_exit_code": 2,
+      "diagnostic_cases": 13,
+      "unmet_safety_expectations": 4,
+      "runtime_or_clinical_acceptance": false,
+      "review_receipt": "./h1-review.md",
+      "focused_regressions_passed": 215,
+      "full_validation": "failed_53_failed_2182_passed_11_skipped",
+      "branch_coverage_percent": 93.27,
+      "full_gate_not_passed": true
+    }
   },
   "decision_gates": [
     "Only genuinely new data use, rights, external action, spend or operational scope beyond existing authority",
     "Case-specific clinical/legal/cultural/organisational decisions remain with authorised people"
   ],
-  "observed_base": "c6892497aa0b03555d5145242c04965471eccc1d"
+  "observed_base": "c6892497aa0b03555d5145242c04965471eccc1d",
+  "current_increment": {
+    "id": "H1",
+    "status": "bounded_h1_work_complete_receiving_and_allocation_pending",
+    "authority": "user instruction: Proceed with the next implementation step.",
+    "scope": "public_source_applicability_and_minimal_interface_preparation",
+    "runtime_implementation_started": false,
+    "receipt": "./h1.md",
+    "receiving_agreement": "not_observed",
+    "shared_allocation": "not_observed",
+    "h1_diagnostic_cases": 13,
+    "h1_diagnostic_unmet_safety_expectations": 4,
+    "checkpoint_review": "complete_with_negative_evidence",
+    "next_tasks": [
+      "H1.3 receiving interface agreement",
+      "H1.4 shared registration and path allocation"
+    ]
+  }
 }

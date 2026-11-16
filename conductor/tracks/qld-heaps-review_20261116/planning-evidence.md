@@ -1,5 +1,7 @@
 # Planning evidence
 
+Historical P0 receipt at published commit 3bd2061cc8508fed374f98e4281ea53c190385ec. Hashes and completed checks below refer to that planning snapshot, not subsequent H1 edits. Current H1 evidence is recorded in [h1.md](./h1.md) and [h1-review.md](./h1-review.md).
+
 ## Scope and identity
 
 User-authorised deliverable: incorporate the HEAPS recommendations into Conductor and report tracks/order. Base master: c6892497aa0b03555d5145242c04965471eccc1d. Issue: [#140](https://github.com/edithatogo/rcagent/issues/140). Branch: docs/qld-heaps-conductor-20261116. This increment changes only conductor/tracks/qld-heaps-review_20261116/**.

@@ -28,3 +28,7 @@ The exit path is removal/reversion of the HEAPS adapter and mapping while retain
 The generic method matrix's mandatory SAC bundles and indicative timings conflict with its own advisory context. Its London/Yorkshire combination guidance also disagrees across files. The coordinator should make jurisdiction/local process selection primary and keep analytical heuristics source-labelled and advisory. This planning PR does not edit those shared files or the active AcciMap guide.
 
 Current report-view and participation functions deliberately admit generated_synthetic only. Preserve that boundary. A future live pathway is a separately assessed change, not a permissive HEAPS configuration value.
+
+## H1 observed consumption gaps
+
+The [H1 diagnostic](./h1.md) reproduces PR #143's renderer/domain-validation mismatch and an absent date-time checker in the unchanged lock. It also establishes separate Unicode hash domains and the lack of a heaps_packet approval scope. These are concrete interface/qualification inputs, not a reason to fork the core. The coordinator owns generic validator/renderer/dependency repairs and approval-contract changes; H3 freezes explicit bindings and H4 qualifies the actual composition after allocation.

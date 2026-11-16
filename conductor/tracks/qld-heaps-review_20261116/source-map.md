@@ -178,3 +178,7 @@ their evidence and accountable authority are available.
 These gaps do not block original public-source contracts, synthetic fixtures or
 non-operational quality checks. They block only the claims and operational
 behaviour that depend on the missing local sources or authority.
+
+## H1 refresh
+
+On 16 November 2026 the directive, guideline and SQEP HEAPS index were rechecked. Their applicability classification and the guideline metadata conflict are retained. Source-specific current observations, failed guide retrievals and two supporting discovery references are recorded in sources.json h1_refresh and [h1.md](./h1.md). Historical and local improvement sources retain their earlier observations; they are not relabelled as freshly retrieved. The inventory remains inactive and does not admit the unavailable official template.

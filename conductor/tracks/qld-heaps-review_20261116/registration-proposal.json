@@ -7,7 +7,7 @@
   "observed_base": "c6892497aa0b03555d5145242c04965471eccc1d",
   "track_number": null,
   "numbering_rule": "Allocate after reconciling active AcciMap139 and other current tracks; do not reserve 15 implicitly.",
-  "registry_row_template": "| [ ] | [<assigned number> Queensland HEAPS](./tracks/qld-heaps-review_20261116/index.md) | [#140](https://github.com/edithatogo/rcagent/issues/140) | Source-aware HEAPS profile, synthetic packet and staged qualification; implementation pending |",
+  "registry_row_template": "| [!] | [<assigned number> Queensland HEAPS](./tracks/qld-heaps-review_20261116/index.md) | [#140](https://github.com/edithatogo/rcagent/issues/140) | Source-aware HEAPS profile, synthetic packet and staged qualification; H1 source/interface appraisal delivered; agreement/allocation pending |",
   "index_entry": "[Queensland HEAPS review profile](./tracks/qld-heaps-review_20261116/index.md): H1 sources/scope, H2 guidance and H3 contract in parallel, H4 synthetic packet, H5 independent qualification, H6 conditional local alignment.",
   "roadmap_record_template": {
     "number": "COORDINATOR_ASSIGN",
@@ -18,7 +18,7 @@
       "frontier-assurance_20261113",
       "cognitive-autopsy_20261107"
     ],
-    "status": "planned"
+    "status": "blocked"
   },
   "requested_changes": [
     {
@@ -74,5 +74,35 @@
     "append_track_id": "qld-heaps-review_20261116",
     "target": "conductor/roadmap.json workstreams[id=product-interfaces-distribution].tracks"
   },
-  "numbering_application": "After allocation, set the roadmap number and this track metadata.json track_number consistently; preserve null/unassigned proposal status until then."
+  "numbering_application": "After allocation, set the roadmap number and this track metadata.json track_number consistently; preserve null/unassigned proposal status until then.",
+  "h1_shared_interface_intake": [
+    {
+      "id": "H1-IF1",
+      "existing_work": "PR143 R01 shared renderer follow-up",
+      "paths": [
+        "tools/interface_actions.py",
+        "tests/test_interface_actions.py"
+      ],
+      "requirement": "Reject unknown typed source references, duplicate identifiers and invalid canonical transitions before rendering; consume the canonical domain gate and qualify the composed boundary.",
+      "status": "receiving_and_owner_assignment_pending"
+    },
+    {
+      "id": "H1-IF2",
+      "paths": [
+        "tools/evidence_core.py",
+        "pyproject.toml",
+        "uv.lock"
+      ],
+      "requirement": "Reconcile missing date-time enforcement in the unchanged lock. Verify actual checker capability and rejection of invalid source/record times; choose the shared fix without weakening validation or duplicating a parser.",
+      "status": "receiving_and_owner_assignment_pending"
+    },
+    {
+      "id": "H1-IF3",
+      "paths": [
+        "tools/interface_actions.py"
+      ],
+      "requirement": "Agree whole-packet approval representation and exact hash domains. Existing scopes exclude heaps_packet; communication scope is not approval of all substantive findings/actions. Do not silently extend the public interface.",
+      "status": "receiving_interface_agreement_pending"
+    }
+  ]
 }

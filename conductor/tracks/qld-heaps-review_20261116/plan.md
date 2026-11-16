@@ -1,6 +1,6 @@
 # HEAPS implementation plan
 
-When implementation is authorised, continue automatically through ready, owned tasks, agent review and bounded rework; do not ask for routine approval. Record each recommendation and its evidence. The safe default is a synthetic preparation packet with unresolved authority and unsupported claims visible. This turn delivers planning only; no implementation task below is completed by publication of this plan.
+When implementation is authorised, continue automatically through ready, owned tasks, agent review and bounded rework; do not ask for routine approval. Record each recommendation and its evidence. The safe default is a synthetic preparation packet with unresolved authority and unsupported claims visible. The initial planning increment is published in PR #142. The user has now authorised the next implementation step, H1. Source/interface work stays inside this dedicated track; shared allocation and runtime ownership remain separate.
 
 ## P0 — Planning increment
 
@@ -12,11 +12,13 @@ When implementation is authorised, continue automatically through ready, owned t
 
 ## H1 — Source applicability and review scope
 
-- [ ] H1.1: refresh the linked Queensland directive/guideline and HEAPS index; retain exact authority, inspected content, access limitations and the guideline metadata conflict.
-- [ ] H1.2: distinguish statewide obligations, advisory guidance, historical context and local requirements; refer to the existing jurisdiction registry rather than create competing active rules.
-- [ ] H1.3: agree the minimal profile/interface boundaries: review process versus tools, record/hash bindings, participation, packet approval and separate status dimensions.
-- [ ] H1.4: coordinator allocates shared-file changes and registry entry; reconcile current AcciMap/D0 owners and WIP before claiming implementation paths.
-- [ ] H1.5: checkpoint: independently review the source/authority crosswalk, fit-gap, rights states and bounded contract; publish H1 receipt. Missing local instrument blocks its conformity claim only.
+- [x] H1.1: refresh the linked Queensland directive/guideline and HEAPS index; retain exact authority, inspected content, access limitations and the guideline metadata conflict.
+- [x] H1.2: distinguish statewide obligations, advisory guidance, historical context and local requirements; refer to the existing jurisdiction registry rather than create competing active rules.
+- [!] H1.3: agree the minimal profile/interface boundaries: review process versus tools, record/hash bindings, participation, packet approval and separate status dimensions.
+- [!] H1.4: coordinator allocates shared-file changes and registry entry; reconcile current AcciMap/D0 owners and WIP before claiming implementation paths.
+- [x] H1.5: checkpoint: independently review the source/authority crosswalk, fit-gap, rights states and bounded contract; publish H1 receipt. Missing local instrument blocks its conformity claim only.
+
+H1 evidence: [source/interface receipt](./h1.md), [reproducible diagnostic](./h1_interface_probe.py) and [observed results](./h1-interface-observation.json). H1.3 technical appraisal is complete; receiving agreement and H1.4 allocation are not observed. Thirteen diagnostic controls include four preserved unsafe-admission observations; these do not discharge HP01–HP25. H1.5 independent review and bounded receipt are complete; see [checkpoint evidence](./h1-review.md). The full local gate has a failed result, preserved separately from the focused checks; no H1 phase acceptance is claimed.
 
 ## H2 — Portable workflow and original report mapping
 
@@ -81,4 +83,4 @@ H6.1 source preparation can run after H1, in parallel with engineering, using an
 
 ## Rollback and resume
 
-Revert only the affected profile/adapter change through a normal commit; preserve original cases, sources and failed receipts. A material source or template change invalidates the affected mapping/approval, not unrelated evidence preparation. A failed optional component falls back to the last qualified deterministic packet. The next cursor after this planning delivery is coordinator registration/ownership reconciliation followed by H1; no new implementation lane is launched by this document.
+Revert only the affected profile/adapter change through a normal commit; preserve original cases, sources and failed receipts. A material source or template change invalidates the affected mapping/approval, not unrelated evidence preparation. A failed optional component falls back to the last qualified deterministic packet. The current cursor is H1.3 receiving agreement and H1.4 coordinator registration/allocation after the H1 checkpoint. H2/H3 remain unstarted; no new runtime implementation lane is launched by this increment.
