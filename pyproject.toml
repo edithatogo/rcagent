@@ -16,8 +16,8 @@ validate = [
   "PyYAML==6.0.3",
 ]
 lint = [
-  "ruff==0.17.4",
-  "ty==0.0.75",
+  "ruff==0.17.3",
+  "ty==0.0.99",
   "basedpyright==1.40.2",
   "types-jsonschema==4.26.0.20261006",
   "types-pyyaml==6.0.12.20261111",
