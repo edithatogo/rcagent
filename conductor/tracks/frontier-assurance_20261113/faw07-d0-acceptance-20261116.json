@@ -1,0 +1,260 @@
+{
+  "schema_version": "faw07-d0-acceptance-1.0",
+  "observed_at": "2026-11-16T21:31:16.000+10:00",
+  "pull_request": 144,
+  "pull_request_url": "https://github.com/edithatogo/rcagent/pull/144",
+  "source_commit": "29d099b6e8d8507250c360481adba0fef63f91bf",
+  "source_tree": "4a8a2849255b317ba97085608557e7bd8841b99a",
+  "base_commit": "c6892497aa0b03555d5145242c04965471eccc1d",
+  "merge_commit": "d3c10d607470c9a50c5410030b80aeab2cfa5430",
+  "merge_tree": "4a8a2849255b317ba97085608557e7bd8841b99a",
+  "merged_at": "2026-11-16T11:26:09Z",
+  "merge_method": "merge",
+  "expected_head_guard": "29d099b6e8d8507250c360481adba0fef63f91bf",
+  "merge_result": {
+    "sha": "d3c10d607470c9a50c5410030b80aeab2cfa5430",
+    "merged": true,
+    "message": "Pull Request successfully merged"
+  },
+  "quality": {
+    "id": 43854810949,
+    "name": "Quality",
+    "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810949",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "29d099b6e8d8507250c360481adba0fef63f91bf",
+    "event": "pull_request",
+    "created_at": "2026-11-16T11:06:39Z",
+    "updated_at": "2026-11-16T11:24:46Z",
+    "jobs": [
+      {
+        "id": 133256210764,
+        "name": "Prose lint (Vale)",
+        "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810949/job/133256210764",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-16T11:07:39Z",
+        "completed_at": "2026-11-16T11:07:45Z"
+      },
+      {
+        "id": 133256211064,
+        "name": "validate (macos-latest)",
+        "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810949/job/133256211064",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-16T11:08:43Z",
+        "completed_at": "2026-11-16T11:12:29Z"
+      },
+      {
+        "id": 133256211169,
+        "name": "Release boundary mutation gate",
+        "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810949/job/133256211169",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-16T11:08:13Z",
+        "completed_at": "2026-11-16T11:08:33Z"
+      },
+      {
+        "id": 133256211253,
+        "name": "Python validation (3.15.2)",
+        "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810949/job/133256211253",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-16T11:09:47Z",
+        "completed_at": "2026-11-16T11:12:06Z"
+      },
+      {
+        "id": 133256211283,
+        "name": "validate (windows-latest)",
+        "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810949/job/133256211283",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-16T11:06:56Z",
+        "completed_at": "2026-11-16T11:09:38Z"
+      },
+      {
+        "id": 133256211291,
+        "name": "Synthetic CPU and memory profile",
+        "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810949/job/133256211291",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-16T11:12:08Z",
+        "completed_at": "2026-11-16T11:12:43Z"
+      },
+      {
+        "id": 133256211326,
+        "name": "Python validation (3.11)",
+        "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810949/job/133256211326",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-16T11:12:30Z",
+        "completed_at": "2026-11-16T11:14:48Z"
+      },
+      {
+        "id": 133260420305,
+        "name": "Complete matrix branch coverage",
+        "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810949/job/133260420305",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-16T11:19:50Z",
+        "completed_at": "2026-11-16T11:20:04Z"
+      },
+      {
+        "id": 133263087998,
+        "name": "validate (ubuntu-latest)",
+        "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810949/job/133263087998",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-16T11:24:44Z",
+        "completed_at": "2026-11-16T11:24:46Z"
+      }
+    ]
+  },
+  "dependency_review": {
+    "id": 43854810885,
+    "name": "Dependency Review",
+    "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810885",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "29d099b6e8d8507250c360481adba0fef63f91bf",
+    "event": "pull_request",
+    "created_at": "2026-11-16T11:06:39Z",
+    "updated_at": "2026-11-16T11:06:55Z"
+  },
+  "privacy_secrets": {
+    "id": 43854810860,
+    "name": "Privacy and secrets",
+    "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854810860",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "29d099b6e8d8507250c360481adba0fef63f91bf",
+    "event": "pull_request",
+    "created_at": "2026-11-16T11:06:39Z",
+    "updated_at": "2026-11-16T11:07:16Z"
+  },
+  "pr_conformance": "not_triggered_by_unchanged_existing_path_filters",
+  "local_conformance_receipt": "./faw07-d0-conformance-20261116.json",
+  "master_conformance": {
+    "id": 43857726512,
+    "name": "Agent Skill Conformance",
+    "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43857726512",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "d3c10d607470c9a50c5410030b80aeab2cfa5430",
+    "event": "push",
+    "created_at": "2026-11-16T11:26:12Z",
+    "updated_at": "2026-11-16T11:30:24Z"
+  },
+  "master_workflows_at_observation": [
+    {
+      "id": 43857727156,
+      "name": "Offline AI security",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43857727156",
+      "status": "queued",
+      "conclusion": null,
+      "head_sha": "d3c10d607470c9a50c5410030b80aeab2cfa5430",
+      "event": "push",
+      "created_at": "2026-11-16T11:26:12Z",
+      "updated_at": "2026-11-16T11:26:12Z"
+    },
+    {
+      "id": 43857726419,
+      "name": "Quality",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43857726419",
+      "status": "queued",
+      "conclusion": null,
+      "head_sha": "d3c10d607470c9a50c5410030b80aeab2cfa5430",
+      "event": "push",
+      "created_at": "2026-11-16T11:26:12Z",
+      "updated_at": "2026-11-16T11:27:29Z"
+    },
+    {
+      "id": 43857726427,
+      "name": "Privacy and secrets",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43857726427",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "d3c10d607470c9a50c5410030b80aeab2cfa5430",
+      "event": "push",
+      "created_at": "2026-11-16T11:26:12Z",
+      "updated_at": "2026-11-16T11:29:19Z"
+    },
+    {
+      "id": 43857726512,
+      "name": "Agent Skill Conformance",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43857726512",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "d3c10d607470c9a50c5410030b80aeab2cfa5430",
+      "event": "push",
+      "created_at": "2026-11-16T11:26:12Z",
+      "updated_at": "2026-11-16T11:30:24Z"
+    }
+  ],
+  "offline_security_source_runs": [
+    {
+      "id": 43854811494,
+      "name": "Offline AI security",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854811494",
+      "status": "queued",
+      "conclusion": null,
+      "head_sha": "29d099b6e8d8507250c360481adba0fef63f91bf",
+      "event": "pull_request",
+      "created_at": "2026-11-16T11:06:39Z",
+      "updated_at": "2026-11-16T11:06:39Z"
+    },
+    {
+      "id": 43854797741,
+      "name": "Offline AI security",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43854797741",
+      "status": "queued",
+      "conclusion": null,
+      "head_sha": "29d099b6e8d8507250c360481adba0fef63f91bf",
+      "event": "push",
+      "created_at": "2026-11-16T11:06:33Z",
+      "updated_at": "2026-11-16T11:06:33Z"
+    }
+  ],
+  "worker_prs": [
+    {
+      "number": 132,
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-16T11:26:11Z",
+      "merge_commit_sha": "d3c10d607470c9a50c5410030b80aeab2cfa5430",
+      "head_sha": "4746027c7de6cd4e0ed1518241f847146d79faef",
+      "branch": "feat/faw07-d0-demo-receipt-20261114",
+      "disposition": "Automatically marked merged after PR #144 integration; original branch preserved",
+      "integration_reference_added": true
+    },
+    {
+      "number": 133,
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-16T11:26:13Z",
+      "merge_commit_sha": "29d099b6e8d8507250c360481adba0fef63f91bf",
+      "head_sha": "4057512f23a2301d6ffe4649e42fb055eeb83937",
+      "branch": "test/faw07-d0-independent-verification-20261114",
+      "disposition": "Automatically marked merged after PR #144 integration; original branch preserved",
+      "integration_reference_added": true
+    }
+  ],
+  "ruleset": {
+    "id": 21834601,
+    "enforcement": "active",
+    "strict_base": true,
+    "bypass_used": false,
+    "required_contexts": [
+      "dependency-review",
+      "validate (ubuntu-latest)",
+      "validate (macos-latest)",
+      "validate (windows-latest)"
+    ]
+  },
+  "execution_receipt": "../../../tests/fixtures/faw07_independent/verification-execution-20261116.json",
+  "premerge_source_receipt": "./faw07-d0-completion-20261116.md",
+  "scope": "generated_synthetic_identity_and_utf8_byte_span_inspection_only",
+  "faw07_complete": true,
+  "d1_started": false,
+  "clinical_or_model_qualification": false
+}

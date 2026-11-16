@@ -3,7 +3,7 @@
   "observed_at": "2026-11-14T16:25:06.420337+10:00",
   "contract": "./faw07-d0-contract.md",
   "contract_version": "faw07-d0-contract-1.0",
-  "status": "completion_source_reviewed_hosted_merge_pending",
+  "status": "d0_accepted_after_protected_merge_and_master_conformance",
   "issue": "https://github.com/edithatogo/rcagent/issues/125",
   "coordination_comment": "https://github.com/edithatogo/rcagent/issues/125#issuecomment-6872993577",
   "authority": {
@@ -257,20 +257,7 @@
       "post_merge_conformance": "required before final delivery claim"
     }
   ],
-  "open_findings": [
-    {
-      "id": "D0-DELIVERY-01",
-      "owner": "explicitly_authorised_D0_completion_owner",
-      "finding": "Exact integration-head hosted Quality, dependency/privacy checks and protected merge pending.",
-      "gate": "A3/A4"
-    },
-    {
-      "id": "D0-DELIVERY-02",
-      "owner": "explicitly_authorised_D0_completion_owner",
-      "finding": "Record actual merge, master conformance and acceptance; only then mark FAW07 complete.",
-      "gate": "A5"
-    }
-  ],
+  "open_findings": [],
   "required_contexts": [
     "dependency-review",
     "validate (ubuntu-latest)",
@@ -303,21 +290,21 @@
     "requalification": false
   },
   "next_actions": [
-    "Publish the combined completion candidate with original worker heads preserved in ancestry.",
-    "Verify every required final-head Actions gate and current-base condition; merge normally with an expected-head guard.",
-    "Inspect automatic master conformance, record the actual merge and final acceptance, and reconcile superseded worker PRs."
+    "D0 accepted; retain its source, worker, test and hosted-delivery receipts.",
+    "FAW08 / D1 remains planned and was not started under this D0 assignment."
   ],
   "acceptance": {
     "A0": "explicit_owner_completion_authority_recorded_prior_acknowledgement_gap_preserved",
     "A1": "source_verified_on_recorded_file_hashes",
     "A2": "independent_oracle_and_subprocess_verification_passed_on_recorded_hashes",
-    "A3": "static_gates_passed_full_local_socket_tests_blocked_hosted_suite_pending",
-    "A4": "pending_exact_integration_head_checks_and_protected_merge",
-    "A5": "pending_actual_merge_and_master_conformance",
-    "faw07_complete": false,
-    "clinical_or_model_qualification": false
+    "A3": "exact_source_head_hosted_strict_engineering_passed_local_failure_preserved",
+    "A4": "all_nine_quality_jobs_dependency_privacy_passed_protected_merge_observed",
+    "A5": "actual_merge_master_conformance_and_worker_reconciliation_recorded",
+    "faw07_complete": true,
+    "clinical_or_model_qualification": false,
+    "receipt": "./faw07-d0-acceptance-20261116.md"
   },
-  "refreshed_at": "2026-11-16T11:04:52.995743+00:00",
+  "refreshed_at": "2026-11-16T21:31:16.000+10:00",
   "completion_20261116": {
     "authority": "Dylan: Implement D0, open a PR, check actions pass, then merge.",
     "scope": "D0 completion and protected integration only; original worker branches and other owners preserved",
@@ -351,9 +338,42 @@
       "limitation": "AF_UNIX creation denied; existing socket/session tests fail; required hosted suite unchanged"
     },
     "official_conformance": "passed_pinned_validator_and_live_drift_inspection",
-    "hosted_delivery": "pending",
-    "merge": "not_performed",
-    "source_recommendation": "three_agent_reviews_accept_A1_A2_for_bound_file_bytes"
+    "hosted_delivery": "passed_exact_source_head_all_nine_quality_dependency_privacy",
+    "merge": {
+      "pull_request": 144,
+      "source_commit": "29d099b6e8d8507250c360481adba0fef63f91bf",
+      "commit": "d3c10d607470c9a50c5410030b80aeab2cfa5430",
+      "tree": "4a8a2849255b317ba97085608557e7bd8841b99a",
+      "merged_at": "2026-11-16T11:26:09Z"
+    },
+    "source_recommendation": "three_agent_reviews_accept_A1_A2_for_bound_file_bytes",
+    "acceptance_receipt": "./faw07-d0-acceptance-20261116.md",
+    "hosted_observation": "./faw07-d0-acceptance-20261116.json",
+    "master_conformance_run": 43857726512,
+    "worker_disposition": [
+      {
+        "number": 132,
+        "state": "closed",
+        "merged": true,
+        "merged_at": "2026-11-16T11:26:11Z",
+        "merge_commit_sha": "d3c10d607470c9a50c5410030b80aeab2cfa5430",
+        "head_sha": "4746027c7de6cd4e0ed1518241f847146d79faef",
+        "branch": "feat/faw07-d0-demo-receipt-20261114",
+        "disposition": "Automatically marked merged after PR #144 integration; original branch preserved",
+        "integration_reference_added": true
+      },
+      {
+        "number": 133,
+        "state": "closed",
+        "merged": true,
+        "merged_at": "2026-11-16T11:26:13Z",
+        "merge_commit_sha": "29d099b6e8d8507250c360481adba0fef63f91bf",
+        "head_sha": "4057512f23a2301d6ffe4649e42fb055eeb83937",
+        "branch": "test/faw07-d0-independent-verification-20261114",
+        "disposition": "Automatically marked merged after PR #144 integration; original branch preserved",
+        "integration_reference_added": true
+      }
+    ]
   },
   "prior_open_findings_20261114": [
     {
@@ -397,6 +417,24 @@
       "owner": "coordinator",
       "finding": "No direct cross-chat inbox is accessible; issue/PR comments are published but worker acknowledgement is not yet observed.",
       "gate": "A0"
+    }
+  ],
+  "resolved_delivery_findings_20261116": [
+    {
+      "id": "D0-DELIVERY-01",
+      "owner": "explicitly_authorised_D0_completion_owner",
+      "finding": "Exact integration-head hosted Quality, dependency/privacy checks and protected merge pending.",
+      "gate": "A3/A4",
+      "resolved_at": "2026-11-16T21:31:16.000+10:00",
+      "resolution": "./faw07-d0-acceptance-20261116.md"
+    },
+    {
+      "id": "D0-DELIVERY-02",
+      "owner": "explicitly_authorised_D0_completion_owner",
+      "finding": "Record actual merge, master conformance and acceptance; only then mark FAW07 complete.",
+      "gate": "A5",
+      "resolved_at": "2026-11-16T21:31:16.000+10:00",
+      "resolution": "./faw07-d0-acceptance-20261116.md"
     }
   ]
 }
