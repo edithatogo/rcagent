@@ -1,0 +1,291 @@
+{
+  "schema_version": "1.1",
+  "case_id": "case-accimap-synthetic-01",
+  "version": 1,
+  "state": "investigation",
+  "jurisdiction": "synthetic-au",
+  "privacy_mode": "fully_local",
+  "authority": "generated synthetic AcciMap fixture",
+  "system_of_record": {
+    "kind": "generated-synthetic",
+    "external_case_id": "synthetic-accimap-01",
+    "reconciled_at": "2026-11-16T00:00:00Z",
+    "external_version": "1"
+  },
+  "roles": [
+    {
+      "role_id": "role-facilitator",
+      "role_type": "synthetic facilitator",
+      "authority": "fixture only"
+    },
+    {
+      "role_id": "role-reviewer",
+      "role_type": "synthetic reviewer",
+      "authority": "fixture only"
+    },
+    {
+      "role_id": "role-owner",
+      "role_type": "synthetic action owner",
+      "authority": "fixture only"
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "source-policy",
+      "source_type": "record",
+      "title": "Generated synthetic policy",
+      "fingerprint": "sha256:40ddbc4d746172cab3ea3b5c46ad4a777470fa723f62e12706c4022a19e97b30",
+      "acquired_at": "2026-11-16T00:00:00Z",
+      "authority": "generated synthetic training fixture",
+      "screening_state": "included"
+    },
+    {
+      "source_id": "source-queue",
+      "source_type": "record",
+      "title": "Generated synthetic queue",
+      "fingerprint": "sha256:908c3f419994ab39e197a193d2aab757ab77ccdefa86bea293e34f18d0bd83d9",
+      "acquired_at": "2026-11-16T00:00:00Z",
+      "authority": "generated synthetic training fixture",
+      "screening_state": "included"
+    },
+    {
+      "source_id": "source-availability",
+      "source_type": "account",
+      "title": "Generated synthetic availability",
+      "fingerprint": "sha256:f643189ecb1b0388782ce0e79d96b044b745d8425c45615f980e6f5a2d4704bb",
+      "acquired_at": "2026-11-16T00:00:00Z",
+      "authority": "generated synthetic training fixture",
+      "screening_state": "included"
+    },
+    {
+      "source_id": "source-conflict",
+      "source_type": "account",
+      "title": "Generated synthetic conflict",
+      "fingerprint": "sha256:522bd9b3f5355fcfe9ea3038ced03978d2bd781d79467dbdeab982f8f73542f6",
+      "acquired_at": "2026-11-16T00:00:00Z",
+      "authority": "generated synthetic training fixture",
+      "screening_state": "included"
+    },
+    {
+      "source_id": "source-outcome",
+      "source_type": "record",
+      "title": "Generated synthetic outcome",
+      "fingerprint": "sha256:ec2eccb6321a7658b7b58917398570e82d6ddf5cadfcc134dcee88fe14d5003b",
+      "acquired_at": "2026-11-16T00:00:00Z",
+      "authority": "generated synthetic training fixture",
+      "screening_state": "included"
+    },
+    {
+      "source_id": "source-context",
+      "source_type": "record",
+      "title": "Generated synthetic context",
+      "fingerprint": "sha256:2e56f2eb74038a4286d8ed162b9dc58dbc7caf9fd70929f80c51cf9c9e4c17c5",
+      "acquired_at": "2026-11-16T00:00:00Z",
+      "authority": "generated synthetic training fixture",
+      "screening_state": "included"
+    }
+  ],
+  "artefacts": [],
+  "evidence": [
+    {
+      "evidence_id": "evidence-policy",
+      "source_id": "source-policy",
+      "content": "The simulated escalation policy omitted a backup owner and fallback route.",
+      "fingerprint": "sha256:40ddbc4d746172cab3ea3b5c46ad4a777470fa723f62e12706c4022a19e97b30",
+      "custody_state": "verified",
+      "redacted": false
+    },
+    {
+      "evidence_id": "evidence-queue",
+      "source_id": "source-queue",
+      "content": "Two synthetic notifications reached the same queue.",
+      "fingerprint": "sha256:908c3f419994ab39e197a193d2aab757ab77ccdefa86bea293e34f18d0bd83d9",
+      "custody_state": "verified",
+      "redacted": false
+    },
+    {
+      "evidence_id": "evidence-availability",
+      "source_id": "source-availability",
+      "content": "A simulated account described the queue as unavailable.",
+      "fingerprint": "sha256:f643189ecb1b0388782ce0e79d96b044b745d8425c45615f980e6f5a2d4704bb",
+      "custody_state": "verified",
+      "redacted": false
+    },
+    {
+      "evidence_id": "evidence-conflict",
+      "source_id": "source-conflict",
+      "content": "A second simulated account described the queue as available.",
+      "fingerprint": "sha256:522bd9b3f5355fcfe9ea3038ced03978d2bd781d79467dbdeab982f8f73542f6",
+      "custody_state": "verified",
+      "redacted": false
+    },
+    {
+      "evidence_id": "evidence-outcome",
+      "source_id": "source-outcome",
+      "content": "The drill recorded a delayed simulated alert; no real patient data.",
+      "fingerprint": "sha256:ec2eccb6321a7658b7b58917398570e82d6ddf5cadfcc134dcee88fe14d5003b",
+      "custody_state": "verified",
+      "redacted": false
+    },
+    {
+      "evidence_id": "evidence-context",
+      "source_id": "source-context",
+      "content": "A simulated timing reference was unavailable.",
+      "fingerprint": "sha256:2e56f2eb74038a4286d8ed162b9dc58dbc7caf9fd70929f80c51cf9c9e4c17c5",
+      "custody_state": "verified",
+      "redacted": false
+    }
+  ],
+  "statements": [
+    {
+      "statement_id": "statement-policy",
+      "kind": "inference",
+      "text": "The simulated escalation policy omitted a backup owner and fallback route.",
+      "provenance": {
+        "source_id": "source-policy",
+        "author_role_id": "role-facilitator",
+        "recorded_at": "2026-11-16T00:10:00Z",
+        "review_state": "reviewed",
+        "reviewer_role_id": "role-reviewer",
+        "reviewed_at": "2026-11-16T00:15:00Z"
+      },
+      "uncertainty": "Illustrative inference in a generated case."
+    },
+    {
+      "statement_id": "statement-queue",
+      "kind": "observed_fact",
+      "text": "Two synthetic notifications reached one queue in [Ward X].",
+      "provenance": {
+        "source_id": "source-queue",
+        "author_role_id": "role-facilitator",
+        "recorded_at": "2026-11-16T00:10:00Z",
+        "review_state": "reviewed",
+        "reviewer_role_id": "role-reviewer",
+        "reviewed_at": "2026-11-16T00:15:00Z"
+      }
+    },
+    {
+      "statement_id": "statement-availability",
+      "kind": "hypothesis",
+      "text": "Queue availability may have delayed the simulated alert.",
+      "provenance": {
+        "source_id": "source-availability",
+        "author_role_id": "role-facilitator",
+        "recorded_at": "2026-11-16T00:10:00Z",
+        "review_state": "reviewed",
+        "reviewer_role_id": "role-reviewer",
+        "reviewed_at": "2026-11-16T00:15:00Z"
+      },
+      "uncertainty": "Simulation accounts conflict; timing is unresolved."
+    },
+    {
+      "statement_id": "statement-outcome",
+      "kind": "observed_fact",
+      "text": "A simulated alert was delayed in [Case ID].",
+      "provenance": {
+        "source_id": "source-outcome",
+        "author_role_id": "role-facilitator",
+        "recorded_at": "2026-11-16T00:10:00Z",
+        "review_state": "reviewed",
+        "reviewer_role_id": "role-reviewer",
+        "reviewed_at": "2026-11-16T00:15:00Z"
+      }
+    },
+    {
+      "statement_id": "statement-context",
+      "kind": "reported_account",
+      "text": "A simulated timing reference was unavailable.",
+      "provenance": {
+        "source_id": "source-context",
+        "author_role_id": "role-facilitator",
+        "recorded_at": "2026-11-16T00:10:00Z",
+        "review_state": "reviewed",
+        "reviewer_role_id": "role-reviewer",
+        "reviewed_at": "2026-11-16T00:15:00Z"
+      },
+      "uncertainty": "Its relevance to the outcome remains unknown."
+    },
+    {
+      "statement_id": "statement-recommendation",
+      "kind": "recommendation",
+      "text": "Test a fallback route for simulated alerts.",
+      "provenance": {
+        "source_id": "source-policy",
+        "author_role_id": "role-facilitator",
+        "recorded_at": "2026-11-16T00:10:00Z",
+        "review_state": "reviewed",
+        "reviewer_role_id": "role-reviewer",
+        "reviewed_at": "2026-11-16T00:15:00Z"
+      },
+      "uncertainty": "Effectiveness has not been evaluated."
+    }
+  ],
+  "relationships": [
+    {
+      "from_id": "evidence-policy",
+      "relation": "supports",
+      "to_id": "statement-policy",
+      "rationale": "Synthetic evidential reference, not a causal arrow."
+    },
+    {
+      "from_id": "evidence-conflict",
+      "relation": "contradicts",
+      "to_id": "statement-availability",
+      "rationale": "Two generated accounts disagree."
+    }
+  ],
+  "factors": [
+    {
+      "factor_id": "factor-policy",
+      "kind": "system_condition",
+      "statement_id": "statement-policy",
+      "status": "accepted"
+    },
+    {
+      "factor_id": "factor-queue",
+      "kind": "contributory",
+      "statement_id": "statement-queue",
+      "status": "candidate"
+    },
+    {
+      "factor_id": "factor-availability",
+      "kind": "contributory",
+      "statement_id": "statement-availability",
+      "status": "candidate"
+    },
+    {
+      "factor_id": "factor-context",
+      "kind": "contributory",
+      "statement_id": "statement-context",
+      "status": "candidate"
+    }
+  ],
+  "events": [
+    {
+      "event_id": "event-start",
+      "event_type": "investigation_started",
+      "occurred_at": "2026-11-16T00:20:00Z",
+      "actor_role_id": "role-facilitator",
+      "from_state": "review",
+      "to_state": "investigation",
+      "authority": "generated exercise only",
+      "evidence_ids": [
+        "evidence-outcome"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "action-fallback",
+      "recommendation_id": "statement-recommendation",
+      "owner_role_id": "role-owner",
+      "status": "proposed",
+      "effectiveness_state": "not_due",
+      "implementation_evidence_ids": [],
+      "residual_risk": "Effectiveness is untested."
+    }
+  ],
+  "reviews": [],
+  "outcomes": [],
+  "referrals": []
+}

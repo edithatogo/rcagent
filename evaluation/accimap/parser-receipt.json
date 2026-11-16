@@ -1,0 +1,831 @@
+{
+  "scope": "Actual Mermaid parse and parsed graph inspection only; SVG/browser rendering and layout unverified",
+  "node": "v24.22.1",
+  "mermaid": "12.3.0",
+  "jsdom": "31.0.1",
+  "source_sha256": "a5be10ced6b4148d1d1221f7c834113ff9621ddf0a2f18285bb306018068d127",
+  "input_sha256": {
+    "tests/fixtures/accimap/record.json": "d6a5073b4d8550402d192a683736a8d3d2e2994e8c1e48d7c5c48ff0835f8141",
+    "tests/fixtures/accimap/graph.json": "bc15745d7b3d0dfb2553cb35fae1945539037edede1945a722afcbbacf470966",
+    "evaluation/accimap/accimap.schema.json": "300e3137d2f92a34b0502f40af16817c76ee6eecc6c1e51983136d6b7dedf511"
+  },
+  "harness_sha256": "325c65f025d7ff4e3a76ca9a1391abe58deb2d6a3d158def83342ec82586f89f",
+  "generator_sha256": "13383813add1d84c0531a8db434029f92ad495161e82ac92b280eec0bbb67a2d",
+  "browser_harness_sha256": "04635b5900d7e1038116ed69a98d504b755ea6ec14212ee3e2cc302306864ee4",
+  "package_lock_sha256": "8aa6d58367de8eb23f4581e729d85831f017d8141f09d4b92110415a614b0c7f",
+  "mermaid_bundle_sha256": "7825d4f50b7725798246bddd67ea229d12e0bd1a0e9edc67ba0c9ca9ff2e4e2b",
+  "browser_blocker": "Chromium 156.0.8078.79 process_singleton_posix.cc:297 socket() EPERM; direct AF_UNIX probe also EPERM; escalation unavailable by policy",
+  "source_unchanged": true,
+  "failures": 0,
+  "evidence_kind": "one-off independent agent parser probe; not a browser render or integrated test",
+  "full_probe_receipt_sha256": "369dbb302bd1d09d23389e5cb453f4d43f45a0add0d79e73af56aee61f514e30",
+  "generated_cases": [
+    {
+      "name": "fixture",
+      "payload": null,
+      "record_sha256": "d6a5073b4d8550402d192a683736a8d3d2e2994e8c1e48d7c5c48ff0835f8141",
+      "graph_sha256": "bc15745d7b3d0dfb2553cb35fae1945539037edede1945a722afcbbacf470966",
+      "mermaid_sha256": "60ef54cbdadb8ba1d8864cb9753e7cec00afc1b8648f5ff6ea679f56c6da7e87",
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "name": "hostile-syntax",
+      "payload": "\"]\nINJECTED_NODE[\"Injected node\"]\nINJECTED_NODE --> n0\nclick INJECTED_NODE \"javascript:window.__accimapInjected=1\"\n%%{init: {\"theme\":\"dark\",\"flowchart\":{\"curve\":\"step\"}}}%%\n[\"",
+      "record_sha256": "9c53d9df0dfbb2fea0d5aaad9709246cfe7bdf6293abb9b8f3f527dd61a317f1",
+      "graph_sha256": "affb7ea35ad86a41a47a322a3c7cab3ea30290bb4175aaf916169c08027c2481",
+      "mermaid_sha256": "ee2bb0bb05b81f908195d047fb4f36a60b1c2b2a8ef255fd5bb9d5ec5b63fc5c",
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "name": "hostile-markup",
+      "payload": "<script>window.__accimapInjected=2</script><a href=\"javascript:window.__accimapInjected=3\">Injected link</a><img src=\"https://accimap-invalid.example/probe\" onerror=\"window.__accimapInjected=4\"><svg onload=\"window.__accimapInjected=5\"></svg>",
+      "record_sha256": "0088598a324353fb833c91393dc9d9911a2d2d2776c2ac09c2fef17dd74e5cf2",
+      "graph_sha256": "f48325df3bec2b5b28adfda153216ebcc1206020da8a5b109b3a6e9523a19088",
+      "mermaid_sha256": "c5af9e5020655685cef062fd9af6830b93bad7469ac6893fe8da64366aae7ad6",
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "name": "hostile-entities",
+      "payload": "#34; #59; #60;script#62; &quot; &#34; &#x22; &lt;script&gt; &amp; #35; [ ] { } | < > ` **bold** _italic_ \u03a9 \u2192",
+      "record_sha256": "a7a1c79fe7a9fcc44d3966755afb39b2457d335a1c4a42875ae020f4a92951c3",
+      "graph_sha256": "9547724d788d813ccfefbc9fc00c1afa42d82632c9dca60d719f099e0ac4fd1d",
+      "mermaid_sha256": "92e9a3a11b8b66866104dde7682d0eb0d86ed5959d40cb112dc3ac844fd3a49b",
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "name": "hostile-directive",
+      "payload": "---\nconfig:\n  securityLevel: loose\n  theme: dark\n---\n%%{init: {\"theme\":\"dark\",\"flowchart\":{\"curve\":\"step\"}}}%%\nclick n4 href \"https://accimap-invalid.example/click\" \"Injected click\" _blank\nstyle n4 fill:#ff0000\nclassDef injected fill:#ff0000\nINJECTED_NODE@{ shape: rect, label: \"Injected node\" }",
+      "record_sha256": "d4af0fbc0065c883e28a196255c3c3266b45020c3b5e51476aa8729022a7e9ea",
+      "graph_sha256": "54029bafcf969d57f59175d4b9ba92475a467c4756cb3a72d68a9e86004dec64",
+      "mermaid_sha256": "9c41e861ad456793a7fcf41790a038961e26773e012e061a8fa8c3ae1e73aa63",
+      "returncode": 0,
+      "stderr": ""
+    }
+  ],
+  "runs": [
+    {
+      "name": "fixture",
+      "securityLevel": "strict",
+      "mermaid_sha256": "60ef54cbdadb8ba1d8864cb9753e7cec00afc1b8648f5ff6ea679f56c6da7e87",
+      "parse_result": {
+        "diagramType": "flowchart-v2",
+        "config": {}
+      },
+      "config": {
+        "securityLevel": "strict",
+        "theme": "default",
+        "curve": "basis"
+      },
+      "direction": "TB",
+      "same_structure_as_fixture": true,
+      "unexpected_ids": [],
+      "click_links": [],
+      "injected_directive_lines": [],
+      "pass": true,
+      "vertex_ids": [
+        "context_note",
+        "n3",
+        "n4",
+        "n0",
+        "n2",
+        "n1",
+        "recommendation_0",
+        "finding_0",
+        "finding_1",
+        "finding_2",
+        "finding_3",
+        "finding_4",
+        "finding_5",
+        "finding_6",
+        "finding_7",
+        "finding_8",
+        "finding_9",
+        "finding_10",
+        "finding_11",
+        "finding_12"
+      ],
+      "edges": [
+        {
+          "start": "n0",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n4",
+          "type": "arrow_point",
+          "stroke": "normal"
+        },
+        {
+          "start": "n4",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "normal"
+        }
+      ],
+      "subgraph_ids": [
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ],
+      "classes": []
+    },
+    {
+      "name": "hostile-syntax",
+      "securityLevel": "strict",
+      "mermaid_sha256": "ee2bb0bb05b81f908195d047fb4f36a60b1c2b2a8ef255fd5bb9d5ec5b63fc5c",
+      "parse_result": {
+        "diagramType": "flowchart-v2",
+        "config": {}
+      },
+      "config": {
+        "securityLevel": "strict",
+        "theme": "default",
+        "curve": "basis"
+      },
+      "direction": "TB",
+      "same_structure_as_fixture": true,
+      "unexpected_ids": [],
+      "click_links": [],
+      "injected_directive_lines": [],
+      "pass": true,
+      "vertex_ids": [
+        "context_note",
+        "n3",
+        "n4",
+        "n0",
+        "n2",
+        "n1",
+        "recommendation_0",
+        "finding_0",
+        "finding_1",
+        "finding_2",
+        "finding_3",
+        "finding_4",
+        "finding_5",
+        "finding_6",
+        "finding_7",
+        "finding_8",
+        "finding_9",
+        "finding_10",
+        "finding_11",
+        "finding_12"
+      ],
+      "edges": [
+        {
+          "start": "n0",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n4",
+          "type": "arrow_point",
+          "stroke": "normal"
+        },
+        {
+          "start": "n4",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "normal"
+        }
+      ],
+      "subgraph_ids": [
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ],
+      "classes": []
+    },
+    {
+      "name": "hostile-markup",
+      "securityLevel": "strict",
+      "mermaid_sha256": "c5af9e5020655685cef062fd9af6830b93bad7469ac6893fe8da64366aae7ad6",
+      "parse_result": {
+        "diagramType": "flowchart-v2",
+        "config": {}
+      },
+      "config": {
+        "securityLevel": "strict",
+        "theme": "default",
+        "curve": "basis"
+      },
+      "direction": "TB",
+      "same_structure_as_fixture": true,
+      "unexpected_ids": [],
+      "click_links": [],
+      "injected_directive_lines": [],
+      "pass": true,
+      "vertex_ids": [
+        "context_note",
+        "n3",
+        "n4",
+        "n0",
+        "n2",
+        "n1",
+        "recommendation_0",
+        "finding_0",
+        "finding_1",
+        "finding_2",
+        "finding_3",
+        "finding_4",
+        "finding_5",
+        "finding_6",
+        "finding_7",
+        "finding_8",
+        "finding_9",
+        "finding_10",
+        "finding_11",
+        "finding_12"
+      ],
+      "edges": [
+        {
+          "start": "n0",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n4",
+          "type": "arrow_point",
+          "stroke": "normal"
+        },
+        {
+          "start": "n4",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "normal"
+        }
+      ],
+      "subgraph_ids": [
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ],
+      "classes": []
+    },
+    {
+      "name": "hostile-entities",
+      "securityLevel": "strict",
+      "mermaid_sha256": "92e9a3a11b8b66866104dde7682d0eb0d86ed5959d40cb112dc3ac844fd3a49b",
+      "parse_result": {
+        "diagramType": "flowchart-v2",
+        "config": {}
+      },
+      "config": {
+        "securityLevel": "strict",
+        "theme": "default",
+        "curve": "basis"
+      },
+      "direction": "TB",
+      "same_structure_as_fixture": true,
+      "unexpected_ids": [],
+      "click_links": [],
+      "injected_directive_lines": [],
+      "pass": true,
+      "vertex_ids": [
+        "context_note",
+        "n3",
+        "n4",
+        "n0",
+        "n2",
+        "n1",
+        "recommendation_0",
+        "finding_0",
+        "finding_1",
+        "finding_2",
+        "finding_3",
+        "finding_4",
+        "finding_5",
+        "finding_6",
+        "finding_7",
+        "finding_8",
+        "finding_9",
+        "finding_10",
+        "finding_11",
+        "finding_12"
+      ],
+      "edges": [
+        {
+          "start": "n0",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n4",
+          "type": "arrow_point",
+          "stroke": "normal"
+        },
+        {
+          "start": "n4",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "normal"
+        }
+      ],
+      "subgraph_ids": [
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ],
+      "classes": []
+    },
+    {
+      "name": "hostile-directive",
+      "securityLevel": "strict",
+      "mermaid_sha256": "9c41e861ad456793a7fcf41790a038961e26773e012e061a8fa8c3ae1e73aa63",
+      "parse_result": {
+        "diagramType": "flowchart-v2",
+        "config": {}
+      },
+      "config": {
+        "securityLevel": "strict",
+        "theme": "default",
+        "curve": "basis"
+      },
+      "direction": "TB",
+      "same_structure_as_fixture": true,
+      "unexpected_ids": [],
+      "click_links": [],
+      "injected_directive_lines": [],
+      "pass": true,
+      "vertex_ids": [
+        "context_note",
+        "n3",
+        "n4",
+        "n0",
+        "n2",
+        "n1",
+        "recommendation_0",
+        "finding_0",
+        "finding_1",
+        "finding_2",
+        "finding_3",
+        "finding_4",
+        "finding_5",
+        "finding_6",
+        "finding_7",
+        "finding_8",
+        "finding_9",
+        "finding_10",
+        "finding_11",
+        "finding_12"
+      ],
+      "edges": [
+        {
+          "start": "n0",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n4",
+          "type": "arrow_point",
+          "stroke": "normal"
+        },
+        {
+          "start": "n4",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "normal"
+        }
+      ],
+      "subgraph_ids": [
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ],
+      "classes": []
+    },
+    {
+      "name": "fixture",
+      "securityLevel": "loose",
+      "mermaid_sha256": "60ef54cbdadb8ba1d8864cb9753e7cec00afc1b8648f5ff6ea679f56c6da7e87",
+      "parse_result": {
+        "diagramType": "flowchart-v2",
+        "config": {}
+      },
+      "config": {
+        "securityLevel": "loose",
+        "theme": "default",
+        "curve": "basis"
+      },
+      "direction": "TB",
+      "same_structure_as_fixture": true,
+      "unexpected_ids": [],
+      "click_links": [],
+      "injected_directive_lines": [],
+      "pass": true,
+      "vertex_ids": [
+        "context_note",
+        "n3",
+        "n4",
+        "n0",
+        "n2",
+        "n1",
+        "recommendation_0",
+        "finding_0",
+        "finding_1",
+        "finding_2",
+        "finding_3",
+        "finding_4",
+        "finding_5",
+        "finding_6",
+        "finding_7",
+        "finding_8",
+        "finding_9",
+        "finding_10",
+        "finding_11",
+        "finding_12"
+      ],
+      "edges": [
+        {
+          "start": "n0",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n4",
+          "type": "arrow_point",
+          "stroke": "normal"
+        },
+        {
+          "start": "n4",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "normal"
+        }
+      ],
+      "subgraph_ids": [
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ],
+      "classes": []
+    },
+    {
+      "name": "hostile-syntax",
+      "securityLevel": "loose",
+      "mermaid_sha256": "ee2bb0bb05b81f908195d047fb4f36a60b1c2b2a8ef255fd5bb9d5ec5b63fc5c",
+      "parse_result": {
+        "diagramType": "flowchart-v2",
+        "config": {}
+      },
+      "config": {
+        "securityLevel": "loose",
+        "theme": "default",
+        "curve": "basis"
+      },
+      "direction": "TB",
+      "same_structure_as_fixture": true,
+      "unexpected_ids": [],
+      "click_links": [],
+      "injected_directive_lines": [],
+      "pass": true,
+      "vertex_ids": [
+        "context_note",
+        "n3",
+        "n4",
+        "n0",
+        "n2",
+        "n1",
+        "recommendation_0",
+        "finding_0",
+        "finding_1",
+        "finding_2",
+        "finding_3",
+        "finding_4",
+        "finding_5",
+        "finding_6",
+        "finding_7",
+        "finding_8",
+        "finding_9",
+        "finding_10",
+        "finding_11",
+        "finding_12"
+      ],
+      "edges": [
+        {
+          "start": "n0",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n4",
+          "type": "arrow_point",
+          "stroke": "normal"
+        },
+        {
+          "start": "n4",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "normal"
+        }
+      ],
+      "subgraph_ids": [
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ],
+      "classes": []
+    },
+    {
+      "name": "hostile-markup",
+      "securityLevel": "loose",
+      "mermaid_sha256": "c5af9e5020655685cef062fd9af6830b93bad7469ac6893fe8da64366aae7ad6",
+      "parse_result": {
+        "diagramType": "flowchart-v2",
+        "config": {}
+      },
+      "config": {
+        "securityLevel": "loose",
+        "theme": "default",
+        "curve": "basis"
+      },
+      "direction": "TB",
+      "same_structure_as_fixture": true,
+      "unexpected_ids": [],
+      "click_links": [],
+      "injected_directive_lines": [],
+      "pass": true,
+      "vertex_ids": [
+        "context_note",
+        "n3",
+        "n4",
+        "n0",
+        "n2",
+        "n1",
+        "recommendation_0",
+        "finding_0",
+        "finding_1",
+        "finding_2",
+        "finding_3",
+        "finding_4",
+        "finding_5",
+        "finding_6",
+        "finding_7",
+        "finding_8",
+        "finding_9",
+        "finding_10",
+        "finding_11",
+        "finding_12"
+      ],
+      "edges": [
+        {
+          "start": "n0",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n4",
+          "type": "arrow_point",
+          "stroke": "normal"
+        },
+        {
+          "start": "n4",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "normal"
+        }
+      ],
+      "subgraph_ids": [
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ],
+      "classes": []
+    },
+    {
+      "name": "hostile-entities",
+      "securityLevel": "loose",
+      "mermaid_sha256": "92e9a3a11b8b66866104dde7682d0eb0d86ed5959d40cb112dc3ac844fd3a49b",
+      "parse_result": {
+        "diagramType": "flowchart-v2",
+        "config": {}
+      },
+      "config": {
+        "securityLevel": "loose",
+        "theme": "default",
+        "curve": "basis"
+      },
+      "direction": "TB",
+      "same_structure_as_fixture": true,
+      "unexpected_ids": [],
+      "click_links": [],
+      "injected_directive_lines": [],
+      "pass": true,
+      "vertex_ids": [
+        "context_note",
+        "n3",
+        "n4",
+        "n0",
+        "n2",
+        "n1",
+        "recommendation_0",
+        "finding_0",
+        "finding_1",
+        "finding_2",
+        "finding_3",
+        "finding_4",
+        "finding_5",
+        "finding_6",
+        "finding_7",
+        "finding_8",
+        "finding_9",
+        "finding_10",
+        "finding_11",
+        "finding_12"
+      ],
+      "edges": [
+        {
+          "start": "n0",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n4",
+          "type": "arrow_point",
+          "stroke": "normal"
+        },
+        {
+          "start": "n4",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "normal"
+        }
+      ],
+      "subgraph_ids": [
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ],
+      "classes": []
+    },
+    {
+      "name": "hostile-directive",
+      "securityLevel": "loose",
+      "mermaid_sha256": "9c41e861ad456793a7fcf41790a038961e26773e012e061a8fa8c3ae1e73aa63",
+      "parse_result": {
+        "diagramType": "flowchart-v2",
+        "config": {}
+      },
+      "config": {
+        "securityLevel": "loose",
+        "theme": "default",
+        "curve": "basis"
+      },
+      "direction": "TB",
+      "same_structure_as_fixture": true,
+      "unexpected_ids": [],
+      "click_links": [],
+      "injected_directive_lines": [],
+      "pass": true,
+      "vertex_ids": [
+        "context_note",
+        "n3",
+        "n4",
+        "n0",
+        "n2",
+        "n1",
+        "recommendation_0",
+        "finding_0",
+        "finding_1",
+        "finding_2",
+        "finding_3",
+        "finding_4",
+        "finding_5",
+        "finding_6",
+        "finding_7",
+        "finding_8",
+        "finding_9",
+        "finding_10",
+        "finding_11",
+        "finding_12"
+      ],
+      "edges": [
+        {
+          "start": "n0",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "dotted"
+        },
+        {
+          "start": "n3",
+          "end": "n4",
+          "type": "arrow_point",
+          "stroke": "normal"
+        },
+        {
+          "start": "n4",
+          "end": "n2",
+          "type": "arrow_point",
+          "stroke": "normal"
+        }
+      ],
+      "subgraph_ids": [
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ],
+      "classes": []
+    }
+  ]
+}

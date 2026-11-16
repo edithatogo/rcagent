@@ -1,0 +1,34 @@
+{
+  "track_id": "accimap-workflow_20261116",
+  "title": "AcciMap workflow and synthetic companion graph",
+  "type": "feature",
+  "evidence_schema": "1.0",
+  "status": "in_progress",
+  "created_at": "2026-11-16T07:11:38Z",
+  "updated_at": "2026-11-16T07:11:38Z",
+  "workstream": "product-interfaces-distribution",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/139",
+    "status": "implementation_in_progress"
+  },
+  "autonomy": "continuous-autonomy-with-owner-decision-gates",
+  "autonomy_contract": "../../autonomy.json",
+  "hard_dependencies": [],
+  "phase_dependencies": ["frontier-assurance_20261113"],
+  "base_commit": "c6892497aa0b03555d5145242c04965471eccc1d",
+  "coordinator": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
+  "verification": {
+    "status": "pending",
+    "scope": "synthetic_structural_graph_and_portable_guidance",
+    "model_runs": 0,
+    "real_cases_processed": 0,
+    "clinical_validation": "not_performed",
+    "release": "not_created",
+    "shared_registry_integration": "coordinator_proposal_prepared"
+  },
+  "decision_gates": [
+    "Shared integration and merge remain with existing coordinator",
+    "Real-data, operational or disclosure scope needs its existing governed authority",
+    "A release needs separate build and verification"
+  ]
+}

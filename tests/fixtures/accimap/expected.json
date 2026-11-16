@@ -1,0 +1,20 @@
+{
+  "schema_version": "accimap-example-expectations-1.0",
+  "basis": "Literal independently specified topology; not calculated by production traversal.",
+  "structurally_valid": true,
+  "review_state": "unreviewed",
+  "outcome_paths": {
+    "node-policy": "supported",
+    "node-queue": "supported",
+    "node-availability": "hypothesis_or_contested",
+    "node-context": "unconnected"
+  },
+  "edge_statuses": {
+    "edge-policy-queue": "supported",
+    "edge-queue-outcome": "supported",
+    "edge-policy-outcome": "hypothesis",
+    "edge-availability-outcome": "contested"
+  },
+  "record_fingerprint": "sha256:af24e4f38a44cb068c6b33ffb2664ddaea0ca6df496cce3498d50c5a9060e0b0",
+  "graph_fingerprint_without_review": "sha256:af70ae5ca784f5bf7b63f27c5c957d3fe1f7bd63023d67f593420643626a8472"
+}
