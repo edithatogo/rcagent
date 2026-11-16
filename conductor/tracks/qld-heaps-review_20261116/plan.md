@@ -1,6 +1,6 @@
 # HEAPS implementation plan
 
-The user explicitly authorised **H4 implementation, pull request, passing Actions and merge** on 17 November 2026 (Australia/Brisbane). Continue automatically through the owned implementation, independent agent review, bounded rework and hosted verification; do not ask for routine approval. Record each recommendation and its evidence. H2/H3 are prerequisites already delivered in draft PR #142; this increment reconciles accepted master, implements the synthetic consumer and integrates those prerequisites through the same PR. Portfolio numbering and other owners' runtime work remain separate. The safe default is a synthetic preparation packet with unresolved authority and unsupported claims visible.
+The user explicitly authorised **H4 implementation, pull request, passing Actions and merge** on 17 November 2026 (Australia/Brisbane). Continue automatically through the owned implementation, independent agent review, bounded rework and hosted verification; do not ask for routine approval. Record each recommendation and its evidence. H2/H3 prerequisites and H4 implementation are now integrated through PR #142; the observed acceptance records the tested source, required checks and actual merge. Portfolio numbering and other owners' runtime work remain separate. The safe default is a synthetic preparation packet with unresolved authority and unsupported claims visible.
 
 ## P0 — Planning increment
 
@@ -31,7 +31,7 @@ Entry: H1 technical receipt and the user's explicit H2/H3 instruction. The curre
 - [x] H2.5: update portable-skill navigation and exact-byte template admission after review for coordinator integration; do not edit the AcciMap owner's guide.
 - [x] H2.6: checkpoint: review all source/authority statements and synthetic report mappings; record unresolved official-template fidelity and guidance receipt.
 
-H2 evidence: [phase receipt](./h2.md), [integrated review](./h2-h3-review.md), [conformance](./h2-conformance.json). Implementation and content admission are complete on this branch; shared portfolio integration and merge remain separate.
+H2 evidence: [phase receipt](./h2.md), [integrated review](./h2-h3-review.md), [conformance](./h2-conformance.json). Implementation and content admission are complete and integrated through PR #142; shared portfolio registration remains separate.
 
 ## H3 — Versioned profile contract and independent fixture design
 
@@ -44,7 +44,7 @@ Entry: H1 receipt. No production assembly code is needed to design expected resu
 - [x] H3.5: an independent verifier freezes synthetic source records and expected positive/negative/revision outcomes, including all catalogue cases and an explicit finite denominator.
 - [x] H3.6: checkpoint: agent review of schema compatibility, migration/rollback, empty/all-abstain behaviour and fixtures; record H3 contract/fixture hashes.
 
-H3 evidence: [frozen contract](./h3-contract.md), [phase receipt](./h3.md), [independent oracle](../../../tests/fixtures/heaps/oracle.json) and [integrated review](./h2-h3-review.md). All 25 catalogue cases have 38 frozen variants; 101 structural/design tests passed. H4/H5 execution remains not_run. The full local repository gate remains failed with the documented socket restriction.
+H3 evidence: [frozen contract](./h3-contract.md), [phase receipt](./h3.md), [independent oracle](../../../tests/fixtures/heaps/oracle.json) and [integrated review](./h2-h3-review.md). All 25 catalogue cases have 38 frozen variants; 101 structural/design tests passed. The original H3 design execution fields remain historical not_run entries; actual H4 execution is recorded separately. H5 remains unaccepted. The full local repository gate remains failed with the documented socket restriction.
 
 ## H4 — Deterministic synthetic review packet
 
@@ -57,7 +57,7 @@ Entry: H2 and H3 receipts plus master `6f9cd9627adc52782a67fa6693f1cdb90c3c84a7`
 - [-] H4.5: optional AcciMap composition consumes the accepted #139 contract and an explicit unanswered question; otherwise omit that view without blocking the packet.
 - [x] H4.6: checkpoint: two clean runs produce identical deterministic packet bytes for fixed inputs; publish input/output/component hashes, counts and explicit capability limitations. H4 acceptance does not require optional H4.4/H4.5 features, but their unimplemented/unqualified status must remain visible.
 
-H4 evidence: [original checkpoint](./h4.md), [hosted review repairs](./h4-hosted-review-repair.md), [new 38-variant execution](./h4-revision-execution.json), [new clean CLI replay](./h4-revision-replay.json), [46 input identities](./h4-input-manifest.json) and [integrated local gate](./h4-revision-validation.json). H4.1–H4.3/H4.6 are complete on the branch; optional H4.4/H4.5 remain omitted and unqualified. The repaired revision passes all 304 H4 checks and all 38 frozen variants. Its full local gate remains failed: 3,125 passed, 52 unchanged socket-restricted failures, 11 skipped; 93.54% coverage. Master8bf94873, including separately owned D2, is normally reconciled. Exact published-head hosted checks and the explicitly authorised merge remain the integration steps. H5 may reuse development-visible controls but is not accepted by H4.
+H4 evidence: [original checkpoint](./h4.md), [hosted review repairs](./h4-hosted-review-repair.md), [new 38-variant execution](./h4-revision-execution.json), [new clean CLI replay](./h4-revision-replay.json), [46 input identities](./h4-input-manifest.json) and [integrated local gate](./h4-revision-validation.json). H4.1–H4.3/H4.6 are complete on the branch; optional H4.4/H4.5 remain omitted and unqualified. The repaired revision passes all 304 H4 checks and all 38 frozen variants. Its full local gate remains failed: 3,125 passed, 52 unchanged socket-restricted failures, 11 skipped; 93.54% coverage. Master8bf94873, including separately owned D2, is normally reconciled. Exact source-head hosted checks passed and PR #142 merged as `006d98cb60c72143b0517f0e7a446641642ddd5a`; see [observed acceptance](./h4-acceptance-20261117.md). H5 may reuse development-visible controls but is not accepted by H4.
 
 ## H5 — Independent engineering qualification and integration
 
@@ -89,4 +89,4 @@ H6.1 source preparation can run after H1, in parallel with engineering, using an
 
 ## Rollback and resume
 
-Revert only the affected profile/adapter change through a normal commit; preserve original cases, sources and failed receipts. A material source or template change invalidates the affected mapping/approval, not unrelated evidence preparation. A failed optional component falls back to the last qualified deterministic packet. H2/H3 implementation is complete on the reconciled HEAPS branch. H4 implementation and independent review are complete on the branch under the explicit implementation/PR/Actions/merge instruction; publish and verify the exact hosted head before merging. Preserve the frozen H3 contracts and oracle and record actual H4 results separately. H1 historical findings remain; H4 must enforce its own admission boundary. Shared portfolio registration remains separate from this authorised PR integration. No operational authority is inferred.
+Revert only the affected profile/adapter change through a normal commit; preserve original cases, sources and failed receipts. A material source or template change invalidates the affected mapping/approval, not unrelated evidence preparation. A failed optional component falls back to the last qualified deterministic packet. H2/H3 and H4 are integrated through PR #142 at `006d98cb60c72143b0517f0e7a446641642ddd5a`, after required hosted success. H5 independent qualification and handoff is the next implementation stage. Preserve the frozen H3 contracts and oracle and record actual H4 results separately. H1 historical findings remain; H4 must enforce its own admission boundary. Shared portfolio registration remains separate from this authorised PR integration. No operational authority is inferred.

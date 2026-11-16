@@ -24,7 +24,7 @@ flowchart TD
     A["Accepted AcciMap view"] -.-> H4
 ```
 
-The graph is a logical dependency plan. H2/H3 prerequisites are complete on the HEAPS branch. The user has now explicitly authorised H4 implementation, PR, passing Actions and merge. One integration lane and two disjoint production/test lanes perform that increment, with read-only agent review. Master `6f9cd96` includes accepted D0/D1; their implementation remains owned by Track 13. H4 consumes prestructured synthetic records and does not qualify an optional D0/D1 or AcciMap composition. The current instruction authorises integration of this HEAPS PR; portfolio numbering and unrelated shared ownership remain separate.
+The graph is a logical dependency plan. H2/H3 prerequisites and H4 are integrated through PR #142; [observed acceptance](./h4-acceptance-20261117.md) binds passing checks to the actual merge. H5 independent qualification and handoff is next. H4 uses prestructured synthetic records and does not compose optional D0/D1/D2 or AcciMap capabilities. Portfolio numbering and unrelated scientific ownership remain separate.
 
 ## Capability-specific dependencies
 

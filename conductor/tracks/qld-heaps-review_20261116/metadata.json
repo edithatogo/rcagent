@@ -5,7 +5,7 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-16T07:34:21+00:00",
-  "updated_at": "2026-11-16T21:33:18.336185+00:00",
+  "updated_at": "2026-11-17T07:40:19+10:00",
   "workstream": "product-interfaces-distribution",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/140",
@@ -21,7 +21,7 @@
   "dependency_semantics": "Only actually consumed capabilities gate dependent claims; no whole-track completion prerequisite. AcciMap and death review are optional partners.",
   "delivery_plan": "./delivery-plan.json",
   "source_inventory": "./sources.json",
-  "description": "Queensland HEAPS H2/H3 prerequisites and H4 deterministic synthetic consumer implemented/reviewed; exact-head hosted integration and then H5 qualification remain separate.",
+  "description": "H2/H3 prerequisites and H4 deterministic synthetic consumer merged and accepted for bounded engineering delivery; H5 qualification is next and H6 remains conditional.",
   "owners": {
     "planning_scope": "current HEAPS planning task / issue140",
     "shared_integrator": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
@@ -46,7 +46,7 @@
     "proposal": "./registration-proposal.json"
   },
   "verification": {
-    "status": "h4_review_repairs_verified_locally_awaiting_hosted_head",
+    "status": "h4_required_hosted_checks_passed_and_merged",
     "scope": "bounded_synthetic_consumer_development_visible_engineering",
     "receipt": "./h4.md",
     "input_manifest": "./h4-input-manifest.json",
@@ -95,7 +95,7 @@
     "real_cases_processed": 0,
     "qualified_clinical_capabilities": 0,
     "official_template_conformity": "unverified",
-    "hosted_checks": "must_observe_exact_published_head_in_PR142_before_merge",
+    "hosted_checks": "observed_passing_on_exact_accepted_source_head",
     "shared_registration": "pending_coordinator_integration",
     "h4_tests_passed": 304,
     "heaps_runtime_acceptance_variants_executed": 38,
@@ -139,7 +139,12 @@
       "review_findings": 2,
       "merge": "not_performed",
       "repair_receipt": "./h4-hosted-review-repair.md"
-    }
+    },
+    "acceptance_receipt": "./h4-acceptance-20261117.md",
+    "acceptance_observation": "./h4-acceptance-20261117.json",
+    "accepted_source": "05975675467684f033e5d4df7320984a4c9eb3a1",
+    "accepted_merge": "006d98cb60c72143b0517f0e7a446641642ddd5a",
+    "offline_security": "queued_not_a_completed_scan"
   },
   "decision_gates": [
     "Only genuinely new data use, rights, external action, spend or operational scope beyond existing authority",
@@ -148,18 +153,17 @@
   "observed_base": "8bf94873af22730e445fcbb1b7fb748cfd16ed25",
   "current_increment": {
     "id": "H4",
-    "status": "h4_implemented_reviewed_awaiting_hosted_merge",
+    "status": "accepted_bounded_synthetic_engineering",
     "authority": "user instruction: Implement H4, open a PR, check actions pass, then merge.",
     "scope": "deterministic synthetic validator/assembler, independent implementation checks and authorised PR integration",
     "runtime_implementation_started": true,
     "shared_integration": "this HEAPS PR integration explicitly authorised; portfolio numbering and unrelated shared ownership remain separate",
     "next_tasks": [
-      "publish exact H4 source head and verify required hosted Actions",
-      "merge this HEAPS PR under explicit user authority",
       "H5 independent engineering qualification and handoff",
-      "H6 authorised local instrument alignment and conditional practice evaluation"
+      "H6 authorised local instrument alignment and conditional practice evaluation",
+      "Separate coordinator portfolio registration and H1 receiving tasks"
     ],
-    "receipt": "./h4.md"
+    "receipt": "./h4-acceptance-20261117.md"
   },
   "shared_candidate_paths": [
     "skills/rca-investigation/SKILL.md",

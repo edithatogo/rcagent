@@ -1,7 +1,7 @@
 {
   "schema_version": "heaps-planning-1.0",
   "track_id": "qld-heaps-review_20261116",
-  "status": "h4_implemented_awaiting_hosted_merge",
+  "status": "h4_accepted_h5_next",
   "issue": 140,
   "hard_dependencies": [],
   "work_packages": [
@@ -46,8 +46,8 @@
         "H3"
       ],
       "owned_scope": "dedicated original HEAPS guide/template plus reviewed shared content/navigation/admission candidates",
-      "status": "completed_on_branch",
-      "implementation_owner": "current HEAPS lane; coordinator retains shared acceptance and merge",
+      "status": "integrated",
+      "implementation_owner": "HEAPS lane; prerequisite content integrated under explicit H4 user merge authority; portfolio registration remains separate",
       "acceptance_ref": "./plan.md",
       "entry_evidence": "H1 technical receipt, current-master reconciliation and explicit H2/H3 instruction; runtime consumer gaps reserved for H4/H5",
       "entry_requires": [
@@ -57,7 +57,9 @@
         "fresh master and path-ownership reconciliation"
       ],
       "receipt": "./h2.md",
-      "integration_state": "pending_explicitly_authorised_PR142_hosted_merge"
+      "integration_state": "merged_through_PR142_after_required_hosted_success",
+      "integration_receipt": "./h4-acceptance-20261117.md",
+      "integration_commit": "006d98cb60c72143b0517f0e7a446641642ddd5a"
     },
     {
       "id": "H3",
@@ -74,8 +76,8 @@
         "H2"
       ],
       "owned_scope": "dedicated evaluation/heaps schemas, normative contract, independent fixtures and tests",
-      "status": "completed_on_branch",
-      "implementation_owner": "current HEAPS lane; coordinator retains shared acceptance and merge",
+      "status": "integrated",
+      "implementation_owner": "HEAPS lane; prerequisite content integrated under explicit H4 user merge authority; portfolio registration remains separate",
       "acceptance_ref": "./plan.md",
       "entry_evidence": "H1 technical receipt, current-master reconciliation and explicit H2/H3 instruction; runtime consumer gaps reserved for H4/H5",
       "entry_requires": [
@@ -85,7 +87,9 @@
         "fresh master and path-ownership reconciliation"
       ],
       "receipt": "./h3.md",
-      "integration_state": "pending_explicitly_authorised_PR142_hosted_merge"
+      "integration_state": "merged_through_PR142_after_required_hosted_success",
+      "integration_receipt": "./h4-acceptance-20261117.md",
+      "integration_commit": "006d98cb60c72143b0517f0e7a446641642ddd5a"
     },
     {
       "id": "H4",
@@ -100,17 +104,19 @@
         "deterministic receipt"
       ],
       "owned_scope": "new HEAPS consumer, independent tests and this PR integration; canonical/schema/shared dispatch owners unchanged",
-      "status": "completed_on_branch",
+      "status": "integrated",
       "implementation_owner": "current HEAPS lane under explicit user implementation and merge instruction",
       "acceptance_ref": "./plan.md",
       "entry_evidence": "H2/H3 receipts, immutable oracle and normal reconciliation with master8bf94873; D2 upstream implementation remains uncomposed in HEAPS",
       "receipt": "./h4.md",
-      "integration_state": "pending_exact_head_hosted_checks_and_merge",
+      "integration_state": "merged_through_PR142_after_required_hosted_success",
       "optional_features": {
         "H4.4": "omitted_unqualified",
         "H4.5": "omitted_unqualified"
       },
-      "revision_verification": "./h4-revision-validation.json"
+      "revision_verification": "./h4-revision-validation.json",
+      "integration_receipt": "./h4-acceptance-20261117.md",
+      "integration_commit": "006d98cb60c72143b0517f0e7a446641642ddd5a"
     },
     {
       "id": "H5",
