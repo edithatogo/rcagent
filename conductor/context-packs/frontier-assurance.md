@@ -1,10 +1,10 @@
 # Bounded context: frontier assurance
 
-- Purpose: retain accepted FAW06 and FAW07 / D0 evidence and hand off the planned FAW08 / D1 boundary without implying that later-stage implementation has started.
+- Purpose: retain accepted FAW06 and FAW07 / D0 evidence and the current bounded FAW08 / D1 assignment below. The earlier D0 authority and handoff remain historical records.
 - Initial integration revision: 50c8a81; assessment reference: a895d42a8738d2937f849b65e3b892042f64b979.
 - Prior FAW06 acceptance: PR #131 merged as `419c04d7e1c0a16e924e0b7058604671855625a2`, tree `c0ff3fa9ce5cc78232d3987431ff857c43d1aa68`. Exact final-head Quality43555675618 and merged-master Quality43556852077 each passed all nine jobs, with dependency/privacy/conformance evidence. FAW06 removed the remaining 3,198 diagnostics across 153 active files; the baseline/caps are empty and explicit Any is an error. Preserve the historical source receipt and its 52 locally socket-denied failures separately from hosted acceptance.
 - Accepted D0 source: [PR #144](https://github.com/edithatogo/rcagent/pull/144), source `29d099b6e8d8507250c360481adba0fef63f91bf`, merged master `d3c10d607470c9a50c5410030b80aeab2cfa5430`, unchanged tree `4a8a2849255b317ba97085608557e7bd8841b99a`. All nine source-head Quality jobs, dependency/privacy checks and automatic master conformance passed; see the [acceptance receipt](../tracks/frontier-assurance_20261113/faw07-d0-acceptance-20261116.md).
-- Authority: the original 14 November worker/coordinator scope is preserved as history. On 16 November Dylan explicitly authorised this conversation to implement D0, open a PR, check Actions and merge. That bounded assignment is complete; it did not transfer other tracks or authorise D1–D3, model, private-data or Rust expansion.
+- D0 authority (history): the original 14 November worker/coordinator scope is preserved as history. On 16 November Dylan explicitly authorised this conversation to implement D0, open a PR, check Actions and merge. That bounded assignment is complete; it did not transfer other tracks or authorise D1–D3, model, private-data or Rust expansion.
 - Start: AGENTS.md, CONSTRAINTS.md, conductor/index.md, selected spec/plan/metadata, and the exact capability/claim/triangulation document needed by that task.
 - Budget: prefer 20,000 input tokens; fetch only relevant source/schema/tests and receipts. This is a planning budget, not permission to omit a material safety dependency.
 - Exclude: private cases, model weights, generated coverage/profile reports, historical raw transcripts and unrelated repositories unless the selected task needs their exact evidence.
@@ -13,7 +13,11 @@
 - Worktree runtime: use the selected worktree's interpreter with `python -m pytest` and verify imported module origins; a reused editable environment's pytest console script can import a different checkout.
 - Checks: locked environment; relevant tests first, then tools.full_validation and hosted required checks. Socket-denied environments must record unavailable integration evidence; never skip it silently in CI.
 - Safety: generated synthetic fixtures only; preserve source/view hashes; no model or external-data fallback. Routine authorised repository branches/PRs carry coordination and evidence; no broader external publication is implied. Agent agreement does not supply clinical authority.
-- Handoff: D0 gates A0–A5 are accepted with actual merge and master-conformance evidence. Original worker acknowledgement remains unobserved; acceptance uses the subsequent explicit completion authority and recorded reviews. FAW08 / D1 is planned and was not started under this assignment. Model/clinical qualification remains at zero; preserve failed observations. Revert only the new increment if needed.
+- D0 handoff (history): D0 gates A0–A5 are accepted with actual merge and master-conformance evidence. Original worker acknowledgement remains unobserved; acceptance uses the subsequent explicit completion authority and recorded reviews. FAW08 / D1 is planned and was not started under this assignment. Model/clinical qualification remains at zero; preserve failed observations. Revert only the new increment if needed.
 - Freshness: refresh GitHub head, policy/source versions and applicable tool APIs before acting on a new session; do not re-request standing approvals.
 
 Canonical task records: [Track 13](../tracks/frontier-assurance_20261113/index.md), [Track 12](../tracks/cognitive-autopsy_20261107/index.md), [Track 14](../tracks/death-review_20261113/index.md).
+
+## Current D1 assignment — 16 November 2026
+
+Dylan subsequently instructed this conversation to implement D1, open a PR, check Actions and merge. The [D1 contract](../tracks/frontier-assurance_20261113/faw08-d1-contract.md) defines this new bounded authority, paths, input grammar, reuse and acceptance. Base `d11548357baba6a1e20163139a366c6367a05432` includes D0 and the later ty/lock update. FAW08 is active; D2 and later stages remain planned. The D0-specific authority and acceptance above remain historical records. No other active PR ownership transfers.
