@@ -1,0 +1,382 @@
+{
+  "format_version": "dm01-verification-1.0",
+  "status": "dm01_documentation_and_agent_checks_passed_hosted_pending",
+  "observed_client_date": "2026-11-17",
+  "date_basis": "Australia/Brisbane",
+  "base_commit": "8a564826a3f51765f177f0d9823194718bacb7d9",
+  "base_tree": "47543fabfbfa8e6682f5b088b56e6982ae5af82d",
+  "privacy_mode": "public_repository_metadata_and_original_synthetic_study_design",
+  "model_runs": 0,
+  "study_cases_created": 0,
+  "holdout_accessed": false,
+  "real_cases_processed": 0,
+  "qualified_capabilities": 0,
+  "local_environment": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "shell_python": "3.12.14",
+    "quality_python": "3.15.2",
+    "uv": "0.13.6",
+    "dependency_lock_sha256": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c"
+  },
+  "locked_install": {
+    "command": "uv sync --locked --extra validate --extra test --extra lint --extra assurance",
+    "exit_code": 0,
+    "dependency_lock_changed": false,
+    "warning": "cache hardlink unavailable; installation used full copy"
+  },
+  "full_validation": {
+    "command": "uv run --no-sync python -m tools.full_validation",
+    "exit_code": 1,
+    "scope": "integrated master including HEAPS H4; no DM01 changes to implementation/tests/dependencies/workflows; final document checks repeated separately",
+    "raw_log_sha256": "892d77c4fbd9f3c1a5403bd580fe3607138fff1dc1d90db7b8718fb0612d8987",
+    "passed_pre_pytest_gates": [
+      "Ruff correctness",
+      "Ruff formatting",
+      "ty",
+      "strict basedpyright",
+      "empty typing baseline and zero policy caps",
+      "Bandit security",
+      "Vulture",
+      "gremlin marker policy",
+      "repository governance",
+      "benchmark registry",
+      "seven benchmark regressions"
+    ],
+    "retained_warnings": [
+      "Existing Bandit nosec markers B108/B608 had no matching failure; no suppressions changed."
+    ],
+    "pytest": {
+      "failed": 52,
+      "passed": 3125,
+      "skipped": 11,
+      "seconds": 61.34,
+      "branch_coverage_percent": 93.54,
+      "coverage_floor_percent": 90,
+      "reported_failure_lines": [
+        "FAILED tests/test_prospective_primary_session.py::test_primary_uses_exact_selected_request_and_persists_candidate",
+        "FAILED tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[identity-drift]",
+        "FAILED tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[missing-package]",
+        "FAILED tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[interrupt]",
+        "FAILED tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[exit]",
+        "FAILED tests/test_prospective_primary_session.py::test_primary_failure_never_masks_http_or_cleanup_failure",
+        "FAILED tests/test_prospective_primary_session.py::test_http_failure_with_successful_gate_stays_failed",
+        "FAILED tests/test_prospective_primary_session.py::test_cleanup_failure_and_postflight_failure_both_retained",
+        "FAILED tests/test_prospective_primary_session.py::test_real_guarded_git_child_http_and_decoder_composition",
+        "FAILED tests/test_prospective_server_session.py::test_fixed_session_reserved_and_locked",
+        "FAILED tests/test_prospective_server_session.py::test_health_attempt_budget_stops_without_completion",
+        "FAILED tests/test_prospective_server_session.py::test_interrupted_health_keeps_failure_after_worker_cleanup",
+        "FAILED tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[duplicate]",
+        "FAILED tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[malformed]",
+        "FAILED tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[status]",
+        "FAILED tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[oversize]",
+        "FAILED tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[http]",
+        "FAILED tests/test_prospective_server_session.py::test_loading_health_retries_on_same_socket",
+        "FAILED tests/test_prospective_server_session.py::test_completion_failure_is_not_erased_by_successful_stop",
+        "FAILED tests/test_prospective_server_session.py::test_socket_replacement_between_health_and_completion_is_rejected",
+        "FAILED tests/test_prospective_server_session.py::test_real_synthetic_child_http_and_graceful_stop",
+        "FAILED tests/test_prospective_server_session.py::test_delayed_socket_creation_does_not_consume_health_attempts",
+        "FAILED tests/test_prospective_server_session.py::test_completion_request_hash_mismatch_rejected",
+        "FAILED tests/test_prospective_server_session.py::test_worker_join_failure_preserves_paths_and_blocks_next_run",
+        "FAILED tests/test_prospective_server_session.py::test_unexpected_directory_content_is_not_recursively_removed",
+        "FAILED tests/test_prospective_server_session.py::test_shared_deadline_expiry_stops_readiness_without_completion",
+        "FAILED tests/test_prospective_study_controller.py::test_two_real_synthetic_children_transport_and_admission",
+        "FAILED tests/test_unix_http_capture.py::test_exact_body_and_locked_receipt - ...",
+        "FAILED tests/test_unix_http_capture.py::test_post_request_bound_by_digest - P...",
+        "FAILED tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[301]",
+        "FAILED tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[400]",
+        "FAILED tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[500]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Length: 2\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: text/plain\\r\\nContent-Length: 2\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: -1\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 9999999\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Length: 2\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Type: application/json\\r\\nContent-Length: 2\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nTransfer-Encoding: chunked\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Encoding: gzip\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_short_body_retained - Permission...",
+        "FAILED tests/test_unix_http_capture.py::test_bad_http - PermissionError: [Err...",
+        "FAILED tests/test_unix_http_capture.py::test_absolute_deadline_stops_trickling_headers",
+        "FAILED tests/test_unix_http_capture.py::test_body_deadline_retains_partial_bytes",
+        "FAILED tests/test_unix_http_capture.py::test_shared_directory_rejected - Perm...",
+        "FAILED tests/test_unix_http_capture.py::test_connection_setup_expiry_returns_receipt",
+        "FAILED tests/test_unix_http_capture.py::test_connect_failure_returns_receipt",
+        "FAILED tests/test_unix_http_capture.py::test_socket_replacement_rejected - Pe...",
+        "FAILED tests/test_unix_http_capture.py::test_socket_symlink_and_foreign_owner_rejected",
+        "FAILED tests/test_unix_http_capture.py::test_http_header_line_bound - Permiss...",
+        "FAILED tests/test_unix_http_capture.py::test_malformed_header_not_silently_ignored"
+      ],
+      "exact_match_to_d2_failure_lines": true,
+      "comparison_receipt": "../../frontier-assurance_20261113/faw09-d2-local-engineering-20261117.json"
+    },
+    "direct_environment_probe": {
+      "operation": "socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)",
+      "result": "PermissionError",
+      "errno": 1,
+      "message": "Operation not permitted"
+    },
+    "conclusion": "failed_existing_socket_restriction; not a passed full gate",
+    "input_commit": "006d98cb60c72143b0517f0e7a446641642ddd5a",
+    "input_tree": "5c55fde1cbe324973b71413f63367c773391d523"
+  },
+  "final_document_checks": {
+    "status": "passed",
+    "json_files": 5,
+    "markdown_local_links": 74,
+    "json_relative_references": 27,
+    "context_files_verified_at_two_revisions": 23,
+    "protocol_questions": 7,
+    "independent_families": 2360,
+    "holdout_families": 1200,
+    "severe_holdout_families": 300,
+    "precision_calculations_reproduced": 8,
+    "task_markers": {
+      "completed": 4,
+      "pending": 39
+    },
+    "acyclic_packages": 11,
+    "privacy_scanned_files": 16,
+    "privacy_findings": 0,
+    "privacy_positive_control_detected": true,
+    "owned_diff_only": true,
+    "schema_contract_proposal_unchanged": true,
+    "commands": [
+      "uv run --no-sync python -m tools.validate_repository",
+      "git diff --check",
+      "uv run --no-sync python: JSON/path/hash/DAG/task/protocol arithmetic and existing privacy-scanner checks"
+    ],
+    "context_files_verified_at_publication_base": 23
+  },
+  "agent_panel": {
+    "status": "passed_bounded_DM01_review",
+    "reviewer_class": "agents",
+    "exact_model_deployment_revision": "not_exposed",
+    "roles": [
+      {
+        "role": "acceptance_architecture",
+        "reviewer": "/root/repo_fit_audit",
+        "status": "passed",
+        "authorship": "none; read-only",
+        "independent_checks": [
+          "23 context inputs at both commits",
+          "22 upstream raw byte/SHA256/Git blob/size identities",
+          "procedure totals and bounds",
+          "relative references",
+          "authority/receiving map"
+        ],
+        "scope_note": "Reviewed preceding draft; subsequent common-disposition/training-timing clarification checked by evidence/safety/integrator."
+      },
+      {
+        "role": "evidence_integrity",
+        "reviewer": "/root/decision_model_sources",
+        "status": "passed_after_two_findings_closed",
+        "authorship": "source pair author; independent of protocol/context authorship",
+        "independent_checks": [
+          "protocol precision/count/variant arithmetic",
+          "context inputs at both commits",
+          "no all-abstain loophole",
+          "data/model freeze and G selection timing",
+          "final common postprocessor and provisional training decisions"
+        ]
+      },
+      {
+        "role": "safety_privacy",
+        "reviewer": "/root/evaluation_and_ontology",
+        "status": "passed_after_assigned_protocol_clarification",
+        "authorship": "protocol author; not an independent or blinded protocol reviewer",
+        "checks": [
+          "no private/clinical data or authority expansion",
+          "candidate status and rights/runtime blockers",
+          "failures retained and explicit successful-review requirement",
+          "deterministic disposition authority",
+          "agent-reference limitations"
+        ]
+      },
+      {
+        "role": "integrator",
+        "reviewer": "/root",
+        "status": "final_document_checks_passed",
+        "checks": "Recorded final_document_checks; reviewed every owned-file diff and common-disposition/timing deltas."
+      }
+    ],
+    "closed_findings": [
+      {
+        "id": "DM01-R01",
+        "finding": "H agreement severe-label threshold ambiguous",
+        "resolution": "Completeness at 0.5; severe at selected component thresholds in MD/JSON."
+      },
+      {
+        "id": "DM01-R02",
+        "finding": "Source no-outcome-access wording conflicted with permitted training selection",
+        "resolution": "Training-only bounded selection permitted; no calibration/threshold/holdout-based selection or substitution."
+      },
+      {
+        "id": "DM01-R03",
+        "finding": "Provisional training decision mapping and final disposition authority not fixed",
+        "resolution": "Raw probabilities and inclusive 0.5 cutoffs for training; common deterministic precedence; G emits keyed probabilities only; R has no invented probabilities."
+      },
+      {
+        "id": "DM01-R04",
+        "finding": "Protocol date inconsistent with current Brisbane instruction",
+        "resolution": "Procedural date 2026-11-17; stable track ID and prespecified seed retained."
+      }
+    ],
+    "limitations": [
+      "Potential correlated agent errors; source/protocol authors also reviewed their domains.",
+      "Not independent human, clinical, legal or organisational validation.",
+      "No model/runtime execution, asset admission, data generation, holdout access or empirical qualification.",
+      "Exact-head hosted and merge evidence is observed separately after publication."
+    ]
+  },
+  "hosted_ci": {
+    "status": "not_yet_observed_for_DM01_final_head",
+    "pull_request": "https://github.com/edithatogo/rcagent/pull/147",
+    "authority": "expected-head normal merge after observed required checks; no bypass",
+    "ruleset_id": 21834601,
+    "required_contexts": [
+      "dependency-review",
+      "validate (ubuntu-latest)",
+      "validate (macos-latest)",
+      "validate (windows-latest)"
+    ],
+    "optional_offline_security": "Observe and disclose actual state separately; queued is not passed."
+  },
+  "initial_full_validation": {
+    "command": "uv run --no-sync python -m tools.full_validation",
+    "exit_code": 1,
+    "scope": "unchanged implementation/test bytes at the reconciled master; document checks repeated after DM01 finalisation",
+    "raw_log_sha256": "17d84a84da0e0d3b4f1a6878bb31d6c3e1b686bfcfe9d14c028eec3e5bb9ac77",
+    "passed_pre_pytest_gates": [
+      "Ruff correctness",
+      "Ruff formatting",
+      "ty",
+      "strict basedpyright",
+      "empty typing baseline and zero policy caps",
+      "Bandit security",
+      "Vulture",
+      "gremlin marker policy",
+      "repository governance",
+      "benchmark registry",
+      "seven benchmark regressions"
+    ],
+    "retained_warnings": [
+      "Existing Bandit nosec markers B108/B608 had no matching failure; no suppressions changed."
+    ],
+    "pytest": {
+      "failed": 52,
+      "passed": 2720,
+      "skipped": 11,
+      "seconds": 46.46,
+      "branch_coverage_percent": 93.38,
+      "coverage_floor_percent": 90,
+      "reported_failure_lines": [
+        "FAILED tests/test_prospective_primary_session.py::test_primary_uses_exact_selected_request_and_persists_candidate",
+        "FAILED tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[identity-drift]",
+        "FAILED tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[missing-package]",
+        "FAILED tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[interrupt]",
+        "FAILED tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[exit]",
+        "FAILED tests/test_prospective_primary_session.py::test_primary_failure_never_masks_http_or_cleanup_failure",
+        "FAILED tests/test_prospective_primary_session.py::test_http_failure_with_successful_gate_stays_failed",
+        "FAILED tests/test_prospective_primary_session.py::test_cleanup_failure_and_postflight_failure_both_retained",
+        "FAILED tests/test_prospective_primary_session.py::test_real_guarded_git_child_http_and_decoder_composition",
+        "FAILED tests/test_prospective_server_session.py::test_fixed_session_reserved_and_locked",
+        "FAILED tests/test_prospective_server_session.py::test_health_attempt_budget_stops_without_completion",
+        "FAILED tests/test_prospective_server_session.py::test_interrupted_health_keeps_failure_after_worker_cleanup",
+        "FAILED tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[duplicate]",
+        "FAILED tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[malformed]",
+        "FAILED tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[status]",
+        "FAILED tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[oversize]",
+        "FAILED tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[http]",
+        "FAILED tests/test_prospective_server_session.py::test_loading_health_retries_on_same_socket",
+        "FAILED tests/test_prospective_server_session.py::test_completion_failure_is_not_erased_by_successful_stop",
+        "FAILED tests/test_prospective_server_session.py::test_socket_replacement_between_health_and_completion_is_rejected",
+        "FAILED tests/test_prospective_server_session.py::test_real_synthetic_child_http_and_graceful_stop",
+        "FAILED tests/test_prospective_server_session.py::test_delayed_socket_creation_does_not_consume_health_attempts",
+        "FAILED tests/test_prospective_server_session.py::test_completion_request_hash_mismatch_rejected",
+        "FAILED tests/test_prospective_server_session.py::test_worker_join_failure_preserves_paths_and_blocks_next_run",
+        "FAILED tests/test_prospective_server_session.py::test_unexpected_directory_content_is_not_recursively_removed",
+        "FAILED tests/test_prospective_server_session.py::test_shared_deadline_expiry_stops_readiness_without_completion",
+        "FAILED tests/test_prospective_study_controller.py::test_two_real_synthetic_children_transport_and_admission",
+        "FAILED tests/test_unix_http_capture.py::test_exact_body_and_locked_receipt - ...",
+        "FAILED tests/test_unix_http_capture.py::test_post_request_bound_by_digest - P...",
+        "FAILED tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[301]",
+        "FAILED tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[400]",
+        "FAILED tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[500]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Length: 2\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: text/plain\\r\\nContent-Length: 2\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: -1\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 9999999\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Length: 2\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Type: application/json\\r\\nContent-Length: 2\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nTransfer-Encoding: chunked\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Encoding: gzip\\r\\n]",
+        "FAILED tests/test_unix_http_capture.py::test_short_body_retained - Permission...",
+        "FAILED tests/test_unix_http_capture.py::test_bad_http - PermissionError: [Err...",
+        "FAILED tests/test_unix_http_capture.py::test_absolute_deadline_stops_trickling_headers",
+        "FAILED tests/test_unix_http_capture.py::test_body_deadline_retains_partial_bytes",
+        "FAILED tests/test_unix_http_capture.py::test_shared_directory_rejected - Perm...",
+        "FAILED tests/test_unix_http_capture.py::test_connection_setup_expiry_returns_receipt",
+        "FAILED tests/test_unix_http_capture.py::test_connect_failure_returns_receipt",
+        "FAILED tests/test_unix_http_capture.py::test_socket_replacement_rejected - Pe...",
+        "FAILED tests/test_unix_http_capture.py::test_socket_symlink_and_foreign_owner_rejected",
+        "FAILED tests/test_unix_http_capture.py::test_http_header_line_bound - Permiss...",
+        "FAILED tests/test_unix_http_capture.py::test_malformed_header_not_silently_ignored"
+      ],
+      "exact_match_to_d2_failure_lines": true,
+      "comparison_receipt": "../../frontier-assurance_20261113/faw09-d2-local-engineering-20261117.json"
+    },
+    "direct_environment_probe": {
+      "operation": "socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)",
+      "result": "PermissionError",
+      "errno": 1,
+      "message": "Operation not permitted"
+    },
+    "conclusion": "failed_existing_socket_restriction; not a passed full gate",
+    "input_commit": "8a564826a3f51765f177f0d9823194718bacb7d9"
+  },
+  "integration_base_commit": "006d98cb60c72143b0517f0e7a446641642ddd5a",
+  "integration_base_tree": "5c55fde1cbe324973b71413f63367c773391d523",
+  "reviewed_artifacts": [
+    {
+      "path": "context-pack.md",
+      "sha256": "9cc60f64f8806bd4bbc8c7cf3aa541585a16d89376c3a74b2c320d6eb5e1f108"
+    },
+    {
+      "path": "context-snapshot.json",
+      "sha256": "0c91651e476101f68ba4daf9eb8c5edf2b619eaea8e1508db7f5658a8b69f802"
+    },
+    {
+      "path": "decisions.md",
+      "sha256": "d48241e64f3d059891b2005af859dc694cd709669b6cfb44cf679fb595709c65"
+    },
+    {
+      "path": "candidate-admission.json",
+      "sha256": "82d97863ae0bd8b53b02c1570c6d2702de4285c01bb000bdb4918d87560b78ac"
+    },
+    {
+      "path": "source-admission.md",
+      "sha256": "a7ca9279d261a35f3a42bbb0cde5ab0485c2db0d966b96b5a5c30e443b193fa0"
+    },
+    {
+      "path": "study-protocol.json",
+      "sha256": "c4019105b5d004bafda4a13dc7719cd3c66b5c2629ae0bb96d2d032e982fde0e"
+    },
+    {
+      "path": "study-protocol.md",
+      "sha256": "f44cc7c97a65b69c0ff2b7d0fe4c63aa0ec31200d637f89522dfc95ecfa0cd59"
+    }
+  ],
+  "completed_plan_items": [
+    "DM01.1",
+    "DM01.2",
+    "DM01.3",
+    "Checkpoint A1"
+  ],
+  "next_scope": "DM02_pending_not_started",
+  "publication_base": {
+    "commit": "5d00ce255cdb5dcabc7d4c749d568c1b9861c47e",
+    "tree": "e6706fc1b2406810c726cbe3cdbd24320d837758",
+    "delta_from_integrated_quality_input": "H4 acceptance documentation only; no implementation/test/dependency/workflow changes"
+  }
+}
