@@ -6,7 +6,7 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-12T20:10:44Z",
-  "updated_at": "2026-11-17T00:17:14.234523+10:00",
+  "updated_at": "2026-11-16T21:12:23+00:00",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/125",
@@ -20,7 +20,9 @@
     "d0_completion_pull_request": "https://github.com/edithatogo/rcagent/pull/144",
     "d1_branch": "feat/faw08-d1-extraction-20261116",
     "d1_implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/148",
-    "d1_acceptance_branch": "docs/faw08-d1-acceptance-20261117"
+    "d1_acceptance_branch": "docs/faw08-d1-acceptance-20261117",
+    "d2_branch": "feat/faw09-d2-timeline-20261117",
+    "d2_implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/150"
   },
   "autonomy": "continuous-autonomy-with-owner-decision-gates",
   "autonomy_contract": "../../autonomy.json",
@@ -34,7 +36,7 @@
   ],
   "description": "Repair confirmed integrity, public-export and template defects; implement strict quality tooling; coordinate staged source/timeline/decision demonstrations, triangulation, hallucination reduction and prospective frontier comparison.",
   "verification": {
-    "status": "faw08_d1_delivered_and_accepted",
+    "status": "faw09_d2_in_progress",
     "scope": "accepted_faw06_and_bounded_synthetic_d0_d1",
     "receipt": "./delivery-evidence.md",
     "model_runs": 0,
@@ -91,7 +93,7 @@
       "offline_security": "queued_not_a_completed_scan",
       "final_delivery": "Exact final documentation head must pass required checks and protected merge; observed acceptance will be recorded on PR #131."
     },
-    "current_work_package": "FAW09 / D2 (planned; not started)",
+    "current_work_package": "FAW09 / D2 (source verified; hosted acceptance pending)",
     "d0_contract": "./faw07-d0-contract.md",
     "d0_coordination": "./faw07-d0-coordination.json",
     "d0_completion_receipt": "./faw07-d0-completion-20261116.md",
@@ -125,7 +127,14 @@
       "privacy_secrets_run": 43880194259,
       "master_conformance_run": 43883158837,
       "observation": "./faw08-d1-acceptance-20261117.json"
-    }
+    },
+    "d2_contract": "./faw09-d2-contract.md",
+    "d2_completion_receipt": "./faw09-d2-completion-20261117.md",
+    "d2_review_receipt": "./faw09-d2-review-20261117.json",
+    "d2_conformance_receipt": "./faw09-d2-conformance-20261117.json",
+    "d2_execution_receipt": "../../../tests/fixtures/faw09_independent/verification-receipt.json",
+    "d2_local_engineering_receipt": "./faw09-d2-local-engineering-20261117.json",
+    "d2_publication_attempts": "./faw09-d2-publication-attempts-20261117.json"
   },
   "decisions": [
     "../../decisions/20261113-001-frontier-assurance.md"

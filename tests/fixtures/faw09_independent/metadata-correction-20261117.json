@@ -1,0 +1,62 @@
+{
+  "schema_version": "faw09-independent-metadata-correction-1.0",
+  "recorded_utc": "2026-11-16T21:10:49Z",
+  "reason": "Transparent timestamp representation correction for a reported Presidio PHONE_NUMBER false positive; no personal data or semantic result is removed.",
+  "failed_privacy_run": {
+    "id": 43956603597,
+    "url": "https://github.com/edithatogo/rcagent/actions/runs/43956603597",
+    "source_commit": "eb376cdb4144fbb91ac4db9c5ce2655059b8c4b7",
+    "reported_finding_count": 1,
+    "recognizer": "Presidio",
+    "entity_type": "PHONE_NUMBER",
+    "file": "tests/fixtures/faw09_independent/attempts/attempt-001-observations.json",
+    "line_at_original_commit": 4,
+    "field": "observed_utc"
+  },
+  "original": {
+    "commit": "eb376cdb4144fbb91ac4db9c5ce2655059b8c4b7",
+    "git_blob_sha1": "5f824100754fdfcb6b1571bed5eda8e149692b31",
+    "path": "tests/fixtures/faw09_independent/attempts/attempt-001-observations.json",
+    "file_sha256": "1de56aa3353c01a4db42dd8c6a2a595bd87542682eaf5bb975de4e43207f6651",
+    "bytes": 304999,
+    "preservation": "Exact original bytes remain retrievable from this published Git commit and blob."
+  },
+  "replacement": {
+    "path": "tests/fixtures/faw09_independent/attempts/attempt-001-observations.json",
+    "file_sha256": "8fb5bb289df77d09d1be0ea9e7c2c48203d7ff70b8029d7b97fdead3585062ff",
+    "bytes": 305025,
+    "observed_utc": "2026-11-16T20:55:14Z",
+    "observed_utc_microseconds": 86646,
+    "interpretation": "Parse observed_utc as whole-second UTC and add observed_utc_microseconds microseconds within that second."
+  },
+  "preservation_checks": {
+    "exact_original_instant_reconstructed": true,
+    "all_non_timestamp_fields_equal": true,
+    "actual_case_count": 34,
+    "original_actual_cases_canonical_sha256": "f88647812f23623514057c32e80f0fc2305e781fc08a1ab9a2dfe7d805d15f40",
+    "revised_actual_cases_canonical_sha256": "f88647812f23623514057c32e80f0fc2305e781fc08a1ab9a2dfe7d805d15f40",
+    "oracle_sha256": "dd3947ac70d54ccb5436040b1a190e19bba4f5b657a7b4781574eac76be13b92",
+    "all_verified_source_test_and_lock_hashes_unchanged": true,
+    "verification_receipt_sha256_unchanged": "5bfa53d0bea3a865d983c6e52359f69e50e2b897e35ede238f761a96735b43b5",
+    "cli_artifact_sha256_unchanged": "30228ca7a438bda9327f1e6bbf3e6f8c7d4b78d8aad7e06a3ff19e0543ad3760",
+    "dependent_hashes": "Existing receipts reference the corrected attempt by path, not its former byte hash. Their original bytes remain unchanged; this record binds both original and replacement attempt hashes."
+  },
+  "validation": {
+    "command": [
+      "/workspace/scratch/a739cac856a2/rcagent-review/.venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/test_faw09_independent_timeline.py::test_independent_frozen_oracle_and_all_coordinates",
+      "tests/test_faw09_independent_timeline.py::test_independent_aggregate_metrics_include_full_implied_order",
+      "-q"
+    ],
+    "exit_code": 0,
+    "stdout": "..                                                                       [100%]\n2 passed in 0.29s\n",
+    "stderr": "",
+    "scope": "Frozen oracle identity/coordinates, aggregate independent temporal verification, exact metadata reconstruction and unchanged receipt artifact hashes only. No broad source/CLI rerun."
+  },
+  "unchanged_controls": [
+    "No production or test code, oracle labels, actual temporal results, scanner configuration, scanner allowlist or escape encoding changed.",
+    "The failed privacy run remains recorded; successful scanner rerun is not claimed by this local correction record."
+  ]
+}

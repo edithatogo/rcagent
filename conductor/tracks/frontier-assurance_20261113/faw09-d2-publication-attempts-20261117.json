@@ -1,0 +1,94 @@
+{
+  "schema_version": "faw09-d2-publication-attempts-1.0",
+  "source_pr": 150,
+  "attempts": [
+    {
+      "source_commit": "eb376cdb4144fbb91ac4db9c5ce2655059b8c4b7",
+      "source_tree": "e8e255bf40c294dba475df84a334e8886cf49a48",
+      "quality_run": 43956603499,
+      "quality": "success",
+      "quality_jobs": [
+        {
+          "id": 133612681772,
+          "name": "Prose lint (Vale)",
+          "conclusion": "success",
+          "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43956603499/job/133612681772"
+        },
+        {
+          "id": 133612682323,
+          "name": "Release boundary mutation gate",
+          "conclusion": "success",
+          "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43956603499/job/133612682323"
+        },
+        {
+          "id": 133612682482,
+          "name": "validate (windows-latest)",
+          "conclusion": "success",
+          "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43956603499/job/133612682482"
+        },
+        {
+          "id": 133612682516,
+          "name": "Python validation (3.15.2)",
+          "conclusion": "success",
+          "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43956603499/job/133612682516"
+        },
+        {
+          "id": 133612682572,
+          "name": "Python validation (3.11)",
+          "conclusion": "success",
+          "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43956603499/job/133612682572"
+        },
+        {
+          "id": 133612682758,
+          "name": "validate (macos-latest)",
+          "conclusion": "success",
+          "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43956603499/job/133612682758"
+        },
+        {
+          "id": 133612682988,
+          "name": "Synthetic CPU and memory profile",
+          "conclusion": "success",
+          "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43956603499/job/133612682988"
+        },
+        {
+          "id": 133614857133,
+          "name": "Complete matrix branch coverage",
+          "conclusion": "success",
+          "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43956603499/job/133614857133"
+        },
+        {
+          "id": 133615126804,
+          "name": "validate (ubuntu-latest)",
+          "conclusion": "success",
+          "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43956603499/job/133615126804"
+        }
+      ],
+      "dependency_review_run": 43956603761,
+      "dependency_review": "success",
+      "privacy_run": 43956603597,
+      "privacy": "failure",
+      "gitleaks": "clean",
+      "presidio": {
+        "blocking_findings": 1,
+        "entity": "PHONE_NUMBER",
+        "path": "tests/fixtures/faw09_independent/attempts/attempt-001-observations.json",
+        "line": 4,
+        "field": "observed_utc"
+      },
+      "acceptance": "withheld_pending_metadata_correction_and_unchanged_hosted_gates"
+    }
+  ],
+  "correction": {
+    "receipt": "../../../tests/fixtures/faw09_independent/metadata-correction-20261117.json",
+    "representation": "whole-second UTC plus separate integer microseconds",
+    "exact_instant_preserved": true,
+    "actual_case_results_unchanged": 34,
+    "production_test_oracle_lock_and_cli_bytes_unchanged": true,
+    "scanner_rules_and_allowlists_unchanged": true,
+    "detector_component_check": "./faw09-d2-timestamp-check-20261117.json",
+    "positive_control_still_detected": true,
+    "full_scanner_rerun": "pending"
+  },
+  "scanner_pin": "edithatogo/repository-standards@985503bc8eae58e7d6ef36a6e5427d0077e0193c",
+  "final_delivery": "Pending subsequent exact-head CI and normal protected merge."
+}
