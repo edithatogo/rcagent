@@ -1,0 +1,218 @@
+{
+  "schema_version": "heaps-planning-1.0",
+  "track_id": "qld-heaps-review_20261116",
+  "status": "planning_only",
+  "issue": 140,
+  "hard_dependencies": [],
+  "work_packages": [
+    {
+      "id": "H1",
+      "title": "Source applicability and review scope",
+      "depends_on": [],
+      "deliverables": [
+        "source applicability receipt",
+        "minimal interface agreement",
+        "coordinator ownership allocation"
+      ],
+      "owned_scope": "dedicated source/profile planning; shared changes by coordinator",
+      "status": "planned",
+      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
+      "acceptance_ref": "./plan.md"
+    },
+    {
+      "id": "H2",
+      "title": "Portable workflow and original report mapping",
+      "depends_on": [
+        "H1"
+      ],
+      "deliverables": [
+        "HEAPS four-mode guidance",
+        "original report mapping",
+        "coordinated method/navigation corrections"
+      ],
+      "parallel_with": [
+        "H3"
+      ],
+      "owned_scope": "new HEAPS guidance/template after allocation; shared files by coordinator",
+      "status": "planned",
+      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
+      "acceptance_ref": "./plan.md"
+    },
+    {
+      "id": "H3",
+      "title": "Versioned profile and independent fixture design",
+      "depends_on": [
+        "H1"
+      ],
+      "deliverables": [
+        "profile schema contract",
+        "packet manifest/approval semantics",
+        "independent synthetic expected outcomes"
+      ],
+      "parallel_with": [
+        "H2"
+      ],
+      "owned_scope": "new HEAPS contract/fixture namespace after allocation",
+      "status": "planned",
+      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
+      "acceptance_ref": "./plan.md"
+    },
+    {
+      "id": "H4",
+      "title": "Deterministic synthetic review packet",
+      "depends_on": [
+        "H2",
+        "H3"
+      ],
+      "deliverables": [
+        "thin validator/assembler",
+        "original report/action views",
+        "deterministic receipt"
+      ],
+      "owned_scope": "new HEAPS adapter; shared interfaces and dispatch by coordinator",
+      "status": "planned",
+      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
+      "acceptance_ref": "./plan.md"
+    },
+    {
+      "id": "H5",
+      "title": "Independent engineering qualification and integration",
+      "depends_on": [
+        "H4"
+      ],
+      "deliverables": [
+        "actual-interface negative/positive/revision results",
+        "exact-head quality checks",
+        "coordinator acceptance"
+      ],
+      "owned_scope": "independent HEAPS verification plus coordinator integration",
+      "status": "planned",
+      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
+      "acceptance_ref": "./plan.md"
+    },
+    {
+      "id": "H6",
+      "title": "Local instrument alignment and conditional practice evaluation",
+      "depends_on": [
+        "H5"
+      ],
+      "deliverables": [
+        "authorised current instrument mapping",
+        "local conformity disposition",
+        "authorised bounded shadow evaluation"
+      ],
+      "preparatory_task": "H6.1",
+      "preparation_depends_on": [
+        "H1"
+      ],
+      "owned_scope": "local authorised source/process owners; engineering changes through coordinator",
+      "status": "planned",
+      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
+      "acceptance_ref": "./plan.md"
+    }
+  ],
+  "capability_gates": [
+    {
+      "id": "canonical-structure",
+      "consumer": "H4",
+      "prerequisite": "existing safety-work v1.1 and selected core interfaces",
+      "kind": "required",
+      "fallback": "validate structure/references only; do not infer clinical truth",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "exact-byte-spans",
+      "consumer": "H4",
+      "prerequisite": "Track13 D0 acceptance",
+      "kind": "conditional",
+      "fallback": "record/reference integrity only; no byte-span claim",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "automatic-extraction",
+      "consumer": "optional_later",
+      "prerequisite": "Track13 D1 acceptance",
+      "kind": "conditional",
+      "fallback": "prestructured synthetic observations",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "uncertain-chronology",
+      "consumer": "optional_later",
+      "prerequisite": "Track13 D2 acceptance",
+      "kind": "conditional",
+      "fallback": "preserve supplied partial ordering",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "decision-time",
+      "consumer": "optional_later",
+      "prerequisite": "Track13 D3 acceptance",
+      "kind": "conditional",
+      "fallback": "no actor/cutoff reconstruction claim",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "model-suggestions",
+      "consumer": "optional_later",
+      "prerequisite": "applicable Track12 component and Track13 D4 acceptance",
+      "kind": "conditional",
+      "fallback": "deterministic preparation and questions",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "accimap-view",
+      "consumer": "H4",
+      "prerequisite": "accepted issue139 graph contract and explicit review question",
+      "kind": "optional",
+      "fallback": "omit graph view",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "composed-d6-claim",
+      "consumer": "optional_later",
+      "prerequisite": "Track13 D6 and consumed component receipts",
+      "kind": "conditional",
+      "fallback": "bounded synthetic packet only",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "local-conformity",
+      "consumer": "H6",
+      "prerequisite": "current authorised local instrument and mapping acceptance",
+      "kind": "required_for_claim",
+      "fallback": "original draft; conformity unverified",
+      "state": "not_accepted_by_this_plan"
+    },
+    {
+      "id": "live-use",
+      "consumer": "H6",
+      "prerequisite": "applicable data/organisational authority and practice evidence",
+      "kind": "required_for_claim",
+      "fallback": "synthetic-only",
+      "state": "not_accepted_by_this_plan"
+    }
+  ],
+  "parallelism": {
+    "integration_lanes_max": 1,
+    "implementation_lanes_max": 2,
+    "starts_new_workers": false,
+    "capacity_owner": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
+    "note": "Logical parallelism does not override existing D0/AcciMap ownership or capacity."
+  },
+  "optional_partner_tracks": [
+    "accimap-workflow_20261116",
+    "death-review_20261113"
+  ],
+  "implementation_authority": "not_exercised_by_this_planning_request",
+  "order": [
+    "H1",
+    [
+      "H2",
+      "H3"
+    ],
+    "H4",
+    "H5",
+    "H6"
+  ]
+}

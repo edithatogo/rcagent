@@ -1,0 +1,78 @@
+{
+  "schema_version": "heaps-registration-proposal-1.0",
+  "status": "proposal_not_applied",
+  "track_id": "qld-heaps-review_20261116",
+  "issue": 140,
+  "owner": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
+  "observed_base": "c6892497aa0b03555d5145242c04965471eccc1d",
+  "track_number": null,
+  "numbering_rule": "Allocate after reconciling active AcciMap139 and other current tracks; do not reserve 15 implicitly.",
+  "registry_row_template": "| [ ] | [<assigned number> Queensland HEAPS](./tracks/qld-heaps-review_20261116/index.md) | [#140](https://github.com/edithatogo/rcagent/issues/140) | Source-aware HEAPS profile, synthetic packet and staged qualification; implementation pending |",
+  "index_entry": "[Queensland HEAPS review profile](./tracks/qld-heaps-review_20261116/index.md): H1 sources/scope, H2 guidance and H3 contract in parallel, H4 synthetic packet, H5 independent qualification, H6 conditional local alignment.",
+  "roadmap_record_template": {
+    "number": "COORDINATOR_ASSIGN",
+    "id": "qld-heaps-review_20261116",
+    "issue": 140,
+    "hard_dependencies": [],
+    "phase_dependencies": [
+      "frontier-assurance_20261113",
+      "cognitive-autopsy_20261107"
+    ],
+    "status": "planned"
+  },
+  "requested_changes": [
+    {
+      "paths": [
+        "conductor/index.md",
+        "conductor/tracks.md",
+        "conductor/roadmap.md",
+        "conductor/roadmap.json"
+      ],
+      "action": "Register stable track and assigned number with bounded phase dependency semantics after exact-head review; append the ID to workstreams[id=product-interfaces-distribution].tracks and populate this track metadata.track_number with the assigned number."
+    },
+    {
+      "paths": [
+        "conductor/jurisdictions/registry.json"
+      ],
+      "action": "Reference existing QLD authority; add reviewed HEAPS index/local instrument mapping and distinct public-index versus restricted-template availability only as needed."
+    },
+    {
+      "paths": [
+        "skills/rca-investigation/references/method-selection-matrix.md",
+        "skills/rca-investigation/references/method-combination-guide.md"
+      ],
+      "action": "Assign one shared owner to reconcile advisory method heuristics and timing with jurisdiction/local process; avoid mandatory bundles and contradictory combinations."
+    },
+    {
+      "paths": [
+        "skills/rca-investigation/SKILL.md",
+        "skills/rca-investigation/assets/template-admission.json"
+      ],
+      "action": "Add HEAPS navigation and admitted original asset only after H2 assets exist and pass review."
+    },
+    {
+      "paths": [
+        "conductor/capability-profiles.json",
+        "conductor/capability-profiles.md"
+      ],
+      "action": "Only if the coordinator chooses a separately registered capability, mark planned/synthetic scope; do not imply a supported runtime or add an unsupported profile class."
+    }
+  ],
+  "excluded_mutations": [
+    "existing D0 and AcciMap files",
+    "shared canonical schemas",
+    "tools/workbench.py",
+    "CI",
+    "manifests and dependency lock",
+    "quality allowances",
+    "historical studies"
+  ],
+  "acceptance": "Coordinator records explicit acceptance/return, shared registration and exact-head required checks; no merge authorised by this proposal.",
+  "workstream_membership": {
+    "workstream_id": "product-interfaces-distribution",
+    "parent_issue": 4,
+    "append_track_id": "qld-heaps-review_20261116",
+    "target": "conductor/roadmap.json workstreams[id=product-interfaces-distribution].tracks"
+  },
+  "numbering_application": "After allocation, set the roadmap number and this track metadata.json track_number consistently; preserve null/unassigned proposal status until then."
+}

@@ -1,0 +1,63 @@
+{
+  "track_id": "qld-heaps-review_20261116",
+  "title": "Queensland HEAPS Review Profile and Staged Qualification",
+  "type": "feature",
+  "evidence_schema": "1.0",
+  "status": "new",
+  "created_at": "2026-11-16T07:34:21+00:00",
+  "updated_at": "2026-11-16T07:37:57+00:00",
+  "workstream": "product-interfaces-distribution",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/140",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/4"
+  },
+  "autonomy": "continuous-autonomy-with-owner-decision-gates",
+  "autonomy_contract": "../../autonomy.json",
+  "hard_dependencies": [],
+  "phase_dependencies": [
+    "frontier-assurance_20261113",
+    "cognitive-autopsy_20261107"
+  ],
+  "dependency_semantics": "Only actually consumed capabilities gate dependent claims; no whole-track completion prerequisite. AcciMap and death review are optional partners.",
+  "delivery_plan": "./delivery-plan.json",
+  "source_inventory": "./sources.json",
+  "description": "Plan a Queensland HEAPS profile over existing evidence/actions, source-aware local template mapping, deterministic synthetic packet and staged qualification.",
+  "owners": {
+    "planning_scope": "current HEAPS planning task / issue140",
+    "shared_integrator": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
+    "implementation": "unassigned; reconcile capacity and paths before execution"
+  },
+  "owned_paths": [
+    "conductor/tracks/qld-heaps-review_20261116/**"
+  ],
+  "registration": {
+    "status": "pending_coordinator_integration",
+    "track_number": null,
+    "proposal": "./registration-proposal.json"
+  },
+  "verification": {
+    "status": "planning_checks_and_agent_review_passed",
+    "scope": "documentation_and_planning_contracts_only",
+    "receipt": "./planning-evidence.md",
+    "agent_review": "./review.md",
+    "runtime_implementation": "not_started",
+    "heaps_tests_executed": 0,
+    "model_runs": 0,
+    "real_cases_processed": 0,
+    "qualified_clinical_capabilities": 0,
+    "official_template_conformity": "unverified",
+    "json_documents": 5,
+    "work_packages": 6,
+    "acceptance_design_cases": 25,
+    "local_link_errors": 0,
+    "repository_governance_validation": "passed",
+    "agent_review_status": "two_agent_reviews_findings_remediated",
+    "hosted_checks": "not_claimed_by_local_planning_receipt",
+    "shared_registration": "pending_coordinator_integration"
+  },
+  "decision_gates": [
+    "Only genuinely new data use, rights, external action, spend or operational scope beyond existing authority",
+    "Case-specific clinical/legal/cultural/organisational decisions remain with authorised people"
+  ],
+  "observed_base": "c6892497aa0b03555d5145242c04965471eccc1d"
+}
