@@ -14,6 +14,16 @@ Continue automatically through ready tasks, agent review and bounded rework. Do 
 
 ## Phase 1: Snapshot, contracts and frozen design — target days 1–2
 
+The [16 November repository-review refinement](../frontier-assurance_20261113/recommendations-20261116.md)
+maps dependency reuse, availability-sensitive evaluation and report-quality
+rubrics to the existing CAW leaves. Prefer conventional baselines and thin
+optional Inspect AI/document adapters with exact-version fit-gap receipts.
+CAW12's outcome × availability experiment is the first distinctive research
+priority; useful cue sensitivity is scored separately from outcome invariance.
+Final packet rendering/correction propagation belongs to FAW14/16, not an
+accidental dependency on optional CAW14–19 process/synthetic-world studies.
+These are pending implementation refinements, not executed experiments.
+
 Execution now uses the [Track 13 capability ladder](../../research/frontier-assurance/capability-ladder.md): repaired integrity/privacy boundaries first, then D0 evidence binding, D1 explicit extraction, D2 uncertain timelines and D3 decision-time packets. Existing CAW identifiers remain canonical. Death-review composition is [Track 14](../death-review_20261113/index.md); additional models/modalities require measured complementary error reduction.
 
 - [ ] Resolve the exact HDC source/Hugging Face revision through the corpus subtrack; inventory actual case payloads, duplicates, completeness and source spans.

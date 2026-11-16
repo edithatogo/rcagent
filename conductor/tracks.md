@@ -19,6 +19,15 @@
 
 The [8 November local-model planning note](./tracks/local-model-cognitive-autopsy_20261108/index.md) is an input to Tracks 12/13, not a second implementation owner. It does not reopen archived Track 08 or expand its empty supported set.
 
+The [16 November recommendation map and implementation order](./tracks/frontier-assurance_20261113/recommendations-20261116.md)
+refines Tracks 12–14 without changing their package counts or accepting pending
+capabilities. AcciMap [#139](https://github.com/edithatogo/rcagent/issues/139)
+(`accimap-workflow_20261116`) and HEAPS
+[#140](https://github.com/edithatogo/rcagent/issues/140)
+(`qld-heaps-review_20261116`) are existing parallel owner handoffs; their track
+numbers and shared registration await coordinator reconciliation. This entry
+does not duplicate their track content or claim their implementation.
+
 ### Workstream A: Foundation and Governance
 
 Parent: [GitHub #2](https://github.com/edithatogo/rcagent/issues/2)

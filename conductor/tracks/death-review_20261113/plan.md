@@ -13,6 +13,17 @@ Continue automatically through ready work, agent review and bounded rework. Do n
 
 ## Phase 1 — Current authority and minimal contracts
 
+The [16 November repository-review refinement](../frontier-assurance_20261113/recommendations-20261116.md)
+places this profile on the shared D1–D3 → qualified selected D6 path. DR-01–04
+source/contract preparation may proceed in parallel. D6 acceptance requires
+canonical renderer validation, final-output/omission checks and evidence-change
+propagation for included components; it does not require every optional model,
+OCR or process experiment. AcciMap #139 and HEAPS #140 keep their existing owners;
+consume their accepted handoffs only where this profile actually uses them.
+DR-13–21 retain their separate study/practice acceptance criteria, with R09/R10
+adding source-qualified rubric and workflow-comparison detail. No source gap or
+runtime qualification is closed by this planning incorporation.
+
 - [ ] DR-01: obtain the complete current PD2026_036 policy through an available authorised source; verify effective arrangements, replacement status, changed deadlines and current resources. Preserve the 2020/2026 transition record.
 - [ ] DR-02: resolve QH-HSDGDL-032-2 effective-date metadata conflict; obtain the applicable HHS mortality/M&M instrument and current NSW screening tool/version where needed. Do not stall generic synthetic work on these route-specific gaps.
 - [ ] DR-03: confirm current specialty destinations, including the NSW CHASM transition and perinatal committee references; mark unresolved specialty routes rather than silently use an obsolete destination.

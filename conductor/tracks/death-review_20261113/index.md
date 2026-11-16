@@ -4,6 +4,7 @@ Status: planning and portable guidance delivered; executable death-review suppor
 
 - [Specification and acceptance criteria](./spec.md)
 - [Incremental implementation plan](./plan.md)
+- [16 November recommendations and shared implementation order](../frontier-assurance_20261113/recommendations-20261116.md)
 - [Metadata](./metadata.json)
 - [Evidence ledger](./evidence.jsonl)
 - [Scoped planning verification](./planning-evidence.md)
