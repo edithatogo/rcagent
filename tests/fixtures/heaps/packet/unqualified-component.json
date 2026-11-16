@@ -1,0 +1,7 @@
+{
+  "fixture_type": "unqualified_optional_component_placeholder",
+  "data_class": "generated_synthetic",
+  "component": "accimap",
+  "qualification": "not_established",
+  "note": "This object is not graph data, an AcciMap result or an inherited component qualification."
+}

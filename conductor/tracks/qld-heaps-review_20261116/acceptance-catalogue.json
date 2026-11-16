@@ -1,0 +1,170 @@
+{
+  "schema_version": "heaps-acceptance-design-1.0",
+  "track_id": "qld-heaps-review_20261116",
+  "status": "independent_design_frozen_not_runtime_executed",
+  "data_class": "generated_synthetic_design",
+  "cases": [
+    {
+      "id": "HP01",
+      "scenario": "correct synthetic packet",
+      "expected_behaviour": "accept structural/reference contract and produce explicit draft scope",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP02",
+      "scenario": "wrong canonical case ID",
+      "expected_behaviour": "reject profile binding",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP03",
+      "scenario": "stale canonical version/hash",
+      "expected_behaviour": "reject stale profile",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP04",
+      "scenario": "wrong entity kind or unresolved reference",
+      "expected_behaviour": "reject typed reference",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP05",
+      "scenario": "recommendation without linked condition/finding",
+      "expected_behaviour": "flag unsupported or incomplete; no accepted recommendation",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP06",
+      "scenario": "withdrawn/rejected factor in accepted findings",
+      "expected_behaviour": "preserve status and reject invalid promotion",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP07",
+      "scenario": "packet changed after approval",
+      "expected_behaviour": "earlier approval stale for changed packet",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP08",
+      "scenario": "conflicting participant accounts",
+      "expected_behaviour": "preserve both accounts and unresolved conflict",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP09",
+      "scenario": "participation missing/declined/unavailable",
+      "expected_behaviour": "do not infer consultation or agreement",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP10",
+      "scenario": "HEAPS selected with no statutory authority",
+      "expected_behaviour": "no inferred RCA protection/severity/reportability",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP11",
+      "scenario": "current local template unavailable",
+      "expected_behaviour": "draft preparation allowed; conformity withheld",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP12",
+      "scenario": "template/source revision changes",
+      "expected_behaviour": "affected mapping and approval require revalidation",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP13",
+      "scenario": "missing trigger date or applicable calendar",
+      "expected_behaviour": "deadline unresolved; no invented timestamp",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP14",
+      "scenario": "review method changed",
+      "expected_behaviour": "existing obligation clock unchanged",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP15",
+      "scenario": "action implemented without outcomes",
+      "expected_behaviour": "effectiveness remains unestablished",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP16",
+      "scenario": "report generated without system-of-record receipt",
+      "expected_behaviour": "no external submission/closure claim",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP17",
+      "scenario": "non-synthetic input",
+      "expected_behaviour": "reject current synthetic-only pathway",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP18",
+      "scenario": "duplicate text/OCR/summary from one source",
+      "expected_behaviour": "preserve source family; no invented independent corroboration",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP19",
+      "scenario": "missing documentation",
+      "expected_behaviour": "gap remains gap; no automatic care-omission finding",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP20",
+      "scenario": "empty/all-abstain packet",
+      "expected_behaviour": "no successful completed review claim",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP21",
+      "scenario": "identical replay, round-trip and object-key reordering under existing canonicalisation",
+      "expected_behaviour": "identical admitted values and revisions retain canonical identity and deterministic payload; preserve uncertainty and verdicts",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP22",
+      "scenario": "optional AcciMap absent or unqualified",
+      "expected_behaviour": "core packet available; no graph qualification claim",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP23",
+      "scenario": "concurrent death/incident/coronial questions",
+      "expected_behaviour": "preserve distinct open route questions",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP24",
+      "scenario": "unknown fields or malformed required values",
+      "expected_behaviour": "reject or explicitly diagnose according to frozen contract; never silently repair",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "HP25",
+      "scenario": "canonical array permutation or other changed canonical bytes",
+      "expected_behaviour": "retain changed content identity and stale profile/approval bindings; only explicitly unordered collections may preserve semantic verdicts, never silently preserve the old hash",
+      "execution_status": "not_run"
+    }
+  ],
+  "future_harness_requirements": [
+    "Independent expectations frozen before implementation execution",
+    "Actual public interface and subprocess exercised",
+    "Positive and negative denominators retained",
+    "Exact-head input/output/component evidence",
+    "No fabricated clinical findings or template conformity"
+  ],
+  "independent_oracle": "../../../tests/fixtures/heaps/oracle.json",
+  "h3_receipt": "./h3.md",
+  "case_count": 25,
+  "variant_count": 38,
+  "runtime_cases_executed": 0
+}

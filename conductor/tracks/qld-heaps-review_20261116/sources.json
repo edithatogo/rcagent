@@ -1,0 +1,289 @@
+{
+  "schema_version": "1.0.0",
+  "inventory_kind": "track_planning_sources",
+  "track_id": "qld-heaps-review_20261116",
+  "accessed_on": "2026-11-16",
+  "timezone": "Australia/Brisbane",
+  "canonical_authority_registry": "../../jurisdictions/registry.json",
+  "active_authority_registry": false,
+  "runtime_rules_enabled": false,
+  "source_bytes_redistributed": false,
+  "official_templates_copied": false,
+  "hash_policy": "Record a checksum only for source bytes actually obtained; no source bytes or invented hashes are recorded by this planning inventory.",
+  "authority_source_references": [
+    {
+      "source_id": "qld-qh-hsd-032",
+      "registry_path": "../../jurisdictions/registry.json",
+      "observation_status": "full_public_html_text_inspected",
+      "observed_revision": "Version 6.0, 9 October 2024; review date 9 October 2027",
+      "pinpoints": [
+        "Mandatory requirements: Clinical incident management",
+        "Mandatory requirements: Patient safety alerts and notifications",
+        "Version control"
+      ],
+      "supports": [
+        "For applicable SAC1 incidents, reporting through RiskMan within one business day of awareness and analysis/report submission within 90 calendar days of reporting as SAC1.",
+        "Analysis reports contain event facts, contributing factors and recommendations addressing recurrence.",
+        "Locally identified patient safety issues with potential statewide impact are reported through the authorised process."
+      ],
+      "limitations": [
+        "This record references the existing canonical source; it neither replaces its metadata nor creates a second rules registry.",
+        "The directive does not make every death or incident a SAC1 event.",
+        "Correct applicability, distinct trigger dates and authorised submission remain necessary; generating a report does not prove submission.",
+        "No new deadline rule or operational connector is enabled by this track inventory."
+      ],
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured"
+    },
+    {
+      "source_id": "qld-qh-hsdgdl-032-2",
+      "registry_path": "../../jurisdictions/registry.json",
+      "observation_status": "full_public_html_text_inspected_with_metadata_conflict",
+      "observed_revision": "Version history 4.0 dated 13 March 2026; page last updated 18 June 2026",
+      "pinpoints": [
+        "3.2.2-3.2.4: method selection and statutory RCA conditions",
+        "3.2.6-3.2.9: participation and report content",
+        "3.3.1-3.3.4: recommendations, implementation and dissemination",
+        "6-7: approval, implementation and version control"
+      ],
+      "supports": [
+        "Queensland Health does not prescribe one analysis method for SAC1 incidents.",
+        "Patient, family and carer perspectives and consumer representation inform the analysis and recommendations.",
+        "Accessible reports distinguish factual descriptions, contributing factors and recommendations.",
+        "Recommendations should identify responsible people, timescales, monitoring, expected outcomes and measures of impact and sustainability.",
+        "Statutory RCA protection has conditions distinct from the review method label; reportable-event status is a stated necessary condition."
+      ],
+      "metadata_conflict": {
+        "header_effective_date": "2024-07-01",
+        "header_review_date": "2027-07-01",
+        "approval_block_effective_date": "2027-07-01",
+        "version_history_entry": "4.0, 2026-03-13",
+        "disposition": "Preserve the conflict and canonical registry record; do not infer withdrawal or silently correct the issuer's dates."
+      },
+      "limitations": [
+        "Guidance expressed as should is not converted into a mandatory rule without a separate applicable authority.",
+        "The public guideline does not establish the exact current HEAPS template fields or CHHHS local workflow.",
+        "A reportable event is not by itself proof that statutory RCA protection applies; authorised case-specific governance remains separate.",
+        "No source-text interpretation or method selector grants clinical, legal, disclosure or organisational authority."
+      ],
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured"
+    }
+  ],
+  "supplementary_sources": [
+    {
+      "source_id": "heaps-qld-sqep-template-index",
+      "title": "Incident review templates",
+      "issuer": "Queensland Health Safety and Quality Education Program",
+      "url": "https://sqep.csds.qld.edu.au/resources/incident-review-templates/",
+      "document_date": "2024-06-06",
+      "date_basis": "page last-updated date",
+      "source_role": "official_resource_discovery",
+      "content_status": "full_public_landing_page_inspected_linked_qheps_templates_not_accessed",
+      "pinpoints": [
+        "HEAPS tools description",
+        "Audience: Queensland Health",
+        "View Resource (QHEPS) link"
+      ],
+      "supports": [
+        "An official public resource index points to HEAPS tools and morbidity and mortality review templates on QHEPS."
+      ],
+      "limitations": [
+        "The linked HEAPS tools were not retrieved and no intranet authentication was attempted.",
+        "Exact current fields, sections, mandatory rules, factor taxonomy, local adaptations and redistribution rights remain unknown.",
+        "The landing-page update date is not a verified template revision."
+      ],
+      "rights_handling": "links_and_original_mapping_only; linked template rights unknown",
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured"
+    },
+    {
+      "source_id": "heaps-qld-best-practice-guide-2023",
+      "title": "Best practice guide to clinical incident management",
+      "issuer": "State of Queensland, Queensland Health",
+      "version": "Second edition, January 2023",
+      "document_date": "2023-01",
+      "date_precision": "month",
+      "url": "https://clinicalexcellence.qld.gov.au/sites/default/files/2018-01/clinicalincidentguide.pdf",
+      "alternative_urls_attempted": [
+        "https://clinicalexcellence.qld.gov.au/sites/default/files/docs/resources/clinicalincidentguide.pdf",
+        "https://clinicalexcellence.qld.gov.au/sites/default/files/docs/resourses/clinicalincidentguide.pdf"
+      ],
+      "source_role": "official_practice_guidance_partial_observation",
+      "content_status": "partial_indexed_text_inspected_subsequent_live_fetches_failed",
+      "retrieval_detail": "The initial web retrieval returned indexed PDF text with 126 pages and 7041 total lines reported, but displayed only lines 0-544 covering the title, licence, contents and introductory material. A separate search excerpt exposed printed page 42. Subsequent live open/find/screenshot requests returned 404 or inaccessible responses. No complete PDF bytes were obtained.",
+      "pinpoints": [
+        "Printed page 2: publication and licence statement, initial indexed text",
+        "Printed pages 3-5: contents, initial indexed text",
+        "Printed page 42: analysis-method description, indexed search excerpt only"
+      ],
+      "supports": [
+        "The observed edition identifies HEAPS, RCA and London Protocol as tools available for comprehensive analysis.",
+        "The guide contents distinguish general incident-management stages including preparation, analysis, follow-through and closing the loop."
+      ],
+      "limitations": [
+        "The /2018-01/ URL path is not the document edition; the inspected title identifies January 2023.",
+        "The page 42 passage was indexed text, not a successfully retrieved current PDF page.",
+        "The general six incident-management stages do not establish an authenticated six-step HEAPS template.",
+        "No complete current-content, current-link or template-fidelity claim is admitted from this partial observation."
+      ],
+      "rights_handling": "Initial indexed page 2 states Creative Commons Attribution 3.0 Australia for the guide; this inventory links and paraphrases only. No template, logo or third-party-material rights are inferred.",
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured"
+    },
+    {
+      "source_id": "heaps-qld-learning-action-2010",
+      "title": "Patient Safety: From Learning to Action III",
+      "issuer": "Queensland Health",
+      "document_date": "2010-05",
+      "date_precision": "month",
+      "url": "https://www.health.qld.gov.au/__data/assets/pdf_file/0024/423537/lta3.pdf",
+      "source_role": "historical_method_description",
+      "content_status": "relevant_official_pdf_text_inspected",
+      "pinpoints": [
+        "Printed page 1: publication and reproduction conditions",
+        "Printed page 14: HEAPS contributing-factor domains and analysis boundaries"
+      ],
+      "supports": [
+        "Historical HEAPS domains include patient, task, practitioner, team, workplace and organisational factors.",
+        "The historical account describes staff training and system learning alongside, rather than replacing, separate accountability processes."
+      ],
+      "limitations": [
+        "This report concerns 2007-08 practice and superseded incident-management arrangements.",
+        "Historical descriptions do not set current SAC eligibility, mandated method selection, deadlines or team membership.",
+        "The six factor domains are not six process steps and are not a verified current official template taxonomy."
+      ],
+      "rights_handling": "links_and_original_mapping_only; no report or template copy redistributed",
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured"
+    },
+    {
+      "source_id": "heaps-metro-north-governance-2021",
+      "title": "Independent Governance Review: Metro North Hospital and Health Services - Caboolture Hospital - Surgery",
+      "issuer": "Independent review published by Metro North Health",
+      "version": "1.0",
+      "document_date": "2021-10",
+      "date_precision": "month",
+      "url": "https://metronorth.health.qld.gov.au/wp-content/uploads/2021/11/independent-governance-review-2021.pdf",
+      "source_role": "local_review_findings_and_quality_control_recommendations",
+      "content_status": "relevant_official_pdf_text_inspected",
+      "pinpoints": [
+        "Printed pages 4-5: recommendations 8-10"
+      ],
+      "supports": [
+        "The review recommends independent re-review, explicit timeline sections and links between contributing factors and recommendations in HEAPS and RCA reports.",
+        "It recommends checking duplicated prior recommendations and governance review before finalisation."
+      ],
+      "limitations": [
+        "These are recommendations from a particular 2021 review, not a current statewide HEAPS mandate or proof of CHHHS policy.",
+        "Proposed rcagent quality checks draw on these failure modes but do not claim that agents supply independent clinical review."
+      ],
+      "rights_handling": "links_and_original_mapping_only; no report or official template copied",
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured"
+    },
+    {
+      "source_id": "heaps-oho-incident-management-2024",
+      "title": "Health service entity's management and reporting of clinical incidents - snapshot report",
+      "issuer": "Office of the Health Ombudsman, Queensland",
+      "evaluation_date": "2024-08",
+      "date_precision": "month",
+      "url": "https://www.oho.qld.gov.au/assets/reports/snapshot-report-202409-clinical-incidents.pdf",
+      "source_role": "regulator_evaluation_and_improvement_recommendations",
+      "content_status": "full_two_page_official_pdf_text_inspected",
+      "pinpoints": [
+        "Page 1: wider learnings and recommendations",
+        "Page 2: evidence gaps in action-plan and improvement follow-through"
+      ],
+      "supports": [
+        "Review recurring themes and implementation progress; date action plans and identify responsible people and ongoing or completed actions.",
+        "The evaluated entity had gaps in evidence connecting audit findings to implemented corrective actions."
+      ],
+      "limitations": [
+        "The report evaluates one entity; it does not establish the performance of CHHHS or every HEAPS review.",
+        "Implementation progress is not proof of effectiveness, and this source is not a HEAPS field-level specification."
+      ],
+      "rights_handling": "links_and_original_mapping_only; no report copy redistributed",
+      "byte_capture_sha256": null,
+      "hash_status": "no_source_bytes_captured"
+    }
+  ],
+  "local_source_intake": {
+    "status": "awaiting_authorised_blank_current_material",
+    "scope": [
+      "Current CHHHS clinical incident management procedure and applicable HEAPS review template",
+      "Relevant statewide HEAPS tool revision and any documented local adaptation"
+    ],
+    "required_provenance": [
+      "Issuer and accountable local custodian",
+      "Document identifier, title, version, approval/effective/review dates and current-status confirmation",
+      "Relationship to the statewide instrument and scope of local applicability",
+      "Source location, access date, access classification and authorised environment",
+      "Permission to inspect, adapt and redistribute recorded separately",
+      "Checksum of actual obtained bytes if an authorised copy is acquired"
+    ],
+    "content_boundary": "Blank documents only, without patient, staff, case or incident identifiers, credentials, completed reviews or internal comments. Blank does not itself mean public or redistributable.",
+    "public_repository_admission": "Keep restricted source bytes in the authorised environment. Admit only a rights-cleared original field crosswalk and synthetic examples to the public repository; do not copy official wording, branding or templates by default.",
+    "field_crosswalk": [
+      "Source section and field locator",
+      "Required, optional or conditional status with exact source basis",
+      "Canonical rcagent object and provenance mapping",
+      "Local role, approval or escalation dependency",
+      "Conflict, ambiguity, missing evidence and disposition"
+    ],
+    "dependent_claims_held": [
+      "Exact official HEAPS template fidelity",
+      "Current CHHHS policy conformance",
+      "Local clinical, legal, records, disclosure or deployment approval"
+    ],
+    "independent_work_permitted": "Public-source planning, original contracts, synthetic fixtures and non-operational quality checks may proceed without implying that the local-source gaps are resolved."
+  },
+  "h1_refresh": {
+    "reviewed_at": "2026-11-16T11:03:02+00:00",
+    "timezone": "Australia/Brisbane",
+    "scope": "public_source_applicability_only",
+    "current_sources_rechecked": [
+      "qld-qh-hsd-032",
+      "qld-qh-hsdgdl-032-2",
+      "heaps-qld-sqep-template-index"
+    ],
+    "disposition": "applicability_classification_retained_with_guideline_metadata_conflict_and_local_instrument_gap",
+    "guide_retrieval_attempts": [
+      {
+        "url": "https://clinicalexcellence.qld.gov.au/sites/default/files/2018-01/clinicalincidentguide.pdf",
+        "outcome": "web_retrieval_reported_http_404"
+      },
+      {
+        "url": "https://clinicalexcellence.qld.gov.au/sites/default/files/docs/resources/clinicalincidentguide.pdf",
+        "outcome": "inaccessible_via_web_retrieval_tool"
+      },
+      {
+        "url": "https://clinicalexcellence.qld.gov.au/sites/default/files/docs/resourses/clinicalincidentguide.pdf",
+        "outcome": "web_retrieval_reported_http_404"
+      }
+    ],
+    "supporting_discovery_sources": [
+      {
+        "url": "https://sqep.csds.qld.edu.au/clinical-incident-management/",
+        "pinpoint": "Guides and other tools: QHEPS links",
+        "observation": "The public page states that QHEPS links require a QH-networked computer.",
+        "role": "access_boundary_evidence_only"
+      },
+      {
+        "url": "https://www.health.qld.gov.au/system-governance/policies-standards/guidelines/patient-safety-net",
+        "pinpoint": "Section 9 Supporting documents; effective 12 October 2026",
+        "observation": "The guideline still cites the second edition, January 2023 clinical incident management guide.",
+        "role": "guide_reference_evidence_only_not_heaps_rules_or_full_guide_retrieval"
+      }
+    ],
+    "historical_sources_not_freshly_retrieved": [
+      "heaps-qld-learning-action-2010",
+      "heaps-metro-north-governance-2021",
+      "heaps-oho-incident-management-2024"
+    ],
+    "source_bytes_captured": false,
+    "official_template_inspected": false,
+    "runtime_rules_activated": false,
+    "receipt": "./h1.md"
+  }
+}

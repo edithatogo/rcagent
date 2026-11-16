@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rcagent.local/schemas/heaps-review-decision-1.0",
+  "title": "Detached synthetic-draft packet decision; no substantive authority",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision_id",
+    "scope",
+    "data_class",
+    "privacy_mode",
+    "manifest_binding",
+    "decision",
+    "author_role_ref",
+    "reviewer_role_ref",
+    "authority_status",
+    "substantive_approval",
+    "conflict_state",
+    "issued_at",
+    "expires_at",
+    "evaluated_at",
+    "reason"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "heaps-review-decision-1.0"
+    },
+    "decision_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._:-]{0,127}$"
+    },
+    "scope": {
+      "const": "heaps-synthetic-draft-packet"
+    },
+    "data_class": {
+      "const": "generated_synthetic"
+    },
+    "privacy_mode": {
+      "const": "fully_local"
+    },
+    "manifest_binding": {
+      "$ref": "#/$defs/manifest_binding"
+    },
+    "decision": {
+      "enum": [
+        "pending",
+        "approved_synthetic_draft",
+        "returned",
+        "rejected"
+      ]
+    },
+    "author_role_ref": {
+      "$ref": "#/$defs/role_ref"
+    },
+    "reviewer_role_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/role_ref"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "authority_status": {
+      "const": "unverified"
+    },
+    "substantive_approval": {
+      "const": "not_established"
+    },
+    "conflict_state": {
+      "enum": [
+        "unresolved",
+        "declared_synthetic"
+      ]
+    },
+    "issued_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "evaluated_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "const": "approved_synthetic_draft"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reviewer_role_ref": {
+            "$ref": "#/$defs/role_ref"
+          },
+          "conflict_state": {
+            "const": "declared_synthetic"
+          },
+          "issued_at": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+          },
+          "expires_at": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+          },
+          "evaluated_at": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "role_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "role"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+        }
+      }
+    },
+    "manifest_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_id",
+        "raw_sha256",
+        "hash_domain"
+      ],
+      "properties": {
+        "manifest_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]{0,127}$"
+        },
+        "raw_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "hash_domain": {
+          "const": "sha256-raw-bytes-v1"
+        }
+      }
+    }
+  }
+}

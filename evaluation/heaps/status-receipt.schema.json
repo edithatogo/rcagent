@@ -1,0 +1,396 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rcagent.local/schemas/heaps-status-receipt-1.0",
+  "title": "Independent HEAPS synthetic preparation and checking receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_id",
+    "data_class",
+    "privacy_mode",
+    "profile_binding",
+    "manifest_binding",
+    "decision_binding",
+    "preparation",
+    "structural_check",
+    "source_check",
+    "template_mapping",
+    "review",
+    "submission",
+    "clinical_review",
+    "actual_authority",
+    "counts",
+    "errors",
+    "limitations",
+    "evaluated_at",
+    "source_check_scope"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "heaps-status-receipt-1.0"
+    },
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._:-]{0,127}$"
+    },
+    "data_class": {
+      "const": "generated_synthetic"
+    },
+    "privacy_mode": {
+      "const": "fully_local"
+    },
+    "profile_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "profile_version",
+        "raw_sha256",
+        "hash_domain"
+      ],
+      "properties": {
+        "profile_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]{0,127}$"
+        },
+        "profile_version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "raw_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "hash_domain": {
+          "const": "sha256-raw-bytes-v1"
+        }
+      }
+    },
+    "manifest_binding": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/manifest_binding"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "decision_binding": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "decision_id",
+            "raw_sha256",
+            "hash_domain"
+          ],
+          "properties": {
+            "decision_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._:-]{0,127}$"
+            },
+            "raw_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "hash_domain": {
+              "const": "sha256-raw-bytes-v1"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "preparation": {
+      "enum": [
+        "not_started",
+        "prepared",
+        "empty",
+        "all_abstain",
+        "failed"
+      ]
+    },
+    "structural_check": {
+      "enum": [
+        "not_checked",
+        "passed",
+        "failed"
+      ]
+    },
+    "source_check": {
+      "enum": [
+        "not_checked",
+        "partial",
+        "passed",
+        "failed",
+        "unavailable"
+      ]
+    },
+    "template_mapping": {
+      "enum": [
+        "original",
+        "unavailable",
+        "mapped_unverified",
+        "stale"
+      ]
+    },
+    "review": {
+      "enum": [
+        "not_requested",
+        "pending",
+        "returned",
+        "rejected",
+        "synthetic_draft_reviewed",
+        "stale"
+      ]
+    },
+    "submission": {
+      "const": "not_submitted"
+    },
+    "clinical_review": {
+      "const": "not_established"
+    },
+    "actual_authority": {
+      "const": "unverified"
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_items",
+        "usable_items",
+        "abstained_items"
+      ],
+      "properties": {
+        "input_items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "usable_items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "abstained_items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 256,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4000
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4000
+      }
+    },
+    "evaluated_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "source_check_scope": {
+      "enum": [
+        "not_checked",
+        "record_reference_integrity",
+        "accepted_d0_byte_spans"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "preparation": {
+            "const": "empty"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "counts": {
+            "properties": {
+              "input_items": {
+                "const": 0
+              },
+              "usable_items": {
+                "const": 0
+              },
+              "abstained_items": {
+                "const": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "preparation": {
+            "const": "all_abstain"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "counts": {
+            "properties": {
+              "input_items": {
+                "minimum": 1
+              },
+              "usable_items": {
+                "const": 0
+              },
+              "abstained_items": {
+                "minimum": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "preparation": {
+            "const": "prepared"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "counts": {
+            "properties": {
+              "usable_items": {
+                "minimum": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {
+            "properties": {
+              "preparation": {
+                "const": "failed"
+              }
+            }
+          },
+          {
+            "properties": {
+              "structural_check": {
+                "const": "failed"
+              }
+            }
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "errors": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "review": {
+            "const": "synthetic_draft_reviewed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "preparation": {
+            "const": "prepared"
+          },
+          "structural_check": {
+            "const": "passed"
+          },
+          "manifest_binding": {
+            "$ref": "#/$defs/manifest_binding"
+          },
+          "decision_binding": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source_check": {
+            "const": "not_checked"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source_check_scope": {
+            "const": "not_checked"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "source_check_scope": {
+            "enum": [
+              "record_reference_integrity",
+              "accepted_d0_byte_spans"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "manifest_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_id",
+        "raw_sha256",
+        "hash_domain"
+      ],
+      "properties": {
+        "manifest_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]{0,127}$"
+        },
+        "raw_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "hash_domain": {
+          "const": "sha256-raw-bytes-v1"
+        }
+      }
+    }
+  }
+}

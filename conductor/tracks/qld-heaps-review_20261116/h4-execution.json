@@ -1,0 +1,687 @@
+{
+  "schema_version": "heaps-h4-oracle-execution-1.0",
+  "observed_at": "2026-11-16T21:05:12.585005+00:00",
+  "scope": "H4 development-visible frozen-oracle API execution; not H5 or clinical qualification",
+  "evaluated_at": "2030-01-07T02:00:00Z",
+  "oracle_sha256": "fd38b4844220f6ea702ee6c6ffde25ab9d912f8d4eb02f7ab57999eed7e57556",
+  "independent_materializer_test_sha256": "5b794df73241730efca79cc3d5863b7fd765969e2955dfa2fd7c1081da36ffcb",
+  "production_sha256": {
+    "tools/heaps.py": "ea9fe374ae7f387d92d11ab7800bd2c636d947f5e62a03e88d5ed75c504dd55b",
+    "tools/heaps_validation.py": "d3bbcffdcfc88f5e453ea6863e22ae5f40727b0425bb3da4be8226ef4ea9a7ae"
+  },
+  "acceptance_case_count": 25,
+  "variant_count": 38,
+  "matching_variants": 38,
+  "observed_preparation_counts": {
+    "prepare_draft": 22,
+    "reject_input": 14,
+    "abstain": 2
+  },
+  "observed_review_counts": {
+    "not_established": 31,
+    "stale": 5,
+    "withheld": 2
+  },
+  "rows": [
+    {
+      "variant_id": "HP01-valid",
+      "acceptance_id": "HP01",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP02-wrong-case-id",
+      "acceptance_id": "HP02",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [
+        "case_binding.case_id: stale or wrong case binding"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "0ef02a1246d7620a5550c07bced3b74a71bc22d9275010d529766f893ba57c2d"
+    },
+    {
+      "variant_id": "HP03-stale-version",
+      "acceptance_id": "HP03",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [
+        "case_binding.version: stale or wrong case binding"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "d8ff03a26e7de28e06842599b746a94e8275d4cadd1f4c9d184aad442542c97e"
+    },
+    {
+      "variant_id": "HP03-stale-hash",
+      "acceptance_id": "HP03",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [
+        "case_binding.fingerprint: stale canonical binding"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "74f23b06a53efcc5d6604489cc0d35cd809039a3b0c8ca7cefe044cb4b3d06b9"
+    },
+    {
+      "variant_id": "HP04-wrong-kind",
+      "acceptance_id": "HP04",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [
+        "reference.kind: typed target kind mismatch"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "86de5735653f01433b591f72748de8a9f5fd11144db4c33c3819433a67e0c9ee"
+    },
+    {
+      "variant_id": "HP04-unresolved-reference",
+      "acceptance_id": "HP04",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [
+        "reference.unresolved: typed target does not resolve in the bound case"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "1a85db17a42e6ebe0cc51e9e435ff87813bda77016890d983edec389b4981271"
+    },
+    {
+      "variant_id": "HP05-unsupported-recommendation",
+      "acceptance_id": "HP05",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "60040db2a678c2d2494c4325c6758cbe3b7f621bc0126eced2f162ab9f6aed47",
+      "profile_ingress_sha256": "13cc34091371e7c79aeb7b8e49d96bfa0df4a9661e1d98d4bc4bf9b547a811f1"
+    },
+    {
+      "variant_id": "HP06-withdrawn-factor",
+      "acceptance_id": "HP06",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [
+        "factor.promotion: syn-factor-prompt is withdrawn; cannot support accepted finding"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "17fea509db9f40be5e2a9f374a742640a9291d8b12923727416d695d185275c6",
+      "profile_ingress_sha256": "6ffca95f0dc36e71b58c56fc41f734bf680d6c21d91bf159b0a813f500f560ec"
+    },
+    {
+      "variant_id": "HP06-rejected-factor",
+      "acceptance_id": "HP06",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [
+        "factor.promotion: syn-factor-prompt is rejected; cannot support accepted finding"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "ebfe10422e64edf2ad0d5f6c689f954fc42e7c225bfe491b3b9b1b7a7eeae409",
+      "profile_ingress_sha256": "26568e685de6aa9e6913bfc9b528022407fd9d8f88e6f0aa80f1d04965236aa5"
+    },
+    {
+      "variant_id": "HP07-report-after-approval",
+      "acceptance_id": "HP07",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "stale",
+      "observed_review": "stale",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 23,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP08-conflicting-accounts",
+      "acceptance_id": "HP08",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP09-participation-missing",
+      "acceptance_id": "HP09",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "d5635c5f8791a50bdaf0ad96ed0dcebc4a403e587d0a51732f7f0b56ba6fc82d"
+    },
+    {
+      "variant_id": "HP09-participation-declined",
+      "acceptance_id": "HP09",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "c4037185870c61096c7659f2089e9578573de2d180a7bb2dc5184ed98146966a"
+    },
+    {
+      "variant_id": "HP09-participation-unavailable",
+      "acceptance_id": "HP09",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "f1c9ef07daac9725cd005b0a277e7ea7a72d73d409abcb02b75edf2b8418dc3a"
+    },
+    {
+      "variant_id": "HP10-no-statutory-authority",
+      "acceptance_id": "HP10",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP11-unavailable-local-template",
+      "acceptance_id": "HP11",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "d091141898a0d62c2d05001f27c0ca012725b2a944f6d4458fab336991f799bc"
+    },
+    {
+      "variant_id": "HP12-template-revision",
+      "acceptance_id": "HP12",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "stale",
+      "observed_review": "stale",
+      "matched": true,
+      "errors": [
+        "artifact.raw_byte_identity: stale template bytes or missing template"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP12-source-revision",
+      "acceptance_id": "HP12",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "stale",
+      "observed_review": "stale",
+      "matched": true,
+      "errors": [
+        "artifact.raw_byte_identity: stale source bytes or fingerprint"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP13-missing-trigger",
+      "acceptance_id": "HP13",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "d09805188dfbc46a4b7e63a35b9724bb6d7e708767b61342e56518f372787279"
+    },
+    {
+      "variant_id": "HP13-missing-calendar",
+      "acceptance_id": "HP13",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "c6758a0621d95fd1dc7bf7014e0bd5bd1e5219e8e5c3001456d0213156f6189a"
+    },
+    {
+      "variant_id": "HP14-method-change",
+      "acceptance_id": "HP14",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 17,
+      "counts": {
+        "input_items": 8,
+        "usable_items": 8,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "4700c9ab99b254720386890c006929e97b9fa08ac4fc4f90e6961371642ff763",
+      "profile_ingress_sha256": "b7a81a1a90179f5210ae9c894fb5eb25a8d1e52235c1f8a08fc7e380a99f008c"
+    },
+    {
+      "variant_id": "HP15-implemented-without-outcomes",
+      "acceptance_id": "HP15",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "9e5d43b46ca4515cefd12a58b55f1a4266bb76d7dc6cf38ad8908a84bb622493",
+      "profile_ingress_sha256": "9612c168a9ef86cf2fe163824fbac0cc92ceac91cc6b8dbcecde2136ddf43e6e"
+    },
+    {
+      "variant_id": "HP16-no-submission-receipt",
+      "acceptance_id": "HP16",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 22,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP17-non-synthetic-label",
+      "acceptance_id": "HP17",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [
+        "heaps-profile: data_class: const"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "64d2cc525247d50eb5846d82e1bbbf0d0b82c1612b80107360a037c9bae30af4"
+    },
+    {
+      "variant_id": "HP18-duplicate-source-family",
+      "acceptance_id": "HP18",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 17,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "b3adfc98ec233a551f082d4e9efaf1f1ff65c922047890e6181bafbc675e5bb4",
+      "profile_ingress_sha256": "de4eb2731113450e4845d58bd8f22ff23cdd3bfaa3607e05cbbe34e456ccbc89"
+    },
+    {
+      "variant_id": "HP19-missing-documentation",
+      "acceptance_id": "HP19",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP20-empty",
+      "acceptance_id": "HP20",
+      "expected_preparation": "abstain",
+      "observed_preparation": "abstain",
+      "expected_review": "withheld",
+      "observed_review": "withheld",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 12,
+      "counts": {
+        "input_items": 0,
+        "usable_items": 0,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "844487467ef75ad40a72fc75299d3ef7c6059e9620a8ee7f94aeffe1b97e3922",
+      "profile_ingress_sha256": "c7c4f74bcc4e495afa35eb2bba7e513307633d4155663a558f9621c14574b5c1"
+    },
+    {
+      "variant_id": "HP20-all-abstain",
+      "acceptance_id": "HP20",
+      "expected_preparation": "abstain",
+      "observed_preparation": "abstain",
+      "expected_review": "withheld",
+      "observed_review": "withheld",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 0,
+        "abstained_items": 7
+      },
+      "case_ingress_sha256": "e7247586dc085bd06135e4cc7873897279c2c1c541170637160d54de1ba6923c",
+      "profile_ingress_sha256": "bbacf3abd30a96b0930879e55ac125af207300daae62dc284f59f75691fbbfa7"
+    },
+    {
+      "variant_id": "HP21-identical-replay",
+      "acceptance_id": "HP21",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP21-round-trip",
+      "acceptance_id": "HP21",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "b9534ad81bba4447f07bd439cf7edbd422963aebffc727fc82d11b8ae7636ce2",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP21-object-key-reorder",
+      "acceptance_id": "HP21",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "e34bc7001982408740898d37c62ca2d98e97431553a68a62f7abaeb3141f69d1",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP22-accimap-absent",
+      "acceptance_id": "HP22",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP22-accimap-unqualified",
+      "acceptance_id": "HP22",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 17,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "c94f003fd45b461fbfe9b0ea3c29346652ba2563e7ceb4af1edcdf187959c1db"
+    },
+    {
+      "variant_id": "HP23-concurrent-routes",
+      "acceptance_id": "HP23",
+      "expected_preparation": "prepare_draft",
+      "observed_preparation": "prepare_draft",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [],
+      "output_file_count": 16,
+      "counts": {
+        "input_items": 7,
+        "usable_items": 7,
+        "abstained_items": 0
+      },
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "c06ebe38a6240f139b121df4a827b8b3276b5fa70adb17da9f58810037c3ca80"
+    },
+    {
+      "variant_id": "HP24-unknown-field",
+      "acceptance_id": "HP24",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [
+        "heaps-profile: <root>: additionalProperties"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "0f23ded0e28e10c86c57ca7e9b9f211b4dbf16156202f96dcb5531f8c2e9274b"
+    },
+    {
+      "variant_id": "HP24-malformed-version",
+      "acceptance_id": "HP24",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "not_established",
+      "observed_review": "not_established",
+      "matched": true,
+      "errors": [
+        "heaps-profile: profile_version: minimum"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e",
+      "profile_ingress_sha256": "14fd8e219c592a7ab941640ccceadab7c2046080bafd5ee63a54df17400c9eaa"
+    },
+    {
+      "variant_id": "HP25-array-permutation",
+      "acceptance_id": "HP25",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "stale",
+      "observed_review": "stale",
+      "matched": true,
+      "errors": [
+        "case_binding.fingerprint: stale canonical binding"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "70d95a023433f8448db3a1aae18d5bdfba4b9a78f4dd52bcee03fa304647867f",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "variant_id": "HP25-canonical-content-change",
+      "acceptance_id": "HP25",
+      "expected_preparation": "reject_input",
+      "observed_preparation": "reject_input",
+      "expected_review": "stale",
+      "observed_review": "stale",
+      "matched": true,
+      "errors": [
+        "case_binding.fingerprint: stale canonical binding"
+      ],
+      "output_file_count": 0,
+      "counts": null,
+      "case_ingress_sha256": "0f5f0de190576819d90deeaa40997baa9b33b6c869ca6a7226d084593d49160e",
+      "profile_ingress_sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    }
+  ],
+  "h3_design_files_modified": false,
+  "clinical_review": "not_established",
+  "actual_authority": "unverified",
+  "submission": "not_submitted"
+}

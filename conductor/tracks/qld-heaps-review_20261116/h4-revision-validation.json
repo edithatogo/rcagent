@@ -1,0 +1,79 @@
+{
+  "schema_version": "heaps-h4-revision-validation-1.0",
+  "observed_at": "2026-11-16T21:29:13.851905+00:00",
+  "scope": "development-visible synthetic H4 hosted-review repair and new-master integration; not H5 qualification",
+  "source_parent": "5317c64852aca80ecdf6005ccd0bf02124b979c0",
+  "reconciled_master": "8bf94873af22730e445fcbb1b7fb748cfd16ed25",
+  "input_manifest": "./h4-input-manifest.json",
+  "input_count": 46,
+  "input_aggregate_sha256": "b43c35b0b8ffafa38fcfc07d9c6cd0f01b99b8c19b9c735f11c0e3af02ae461e",
+  "command": [
+    "uv",
+    "run",
+    "--no-sync",
+    "python",
+    "-m",
+    "tools.full_validation"
+  ],
+  "full_local_gate": {
+    "started_at": "2026-11-16T21:26:41.802697+00:00",
+    "completed_at": "2026-11-16T21:28:00.690267+00:00",
+    "exit_code": 1,
+    "log_bytes": 128949,
+    "log_sha256": "a3ca1f286d215010082d98ead57a6f62a28161f4da5be9808979515d2f2addb7",
+    "base_master": "8bf94873af22730e445fcbb1b7fb748cfd16ed25",
+    "collected": 3188,
+    "passed": 3125,
+    "failed": 52,
+    "skipped": 11,
+    "pytest_seconds": 61.04,
+    "coverage_percent": 93.54,
+    "prior_stages_passed": true,
+    "failure_groups": {
+      "tests/test_prospective_primary_session.py": 9,
+      "tests/test_prospective_server_session.py": 17,
+      "tests/test_prospective_study_controller.py": 1,
+      "tests/test_unix_http_capture.py": 25
+    },
+    "failure_scope": "same executor-denied AF_UNIX session/controller/capture groups"
+  },
+  "focused_tests": {
+    "passed": 304,
+    "seconds": 19.39,
+    "modules": {
+      "tests/test_heaps.py": 290,
+      "tests/test_heaps_cli_boundaries.py": 14
+    },
+    "standard_branch_coverage_percent": 95.71,
+    "codecov_style_fully_covered_lines": 706,
+    "codecov_style_total_lines": 754,
+    "codecov_style_percent": 93.63395225464191,
+    "qualification": "local measurement; fresh hosted Codecov result remains required"
+  },
+  "independent_followup_review": {
+    "targeted_behavioural_cases": 28,
+    "passed": 28,
+    "production_start_end_hashes_unchanged": true,
+    "receipt": "./h4-hosted-review-repair.md"
+  },
+  "oracle_execution": "./h4-revision-execution.json",
+  "cli_replay": "./h4-revision-replay.json",
+  "interrupted_preintegration_attempt": {
+    "result": "incomplete_no_exit_observed",
+    "log_bytes": 12595,
+    "log_sha256": "fd32ff4b784dffbcdbdd8aab651e2c7ca86e231aa892e6919469b76193bf071d",
+    "base_master": "6f9cd9627adc52782a67fa6693f1cdb90c3c84a7",
+    "used_as_pass": false
+  },
+  "historical_observations_preserved": [
+    "./h4-execution.json",
+    "./h4-replay.json",
+    "./h4-conformance.json",
+    "./h4-hosted-repair.md"
+  ],
+  "h3_design_files_modified": false,
+  "h5_accepted": false,
+  "clinical_review": "not_established",
+  "actual_authority": "unverified",
+  "submission": "not_submitted"
+}

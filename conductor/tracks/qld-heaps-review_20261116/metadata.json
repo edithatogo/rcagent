@@ -1,0 +1,178 @@
+{
+  "track_id": "qld-heaps-review_20261116",
+  "title": "Queensland HEAPS Review Profile and Staged Qualification",
+  "type": "feature",
+  "evidence_schema": "1.0",
+  "status": "in_progress",
+  "created_at": "2026-11-16T07:34:21+00:00",
+  "updated_at": "2026-11-16T21:33:18.336185+00:00",
+  "workstream": "product-interfaces-distribution",
+  "github": {
+    "issue": "https://github.com/edithatogo/rcagent/issues/140",
+    "parent_issue": "https://github.com/edithatogo/rcagent/issues/4"
+  },
+  "autonomy": "continuous-autonomy-with-owner-decision-gates",
+  "autonomy_contract": "../../autonomy.json",
+  "hard_dependencies": [],
+  "phase_dependencies": [
+    "frontier-assurance_20261113",
+    "cognitive-autopsy_20261107"
+  ],
+  "dependency_semantics": "Only actually consumed capabilities gate dependent claims; no whole-track completion prerequisite. AcciMap and death review are optional partners.",
+  "delivery_plan": "./delivery-plan.json",
+  "source_inventory": "./sources.json",
+  "description": "Queensland HEAPS H2/H3 prerequisites and H4 deterministic synthetic consumer implemented/reviewed; exact-head hosted integration and then H5 qualification remain separate.",
+  "owners": {
+    "planning_scope": "current HEAPS planning task / issue140",
+    "shared_integrator": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
+    "implementation": "current HEAPS lane: user-authorised H4 implementation and PR integration after passing hosted Actions"
+  },
+  "owned_paths": [
+    "conductor/tracks/qld-heaps-review_20261116/**",
+    "evaluation/heaps/**",
+    "tests/fixtures/heaps/**",
+    "tests/test_heaps_profile_contract.py",
+    "tests/test_heaps_fixture_design.py",
+    "skills/rca-investigation/references/methods/heaps.md",
+    "skills/rca-investigation/assets/templates/markdown/15-heaps-review-draft.md",
+    "tests/test_heaps.py",
+    "tools/heaps.py",
+    "tools/heaps_validation.py",
+    "tests/test_heaps_cli_boundaries.py"
+  ],
+  "registration": {
+    "status": "pending_coordinator_integration",
+    "track_number": null,
+    "proposal": "./registration-proposal.json"
+  },
+  "verification": {
+    "status": "h4_review_repairs_verified_locally_awaiting_hosted_head",
+    "scope": "bounded_synthetic_consumer_development_visible_engineering",
+    "receipt": "./h4.md",
+    "input_manifest": "./h4-input-manifest.json",
+    "h2_receipt": "./h2.md",
+    "h3_receipt": "./h3.md",
+    "planning_receipt": "./planning-evidence.md",
+    "h1": {
+      "review": "independent_checkpoint_complete_no_new_blocking_increment_findings",
+      "receipt": "./h1.md",
+      "diagnostic": "./h1-interface-observation.json",
+      "diagnostic_exit_code": 2,
+      "diagnostic_cases": 13,
+      "unmet_safety_expectations": 4,
+      "runtime_or_clinical_acceptance": false,
+      "review_receipt": "./h1-review.md",
+      "focused_regressions_passed": 215,
+      "full_validation": "failed_53_failed_2182_passed_11_skipped",
+      "branch_coverage_percent": 93.27,
+      "full_gate_not_passed": true
+    },
+    "runtime_implementation": "implemented",
+    "h3_structural_tests_passed": 52,
+    "h3_independent_design_tests_passed": 49,
+    "h3_combined_tests_passed": 101,
+    "existing_template_adapter_tests_passed": 69,
+    "canonical_variant_inputs_admitted": 38,
+    "acceptance_design_cases": 25,
+    "acceptance_design_variants": 38,
+    "heaps_runtime_acceptance_cases_executed": 25,
+    "full_local_validation": {
+      "exit_code": 1,
+      "passed": 3125,
+      "failed": 52,
+      "skipped": 11,
+      "branch_coverage_percent": 93.54,
+      "failure_scope": "unchanged_socket_session_controller_tests_in_executor_denying_AF_UNIX",
+      "prior_stages_passed": true,
+      "log_sha256": "a3ca1f286d215010082d98ead57a6f62a28161f4da5be9808979515d2f2addb7",
+      "receipt": "./h4-revision-validation.json"
+    },
+    "skill_current_conformance": true,
+    "conformance_receipt": "./h4-conformance.json",
+    "typing_diagnostics": 0,
+    "typing_baseline_allowances": 0,
+    "model_runs": 0,
+    "real_cases_processed": 0,
+    "qualified_clinical_capabilities": 0,
+    "official_template_conformity": "unverified",
+    "hosted_checks": "must_observe_exact_published_head_in_PR142_before_merge",
+    "shared_registration": "pending_coordinator_integration",
+    "h4_tests_passed": 304,
+    "heaps_runtime_acceptance_variants_executed": 38,
+    "heaps_runtime_variants_matching": 38,
+    "h4_execution": "./h4-revision-execution.json",
+    "h4_replay": "./h4-revision-replay.json",
+    "h4_review": "./h4-review.md",
+    "h5_phase_accepted": false,
+    "hosted_first_attempt": {
+      "source_head": "a9df9ba581eeeeae9a777546125225fae2c88b25",
+      "state": "failed_windows_test_typing",
+      "quality_run": 43957189042,
+      "job": 133614737639,
+      "repair_receipt": "./h4-hosted-repair.md"
+    },
+    "current_h4_test_sha256": "fee67464a2a9bfd53a7aa940348f4a04bd07d021b2c6994423ba1254a3d940d4",
+    "original_full_local_validation": {
+      "exit_code": 1,
+      "passed": 2829,
+      "failed": 52,
+      "skipped": 11,
+      "branch_coverage_percent": 92.94,
+      "failure_scope": "unchanged_socket_session_controller_tests_in_executor_denying_AF_UNIX",
+      "prior_stages_passed": true,
+      "log_sha256": "12f2312ef2a628adf1670a665aa11b37ec5cbd9f7c7b07a286df2a7606c3fc48"
+    },
+    "h4_test_modules": {
+      "tests/test_heaps.py": 290,
+      "tests/test_heaps_cli_boundaries.py": 14
+    },
+    "current_h4_cli_boundary_test_sha256": "60f71caa182b8a7fcba9dd130e1ed450868e38ce976da82dd820385aada43e4f",
+    "h4_followup_review": "./h4-hosted-review-repair.md",
+    "h4_revision_validation": "./h4-revision-validation.json",
+    "hosted_second_attempt": {
+      "source_head": "5317c64852aca80ecdf6005ccd0bf02124b979c0",
+      "required_quality": "passed",
+      "quality_run": 43957881817,
+      "codecov_patch": "failed",
+      "codecov_patch_percent": 81.97832,
+      "codecov_check": 133619071523,
+      "review_findings": 2,
+      "merge": "not_performed",
+      "repair_receipt": "./h4-hosted-review-repair.md"
+    }
+  },
+  "decision_gates": [
+    "Only genuinely new data use, rights, external action, spend or operational scope beyond existing authority",
+    "Case-specific clinical/legal/cultural/organisational decisions remain with authorised people"
+  ],
+  "observed_base": "8bf94873af22730e445fcbb1b7fb748cfd16ed25",
+  "current_increment": {
+    "id": "H4",
+    "status": "h4_implemented_reviewed_awaiting_hosted_merge",
+    "authority": "user instruction: Implement H4, open a PR, check actions pass, then merge.",
+    "scope": "deterministic synthetic validator/assembler, independent implementation checks and authorised PR integration",
+    "runtime_implementation_started": true,
+    "shared_integration": "this HEAPS PR integration explicitly authorised; portfolio numbering and unrelated shared ownership remain separate",
+    "next_tasks": [
+      "publish exact H4 source head and verify required hosted Actions",
+      "merge this HEAPS PR under explicit user authority",
+      "H5 independent engineering qualification and handoff",
+      "H6 authorised local instrument alignment and conditional practice evaluation"
+    ],
+    "receipt": "./h4.md"
+  },
+  "shared_candidate_paths": [
+    "skills/rca-investigation/SKILL.md",
+    "skills/rca-investigation/references/method-selection-matrix.md",
+    "skills/rca-investigation/references/method-combination-guide.md",
+    "skills/rca-investigation/assets/template-admission.json"
+  ],
+  "latest_master_reconciliation": {
+    "master": "8a564826a3f51765f177f0d9823194718bacb7d9",
+    "scope": "documentation-only D2 acceptance through PR151",
+    "previous_execution_base": "8bf94873af22730e445fcbb1b7fb748cfd16ed25",
+    "all_46_heaps_input_identities_unchanged": true,
+    "local_validation_reused_without_relabelling": "./h4-revision-validation.json",
+    "new_hosted_head_required": true
+  }
+}

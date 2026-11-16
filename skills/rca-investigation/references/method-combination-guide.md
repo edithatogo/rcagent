@@ -1,66 +1,53 @@
 # Method Combination Guide
 
-Most SAC 1–2 investigations use 3–4 methods together. Each method captures a different dimension of the event. This guide shows which combinations are most effective.
+Choose the local review process using the [selection matrix](method-selection-matrix.md),
+then add analytical tools for named unanswered questions. These patterns are
+repository planning examples; they are not mandatory SAC bundles or evidence that
+one combination is more effective than another. A HEAPS process can use selected
+tools without becoming a different review route or acquiring statutory protection.
 
-## Recommended Combinations
+## Examples of complementary questions
 
-### Combination 1: Standard SAC 1–2 (Most Common)
-**Timeline + Yorkshire Framework + Bow-Tie**
+| Review question | Possible sequence | What must remain visible |
+| --- | --- | --- |
+| How did the event develop, and which system conditions need attention? | Sourced chronology → one primary factor structure, such as Yorkshire or London Protocol → focused barrier analysis where needed | Conflicting accounts, uncertain timing, supporting and contrary evidence, alternative explanations and review state. |
+| How did a device, information system or task design interact with work? | Sourced observations and work-as-done → SEIPS → a targeted barrier/control question | Actual adaptations, evidence gaps and interactions; a technology label is not proof of a technology cause. |
+| Which decisions beyond the immediate team are relevant? | Sourced chronology and factors → AcciMap for a stated cross-level question | Canonical node/evidence identities, uncertain relationships and the limits of an optional unqualified graph. |
+| What can be learned from interviews about working conditions? | Participant accounts → London Protocol or another locally selected interview structure → HFACS only for a distinct remaining classification question | Each account's provenance and status, involvement versus review responsibility, and disagreement without blame classification. |
+| What could fail in a proposed redesign? | A separately scoped prospective FMEA → Bow-Tie if a hazard/control view is useful | Prospective assumptions, existing versus proposed safeguards, unintended effects and a measurement plan. |
+| What does a HEAPS meeting/report need to decide? | [HEAPS guidance](methods/heaps.md) → original [draft outline](../assets/templates/markdown/15-heaps-review-draft.md) → only the analytical tools needed for remaining questions | Scope, authority, evidence/accounts, candidate findings, actions, unknowns and distinct review/submission states. |
 
-- Timeline establishes factual sequence
-- Yorkshire Framework maps all contributing factors systematically
-- Bow-Tie maps the specific barriers that failed and guides action strength decisions
+## Sequence iteratively
 
-*Best for*: Clinical events with multiple contributing factors and identifiable barrier failures
+Start by preserving source evidence, immediate safety needs and questions. Build a
+chronology to the precision the evidence permits. Do not wait for an artificially
+complete timeline before seeking accounts, examining barriers or addressing an
+immediate hazard. Revisit chronology and factors when new evidence changes them.
 
-### Combination 2: Technology-Heavy Events
-**Timeline + SEIPS 3.0 + Swiss Cheese**
+Separate observations and accounts from analysis. Test a candidate finding against
+supporting and contrary evidence, source-family independence and alternatives.
+Bring the resulting candidate, its uncertainty and its unresolved questions to the
+appropriate reviewer. Develop recommendations against evidenced conditions and
+findings, with implementation, outcome and balancing measures.
 
-- Timeline establishes factual sequence
-- SEIPS maps the work system components and their interactions
-- Swiss Cheese identifies which defensive layers failed and why
+## Avoid duplicate analyses
 
-*Best for*: EMR-related events, device failures, alarm fatigue, automation errors
+Use one primary factor structure by default. London Protocol and Yorkshire may
+overlap; include parts of both only for a recorded distinct question and reconcile
+their mappings. The same rule applies to HFACS/AcciMap and AcciMap/STAMP. Reuse
+canonical IDs and evidence rather than producing separate, conflicting case
+records or counting the same source as independent corroboration.
 
-### Combination 3: Human Factors Focus
-**Timeline + London Protocol + HFACS**
+Before retaining another view, state what it adds and what it cannot establish.
+If it only repeats earlier content, link to that analysis and omit the duplicate
+view. If it exposes an unresolved issue, retain the issue even when no finding can
+be accepted. Complexity, attention, a severe outcome or the number of methods used
+does not replace evidence or accountable review.
 
-- Timeline establishes factual sequence
-- London Protocol provides structured interview and factor classification
-- HFACS traces human actions back through levels to organisational influences
+## Carry the result into action tracking
 
-*Best for*: Events where communication, decision-making, fatigue, or team dynamics are prominent
-
-### Combination 4: Systemic / Organisational Events
-**Timeline + Yorkshire Framework + AcciMap**
-
-- Timeline establishes factual sequence
-- Yorkshire Framework maps ward-level contributing factors
-- AcciMap maps factors at all levels from staff to government policy
-
-*Best for*: Events revealing systemic issues requiring change at multiple organisational levels
-
-### Combination 5: Proactive Risk Analysis
-**FMEA + Bow-Tie**
-
-- FMEA systematically identifies all failure modes in a process before implementation
-- Bow-Tie maps the specific barriers and their adequacy for each high-risk failure mode
-
-*Best for*: New services, new high-risk medications, pathway redesign, post-RCA process changes
-
-### Combination 6: Comprehensive SAC 1 (Complex Events)
-**Timeline + Yorkshire Framework + London Protocol + SEIPS + Bow-Tie**
-
-Full systems-thinking investigation. Use when the event is highly complex, involves multiple services, or has significant governance, media, or regulatory attention.
-
-## Sequencing Methods
-
-Always apply methods in this order:
-
-1. **Timeline first** — establishes the shared factual foundation for the whole team
-2. **Contributing factor analysis** (Yorkshire / London Protocol / HFACS) — identifies what was present
-3. **Systems analysis** (SEIPS / Swiss Cheese / AcciMap) — explains how those factors interacted
-4. **Barrier/action analysis** (Bow-Tie / Barrier Analysis) — guides what changes to make
-
-Never start with Bow-Tie before the timeline and contributing factor analysis.
-Never start contributing factor analysis without a shared timeline.
+Record how each recommendation addresses a system condition or finding and its
+intended mechanism, owner, resources, dependencies and measurement plan. Do not
+infer that report generation means approval or external submission, or that an
+implemented action is effective. Follow the existing [track workflow](workflows/track.md)
+and preserve evidence of unintended effects and residual uncertainty.

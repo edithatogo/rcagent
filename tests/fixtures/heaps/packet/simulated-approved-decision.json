@@ -1,0 +1,28 @@
+{
+  "schema_version": "heaps-review-decision-1.0",
+  "decision_id": "syn-decision-draft-01",
+  "scope": "heaps-synthetic-draft-packet",
+  "data_class": "generated_synthetic",
+  "privacy_mode": "fully_local",
+  "manifest_binding": {
+    "manifest_id": "syn-manifest-01",
+    "raw_sha256": "2c8f273aaa5664eb0624172cdef7472a2e667af9ddf10117e353addcea8cbd08",
+    "hash_domain": "sha256-raw-bytes-v1"
+  },
+  "decision": "approved_synthetic_draft",
+  "author_role_ref": {
+    "kind": "role",
+    "id": "syn-role-facilitator"
+  },
+  "reviewer_role_ref": {
+    "kind": "role",
+    "id": "syn-role-reviewer"
+  },
+  "authority_status": "unverified",
+  "substantive_approval": "not_established",
+  "conflict_state": "declared_synthetic",
+  "issued_at": "2030-01-07T01:00:00Z",
+  "expires_at": "2030-01-08T01:00:00Z",
+  "evaluated_at": "2030-01-07T02:00:00Z",
+  "reason": "Literal simulated draft approval for stale-binding fixtures only; not an agent or human acceptance receipt."
+}

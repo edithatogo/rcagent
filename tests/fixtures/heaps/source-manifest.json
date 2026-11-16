@@ -1,0 +1,97 @@
+{
+  "schema_version": "heaps-fixture-source-manifest-1.0",
+  "data_class": "generated_synthetic",
+  "sources": [
+    {
+      "path": "sources/record.txt",
+      "source_id": "syn-src-record",
+      "revision": 1,
+      "source_type": "record",
+      "family_id": "syn-family-record",
+      "derivation": "original",
+      "derived_from_source_id": null,
+      "sha256": "1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693",
+      "bytes": 390,
+      "data_class": "generated_synthetic",
+      "rights": "Original synthetic fixture text; repository licence applies. No Queensland Health form content."
+    },
+    {
+      "path": "sources/staff-account.txt",
+      "source_id": "syn-src-staff",
+      "revision": 1,
+      "source_type": "account",
+      "family_id": "syn-family-staff",
+      "derivation": "original",
+      "derived_from_source_id": null,
+      "sha256": "84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70",
+      "bytes": 283,
+      "data_class": "generated_synthetic",
+      "rights": "Original synthetic fixture text; repository licence applies. No Queensland Health form content."
+    },
+    {
+      "path": "sources/consumer-account.txt",
+      "source_id": "syn-src-consumer",
+      "revision": 1,
+      "source_type": "account",
+      "family_id": "syn-family-consumer",
+      "derivation": "original",
+      "derived_from_source_id": null,
+      "sha256": "5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32",
+      "bytes": 274,
+      "data_class": "generated_synthetic",
+      "rights": "Original synthetic fixture text; repository licence applies. No Queensland Health form content."
+    },
+    {
+      "path": "sources/record-summary.txt",
+      "source_id": "syn-src-record-summary",
+      "revision": 1,
+      "source_type": "other",
+      "family_id": "syn-family-record",
+      "derivation": "summary",
+      "derived_from_source_id": "syn-src-record",
+      "sha256": "a7926952e4e757a3b5773eb8ee915cb9373b02885dc13a0effc6a0a6ebb0eec0",
+      "bytes": 293,
+      "data_class": "generated_synthetic",
+      "rights": "Original synthetic fixture text; repository licence applies. No Queensland Health form content."
+    },
+    {
+      "path": "sources/record-revision-2.txt",
+      "source_id": "syn-src-record",
+      "revision": 2,
+      "source_type": "record",
+      "family_id": "syn-family-record",
+      "derivation": "revision",
+      "derived_from_source_id": "syn-src-record",
+      "sha256": "710935c135e8a9da34f012d1a4be111cb5bc9c18838d1fa7c56cd654e51f4d61",
+      "bytes": 414,
+      "data_class": "generated_synthetic",
+      "rights": "Original synthetic fixture text; repository licence applies. No Queensland Health form content."
+    },
+    {
+      "path": "sources/synthetic-clock-rule.txt",
+      "source_id": "syn-src-clock",
+      "revision": 1,
+      "source_type": "other",
+      "family_id": "syn-family-clock",
+      "derivation": "original",
+      "derived_from_source_id": null,
+      "sha256": "cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02",
+      "bytes": 425,
+      "data_class": "generated_synthetic",
+      "rights": "Original synthetic fixture text; repository licence applies. No Queensland Health rule or form content."
+    },
+    {
+      "path": "sources/method-handover.txt",
+      "source_id": "syn-src-method-handover",
+      "revision": 1,
+      "source_type": "other",
+      "family_id": "syn-family-method-handover",
+      "derivation": "original",
+      "derived_from_source_id": null,
+      "sha256": "2af4d88b05c55d04919bfa98fb25bde50bb2ee92ba2700ec25c1da3337c3e137",
+      "bytes": 593,
+      "data_class": "generated_synthetic",
+      "rights": "Original synthetic fixture text; repository licence applies. No official procedure or appointment is asserted."
+    }
+  ]
+}
