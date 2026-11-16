@@ -1,0 +1,15 @@
+{
+  "schema_version": "faw08-independent-freeze-1.0",
+  "frozen_utc": "2026-11-16T13:36:11.056782+00:00",
+  "oracle_sha256": "263143abe0c71bc02d7b04bd9593af3946f00c2ab64970786c922a005627aafe",
+  "base_commit": "d11548357baba6a1e20163139a366c6367a05432",
+  "contract_sha256": "402d01b52aaccbf5a0181aec1cc30d815f8c3386652cc4fc982e5b666741efb0",
+  "cases": 28,
+  "families": 14,
+  "expected_observations": 54,
+  "expected_resolved": 37,
+  "producer_calls_before_freeze": 0,
+  "production_source_read_before_freeze": false,
+  "source_existed_when_initial_labels_written": false,
+  "scope": "Independent synthetic development labels only; exact output API matches the coordinator contract; no clinical or held-out claim."
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "faw08-independent-history-1.0",
+  "preserved_utc": "2026-11-16T13:49:30.458249+00:00",
+  "observed_source_sha256": "754ee31ab30898817b9b68472d25ee0b55dbaa9a40a5e3b389913edad86682f4",
+  "reason": "Preserve accepted synthetic engineering observation before the later unsupported nonstandalone assertion-scope repair. Canonical receipt paths may be refreshed; all original bytes and their path mapping remain here.",
+  "files": [
+    {
+      "original_path_at_observation": "tests/fixtures/faw08_independent/verification-receipt.json",
+      "preserved_path": "tests/fixtures/faw08_independent/attempts/accepted-20261116-754ee31/verification-receipt.json",
+      "bytes": 7490,
+      "sha256": "0175e0e156f9f201a3831049f6fea026be024e23fe474c08743cff0f88fe7fb8"
+    },
+    {
+      "original_path_at_observation": "tests/fixtures/faw08_independent/cli-execution-20261116.json",
+      "preserved_path": "tests/fixtures/faw08_independent/attempts/accepted-20261116-754ee31/cli-execution-20261116.json",
+      "bytes": 3263,
+      "sha256": "4d6b5819674b3c6d2d426298c9e0e0a786b6491dc9b9292a52007ec95275ecc9"
+    },
+    {
+      "original_path_at_observation": "tests/fixtures/faw08_independent/d1-demo-receipt-20261116.json",
+      "preserved_path": "tests/fixtures/faw08_independent/attempts/accepted-20261116-754ee31/d1-demo-receipt-20261116.json",
+      "bytes": 44074,
+      "sha256": "04c1857cad870e625a3196d0b6e78451b2cad58fef4601244d3a1e4f138d74cd"
+    },
+    {
+      "original_path_at_observation": "tests/fixtures/faw08_independent/README.md",
+      "preserved_path": "tests/fixtures/faw08_independent/attempts/accepted-20261116-754ee31/README.md",
+      "bytes": 4777,
+      "sha256": "b9472df1ba7cecfac34e26663d541b9cfcf6cfaef8813bac4bf4bea744509f7c"
+    }
+  ],
+  "related_test_attempt": "attempts/attempt-003.json",
+  "related_oracle_observations": "attempts/attempt-004-observations.json"
+}

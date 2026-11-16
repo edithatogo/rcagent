@@ -1,0 +1,3025 @@
+{
+  "oracle_sha256": "263143abe0c71bc02d7b04bd9593af3946f00c2ab64970786c922a005627aafe",
+  "actual_cases": [
+    {
+      "case_id": "independent-numeric-valid",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-numeric-valid",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-numeric-valid",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:2b65ec693644068605c58315fc62d32e4eff6b2f515de973ce63f5bc6e3dcadf",
+            "bytes": 10
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:403b02c8d52ab7ecbdd9c43f8505dc8ad1a8665d1082d4650ce77d3ac0bf21ba",
+            "case_id": "independent-numeric-valid",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:2b65ec693644068605c58315fc62d32e4eff6b2f515de973ce63f5bc6e3dcadf",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 10,
+            "text": "2024-02-29",
+            "kind": "date",
+            "status": "resolved",
+            "normalized": {
+              "year": 2024,
+              "month": 2,
+              "day": 29,
+              "iso": "2024-02-29",
+              "alternatives": []
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-numeric-valid",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 10,
+              "text": "2024-02-29",
+              "source_sha256": "sha256:2b65ec693644068605c58315fc62d32e4eff6b2f515de973ce63f5bc6e3dcadf",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 1,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-numeric-invalid",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-numeric-invalid",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-numeric-invalid",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:468dbb10858c5eceaf1b449ce92220d0903fe4aa94fda6e3dc070beea28d1631",
+            "bytes": 10
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:d263038a4b5cd47ac66dcb20d8128fede3f0c044abdd1f18db53e18fb6accb97",
+            "case_id": "independent-numeric-invalid",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:468dbb10858c5eceaf1b449ce92220d0903fe4aa94fda6e3dc070beea28d1631",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 10,
+            "text": "2023-02-29",
+            "kind": "date",
+            "status": "invalid",
+            "normalized": null,
+            "reason": "invalid_calendar_date",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-numeric-invalid",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 10,
+              "text": "2023-02-29",
+              "source_sha256": "sha256:468dbb10858c5eceaf1b449ce92220d0903fe4aa94fda6e3dc070beea28d1631",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 1,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-year-explicit",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-year-explicit",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-year-explicit",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:e9bac7668eedb2079ca6cebb05e3af92c079d14f27ae52fc648b2f327218e165",
+            "bytes": 13
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:b357330dc38fcf67692a599f60c3b7b05bcb25de02ea6a9f520e0d116925d5de",
+            "case_id": "independent-year-explicit",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:e9bac7668eedb2079ca6cebb05e3af92c079d14f27ae52fc648b2f327218e165",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 13,
+            "text": "14 March 2024",
+            "kind": "date",
+            "status": "resolved",
+            "normalized": {
+              "year": 2024,
+              "month": 3,
+              "day": 14,
+              "iso": "2024-03-14",
+              "alternatives": []
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-year-explicit",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 13,
+              "text": "14 March 2024",
+              "source_sha256": "sha256:e9bac7668eedb2079ca6cebb05e3af92c079d14f27ae52fc648b2f327218e165",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 1,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-year-missing",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-year-missing",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-year-missing",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:dd525bbf7d409e5127882d3c8ff282e86ddcf75a72934bec8d8907bd7b30049a",
+            "bytes": 8
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:add9e669c273a1783d293b03c1f2c5bccb677800c8406fada169a425678de85e",
+            "case_id": "independent-year-missing",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:dd525bbf7d409e5127882d3c8ff282e86ddcf75a72934bec8d8907bd7b30049a",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 8,
+            "text": "14 March",
+            "kind": "date",
+            "status": "partial",
+            "normalized": {
+              "year": null,
+              "month": 3,
+              "day": 14,
+              "iso": null,
+              "alternatives": []
+            },
+            "reason": "missing_year",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-year-missing",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 8,
+              "text": "14 March",
+              "source_sha256": "sha256:dd525bbf7d409e5127882d3c8ff282e86ddcf75a72934bec8d8907bd7b30049a",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 1,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-midnight-known",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-midnight-known",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-midnight-known",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:07b9fcbb6ab70f1c6819e4f2276cc4b307905e077675aadb2e4076fefcd68ecd",
+            "bytes": 5
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:851fb858d9ca92128d90459bae8cc51f02fe1460581cf1c11c3b25c1d868ef57",
+            "case_id": "independent-midnight-known",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:07b9fcbb6ab70f1c6819e4f2276cc4b307905e077675aadb2e4076fefcd68ecd",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 5,
+            "text": "00:00",
+            "kind": "time",
+            "status": "resolved",
+            "normalized": {
+              "time": "00:00:00",
+              "precision": "minute"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-midnight-known",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 5,
+              "text": "00:00",
+              "source_sha256": "sha256:07b9fcbb6ab70f1c6819e4f2276cc4b307905e077675aadb2e4076fefcd68ecd",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 1,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-midnight-invalid",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-midnight-invalid",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-midnight-invalid",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:034f42f692db3441eddee6cc806bcb02e44ef008029c66c172da7928e19b8723",
+            "bytes": 5
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:51c69786c430e14842c1d5809017b283ba2dac3fcc1b0637ba1bf57297074cfb",
+            "case_id": "independent-midnight-invalid",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:034f42f692db3441eddee6cc806bcb02e44ef008029c66c172da7928e19b8723",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 5,
+            "text": "24:00",
+            "kind": "time",
+            "status": "invalid",
+            "normalized": null,
+            "reason": "invalid_clock_time",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-midnight-invalid",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 5,
+              "text": "24:00",
+              "source_sha256": "sha256:034f42f692db3441eddee6cc806bcb02e44ef008029c66c172da7928e19b8723",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 1,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-locale-explicit",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-locale-explicit",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "DMY",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-locale-explicit",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:2d9ebd780b12fad78081f4ae6b3f7d480147dc92bba24345736c9697d7b858a6",
+            "bytes": 10
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:1e2fb83a2236feb2372aa991f2b543369cbd01f0b9ac0669441603abb9582ea7",
+            "case_id": "independent-locale-explicit",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:2d9ebd780b12fad78081f4ae6b3f7d480147dc92bba24345736c9697d7b858a6",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 10,
+            "text": "03/04/2024",
+            "kind": "date",
+            "status": "resolved",
+            "normalized": {
+              "year": 2024,
+              "month": 4,
+              "day": 3,
+              "iso": "2024-04-03",
+              "alternatives": []
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-locale-explicit",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 10,
+              "text": "03/04/2024",
+              "source_sha256": "sha256:2d9ebd780b12fad78081f4ae6b3f7d480147dc92bba24345736c9697d7b858a6",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 1,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-locale-unresolved",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-locale-unresolved",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-locale-unresolved",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:2d9ebd780b12fad78081f4ae6b3f7d480147dc92bba24345736c9697d7b858a6",
+            "bytes": 10
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:272b9edb6a1d1140ca0de599ce600fefb60037a9e4614b697430c0dba70409f6",
+            "case_id": "independent-locale-unresolved",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:2d9ebd780b12fad78081f4ae6b3f7d480147dc92bba24345736c9697d7b858a6",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 10,
+            "text": "03/04/2024",
+            "kind": "date",
+            "status": "ambiguous",
+            "normalized": {
+              "year": 2024,
+              "month": null,
+              "day": null,
+              "iso": null,
+              "alternatives": [
+                "2024-03-04",
+                "2024-04-03"
+              ]
+            },
+            "reason": "ambiguous_date_order",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-locale-unresolved",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 10,
+              "text": "03/04/2024",
+              "source_sha256": "sha256:2d9ebd780b12fad78081f4ae6b3f7d480147dc92bba24345736c9697d7b858a6",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 1,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-ranges-ordered",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-ranges-ordered",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-ranges-ordered",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:b17c28586b4d9fb7268c87cdfb6c040aa956d6ed59066e6da011644d71bc5a74",
+            "bytes": 50
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:471a7b24a45754a5d8a7a01aec3343e54e86711f653d8256aa44a9372774395c",
+            "case_id": "independent-ranges-ordered",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:b17c28586b4d9fb7268c87cdfb6c040aa956d6ed59066e6da011644d71bc5a74",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 24,
+            "text": "2024-04-14 to 2024-04-15",
+            "kind": "date_range",
+            "status": "resolved",
+            "normalized": {
+              "start": "2024-04-14",
+              "end": "2024-04-15"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ranges-ordered",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 24,
+              "text": "2024-04-14 to 2024-04-15",
+              "source_sha256": "sha256:b17c28586b4d9fb7268c87cdfb6c040aa956d6ed59066e6da011644d71bc5a74",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:39ec680ab292823e73bba4e94f4d4a7bbbed84467f3eccc15268c7cc47f560b7",
+            "case_id": "independent-ranges-ordered",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:b17c28586b4d9fb7268c87cdfb6c040aa956d6ed59066e6da011644d71bc5a74",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 26,
+            "end_byte": 39,
+            "text": "09:30–10:15",
+            "kind": "time_range",
+            "status": "resolved",
+            "normalized": {
+              "start": "09:30:00",
+              "end": "10:15:00"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ranges-ordered",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 26,
+              "end_byte": 39,
+              "text": "09:30–10:15",
+              "source_sha256": "sha256:b17c28586b4d9fb7268c87cdfb6c040aa956d6ed59066e6da011644d71bc5a74",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:44170c7ae4fb86c4e01bc186bc1ea34393d547acf4b12a832864666c35a90ba2",
+            "case_id": "independent-ranges-ordered",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:b17c28586b4d9fb7268c87cdfb6c040aa956d6ed59066e6da011644d71bc5a74",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 41,
+            "end_byte": 50,
+            "text": "5–10 mg",
+            "kind": "quantity_range",
+            "status": "resolved",
+            "normalized": {
+              "lower": "5",
+              "upper": "10",
+              "unit": "mg"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ranges-ordered",
+              "evidence_id": "context-2",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 41,
+              "end_byte": 50,
+              "text": "5–10 mg",
+              "source_sha256": "sha256:b17c28586b4d9fb7268c87cdfb6c040aa956d6ed59066e6da011644d71bc5a74",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 3,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-ranges-reversed",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-ranges-reversed",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-ranges-reversed",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:dfc33659c3a4730652a7bb1b9eb60c5e2dbe9930c8122948e46c7a5437c7a021",
+            "bytes": 50
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:2bcf142cd1ed8d68766b9c5261eef81290c14e09f8467eb2570337a39b5b0e57",
+            "case_id": "independent-ranges-reversed",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:dfc33659c3a4730652a7bb1b9eb60c5e2dbe9930c8122948e46c7a5437c7a021",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 24,
+            "text": "2024-04-15 to 2024-04-14",
+            "kind": "date_range",
+            "status": "invalid",
+            "normalized": null,
+            "reason": "reversed_range",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ranges-reversed",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 24,
+              "text": "2024-04-15 to 2024-04-14",
+              "source_sha256": "sha256:dfc33659c3a4730652a7bb1b9eb60c5e2dbe9930c8122948e46c7a5437c7a021",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:5abec8198d0f3173d684fe320104d2b15f9734151739a32696b8a15488044b2a",
+            "case_id": "independent-ranges-reversed",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:dfc33659c3a4730652a7bb1b9eb60c5e2dbe9930c8122948e46c7a5437c7a021",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 26,
+            "end_byte": 39,
+            "text": "23:30–01:30",
+            "kind": "time_range",
+            "status": "ambiguous",
+            "normalized": {
+              "start": "23:30:00",
+              "end": "01:30:00"
+            },
+            "reason": "range_requires_date",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ranges-reversed",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 26,
+              "end_byte": 39,
+              "text": "23:30–01:30",
+              "source_sha256": "sha256:dfc33659c3a4730652a7bb1b9eb60c5e2dbe9930c8122948e46c7a5437c7a021",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:e358faaabe9e2dd9ceacdd6bafc21cb6977e513d533fe86b7a8c916fcc63140f",
+            "case_id": "independent-ranges-reversed",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:dfc33659c3a4730652a7bb1b9eb60c5e2dbe9930c8122948e46c7a5437c7a021",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 41,
+            "end_byte": 50,
+            "text": "10–5 mg",
+            "kind": "quantity_range",
+            "status": "invalid",
+            "normalized": null,
+            "reason": "reversed_range",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ranges-reversed",
+              "evidence_id": "context-2",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 41,
+              "end_byte": 50,
+              "text": "10–5 mg",
+              "source_sha256": "sha256:dfc33659c3a4730652a7bb1b9eb60c5e2dbe9930c8122948e46c7a5437c7a021",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 3,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-units-valid",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-units-valid",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-units-valid",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:5f8e37d6657acb2d77158607e29a91b460e16f47148df1c1eb6c47487ef8064b",
+            "bytes": 64
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:401825d1a0ddfa93c7b448042bca84b5445d9a4a1116f5caba7b0e9a3784edf3",
+            "case_id": "independent-units-valid",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:5f8e37d6657acb2d77158607e29a91b460e16f47148df1c1eb6c47487ef8064b",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 17,
+            "end_byte": 24,
+            "text": "0.50 mg",
+            "kind": "quantity",
+            "status": "resolved",
+            "normalized": {
+              "value": "0.50",
+              "unit": "mg"
+            },
+            "reason": null,
+            "polarity": "affirmed",
+            "subject": "patient",
+            "reporter": null,
+            "context": {
+              "case_id": "independent-units-valid",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 24,
+              "text": "patient received 0.50 mg",
+              "source_sha256": "sha256:5f8e37d6657acb2d77158607e29a91b460e16f47148df1c1eb6c47487ef8064b",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:76870e147115757baf4f3346d7c6683bb3b6043eac99c7b9d77bec68bf652fa0",
+            "case_id": "independent-units-valid",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:5f8e37d6657acb2d77158607e29a91b460e16f47148df1c1eb6c47487ef8064b",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 38,
+            "end_byte": 46,
+            "text": "38.2 °C",
+            "kind": "quantity",
+            "status": "resolved",
+            "normalized": {
+              "value": "38.2",
+              "unit": "°C"
+            },
+            "reason": null,
+            "polarity": "affirmed",
+            "subject": "patient",
+            "reporter": null,
+            "context": {
+              "case_id": "independent-units-valid",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 26,
+              "end_byte": 46,
+              "text": "patient was 38.2 °C",
+              "source_sha256": "sha256:5f8e37d6657acb2d77158607e29a91b460e16f47148df1c1eb6c47487ef8064b",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:726be527cd5f1f641d34cad355377e1d0bcc3e6615304380d06a446c64adb0ea",
+            "case_id": "independent-units-valid",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:5f8e37d6657acb2d77158607e29a91b460e16f47148df1c1eb6c47487ef8064b",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 48,
+            "end_byte": 54,
+            "text": "5 mL/h",
+            "kind": "quantity",
+            "status": "resolved",
+            "normalized": {
+              "value": "5",
+              "unit": "mL/h"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-units-valid",
+              "evidence_id": "context-2",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 48,
+              "end_byte": 54,
+              "text": "5 mL/h",
+              "source_sha256": "sha256:5f8e37d6657acb2d77158607e29a91b460e16f47148df1c1eb6c47487ef8064b",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:6564a30c7c947050cfeaa4f0ba39a60ea89a9eb890d8adb5c28192ad5b793fbf",
+            "case_id": "independent-units-valid",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:5f8e37d6657acb2d77158607e29a91b460e16f47148df1c1eb6c47487ef8064b",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 56,
+            "end_byte": 64,
+            "text": "-0.25 mg",
+            "kind": "quantity",
+            "status": "resolved",
+            "normalized": {
+              "value": "-0.25",
+              "unit": "mg"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-units-valid",
+              "evidence_id": "context-3",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 56,
+              "end_byte": 64,
+              "text": "-0.25 mg",
+              "source_sha256": "sha256:5f8e37d6657acb2d77158607e29a91b460e16f47148df1c1eb6c47487ef8064b",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 4,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-units-invalid",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-units-invalid",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-units-invalid",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:098023edd43312e8c39fa94e7ccaa1fc64b125e589df095b636922be5befcc39",
+            "bytes": 25
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:ba6d01ab588516eb6497ff6b9ae0bb7fbee7a846128ed84416d06f400b05fbb1",
+            "case_id": "independent-units-invalid",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:098023edd43312e8c39fa94e7ccaa1fc64b125e589df095b636922be5befcc39",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 9,
+            "text": "5 widgets",
+            "kind": "quantity",
+            "status": "unsupported",
+            "normalized": null,
+            "reason": "unsupported_unit",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-units-invalid",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 9,
+              "text": "5 widgets",
+              "source_sha256": "sha256:098023edd43312e8c39fa94e7ccaa1fc64b125e589df095b636922be5befcc39",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:1d54ef4a98ef8000a08a04ccca20642ce6731f6df6533ffbac5dcc96bfb2a40d",
+            "case_id": "independent-units-invalid",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:098023edd43312e8c39fa94e7ccaa1fc64b125e589df095b636922be5befcc39",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 11,
+            "end_byte": 17,
+            "text": "1,5 mg",
+            "kind": "quantity",
+            "status": "ambiguous",
+            "normalized": null,
+            "reason": "ambiguous_number_format",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-units-invalid",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 11,
+              "end_byte": 17,
+              "text": "1,5 mg",
+              "source_sha256": "sha256:098023edd43312e8c39fa94e7ccaa1fc64b125e589df095b636922be5befcc39",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:a79a5394f323e6fc5478ab26ece46ee5afe4c95b8472568be6cb766c3a5083bd",
+            "case_id": "independent-units-invalid",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:098023edd43312e8c39fa94e7ccaa1fc64b125e589df095b636922be5befcc39",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 19,
+            "end_byte": 25,
+            "text": "1e3 mg",
+            "kind": "quantity",
+            "status": "unsupported",
+            "normalized": null,
+            "reason": "unsupported_number_format",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-units-invalid",
+              "evidence_id": "context-2",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 19,
+              "end_byte": 25,
+              "text": "1e3 mg",
+              "source_sha256": "sha256:098023edd43312e8c39fa94e7ccaa1fc64b125e589df095b636922be5befcc39",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 3,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-negation-local",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-negation-local",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-negation-local",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:288ae880a57a15f50e12db88950d17dacb69fac9519e38e43fb4ad2ecfbb92ed",
+            "bytes": 39
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:69338424c4d7459754589044c2b2048e3d0b3bbdb51672742d169d4409c2aafd",
+            "case_id": "independent-negation-local",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:288ae880a57a15f50e12db88950d17dacb69fac9519e38e43fb4ad2ecfbb92ed",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 15,
+            "end_byte": 20,
+            "text": "fever",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "fever"
+            },
+            "reason": null,
+            "polarity": "negated",
+            "subject": "patient",
+            "reporter": null,
+            "context": {
+              "case_id": "independent-negation-local",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 20,
+              "text": "patient denies fever",
+              "source_sha256": "sha256:288ae880a57a15f50e12db88950d17dacb69fac9519e38e43fb4ad2ecfbb92ed",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:36418181e58f9c09799257a6965e51a1eca26550ae475a920af6f27807d10279",
+            "case_id": "independent-negation-local",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:288ae880a57a15f50e12db88950d17dacb69fac9519e38e43fb4ad2ecfbb92ed",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 34,
+            "end_byte": 39,
+            "text": "cough",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "cough"
+            },
+            "reason": null,
+            "polarity": "affirmed",
+            "subject": "patient",
+            "reporter": null,
+            "context": {
+              "case_id": "independent-negation-local",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 22,
+              "end_byte": 39,
+              "text": "patient has cough",
+              "source_sha256": "sha256:288ae880a57a15f50e12db88950d17dacb69fac9519e38e43fb4ad2ecfbb92ed",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 2,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-negation-compound",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-negation-compound",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-negation-compound",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:61ec433e87bd9a7f2c4c77019e516d1901c088601c4c1e166a5fce688477a918",
+            "bytes": 55
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:bbb99e927e6bef9b0593ae1496d5a7ab38d1a37c949d5d18d15b9d2daf048529",
+            "case_id": "independent-negation-compound",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:61ec433e87bd9a7f2c4c77019e516d1901c088601c4c1e166a5fce688477a918",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 22,
+            "end_byte": 27,
+            "text": "fever",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "fever"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-negation-compound",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 27,
+              "text": "patient does not deny fever",
+              "source_sha256": "sha256:61ec433e87bd9a7f2c4c77019e516d1901c088601c4c1e166a5fce688477a918",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:31221cc0260da98bbbb2a76042d310fdef8d754108f962ba1a631ac34e5a2bc2",
+            "case_id": "independent-negation-compound",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:61ec433e87bd9a7f2c4c77019e516d1901c088601c4c1e166a5fce688477a918",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 50,
+            "end_byte": 55,
+            "text": "cough",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "cough"
+            },
+            "reason": null,
+            "polarity": "uncertain",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-negation-compound",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 29,
+              "end_byte": 55,
+              "text": "patient not only has cough",
+              "source_sha256": "sha256:61ec433e87bd9a7f2c4c77019e516d1901c088601c4c1e166a5fce688477a918",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "unsupported_assertion_scope"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 2,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-attribution-explicit",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-attribution-explicit",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-attribution-explicit",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:1a9955ddeafeb66d2f0927fec7fbb992c1e1aa3909dbd8b9a4735cdbb91ee265",
+            "bytes": 75
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:f5bfb0d5914860d9fd2a2d0730f5150574a70487839a135a7c45077750643dda",
+            "case_id": "independent-attribution-explicit",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:1a9955ddeafeb66d2f0927fec7fbb992c1e1aa3909dbd8b9a4735cdbb91ee265",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 27,
+            "end_byte": 32,
+            "text": "fever",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "fever"
+            },
+            "reason": null,
+            "polarity": "affirmed",
+            "subject": "patient",
+            "reporter": "mother",
+            "context": {
+              "case_id": "independent-attribution-explicit",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 32,
+              "text": "mother reports patient has fever",
+              "source_sha256": "sha256:1a9955ddeafeb66d2f0927fec7fbb992c1e1aa3909dbd8b9a4735cdbb91ee265",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:10e20e483527c62bb8056cc2f6c8838fc5539aabce50b5e625a181df003e0bec",
+            "case_id": "independent-attribution-explicit",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:1a9955ddeafeb66d2f0927fec7fbb992c1e1aa3909dbd8b9a4735cdbb91ee265",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 70,
+            "end_byte": 75,
+            "text": "cough",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "cough"
+            },
+            "reason": null,
+            "polarity": "affirmed",
+            "subject": "[Patient A]",
+            "reporter": "[RN B]",
+            "context": {
+              "case_id": "independent-attribution-explicit",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 34,
+              "end_byte": 75,
+              "text": "[RN B] reports that [Patient A] has cough",
+              "source_sha256": "sha256:1a9955ddeafeb66d2f0927fec7fbb992c1e1aa3909dbd8b9a4735cdbb91ee265",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 2,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-attribution-reset",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-attribution-reset",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-attribution-reset",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:0691a42730091bc952771fa086fd97016a48d5ed0a4a4f5c3d3c8d011fc9de91",
+            "bytes": 39
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:cca79681303d3d9bda49134fccc49b7ebac1eee5af466fdcb780482e855b4f12",
+            "case_id": "independent-attribution-reset",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:0691a42730091bc952771fa086fd97016a48d5ed0a4a4f5c3d3c8d011fc9de91",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 27,
+            "end_byte": 32,
+            "text": "fever",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "fever"
+            },
+            "reason": null,
+            "polarity": "affirmed",
+            "subject": "patient",
+            "reporter": "mother",
+            "context": {
+              "case_id": "independent-attribution-reset",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 32,
+              "text": "mother reports patient has fever",
+              "source_sha256": "sha256:0691a42730091bc952771fa086fd97016a48d5ed0a4a4f5c3d3c8d011fc9de91",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:f0c98437d3b6bdd34b6c4cb106f928052fb68bfc87f95fa6905212afb28f03c0",
+            "case_id": "independent-attribution-reset",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:0691a42730091bc952771fa086fd97016a48d5ed0a4a4f5c3d3c8d011fc9de91",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 34,
+            "end_byte": 39,
+            "text": "cough",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "cough"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-attribution-reset",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 34,
+              "end_byte": 39,
+              "text": "cough",
+              "source_sha256": "sha256:0691a42730091bc952771fa086fd97016a48d5ed0a4a4f5c3d3c8d011fc9de91",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 2,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-relative-selected-anchor",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-relative-selected-anchor",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-relative-selected-anchor",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+            "bytes": 41
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:76aeda78a1a41fb9c05e7d0a4a989caaa163477c3e7043920b7c4966137d86f1",
+            "case_id": "independent-relative-selected-anchor",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 10,
+            "text": "2024-04-14",
+            "kind": "date",
+            "status": "resolved",
+            "normalized": {
+              "year": 2024,
+              "month": 4,
+              "day": 14,
+              "iso": "2024-04-14",
+              "alternatives": []
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-relative-selected-anchor",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 16,
+              "text": "2024-04-14 23:30",
+              "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:e3e6331a05f57c1cd4cc53b1a98f0179b8ba21b330197746504d9f25f604bd40",
+            "case_id": "independent-relative-selected-anchor",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 11,
+            "end_byte": 16,
+            "text": "23:30",
+            "kind": "time",
+            "status": "resolved",
+            "normalized": {
+              "time": "23:30:00",
+              "precision": "minute"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-relative-selected-anchor",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 16,
+              "text": "2024-04-14 23:30",
+              "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:9d3c2d3d91f08286f689a4e0270cbfbd50dd5e8de55fe35bce04bc0514da2a03",
+            "case_id": "independent-relative-selected-anchor",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 18,
+            "end_byte": 31,
+            "text": "2 hours later",
+            "kind": "relative_time",
+            "status": "resolved",
+            "normalized": {
+              "offset_seconds": 7200,
+              "local_datetime": "2024-04-15T01:30:00"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-relative-selected-anchor",
+              "evidence_id": "context-2",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 18,
+              "end_byte": 31,
+              "text": "2 hours later",
+              "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+              "verified": true
+            },
+            "anchor": {
+              "case_id": "independent-relative-selected-anchor",
+              "evidence_id": "anchor-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 16,
+              "text": "2024-04-14 23:30",
+              "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+              "verified": true
+            },
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:81e2e25130e47f5f674afb8d3815d12beec3531e1a3510022c657afc03709d26",
+            "case_id": "independent-relative-selected-anchor",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 33,
+            "end_byte": 41,
+            "text": "tomorrow",
+            "kind": "relative_time",
+            "status": "resolved",
+            "normalized": {
+              "offset_days": 1,
+              "date": "2024-04-15"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-relative-selected-anchor",
+              "evidence_id": "context-3",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 33,
+              "end_byte": 41,
+              "text": "tomorrow",
+              "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+              "verified": true
+            },
+            "anchor": {
+              "case_id": "independent-relative-selected-anchor",
+              "evidence_id": "anchor-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 16,
+              "text": "2024-04-14 23:30",
+              "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+              "verified": true
+            },
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 4,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-relative-no-selected-anchor",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-relative-no-selected-anchor",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-relative-no-selected-anchor",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+            "bytes": 41
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:2d4bf21102052fa4665bce353d3b0600ba5a6567389eebef08de5f01921196fb",
+            "case_id": "independent-relative-no-selected-anchor",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 10,
+            "text": "2024-04-14",
+            "kind": "date",
+            "status": "resolved",
+            "normalized": {
+              "year": 2024,
+              "month": 4,
+              "day": 14,
+              "iso": "2024-04-14",
+              "alternatives": []
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-relative-no-selected-anchor",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 16,
+              "text": "2024-04-14 23:30",
+              "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:73908d3e610c24838a2445befe3f13a44c0dd708d05060d64a15a4929549b627",
+            "case_id": "independent-relative-no-selected-anchor",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 11,
+            "end_byte": 16,
+            "text": "23:30",
+            "kind": "time",
+            "status": "resolved",
+            "normalized": {
+              "time": "23:30:00",
+              "precision": "minute"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-relative-no-selected-anchor",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 16,
+              "text": "2024-04-14 23:30",
+              "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:d844ed96ae55eead9b756b07c344b4844017820862ceb2bc5a6dd310f1a6e416",
+            "case_id": "independent-relative-no-selected-anchor",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 18,
+            "end_byte": 31,
+            "text": "2 hours later",
+            "kind": "relative_time",
+            "status": "partial",
+            "normalized": {
+              "offset_seconds": 7200,
+              "local_datetime": null
+            },
+            "reason": "missing_explicit_anchor",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-relative-no-selected-anchor",
+              "evidence_id": "context-2",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 18,
+              "end_byte": 31,
+              "text": "2 hours later",
+              "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:a837b81d9c36a5484b8fae985720edd70f166c09f7add897298d496646671a6d",
+            "case_id": "independent-relative-no-selected-anchor",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 33,
+            "end_byte": 41,
+            "text": "tomorrow",
+            "kind": "relative_time",
+            "status": "partial",
+            "normalized": {
+              "offset_days": 1,
+              "date": null
+            },
+            "reason": "missing_explicit_anchor",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-relative-no-selected-anchor",
+              "evidence_id": "context-3",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 33,
+              "end_byte": 41,
+              "text": "tomorrow",
+              "source_sha256": "sha256:92770b1007c569543395aeb56d6acdebf07137ecad4ff3c68009468b60d699b2",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 4,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-conflicting-sources",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-conflicting-sources",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-conflicting-sources",
+            "source_id": "nurse-note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:4eb99d28bd7f6ede593bc72e82f03ad94989971681fc90e7177cd3d12fb37b83",
+            "bytes": 17
+          },
+          {
+            "case_id": "independent-conflicting-sources",
+            "source_id": "medical-note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:02c2285eccfcb3c4dd1cf7a2e9e8696c4690162c8e1c2a4963027b7a4993bbfa",
+            "bytes": 20
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:6c1fe80bf6d5c0058ae174cf8fef9324868be49b439b2b961a86a640cdd55154",
+            "case_id": "independent-conflicting-sources",
+            "source_id": "medical-note",
+            "source_version": 1,
+            "source_sha256": "sha256:02c2285eccfcb3c4dd1cf7a2e9e8696c4690162c8e1c2a4963027b7a4993bbfa",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 15,
+            "end_byte": 20,
+            "text": "fever",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "fever"
+            },
+            "reason": null,
+            "polarity": "negated",
+            "subject": "patient",
+            "reporter": null,
+            "context": {
+              "case_id": "independent-conflicting-sources",
+              "evidence_id": "context-0",
+              "source_id": "medical-note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 20,
+              "text": "patient denies fever",
+              "source_sha256": "sha256:02c2285eccfcb3c4dd1cf7a2e9e8696c4690162c8e1c2a4963027b7a4993bbfa",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:741df8468eab2f576e79260f43d01d8136912680f00f802e057e5f9fbab03dc5",
+            "case_id": "independent-conflicting-sources",
+            "source_id": "nurse-note",
+            "source_version": 1,
+            "source_sha256": "sha256:4eb99d28bd7f6ede593bc72e82f03ad94989971681fc90e7177cd3d12fb37b83",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 12,
+            "end_byte": 17,
+            "text": "fever",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "fever"
+            },
+            "reason": null,
+            "polarity": "affirmed",
+            "subject": "patient",
+            "reporter": null,
+            "context": {
+              "case_id": "independent-conflicting-sources",
+              "evidence_id": "context-1",
+              "source_id": "nurse-note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 17,
+              "text": "patient has fever",
+              "source_sha256": "sha256:4eb99d28bd7f6ede593bc72e82f03ad94989971681fc90e7177cd3d12fb37b83",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 2,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-conflicting-revisions",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-conflicting-revisions",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-conflicting-revisions",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:ea763d7a3b5799fa186dd3dc7c6fb34c644d54ef8385cc4541a8213a377f99b2",
+            "bytes": 21
+          },
+          {
+            "case_id": "independent-conflicting-revisions",
+            "source_id": "note",
+            "version": 2,
+            "state": "present",
+            "sha256": "sha256:9ab42e949dfe9135d270158d243368522cac9b8319f9efd28ce2a157682faef6",
+            "bytes": 28
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:8dfc648182d3283140ef1f25ffaaea920b8529c2dd1277c4c6ad56542030abb2",
+            "case_id": "independent-conflicting-revisions",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:ea763d7a3b5799fa186dd3dc7c6fb34c644d54ef8385cc4541a8213a377f99b2",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 17,
+            "end_byte": 21,
+            "text": "5 mg",
+            "kind": "quantity",
+            "status": "resolved",
+            "normalized": {
+              "value": "5",
+              "unit": "mg"
+            },
+            "reason": null,
+            "polarity": "affirmed",
+            "subject": "patient",
+            "reporter": null,
+            "context": {
+              "case_id": "independent-conflicting-revisions",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 21,
+              "text": "patient received 5 mg",
+              "source_sha256": "sha256:ea763d7a3b5799fa186dd3dc7c6fb34c644d54ef8385cc4541a8213a377f99b2",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:01684bb1283d7229fb1271819341cb9bd0acc8a63c83265393efddb3b3f87ef3",
+            "case_id": "independent-conflicting-revisions",
+            "source_id": "note",
+            "source_version": 2,
+            "source_sha256": "sha256:9ab42e949dfe9135d270158d243368522cac9b8319f9efd28ce2a157682faef6",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 24,
+            "end_byte": 28,
+            "text": "5 mg",
+            "kind": "quantity",
+            "status": "resolved",
+            "normalized": {
+              "value": "5",
+              "unit": "mg"
+            },
+            "reason": null,
+            "polarity": "negated",
+            "subject": "patient",
+            "reporter": null,
+            "context": {
+              "case_id": "independent-conflicting-revisions",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 2,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 28,
+              "text": "patient did not receive 5 mg",
+              "source_sha256": "sha256:9ab42e949dfe9135d270158d243368522cac9b8319f9efd28ce2a157682faef6",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 2,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-ocr-clean-control",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-ocr-clean-control",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-ocr-clean-control",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:77e20a6bb44a75e4b50afe7fb8343a29cca1ed5f80efda38a6604b3a8bb9ce58",
+            "bytes": 23
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:e1de29fb1c2ea4bb9134a772bff1216a81d73ea910788b18b64b384db2a683fa",
+            "case_id": "independent-ocr-clean-control",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:77e20a6bb44a75e4b50afe7fb8343a29cca1ed5f80efda38a6604b3a8bb9ce58",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 10,
+            "text": "2024-04-14",
+            "kind": "date",
+            "status": "resolved",
+            "normalized": {
+              "year": 2024,
+              "month": 4,
+              "day": 14,
+              "iso": "2024-04-14",
+              "alternatives": []
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ocr-clean-control",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 10,
+              "text": "2024-04-14",
+              "source_sha256": "sha256:77e20a6bb44a75e4b50afe7fb8343a29cca1ed5f80efda38a6604b3a8bb9ce58",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:f6089ef7298aeced98ca7e7502047c782af83fa6a917b85337fbd0887e41d3c8",
+            "case_id": "independent-ocr-clean-control",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:77e20a6bb44a75e4b50afe7fb8343a29cca1ed5f80efda38a6604b3a8bb9ce58",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 12,
+            "end_byte": 17,
+            "text": "05:30",
+            "kind": "time",
+            "status": "resolved",
+            "normalized": {
+              "time": "05:30:00",
+              "precision": "minute"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ocr-clean-control",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 12,
+              "end_byte": 17,
+              "text": "05:30",
+              "source_sha256": "sha256:77e20a6bb44a75e4b50afe7fb8343a29cca1ed5f80efda38a6604b3a8bb9ce58",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:d2f56d3334740ce8eda0c4067d282631d6f0eefd59b8fe5252eed96d846ac830",
+            "case_id": "independent-ocr-clean-control",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:77e20a6bb44a75e4b50afe7fb8343a29cca1ed5f80efda38a6604b3a8bb9ce58",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 19,
+            "end_byte": 23,
+            "text": "5 mg",
+            "kind": "quantity",
+            "status": "resolved",
+            "normalized": {
+              "value": "5",
+              "unit": "mg"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ocr-clean-control",
+              "evidence_id": "context-2",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 19,
+              "end_byte": 23,
+              "text": "5 mg",
+              "source_sha256": "sha256:77e20a6bb44a75e4b50afe7fb8343a29cca1ed5f80efda38a6604b3a8bb9ce58",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 3,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-ocr-corrupt",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-ocr-corrupt",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-ocr-corrupt",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:08e7263f1226d993a0c9fb8d3cbfe92d6c4892b944e2101019bd095aa2cb89d4",
+            "bytes": 23
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:865c10de63dac01801b7bf92f3a1b8299ac582f37e82644eeaedb4be1317f3a4",
+            "case_id": "independent-ocr-corrupt",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:08e7263f1226d993a0c9fb8d3cbfe92d6c4892b944e2101019bd095aa2cb89d4",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 10,
+            "text": "2O24-04-14",
+            "kind": "date",
+            "status": "unsupported",
+            "normalized": null,
+            "reason": "ocr_corruption",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ocr-corrupt",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 10,
+              "text": "2O24-04-14",
+              "source_sha256": "sha256:08e7263f1226d993a0c9fb8d3cbfe92d6c4892b944e2101019bd095aa2cb89d4",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:75f8fa95871c642400136d32042924865437ea7be2b9d6ccda5fecda2497916e",
+            "case_id": "independent-ocr-corrupt",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:08e7263f1226d993a0c9fb8d3cbfe92d6c4892b944e2101019bd095aa2cb89d4",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 12,
+            "end_byte": 17,
+            "text": "0S:30",
+            "kind": "time",
+            "status": "unsupported",
+            "normalized": null,
+            "reason": "ocr_corruption",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ocr-corrupt",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 12,
+              "end_byte": 17,
+              "text": "0S:30",
+              "source_sha256": "sha256:08e7263f1226d993a0c9fb8d3cbfe92d6c4892b944e2101019bd095aa2cb89d4",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:30153f12b9bad4ee35dbef9107aec13ceeb4228b1aefebed086eb1c786385518",
+            "case_id": "independent-ocr-corrupt",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:08e7263f1226d993a0c9fb8d3cbfe92d6c4892b944e2101019bd095aa2cb89d4",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 19,
+            "end_byte": 23,
+            "text": "5 mg",
+            "kind": "quantity",
+            "status": "resolved",
+            "normalized": {
+              "value": "5",
+              "unit": "mg"
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-ocr-corrupt",
+              "evidence_id": "context-2",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 19,
+              "end_byte": 23,
+              "text": "5 mg",
+              "source_sha256": "sha256:08e7263f1226d993a0c9fb8d3cbfe92d6c4892b944e2101019bd095aa2cb89d4",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 3,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-no-supported-observation",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-no-supported-observation",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-no-supported-observation",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:ef8ebfd08683bddf4fa23a4c33e1bc19979bcad5b27d71c72234ce45594073d5",
+            "bytes": 47
+          }
+        ],
+        "observations": [],
+        "observation_count": 0,
+        "no_supported_observation": true
+      }
+    },
+    {
+      "case_id": "independent-no-observation-added-mention",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-no-observation-added-mention",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-no-observation-added-mention",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:2b686085e9c263e074e39c532104eb608ae794d689c45dc1b554cb697f0ce58b",
+            "bytes": 41
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:51fc6c2483d51bcdf92ba3dfeccb7a34a96b1fc7214eda1b0aab1a300d0d8e87",
+            "case_id": "independent-no-observation-added-mention",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:2b686085e9c263e074e39c532104eb608ae794d689c45dc1b554cb697f0ce58b",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 37,
+            "end_byte": 41,
+            "text": "rash",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "rash"
+            },
+            "reason": null,
+            "polarity": "affirmed",
+            "subject": "patient",
+            "reporter": null,
+            "context": {
+              "case_id": "independent-no-observation-added-mention",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 25,
+              "end_byte": 41,
+              "text": "patient has rash",
+              "source_sha256": "sha256:2b686085e9c263e074e39c532104eb608ae794d689c45dc1b554cb697f0ce58b",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 1,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-administrative-identifiers",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-administrative-identifiers",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-administrative-identifiers",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:78b3c439c305e1571aef61727e0349f46751381c7105bae932eea92a611b8a4c",
+            "bytes": 46
+          }
+        ],
+        "observations": [],
+        "observation_count": 0,
+        "no_supported_observation": true
+      }
+    },
+    {
+      "case_id": "independent-unicode-byte-coordinates",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-unicode-byte-coordinates",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-unicode-byte-coordinates",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:a135e4ecae21df8623628a20b8be4f9ae060137c5c309b1cad5cc0e8021bb4ae",
+            "bytes": 56
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:6ac227ee1d7b1eca565642bcf60420f29480cc04be9754cd4cceef2270b7d51d",
+            "case_id": "independent-unicode-byte-coordinates",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:a135e4ecae21df8623628a20b8be4f9ae060137c5c309b1cad5cc0e8021bb4ae",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 33,
+            "end_byte": 38,
+            "text": "5 µg",
+            "kind": "quantity",
+            "status": "resolved",
+            "normalized": {
+              "value": "5",
+              "unit": "µg"
+            },
+            "reason": null,
+            "polarity": "affirmed",
+            "subject": "patient",
+            "reporter": null,
+            "context": {
+              "case_id": "independent-unicode-byte-coordinates",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 16,
+              "end_byte": 38,
+              "text": "patient received 5 µg",
+              "source_sha256": "sha256:a135e4ecae21df8623628a20b8be4f9ae060137c5c309b1cad5cc0e8021bb4ae",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:61bd852e706b91acb9cc8f02eb8f54218070f9727c00813545821c482dc96992",
+            "case_id": "independent-unicode-byte-coordinates",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:a135e4ecae21df8623628a20b8be4f9ae060137c5c309b1cad5cc0e8021bb4ae",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 52,
+            "end_byte": 56,
+            "text": "rash",
+            "kind": "assertion",
+            "status": "resolved",
+            "normalized": {
+              "observation": "rash"
+            },
+            "reason": null,
+            "polarity": "affirmed",
+            "subject": "patient",
+            "reporter": null,
+            "context": {
+              "case_id": "independent-unicode-byte-coordinates",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 40,
+              "end_byte": 56,
+              "text": "patient has rash",
+              "source_sha256": "sha256:a135e4ecae21df8623628a20b8be4f9ae060137c5c309b1cad5cc0e8021bb4ae",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 2,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-invalid-clock-components",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-invalid-clock-components",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-invalid-clock-components",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:82ed322d0275a9314ed962b2994dac61d9745fc4714e90d859a4ad4ec89f082a",
+            "bytes": 22
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:3b19f123a1aa02e59dabf214e619e532dfccd2a01b79517f7549fd9557b37743",
+            "case_id": "independent-invalid-clock-components",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:82ed322d0275a9314ed962b2994dac61d9745fc4714e90d859a4ad4ec89f082a",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 5,
+            "text": "25:00",
+            "kind": "time",
+            "status": "invalid",
+            "normalized": null,
+            "reason": "invalid_clock_time",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-invalid-clock-components",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 5,
+              "text": "25:00",
+              "source_sha256": "sha256:82ed322d0275a9314ed962b2994dac61d9745fc4714e90d859a4ad4ec89f082a",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:d5b476893454695b3449d06a59fcc3432d59d39f02c27001c9aea0f2d2244e23",
+            "case_id": "independent-invalid-clock-components",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:82ed322d0275a9314ed962b2994dac61d9745fc4714e90d859a4ad4ec89f082a",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 7,
+            "end_byte": 12,
+            "text": "12:60",
+            "kind": "time",
+            "status": "invalid",
+            "normalized": null,
+            "reason": "invalid_clock_time",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-invalid-clock-components",
+              "evidence_id": "context-1",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 7,
+              "end_byte": 12,
+              "text": "12:60",
+              "source_sha256": "sha256:82ed322d0275a9314ed962b2994dac61d9745fc4714e90d859a4ad4ec89f082a",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          },
+          {
+            "observation_id": "sha256:ac3fb338a3753fd091c1eb588ff61939f0cbf7869046202f1994e7b1478763e2",
+            "case_id": "independent-invalid-clock-components",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:82ed322d0275a9314ed962b2994dac61d9745fc4714e90d859a4ad4ec89f082a",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 14,
+            "end_byte": 22,
+            "text": "12:30:60",
+            "kind": "time",
+            "status": "invalid",
+            "normalized": null,
+            "reason": "invalid_clock_time",
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-invalid-clock-components",
+              "evidence_id": "context-2",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 14,
+              "end_byte": 22,
+              "text": "12:30:60",
+              "source_sha256": "sha256:82ed322d0275a9314ed962b2994dac61d9745fc4714e90d859a4ad4ec89f082a",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 3,
+        "no_supported_observation": false
+      }
+    },
+    {
+      "case_id": "independent-locale-one-valid-order",
+      "result": {
+        "schema_version": "faw08-d1-case-1.0",
+        "case_id": "independent-locale-one-valid-order",
+        "permitted_view": "synthetic-d1-extraction-only",
+        "date_order": "unknown",
+        "source_admission": "verified-full-source-witnesses-not-observations",
+        "sources": [
+          {
+            "case_id": "independent-locale-one-valid-order",
+            "source_id": "note",
+            "version": 1,
+            "state": "present",
+            "sha256": "sha256:1cd59b8bf8ce0a14da19d7fe773a68a8178100b62620b1d480f834587050a750",
+            "bytes": 10
+          }
+        ],
+        "observations": [
+          {
+            "observation_id": "sha256:5b4838ddc47cdabcabde4d1662c2e3d0739a379d228078ad13b51ae22abc35a8",
+            "case_id": "independent-locale-one-valid-order",
+            "source_id": "note",
+            "source_version": 1,
+            "source_sha256": "sha256:1cd59b8bf8ce0a14da19d7fe773a68a8178100b62620b1d480f834587050a750",
+            "coordinate_system": "utf8-byte",
+            "start_byte": 0,
+            "end_byte": 10,
+            "text": "13/04/2024",
+            "kind": "date",
+            "status": "resolved",
+            "normalized": {
+              "year": 2024,
+              "month": 4,
+              "day": 13,
+              "iso": "2024-04-13",
+              "alternatives": []
+            },
+            "reason": null,
+            "polarity": "unknown",
+            "subject": null,
+            "reporter": null,
+            "context": {
+              "case_id": "independent-locale-one-valid-order",
+              "evidence_id": "context-0",
+              "source_id": "note",
+              "source_version": 1,
+              "coordinate_system": "utf8-byte",
+              "start_byte": 0,
+              "end_byte": 10,
+              "text": "13/04/2024",
+              "source_sha256": "sha256:1cd59b8bf8ce0a14da19d7fe773a68a8178100b62620b1d480f834587050a750",
+              "verified": true
+            },
+            "anchor": null,
+            "timezone": null,
+            "recording_time": null,
+            "availability_time": null,
+            "event_linkage": null,
+            "context_reasons": [
+              "polarity_not_explicit"
+            ],
+            "method": "deterministic-stdlib-rules",
+            "rule_version": "faw08-d1-rules-1.0"
+          }
+        ],
+        "observation_count": 1,
+        "no_supported_observation": false
+      }
+    }
+  ],
+  "metrics": {
+    "expected_observations": 54,
+    "actual_observations": 54,
+    "true_positive": 54,
+    "false_positive": 0,
+    "false_negative": 0,
+    "expected_resolved": 37,
+    "expected_unresolved": 17,
+    "correct_observations": 52,
+    "correct_resolved": 36,
+    "correct_unresolved": 16,
+    "false_blocking": 0,
+    "execution_failures": 0,
+    "no_observation_cases": 2,
+    "no_observation_false_positives": 0,
+    "no_observation_cases_with_false_positives": 0,
+    "case_count": 28,
+    "family_count": 14,
+    "precision": 1.0,
+    "recall": 1.0,
+    "normalization_recall": 0.972972972972973,
+    "useful_resolved_coverage": 0.6666666666666666,
+    "exact_annotation_coverage": 0.9629629629629629,
+    "ambiguity_recognition": 0.9411764705882353,
+    "no_observation_false_positive_case_rate": 0.0,
+    "field_error_count": 3,
+    "field_errors": {
+      "context_reasons": 1,
+      "polarity": 1,
+      "reason": 1
+    }
+  },
+  "execution_utc": "2026-11-16T13:41:16.327680+00:00",
+  "source_hash_before": "d35f2d1608b693d745c995ef7a79731d14ff2e68b0d751a6433d0c15c16d1dd6",
+  "source_hash_after": "d35f2d1608b693d745c995ef7a79731d14ff2e68b0d751a6433d0c15c16d1dd6"
+}

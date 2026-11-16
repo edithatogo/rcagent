@@ -21,7 +21,8 @@ Continue automatically through ready tasks, review and bounded rework. Do not as
   three-role agent review. [Coordination](./faw07-d0-coordination.json) records
   actual merge acceptance and the superseded worker handoffs. Later stages were
   not started under this D0 assignment.
-- [ ] FAW08 / D1: demonstrate bounded dates/times/units/negation and exact source-span extraction, including invalid/ambiguous expressions (CAW02/04/08).
+- [~] FAW08 / D1: demonstrate bounded dates/times/units/negation and exact source-span extraction, including invalid/ambiguous expressions (CAW02/04/08).
+  The [D1 contract](./faw08-d1-contract.md) records the direct implementation/PR/check/merge authority, exclusive paths, reuse decision and bounded grammar. The [source completion record](./faw08-d1-completion-20261116.md) records 195 focused passing tests and the unchanged independent 28-case oracle; exact-head hosted checks and actual protected merge remain required before acceptance.
 - [ ] FAW09 / D2: demonstrate timeline/partial-order assembly with event, recording and recipient-availability clocks; preserve disagreement and unknown order (CAW10, CS03).
 - [ ] FAW10 / D3: demonstrate decision-time packets and patient/family concern traceability; hide future outcome/appraisal through every retrieval/verification/rendering path (CAW10/20).
 - [ ] Checkpoint B: pass the finite oracle suite and property/metamorphic tests; publish precision/recall and abstention on held-out component examples without calling them clinical validation.
@@ -63,7 +64,7 @@ and merged-master Quality43556852077 both passed all nine jobs, with
 privacy/secrets and official conformance success. This updates the Phase A
 publication-time statements above without rewriting their source receipts.
 The 16 November bounded D0 completion assignment is delivered and accepted;
-FAW08 / D1 remains planned. Original worker history and the direct completion
+FAW08 / D1 is now in progress under the subsequent explicit D1 assignment. Original worker history and the direct completion
 authority are retained in the D0 receipts. The implementation has distinct CLI/server admission and
 phase-dependent probe receipts, checked optional/native output, typed autonomy,
 evidence, retrieval, benchmark, privacy, panel and evaluator contracts, and
