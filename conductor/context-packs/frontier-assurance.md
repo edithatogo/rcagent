@@ -1,6 +1,6 @@
 # Bounded context: frontier assurance
 
-- Purpose: retain accepted FAW06 and FAW07 / D0 evidence and the current bounded FAW08 / D1 assignment below. The earlier D0 authority and handoff remain historical records.
+- Purpose: retain accepted FAW06, FAW07 / D0 and FAW08 / D1 evidence. FAW09 / D2 is planned next. Earlier authority and handoff notes remain historical records.
 - Initial integration revision: 50c8a81; assessment reference: a895d42a8738d2937f849b65e3b892042f64b979.
 - Prior FAW06 acceptance: PR #131 merged as `419c04d7e1c0a16e924e0b7058604671855625a2`, tree `c0ff3fa9ce5cc78232d3987431ff857c43d1aa68`. Exact final-head Quality43555675618 and merged-master Quality43556852077 each passed all nine jobs, with dependency/privacy/conformance evidence. FAW06 removed the remaining 3,198 diagnostics across 153 active files; the baseline/caps are empty and explicit Any is an error. Preserve the historical source receipt and its 52 locally socket-denied failures separately from hosted acceptance.
 - Accepted D0 source: [PR #144](https://github.com/edithatogo/rcagent/pull/144), source `29d099b6e8d8507250c360481adba0fef63f91bf`, merged master `d3c10d607470c9a50c5410030b80aeab2cfa5430`, unchanged tree `4a8a2849255b317ba97085608557e7bd8841b99a`. All nine source-head Quality jobs, dependency/privacy checks and automatic master conformance passed; see the [acceptance receipt](../tracks/frontier-assurance_20261113/faw07-d0-acceptance-20261116.md).
@@ -18,6 +18,10 @@
 
 Canonical task records: [Track 13](../tracks/frontier-assurance_20261113/index.md), [Track 12](../tracks/cognitive-autopsy_20261107/index.md), [Track 14](../tracks/death-review_20261113/index.md).
 
-## Current D1 assignment — 16 November 2026
+## D1 assignment — 16 November 2026 (history)
 
 Dylan subsequently instructed this conversation to implement D1, open a PR, check Actions and merge. The [D1 contract](../tracks/frontier-assurance_20261113/faw08-d1-contract.md) defines this new bounded authority, paths, input grammar, reuse and acceptance. Base `d11548357baba6a1e20163139a366c6367a05432` includes D0 and the later ty/lock update. FAW08 is active; D2 and later stages remain planned. The D0-specific authority and acceptance above remain historical records. No other active PR ownership transfers.
+
+## Current D1 acceptance — 17 November 2026
+
+FAW08 / D1 is accepted through [PR #148](https://github.com/edithatogo/rcagent/pull/148), source `3627e3a82424f18a19c865a380cb90181e648729`, merged as `33ab6d20f294fd86de2b39659aea53b0941e80e9` with the identical tested tree. All nine source Quality jobs, dependency review and privacy/secrets passed before normal protected merge. Automatic master conformance then passed with 2,571 contract tests. The [acceptance receipt](../tracks/frontier-assurance_20261113/faw08-d1-acceptance-20261117.md) records actual identities and preserves the 52 local socket-denied failures. D1 has 195 focused tests and an unchanged independently frozen 28-case/14-family oracle with 54 exact observations, 37 lexical normalizations and 17 retained uncertainty states; this is synthetic development evidence, with no model or clinical qualification. No new dependencies were introduced. FAW09 / D2 timeline/partial-order assembly is next and remains planned; Checkpoint B and broader CAW completion stay open. Other owners and earlier negative evidence remain unchanged.

@@ -1,8 +1,9 @@
 # FAW08 / D1 source completion and integration record
 
-This is the premerge source record. It does not assert a future Actions result
-or merge. FAW08 remains `[~]` until the exact committed head passes the required
-hosted gates and its actual protected merge is observed.
+This document retains the premerge source record. The subsequent
+[observed acceptance](./faw08-d1-acceptance-20261117.md) records actual hosted
+results, protected merge and master conformance. Pending statements below
+describe the original source-verification time.
 
 ## Authority, scope and reconciliation
 
@@ -197,3 +198,12 @@ Rollback is a normal revert of the D1 source increment. Preserve D0's original
 oracle, negative observations and source/lock-bound receipts, previous studies
 and other owners' work. A newly generated D0 artifact legitimately binds the
 current workbench and lock; it need not equal the old whole-artifact hash.
+
+## Subsequent observed acceptance
+
+PR #148 merged as `33ab6d20f294fd86de2b39659aea53b0941e80e9` after all nine
+exact source-head Quality jobs, dependency review and privacy/secrets succeeded.
+Automatic master conformance run 43883158837 then passed, including 2,571
+contract tests. See the [acceptance receipt](./faw08-d1-acceptance-20261117.md)
+for actual check and merge identities. The local socket failures and earlier
+failed development observations above remain preserved.
