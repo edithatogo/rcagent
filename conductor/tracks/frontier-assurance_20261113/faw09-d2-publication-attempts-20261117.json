@@ -76,6 +76,21 @@
         "field": "observed_utc"
       },
       "acceptance": "withheld_pending_metadata_correction_and_unchanged_hosted_gates"
+    },
+    {
+      "source_commit": "89425a12c15b4d533fb8610baed764fb429c86dc",
+      "source_tree": "bda7e6384bca761842260a7a5c2dec64812dc2c3",
+      "quality_run": 43957854760,
+      "quality": "success",
+      "quality_jobs_passed": 9,
+      "dependency_review_run": 43957855067,
+      "dependency_review": "success",
+      "privacy_run": 43957854773,
+      "privacy": "success",
+      "gitleaks_findings": 0,
+      "presidio_blocking_findings": 0,
+      "presidio_advisory_findings": 0,
+      "acceptance": "normal_protected_merge_and_master_conformance_passed"
     }
   ],
   "correction": {
@@ -87,8 +102,13 @@
     "scanner_rules_and_allowlists_unchanged": true,
     "detector_component_check": "./faw09-d2-timestamp-check-20261117.json",
     "positive_control_still_detected": true,
-    "full_scanner_rerun": "pending"
+    "full_scanner_rerun": "passed_on_final_source_head"
   },
   "scanner_pin": "edithatogo/repository-standards@985503bc8eae58e7d6ef36a6e5427d0077e0193c",
-  "final_delivery": "Pending subsequent exact-head CI and normal protected merge."
+  "final_delivery": {
+    "merge_commit": "8bf94873af22730e445fcbb1b7fb748cfd16ed25",
+    "merged_at": "2026-11-16T21:18:50Z",
+    "master_conformance_run": 43958804476,
+    "acceptance": "./faw09-d2-acceptance-20261117.json"
+  }
 }
