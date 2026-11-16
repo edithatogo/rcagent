@@ -14,7 +14,7 @@
 | Status | Track | GitHub | Scope |
 |---|---|---:|---|
 | [ ] | [12 Cognitive autopsy](./tracks/cognitive-autopsy_20261107/index.md) | [#116](https://github.com/edithatogo/rcagent/issues/116) | Canonical CA01–CA12 / CAW01–CAW25 scientific component programme; models remain unqualified |
-| [~] | [13 Frontier assurance](./tracks/frontier-assurance_20261113/index.md) | [#125](https://github.com/edithatogo/rcagent/issues/125) | FAW06 delivered with zero typing debt; [FAW07 / D0 accepted](./tracks/frontier-assurance_20261113/faw07-d0-acceptance-20261116.md) through PR #144 at d3c10d6; FAW08 / D1 in progress under its bounded extraction contract; broader track open |
+| [~] | [13 Frontier assurance](./tracks/frontier-assurance_20261113/index.md) | [#125](https://github.com/edithatogo/rcagent/issues/125) | FAW06 and D0 remain delivered; [FAW08 / D1 accepted](./tracks/frontier-assurance_20261113/faw08-d1-acceptance-20261117.md) through PR #148 at 33ab6d2; FAW09 / D2 planned next; broader track open |
 | [ ] | [14 Death reviews](./tracks/death-review_20261113/index.md) | [#126](https://github.com/edithatogo/rcagent/issues/126) | NSW/Queensland mortality learning and death-review application profile |
 
 The [8 November local-model planning note](./tracks/local-model-cognitive-autopsy_20261108/index.md) is an input to Tracks 12/13, not a second implementation owner. It does not reopen archived Track 08 or expand its empty supported set.
