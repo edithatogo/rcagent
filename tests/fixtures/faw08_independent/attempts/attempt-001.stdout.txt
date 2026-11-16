@@ -1,0 +1,110 @@
+........F.....F........F.F...F.......................................... [ 52%]
+..................................................F..............        [100%]
+=================================== FAILURES ===================================
+___________ test_independent_literal_expectations[locale-unresolved] ___________
+
+identifier = 'locale-unresolved'
+
+    @pytest.mark.parametrize("identifier", [text_value(row["id"]) for row in _cases()])
+    def test_independent_literal_expectations(identifier: str) -> None:
+        item = _item(identifier)
+        case = deepcopy(mapping(item["input"]))
+        before = deepcopy(case)
+        result = mapping(extract_case(case))
+        assert case == before
+        _check_result(case, result)
+        score = score_cases([item], [{"case_id": case["case_id"], "result": result}])
+        assert score["false_positive"] == 0, score
+        assert score["false_negative"] == 0, score
+>       assert score["field_error_count"] == 0, score
+E       AssertionError: {'expected_observations': 1, 'actual_observations': 1, 'true_positive': 1, 'false_positive': 0, ...}
+E       assert 1 == 0
+
+tests/test_faw08_independent_extraction.py:392: AssertionError
+___________ test_independent_literal_expectations[negation-compound] ___________
+
+identifier = 'negation-compound'
+
+    @pytest.mark.parametrize("identifier", [text_value(row["id"]) for row in _cases()])
+    def test_independent_literal_expectations(identifier: str) -> None:
+        item = _item(identifier)
+        case = deepcopy(mapping(item["input"]))
+        before = deepcopy(case)
+        result = mapping(extract_case(case))
+        assert case == before
+        _check_result(case, result)
+        score = score_cases([item], [{"case_id": case["case_id"], "result": result}])
+>       assert score["false_positive"] == 0, score
+E       AssertionError: {'expected_observations': 2, 'actual_observations': 3, 'true_positive': 2, 'false_positive': 1, ...}
+E       assert 1 == 0
+
+tests/test_faw08_independent_extraction.py:390: AssertionError
+_______ test_independent_literal_expectations[no-supported-observation] ________
+
+identifier = 'no-supported-observation'
+
+    @pytest.mark.parametrize("identifier", [text_value(row["id"]) for row in _cases()])
+    def test_independent_literal_expectations(identifier: str) -> None:
+        item = _item(identifier)
+        case = deepcopy(mapping(item["input"]))
+        before = deepcopy(case)
+        result = mapping(extract_case(case))
+        assert case == before
+        _check_result(case, result)
+        score = score_cases([item], [{"case_id": case["case_id"], "result": result}])
+>       assert score["false_positive"] == 0, score
+E       AssertionError: {'expected_observations': 0, 'actual_observations': 2, 'true_positive': 0, 'false_positive': 2, ...}
+E       assert 2 == 0
+
+tests/test_faw08_independent_extraction.py:390: AssertionError
+______ test_independent_literal_expectations[administrative-identifiers] _______
+
+identifier = 'administrative-identifiers'
+
+    @pytest.mark.parametrize("identifier", [text_value(row["id"]) for row in _cases()])
+    def test_independent_literal_expectations(identifier: str) -> None:
+        item = _item(identifier)
+        case = deepcopy(mapping(item["input"]))
+        before = deepcopy(case)
+        result = mapping(extract_case(case))
+        assert case == before
+        _check_result(case, result)
+        score = score_cases([item], [{"case_id": case["case_id"], "result": result}])
+>       assert score["false_positive"] == 0, score
+E       AssertionError: {'expected_observations': 0, 'actual_observations': 1, 'true_positive': 0, 'false_positive': 1, ...}
+E       assert 1 == 0
+
+tests/test_faw08_independent_extraction.py:390: AssertionError
+__________ test_independent_aggregate_metrics_retain_all_denominators __________
+
+    def test_independent_aggregate_metrics_retain_all_denominators() -> None:
+        metrics = mapping(evaluate_oracle()["metrics"])
+        assert metrics["case_count"] == 28
+        assert metrics["family_count"] == 14
+        assert metrics["expected_observations"] == metrics["true_positive"] == 54
+>       assert metrics["expected_resolved"] == metrics["correct_resolved"] == 37
+E       assert 37 == 36
+
+tests/test_faw08_independent_extraction.py:401: AssertionError
+__ test_independent_polarity_and_attribution_stop_at_clause_boundaries[ but ] __
+
+boundary = ' but '
+
+    @pytest.mark.parametrize("boundary", ["; ", ". ", "\n", " but ", " however "])
+    def test_independent_polarity_and_attribution_stop_at_clause_boundaries(boundary: str) -> None:
+        case = _make_case("mother reports patient denies fever" + boundary + "father has cough")
+        result = mapping(extract_case(case))
+        observed = _objects(result["observations"])
+>       assert len(observed) == 2
+E       AssertionError: assert 3 == 2
+E        +  where 3 = len([{'observation_id': 'sha256:af882208def70e540bd51238cde51c76041a785f79bade157470edd92134b104', 'case_id': 'independent...8c33acdcd0c72e6247e03ca6959c1cf8f063a', 'case_id': 'independent-probe', 'source_id': 'note', 'source_version': 1, ...}])
+
+tests/test_faw08_independent_extraction.py:803: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_faw08_independent_extraction.py::test_independent_literal_expectations[locale-unresolved]
+FAILED tests/test_faw08_independent_extraction.py::test_independent_literal_expectations[negation-compound]
+FAILED tests/test_faw08_independent_extraction.py::test_independent_literal_expectations[no-supported-observation]
+FAILED tests/test_faw08_independent_extraction.py::test_independent_literal_expectations[administrative-identifiers]
+FAILED tests/test_faw08_independent_extraction.py::test_independent_aggregate_metrics_retain_all_denominators
+FAILED tests/test_faw08_independent_extraction.py::test_independent_polarity_and_attribution_stop_at_clause_boundaries[ but ]
+6 failed, 131 passed in 2.15s

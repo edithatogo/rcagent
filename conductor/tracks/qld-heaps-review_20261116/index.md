@@ -1,7 +1,13 @@
 # Queensland HEAPS review profile
 
-Status: H2 portable guidance/report mapping and H3 profile/independent fixture contracts implemented and reviewed on reconciled master d115483. H1 source/interface evidence is preserved. Shared portfolio registration and coordinator integration remain pending. H4 runtime delivery, official-template conformity, clinical performance and operational deployment are not qualified.
+Status: H4 deterministic synthetic consumer and independent implementation review are complete on the reconciled branch. The explicitly authorised PR/Actions/merge sequence is in progress. H2/H3 prerequisites and historical H1 findings remain preserved. H5 phase qualification and H6 current local instrument/operational alignment are not accepted by H4.
 
+- [H4 consumer completion receipt](./h4.md)
+- [H4 independent review](./h4-review.md)
+- [H4 actual oracle execution](./h4-execution.json)
+- [H4 deterministic CLI replay](./h4-replay.json)
+- [H4 exact input identities](./h4-input-manifest.json)
+- [H4 conformance](./h4-conformance.json)
 - [H2 workflow/report receipt](./h2.md)
 - [H3 contract/fixture receipt](./h3.md)
 - [H2/H3 integrated review](./h2-h3-review.md)
@@ -32,6 +38,6 @@ Status: H2 portable guidance/report mapping and H3 profile/independent fixture c
 GitHub: [issue #140](https://github.com/edithatogo/rcagent/issues/140).
 Stable track ID: `qld-heaps-review_20261116`. The shared coordinator allocates its portfolio number; this track does not reserve the next number ahead of the active [AcciMap lane #139](https://github.com/edithatogo/rcagent/issues/139).
 
-The user subsequently authorised H1 and then explicitly authorised implementing H2 and H3. Those phases deliver original workflow/report assets, closed sidecar contracts and independently authored synthetic fixtures. Their 101 structural/design checks pass; the full local gate retains 52 existing socket/session failures. H1 shared receiving/portfolio tasks remain visible for integration; H4–H6 are unstarted.
+The user subsequently authorised H1 and then explicitly authorised implementing H2 and H3. Those phases deliver original workflow/report assets, closed sidecar contracts and independently authored synthetic fixtures. Their 101 structural/design checks pass; the full local gate retains 52 existing socket/session failures. H1 shared receiving/portfolio tasks remain visible. H4 implementation is complete with 220 passing regressions and identical 16-file CLI output; required hosted checks and merge are the next integration actions. H5/H6 remain separate qualification and local alignment stages.
 
 HEAPS is an application profile across the existing triage, investigate, report and track modes. Reuse the canonical evidence/action contracts and Queensland jurisdiction pack. AcciMap is an optional view owned elsewhere. The current internal QHEPS/CHHHS instrument is unavailable to this review: that limits official-template conformity, not independent public-source planning or synthetic engineering.

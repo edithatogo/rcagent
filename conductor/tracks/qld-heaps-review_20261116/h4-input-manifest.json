@@ -1,0 +1,237 @@
+{
+  "schema_version": "heaps-h4-input-manifest-1.0",
+  "recorded_at": "2026-11-16T21:06:48.643232+00:00",
+  "base_master": "6f9cd9627adc52782a67fa6693f1cdb90c3c84a7",
+  "previous_heaps_head": "8adcff03d7f33baf0110fbb198661b01db0754b0",
+  "scope": "production, independent tests, frozen normative inputs, declared runtime dependencies and usage; excludes this manifest and mutable administrative receipts",
+  "count": 45,
+  "aggregate_algorithm": "sha256 of UTF-8 path-sorted sha256 + two spaces + repository-relative path + LF",
+  "aggregate_sha256": "fd4481173ebeebfc490ccea24e6b370229b7256a41329ad834ba5cf7665f9e85",
+  "files": [
+    {
+      "path": "conductor/schemas/safety-work.schema.json",
+      "bytes": 11085,
+      "sha256": "ccf454138863d98af6337703a874f8e8a90f819e1fbdeb1f4f97c684d36f53d5"
+    },
+    {
+      "path": "conductor/tracks/qld-heaps-review_20261116/acceptance-catalogue.json",
+      "bytes": 6050,
+      "sha256": "5eef3fada25e2d58da0d1fc85a5a3f9aa25cc2c994d1bf272e90a570d038d2b7"
+    },
+    {
+      "path": "conductor/tracks/qld-heaps-review_20261116/h3-contract.md",
+      "bytes": 22754,
+      "sha256": "7045a1891a95ea834dd8b6b412302b442b9a7d525e17a6e6b87f67474b50b522"
+    },
+    {
+      "path": "evaluation/heaps/README.md",
+      "bytes": 4479,
+      "sha256": "8a4a135575af6d9c3ccf07277a9a24f90e024276110a43041752cc38f75ea6b7"
+    },
+    {
+      "path": "evaluation/heaps/h4-usage.md",
+      "bytes": 7965,
+      "sha256": "278be76c5676ce8ad6fb9b26af90fcb9ff3b5dc0940ddbfed8682093904596de"
+    },
+    {
+      "path": "evaluation/heaps/heaps-profile.schema.json",
+      "bytes": 42485,
+      "sha256": "934181ec3e5951c573f54f99cc47f3ec1567644a7548b5e66dc3a7ae5814e5d1"
+    },
+    {
+      "path": "evaluation/heaps/packet-manifest.schema.json",
+      "bytes": 3140,
+      "sha256": "1677ded58fe5063780ef3e947ced40a4c29e1d49ecf374c4af58f618d6733cae"
+    },
+    {
+      "path": "evaluation/heaps/review-decision.schema.json",
+      "bytes": 4198,
+      "sha256": "5d3866616ab458d57db0f9014a8768cfb8f0974617a454f7913b10020fe8423d"
+    },
+    {
+      "path": "evaluation/heaps/status-receipt.schema.json",
+      "bytes": 8130,
+      "sha256": "9cd5a6e29aacdcf965215b0dcb8b900381cc407c7034fabb6f28da5410b140b7"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 2973,
+      "sha256": "0d9a5e7ab62b2c66966a563c873eca62edc7796181a522aa75f4340ae3fedb09"
+    },
+    {
+      "path": "skills/rca-investigation/assets/template-admission.json",
+      "bytes": 9528,
+      "sha256": "b852feb35c982cf339c67c736bbf8c2a1983db670058a0c392be863286535a25"
+    },
+    {
+      "path": "skills/rca-investigation/assets/templates/markdown/15-heaps-review-draft.md",
+      "bytes": 17653,
+      "sha256": "2fa4e705bd9f271b6aaf1d0c06caa904724d8cb7630c644c1597a31671ee63ec"
+    },
+    {
+      "path": "skills/rca-investigation/references/methods/heaps.md",
+      "bytes": 19949,
+      "sha256": "3f52a5cb8a8cfb1b093609a381cc9e02553eff7ad296562be1530d5f73fcdcf0"
+    },
+    {
+      "path": "tests/fixtures/heaps/README.md",
+      "bytes": 10671,
+      "sha256": "767bc43ae2de74dd3bbd296a18578552d3e410b059c79b2959a096013081220c"
+    },
+    {
+      "path": "tests/fixtures/heaps/canonical/base-case.json",
+      "bytes": 13206,
+      "sha256": "33e079a965f07f83745970346149015bc4fa2b38b35e72414be5a79fb116400e"
+    },
+    {
+      "path": "tests/fixtures/heaps/fixture-lock.json",
+      "bytes": 3678,
+      "sha256": "1bbcb62f04f7a45c512a1c1f0ef3f7b42798c3e559860565146c15a92ff7299e"
+    },
+    {
+      "path": "tests/fixtures/heaps/oracle.json",
+      "bytes": 152442,
+      "sha256": "fd38b4844220f6ea702ee6c6ffde25ab9d912f8d4eb02f7ab57999eed7e57556"
+    },
+    {
+      "path": "tests/fixtures/heaps/packet/base-manifest.json",
+      "bytes": 2359,
+      "sha256": "2c8f273aaa5664eb0624172cdef7472a2e667af9ddf10117e353addcea8cbd08"
+    },
+    {
+      "path": "tests/fixtures/heaps/packet/base-mapping.json",
+      "bytes": 949,
+      "sha256": "ef5a4e651d78d85c590d9e0c852ecc177bad3b65c34b4c50b86c3a9c63155d29"
+    },
+    {
+      "path": "tests/fixtures/heaps/packet/base-profile.json",
+      "bytes": 16221,
+      "sha256": "f723757fce6ae8cc26ddf22dd240fc39c19ed186bcfaf12fcc8b1828f1b67f3d"
+    },
+    {
+      "path": "tests/fixtures/heaps/packet/base-report.md",
+      "bytes": 872,
+      "sha256": "80784972356123bc9eab546a1a990f84b4618d1fb1e7cc884f0816c3cf5458d1"
+    },
+    {
+      "path": "tests/fixtures/heaps/packet/design-status.json",
+      "bytes": 1093,
+      "sha256": "0a04824281b2921a517a44da979e1b3721fb91f325d2a358e2ab854ac9e4c7ba"
+    },
+    {
+      "path": "tests/fixtures/heaps/packet/revised-report-manifest.json",
+      "bytes": 2362,
+      "sha256": "4d226517c00d3839ee000b0e45dd41ff77ac4f21ba889d73f5d38f8a56ed0ebe"
+    },
+    {
+      "path": "tests/fixtures/heaps/packet/revised-report.md",
+      "bytes": 939,
+      "sha256": "ab79cb7b02300b3eca9f429b8ee5584c067d59ad1f073e7e6a84fa7ffe12df5f"
+    },
+    {
+      "path": "tests/fixtures/heaps/packet/simulated-approved-decision.json",
+      "bytes": 973,
+      "sha256": "0724f4322eca7b6ab5dd8d2c2f2f7a3384c323d7d1bd8a092de82c6f15a1d107"
+    },
+    {
+      "path": "tests/fixtures/heaps/packet/template-v1.md",
+      "bytes": 616,
+      "sha256": "bd0b370bb21b5736ef560943c77a4bc356b8c864040cc3cb3d29f2eb93426928"
+    },
+    {
+      "path": "tests/fixtures/heaps/packet/template-v2.md",
+      "bytes": 759,
+      "sha256": "ab8335a01aac035bf27b98f087d26f7e72c217e263f071042b7d7e38afa87ed2"
+    },
+    {
+      "path": "tests/fixtures/heaps/packet/unqualified-component.json",
+      "bytes": 273,
+      "sha256": "85cac5dc9590285051a0b53d9c8c9e2076299bd06627994abe0f4071dff0055b"
+    },
+    {
+      "path": "tests/fixtures/heaps/source-manifest.json",
+      "bytes": 3811,
+      "sha256": "e7e02930fb8f0a9bafc1915e463c2f11db8f414198e02489dcdb89373b095bb5"
+    },
+    {
+      "path": "tests/fixtures/heaps/sources/consumer-account.txt",
+      "bytes": 274,
+      "sha256": "5a5eb43802ecb5783d75980239e6e81922c0daab97dd7fa01317fdc97b1b2b32"
+    },
+    {
+      "path": "tests/fixtures/heaps/sources/method-handover.txt",
+      "bytes": 593,
+      "sha256": "2af4d88b05c55d04919bfa98fb25bde50bb2ee92ba2700ec25c1da3337c3e137"
+    },
+    {
+      "path": "tests/fixtures/heaps/sources/record-revision-2.txt",
+      "bytes": 414,
+      "sha256": "710935c135e8a9da34f012d1a4be111cb5bc9c18838d1fa7c56cd654e51f4d61"
+    },
+    {
+      "path": "tests/fixtures/heaps/sources/record-summary.txt",
+      "bytes": 293,
+      "sha256": "a7926952e4e757a3b5773eb8ee915cb9373b02885dc13a0effc6a0a6ebb0eec0"
+    },
+    {
+      "path": "tests/fixtures/heaps/sources/record.txt",
+      "bytes": 390,
+      "sha256": "1fc6ea297c53df21ca14a908462f970675f46c0b98a433b6838403b019ced693"
+    },
+    {
+      "path": "tests/fixtures/heaps/sources/staff-account.txt",
+      "bytes": 283,
+      "sha256": "84be5eec1c8e1d29b8c9d6b5e43297ea1735a4fc62810cea14ce37cff5f06c70"
+    },
+    {
+      "path": "tests/fixtures/heaps/sources/synthetic-clock-rule.txt",
+      "bytes": 425,
+      "sha256": "cba257eda2cb581ba03da8977590e185d436b3c0b274e5183e5ebf52077dac02"
+    },
+    {
+      "path": "tests/test_heaps.py",
+      "bytes": 59397,
+      "sha256": "5b794df73241730efca79cc3d5863b7fd765969e2955dfa2fd7c1081da36ffcb"
+    },
+    {
+      "path": "tests/test_heaps_fixture_design.py",
+      "bytes": 18339,
+      "sha256": "6a69a94b8319c6ef54421289d057a264e6d3852bb7bb220195aa0b34ca48693e"
+    },
+    {
+      "path": "tests/test_heaps_profile_contract.py",
+      "bytes": 11949,
+      "sha256": "dc0caa562fc5cc5846c93b065f16816797c2a21057d2daab139c017457c5e71e"
+    },
+    {
+      "path": "tools/evidence_core.py",
+      "bytes": 17161,
+      "sha256": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee"
+    },
+    {
+      "path": "tools/heaps.py",
+      "bytes": 37550,
+      "sha256": "ea9fe374ae7f387d92d11ab7800bd2c636d947f5e62a03e88d5ed75c504dd55b"
+    },
+    {
+      "path": "tools/heaps_validation.py",
+      "bytes": 22243,
+      "sha256": "d3bbcffdcfc88f5e453ea6863e22ae5f40727b0425bb3da4be8226ef4ea9a7ae"
+    },
+    {
+      "path": "tools/interface_actions.py",
+      "bytes": 48353,
+      "sha256": "32ec06ec5b7659f0613dc29d6db146b17ef3ff5bed18b1948ba8c9a44c0b3bbf"
+    },
+    {
+      "path": "tools/json_shapes.py",
+      "bytes": 1505,
+      "sha256": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5"
+    },
+    {
+      "path": "uv.lock",
+      "bytes": 271085,
+      "sha256": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c"
+    }
+  ]
+}

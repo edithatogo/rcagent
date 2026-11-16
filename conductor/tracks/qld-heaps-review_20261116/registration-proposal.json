@@ -4,10 +4,10 @@
   "track_id": "qld-heaps-review_20261116",
   "issue": 140,
   "owner": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
-  "observed_base": "d11548357baba6a1e20163139a366c6367a05432",
+  "observed_base": "6f9cd9627adc52782a67fa6693f1cdb90c3c84a7",
   "track_number": null,
   "numbering_rule": "Allocate after reconciling active AcciMap139 and other current tracks; do not reserve 15 implicitly.",
-  "registry_row_template": "| [~] | [<assigned number> Queensland HEAPS](./tracks/qld-heaps-review_20261116/index.md) | [#140](https://github.com/edithatogo/rcagent/issues/140) | H1 source/interface receipt; H2 portable guidance and H3 profile/fixture contracts prepared; H4 runtime and shared integration next |",
+  "registry_row_template": "| [~] | [<assigned number> Queensland HEAPS](./tracks/qld-heaps-review_20261116/index.md) | [#140](https://github.com/edithatogo/rcagent/issues/140) | H2/H3 prerequisites delivered; H4 deterministic synthetic consumer and authorised PR integration in progress; H5/H6 qualification separate |",
   "index_entry": "[Queensland HEAPS review profile](./tracks/qld-heaps-review_20261116/index.md): H1 sources/scope, H2 guidance and H3 contract in parallel, H4 synthetic packet, H5 independent qualification, H6 conditional local alignment.",
   "roadmap_record_template": {
     "number": "COORDINATOR_ASSIGN",
@@ -106,5 +106,6 @@
       "h3_disposition": "Separate heaps-synthetic-draft-packet decision and detached manifest; shared approval scope is not extended or silently mapped. Actual authority/substantive approval remain unverified/not_established."
     }
   ],
-  "h2_h3_authority": "User explicitly instructed: Proceed with implementing H2 and H3. Dedicated content/schema/fixture paths and necessary reviewable H2 content integration are prepared in PR142; coordinator registration and merge remain separate."
+  "h2_h3_authority": "User explicitly instructed: Proceed with implementing H2 and H3. Dedicated content/schema/fixture paths and necessary reviewable H2 content integration are prepared in PR142; coordinator registration and merge remain separate.",
+  "h4_authority": "User explicitly instructed: Implement H4, open a PR, check actions pass, then merge. This authorises the HEAPS PR integration after actual passing required checks; portfolio number allocation remains a separate shared task."
 }

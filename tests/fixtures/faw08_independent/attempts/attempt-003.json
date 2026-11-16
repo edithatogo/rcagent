@@ -1,0 +1,37 @@
+{
+  "schema_version": "faw08-independent-attempt-1.0",
+  "attempt": 3,
+  "started_utc": "2026-11-16T13:47:16.382805+00:00",
+  "command": [
+    "/workspace/scratch/a739cac856a2/rcagent-review/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/test_faw08_independent_extraction.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds_single_test_process": 2.7033051200123737,
+  "hashes_before": {
+    "tools/faw08_d1_extraction.py": "754ee31ab30898817b9b68472d25ee0b55dbaa9a40a5e3b389913edad86682f4",
+    "tools/workbench.py": "79c40c57e75d6c3fe2fb39f6d50d6a4a40616ff561d87e45d1c4748dab1aed92",
+    "tools/faw07_d0_demo.py": "4aeafc70fb9149ce2d1068a27aa948fafd801c43c0786d22292bb130b7f47b5b",
+    "tools/evidence_core.py": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+    "tools/json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+    "uv.lock": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c",
+    "tests/test_faw08_independent_extraction.py": "2db98e4f7bd347f8e16e65969a9056d8bcc5894ec9cad596dcba95abd36fa693",
+    "tests/fixtures/faw08_independent/d1_oracle.json": "263143abe0c71bc02d7b04bd9593af3946f00c2ab64970786c922a005627aafe"
+  },
+  "hashes_after": {
+    "tools/faw08_d1_extraction.py": "754ee31ab30898817b9b68472d25ee0b55dbaa9a40a5e3b389913edad86682f4",
+    "tools/workbench.py": "79c40c57e75d6c3fe2fb39f6d50d6a4a40616ff561d87e45d1c4748dab1aed92",
+    "tools/faw07_d0_demo.py": "4aeafc70fb9149ce2d1068a27aa948fafd801c43c0786d22292bb130b7f47b5b",
+    "tools/evidence_core.py": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+    "tools/json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+    "uv.lock": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c",
+    "tests/test_faw08_independent_extraction.py": "2db98e4f7bd347f8e16e65969a9056d8bcc5894ec9cad596dcba95abd36fa693",
+    "tests/fixtures/faw08_independent/d1_oracle.json": "263143abe0c71bc02d7b04bd9593af3946f00c2ab64970786c922a005627aafe"
+  },
+  "stdout_sha256": "30d1ac9fdee973e40a259281d450394f318ccc5e1902dadd7f239d0a050d8c61",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "qualification": "Independent frozen synthetic oracle plus separate injected-corruption and metamorphic engineering probes; no clinical or held-out claim."
+}

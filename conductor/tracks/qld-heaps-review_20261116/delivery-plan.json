@@ -1,7 +1,7 @@
 {
   "schema_version": "heaps-planning-1.0",
   "track_id": "qld-heaps-review_20261116",
-  "status": "h2_h3_implemented_integration_pending",
+  "status": "h4_implemented_awaiting_hosted_merge",
   "issue": 140,
   "hard_dependencies": [],
   "work_packages": [
@@ -57,7 +57,7 @@
         "fresh master and path-ownership reconciliation"
       ],
       "receipt": "./h2.md",
-      "integration_state": "pending_coordinator_acceptance_and_merge"
+      "integration_state": "pending_explicitly_authorised_PR142_hosted_merge"
     },
     {
       "id": "H3",
@@ -85,7 +85,7 @@
         "fresh master and path-ownership reconciliation"
       ],
       "receipt": "./h3.md",
-      "integration_state": "pending_coordinator_acceptance_and_merge"
+      "integration_state": "pending_explicitly_authorised_PR142_hosted_merge"
     },
     {
       "id": "H4",
@@ -99,10 +99,17 @@
         "original report/action views",
         "deterministic receipt"
       ],
-      "owned_scope": "new HEAPS adapter; shared interfaces and dispatch by coordinator",
-      "status": "planned",
-      "implementation_owner": "unassigned_pending_coordinator_reconciliation",
-      "acceptance_ref": "./plan.md"
+      "owned_scope": "new HEAPS consumer, independent tests and this PR integration; canonical/schema/shared dispatch owners unchanged",
+      "status": "completed_on_branch",
+      "implementation_owner": "current HEAPS lane under explicit user implementation and merge instruction",
+      "acceptance_ref": "./plan.md",
+      "entry_evidence": "H2/H3 receipts, immutable oracle and reconciliation with master6f9cd96",
+      "receipt": "./h4.md",
+      "integration_state": "pending_exact_head_hosted_checks_and_merge",
+      "optional_features": {
+        "H4.4": "omitted_unqualified",
+        "H4.5": "omitted_unqualified"
+      }
     },
     {
       "id": "H5",
@@ -148,7 +155,8 @@
       "prerequisite": "existing safety-work v1.1 and selected core interfaces",
       "kind": "required",
       "fallback": "validate structure/references only; do not infer clinical truth",
-      "state": "not_accepted_by_this_plan"
+      "state": "h4_dedicated_consumer_admission_verified",
+      "evidence": "./h4.md"
     },
     {
       "id": "exact-byte-spans",
@@ -165,7 +173,8 @@
       "prerequisite": "Track13 D1 acceptance",
       "kind": "conditional",
       "fallback": "prestructured synthetic observations",
-      "state": "not_accepted_by_this_plan"
+      "state": "upstream_d1_accepted_heaps_composition_omitted",
+      "evidence": "../frontier-assurance_20261113/faw08-d1-acceptance-20261117.md"
     },
     {
       "id": "uncertain-chronology",
@@ -197,7 +206,7 @@
       "prerequisite": "accepted issue139 graph contract and explicit review question",
       "kind": "optional",
       "fallback": "omit graph view",
-      "state": "not_accepted_by_this_plan"
+      "state": "omitted_unqualified_in_h4"
     },
     {
       "id": "composed-d6-claim",
@@ -229,13 +238,13 @@
     "implementation_lanes_max": 2,
     "starts_new_workers": false,
     "capacity_owner": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
-    "note": "Logical parallelism does not override existing D0/AcciMap ownership or capacity."
+    "note": "One HEAPS integration lane, two disjoint producer/test lanes and read-only agent review; existing D0/D1/AcciMap owners and files preserved."
   },
   "optional_partner_tracks": [
     "accimap-workflow_20261116",
     "death-review_20261113"
   ],
-  "implementation_authority": "user_explicitly_authorised_h2_and_h3",
+  "implementation_authority": "user_explicitly_authorised_h4_pr_actions_and_merge",
   "order": [
     "H1",
     [

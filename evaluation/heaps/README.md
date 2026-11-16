@@ -1,9 +1,10 @@
 # HEAPS synthetic contract fixtures
 
 This directory contains the H3 contract for a generated-synthetic Queensland
-HEAPS preparation profile. It contains four standalone Draft 2020-12 JSON
-Schemas. It does not contain a production validator, report assembler or an
-official Queensland Health form.
+HEAPS preparation profile: four standalone Draft 2020-12 JSON Schemas. The H4
+consumer is implemented separately in `tools/heaps.py`; its public interface and
+limits are described in [the usage guide](./h4-usage.md). These are original
+engineering artifacts, not an official Queensland Health form.
 
 | File | Object and boundary |
 | --- | --- |
@@ -17,7 +18,8 @@ are in [the H3 contract](../../conductor/tracks/qld-heaps-review_20261116/h3-con
 The independent fixture author owns [tests/fixtures/heaps](../../tests/fixtures/heaps/).
 Structural checks live in [test_heaps_profile_contract.py](../../tests/test_heaps_profile_contract.py).
 Schema examples and fixture-design checks do not qualify an H4 consumer or H5
-composed behaviour.
+composed behaviour. H4 implementation observations are recorded separately from
+the immutable H3 design oracle.
 
 ## What these schemas check
 
@@ -62,6 +64,7 @@ interface. Every consumed optional artifact belongs in the detached manifest's
 component's result.
 
 The shared canonical schema and helpers remain unchanged. H1's renderer/domain
-validation mismatch and absent date-time checker remain current at master
-`d11548357baba6a1e20163139a366c6367a05432`; H3 records these limits and does not
-repair or bypass them.
+validation mismatch and absent date-time checker remain current at the H4 base
+`6f9cd9627adc52782a67fa6693f1cdb90c3c84a7`. The H4 consumer applies canonical
+domain admission and strict time parsing at its own boundary. This does not
+repair or qualify other callers of the shared renderer.

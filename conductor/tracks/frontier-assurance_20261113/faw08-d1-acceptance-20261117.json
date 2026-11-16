@@ -1,0 +1,212 @@
+{
+  "schema_version": "faw08-d1-acceptance-1.0",
+  "status": "accepted",
+  "scope": "bounded synthetic FAW08/D1; CAW02/04/08 contribution only",
+  "source_pr": 148,
+  "source_commit": "3627e3a82424f18a19c865a380cb90181e648729",
+  "source_tree": "99d641040b0016deeb5e4b241747a7aec4ed0991",
+  "merge_commit": "33ab6d20f294fd86de2b39659aea53b0941e80e9",
+  "merge_tree": "99d641040b0016deeb5e4b241747a7aec4ed0991",
+  "merged_at": "2026-11-16T14:11:31Z",
+  "quality_run": 43880194216,
+  "quality_jobs": [
+    {
+      "id": 133343721459,
+      "name": "Release boundary mutation gate",
+      "conclusion": "success",
+      "started_at": "2026-11-16T14:03:51Z",
+      "completed_at": "2026-11-16T14:04:12Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43880194216/job/133343721459"
+    },
+    {
+      "id": 133343721749,
+      "name": "Python validation (3.11)",
+      "conclusion": "success",
+      "started_at": "2026-11-16T14:04:45Z",
+      "completed_at": "2026-11-16T14:06:23Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43880194216/job/133343721749"
+    },
+    {
+      "id": 133343721766,
+      "name": "validate (macos-latest)",
+      "conclusion": "success",
+      "started_at": "2026-11-16T13:59:48Z",
+      "completed_at": "2026-11-16T14:02:08Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43880194216/job/133343721766"
+    },
+    {
+      "id": 133343721790,
+      "name": "validate (windows-latest)",
+      "conclusion": "success",
+      "started_at": "2026-11-16T13:56:56Z",
+      "completed_at": "2026-11-16T13:59:52Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43880194216/job/133343721790"
+    },
+    {
+      "id": 133343721807,
+      "name": "Python validation (3.15.2)",
+      "conclusion": "success",
+      "started_at": "2026-11-16T14:04:41Z",
+      "completed_at": "2026-11-16T14:06:40Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43880194216/job/133343721807"
+    },
+    {
+      "id": 133343722009,
+      "name": "Synthetic CPU and memory profile",
+      "conclusion": "success",
+      "started_at": "2026-11-16T14:06:06Z",
+      "completed_at": "2026-11-16T14:06:45Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43880194216/job/133343722009"
+    },
+    {
+      "id": 133343722013,
+      "name": "Prose lint (Vale)",
+      "conclusion": "success",
+      "started_at": "2026-11-16T14:06:02Z",
+      "completed_at": "2026-11-16T14:06:12Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43880194216/job/133343722013"
+    },
+    {
+      "id": 133351224502,
+      "name": "Complete matrix branch coverage",
+      "conclusion": "success",
+      "started_at": "2026-11-16T14:10:24Z",
+      "completed_at": "2026-11-16T14:10:42Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43880194216/job/133351224502"
+    },
+    {
+      "id": 133353597823,
+      "name": "validate (ubuntu-latest)",
+      "conclusion": "success",
+      "started_at": "2026-11-16T14:10:58Z",
+      "completed_at": "2026-11-16T14:11:01Z",
+      "html_url": "https://github.com/edithatogo/rcagent/actions/runs/43880194216/job/133353597823"
+    }
+  ],
+  "dependency_review_run": 43880194232,
+  "dependency_review": "success",
+  "privacy_secrets_run": 43880194259,
+  "privacy_secrets": "success",
+  "hosted_tests": {
+    "linux_python_3_11": {
+      "passed": 2571,
+      "branch_coverage_percent": 94.55
+    },
+    "linux_python_3_15_2": {
+      "passed": 2571,
+      "branch_coverage_percent": 94.55
+    },
+    "macos": {
+      "passed": 2571,
+      "branch_coverage_percent": 94.57
+    },
+    "windows": {
+      "passed": 2311,
+      "platform_skips": 260,
+      "coverage_floor": "deferred_to_required_combined_gate"
+    }
+  },
+  "combined_coverage": {
+    "job_id": 133351224502,
+    "nonempty_branch_databases": 4,
+    "required_floor_percent": 90,
+    "conclusion": "success"
+  },
+  "mutation": {
+    "job_id": 133343721459,
+    "killed": 24,
+    "total": 24,
+    "excluded_verdicts": 0
+  },
+  "profile": {
+    "job_id": 133343722009,
+    "iterations": 300,
+    "wall_seconds_observed": 21.321331,
+    "workload": "schema-validation-and-provenance-round-trip",
+    "qualification": "repository synthetic profile, not a D1 or clinical workload latency guarantee"
+  },
+  "master_conformance": {
+    "run": 43883158837,
+    "job_id": 133354114485,
+    "head": "33ab6d20f294fd86de2b39659aea53b0941e80e9",
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-11-16T14:14:24Z",
+    "contract_tests_passed": 2571,
+    "official_validator_revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379"
+  },
+  "master_quality": {
+    "run": 43883159079,
+    "status": "in_progress_at_acceptance_observation",
+    "jobs": [
+      {
+        "id": 133354115101,
+        "name": "Release boundary mutation gate",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 133354115339,
+        "name": "Synthetic CPU and memory profile",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 133354115385,
+        "name": "Prose lint (Vale)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 133354115516,
+        "name": "validate (macos-latest)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 133354115742,
+        "name": "validate (windows-latest)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 133354115791,
+        "name": "Python validation (3.11)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 133354115850,
+        "name": "Python validation (3.15.2)",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "used_as_source_merge_gate": false
+  },
+  "offline_security": "queued_not_a_completed_scan",
+  "model_runs": 0,
+  "clinical_qualification": false,
+  "new_dependencies": 0,
+  "observed_at": "2026-11-17T00:15:55+10:00",
+  "source_head_checks_preceded_merge": true,
+  "merged_tree_equals_tested_tree": true,
+  "normal_expected_head_merge": true,
+  "local_full_gate": "failed_existing_socket_restriction_preserved",
+  "independent_verification": {
+    "focused_tests": 195,
+    "independent_tests": 140,
+    "cases": 28,
+    "families": 14,
+    "exact_observations": 54,
+    "false_positive": 0,
+    "false_negative": 0,
+    "field_errors": 0,
+    "lexically_resolved": 37,
+    "unresolved_retained": 17,
+    "oracle_sha256": "263143abe0c71bc02d7b04bd9593af3946f00c2ab64970786c922a005627aafe",
+    "receipt": "../../../tests/fixtures/faw08_independent/verification-receipt.json"
+  },
+  "next_stage": "FAW09 / D2 planned; not started",
+  "research_checkpoints_closed": false
+}

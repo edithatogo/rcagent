@@ -46,6 +46,6 @@ Conformity with the current CHHHS instrument requires an authorised blank templa
 
 ## Non-goals and open questions
 
-The current H1 increment adds source/interface evidence and a synthetic diagnostic. It does not implement the HEAPS runtime, copy official forms, import clinical cases, activate RiskMan, choose a legal protection, alter shared schemas/CI, merge, deploy or release. Optional model studies are outside the initial deterministic implementation.
+The current H4 increment implements the deterministic synthetic consumer and integrates its H2/H3 prerequisites through an explicitly authorised PR and merge after passing hosted checks. It does not copy official forms, import clinical cases, activate RiskMan, choose a legal protection, alter shared schemas/CI, deploy or release. Optional model studies and automated extraction remain outside this deterministic implementation. H1 source/diagnostic and H3 fixture-design receipts retain their historical scope.
 
 Open questions: current local instrument and rights; exact local roles and approval route; unresolved Queensland guideline date metadata; accepted upstream capability revisions; optional AcciMap interface; coordinator assignment of shared edits and portfolio number. Resolve only the affected scope. Preserve failed evidence and enable safe independent work.

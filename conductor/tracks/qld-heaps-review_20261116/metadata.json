@@ -5,7 +5,7 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-16T07:34:21+00:00",
-  "updated_at": "2026-11-16T13:46:50.724297+00:00",
+  "updated_at": "2026-11-16T21:07:21.389339+00:00",
   "workstream": "product-interfaces-distribution",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/140",
@@ -21,11 +21,11 @@
   "dependency_semantics": "Only actually consumed capabilities gate dependent claims; no whole-track completion prerequisite. AcciMap and death review are optional partners.",
   "delivery_plan": "./delivery-plan.json",
   "source_inventory": "./sources.json",
-  "description": "Queensland HEAPS profile: H1 source/interface receipt, H2 portable guidance/report mapping and H3 closed contracts/independent fixtures delivered on branch; H4 synthetic assembly next.",
+  "description": "Queensland HEAPS H2/H3 prerequisites and H4 deterministic synthetic consumer implemented/reviewed; exact-head hosted integration and then H5 qualification remain separate.",
   "owners": {
     "planning_scope": "current HEAPS planning task / issue140",
     "shared_integrator": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
-    "implementation": "current HEAPS lane: user-authorised H2/H3; dedicated guidance/contracts/fixtures and reviewable shared content integration"
+    "implementation": "current HEAPS lane: user-authorised H4 implementation and PR integration after passing hosted Actions"
   },
   "owned_paths": [
     "conductor/tracks/qld-heaps-review_20261116/**",
@@ -34,7 +34,10 @@
     "tests/test_heaps_profile_contract.py",
     "tests/test_heaps_fixture_design.py",
     "skills/rca-investigation/references/methods/heaps.md",
-    "skills/rca-investigation/assets/templates/markdown/15-heaps-review-draft.md"
+    "skills/rca-investigation/assets/templates/markdown/15-heaps-review-draft.md",
+    "tests/test_heaps.py",
+    "tools/heaps.py",
+    "tools/heaps_validation.py"
   ],
   "registration": {
     "status": "pending_coordinator_integration",
@@ -42,10 +45,10 @@
     "proposal": "./registration-proposal.json"
   },
   "verification": {
-    "status": "h2_h3_phase_checks_passed_full_local_gate_failed",
-    "scope": "portable_guidance_schema_and_fixture_design",
-    "receipt": "./h2-h3-review.md",
-    "input_manifest": "./h2-h3-input-manifest.json",
+    "status": "h4_implementation_checks_passed_full_local_gate_failed",
+    "scope": "bounded_synthetic_consumer_development_visible_engineering",
+    "receipt": "./h4.md",
+    "input_manifest": "./h4-input-manifest.json",
     "h2_receipt": "./h2.md",
     "h3_receipt": "./h3.md",
     "planning_receipt": "./planning-evidence.md",
@@ -63,7 +66,7 @@
       "branch_coverage_percent": 93.27,
       "full_gate_not_passed": true
     },
-    "runtime_implementation": "not_started",
+    "runtime_implementation": "implemented",
     "h3_structural_tests_passed": 52,
     "h3_independent_design_tests_passed": 49,
     "h3_combined_tests_passed": 101,
@@ -71,46 +74,54 @@
     "canonical_variant_inputs_admitted": 38,
     "acceptance_design_cases": 25,
     "acceptance_design_variants": 38,
-    "heaps_runtime_acceptance_cases_executed": 0,
+    "heaps_runtime_acceptance_cases_executed": 25,
     "full_local_validation": {
       "exit_code": 1,
-      "passed": 2414,
+      "passed": 2829,
       "failed": 52,
       "skipped": 11,
-      "branch_coverage_percent": 93.39,
-      "failure_scope": "existing_socket_session_controller_tests_in_restricted_local_environment",
-      "prior_stages_passed": true
+      "branch_coverage_percent": 92.94,
+      "failure_scope": "unchanged_socket_session_controller_tests_in_executor_denying_AF_UNIX",
+      "prior_stages_passed": true,
+      "log_sha256": "12f2312ef2a628adf1670a665aa11b37ec5cbd9f7c7b07a286df2a7606c3fc48"
     },
     "skill_current_conformance": true,
-    "conformance_receipt": "./h2-conformance.json",
+    "conformance_receipt": "./h4-conformance.json",
     "typing_diagnostics": 0,
     "typing_baseline_allowances": 0,
     "model_runs": 0,
     "real_cases_processed": 0,
     "qualified_clinical_capabilities": 0,
     "official_template_conformity": "unverified",
-    "hosted_checks": "observe_publication_head_in_PR142_not_preclaimed_by_local_receipt",
-    "shared_registration": "pending_coordinator_integration"
+    "hosted_checks": "must_observe_exact_published_head_in_PR142_before_merge",
+    "shared_registration": "pending_coordinator_integration",
+    "h4_tests_passed": 220,
+    "heaps_runtime_acceptance_variants_executed": 38,
+    "heaps_runtime_variants_matching": 38,
+    "h4_execution": "./h4-execution.json",
+    "h4_replay": "./h4-replay.json",
+    "h4_review": "./h4-review.md",
+    "h5_phase_accepted": false
   },
   "decision_gates": [
     "Only genuinely new data use, rights, external action, spend or operational scope beyond existing authority",
     "Case-specific clinical/legal/cultural/organisational decisions remain with authorised people"
   ],
-  "observed_base": "d11548357baba6a1e20163139a366c6367a05432",
+  "observed_base": "6f9cd9627adc52782a67fa6693f1cdb90c3c84a7",
   "current_increment": {
-    "id": "H2-H3",
-    "status": "h2_h3_implemented_reviewed_on_branch",
-    "authority": "user instruction: Proceed with implementing H2 and H3",
-    "scope": "portable guidance, original draft mapping, closed profile contracts and independent synthetic fixture design",
-    "runtime_implementation_started": false,
-    "shared_integration": "coordinator retains registration, acceptance and merge",
+    "id": "H4",
+    "status": "h4_implemented_reviewed_awaiting_hosted_merge",
+    "authority": "user instruction: Implement H4, open a PR, check actions pass, then merge.",
+    "scope": "deterministic synthetic validator/assembler, independent implementation checks and authorised PR integration",
+    "runtime_implementation_started": true,
+    "shared_integration": "this HEAPS PR integration explicitly authorised; portfolio numbering and unrelated shared ownership remain separate",
     "next_tasks": [
-      "coordinator registration and integration reconciliation",
-      "H4 deterministic synthetic validator/assembler",
-      "H5 independent actual-interface qualification",
+      "publish exact H4 source head and verify required hosted Actions",
+      "merge this HEAPS PR under explicit user authority",
+      "H5 independent engineering qualification and handoff",
       "H6 authorised local instrument alignment and conditional practice evaluation"
     ],
-    "receipt": "./h2-h3-review.md"
+    "receipt": "./h4.md"
   },
   "shared_candidate_paths": [
     "skills/rca-investigation/SKILL.md",

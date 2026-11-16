@@ -1,6 +1,6 @@
 # HEAPS implementation plan
 
-When implementation is authorised, continue automatically through ready, owned tasks, agent review and bounded rework; do not ask for routine approval. Record each recommendation and its evidence. The safe default is a synthetic preparation packet with unresolved authority and unsupported claims visible. The initial planning increment and H1 are published in PR #142. The user has explicitly authorised implementing H2 and H3. This increment prepares their dedicated guidance/schema/fixture paths and the necessary shared navigation/method/admission changes on the HEAPS branch; shared integration, registration and merge remain with the coordinator. No H4 runtime assembler is claimed.
+The user explicitly authorised **H4 implementation, pull request, passing Actions and merge** on 17 November 2026 (Australia/Brisbane). Continue automatically through the owned implementation, independent agent review, bounded rework and hosted verification; do not ask for routine approval. Record each recommendation and its evidence. H2/H3 are prerequisites already delivered in draft PR #142; this increment reconciles accepted master, implements the synthetic consumer and integrates those prerequisites through the same PR. Portfolio numbering and other owners' runtime work remain separate. The safe default is a synthetic preparation packet with unresolved authority and unsupported claims visible.
 
 ## P0 — Planning increment
 
@@ -48,14 +48,16 @@ H3 evidence: [frozen contract](./h3-contract.md), [phase receipt](./h3.md), [ind
 
 ## H4 — Deterministic synthetic review packet
 
-Entry: H2 and H3 receipts plus reconciliation of the exact accepted core interfaces used. No new framework or model is needed.
+Entry: H2 and H3 receipts plus master `6f9cd9627adc52782a67fa6693f1cdb90c3c84a7`, including accepted D0/D1. The user explicitly authorises this HEAPS PR integration and merge after passing hosted checks. H4 uses the existing canonical validator and keeps D0/AcciMap composition optional and unqualified. No new framework or model is needed.
 
-- [ ] H4.1: add a thin validator/assembler that resolves the profile against prestructured synthetic canonical records and rejects malformed/stale bindings.
-- [ ] H4.2: assemble a chronology view without inventing ordering, a draft report with separate accounts/analysis/findings, and an action register using existing contracts.
-- [ ] H4.3: bind source references, report views, approvals and receipts; keep preparation distinct from system-of-record submission and implementation distinct from effectiveness.
-- [ ] H4.4: add an exact byte-span view only after accepted Track 13 D0 evidence. Until then, label record/reference integrity precisely and do not claim byte-span verification.
-- [ ] H4.5: optional AcciMap composition consumes the accepted #139 contract and an explicit unanswered question; otherwise omit that view without blocking the packet.
-- [ ] H4.6: checkpoint: two clean runs produce identical deterministic packet bytes for fixed inputs; publish input/output/component hashes, counts and explicit capability limitations. H4 acceptance does not require optional H4.4/H4.5 features, but their unimplemented/unqualified status must remain visible.
+- [x] H4.1: add a thin validator/assembler that resolves the profile against prestructured synthetic canonical records and rejects malformed/stale bindings.
+- [x] H4.2: assemble a chronology view without inventing ordering, a draft report with separate accounts/analysis/findings, and an action register using existing contracts.
+- [x] H4.3: bind source references, report views, approvals and receipts; keep preparation distinct from system-of-record submission and implementation distinct from effectiveness.
+- [-] H4.4: add an exact byte-span view only after accepted Track 13 D0 evidence. Until then, label record/reference integrity precisely and do not claim byte-span verification.
+- [-] H4.5: optional AcciMap composition consumes the accepted #139 contract and an explicit unanswered question; otherwise omit that view without blocking the packet.
+- [x] H4.6: checkpoint: two clean runs produce identical deterministic packet bytes for fixed inputs; publish input/output/component hashes, counts and explicit capability limitations. H4 acceptance does not require optional H4.4/H4.5 features, but their unimplemented/unqualified status must remain visible.
+
+H4 evidence: [completion receipt](./h4.md), [independent review](./h4-review.md), [38-variant execution](./h4-execution.json), [two clean CLI runs](./h4-replay.json), [45 input identities](./h4-input-manifest.json) and [current conformance](./h4-conformance.json). H4.1–H4.3/H4.6 are complete on the branch; optional H4.4/H4.5 are intentionally omitted and unqualified. All 220 H4 regressions passed in the complete local run. The full local gate remains failed: 2,829 passed, 52 socket-restricted failures, 11 skipped; 92.94% coverage. Exact-head hosted verification and the explicitly authorised merge remain the integration steps. H5 may reuse these development-visible controls but is not accepted by this receipt.
 
 ## H5 — Independent engineering qualification and integration
 
@@ -87,4 +89,4 @@ H6.1 source preparation can run after H1, in parallel with engineering, using an
 
 ## Rollback and resume
 
-Revert only the affected profile/adapter change through a normal commit; preserve original cases, sources and failed receipts. A material source or template change invalidates the affected mapping/approval, not unrelated evidence preparation. A failed optional component falls back to the last qualified deterministic packet. H2/H3 implementation is complete on the reconciled HEAPS branch. The resume cursor is coordinator integration/registration and H4 deterministic synthetic validator/assembler, using the frozen H3 contract and independent expectations. H1 receiving issues remain explicit consumer obligations; no shared runtime repair, H4 execution, merge or operational authority is inferred.
+Revert only the affected profile/adapter change through a normal commit; preserve original cases, sources and failed receipts. A material source or template change invalidates the affected mapping/approval, not unrelated evidence preparation. A failed optional component falls back to the last qualified deterministic packet. H2/H3 implementation is complete on the reconciled HEAPS branch. H4 implementation and independent review are complete on the branch under the explicit implementation/PR/Actions/merge instruction; publish and verify the exact hosted head before merging. Preserve the frozen H3 contracts and oracle and record actual H4 results separately. H1 historical findings remain; H4 must enforce its own admission boundary. Shared portfolio registration remains separate from this authorised PR integration. No operational authority is inferred.

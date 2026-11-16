@@ -1,6 +1,6 @@
 # Track 13: Frontier assurance and incremental capability evidence
 
-Status: FAW06 remains delivered through [PR #131](https://github.com/edithatogo/rcagent/pull/131) with zero typing debt. FAW07 / D0 is accepted through [PR #144](https://github.com/edithatogo/rcagent/pull/144), merged as `d3c10d607470c9a50c5410030b80aeab2cfa5430` after all nine source-head Quality jobs and dependency/privacy checks passed; acceptance followed successful automatic master conformance. The [acceptance receipt](./faw07-d0-acceptance-20261116.md) preserves original worker heads and failed observations. FAW08 / D1 is planned; the wider track remains open, with no model or clinical qualification.
+Status: FAW06 remains delivered through [PR #131](https://github.com/edithatogo/rcagent/pull/131) with zero typing debt. FAW07 / D0 remains accepted through [PR #144](https://github.com/edithatogo/rcagent/pull/144); its [receipt](./faw07-d0-acceptance-20261116.md) preserves original worker heads and failed observations. FAW08 / D1 is now accepted through [PR #148](https://github.com/edithatogo/rcagent/pull/148), merged as `33ab6d20f294fd86de2b39659aea53b0941e80e9` after all nine source-head Quality jobs and dependency/privacy checks passed, followed by successful automatic master conformance. The [D1 acceptance receipt](./faw08-d1-acceptance-20261117.md) records the exact identities. FAW09 / D2 is next and remains planned; the wider track is open, with no model or clinical qualification.
 
 - [Specification and MoSCoW requirements](./spec.md)
 - [Executable work packages and acceptance](./plan.md)
@@ -9,6 +9,9 @@ Status: FAW06 remains delivered through [PR #131](https://github.com/edithatogo/
 - [FAW07 / D0 live reconciliation and handoff record](./faw07-d0-coordination.json)
 - [16 November D0 completion, independent verification and integration record](./faw07-d0-completion-20261116.md)
 - [D0 observed merge and acceptance](./faw07-d0-acceptance-20261116.md)
+- [FAW08 / D1 bounded extraction contract](./faw08-d1-contract.md)
+- [16 November D1 source completion and independent verification](./faw08-d1-completion-20261116.md)
+- [17 November D1 observed merge and acceptance](./faw08-d1-acceptance-20261117.md)
 - [Evidence ledger](./evidence.jsonl)
 - [Capability demonstration ladder](../../research/frontier-assurance/capability-ladder.md)
 - [Programmatic, multi-model and multimodal triangulation](../../research/frontier-assurance/triangulation.md)

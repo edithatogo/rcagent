@@ -1,0 +1,37 @@
+{
+  "schema_version": "faw08-independent-attempt-1.0",
+  "attempt": 1,
+  "started_utc": "2026-11-16T13:41:02.857157+00:00",
+  "command": [
+    "/workspace/scratch/a739cac856a2/rcagent-review/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/test_faw08_independent_extraction.py",
+    "-q"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds_single_test_process": 2.6424997680005617,
+  "hashes_before": {
+    "tools/faw08_d1_extraction.py": "ff6afa1f0f867da10e12201506c9fba47c7d072162feb6d64a836b3be518bab0",
+    "tools/workbench.py": "79c40c57e75d6c3fe2fb39f6d50d6a4a40616ff561d87e45d1c4748dab1aed92",
+    "tools/faw07_d0_demo.py": "4aeafc70fb9149ce2d1068a27aa948fafd801c43c0786d22292bb130b7f47b5b",
+    "tools/evidence_core.py": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+    "tools/json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+    "uv.lock": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c",
+    "tests/test_faw08_independent_extraction.py": "b1901c552815fcc4853c0252a5b083fec33e6a26b69d8aafaab5bc53210a2c16",
+    "tests/fixtures/faw08_independent/d1_oracle.json": "263143abe0c71bc02d7b04bd9593af3946f00c2ab64970786c922a005627aafe"
+  },
+  "hashes_after": {
+    "tools/faw08_d1_extraction.py": "d35f2d1608b693d745c995ef7a79731d14ff2e68b0d751a6433d0c15c16d1dd6",
+    "tools/workbench.py": "79c40c57e75d6c3fe2fb39f6d50d6a4a40616ff561d87e45d1c4748dab1aed92",
+    "tools/faw07_d0_demo.py": "4aeafc70fb9149ce2d1068a27aa948fafd801c43c0786d22292bb130b7f47b5b",
+    "tools/evidence_core.py": "b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+    "tools/json_shapes.py": "85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+    "uv.lock": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c",
+    "tests/test_faw08_independent_extraction.py": "b1901c552815fcc4853c0252a5b083fec33e6a26b69d8aafaab5bc53210a2c16",
+    "tests/fixtures/faw08_independent/d1_oracle.json": "263143abe0c71bc02d7b04bd9593af3946f00c2ab64970786c922a005627aafe"
+  },
+  "stdout_sha256": "8a746deb93a635141a80baaed45360700e5fee4a794af7b7b2078a64a4e02fb2",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "qualification": "First synthetic engineering test observation; source may still be under construction. Raw failures preserved without changing oracle labels."
+}

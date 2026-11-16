@@ -1,85 +1,82 @@
-# Coordinator integration handoff
+# HEAPS integration handoff
 
 ## Current authorised increment
 
-The user explicitly authorised **implementing H2 and H3** after P0 and H1.
-[PR #142](https://github.com/edithatogo/rcagent/pull/142) now prepares those phases
-on the HEAPS branch, reconciled with master
-`d11548357baba6a1e20163139a366c6367a05432`. The coordinator
-`6af6164f-cf84-8321-9f96-8b7d685aabe5` retains shared portfolio registration,
-integration acceptance and merge. This branch does not merge itself.
+The user explicitly instructed **H4 implementation, PR, passing Actions and
+merge** on 17 November 2026 (Australia/Brisbane). This supersedes the earlier
+merge reservation for this HEAPS PR. [PR #142](https://github.com/edithatogo/rcagent/pull/142)
+contains the H2/H3 prerequisites and now receives the H4 implementation.
+Portfolio numbering remains a separate coordinator task; this instruction does
+not transfer unrelated D0/D1/D2/AcciMap or shared scientific ownership.
 
-H1 evidence at `58fb0b15171322f70ee070cea6756f32fe792f50` remains historical.
-Its four unsafe-admission observations are not erased by H2/H3 schema checks.
-The frozen H3 consumer rules explicitly require the missing canonical/time
-admission and distinguish raw, evidence-core and interface hash domains.
+The H4 starting master is `6f9cd9627adc52782a67fa6693f1cdb90c3c84a7`, including
+accepted D0/D1. Reconcile normally with H2/H3 source
+`8adcff03d7f33baf0110fbb198661b01db0754b0`. Do not rewrite history. Historical H1
+negative observations and the immutable H3 oracle remain intact.
 
-## Reviewable implementation and shared content changes
+## Consumer and prerequisite scope
 
-Dedicated additions are the portable HEAPS guide and original report/meeting
-outline, four closed schemas in `evaluation/heaps`, the H3 contract, independent
-synthetic sources/fixtures and two focused test modules. No official form bytes,
-patient records, model or enterprise connector is included.
+H4 implements a dedicated `tools.heaps` byte-input API and CLI, with independent
+consumer tests. It composes the existing canonical validator, hashing and safe
+export contracts, adds HEAPS reference/artifact/time/status checks, and prepares
+an original synthetic report, chronology and action register. Canonical schemas,
+shared validators, workbench dispatch, CI, dependency lock and quality
+allowances remain unchanged by this increment.
 
-The same branch contains the necessary H2 integration candidates:
+The source branch also includes the previously reviewed H2 guide, original
+report outline, portable skill navigation, method-selection/combination
+corrections and exact-byte template admission. H3 contributes its four closed
+schemas and independently authored source/fixture corpus. Preserve their scope:
+none is an official local form or actual clinical acceptance.
 
-- portable `SKILL.md` HEAPS discovery and four-mode navigation;
-- method selection and combination guidance with local process first, explicit
-  unanswered questions, consistent overlap rules and no unsupported SAC method
-  bundles, method-count limits or turnaround times;
-- the exact-byte template-admission inventory after the original draft's content
-  review, retaining the historical quarantine and portable-draft-only status.
+H1's canonical-renderer mismatch and missing date-time checker still affect
+unchanged shared callers. The HEAPS consumer must apply its own strict admission
+before producing a view. Its synthetic packet-decision scope remains separate
+from the shared substantive approval API; no scope is silently relabelled.
 
-These paths were reconciled against master and the actual changed-file lists
-of AcciMap PR #141 and repository-recommendations PR #143. They do not intersect
-those proposals. Shared core schemas/validators, authority registry, workbench,
-CI, locks, baseline allowances and the AcciMap guide remain untouched relative to
-master. The D0 and ty changes are inherited by normal master reconciliation.
+## Verification and merge
 
-## Remaining shared registration
+H4 implementation and independent review are complete; [h4.md](./h4.md) records
+commands, input/output/component hashes, 220 passing H4 tests and identical
+16-file CLI replay. The locked strict gate ran and its actual local failure
+result is preserved. This workspace still
+denies AF_UNIX socket construction; do not disable existing session tests to
+manufacture a local pass. Require their unchanged hosted matrix to pass.
 
-[registration-proposal.json](./registration-proposal.json) remains proposed
-input, not an active second registry. Allocate a portfolio number after reconciling
-AcciMap #139, then update the shared index/tracks/roadmap and this track's number
-consistently. Keep hard dependencies empty and capability-specific phase gates;
-no whole Track 12/13/14 completion or mandatory AcciMap dependency is introduced.
-Only reviewed authority records may enter the existing jurisdiction registry.
+Before merge, recheck the PR head, master base and active ruleset. Require all
+configured merge gates and the complete Quality aggregation, privacy/secrets
+and applicable conformance at the tested revision. Use the expected-head guard;
+never use the authenticated user's bypass ability to evade required checks.
+The separately configured offline AI security job currently awaits a
+self-hosted runner and is not a required merge check. Preserve that pending
+observation instead of calling it a completed scan.
 
-## Runtime receiving and implementation order
+Record source/head/tree, hosted job identities and the observed merge result.
+The merge is integration of this bounded synthetic implementation, not H5 or H6
+qualification, a release or clinical deployment.
 
-H2/H3 are guidance, contract and fixture-design work. Their tests do not execute
-a HEAPS packet assembler or establish HP01–HP25 production acceptance. The next
-runtime increment is H4, followed by H5 independent actual-interface execution.
-Use `h3-contract.md`, the independent fixture catalogue and the two phase receipts
-as its entry evidence after coordinator reconciliation of the integrated head.
+## Optional capabilities and later stages
 
-H4 must apply canonical semantic admission before any shared renderer, use strict
-time parsing rather than assuming `FormatChecker` is present, resolve typed
-references and raw artifacts, preserve uncertainty and reject forged receipt
-claims. The distinct synthetic packet-decision scope does not modify the shared
-approval API or approve substantive findings/actions/closure. Keep the proposed
-shared renderer repair in PR #143's receiving sequence rather than duplicating it.
+D0 byte-span verification and AcciMap remain optional, omitted and unqualified
+in this H4 composition. Source scope stays record/reference integrity with
+verified raw artifact bindings. Accepted D0/D1 and a separately proposed AcciMap
+interface do not transfer qualification to HEAPS. D1 extraction, D2 automatic
+uncertain chronology and later model work remain distinct owner stages.
 
-D0 is now accepted through PR #144 and the Track 13 acceptance receipt. Its exact
-byte-span seam may be composed optionally in H4; that needs a fresh receipt for
-actual HEAPS inputs and current lock/component bytes. D0 acceptance is not HEAPS
-composition acceptance. AcciMap remains optional and requires its own accepted
-contract; omit it while unqualified. D1 and later automation remain separate.
+H5 is the next independent qualification/handoff stage. The H4 regression corpus
+is development-visible, not a held-out clinical evaluation. H6 needs the
+current authorised local instrument and applicable data/organisational authority.
+Local HEAPS fields, roles, taxonomy, rights and patient benefit remain unverified.
 
-H6 local-form alignment follows H5 and an authorised current instrument. Earlier
-source acquisition may proceed through an authorised route, but current local
-HEAPS fields/roles/taxonomy/rights and clinical effectiveness remain unverified.
+## Remaining shared registration and rollback
 
-## Evidence and rollback
+[registration-proposal.json](./registration-proposal.json) is still proposed
+input. The shared coordinator may assign a portfolio number after reconciling
+active tracks, then apply consistent index/tracks/roadmap entries. No number is
+reserved implicitly and no competing jurisdiction registry is created. Keep
+hard dependencies empty and capability-specific phase gates.
 
-Use the H2/H3 receipts for actual commands, counts, source/component hashes and
-review findings. Inspect exact-head hosted checks independently; unavailable or
-queued checks are not passes. Retain full local gate failures separately from
-focused schema/content/conformance evidence. No merge, release or deployment is
-implied by this handoff.
-
-Rollback through a normal commit reverting the affected HEAPS artifacts and
-associated skill navigation/admission entries together. Preserve canonical
-cases, source history, old decisions, failed evidence, historical template
-quarantine and unrelated owners' work. No data migration or canonical schema
-change is required by H2/H3.
+Rollback through a normal revert of the affected HEAPS increment. Preserve
+canonical cases, sources, old decisions, failed evidence, historical template
+quarantine and unrelated owner work. No data migration, canonical schema change,
+enterprise connector or deployment is part of H4.
