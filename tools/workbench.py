@@ -14,6 +14,7 @@ from tools.autonomy_harness import WorkItem, paths_conflict, select_next_ready
 from tools.autonomy_state import StateStore, next_action
 from tools.faw07_d0_demo import main as run_d0_demo
 from tools.faw08_d1_extraction import main as run_d1_demo
+from tools.faw09_d2_timeline import main as run_d2_demo
 from tools.json_shapes import JsonObject, is_array, is_object
 from tools.validate_repository import validate
 
@@ -258,6 +259,7 @@ def _main(argv: list[str] | None = None) -> int:
     subparsers.add_parser("evaluate")
     subparsers.add_parser("d0-demo")
     subparsers.add_parser("d1-demo")
+    subparsers.add_parser("d2-demo")
     state_parser = subparsers.add_parser("state")
     state_parser.add_argument(
         "operation", choices=("initialise", "next", "advance", "resume", "recover")
@@ -314,6 +316,8 @@ def _main(argv: list[str] | None = None) -> int:
         return run_d0_demo([])
     elif args.command == "d1-demo":
         return run_d1_demo([])
+    elif args.command == "d2-demo":
+        return run_d2_demo([])
     elif args.command == "evaluate":
         result = {
             "status": "unavailable",
