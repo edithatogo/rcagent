@@ -1,0 +1,49 @@
+{
+  "schema_version": "faw07-independent-verification-observation-1.0",
+  "data_class": "synthetic-only",
+  "status": "blocked-before-full-execution",
+  "repository": "edithatogo/rcagent",
+  "issue": 125,
+  "verification_pr": 133,
+  "base_master_sha": "419c04d7e1c0a16e924e0b7058604671855625a2",
+  "implementation_sha_inspected": "de32f9cd27867c2488b78c66e1bcf0ba24e79151",
+  "combined_ci": {
+    "verification_head": "71c1f93938e41bb63c78f8b6b04ae2cd0db5ae21",
+    "base_sha_at_run": "671cbbbd448b66380e31c1f52a103ad3765f5929",
+    "run_id": 43566306927,
+    "url": "https://github.com/edithatogo/rcagent/actions/runs/43566306927",
+    "status": "completed",
+    "conclusion": "failure",
+    "observed_failure": "Ruff formatting of implementation-owned files; execution stopped before independent test suite",
+    "independent_integration_tests_executed": false,
+    "full_matrix_acceptance": false,
+    "offline_security": "queued/not a completed scan"
+  },
+  "oracle": {
+    "fixture": "tests/fixtures/faw07_independent/d0_oracle.json",
+    "accepted_claims": 5,
+    "rejected_claims": 14,
+    "collection_checks": 3,
+    "self_consistency_tests": "tests/test_faw07_independent_oracle.py",
+    "implementation_integration_tests": "tests/test_faw07_independent_d0_integration.py"
+  },
+  "finding": {
+    "id": "D0-CASE-SCOPE-001",
+    "severity": "blocking-for-case-bound-provenance",
+    "source": "tools/faw07_d0_demo.py:inspect_case",
+    "description": "Source case_id is not validated against enclosing case_id; cross-case source may be accepted",
+    "regression": "test_independent_cross_case_provenance_fails_closed",
+    "observed_by": "source inspection; production test execution pending formatting gate",
+    "expected": "foreign-case source must be rejected",
+    "status": "open"
+  },
+  "constraints": {
+    "production_code_modified_by_verifier": false,
+    "shared_contracts_modified_by_verifier": false,
+    "typing_allowances_changed": false,
+    "historical_negative_evidence_modified": false,
+    "model_or_private_data_runs": 0,
+    "merge_performed": false
+  },
+  "acceptance": "withheld"
+}

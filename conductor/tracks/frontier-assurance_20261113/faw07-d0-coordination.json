@@ -3,7 +3,7 @@
   "observed_at": "2026-11-14T16:25:06.420337+10:00",
   "contract": "./faw07-d0-contract.md",
   "contract_version": "faw07-d0-contract-1.0",
-  "status": "contract_ready_worker_acceptance_pending",
+  "status": "completion_source_reviewed_hosted_merge_pending",
   "issue": "https://github.com/edithatogo/rcagent/issues/125",
   "coordination_comment": "https://github.com/edithatogo/rcagent/issues/125#issuecomment-6872993577",
   "authority": {
@@ -57,7 +57,7 @@
   "lanes": [
     {
       "role": "implementation",
-      "worker": "rcagent — FAW07 demo and receipts",
+      "worker": "rcagent \u2014 FAW07 demo and receipts",
       "owner_reported_state": "running",
       "branch": "feat/faw07-d0-demo-receipt-20261114",
       "pull_request": 132,
@@ -81,7 +81,7 @@
     },
     {
       "role": "independent_verification",
-      "worker": "rcagent — Independent verification and synthetic cases",
+      "worker": "rcagent \u2014 Independent verification and synthetic cases",
       "owner_reported_state": "running",
       "branch": "test/faw07-d0-independent-verification-20261114",
       "pull_request": 133,
@@ -259,6 +259,104 @@
   ],
   "open_findings": [
     {
+      "id": "D0-DELIVERY-01",
+      "owner": "explicitly_authorised_D0_completion_owner",
+      "finding": "Exact integration-head hosted Quality, dependency/privacy checks and protected merge pending.",
+      "gate": "A3/A4"
+    },
+    {
+      "id": "D0-DELIVERY-02",
+      "owner": "explicitly_authorised_D0_completion_owner",
+      "finding": "Record actual merge, master conformance and acceptance; only then mark FAW07 complete.",
+      "gate": "A5"
+    }
+  ],
+  "required_contexts": [
+    "dependency-review",
+    "validate (ubuntu-latest)",
+    "validate (macos-latest)",
+    "validate (windows-latest)"
+  ],
+  "ruleset": {
+    "id": 21834601,
+    "enforcement": "active",
+    "strict_base": true,
+    "new_approval_requirements": false,
+    "bypass_permitted_for_this_work": false
+  },
+  "preserved_gates": {
+    "linux_and_macos_branch_coverage_floor": 90,
+    "combined_branch_coverage_floor": 90,
+    "combined_inputs": 4,
+    "release_mutation_real_kills": 24,
+    "scalene_synthetic_iterations": 300,
+    "privacy_secrets_and_official_conformance": "required for coordinator acceptance"
+  },
+  "historical_negative_evidence": {
+    "consumed_source": "e6c1453d68b562829b99f40b925de6d287496601",
+    "review": "cd09dba47704f3c87b95975a216a9a5be98158bd",
+    "protocol_sha256": "650186fd54dd832532ea995c954862026203b848bb520e8e0cae7a4af8c80628",
+    "profile_sha256": "c5bdd37eb8391baedd191c482996210ebdfbd43888ab8afb578092fafd8896c1",
+    "admitted_observations": 0,
+    "attempted_observations": 2,
+    "current_engineering_identity": "typing-20261114",
+    "requalification": false
+  },
+  "next_actions": [
+    "Publish the combined completion candidate with original worker heads preserved in ancestry.",
+    "Verify every required final-head Actions gate and current-base condition; merge normally with an expected-head guard.",
+    "Inspect automatic master conformance, record the actual merge and final acceptance, and reconcile superseded worker PRs."
+  ],
+  "acceptance": {
+    "A0": "explicit_owner_completion_authority_recorded_prior_acknowledgement_gap_preserved",
+    "A1": "source_verified_on_recorded_file_hashes",
+    "A2": "independent_oracle_and_subprocess_verification_passed_on_recorded_hashes",
+    "A3": "static_gates_passed_full_local_socket_tests_blocked_hosted_suite_pending",
+    "A4": "pending_exact_integration_head_checks_and_protected_merge",
+    "A5": "pending_actual_merge_and_master_conformance",
+    "faw07_complete": false,
+    "clinical_or_model_qualification": false
+  },
+  "refreshed_at": "2026-11-16T11:04:52.995743+00:00",
+  "completion_20261116": {
+    "authority": "Dylan: Implement D0, open a PR, check actions pass, then merge.",
+    "scope": "D0 completion and protected integration only; original worker branches and other owners preserved",
+    "base_commit": "c6892497aa0b03555d5145242c04965471eccc1d",
+    "input_worker_heads": {
+      "implementation": "4746027c7de6cd4e0ed1518241f847146d79faef",
+      "verification": "4057512f23a2301d6ffe4649e42fb055eeb83937"
+    },
+    "integration_branch": "feat/faw07-d0-completion-20261116",
+    "implementation_files": {
+      "tools/evidence_core.py": "sha256:b17b6bfc49ca807014de89d41f41de89a6b0b529b28572a048a3aca2b98155ee",
+      "tools/faw07_d0_demo.py": "sha256:4aeafc70fb9149ce2d1068a27aa948fafd801c43c0786d22292bb130b7f47b5b",
+      "tools/json_shapes.py": "sha256:85d1b47e29a4dc26c6af02560692a7a323a1e31ec54158a709a1f3a7fb0946e5",
+      "tools/workbench.py": "sha256:db570e5a05648f5f44323f00f69445a3ae557dac0d8576783c8b63c12c6baddb"
+    },
+    "receipt": "./faw07-d0-completion-20261116.md",
+    "execution_receipt": "../../../tests/fixtures/faw07_independent/verification-execution-20261116.json",
+    "conformance_receipt": "./faw07-d0-conformance-20261116.json",
+    "original_worker_acknowledgement": "not_observed_not_fabricated",
+    "read_only_agent_reviews": 3,
+    "focused_tests": {
+      "passed": 130,
+      "failed": 0
+    },
+    "full_local_gate": {
+      "passed": false,
+      "tests_passed": 2313,
+      "tests_failed": 52,
+      "tests_skipped": 11,
+      "coverage_percent": 93.39,
+      "limitation": "AF_UNIX creation denied; existing socket/session tests fail; required hosted suite unchanged"
+    },
+    "official_conformance": "passed_pinned_validator_and_live_drift_inspection",
+    "hosted_delivery": "pending",
+    "merge": "not_performed",
+    "source_recommendation": "three_agent_reviews_accept_A1_A2_for_bound_file_bytes"
+  },
+  "prior_open_findings_20261114": [
+    {
       "id": "D0-I01",
       "owner": "implementation",
       "finding": "Explicit source/evidence case binding and evidence-level claimed digest/coordinate checks are absent from the observed candidate.",
@@ -300,53 +398,5 @@
       "finding": "No direct cross-chat inbox is accessible; issue/PR comments are published but worker acknowledgement is not yet observed.",
       "gate": "A0"
     }
-  ],
-  "required_contexts": [
-    "dependency-review",
-    "validate (ubuntu-latest)",
-    "validate (macos-latest)",
-    "validate (windows-latest)"
-  ],
-  "ruleset": {
-    "id": 21834601,
-    "enforcement": "active",
-    "strict_base": true,
-    "new_approval_requirements": false,
-    "bypass_permitted_for_this_work": false
-  },
-  "preserved_gates": {
-    "linux_and_macos_branch_coverage_floor": 90,
-    "combined_branch_coverage_floor": 90,
-    "combined_inputs": 4,
-    "release_mutation_real_kills": 24,
-    "scalene_synthetic_iterations": 300,
-    "privacy_secrets_and_official_conformance": "required for coordinator acceptance"
-  },
-  "historical_negative_evidence": {
-    "consumed_source": "e6c1453d68b562829b99f40b925de6d287496601",
-    "review": "cd09dba47704f3c87b95975a216a9a5be98158bd",
-    "protocol_sha256": "650186fd54dd832532ea995c954862026203b848bb520e8e0cae7a4af8c80628",
-    "profile_sha256": "c5bdd37eb8391baedd191c482996210ebdfbd43888ab8afb578092fafd8896c1",
-    "admitted_observations": 0,
-    "attempted_observations": 2,
-    "current_engineering_identity": "typing-20261114",
-    "requalification": false
-  },
-  "next_actions": [
-    "Publish and validate coordinator contract-only PR; merge normally after exact-head checks.",
-    "Workers reconcile with contract and repair their owned files; acknowledge the contract on issue #125 or their PR.",
-    "Verifier executes the exact implementation candidate and appends an honest execution receipt.",
-    "Coordinator combines both worker diffs, validates final integration head, then merges and records acceptance only if every gate passes."
-  ],
-  "acceptance": {
-    "A0": "contract_ready_acknowledgement_pending",
-    "A1": "pending_repairs",
-    "A2": "supplied_production_regression_fails_cross_case",
-    "A3": "formatting_failure_at_current_candidate",
-    "A4": "pending_integrated_final_head",
-    "A5": "pending",
-    "faw07_complete": false,
-    "clinical_or_model_qualification": false
-  },
-  "refreshed_at": "2026-11-14T16:35:38.298964+10:00"
+  ]
 }
