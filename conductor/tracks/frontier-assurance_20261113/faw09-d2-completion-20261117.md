@@ -119,6 +119,32 @@ was reproduced before repair and remains a permanent regression. Early test
 helper and strict-typing failures are also retained in the attempt history.
 No skip, xfail, allowance or reduced gate was introduced.
 
+## First hosted publication and metadata correction
+
+Initial source commit `eb376cdb4144fbb91ac4db9c5ce2655059b8c4b7` in
+[PR #150](https://github.com/edithatogo/rcagent/pull/150) passed all nine jobs in
+[Quality 43956603499](https://github.com/edithatogo/rcagent/actions/runs/43956603499)
+and dependency review. [Privacy 43956603597](https://github.com/edithatogo/rcagent/actions/runs/43956603597)
+reported one phone-number finding in the fractional timestamp of the first
+independent execution record; Gitleaks was clean. Acceptance was withheld.
+
+The [metadata correction](../../../tests/fixtures/faw09_independent/metadata-correction-20261117.json)
+represents that generated instant as whole-second UTC plus a separate integer
+microsecond field. Exact reconstruction and equality of every non-timestamp
+field, including all 34 returned cases, passed. The original published commit,
+blob and hash remain retrievable, and the correction binds both representations.
+Two relevant independent tests passed. Production, tests, oracle, lock, original
+verification receipt and CLI bytes are unchanged. The scanner and its rules are
+unchanged; no suppression or exclusion was introduced. The
+[publication attempt record](./faw09-d2-publication-attempts-20261117.json)
+retains the failed observation and requires fresh exact-head hosted acceptance. The
+[independent detector-component check](./faw09-d2-timestamp-check-20261117.json)
+reproduced the original finding, found none in the corrected artifact, and
+still detected the shared scanner's documented fictional positive control
+both alone and beside the corrected metadata. It executed the exact pinned
+phonenumbers component, not the complete Presidio/Gitleaks workflow; hosted
+privacy acceptance remains required.
+
 ## Engineering evidence and delivery boundary
 
 The exact reviewed source SHA-256 identities are:

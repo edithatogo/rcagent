@@ -6,7 +6,7 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-12T20:10:44Z",
-  "updated_at": "2026-11-17T07:03:02.683687+10:00",
+  "updated_at": "2026-11-16T21:12:23+00:00",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/125",
@@ -21,7 +21,8 @@
     "d1_branch": "feat/faw08-d1-extraction-20261116",
     "d1_implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/148",
     "d1_acceptance_branch": "docs/faw08-d1-acceptance-20261117",
-    "d2_branch": "feat/faw09-d2-timeline-20261117"
+    "d2_branch": "feat/faw09-d2-timeline-20261117",
+    "d2_implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/150"
   },
   "autonomy": "continuous-autonomy-with-owner-decision-gates",
   "autonomy_contract": "../../autonomy.json",
@@ -132,7 +133,8 @@
     "d2_review_receipt": "./faw09-d2-review-20261117.json",
     "d2_conformance_receipt": "./faw09-d2-conformance-20261117.json",
     "d2_execution_receipt": "../../../tests/fixtures/faw09_independent/verification-receipt.json",
-    "d2_local_engineering_receipt": "./faw09-d2-local-engineering-20261117.json"
+    "d2_local_engineering_receipt": "./faw09-d2-local-engineering-20261117.json",
+    "d2_publication_attempts": "./faw09-d2-publication-attempts-20261117.json"
   },
   "decisions": [
     "../../decisions/20261113-001-frontier-assurance.md"

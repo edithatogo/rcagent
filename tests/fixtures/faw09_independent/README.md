@@ -81,3 +81,17 @@ a verifier integration error, not a production assembly failure. Correcting the
 output-key mapping against the same saved results exposed no semantic mismatch.
 Later passing tests and complete actual temporal outputs are separately bound
 to final source hashes. Replay equality is not used as the independent oracle.
+
+## Timestamp metadata correction
+
+[Privacy run 43956603597](https://github.com/edithatogo/rcagent/actions/runs/43956603597)
+reported one Presidio `PHONE_NUMBER` finding on the fractional timestamp in
+`attempts/attempt-001-observations.json`. The
+[metadata correction record](./metadata-correction-20261117.json) preserves the
+published original commit, Git blob and byte hash, and binds the replacement.
+The instant is now represented explicitly as `2026-11-16T20:55:14Z` plus
+`observed_utc_microseconds=86646`. Adding that integer microsecond component
+reconstructs the original instant exactly. Every other field, including all 34
+actual case results, is unchanged. The frozen oracle, original verification
+receipt and CLI artifact retain their hashes. No scanner rules, allowlists or
+escape encodings were changed; the failed run remains part of the record.

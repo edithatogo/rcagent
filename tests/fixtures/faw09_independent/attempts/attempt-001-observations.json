@@ -1,7 +1,8 @@
 {
   "schema_version": "faw09-independent-attempt-1.0",
   "attempt": 1,
-  "observed_utc": "2026-11-16T20:55:14.086646+00:00",
+  "observed_utc": "2026-11-16T20:55:14Z",
+  "observed_utc_microseconds": 86646,
   "entry_point": "tools.faw09_d2_timeline.assemble_timeline over literal independently frozen inputs",
   "oracle_sha256": "dd3947ac70d54ccb5436040b1a190e19bba4f5b657a7b4781574eac76be13b92",
   "hashes_before": {
