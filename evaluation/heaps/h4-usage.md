@@ -59,6 +59,13 @@ nonfinite numbers and unpaired surrogates. Schema and semantic checks then
 validate the case, exact versions, typed references, source families, dates and
 artifact bindings. The shared canonical schema remains unchanged.
 
+Direct canonical `supports` relationships and supplementary profile support
+references use the same eligibility rule for findings marked accepted. A
+withdrawn or rejected factor or statement, a factor backed by such a statement,
+or withdrawn evidence cannot supply that positive support. Other relationship
+types and unreviewed draft findings retain their recorded roles; this check does
+not infer transitive support or establish the finding's truth.
+
 Captured source and template bytes are preserved exactly. Generated JSON uses
 sorted keys, two-space indentation, unescaped Unicode and one terminal LF.
 Original case and profile ingress bytes are retained separately from normalised
@@ -123,6 +130,10 @@ HEAPS manifest, decision, status and verification objects are admitted through
 their detached verification channels. This consumer rejects those objects when
 disguised as source, report or supporting artifacts inside the construction
 inventory, regardless of the filename extension.
+The six detached root filenames are reserved case-insensitively, including
+`manifest.json`, `decision.json`, `status.json`, `verification.json` and the two
+`verification-input-*.json` captures. This keeps admitted output portable across
+case-sensitive and case-insensitive filesystems.
 
 ## Interpretation boundaries
 

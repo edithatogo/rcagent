@@ -1,0 +1,166 @@
+{
+  "schema_version": "faw09-d2-agent-review-1.0",
+  "observed_at": "2026-11-16T20:58:29.192345+00:00",
+  "scope": "bounded synthetic FAW09/D2 source and independent verification accepted; hosted delivery separate",
+  "source_hashes": {
+    "tools/faw09_d2_clock.py": "b0e24b747cba8a6947cfeab39f22a8103c3251db6aa48cfcbe63269464e84855",
+    "tools/faw09_d2_timeline.py": "254ea0ab87c30ab8ce568b1c892ae1c01c31ef46c8c6bc88778e92507b4eb020",
+    "tools/workbench.py": "122152d01584ff72749c8f3ce3f2e6f0efaafdeddd1699b72a55418ed05a9dd2"
+  },
+  "contract_sha256": "ca535c7a6e5ccdf3d2dcc150d3c7b7043579f89732f6375335df15a58119879b",
+  "reviewers": [
+    {
+      "agent": "frontier_research",
+      "role": "independent frozen oracle and verifier",
+      "disposition": "accepted",
+      "oracle_sha256": "dd3947ac70d54ccb5436040b1a190e19bba4f5b657a7b4781574eac76be13b92",
+      "literal_cases": 34,
+      "families": 15,
+      "oracle_labels_revised": false,
+      "tests_passed": 166,
+      "events_retained": 73,
+      "expected_events": 73,
+      "clocks_retained": 74,
+      "expected_clocks": 74,
+      "correct_pairs": 46,
+      "expected_pairs": 46,
+      "strict_order_tp": 12,
+      "strict_order_fp": 0,
+      "strict_order_fn": 0,
+      "correct_usable_utc_interpretations": 61,
+      "expected_usable_utc_interpretations": 61,
+      "correct_unusable_interpretations": 13,
+      "expected_unusable_interpretations": 13,
+      "correct_summaries": 158,
+      "expected_summaries": 158,
+      "unknown_unresolved_summaries_retained": 105,
+      "disagreements_retained": 3,
+      "unknown_pairs_retained": 19,
+      "consistent_cases_correct": 29,
+      "inconsistent_cases_correct": 5,
+      "false_blocking": 0,
+      "false_acceptance": 0,
+      "execution_failures": 0,
+      "field_errors": 0,
+      "receipt": "../../../tests/fixtures/faw09_independent/verification-receipt.json",
+      "receipt_sha256": "5bfa53d0bea3a865d983c6e52359f69e50e2b897e35ede238f761a96735b43b5",
+      "test_module_sha256": "3daab366f7092291c1f756e5f41ca95adb16e1db2a3adc373d526f06afbf8941"
+    },
+    {
+      "agent": "plan_gap_review",
+      "role": "independent semantic and scope review",
+      "disposition": "accepted",
+      "checks_passed": 292,
+      "failures": 0,
+      "probe_groups": {
+        "independent_graph_assignment_and_reachability": 256,
+        "targeted_temporal_clock_and_amendment": 13,
+        "invalid_admission": 4,
+        "canonical_permutations": 12,
+        "clock_grammar": 7
+      },
+      "probe_script_sha256": "ab335fe19b654871e59985a7a18bc6e85bfc99c5d306b95754e9505a2ad1f1bf",
+      "result_sha256": "1820710cf0c7aceb397793eef55e43591a9aff9f9d0c415119ec25ec33f50c75",
+      "source_stable_during_execution": true,
+      "no_repository_files_edited": true
+    },
+    {
+      "agent": "dependency_audit",
+      "role": "independent reuse, admission, resources and receipt review",
+      "disposition": "accepted",
+      "execution": {
+        "cli": {
+          "case_count": 10,
+          "clock_assertion_count": 41,
+          "event_count": 20,
+          "identical_processes": 3,
+          "independent_hash_and_count_checks": "pass",
+          "invalid_cli_runs_rejected": 2,
+          "output_fingerprint": "sha256:79119822b52815dc00bf34e373c44e3a50de5f251dfde4517769399088b04ddd",
+          "stdout_bytes": 96602,
+          "stdout_sha256": "30228ca7a438bda9327f1e6bbf3e6f8c7d4b78d8aad7e06a3ff19e0543ad3760"
+        },
+        "counts": {
+          "accepted_boundary": 7,
+          "amendment_probes": 2,
+          "rejected_boundary": 109,
+          "replay_rejected": 9,
+          "structural_probes": 4
+        },
+        "failures": [],
+        "resource_observations": {
+          "32_sources_2MiB_seconds": 0.01217162300599739,
+          "64_spans_16_events_16_recipients_seconds": 0.0027283730159979314
+        },
+        "review": "independent admission/resource/replay probes; no semantic oracle substitution",
+        "source_hashes_after": {
+          "tools/faw09_d2_clock.py": "b0e24b747cba8a6947cfeab39f22a8103c3251db6aa48cfcbe63269464e84855",
+          "tools/faw09_d2_timeline.py": "254ea0ab87c30ab8ce568b1c892ae1c01c31ef46c8c6bc88778e92507b4eb020",
+          "tools/workbench.py": "122152d01584ff72749c8f3ce3f2e6f0efaafdeddd1699b72a55418ed05a9dd2"
+        },
+        "source_hashes_before": {
+          "tools/faw09_d2_clock.py": "b0e24b747cba8a6947cfeab39f22a8103c3251db6aa48cfcbe63269464e84855",
+          "tools/faw09_d2_timeline.py": "254ea0ab87c30ab8ce568b1c892ae1c01c31ef46c8c6bc88778e92507b4eb020",
+          "tools/workbench.py": "122152d01584ff72749c8f3ce3f2e6f0efaafdeddd1699b72a55418ed05a9dd2"
+        }
+      },
+      "probe_script_sha256": "563cced419929bea242336a31173a46d08e35fa325083b9285b0f68315ae9208",
+      "result_sha256": "b2c2d09c1e0d7c3716c1aa2d7d97333e76b5993c76bacf3c5a19ec290426c0c2",
+      "no_repository_files_edited": true
+    }
+  ],
+  "resolved_findings": [
+    "Narrowed full implied order wording to the transitive closure of asserted and interval-derived edges; feasibility does not claim all consequences of alternative pruning.",
+    "String-like non-JSON enum objects could bypass permitted_view or leak TypeError from clock kind; actual string admission is now required and both red regressions are retained.",
+    "The first early-sized-object guard leaked OverflowError for a huge non-object range; dictionary admission now precedes length, with the red regression retained."
+  ],
+  "root_regression_history": [
+    {
+      "phase": "pre-implementation",
+      "outcome": "collection failure: missing producer module"
+    },
+    {
+      "phase": "first producer run",
+      "passed": 30,
+      "failed": 13,
+      "cause": "root test helper omitted required context argument; no producer semantic assertion failures"
+    },
+    {
+      "phase": "corrected test helper",
+      "passed": 43,
+      "failed": 0
+    },
+    {
+      "phase": "strict checks",
+      "outcome": "ty rejected inferred heterogeneous demo tuple; fixed with typed JsonObject list; basedpyright rejected unchecked dictionary length, fixed with structural container guard"
+    },
+    {
+      "phase": "string-like enum regression baseline",
+      "passed": 0,
+      "failed": 2
+    },
+    {
+      "phase": "string-like enum repair",
+      "passed": 45,
+      "failed": 0
+    },
+    {
+      "phase": "non-object size regression baseline",
+      "passed": 0,
+      "failed": 1
+    },
+    {
+      "phase": "final root suite",
+      "passed": 46,
+      "failed": 0,
+      "hypothesis_shift_examples": 35
+    }
+  ],
+  "limitations": [
+    "Agent reviews may share correlated errors.",
+    "Supplementary probes are not pooled into frozen-oracle metrics.",
+    "Observed runtimes are not portable performance guarantees.",
+    "No held-out, model or clinical qualification.",
+    "Exact-head hosted checks and normal protected merge remain required."
+  ]
+}

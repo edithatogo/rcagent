@@ -268,6 +268,34 @@ def target(value: object, index: Mapping[str, tuple[str, JsonObject]]) -> JsonOb
     return index[text(ref["id"])][1]
 
 
+def _require_eligible_support(
+    kind: str, support: JsonObject, index: Mapping[str, tuple[str, JsonObject]]
+) -> None:
+    if kind == "factor":
+        if support["status"] in {"withdrawn", "rejected"}:
+            raise ValueError(
+                f"factor.promotion: {support['factor_id']} is {support['status']}; cannot support accepted finding"
+            )
+        # Factor meaning is carried by its directly referenced canonical
+        # statement. Do not infer support through further graph relationships.
+        statement = index[text(support["statement_id"])][1]
+        _require_eligible_statement(statement)
+    elif kind == "evidence" and support["custody_state"] == "withdrawn":
+        raise ValueError("finding support: withdrawn evidence cannot support accepted finding")
+    else:
+        _require_eligible_statement(support)
+
+
+def _require_eligible_statement(statement: JsonObject) -> None:
+    if statement.get("withdrawn") is True or (
+        is_object(statement.get("provenance"))
+        and obj(statement["provenance"]).get("review_state") in {"withdrawn", "rejected"}
+    ):
+        raise ValueError(
+            "finding support: withdrawn or rejected statement cannot support accepted finding"
+        )
+
+
 def admit_case_profile(case: JsonObject, profile: JsonObject) -> dict[str, tuple[str, JsonObject]]:
     core_errors = validate_record(case)
     if core_errors:
@@ -293,6 +321,13 @@ def admit_case_profile(case: JsonObject, profile: JsonObject) -> dict[str, tuple
     sanitize_export(profile)
     index = reference_index(case)
     check_references(profile, index)
+    for relationship in rows(case.get("relationships")):
+        if relationship["relation"] != "supports":
+            continue
+        target_kind, finding = index[text(relationship["to_id"])]
+        if target_kind == "finding" and obj(finding["provenance"])["review_state"] == "accepted":
+            support_kind, support = index[text(relationship["from_id"])]
+            _require_eligible_support(support_kind, support, index)
     return index
 
 
@@ -404,18 +439,7 @@ def validate_profile_semantics(
         if obj(finding["provenance"])["review_state"] != "accepted":
             continue
         for ref in rows(context["supporting_refs"]):
-            support = target(ref, index)
-            if ref["kind"] == "factor" and support["status"] in {"withdrawn", "rejected"}:
-                raise ValueError(
-                    f"factor.promotion: {support['factor_id']} is {support['status']}; cannot support accepted finding"
-                )
-            if support.get("withdrawn") is True or (
-                is_object(support.get("provenance"))
-                and obj(support["provenance"]).get("review_state") in {"withdrawn", "rejected"}
-            ):
-                raise ValueError(
-                    "finding support: withdrawn or rejected statement cannot support accepted finding"
-                )
+            _require_eligible_support(text(ref["kind"]), target(ref, index), index)
     for assignment in rows(profile["factor_assignments"]):
         if assignment["state"] != "mapped":
             continue
@@ -507,6 +531,16 @@ def manifest_inventory(manifest: JsonObject, artifacts: Mapping[str, bytes]) -> 
         if paths != sorted(paths) or len(paths) != len(set(paths)):
             raise ValueError("manifest: inventory must have unique ascending paths")
         for entry in entries:
+            path = safe_path(entry["path"])
+            if path.casefold() in {
+                "manifest.json",
+                "decision.json",
+                "status.json",
+                "verification.json",
+                "verification-input-manifest.json",
+                "verification-input-status.json",
+            }:
+                raise ValueError("manifest: self or later receipt is forbidden")
             path, payload = read_artifact(entry, artifacts)
             candidate: JsonObject | None = None
             if path.endswith(".json"):
@@ -528,15 +562,6 @@ def manifest_inventory(manifest: JsonObject, artifacts: Mapping[str, bytes]) -> 
             identifier = text(entry["artifact_id"])
             if path.casefold() in casefold_paths or identifier in identifiers:
                 raise ValueError("manifest: duplicate path or artifact identity")
-            if path in {
-                "manifest.json",
-                "decision.json",
-                "status.json",
-                "verification.json",
-                "verification-input-manifest.json",
-                "verification-input-status.json",
-            }:
-                raise ValueError("manifest: self or later receipt is forbidden")
             casefold_paths.add(path.casefold())
             identifiers.add(identifier)
             consumed[path] = payload

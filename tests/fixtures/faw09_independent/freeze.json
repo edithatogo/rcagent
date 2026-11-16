@@ -1,0 +1,36 @@
+{
+  "schema_version": "faw09-independent-freeze-1.0",
+  "frozen_utc": "2026-11-16T20:54:42.009730+00:00",
+  "oracle_sha256": "dd3947ac70d54ccb5436040b1a190e19bba4f5b657a7b4781574eac76be13b92",
+  "base_commit": "6f9cd9627adc52782a67fa6693f1cdb90c3c84a7",
+  "contract_sha256": "ca535c7a6e5ccdf3d2dcc150d3c7b7043579f89732f6375335df15a58119879b",
+  "cases": 34,
+  "families": 15,
+  "events": 73,
+  "clocks": 74,
+  "pairs": 46,
+  "full_implied_strict_orders": 12,
+  "clock_status_counts": {
+    "ambiguous": 3,
+    "invalid": 3,
+    "resolved": 58,
+    "unknown": 7,
+    "unsupported": 3
+  },
+  "summary_status_counts": {
+    "ambiguous": 3,
+    "conflicting": 3,
+    "known": 47,
+    "unknown": 93,
+    "unresolved": 12
+  },
+  "inconsistent_cases": 5,
+  "producer_executions_before_freeze": 0,
+  "production_source_read_before_freeze": false,
+  "authoring_inputs": [
+    "frozen D2 contract and coordinator serialization clarifications",
+    "independent literal temporal expectations",
+    "AST-extracted output access-key names only; no root-test expected labels"
+  ],
+  "qualification": "Independent authorship, visible synthetic development cases; not a held-out assessment or clinical/model qualification."
+}

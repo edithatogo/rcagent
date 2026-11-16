@@ -5,7 +5,7 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-16T07:34:21+00:00",
-  "updated_at": "2026-11-16T21:12:58.967424+00:00",
+  "updated_at": "2026-11-16T21:29:13.851905+00:00",
   "workstream": "product-interfaces-distribution",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/140",
@@ -37,7 +37,8 @@
     "skills/rca-investigation/assets/templates/markdown/15-heaps-review-draft.md",
     "tests/test_heaps.py",
     "tools/heaps.py",
-    "tools/heaps_validation.py"
+    "tools/heaps_validation.py",
+    "tests/test_heaps_cli_boundaries.py"
   ],
   "registration": {
     "status": "pending_coordinator_integration",
@@ -45,7 +46,7 @@
     "proposal": "./registration-proposal.json"
   },
   "verification": {
-    "status": "h4_implementation_checks_passed_full_local_gate_failed",
+    "status": "h4_review_repairs_verified_locally_awaiting_hosted_head",
     "scope": "bounded_synthetic_consumer_development_visible_engineering",
     "receipt": "./h4.md",
     "input_manifest": "./h4-input-manifest.json",
@@ -77,13 +78,14 @@
     "heaps_runtime_acceptance_cases_executed": 25,
     "full_local_validation": {
       "exit_code": 1,
-      "passed": 2829,
+      "passed": 3125,
       "failed": 52,
       "skipped": 11,
-      "branch_coverage_percent": 92.94,
+      "branch_coverage_percent": 93.54,
       "failure_scope": "unchanged_socket_session_controller_tests_in_executor_denying_AF_UNIX",
       "prior_stages_passed": true,
-      "log_sha256": "12f2312ef2a628adf1670a665aa11b37ec5cbd9f7c7b07a286df2a7606c3fc48"
+      "log_sha256": "a3ca1f286d215010082d98ead57a6f62a28161f4da5be9808979515d2f2addb7",
+      "receipt": "./h4-revision-validation.json"
     },
     "skill_current_conformance": true,
     "conformance_receipt": "./h4-conformance.json",
@@ -95,11 +97,11 @@
     "official_template_conformity": "unverified",
     "hosted_checks": "must_observe_exact_published_head_in_PR142_before_merge",
     "shared_registration": "pending_coordinator_integration",
-    "h4_tests_passed": 220,
+    "h4_tests_passed": 304,
     "heaps_runtime_acceptance_variants_executed": 38,
     "heaps_runtime_variants_matching": 38,
-    "h4_execution": "./h4-execution.json",
-    "h4_replay": "./h4-replay.json",
+    "h4_execution": "./h4-revision-execution.json",
+    "h4_replay": "./h4-revision-replay.json",
     "h4_review": "./h4-review.md",
     "h5_phase_accepted": false,
     "hosted_first_attempt": {
@@ -109,13 +111,41 @@
       "job": 133614737639,
       "repair_receipt": "./h4-hosted-repair.md"
     },
-    "current_h4_test_sha256": "03a83edfea642163de6e4f058df8abb68262e16af3586b78bca5f72eff161dfa"
+    "current_h4_test_sha256": "fee67464a2a9bfd53a7aa940348f4a04bd07d021b2c6994423ba1254a3d940d4",
+    "original_full_local_validation": {
+      "exit_code": 1,
+      "passed": 2829,
+      "failed": 52,
+      "skipped": 11,
+      "branch_coverage_percent": 92.94,
+      "failure_scope": "unchanged_socket_session_controller_tests_in_executor_denying_AF_UNIX",
+      "prior_stages_passed": true,
+      "log_sha256": "12f2312ef2a628adf1670a665aa11b37ec5cbd9f7c7b07a286df2a7606c3fc48"
+    },
+    "h4_test_modules": {
+      "tests/test_heaps.py": 290,
+      "tests/test_heaps_cli_boundaries.py": 14
+    },
+    "current_h4_cli_boundary_test_sha256": "60f71caa182b8a7fcba9dd130e1ed450868e38ce976da82dd820385aada43e4f",
+    "h4_followup_review": "./h4-hosted-review-repair.md",
+    "h4_revision_validation": "./h4-revision-validation.json",
+    "hosted_second_attempt": {
+      "source_head": "5317c64852aca80ecdf6005ccd0bf02124b979c0",
+      "required_quality": "passed",
+      "quality_run": 43957881817,
+      "codecov_patch": "failed",
+      "codecov_patch_percent": 81.97832,
+      "codecov_check": 133619071523,
+      "review_findings": 2,
+      "merge": "not_performed",
+      "repair_receipt": "./h4-hosted-review-repair.md"
+    }
   },
   "decision_gates": [
     "Only genuinely new data use, rights, external action, spend or operational scope beyond existing authority",
     "Case-specific clinical/legal/cultural/organisational decisions remain with authorised people"
   ],
-  "observed_base": "6f9cd9627adc52782a67fa6693f1cdb90c3c84a7",
+  "observed_base": "8bf94873af22730e445fcbb1b7fb748cfd16ed25",
   "current_increment": {
     "id": "H4",
     "status": "h4_implemented_reviewed_awaiting_hosted_merge",

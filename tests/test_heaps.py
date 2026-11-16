@@ -871,6 +871,441 @@ def test_canonical_semantic_admission_precedes_rendering(defect: str) -> None:
     assert "report.md" not in result.files
 
 
+@pytest.mark.parametrize("factor_state", ["withdrawn", "rejected"])
+@pytest.mark.parametrize("keep_profile_context", [True, False])
+def test_canonical_support_edge_cannot_promote_an_excluded_factor(
+    factor_state: str,
+    keep_profile_context: bool,
+) -> None:
+    inputs = _inputs()
+    case = _parsed(inputs.case)
+    _rows(case["factors"])[0]["status"] = factor_state
+    finding = next(row for row in _rows(case["statements"]) if row["kind"] == "finding")
+    mapping(finding["provenance"])["review_state"] = "accepted"
+    sequence(case["relationships"]).append(
+        {
+            "from_id": "syn-factor-prompt",
+            "relation": "supports",
+            "to_id": finding["statement_id"],
+            "rationale": "Synthetic unsupported promotion through the canonical relationship alone.",
+        }
+    )
+    # The independent profile contains only documentary support, so its
+    # supplementary references cannot be the sole admission boundary.
+    profile = _parsed(inputs.profile)
+    if not keep_profile_context:
+        profile["finding_context"] = []
+    result = _rebound(inputs, case, profile).run()
+    assert result.preparation_disposition == "reject_input"
+    assert "syn-factor-prompt" in "\n".join(result.errors)
+
+
+@pytest.mark.parametrize(
+    ("factor_state", "finding_state", "relation", "reverse"),
+    [
+        ("candidate", "accepted", "supports", False),
+        ("accepted", "accepted", "supports", False),
+        ("withdrawn", "unreviewed", "supports", False),
+        ("rejected", "reviewed", "supports", False),
+        ("withdrawn", "accepted", "contradicts", False),
+        ("rejected", "accepted", "relevant_to", False),
+        ("withdrawn", "accepted", "supports", True),
+    ],
+)
+def test_support_guard_preserves_draft_history_relation_direction_and_eligible_factors(
+    factor_state: str,
+    finding_state: str,
+    relation: str,
+    reverse: bool,
+) -> None:
+    inputs = _inputs()
+    case = _parsed(inputs.case)
+    _rows(case["factors"])[0]["status"] = factor_state
+    finding = next(row for row in _rows(case["statements"]) if row["kind"] == "finding")
+    mapping(finding["provenance"])["review_state"] = finding_state
+    source, target = "syn-factor-prompt", text_value(finding["statement_id"])
+    if reverse:
+        source, target = target, source
+    sequence(case["relationships"]).append(
+        {"from_id": source, "relation": relation, "to_id": target}
+    )
+    result = _rebound(inputs, case).run()
+    assert result.preparation_disposition == "prepare_draft", result.errors
+    assert "syn-factor-prompt" in _report(result)
+    assert factor_state in _report(result)
+    assert _status(result)["clinical_review"] == "not_established"
+
+
+@pytest.mark.parametrize(
+    "support_route", ["statement", "factor_backing_statement", "profile_statement"]
+)
+@pytest.mark.parametrize("exclusion", ["withdrawn_flag", "withdrawn", "rejected"])
+def test_excluded_statement_cannot_support_an_accepted_finding_through_either_reference_path(
+    support_route: str,
+    exclusion: str,
+) -> None:
+    inputs = _inputs()
+    case = _parsed(inputs.case)
+    profile = _parsed(inputs.profile)
+    finding = next(row for row in _rows(case["statements"]) if row["kind"] == "finding")
+    mapping(finding["provenance"])["review_state"] = "accepted"
+    statement_id = "syn-stmt-document-gap"
+    statement = next(
+        row for row in _rows(case["statements"]) if row["statement_id"] == statement_id
+    )
+    if exclusion == "withdrawn_flag":
+        statement["withdrawn"] = True
+    else:
+        mapping(statement["provenance"])["review_state"] = exclusion
+    if support_route == "profile_statement":
+        _rows(profile["finding_context"])[0]["supporting_refs"] = [
+            {"kind": "hypothesis", "id": statement_id}
+        ]
+    else:
+        from_id = (
+            "syn-factor-prompt" if support_route == "factor_backing_statement" else statement_id
+        )
+        sequence(case["relationships"]).append(
+            {"from_id": from_id, "relation": "supports", "to_id": finding["statement_id"]}
+        )
+    result = _rebound(inputs, case, profile).run()
+    assert result.preparation_disposition == "reject_input"
+    assert "support" in "\n".join(result.errors)
+
+
+@pytest.mark.parametrize("support_route", ["canonical", "profile"])
+def test_withdrawn_evidence_cannot_support_an_accepted_finding(support_route: str) -> None:
+    inputs = _inputs()
+    case = _parsed(inputs.case)
+    profile = _parsed(inputs.profile)
+    finding = next(row for row in _rows(case["statements"]) if row["kind"] == "finding")
+    mapping(finding["provenance"])["review_state"] = "accepted"
+    _rows(case["evidence"])[0]["custody_state"] = "withdrawn"
+    if support_route == "canonical":
+        sequence(case["relationships"]).append(
+            {
+                "from_id": "syn-evidence-record",
+                "relation": "supports",
+                "to_id": finding["statement_id"],
+            }
+        )
+    else:
+        _rows(profile["finding_context"])[0]["supporting_refs"] = [
+            {"kind": "evidence", "id": "syn-evidence-record"}
+        ]
+    result = _rebound(inputs, case, profile).run()
+    assert result.preparation_disposition == "reject_input"
+    assert "withdrawn" in "\n".join(result.errors)
+
+
+def _source_at_path(path: str) -> Inputs:
+    inputs = _inputs()
+    case = _parsed(inputs.case)
+    profile = _parsed(inputs.profile)
+    _rows(case["sources"])[0]["citation"] = path
+    _rows(profile["source_snapshots"])[0]["locator"] = None
+    artifacts = {**inputs.artifacts, path: inputs.artifacts["sources/record.txt"]}
+    return _rebound(replace(inputs, artifacts=artifacts), case, profile)
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        "STATUS.JSON",
+        "DECISION.JSON",
+        "MANIFEST.JSON",
+        "VERIFICATION.JSON",
+        "VERIFICATION-INPUT-MANIFEST.JSON",
+        "VERIFICATION-INPUT-STATUS.JSON",
+        "StAtUs.JsOn",
+        "VeRiFiCaTiOn-InPuT-StAtUs.JsOn",
+    ],
+)
+def test_casefolded_detached_names_cannot_be_source_artifacts(path: str) -> None:
+    result = _source_at_path(path).run()
+    assert result.preparation_disposition == "reject_input"
+    assert "receipt" in "\n".join(result.errors)
+
+
+def test_similar_unreserved_source_name_does_not_become_a_detached_receipt() -> None:
+    result = _source_at_path("verification-input-note.txt").run()
+    assert result.preparation_disposition == "prepare_draft", result.errors
+    manifest = _parsed(result.files["manifest.json"])
+    assert "verification-input-note.txt" in {
+        text_value(row["path"]) for row in _inventory(manifest)
+    }
+
+
+def test_cli_rejects_casefolded_detached_source_before_publication(tmp_path: Path) -> None:
+    output = tmp_path / "output"
+    result = _cli(_source_at_path("STATUS.JSON"), tmp_path / "input", output)
+    assert result.returncode == 2
+    assert "receipt" in result.stdout
+    assert not output.exists()
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "duplicate_snapshot",
+        "unresolved_snapshot",
+        "missing_snapshot",
+        "duplicate_family",
+        "missing_family",
+        "lineage_mismatch",
+        "self_derivation",
+        "cross_family_derivation",
+        "cyclic_derivation",
+    ],
+)
+def test_source_snapshot_and_lineage_contracts_reject_incoherent_profiles(defect: str) -> None:
+    inputs = _inputs()
+    profile = _parsed(inputs.profile)
+    snapshots = _rows(profile["source_snapshots"])
+    families = _rows(profile["source_families"])
+    if defect == "duplicate_snapshot":
+        duplicate = {**snapshots[0], "snapshot_id": "syn-snapshot-duplicate"}
+        sequence(profile["source_snapshots"]).append(duplicate)
+    elif defect == "unresolved_snapshot":
+        snapshots[0]["source_id"] = "syn-missing-source"
+    elif defect == "missing_snapshot":
+        sequence(profile["source_snapshots"]).pop()
+    elif defect == "duplicate_family":
+        sequence(profile["source_families"]).append(
+            {**families[0], "family_id": "syn-other-family"}
+        )
+    elif defect == "missing_family":
+        sequence(profile["source_families"]).pop()
+    elif defect == "lineage_mismatch":
+        snapshots[0]["source_family_id"] = "syn-other-family"
+    elif defect == "self_derivation":
+        families[0]["derived_from"] = [{"kind": "source", "id": "syn-src-record"}]
+    elif defect == "cross_family_derivation":
+        families[1]["derived_from"] = [{"kind": "source", "id": "syn-src-record"}]
+    else:
+        families[0]["derived_from"] = [{"kind": "source", "id": "syn-src-staff"}]
+        families[1]["derived_from"] = [{"kind": "source", "id": "syn-src-record"}]
+        families[1]["family_id"] = "syn-family-record"
+        snapshots[1]["source_family_id"] = "syn-family-record"
+    result = replace(inputs, profile=_json(profile)).run()
+    assert result.preparation_disposition == "reject_input"
+    assert "source" in "\n".join(result.errors)
+    assert not result.files
+
+
+@pytest.mark.parametrize(
+    ("collection", "field"),
+    [
+        ("roles", "responsibilities"),
+        ("participation", "state_note"),
+        ("factor_assignments", "rationale"),
+        ("finding_context", "uncertainty"),
+        ("action_context", "intended_mechanism"),
+    ],
+)
+def test_profile_repeated_entity_contexts_are_not_silently_combined(
+    collection: str, field: str
+) -> None:
+    inputs = _inputs()
+    profile = _parsed(inputs.profile)
+    duplicate = deepcopy(_rows(profile[collection])[0])
+    duplicate[field] = (
+        ["participant"]
+        if collection == "roles"
+        else "Different synthetic context for the same entity."
+    )
+    sequence(profile[collection]).append(duplicate)
+    result = replace(inputs, profile=_json(profile)).run()
+    assert result.preparation_disposition == "reject_input"
+    assert "duplicate" in "\n".join(result.errors)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"), [("schema_version", "1.0"), ("privacy_mode", "public_remote")]
+)
+def test_valid_other_canonical_modes_cannot_enter_the_heaps_subset(field: str, value: str) -> None:
+    inputs = _inputs()
+    case = _parsed(inputs.case)
+    case[field] = value
+    result = _rebound(inputs, case).run()
+    assert result.preparation_disposition == "reject_input"
+    assert "safety-work 1.1 and fully_local" in "\n".join(result.errors)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("procedure_snapshot_id", "syn-missing-procedure"),
+        ("procedure_snapshot_id", "syn-snapshot-record"),
+        ("obligation_snapshot_ids", ["syn-missing-obligation"]),
+        ("obligation_snapshot_ids", ["syn-snapshot-record"]),
+    ],
+)
+def test_procedure_and_obligation_references_require_their_declared_purpose(
+    field: str, value: object
+) -> None:
+    inputs = _inputs()
+    profile = _parsed(inputs.profile)
+    mapping(profile["applicability"])[field] = value
+    result = replace(inputs, profile=_json(profile)).run()
+    assert result.preparation_disposition == "reject_input"
+    assert "applicability" in "\n".join(result.errors)
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "duplicate_deadline",
+        "unknown_trigger",
+        "unsupported_timezone",
+        "missing_action_deadline",
+        "missing_template_snapshot",
+    ],
+)
+def test_workflow_bases_cannot_be_fabricated_from_valid_shapes(defect: str) -> None:
+    inputs = _inputs()
+    profile = _parsed(inputs.profile)
+    if defect == "duplicate_deadline":
+        duplicate = deepcopy(_rows(profile["deadlines"])[0])
+        duplicate["note"] = "A second distinct assertion reusing the same deadline identity."
+        sequence(profile["deadlines"]).append(duplicate)
+    elif defect == "unknown_trigger":
+        mapping(profile["clocks"])["awareness"] = {
+            "state": "unknown",
+            "value": None,
+            "precision": "unknown",
+            "basis_refs": [],
+            "uncertainty": "The synthetic trigger has not been established.",
+        }
+    elif defect == "unsupported_timezone":
+        _rows(profile["deadlines"])[0]["time_zone"] = "Australia/Brisbane"
+    elif defect == "missing_action_deadline":
+        _rows(profile["action_context"])[0]["deadline_id"] = "syn-missing-deadline"
+    else:
+        mapping(profile["template_mapping"])["source_snapshot_id"] = "syn-missing-template"
+    result = replace(inputs, profile=_json(profile)).run()
+    assert result.preparation_disposition == "reject_input"
+    expected = "template mapping" if defect == "missing_template_snapshot" else "deadline"
+    assert expected in "\n".join(result.errors)
+
+
+def test_action_context_cannot_substitute_a_different_existing_recommendation() -> None:
+    inputs = _inputs()
+    case = _parsed(inputs.case)
+    profile = _parsed(inputs.profile)
+    recommendation = deepcopy(
+        next(row for row in _rows(case["statements"]) if row["kind"] == "recommendation")
+    )
+    recommendation["statement_id"] = "syn-other-recommendation"
+    sequence(case["statements"]).append(recommendation)
+    _rows(profile["action_context"])[0]["recommendation_ref"] = {
+        "kind": "recommendation",
+        "id": "syn-other-recommendation",
+    }
+    result = _rebound(inputs, case, profile).run()
+    assert result.preparation_disposition == "reject_input"
+    assert "recommendation does not match canonical action" in "\n".join(result.errors)
+
+
+@pytest.mark.parametrize(
+    ("precision", "value"), [("day", "2030-02-28"), ("minute", "2030-01-07T02:00Z")]
+)
+def test_supported_lower_time_precision_survives_without_invented_seconds(
+    precision: str, value: str
+) -> None:
+    inputs = _inputs()
+    profile = _parsed(inputs.profile)
+    assertion = mapping(_rows(profile["chronology"])[0]["available_time"])
+    assertion["precision"] = precision
+    assertion["value"] = value
+    result = replace(inputs, profile=_json(profile)).run()
+    assert result.preparation_disposition == "prepare_draft", result.errors
+    preserved = mapping(
+        _rows(_parsed(result.files["profile.json"])["chronology"])[0]["available_time"]
+    )
+    assert preserved["precision"] == precision
+    assert preserved["value"] == value
+
+
+def test_known_time_without_basis_cannot_become_an_observation() -> None:
+    inputs = _inputs()
+    profile = _parsed(inputs.profile)
+    mapping(_rows(profile["chronology"])[0]["available_time"])["basis_refs"] = []
+    result = replace(inputs, profile=_json(profile)).run()
+    assert result.preparation_disposition == "reject_input"
+    assert "requires a source basis" in "\n".join(result.errors)
+
+
+def test_canonical_timestamp_requires_rfc3339_zone_even_with_matching_case_digest() -> None:
+    inputs = _inputs()
+    case = _parsed(inputs.case)
+    _rows(case["sources"])[0]["acquired_at"] = "2030-01-07T02:00:00"
+    result = _rebound(inputs, case).run()
+    assert result.preparation_disposition == "reject_input"
+    assert "RFC3339" in "\n".join(result.errors)
+
+
+@pytest.mark.parametrize("defect", ["empty", "oversized", "excessive_nesting"])
+def test_json_ingress_resource_bounds_fail_before_domain_admission(defect: str) -> None:
+    inputs = _inputs()
+    if defect == "empty":
+        raw = b""
+    elif defect == "oversized":
+        raw = b" " * (4 * 1024 * 1024 + 1)
+    else:
+        raw = b'{"nested":' + b"[" * 66 + b"null" + b"]" * 66 + b"}"
+    result = replace(inputs, profile=raw).run()
+    assert result.preparation_disposition == "reject_input"
+    expected = "nesting" if defect == "excessive_nesting" else "empty or oversized"
+    assert expected in "\n".join(result.errors)
+
+
+@pytest.mark.parametrize(
+    "defect", ["unknown_manifest_field", "missing_report", "empty_report", "oversized_report"]
+)
+def test_prior_manifest_and_artifact_admission_rejects_incomplete_or_unbounded_inputs(
+    defect: str,
+) -> None:
+    inputs = _inputs("HP16-no-submission-receipt")
+    assert inputs.manifest is not None
+    manifest = _parsed(inputs.manifest)
+    artifacts = dict(inputs.artifacts)
+    if defect == "unknown_manifest_field":
+        manifest["assume_authority"] = True
+    elif defect == "missing_report":
+        del artifacts["packet/base-report.md"]
+    elif defect == "empty_report":
+        artifacts["packet/base-report.md"] = b""
+    else:
+        artifacts["packet/base-report.md"] = b"x" * (4 * 1024 * 1024 + 1)
+    result = replace(inputs, artifacts=artifacts, manifest=_json(manifest)).run()
+    assert result.preparation_disposition == "reject_input"
+    assert result.errors
+
+
+def test_json_looking_plain_text_is_preserved_as_opaque_text_without_repair() -> None:
+    inputs = _inputs("HP16-no-submission-receipt")
+    assert inputs.manifest is not None
+    manifest = _parsed(inputs.manifest)
+    raw = b'{"synthetic_note": this is an intentionally incomplete plain-text fragment'
+    path = "history/incomplete-text.txt"
+    mapping(manifest["components"])["supporting_artifacts"] = [
+        {
+            "artifact_id": "syn-plain-text-fragment",
+            "path": path,
+            "sha256": _sha(raw),
+            "bytes": len(raw),
+        }
+    ]
+    result = replace(
+        inputs, artifacts={**inputs.artifacts, path: raw}, manifest=_json(manifest)
+    ).run()
+    assert result.preparation_disposition == "prepare_draft", result.errors
+    entries = _inventory(_parsed(result.files["manifest.json"]))
+    captured = next(row for row in entries if row["sha256"] == _sha(raw))
+    assert result.files[text_value(captured["path"])] == raw
+
+
 def _decision_for(result: heaps.PacketResult) -> ObjectMap:
     decision = _read(FIXTURES / "packet/simulated-approved-decision.json")
     manifest = _parsed(result.files["manifest.json"])

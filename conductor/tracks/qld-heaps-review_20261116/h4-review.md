@@ -6,9 +6,9 @@ additional code/output review, ran the full gate and reproduced the actual CLI.
 These are agent engineering reviews with shared-model/shared-context correlation
 limits; they are not independent human or clinical validation.
 
-## Reviewed source
+## Original checkpoint source
 
-| File | Final SHA-256 |
+| File | Original checkpoint SHA-256 |
 | --- | --- |
 | `tools/heaps.py` | `ea9fe374ae7f387d92d11ab7800bd2c636d947f5e62a03e88d5ed75c504dd55b` |
 | `tools/heaps_validation.py` | `d3bbcffdcfc88f5e453ea6863e22ae5f40727b0425bb3da4be8226ef4ea9a7ae` |
@@ -76,3 +76,14 @@ remain unqualified. This closes the H4 implementation review, not H5 or H6.
 ## Hosted portability follow-up
 
 The first publication exposed a Windows static-type error in the Unix FIFO test. A separate read-only review accepted the minimal capability-guard repair; production bytes and POSIX rejection assertions are unchanged. The failed job, exact old/new test identities and independent checks are retained in [h4-hosted-repair.md](./h4-hosted-repair.md). This does not replace the requirement for a fresh hosted Windows pass.
+
+## Subsequent hosted review findings
+
+Hosted review subsequently found two boundary defects missed by the original
+checkpoint: canonical support edges could bypass withdrawn-factor eligibility,
+and uppercase detached filenames could collide with generated outputs. The
+earlier no-material-findings recommendation is preserved as that checkpoint's
+observation; it was superseded until the new findings were repaired and checked.
+The [follow-up receipt](./h4-hosted-review-repair.md) records the reproduced
+failures, bounded repairs, independent review and new source-bound verification.
+The original execution and replay records above retain their original hashes.

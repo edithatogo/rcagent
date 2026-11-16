@@ -103,13 +103,14 @@
       "status": "completed_on_branch",
       "implementation_owner": "current HEAPS lane under explicit user implementation and merge instruction",
       "acceptance_ref": "./plan.md",
-      "entry_evidence": "H2/H3 receipts, immutable oracle and reconciliation with master6f9cd96",
+      "entry_evidence": "H2/H3 receipts, immutable oracle and normal reconciliation with master8bf94873; D2 upstream implementation remains uncomposed in HEAPS",
       "receipt": "./h4.md",
       "integration_state": "pending_exact_head_hosted_checks_and_merge",
       "optional_features": {
         "H4.4": "omitted_unqualified",
         "H4.5": "omitted_unqualified"
-      }
+      },
+      "revision_verification": "./h4-revision-validation.json"
     },
     {
       "id": "H5",

@@ -1,0 +1,68 @@
+{
+  "configuration": {
+    "leniency": 1,
+    "supported_regions": [
+      "AU",
+      "NZ"
+    ]
+  },
+  "dependencies": {
+    "phonenumbers": "9.0.43",
+    "presidio-analyzer_wrapper_source": "2.2.366"
+  },
+  "executed_scope": "exact phonenumbers recognizer component",
+  "full_shared_scanner_executed": false,
+  "installation": "isolated scratch environment; no-deps; binary wheels; required hashes copied from pinned shared lock",
+  "limitation": "Component reproduction only; does not replace the required hosted privacy/secrets run.",
+  "non_timestamp_fields_unchanged": true,
+  "observed_instant_exactly_preserved": true,
+  "presidio_wrapper_executed": false,
+  "presidio_wrapper_inspected": true,
+  "python_version": "3.12.14",
+  "repository_writes_by_this_probe": false,
+  "results": {
+    "corrected_artifact": {
+      "detected": false,
+      "lines": [],
+      "unique_match_count": 0
+    },
+    "corrected_artifact_with_nearby_positive_control": {
+      "detected": true,
+      "lines": [
+        6
+      ],
+      "unique_match_count": 1
+    },
+    "original_published_artifact": {
+      "detected": true,
+      "lines": [
+        4
+      ],
+      "unique_match_count": 1
+    },
+    "shared_scanner_positive_control": {
+      "detected": true,
+      "lines": [
+        1
+      ],
+      "unique_match_count": 1
+    }
+  },
+  "scanner_repository": "edithatogo/repository-standards",
+  "scanner_revision": "985503bc8eae58e7d6ef36a6e5427d0077e0193c",
+  "source": {
+    "corrected_artifact_sha256": "8fb5bb289df77d09d1be0ea9e7c2c48203d7ff70b8029d7b97fdead3585062ff",
+    "original_artifact_sha256": "1de56aa3353c01a4db42dd8c6a2a595bd87542682eaf5bb975de4e43207f6651",
+    "original_consumer_head": "eb376cdb4144fbb91ac4db9c5ce2655059b8c4b7",
+    "phone_recognizer_source_sha256": "d8bef4065297fb3661ca224813a16fb118a9d7f2c3c282231eb93ab91426c4b0",
+    "positive_control_factory": "_generated_recognizer_vectors",
+    "positive_control_provenance": "shared scanner test documents ACMA reserved fictional mobile",
+    "positive_control_tests_git_blob": "219b52d3bc7b96df30fc8b0f4158079ab97efc7e",
+    "privacy_scan_git_blob": "dde66597b41bdaed1ac69a80728e6aa408d89e5b"
+  },
+  "suppressions_or_scanner_changes": false,
+  "schema_version": "faw09-d2-timestamp-component-check-1.0",
+  "recorded_utc": "2026-11-16T21:12:56+00:00",
+  "probe_script_sha256": "735b08ce4204db22f549fe49f973ace253060efa4fe8a3e61f10cd6042b3f263",
+  "raw_result_sha256": "a4669c58a1b5730820326a5b2e70ed30d9e8ff1d1a262ad50c6e13f430cefef3"
+}

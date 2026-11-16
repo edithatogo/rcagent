@@ -1,12 +1,12 @@
 {
   "schema_version": "heaps-h4-input-manifest-1.0",
-  "recorded_at": "2026-11-16T21:12:58.957610+00:00",
-  "base_master": "6f9cd9627adc52782a67fa6693f1cdb90c3c84a7",
-  "previous_heaps_head": "a9df9ba581eeeeae9a777546125225fae2c88b25",
+  "recorded_at": "2026-11-16T21:26:33.199828+00:00",
+  "base_master": "8bf94873af22730e445fcbb1b7fb748cfd16ed25",
+  "previous_heaps_head": "5317c64852aca80ecdf6005ccd0bf02124b979c0",
   "scope": "production, independent tests, frozen normative inputs, declared runtime dependencies and usage; excludes this manifest and mutable administrative receipts",
-  "count": 45,
+  "count": 46,
   "aggregate_algorithm": "sha256 of UTF-8 path-sorted sha256 + two spaces + repository-relative path + LF",
-  "aggregate_sha256": "483c252214c3559211357faa4c05c68af793555e8024d2c4f1827c619aa7a995",
+  "aggregate_sha256": "b43c35b0b8ffafa38fcfc07d9c6cd0f01b99b8c19b9c735f11c0e3af02ae461e",
   "files": [
     {
       "path": "conductor/schemas/safety-work.schema.json",
@@ -30,8 +30,8 @@
     },
     {
       "path": "evaluation/heaps/h4-usage.md",
-      "bytes": 7965,
-      "sha256": "278be76c5676ce8ad6fb9b26af90fcb9ff3b5dc0940ddbfed8682093904596de"
+      "bytes": 8703,
+      "sha256": "ec83eecaee6455eb0a5d98472b12bd859a9ec5dd89944d31d88a23f77b1597fa"
     },
     {
       "path": "evaluation/heaps/heaps-profile.schema.json",
@@ -190,8 +190,13 @@
     },
     {
       "path": "tests/test_heaps.py",
-      "bytes": 59446,
-      "sha256": "03a83edfea642163de6e4f058df8abb68262e16af3586b78bca5f72eff161dfa"
+      "bytes": 76886,
+      "sha256": "fee67464a2a9bfd53a7aa940348f4a04bd07d021b2c6994423ba1254a3d940d4"
+    },
+    {
+      "path": "tests/test_heaps_cli_boundaries.py",
+      "bytes": 10696,
+      "sha256": "60f71caa182b8a7fcba9dd130e1ed450868e38ce976da82dd820385aada43e4f"
     },
     {
       "path": "tests/test_heaps_fixture_design.py",
@@ -215,8 +220,8 @@
     },
     {
       "path": "tools/heaps_validation.py",
-      "bytes": 22243,
-      "sha256": "d3bbcffdcfc88f5e453ea6863e22ae5f40727b0425bb3da4be8226ef4ea9a7ae"
+      "bytes": 23379,
+      "sha256": "b927daa9f6e5edcbc4a1139349405fa73ffaa070601b7631d6bc052261235a4c"
     },
     {
       "path": "tools/interface_actions.py",
@@ -234,5 +239,5 @@
       "sha256": "ad939a067ac2eb2f0558e06f748b780f03dbe0c9046feb3a66e92888c6ff8e1c"
     }
   ],
-  "previous_input_manifest": "https://github.com/edithatogo/rcagent/blob/a9df9ba581eeeeae9a777546125225fae2c88b25/conductor/tracks/qld-heaps-review_20261116/h4-input-manifest.json"
+  "previous_input_manifest": "https://github.com/edithatogo/rcagent/blob/5317c64852aca80ecdf6005ccd0bf02124b979c0/conductor/tracks/qld-heaps-review_20261116/h4-input-manifest.json"
 }
