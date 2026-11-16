@@ -5,7 +5,7 @@
 The user explicitly instructed **H4 implementation, PR, passing Actions and
 merge** on 17 November 2026 (Australia/Brisbane). This supersedes the earlier
 merge reservation for this HEAPS PR. [PR #142](https://github.com/edithatogo/rcagent/pull/142)
-contains the H2/H3 prerequisites and now receives the H4 implementation.
+merged the H2/H3 prerequisites and H4 implementation at `006d98cb60c72143b0517f0e7a446641642ddd5a` after observed passing source-head checks. [Acceptance](./h4-acceptance-20261117.md) records the delivery.
 Portfolio numbering remains a separate coordinator task; this instruction does
 not transfer unrelated D0/D1/D2/AcciMap or shared scientific ownership.
 
@@ -34,26 +34,20 @@ unchanged shared callers. The HEAPS consumer must apply its own strict admission
 before producing a view. Its synthetic packet-decision scope remains separate
 from the shared substantive approval API; no scope is silently relabelled.
 
-## Verification and merge
+## Observed verification and merge
 
-H4 implementation and independent review are complete; [h4.md](./h4.md) records
-commands, input/output/component hashes, 220 passing H4 tests and identical
-16-file CLI replay. The locked strict gate ran and its actual local failure
-result is preserved. This workspace still
-denies AF_UNIX socket construction; do not disable existing session tests to
-manufacture a local pass. Require their unchanged hosted matrix to pass.
+[H4 acceptance](./h4-acceptance-20261117.md) records source `05975675467684f033e5d4df7320984a4c9eb3a1`, passing required and applicable
+hosted checks, expected-head merge `006d98cb60c72143b0517f0e7a446641642ddd5a`, and equality of tested and merged
+trees. [The repaired-source validation](./h4-revision-validation.json) preserves
+304 passing H4 checks and the failed integrated local gate: 3,125 passed,
+52 unchanged socket-restricted failures, 11 skipped, 93.54% coverage. The hosted
+matrix passed on the accepted source. No gate or test was disabled.
 
-Before merge, recheck the PR head, master base and active ruleset. Require all
-configured merge gates and the complete Quality aggregation, privacy/secrets
-and applicable conformance at the tested revision. Use the expected-head guard;
-never use the authenticated user's bypass ability to evade required checks.
-The separately configured offline AI security job currently awaits a
-self-hosted runner and is not a required merge check. Preserve that pending
-observation instead of calling it a completed scan.
-
-Record source/head/tree, hosted job identities and the observed merge result.
-The merge is integration of this bounded synthetic implementation, not H5 or H6
-qualification, a release or clinical deployment.
+The separate offline security job remains queued for its self-hosted runner;
+it is neither a required merge context nor a completed scan. Earlier failed
+Windows, patch-coverage and review observations remain retained. This merge
+accepts bounded H4 engineering delivery; H5/H6, release and clinical deployment
+are separate.
 
 ## Optional capabilities and later stages
 

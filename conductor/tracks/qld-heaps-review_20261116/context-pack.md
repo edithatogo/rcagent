@@ -62,9 +62,19 @@ self-hosted runner and is not a completed scan or a required merge check.
 
 Do not mark H5 or H6 complete merely because H4 implementation checks pass. H5
 remains the independent qualification/handoff stage; H6 requires current
-local instrument evidence and applicable operational authority. Update this
-cursor after observed publication, checks and merge.
+local instrument evidence and applicable operational authority. The observed publication, checks and merge are recorded in [H4 acceptance](./h4-acceptance-20261117.md).
 
 ## Current execution checkpoint
 
-The repaired H4 production and independent tests are frozen at the 46 identities in [h4-input-manifest.json](./h4-input-manifest.json). Hosted review found and the independent lanes repaired canonical support eligibility and case-insensitive detached filenames. All 304 focused H4 tests passed; 38/38 frozen variants matched; two new CLI runs produced identical 16-file packets. Master8bf94873 was normally reconciled without changing those runtime inputs. The full integrated local gate retains 52 unchanged socket-denial failures, 3,125 passes and 11 skips, with 93.54% coverage. The first Windows failure, second-head patch-coverage failure, interrupted preintegration attempt and completed original/repaired observations remain distinct. Publish the repaired source, require fresh actual hosted checks including Codecov, merge with the expected-head guard and record the observed result. H5/H6 remain unaccepted.
+PR #142 is merged. Source `05975675467684f033e5d4df7320984a4c9eb3a1` and tree `5c55fde1cbe324973b71413f63367c773391d523` passed the
+required hosted checks, complete Quality aggregation, Codecov, privacy/secrets
+and conformance. Merge `006d98cb60c72143b0517f0e7a446641642ddd5a` has the same tree. [The acceptance receipt](./h4-acceptance-20261117.md)
+records actual job identities, times, ruleset and expected-head merge evidence.
+The separate offline security scan remains queued, not passed. Original failed
+and later repaired local/hosted observations remain distinct.
+
+H4's 304 tests, frozen 38-variant execution and identical 16-file replay are
+development-visible engineering evidence. H5 qualification and handoff is next;
+do not mark its tasks complete from this H4 receipt. H6 still needs current local
+instrument evidence and applicable authority. Shared registration remains with
+the coordinator, with no portfolio number assigned here.

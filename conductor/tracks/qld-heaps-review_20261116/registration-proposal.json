@@ -7,7 +7,7 @@
   "observed_base": "6f9cd9627adc52782a67fa6693f1cdb90c3c84a7",
   "track_number": null,
   "numbering_rule": "Allocate after reconciling active AcciMap139 and other current tracks; do not reserve 15 implicitly.",
-  "registry_row_template": "| [~] | [<assigned number> Queensland HEAPS](./tracks/qld-heaps-review_20261116/index.md) | [#140](https://github.com/edithatogo/rcagent/issues/140) | H2/H3 prerequisites delivered; H4 deterministic synthetic consumer and authorised PR integration in progress; H5/H6 qualification separate |",
+  "registry_row_template": "| [~] | [<assigned number> Queensland HEAPS](./tracks/qld-heaps-review_20261116/index.md) | [#140](https://github.com/edithatogo/rcagent/issues/140) | H2/H3/H4 integrated; H5 independent qualification next; H6 conditional local alignment remains separate |",
   "index_entry": "[Queensland HEAPS review profile](./tracks/qld-heaps-review_20261116/index.md): H1 sources/scope, H2 guidance and H3 contract in parallel, H4 synthetic packet, H5 independent qualification, H6 conditional local alignment.",
   "roadmap_record_template": {
     "number": "COORDINATOR_ASSIGN",
@@ -107,5 +107,12 @@
     }
   ],
   "h2_h3_authority": "User explicitly instructed: Proceed with implementing H2 and H3. Dedicated content/schema/fixture paths and necessary reviewable H2 content integration are prepared in PR142; coordinator registration and merge remain separate.",
-  "h4_authority": "User explicitly instructed: Implement H4, open a PR, check actions pass, then merge. This authorises the HEAPS PR integration after actual passing required checks; portfolio number allocation remains a separate shared task."
+  "h4_authority": "User explicitly instructed: Implement H4, open a PR, check actions pass, then merge. This authorises the HEAPS PR integration after actual passing required checks; portfolio number allocation remains a separate shared task.",
+  "applied_content_integration": {
+    "pr": 142,
+    "source": "05975675467684f033e5d4df7320984a4c9eb3a1",
+    "merge": "006d98cb60c72143b0517f0e7a446641642ddd5a",
+    "receipt": "./h4-acceptance-20261117.md",
+    "scope": "H2 shared content/navigation/admission and H3/H4 delivery; portfolio registration remains pending"
+  }
 }
