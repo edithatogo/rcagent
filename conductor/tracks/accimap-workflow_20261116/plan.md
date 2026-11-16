@@ -4,24 +4,27 @@
 
 - [x] AM00 Reconcile current master, open PRs, source ownership and existing AcciMap support.
 - [x] AM00 Record authorisation, fit-gap, owned paths, contracts and acceptance in issue #139 and this track.
-- [~] AM01 Name the healthcare/original profiles and expand the portable facilitation guide.
-- [ ] AM01 Review the method against primary sources; preserve adaptation and source-access limits.
+- [x] AM01 Name the healthcare/original profiles and expand the portable facilitation guide.
+- [x] AM01 Review the method against primary sources; preserve adaptation and source-access limits.
 
 ## Phase 2: Synthetic companion
 
-- [~] AM02 Add the companion schema and typed validator using existing evidence-core primitives.
-- [~] AM02 Create an independently specified synthetic canonical record and graph.
-- [ ] AM02 Exercise record binding, typed references, supported/hypothesis/contested states and stale review rejection.
-- [ ] AM03 Generate Mermaid from checked records, with visible uncertainty and safe text handling.
-- [ ] AM03 Run actual standalone validate/render commands and compare repeated output bytes.
+- [x] AM02 Add the companion schema and typed validator using existing evidence-core primitives.
+- [x] AM02 Create an independently specified synthetic canonical record and graph.
+- [x] AM02 Exercise record binding, typed references, supported/hypothesis/contested states and stale review rejection.
+- [x] AM03 Generate Mermaid from checked records, with visible uncertainty and safe text handling.
+- [x] AM03 Run actual standalone validate/render commands and compare repeated output bytes.
+- [x] AM03 Exercise the actual Mermaid parser with hostile labels; 10/10 cases passed.
 
 ## Phase 3: Verification and handoff
 
-- [ ] AM04 Run focused positive, adversarial and property tests and shared-interface regressions.
-- [ ] AM04 Run strict formatting, lint, typing, security and repository gates without new allowances.
-- [ ] AM04 Obtain independent code/method review; repair findings and preserve failed observations.
-- [ ] AM04 Record exact source identities, runtime, commands, results and limitations.
-- [ ] AM05 Publish a draft PR and durable handoff for the existing coordinator.
+- [x] AM04 Run focused positive, adversarial and property tests and shared-interface regressions.
+- [x] AM04 Run strict formatting, lint, typing, security and repository gates without new allowances.
+- [x] AM04 Obtain independent code/method review; repair findings and preserve failed observations.
+- [x] AM04 Record exact source identities, runtime, commands, results and limitations.
+- [ ] AM04 Complete whole-repository qualification on a supported runner; 52 existing socket tests remain environment-blocked locally.
+- [ ] AM04 Complete browser SVG/layout/DOM review on a permitted client; parser evidence is narrower.
+- [x] AM05 Publish draft PR #141 and durable handoff for the existing coordinator.
 - [ ] AM05 Coordinator reconciles shared registry/roadmap and final-head hosted checks before integration.
 
 ## Later dependent work

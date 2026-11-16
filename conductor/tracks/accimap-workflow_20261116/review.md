@@ -74,6 +74,14 @@ The independent reviewer reported all three findings resolved at those bytes.
   deadline. There was no failing topology assertion. No health check or deadline
   was suppressed. Root's subsequent focused run passed all 72 tests; the full
   gate outcome is recorded separately.
+- The first coverage run reproduced the redundant-validation timing issue in
+  two properties (minimal Unicode example `0`; invalid-reference suffix
+  `xz22cr`). Checks were split into separate topology and rendering properties,
+  and invalid-reference assertions reuse a single inspection result. Input
+  ranges, default example counts and the 200 ms deadline remain unchanged.
+  Repeatability remains covered directly and through the actual CLI. The final
+  full coverage run passed all 80 AcciMap tests, including added API resource
+  limits, and retained 52 unrelated socket-dependent failures.
 - The first full-gate attempt found one unescaped regex in a new regression.
   It was corrected to the literal `1.1` diagnostic.
 - A second attempt scanned third-party packages in the nonstandard

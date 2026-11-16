@@ -5,30 +5,43 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-16T07:11:38Z",
-  "updated_at": "2026-11-16T07:11:38Z",
+  "updated_at": "2026-11-16T07:38:21.389527+00:00",
   "workstream": "product-interfaces-distribution",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/139",
-    "status": "implementation_in_progress"
+    "status": "draft_pr_ready_for_coordinator",
+    "pull_request": "https://github.com/edithatogo/rcagent/pull/141"
   },
   "autonomy": "continuous-autonomy-with-owner-decision-gates",
   "autonomy_contract": "../../autonomy.json",
   "hard_dependencies": [],
-  "phase_dependencies": ["frontier-assurance_20261113"],
+  "phase_dependencies": [
+    "frontier-assurance_20261113"
+  ],
   "base_commit": "c6892497aa0b03555d5145242c04965471eccc1d",
   "coordinator": "6af6164f-cf84-8321-9f96-8b7d685aabe5",
   "verification": {
-    "status": "pending",
+    "status": "local_source_verified_hosted_and_visual_pending",
     "scope": "synthetic_structural_graph_and_portable_guidance",
     "model_runs": 0,
     "real_cases_processed": 0,
     "clinical_validation": "not_performed",
     "release": "not_created",
-    "shared_registry_integration": "coordinator_proposal_prepared"
+    "shared_registry_integration": "coordinator_proposal_prepared",
+    "accimap_tests_passed": 80,
+    "full_suite_failed": 52,
+    "full_suite_passed": 2263,
+    "full_suite_skipped": 11,
+    "coverage_percent": 93.03,
+    "mermaid_parser_cases_passed": 10,
+    "browser_render": "environment_blocked",
+    "official_skill_conformance": "passed",
+    "agent_facilitation_trials": 1
   },
   "decision_gates": [
     "Shared integration and merge remain with existing coordinator",
     "Real-data, operational or disclosure scope needs its existing governed authority",
     "A release needs separate build and verification"
-  ]
+  ],
+  "implementation_commit": "3f1d143c8ecaba0aad13365dd35afc3701992dd8"
 }
