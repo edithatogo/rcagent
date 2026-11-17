@@ -105,6 +105,7 @@ class ContractContext:
     calibration_required: bool = False
     calibrator_hash: str | None = None
     eligible_continue: bool = False
+    now_monotonic_ns: int | None = None
 
 
 def _unique_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
@@ -251,8 +252,10 @@ def validate_request(
         if req.get(key) != expected:
             errors.append(f"authority.{key}")
     privacy = require_object(cap["privacy"], context="capability privacy")
-    if (context.privacy_mode not in privacy["allowed_modes"]
-            or context.data_class not in privacy["allowed_data_classes"]):
+    modes = privacy["allowed_modes"]
+    classes = privacy["allowed_data_classes"]
+    if (not is_array(modes) or context.privacy_mode not in modes
+            or not is_array(classes) or context.data_class not in classes):
         errors.append("authority.capability_scope")
     if context.privacy_veto or context.authority_veto:
         errors.append("authority.hard_veto")
@@ -272,6 +275,15 @@ def validate_request(
     limits = require_object(cap["limits"], context="limits")
     if len(questions) > int(str(limits["max_questions"])):
         errors.append("capability.question_limit")
+    operation = require_object(req["operation"], context="operation")
+    timeout = _number(operation["timeout_seconds"])
+    maximum_timeout = _number(limits["timeout_seconds"])
+    if timeout is None or maximum_timeout is None or timeout > maximum_timeout:
+        errors.append("capability.timeout_limit")
+    deadline = operation["deadline_monotonic_ns"]
+    if (context.now_monotonic_ns is not None and isinstance(deadline, int)
+            and deadline <= context.now_monotonic_ns):
+        errors.append("operation.deadline_expired")
     combinations = {
         (item["kind"], item["modality"], item["multiple"])
         for item in _rows(cap["supported"])
@@ -360,6 +372,11 @@ def _primitive_errors(
             errors.append("choice.candidate_set")
         if output["multiple"] != question["multiple"]:
             errors.append("choice.multiple")
+        if question["multiple"] and is_array(selected):
+            expected_selected = {key for key, value in values.items() if
+                                 _number(value) is not None and float(str(value)) >= 0.5}
+            if set(selected) != expected_selected:
+                errors.append("choice.multilabel_selection")
         if not question["multiple"]:
             probs = [_number(v) for v in values.values()]
             if any(v is None for v in probs):
@@ -390,7 +407,8 @@ def _primitive_errors(
             errors.extend(_validate_anchor(output["source_anchor_id"], req, ctx, expected_text=text))
         if kind == "number" and value is not None:
             unit = output["unit"]
-            if not is_array(question["allowed_units"]) or unit not in question["allowed_units"]:
+            allowed_units = question["allowed_units"]
+            if not is_array(allowed_units) or unit not in allowed_units:
                 errors.append("number.unit_not_allowed")
             anchor = ctx.anchors.get(str(output["source_anchor_id"]))
             if anchor is None or anchor.unit != unit:
@@ -553,6 +571,9 @@ def idempotency_identity(request: object) -> str:
         "case": value["case_id"],
         "view": value["view_hash"],
         "sources": value["source_manifest_hash"],
+        "privacy_mode": value["privacy_mode"],
+        "data_class": value["data_class"],
+        "compartment_id": value["compartment_id"],
         "capability": value["capability_receipt_hash"],
         "questions": value["questions"],
     })
