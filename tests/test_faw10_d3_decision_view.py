@@ -505,3 +505,155 @@ def test_binary_d3_entrypoints_emit_identical_provenance(
     captured = capfdbinary.readouterr()
     assert captured.out == canonical_bytes(generate_receipt()) + b"\n"
     assert captured.err == b""
+@pytest.mark.parametrize(
+    ("kind", "speaker", "has_concern"),
+    [
+        ("observation", None, False),
+        ("outcome", None, False),
+        ("appraisal", None, False),
+        ("patient_family_concern", "patient", True),
+    ],
+)
+def test_visible_supported_event_kinds_and_concern_speakers(
+    kind: str, speaker: str | None, has_concern: bool
+) -> None:
+    """Each synthetic kind has an explicit speaker and decision-time disposition."""
+    raw = case_input()
+    first = _rows(raw["labels"])[0]
+    first["kind"] = kind
+    first["speaker_role"] = speaker
+    packet = assemble_decision_packet(raw)
+    assert packet["event_count"] == 1
+    assert packet["events"][0]["kind"] == kind
+    assert packet["events"][0]["speaker_role"] == speaker
+    assert (packet["family_concern_status"] == "documented_at_cutoff") == has_concern
+
+
+@pytest.mark.parametrize(
+    ("field", "invalid"),
+    [
+        ("recipient_id", ""),
+        ("recipient_id", "a" * 129),
+        ("recipient_id", 42),
+        ("cutoff_utc", "2026-11-17T10:00:60Z"),
+        ("cutoff_utc", "2026-11-17T10:00:00"),
+        ("cutoff_utc", "2026-11-17T10:00:00z"),
+        ("cutoff_utc", True),
+    ],
+)
+def test_public_input_rejects_invalid_identifiers_and_utc_seconds(
+    field: str, invalid: object
+) -> None:
+    raw = case_input()
+    raw[field] = invalid
+    with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+        assemble_decision_packet(raw)
+
+
+def test_public_input_rejects_non_utf8_surrogate_without_echoing_it() -> None:
+    raw = case_input()
+    raw["recipient_id"] = "private-" + chr(0xD800)
+    with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+        assemble_decision_packet(raw)
+
+
+@pytest.mark.parametrize(
+    ("kind", "speaker"),
+    [
+        ("unsupported", None),
+        ("observation", "family"),
+        ("outcome", "patient"),
+        ("patient_family_concern", None),
+        ("patient_family_concern", "staff"),
+    ],
+)
+def test_metadata_kind_and_speaker_validation_is_fail_closed(
+    kind: str, speaker: str | None
+) -> None:
+    raw = case_input()
+    label = _rows(raw["labels"])[0]
+    label["kind"] = kind
+    label["speaker_role"] = speaker
+    with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+        assemble_decision_packet(raw)
+
+
+@pytest.mark.parametrize(
+    ("field", "invalid"),
+    [
+        ("source_version", 0),
+        ("source_version", True),
+        ("recipient_id", "recipient-outside-case"),
+        ("first_available_utc", "2026-11-17T09:00:00+00:00"),
+        ("first_available_utc", "2026-02-30T09:00:00Z"),
+        ("source_id", "unadmitted-source"),
+    ],
+)
+def test_entitlement_row_requires_admitted_version_actor_and_explicit_clock(
+    field: str, invalid: object
+) -> None:
+    raw = case_input()
+    entitlement = _rows(raw["entitlements"])[0]
+    entitlement[field] = invalid
+    with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+        assemble_decision_packet(raw)
+
+
+def test_event_labels_require_complete_unique_admitted_identifiers() -> None:
+    for mutation in ("missing", "duplicate", "unknown"):
+        raw = case_input()
+        labels = _rows(raw["labels"])
+        if mutation == "missing":
+            labels.pop()
+        elif mutation == "duplicate":
+            labels[1]["event_id"] = "early"
+        else:
+            labels[1]["event_id"] = "not-an-admitted-event"
+        with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+            assemble_decision_packet(raw)
+
+
+@pytest.mark.parametrize("field", ["entitlements", "labels"])
+def test_metadata_array_caps_are_enforced_before_mapping(field: str) -> None:
+    raw = case_input()
+    rows = _rows(raw[field])
+    maximum = 512 if field == "entitlements" else 16
+    raw[field] = [deepcopy(rows[0]) for _ in range(maximum + 1)]
+    with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+        assemble_decision_packet(raw)
+
+
+def test_missing_occurrence_time_blocks_outcome_but_not_observation() -> None:
+    raw = case_input()
+    timeline = require_object(raw["timeline"], context="timeline")
+    timeline["clocks"] = [
+        row for row in _rows(timeline["clocks"]) if row["id"] != "early-time"
+    ]
+    _rows(raw["labels"])[0]["kind"] = "outcome"
+    _rows(raw["labels"])[0]["speaker_role"] = None
+    assert assemble_decision_packet(raw)["events"] == []
+    _rows(raw["labels"])[0]["kind"] = "observation"
+    assert [item["event_id"] for item in assemble_decision_packet(raw)["events"]] == [
+        "early"
+    ]
+
+
+@pytest.mark.parametrize("query", ["", "q" * 129, 100])
+def test_retrieval_rejects_invalid_queries_after_packet_replay(query: object) -> None:
+    raw = case_input()
+    packet = assemble_decision_packet(raw)
+    with pytest.raises(ValueError):
+        retrieve_decision_evidence(raw, packet, query)
+
+
+def test_replay_rejects_malformed_packet_and_preserves_empty_actor_view() -> None:
+    raw = case_input()
+    packet = assemble_decision_packet(raw)
+    with pytest.raises(ValueError, match=r"^invalid or unbound decision packet$"):
+        render_decision_packet(raw, {"events": packet["events"]})
+    raw["recipient_id"] = "rn-b"
+    raw["cutoff_utc"] = "2026-11-17T08:00:00Z"
+    empty = assemble_decision_packet(raw)
+    assert empty["events"] == []
+    assert empty["partial_order"]["display_order"] == []
+    assert render_decision_packet(raw, empty) == canonical_bytes(empty).decode("utf-8")
