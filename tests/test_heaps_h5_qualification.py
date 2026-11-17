@@ -421,3 +421,284 @@ def test_independent_subprocess_reject_and_abstain(
             "empty" if variant_id == "HP20-empty" else "all_abstain"
         )
         assert console["review_disposition"] == "withheld"
+
+
+DETACHED_CHANNELS = {
+    "manifest.json",
+    "decision.json",
+    "status.json",
+    "verification.json",
+    "verification-input-manifest.json",
+    "verification-input-status.json",
+}
+
+
+@pytest.mark.parametrize(
+    "variant_id",
+    [
+        name
+        for name, variant in sorted(VARIANTS.items())
+        if mapping(variant["expected"])["preparation_disposition"] != "reject_input"
+    ],
+)
+def test_manifest_inventory_complete_for_each_admitted_variant(variant_id: str) -> None:
+    """Check the required set, not only hashes the producer elected to inventory."""
+    scenario = _scenario(variant_id)
+    result = scenario.run()
+    assert result.preparation_disposition != "reject_input", result.errors
+    manifest = _decode(result.files["manifest.json"])
+    groups = mapping(manifest["components"])
+    listed = {
+        text_value(mapping(groups[name])["path"])
+        for name in ("case", "profile", "mapping", "template")
+    }
+    for name in ("sources", "supporting_artifacts", "reports"):
+        listed.update(text_value(mapping(row)["path"]) for row in sequence(groups[name]))
+    assert listed == set(result.files) - DETACHED_CHANNELS
+    assert {
+        "case.json", "profile.json", "mapping.json", "template.md",
+        "ingress/case.json", "ingress/profile.json",
+        "report.md", "chronology.md", "actions.md",
+    } <= listed
+
+    case = _decode(scenario.case)
+    profile = _decode(scenario.profile)
+    sources = {
+        text_value(mapping(row)["source_id"]): mapping(row)
+        for row in sequence(case.get("sources", []))
+    }
+    expected_sources: set[str] = set()
+    for snapshot in sequence(profile["source_snapshots"]):
+        row = mapping(snapshot)
+        if row["state"] != "available":
+            continue
+        source = sources[text_value(row["source_id"])]
+        citation = source.get("citation")
+        if isinstance(citation, str):
+            expected_sources.add(citation)
+        else:
+            expected_sources.add(text_value(row["locator"]).removeprefix("synthetic:"))
+    declared_sources = {
+        text_value(mapping(row)["path"]) for row in sequence(groups["sources"])
+    }
+    assert declared_sources == expected_sources
+    for path in expected_sources:
+        assert result.files[path] == scenario.assets[path]
+
+    for component in sequence(profile["optional_components"]):
+        path = text_value(mapping(mapping(component)["artifact"])["path"])
+        assert path in listed
+        assert result.files[path] == scenario.assets[path]
+
+    if scenario.manifest is not None:
+        assert result.files["verification-input-manifest.json"] == scenario.manifest
+        earlier = mapping(_decode(scenario.manifest)["components"])
+        old_entries = [
+            mapping(earlier[name]) for name in ("case", "profile", "mapping", "template")
+        ]
+        for name in ("sources", "supporting_artifacts", "reports"):
+            old_entries.extend(mapping(row) for row in sequence(earlier[name]))
+        for entry in old_entries:
+            path = text_value(entry["path"])
+            raw = scenario.assets[path]
+            assert any(
+                result.files.get(candidate) == raw
+                for candidate in (path, "history/" + path)
+            )
+
+
+@pytest.mark.parametrize("variant_id", sorted(VARIANTS))
+def test_frozen_case_specific_semantics_and_retained_ids(variant_id: str) -> None:
+    """Retain case-level meaning as well as the frozen disposition."""
+    scenario = _scenario(variant_id)
+    expected = mapping(VARIANTS[variant_id]["expected"])
+    required = mapping(expected["required_states"])
+    result = scenario.run()
+    retained = [text_value(value) for value in sequence(expected["retained_ids"])]
+    if result.preparation_disposition == "reject_input":
+        _rejected(result)
+        raw_inputs = scenario.case + scenario.profile
+        for identity in retained:
+            assert identity.encode() in raw_inputs
+        return
+
+    status = mapping(result.status)
+    case = _decode(result.files["case.json"])
+    profile = _decode(result.files["profile.json"])
+    report = result.files["report.md"].decode("utf-8")
+    actions = result.files["actions.md"].decode("utf-8")
+    combined = report + result.files["chronology.md"].decode("utf-8") + actions
+    for identity in retained:
+        assert identity in combined
+
+    canonical_statements = [mapping(row) for row in sequence(case.get("statements", []))]
+    usable = sum(
+        row.get("withdrawn") is not True
+        and mapping(row["provenance"])["review_state"] not in ("withdrawn", "rejected")
+        for row in canonical_statements
+    )
+    assert status["counts"] == {
+        "input_items": len(canonical_statements),
+        "usable_items": usable,
+        "abstained_items": len(canonical_statements) - usable,
+    }
+    assert "Accepted recommendations: 0" in report
+    assert status["clinical_review"] == "not_established"
+    assert status["actual_authority"] == "unverified"
+    assert status["submission"] == "not_submitted"
+
+    if variant_id == "HP05-unsupported-recommendation":
+        assert required["recommendation_support"] == "incomplete"
+        assert required["accepted_recommendations"] == 0
+        assert "Recommendation support incomplete for: syn-stmt-recommendation" in report
+    elif variant_id == "HP08-conflicting-accounts":
+        assert required["account_conflict"] == "unresolved"
+        assert required["alternatives"] == "retained"
+        for identity in (
+            "syn-stmt-staff", "syn-stmt-consumer",
+            "syn-stmt-document-gap", "syn-stmt-recall",
+        ):
+            assert identity in report
+        assert "Reported accounts" in report
+        assert "Hypotheses and alternatives" in report
+        assert "contrary evidence and alternatives" in report
+    elif variant_id.startswith("HP09-"):
+        expected_state = text_value(required["consumer_participation"])
+        participation = [
+            mapping(row) for row in sequence(profile["participation"])
+            if mapping(mapping(row)["role_ref"])["id"] == "syn-role-consumer"
+        ]
+        assert len(participation) == 1
+        assert participation[0]["state"] == expected_state
+        assert f'"state": "{expected_state}"' in report
+        assert required["consultation_completed"] is False
+        assert required["agreement_established"] is False
+        assert "do not establish consultation completion or agreement" in report
+    elif variant_id == "HP10-no-statutory-authority":
+        assert mapping(profile["applicability"])["protection_status"] == required["protection"]
+        assert "No" in report and "clinical" in report
+    elif variant_id == "HP11-unavailable-local-template":
+        assert required["local_template_conformity"] == "not_established"
+        assert required["draft_preparation"] == "available"
+        assert "Current local HEAPS instrument conformity is not established" in report
+        assert status["preparation"] == "prepared"
+    elif variant_id.startswith("HP13-"):
+        deadline = mapping(sequence(profile["deadlines"])[0])
+        assert required["deadline"] == "unresolved"
+        assert required["due_timestamp"] is None
+        assert mapping(deadline["due"])["value"] is None
+        assert "Unverified deadlines and unresolved bases" in report
+    elif variant_id == "HP14-method-change":
+        assert required["awareness"] in report
+        assert required["due_timestamp"] in report
+        assert required["prior_process"] in report
+        assert required["selected_process"] in report
+        assert required["clock_reset"] is False
+        clocks = mapping(profile["clocks"])
+        assert mapping(clocks["sac1_reporting"])["value"] is None
+        assert mapping(clocks["review_submission"])["value"] is None
+    elif variant_id == "HP15-implemented-without-outcomes":
+        action = mapping(sequence(case["actions"])[0])
+        outcome = mapping(sequence(case["outcomes"])[0])
+        assert action["status"] == required["implementation"]
+        assert action["effectiveness_state"] == required["effectiveness"]
+        assert outcome["status"] == required["outcome_status"]
+        assert "Recorded implementation is distinct from effectiveness" in actions
+        for value in (required["implementation"], required["effectiveness"]):
+            assert text_value(value) in actions
+    elif variant_id == "HP16-no-submission-receipt":
+        assert required["submission"] == "not_submitted"
+        assert required["system_of_record_receipt"] is None
+        assert required["case_closed"] is False
+        assert status["submission"] == "not_submitted"
+    elif variant_id == "HP18-duplicate-source-family":
+        snapshots = [
+            mapping(row) for row in sequence(profile["source_snapshots"])
+            if "incident_evidence" in sequence(mapping(row)["purposes"])
+        ]
+        assert len(snapshots) == required["incident_source_count"]
+        family_count = len({text_value(row["source_family_id"]) for row in snapshots})
+        assert family_count == required["incident_source_family_count"]
+        assert (
+            f"Incident source count: {len(snapshots)}; "
+            f"incident source-family count: {family_count}"
+        ) in report
+        assert "Independent corroboration is not established" in report
+    elif variant_id == "HP19-missing-documentation":
+        assert required["care_omission_finding"] == "not_established"
+        assert "Missing documentation does not establish omitted care" in report
+    elif variant_id.startswith("HP20-"):
+        assert status["preparation"] == required["preparation"]
+        assert status["counts"] == mapping(required["counts"])
+        assert status["review"] == "not_requested"
+        assert required["completed_review"] is False
+    elif variant_id.startswith("HP21-"):
+        original = _scenario("HP01-valid").run()
+        assert result.files["case.json"] == original.files["case.json"]
+        assert result.files["profile.json"] == original.files["profile.json"]
+        assert result.files["report.md"] == original.files["report.md"]
+        if variant_id in ("HP21-round-trip", "HP21-object-key-reorder"):
+            assert result.files["ingress/case.json"] != original.files["ingress/case.json"]
+            assert result.files["manifest.json"] != original.files["manifest.json"]
+    elif variant_id.startswith("HP22-"):
+        assert required["graph_qualification"] == "not_established"
+        assert required["core_draft"] == "available"
+        assert "No qualified graph or source-span view is emitted" in report
+        assert "accimap.md" not in result.files
+    elif variant_id == "HP23-concurrent-routes":
+        assert required["route_resolution"] == "not_established"
+        for route in sequence(required["open_routes"]):
+            assert text_value(route) in report
+
+
+@pytest.mark.parametrize(
+    ("variant_id", "exit_code"),
+    [
+        ("HP07-report-after-approval", 0),
+        ("HP12-template-revision", 2),
+        ("HP12-source-revision", 2),
+        ("HP16-no-submission-receipt", 0),
+    ],
+)
+def test_cli_detached_manifest_decision_revision_matches_api(
+    tmp_path: Path, variant_id: str, exit_code: int
+) -> None:
+    scenario = _scenario(variant_id)
+    assert scenario.manifest is not None
+    expected = scenario.run()
+    args = _write_inputs(scenario, tmp_path / "inputs")
+    output = tmp_path / "packet"
+    process = _cli(args, output)
+    assert process.returncode == exit_code, process.stdout + process.stderr
+    console = mapping(json.loads(process.stdout))
+    assert console["preparation_disposition"] == expected.preparation_disposition
+    assert console["review_disposition"] == expected.review_disposition
+    if exit_code == 2:
+        assert not output.exists()
+        _rejected(expected)
+    else:
+        files = {
+            path.relative_to(output).as_posix(): path.read_bytes()
+            for path in output.rglob("*")
+            if path.is_file()
+        }
+        assert files == expected.files
+        assert files["verification-input-manifest.json"] == scenario.manifest
+        if scenario.decision is not None:
+            assert files["decision.json"] == scenario.decision
+
+
+def test_cli_rejects_forged_detached_submission_status(tmp_path: Path) -> None:
+    baseline = _scenario()
+    forged = _decode(baseline.run().files["status.json"])
+    forged["submission"] = "submitted"
+    scenario = replace(baseline, status=_encode(forged))
+    _rejected(scenario.run())
+    args = _write_inputs(scenario, tmp_path / "inputs")
+    output = tmp_path / "packet"
+    process = _cli(args, output)
+    assert process.returncode == 2, process.stdout + process.stderr
+    console = mapping(json.loads(process.stdout))
+    assert console["preparation_disposition"] == "reject_input"
+    assert console["review_disposition"] == "not_established"
+    assert not output.exists()
