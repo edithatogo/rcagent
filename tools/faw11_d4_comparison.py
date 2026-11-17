@@ -32,7 +32,9 @@ _KINDS: tuple[Kind, ...] = (
     "patient_family_concern",
 )
 _FAMILY = re.compile(r"\b(family|mother|father|patient|parent)\b", re.IGNORECASE)
-_CONCERN = re.compile(r"\b(concern|concerns|worried|worry|complain|reported|raised)\b", re.IGNORECASE)
+_CONCERN = re.compile(
+    r"\b(concern|concerns|worried|worry|complain|reported|raised)\b", re.IGNORECASE
+)
 _OUTCOME = re.compile(r"\b(result|outcome|harm|death|injury)\b", re.IGNORECASE)
 _APPRAISAL = re.compile(r"\b(appraisal|review|preventab|judgement|conclusion)\w*", re.IGNORECASE)
 
@@ -246,11 +248,16 @@ def _validate_study(
     return views, expected, {v["root_family_id"] for v in views if v["partition"] == "test"}
 
 
-def _validate_references(value: object, expected: set[tuple[str, str]]) -> dict[tuple[str, str], Kind]:
+def _validate_references(
+    value: object, expected: set[tuple[str, str]]
+) -> dict[tuple[str, str], Kind]:
     found: dict[tuple[str, str], Kind] = {}
     for row in _rows(value, "synthetic reference labels", 2048):
         _fields(row, {"view_fingerprint", "event_id", "expected_kind", "reference_origin"})
-        key = (_text(row["view_fingerprint"], "view fingerprint"), _text(row["event_id"], "event id"))
+        key = (
+            _text(row["view_fingerprint"], "view fingerprint"),
+            _text(row["event_id"], "event id"),
+        )
         if (
             key not in expected
             or key in found
