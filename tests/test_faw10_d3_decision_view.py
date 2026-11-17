@@ -606,7 +606,7 @@ def test_event_labels_require_complete_unique_admitted_identifiers() -> None:
         raw = case_input()
         labels = _rows(raw["labels"])
         if mutation == "missing":
-            labels.pop()
+            raw["labels"] = labels[:-1]
         elif mutation == "duplicate":
             labels[1]["event_id"] = "early"
         else:
