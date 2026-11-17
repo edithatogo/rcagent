@@ -6,13 +6,13 @@
   "evidence_schema": "1.0",
   "status": "in_progress",
   "created_at": "2026-11-12T20:10:44Z",
-  "updated_at": "2026-11-17T07:26:10+10:00",
+  "updated_at": "2026-11-17T23:06:39+10:00",
   "workstream": "foundation-governance",
   "github": {
     "issue": "https://github.com/edithatogo/rcagent/issues/125",
     "parent_issue": "https://github.com/edithatogo/rcagent/issues/2",
-    "last_accepted_pull_request": "https://github.com/edithatogo/rcagent/pull/150",
-    "last_accepted_master": "8bf94873af22730e445fcbb1b7fb748cfd16ed25",
+    "last_accepted_pull_request": "https://github.com/edithatogo/rcagent/pull/155",
+    "last_accepted_master": "54c67551db712e1e9f8812156d574cad060501e6",
     "coordination_branch": "coordination/faw07-d0-contract-20261114",
     "implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/132",
     "verification_pull_request": "https://github.com/edithatogo/rcagent/pull/133",
@@ -23,7 +23,9 @@
     "d1_acceptance_branch": "docs/faw08-d1-acceptance-20261117",
     "d2_branch": "feat/faw09-d2-timeline-20261117",
     "d2_implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/150",
-    "d2_acceptance_branch": "docs/faw09-d2-acceptance-20261117"
+    "d2_acceptance_branch": "docs/faw09-d2-acceptance-20261117",
+    "d3_implementation_pull_request": "https://github.com/edithatogo/rcagent/pull/155",
+    "d3_branch": "feat/faw10-d3-decision-view-20261117"
   },
   "autonomy": "continuous-autonomy-with-owner-decision-gates",
   "autonomy_contract": "../../autonomy.json",
@@ -37,8 +39,8 @@
   ],
   "description": "Repair confirmed integrity, public-export and template defects; implement strict quality tooling; coordinate staged source/timeline/decision demonstrations, triangulation, hallucination reduction and prospective frontier comparison.",
   "verification": {
-    "status": "faw09_d2_delivered_and_accepted",
-    "scope": "accepted_faw06_and_bounded_synthetic_d0_d1_d2",
+    "status": "faw10_d3_delivered_and_accepted_bounded_synthetic",
+    "scope": "accepted_faw06_and_bounded_synthetic_d0_d1_d2_d3",
     "receipt": "./delivery-evidence.md",
     "model_runs": 0,
     "qualified_capabilities": 0,
@@ -57,7 +59,8 @@
       "offline_security": "queued_not_a_completed_scan",
       "faw07": "accepted_see_d0_hosted_ci",
       "faw08": "accepted_see_d1_hosted_ci",
-      "faw09": "accepted_see_d2_hosted_ci"
+      "faw09": "accepted_see_d2_hosted_ci",
+      "faw10": "accepted_bounded_synthetic_see_d3_hosted_ci"
     },
     "typing_receipt": "./typing-completion-evidence.md",
     "typing_measurement": "../../../quality/typing-completion-verification-20261114.json",
@@ -81,8 +84,8 @@
       "./typing-contracts-evidence.md",
       "./typing-evidence.md"
     ],
-    "next_work_package": "FAW10 / D3: recipient/cutoff-scoped decision-time packets and patient/family concern traceability",
-    "delivery_acceptance_record": "https://github.com/edithatogo/rcagent/pull/150",
+    "next_work_package": "FAW11 / D4 matched comparison qualification, conditional on sources/models/hardware; FAW12 / D5 planning",
+    "delivery_acceptance_record": "https://github.com/edithatogo/rcagent/pull/155",
     "faw06_source_publication": {
       "status": "source_head_passed",
       "observed_source_commit": "c3d26b0c70a65f06dcab9f878db99d351de7b758",
@@ -95,7 +98,7 @@
       "offline_security": "queued_not_a_completed_scan",
       "final_delivery": "Exact final documentation head must pass required checks and protected merge; observed acceptance will be recorded on PR #131."
     },
-    "current_work_package": "FAW10 / D3 (planned; not started)",
+    "current_work_package": "FAW11 / D4 (comparison infrastructure prepared; three arms unavailable)",
     "d0_contract": "./faw07-d0-contract.md",
     "d0_coordination": "./faw07-d0-coordination.json",
     "d0_completion_receipt": "./faw07-d0-completion-20261116.md",
@@ -151,6 +154,23 @@
       "master_quality_run": 43958804573,
       "master_quality_jobs_passed": 9,
       "master_privacy_run": 43958804670
+    },
+    "d3_contract": "./faw10-d3-contract.md",
+    "d3_acceptance_receipt": "./faw10-d3-acceptance-20261117.md",
+    "d3_hosted_ci": {
+      "status": "passed_and_merged",
+      "source_head": "66ae4edd70bf73cb56261b28e8706c5b9185c71e",
+      "merged_master": "54c67551db712e1e9f8812156d574cad060501e6",
+      "quality_run": 44087095466,
+      "quality_attempt": 2,
+      "quality_jobs_passed": 9,
+      "dependency_review_run": 44087095465,
+      "privacy_secrets_run": 44087095482,
+      "master_conformance_run": 44089474602,
+      "master_privacy_run": 44089474768,
+      "master_quality_run": 44089474608,
+      "master_quality_status": "in_progress_at_receipt",
+      "observations": "./faw10-d3-acceptance-20261117.json"
     }
   },
   "decisions": [

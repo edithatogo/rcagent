@@ -7,14 +7,17 @@ from hashlib import sha256
 
 import pytest
 
-from tools.evidence_core import canonical_bytes
+from tools.evidence_core import canonical_bytes, fingerprint
 from tools.faw10_d3_decision_view import (
     assemble_decision_packet,
+    generate_receipt,
     render_decision_packet,
     retrieve_decision_evidence,
     verify_decision_claim,
 )
+from tools.faw10_d3_decision_view import main as d3_main
 from tools.json_shapes import JsonObject, is_array, require_object
+from tools.workbench import main as workbench_main
 
 
 def _source(case_id: str, sid: str, text: str, version: int = 1) -> JsonObject:
@@ -397,11 +400,11 @@ def test_downstream_failure_does_not_echo_future_source_identifiers() -> None:
     packet = assemble_decision_packet(raw)
     timeline = require_object(raw["timeline"], context="timeline")
     _rows(timeline["sources"])[1]["fingerprint"] = "sha256:" + "0" * 64
-    with pytest.raises(ValueError, match="^invalid or unbound decision packet$"):
+    with pytest.raises(ValueError, match=r"^invalid or unbound decision packet$"):
         retrieve_decision_evidence(raw, packet, "Mother")
-    with pytest.raises(ValueError, match="^invalid or unbound decision packet$"):
+    with pytest.raises(ValueError, match=r"^invalid or unbound decision packet$"):
         verify_decision_claim(raw, packet, "early", "Mother raised concerns about pain.")
-    with pytest.raises(ValueError, match="^invalid or unbound decision packet$"):
+    with pytest.raises(ValueError, match=r"^invalid or unbound decision packet$"):
         render_decision_packet(raw, packet)
 
 
@@ -438,9 +441,7 @@ def test_future_only_cycle_does_not_affect_past_packet() -> None:
             "id": "late-before-early",
             "before_event_id": "late",
             "after_event_id": "early",
-            "evidence": _span(
-                "synthetic-decision-case", "b", revised, "Late before early."
-            ),
+            "evidence": _span("synthetic-decision-case", "b", revised, "Late before early."),
         },
     )
     assert canonical_bytes(assemble_decision_packet(raw)) == baseline
@@ -463,13 +464,194 @@ def test_unentitled_invalid_relation_does_not_leak_future_identity_in_errors() -
             "id": "postcutoff-relation",
             "before_event_id": "late",
             "after_event_id": "CONFIDENTIAL_FUTURE_OUTCOME",
-            "evidence": _span(
-                "synthetic-decision-case", "b", content, "Later test result"
-            ),
+            "evidence": _span("synthetic-decision-case", "b", content, "Later test result"),
         },
     )
     with pytest.raises(
-        ValueError, match="^invalid or inadmissible decision packet input$"
+        ValueError, match=r"^invalid or inadmissible decision packet input$"
     ) as error:
         assemble_decision_packet(raw)
     assert "CONFIDENTIAL_FUTURE_OUTCOME" not in str(error.value)
+
+
+def test_synthetic_receipt_is_deterministic_and_replay_bound() -> None:
+    """Exercise the actual D3 generator, not a placeholder source fixture."""
+    receipt = generate_receipt()
+    assert canonical_bytes(receipt) == canonical_bytes(generate_receipt())
+    assert receipt["dataset"] == "generated-synthetic-only"
+    assert receipt["case_count"] == 3
+    assert receipt["visible_counts"] == [1, 2, 0]
+    assert receipt["output_fingerprint"] == fingerprint(
+        {key: value for key, value in receipt.items() if key != "output_fingerprint"}
+    )
+    inputs = receipt["inputs"]
+    cases = receipt["cases"]
+    assert is_array(inputs)
+    assert is_array(cases)
+    for raw, packet in zip(inputs, cases, strict=True):
+        assert canonical_bytes(assemble_decision_packet(raw)) == canonical_bytes(packet)
+        assert render_decision_packet(raw, packet) == canonical_bytes(packet).decode("utf-8")
+    assert "Later test result" not in render_decision_packet(inputs[0], cases[0])
+    assert require_object(cases[2], context="synthetic empty D3 packet")["events"] == []
+
+
+@pytest.mark.parametrize("entrypoint", ["module", "workbench"])
+def test_binary_d3_entrypoints_emit_identical_provenance(
+    entrypoint: str, capfdbinary: pytest.CaptureFixture[bytes]
+) -> None:
+    """Exercise both published CLI entrypoints and canonical-byte boundary."""
+    status = d3_main([]) if entrypoint == "module" else workbench_main(["d3-demo"])
+    assert status == 0
+    captured = capfdbinary.readouterr()
+    assert captured.out == canonical_bytes(generate_receipt()) + b"\n"
+    assert captured.err == b""
+
+
+@pytest.mark.parametrize(
+    ("kind", "speaker", "has_concern"),
+    [
+        ("observation", None, False),
+        ("outcome", None, False),
+        ("appraisal", None, False),
+        ("patient_family_concern", "patient", True),
+    ],
+)
+def test_visible_supported_event_kinds_and_concern_speakers(
+    kind: str, speaker: str | None, has_concern: bool
+) -> None:
+    """Each synthetic kind has an explicit speaker and decision-time disposition."""
+    raw = case_input()
+    first = _rows(raw["labels"])[0]
+    first["kind"] = kind
+    first["speaker_role"] = speaker
+    packet = assemble_decision_packet(raw)
+    assert packet["event_count"] == 1
+    assert packet["events"][0]["kind"] == kind
+    assert packet["events"][0]["speaker_role"] == speaker
+    assert (packet["family_concern_status"] == "documented_at_cutoff") == has_concern
+
+
+@pytest.mark.parametrize(
+    ("field", "invalid"),
+    [
+        ("recipient_id", ""),
+        ("recipient_id", "a" * 129),
+        ("recipient_id", 42),
+        ("cutoff_utc", "2026-11-17T10:00:60Z"),
+        ("cutoff_utc", "2026-11-17T10:00:00"),
+        ("cutoff_utc", "2026-11-17T10:00:00z"),
+        ("cutoff_utc", True),
+    ],
+)
+def test_public_input_rejects_invalid_identifiers_and_utc_seconds(
+    field: str, invalid: object
+) -> None:
+    raw = case_input()
+    raw[field] = invalid
+    with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+        assemble_decision_packet(raw)
+
+
+def test_public_input_rejects_non_utf8_surrogate_without_echoing_it() -> None:
+    raw = case_input()
+    raw["recipient_id"] = "private-" + chr(0xD800)
+    with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+        assemble_decision_packet(raw)
+
+
+@pytest.mark.parametrize(
+    ("kind", "speaker"),
+    [
+        ("unsupported", None),
+        ("observation", "family"),
+        ("outcome", "patient"),
+        ("patient_family_concern", None),
+        ("patient_family_concern", "staff"),
+    ],
+)
+def test_metadata_kind_and_speaker_validation_is_fail_closed(
+    kind: str, speaker: str | None
+) -> None:
+    raw = case_input()
+    label = _rows(raw["labels"])[0]
+    label["kind"] = kind
+    label["speaker_role"] = speaker
+    with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+        assemble_decision_packet(raw)
+
+
+@pytest.mark.parametrize(
+    ("field", "invalid"),
+    [
+        ("source_version", 0),
+        ("source_version", True),
+        ("recipient_id", "recipient-outside-case"),
+        ("first_available_utc", "2026-11-17T09:00:00+00:00"),
+        ("first_available_utc", "2026-02-30T09:00:00Z"),
+        ("source_id", "unadmitted-source"),
+    ],
+)
+def test_entitlement_row_requires_admitted_version_actor_and_explicit_clock(
+    field: str, invalid: object
+) -> None:
+    raw = case_input()
+    entitlement = _rows(raw["entitlements"])[0]
+    entitlement[field] = invalid
+    with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+        assemble_decision_packet(raw)
+
+
+def test_event_labels_require_complete_unique_admitted_identifiers() -> None:
+    for mutation in ("missing", "duplicate", "unknown"):
+        raw = case_input()
+        labels = _rows(raw["labels"])
+        if mutation == "missing":
+            raw["labels"] = labels[:-1]
+        elif mutation == "duplicate":
+            labels[1]["event_id"] = "early"
+        else:
+            labels[1]["event_id"] = "not-an-admitted-event"
+        with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+            assemble_decision_packet(raw)
+
+
+@pytest.mark.parametrize("field", ["entitlements", "labels"])
+def test_metadata_array_caps_are_enforced_before_mapping(field: str) -> None:
+    raw = case_input()
+    rows = _rows(raw[field])
+    maximum = 512 if field == "entitlements" else 16
+    raw[field] = [deepcopy(rows[0]) for _ in range(maximum + 1)]
+    with pytest.raises(ValueError, match=r"^invalid or inadmissible decision packet input$"):
+        assemble_decision_packet(raw)
+
+
+def test_missing_occurrence_time_blocks_outcome_but_not_observation() -> None:
+    raw = case_input()
+    timeline = require_object(raw["timeline"], context="timeline")
+    timeline["clocks"] = [row for row in _rows(timeline["clocks"]) if row["id"] != "early-time"]
+    _rows(raw["labels"])[0]["kind"] = "outcome"
+    _rows(raw["labels"])[0]["speaker_role"] = None
+    assert assemble_decision_packet(raw)["events"] == []
+    _rows(raw["labels"])[0]["kind"] = "observation"
+    assert [item["event_id"] for item in assemble_decision_packet(raw)["events"]] == ["early"]
+
+
+@pytest.mark.parametrize("query", ["", "q" * 129, 100])
+def test_retrieval_rejects_invalid_queries_after_packet_replay(query: object) -> None:
+    raw = case_input()
+    packet = assemble_decision_packet(raw)
+    with pytest.raises(ValueError):
+        retrieve_decision_evidence(raw, packet, query)
+
+
+def test_replay_rejects_malformed_packet_and_preserves_empty_actor_view() -> None:
+    raw = case_input()
+    packet = assemble_decision_packet(raw)
+    with pytest.raises(ValueError, match=r"^invalid or unbound decision packet$"):
+        render_decision_packet(raw, {"events": packet["events"]})
+    raw["recipient_id"] = "rn-b"
+    raw["cutoff_utc"] = "2026-11-17T08:00:00Z"
+    empty = assemble_decision_packet(raw)
+    assert empty["events"] == []
+    assert empty["partial_order"]["display_order"] == []
+    assert render_decision_packet(raw, empty) == canonical_bytes(empty).decode("utf-8")

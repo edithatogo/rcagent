@@ -303,6 +303,42 @@ def _eligible(
     return kind not in ("outcome", "appraisal") or _known_before(occurrence, cutoff)
 
 
+def _packet(
+    case_id: str,
+    recipient: str,
+    cutoff: str,
+    events: list[DecisionEvent],
+    order: PartialOrder,
+) -> D3Packet:
+    """Bind a recipient/cutoff packet including the valid empty-evidence view."""
+    family_ids = [
+        event["event_id"] for event in events if event["kind"] == "patient_family_concern"
+    ]
+    packet: D3Packet = {
+        "schema_version": "faw10-d3-packet-1.0",
+        "case_id": case_id,
+        "permitted_view": VIEW,
+        "recipient_id": recipient,
+        "cutoff_utc": cutoff,
+        "rule_version": RULE_VERSION,
+        "linkage_basis": LINKAGE,
+        "source_entitlement_basis": "caller-declared-not-delivery-proof",
+        "event_labels_basis": "caller-declared-not-semantic-verification",
+        "events": events,
+        "event_count": len(events),
+        "family_concern_status": (
+            "documented_at_cutoff" if family_ids else "not_documented_at_cutoff"
+        ),
+        "family_concern_event_ids": family_ids,
+        "partial_order": order,
+        "view_fingerprint": "",
+    }
+    packet["view_fingerprint"] = fingerprint(
+        {key: value for key, value in packet.items() if key != "view_fingerprint"}
+    )
+    return packet
+
+
 def _assemble_decision_packet(case: object) -> D3Packet:
     """Build a scoped view inside the integrity-validation compartment."""
     record = _object(case, _PACKET_KEYS, "D3 case")
@@ -325,6 +361,29 @@ def _assemble_decision_packet(case: object) -> D3Packet:
         for (sid, version, actor), available in ledger.items()
         if actor == recipient and available is not None and available <= cutoff
     }
+
+    # With no entitled source versions, the full D2 original has already been
+    # integrity-verified. Its source-admission API does not admit an empty
+    # source collection, so represent the genuinely empty actor view directly.
+    # Never smuggle an unentitled sentinel source through the chronology.
+    if not permitted_sources:
+        return _packet(
+            admitted["case_id"],
+            recipient,
+            cutoff,
+            [],
+            {
+                "edges": [],
+                "pairs": [],
+                "consistency": {
+                    "status": "consistent",
+                    "cycle_event_ids": [],
+                    "infeasible_event_ids": [],
+                },
+                "display_order": [],
+                "display_order_is_temporal_evidence": False,
+            },
+        )
 
     # Project the revision ledger first. A later source version, amendment or
     # source-bound assertion is not permitted to supersede earlier knowledge.
@@ -361,38 +420,19 @@ def _assemble_decision_packet(case: object) -> D3Packet:
                 "availability": availability[0],
             }
         )
-    family_ids = [
-        event["event_id"] for event in events if event["kind"] == "patient_family_concern"
-    ]
-    packet: D3Packet = {
-        "schema_version": "faw10-d3-packet-1.0",
-        "case_id": admitted["case_id"],
-        "permitted_view": VIEW,
-        "recipient_id": recipient,
-        "cutoff_utc": cutoff,
-        "rule_version": RULE_VERSION,
-        "linkage_basis": LINKAGE,
-        "source_entitlement_basis": "caller-declared-not-delivery-proof",
-        "event_labels_basis": "caller-declared-not-semantic-verification",
-        "events": events,
-        "event_count": len(events),
-        "family_concern_status": (
-            "documented_at_cutoff" if family_ids else "not_documented_at_cutoff"
-        ),
-        "family_concern_event_ids": family_ids,
-        "partial_order": {
+    return _packet(
+        admitted["case_id"],
+        recipient,
+        cutoff,
+        events,
+        {
             "edges": visible["edges"],
             "pairs": visible["pairs"],
             "consistency": visible["consistency"],
             "display_order": visible["display_order"],
             "display_order_is_temporal_evidence": False,
         },
-        "view_fingerprint": "",
-    }
-    packet["view_fingerprint"] = fingerprint(
-        {key: value for key, value in packet.items() if key != "view_fingerprint"}
     )
-    return packet
 
 
 def assemble_decision_packet(case: object) -> D3Packet:

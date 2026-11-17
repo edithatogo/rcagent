@@ -1,0 +1,46 @@
+{
+  "schema_version": "faw10-d3-acceptance-1.0",
+  "status": "accepted_bounded_synthetic_source_engineering",
+  "source_pr": 155,
+  "source_head": "66ae4edd70bf73cb56261b28e8706c5b9185c71e",
+  "source_tree": "e40ba394ffb62746c9d16989d4cf30838901b843",
+  "merge_commit": "54c67551db712e1e9f8812156d574cad060501e6",
+  "merged_tree": "e40ba394ffb62746c9d16989d4cf30838901b843",
+  "merged_at": "2026-11-17T13:06:39Z",
+  "source_head_checks": {
+    "quality_run": 44087095466,
+    "quality_attempt": 2,
+    "quality_jobs_passed": 9,
+    "quality_conclusion": "success",
+    "dependency_review_run": 44087095465,
+    "dependency_review": "success",
+    "privacy_secrets_run": 44087095482,
+    "privacy_secrets": "success",
+    "codecov_patch": "success",
+    "optional_offline_security": "queued_not_qualified"
+  },
+  "merged_master_checks": {
+    "skill_conformance_run": 44089474602,
+    "status": "success",
+    "contract_tests_passed": 3246,
+    "quality_run": 44089474608,
+    "quality_status": "in_progress_at_receipt",
+    "privacy_run": 44089474768,
+    "privacy": "success"
+  },
+  "evidence": {
+    "linux_python_3_15_2_tests_passed": 3246,
+    "branch_coverage_percent": 94.63,
+    "original_red_and_failed_ci_preserved": true,
+    "replay_scope": "source-version-recipient-cutoff"
+  },
+  "limitations": [
+    "Caller-declared synthetic entitlements and event labels only; byte integrity is not delivery, comprehension or clinical truth.",
+    "No model, clinical, held-out or deployment qualification.",
+    "Source-bound viewing depends on supported D2 and D0 admission; no independently verified real-world access rights.",
+    "The full downstream D4 empirical comparison, Checkpoint B and CAW10/20 scientific studies remain open."
+  ],
+  "model_executions": 0,
+  "clinical_validation": false,
+  "broader_track_open": true
+}

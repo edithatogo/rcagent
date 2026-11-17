@@ -2,18 +2,20 @@
 
 ## Prerequisite and ownership
 
-Track 13's FAW11 / D4 follows **accepted** FAW10 / D3. This branch is stacked
-on D3 source head `b4665d0691802535521b3e4f56b62c622acfffc4`
-while [PR #155](https://github.com/edithatogo/rcagent/pull/155) is draft
-because its exact-head Quality matrix, dependency review and privacy/secrets
-have not completed. This does **not** constitute D3 acceptance. Keep D4 draft
-and do not retarget/merge until D3 implementation **and its separate Conductor
-acceptance** are integrated, followed by fresh D4 hosted checks. D3's existing
-owner retains that PR. Checkpoint B and Track 12's CAW04–09/21 scientific
-work remain open; no other shared contracts, dependency profiles or historical
-negative results are edited.
+Track 13's FAW11 / D4 follows **accepted** FAW10 / D3. The predecessor
+[source PR #155](https://github.com/edithatogo/rcagent/pull/155) merged as
+`54c67551db712e1e9f8812156d574cad060501e6`, followed by successful master
+conformance and the separately protected [Conductor acceptance PR #157](https://github.com/edithatogo/rcagent/pull/157)
+merged as `5c06b5c7813cb25b23df1f1a287615cf0dcaf578`.
+This D4 implementation preserves its original stacked worker commits and
+reconciles their changed paths onto that exact accepted master by an explicit
+two-parent integration commit; the final head must pass fresh Quality,
+dependency and privacy checks before normal source merge. D3 retains its
+accepted source without rollback or overwrite. Checkpoint B and Track 12's
+CAW04–09/21 scientific work remain open; no other shared contracts,
+dependency profiles or historical negative results are edited.
 
-The implementation is a **synthetic comparison admission/scoring slice**,
+The implementation is a **synthetic comparison admission/scoring slice**, with an inspectable deterministic `d4-demo` workbench receipt,
 not the full D4 comparative experiment. It exposes four required arm
 dispositions: regex, token/section/ConText NLP, conventional linear
 classifier and structured local generation. Only the deliberately weak,
@@ -100,7 +102,7 @@ A supplied prediction file does not certify a model run.
 
 ## Current acceptance status
 
-**Pending / incomplete.** Only the synthetic D3-to-D4 input
+**Pending complete hosted source acceptance; empirical comparison incomplete.** Only the synthetic D3-to-D4 input
 projector, regex reference arm, four-method explicit disposition
 contract, fail-closed scorer and negative/metamorphic tests are
 being delivered in this draft. The synthetic demo's labels are
