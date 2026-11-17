@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from copy import deepcopy
+from hashlib import sha256
 
 import pytest
 
@@ -178,10 +179,44 @@ def test_bounded_array_admission_rejects_non_array_and_excessive_cases() -> None
     ],
 )
 def test_fixed_lexical_reference_arm_categories(text: str, label: str) -> None:
-    case, view, _, _, _ = _scenario()
-    del case
-    view["events"][0]["text"] = text
-    observed = d4._regex_predictions(view)
+    # Exercise the public replay boundary, not the private, unscoped rules.
+    case = _case()
+    timeline = require_object(case["timeline"], context="D3 timeline")
+    source_list = timeline["sources"]
+    assert is_array(source_list)
+    source = require_object(source_list[0], context="D3 source")
+    original = source["content"]
+    assert isinstance(original, str)
+    previous = "Family reported persistent concern."
+    updated = original.replace(previous, text)
+    digest = "sha256:" + sha256(updated.encode("utf-8")).hexdigest()
+    source["content"] = updated
+    source["fingerprint"] = digest
+    for category in ("events", "clocks", "relations", "amendments"):
+        rows = timeline[category]
+        assert is_array(rows)
+        for item in rows:
+            observation = require_object(item, context="D3 observation")
+            evidence = require_object(observation["evidence"], context="source span")
+            if evidence["source_id"] != "early":
+                continue
+            existing = evidence["text"]
+            assert isinstance(existing, str)
+            quote = text if existing == previous else existing
+            start = updated.index(quote)
+            evidence["text"] = quote
+            evidence["start_byte"] = len(updated[:start].encode("utf-8"))
+            evidence["end_byte"] = len(updated[: start + len(quote)].encode("utf-8"))
+            evidence["source_sha256"] = digest
+    label_rows = case["labels"]
+    assert is_array(label_rows)
+    for row in label_rows:
+        category = require_object(row, context="D3 event label")
+        if category["event_id"] == "concern":
+            category["kind"] = label
+            category["speaker_role"] = "family" if label == "patient_family_concern" else None
+    view = d4.make_view(case, "family-root-1", "test")
+    observed = d4.regex_predictions(case, view)
     assert observed[0]["predicted_kind"] == label
 
 
