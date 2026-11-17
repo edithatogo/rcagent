@@ -403,3 +403,73 @@ def test_downstream_failure_does_not_echo_future_source_identifiers() -> None:
         verify_decision_claim(raw, packet, "early", "Mother raised concerns about pain.")
     with pytest.raises(ValueError, match="^invalid or unbound decision packet$"):
         render_decision_packet(raw, packet)
+
+
+def test_future_label_change_is_noninterfering_at_earlier_cutoff() -> None:
+    raw = case_input()
+    baseline = canonical_bytes(assemble_decision_packet(raw))
+    labels = _rows(raw["labels"])
+    assert labels[1]["event_id"] == "late"
+    labels[1]["kind"] = "appraisal"
+    assert canonical_bytes(assemble_decision_packet(raw)) == baseline
+
+
+def test_future_only_cycle_does_not_affect_past_packet() -> None:
+    raw = case_input()
+    baseline = canonical_bytes(assemble_decision_packet(raw))
+    timeline = require_object(raw["timeline"], context="timeline")
+    source = _rows(timeline["sources"])[1]
+    original = source["content"]
+    assert isinstance(original, str)
+    revised = original + "\nLate before early."
+    source["content"] = revised
+    source["fingerprint"] = "sha256:" + sha256(revised.encode("utf-8")).hexdigest()
+    for category in ("events", "clocks"):
+        for row in _rows(timeline[category]):
+            evidence = require_object(row["evidence"], context="evidence")
+            if evidence["source_id"] == "b":
+                quote = evidence["text"]
+                assert isinstance(quote, str)
+                row["evidence"] = _span("synthetic-decision-case", "b", revised, quote)
+    _append(
+        timeline,
+        "relations",
+        {
+            "id": "late-before-early",
+            "before_event_id": "late",
+            "after_event_id": "early",
+            "evidence": _span(
+                "synthetic-decision-case", "b", revised, "Late before early."
+            ),
+        },
+    )
+    assert canonical_bytes(assemble_decision_packet(raw)) == baseline
+    raw["cutoff_utc"] = "2026-11-17T13:00:00Z"
+    packet = assemble_decision_packet(raw)
+    assert packet["partial_order"]["consistency"]["status"] == "inconsistent"
+    assert packet["partial_order"]["display_order"] is None
+
+
+def test_unentitled_invalid_relation_does_not_leak_future_identity_in_errors() -> None:
+    raw = case_input()
+    timeline = require_object(raw["timeline"], context="timeline")
+    source = _rows(timeline["sources"])[1]
+    content = source["content"]
+    assert isinstance(content, str)
+    _append(
+        timeline,
+        "relations",
+        {
+            "id": "postcutoff-relation",
+            "before_event_id": "late",
+            "after_event_id": "CONFIDENTIAL_FUTURE_OUTCOME",
+            "evidence": _span(
+                "synthetic-decision-case", "b", content, "Later test result"
+            ),
+        },
+    )
+    with pytest.raises(
+        ValueError, match="^invalid or inadmissible decision packet input$"
+    ) as error:
+        assemble_decision_packet(raw)
+    assert "CONFIDENTIAL_FUTURE_OUTCOME" not in str(error.value)
