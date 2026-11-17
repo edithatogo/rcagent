@@ -121,11 +121,7 @@ def _comparison(rows: list[Representation], key: str) -> Comparison:
         and len(values) > 1
         and any(group != observed[next(iter(observed))] for group in observed.values())
     )
-    independent_agreement = (
-        len(observed) > 1
-        and not within
-        and len(values) == 1
-    )
+    independent_agreement = len(observed) > 1 and not within and len(values) == 1
     return {
         "comparison_key": key,
         "origin_count": len(observed),

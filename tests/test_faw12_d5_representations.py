@@ -111,7 +111,9 @@ def test_explicitly_unsupported_ocr_is_not_an_executed_observation() -> None:
         _case(),
         [
             _row("native", "concern", "native_text", "pdf-original", "3 mg"),
-            _row("unsupported", "concern", "layout_ocr", "pdf-original", None, status="unsupported"),
+            _row(
+                "unsupported", "concern", "layout_ocr", "pdf-original", None, status="unsupported"
+            ),
         ],
     )
     group = outcome["comparisons"][0]
@@ -174,9 +176,7 @@ def test_forged_source_fingerprint_rejected_without_echoing_source_material() ->
     assert is_array(sources)
     require_object(sources[0], context="source")["fingerprint"] = "sha256:" + "0" * 64
     with pytest.raises(ValueError, match="invalid or unauthorized D5 representations") as caught:
-        compare_representations(
-            raw, [_row("native", "concern", "native_text", "source", "3 mg")]
-        )
+        compare_representations(raw, [_row("native", "concern", "native_text", "source", "3 mg")])
     assert "Family reported" not in str(caught.value)
 
 
