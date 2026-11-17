@@ -140,7 +140,7 @@ def _utc(value: object) -> str:
     if not _UTC_SECONDS.fullmatch(text):
         raise ValueError("UTC second must have explicit YYYY-MM-DDTHH:MM:SSZ form")
     try:
-        datetime.fromisoformat(text[:-1] + "+00:00")
+        datetime.fromisoformat(text)
     except ValueError as exc:
         raise ValueError("UTC second is not a valid calendar instant") from exc
     return text
@@ -305,9 +305,7 @@ def _eligible(
         return False
     # An outcome or retrospective appraisal with an unknown occurrence time
     # cannot be declared contemporaneous by its availability alone.
-    if kind in ("outcome", "appraisal") and not _known_before(occurrence, cutoff):
-        return False
-    return True
+    return kind not in ("outcome", "appraisal") or _known_before(occurrence, cutoff)
 
 
 def assemble_decision_packet(case: object) -> D3Packet:

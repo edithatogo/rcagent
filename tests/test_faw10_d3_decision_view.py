@@ -7,14 +7,13 @@ from hashlib import sha256
 
 import pytest
 
+from tools.evidence_core import canonical_bytes
 from tools.faw10_d3_decision_view import (
     assemble_decision_packet,
     render_decision_packet,
     retrieve_decision_evidence,
     verify_decision_claim,
 )
-
-from tools.evidence_core import canonical_bytes
 from tools.json_shapes import JsonObject, is_array, require_object
 
 
