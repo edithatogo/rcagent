@@ -20,7 +20,9 @@ def _case() -> JsonObject:
     return deepcopy(require_object(inputs[0], context="synthetic D3 case"))
 
 
-def _scenario() -> tuple[JsonObject, d4.D4View, list[JsonObject], list[JsonObject], list[JsonObject]]:
+def _scenario() -> tuple[
+    JsonObject, d4.D4View, list[JsonObject], list[JsonObject], list[JsonObject]
+]:
     case = _case()
     view = d4.make_view(case, "family-root-1", "test")
     study: list[JsonObject] = [
