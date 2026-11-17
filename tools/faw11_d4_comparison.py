@@ -93,6 +93,8 @@ def _text(value: object, field: str) -> str:
 
 
 def _partition(value: object) -> Partition:
+    if type(value) is not str:
+        raise ValueError("invalid partition enum type")
     if value == "train":
         return "train"
     if value == "development":
@@ -103,6 +105,8 @@ def _partition(value: object) -> Partition:
 
 
 def _kind(value: object) -> Kind:
+    if type(value) is not str:
+        raise ValueError("invalid kind enum type")
     if value == "observation":
         return "observation"
     if value == "outcome":
@@ -115,6 +119,8 @@ def _kind(value: object) -> Kind:
 
 
 def _method(value: object) -> Method:
+    if type(value) is not str:
+        raise ValueError("invalid method enum type")
     if value == "regex":
         return "regex"
     if value == "token_section_context":
@@ -221,6 +227,7 @@ def _validate_study(
     by_root: dict[str, Partition] = {}
     by_case: dict[str, str] = {}
     known: set[str] = set()
+    source_partitions: dict[str, Partition] = {}
     expected: set[tuple[str, str]] = set()
     for row in rows:
         _fields(row, {"root_family_id", "partition", "case"})
@@ -233,6 +240,14 @@ def _validate_study(
             raise ValueError("case-family split leakage")
         if view["view_fingerprint"] in known:
             raise ValueError("repeated case view")
+        # Identical source bytes are dependent evidence even under a renamed
+        # case identifier or a caller-declared different root family.
+        for event in view["events"]:
+            source_digest = event["source_sha256"]
+            previous_partition = source_partitions.get(source_digest)
+            if previous_partition is not None and previous_partition != part:
+                raise ValueError("shared source bytes cross case-family partitions")
+            source_partitions[source_digest] = part
         by_root[root] = part
         by_case[view["case_id"]] = root
         known.add(view["view_fingerprint"])
