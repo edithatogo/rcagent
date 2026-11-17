@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import math
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from hashlib import sha256
 from pathlib import Path
@@ -106,6 +106,9 @@ class ContractContext:
     calibrator_hash: str | None = None
     eligible_continue: bool = False
     now_monotonic_ns: int | None = None
+    trusted_candidate_sets: Mapping[str, str] = field(default_factory=dict)
+    trusted_rubrics: Mapping[str, str] = field(default_factory=dict)
+    trusted_fields: frozenset[str] = frozenset()
 
 
 def _unique_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
@@ -210,7 +213,10 @@ def _ids(rows: Sequence[Mapping[str, object]], key: str) -> list[str]:
 def _number(value: object) -> float | None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
-    result = float(value)
+    try:
+        result = float(value)
+    except (OverflowError, ValueError):
+        return None
     return result if math.isfinite(result) else None
 
 
@@ -309,9 +315,13 @@ def validate_request(
                 errors.append("capability.candidate_limit")
             if question["candidate_set_hash"] != fingerprint(question["candidates"]):
                 errors.append("choice.candidate_hash")
+            if context.trusted_candidate_sets.get(str(qid)) != question["candidate_set_hash"]:
+                errors.append("choice.untrusted_candidate_set")
             if question.get("ontology_release_hash") != context.ontology_release_hash:
                 errors.append("choice.ontology_release")
         if kind == "score":
+            if context.trusted_rubrics.get(str(question["rubric_id"])) != question["rubric_hash"]:
+                errors.append("score.untrusted_rubric")
             levels = _rows(question["ordered_levels"])
             levels_ids = _ids(levels, "level_id")
             order = [int(str(part["severity_order"])) for part in levels]
@@ -320,6 +330,8 @@ def validate_request(
             severe = question["severe_level_ids"]
             if is_array(severe) and not set(str(x) for x in severe).issubset(levels_ids):
                 errors.append("score.severe_membership")
+        if kind in {"text", "number", "date", "box", "boxes"} and question["field_spec_id"] not in context.trusted_fields:
+            errors.append("field.untrusted_definition")
         if kind in {"box", "boxes"} and (
             question["media_anchor_id"] not in context.anchors
             or not context.anchors[str(question["media_anchor_id"])].permitted
@@ -404,6 +416,8 @@ def _primitive_errors(
             errors.append("typed.below_found_boundary")
         if value is not None:
             text = value if kind in {"text", "date"} and isinstance(value, str) else None
+            if kind == "number":
+                text = str(value)
             errors.extend(_validate_anchor(output["source_anchor_id"], req, ctx, expected_text=text))
         if kind == "number" and value is not None:
             unit = output["unit"]
