@@ -16,6 +16,7 @@ from tools.faw07_d0_demo import main as run_d0_demo
 from tools.faw08_d1_extraction import main as run_d1_demo
 from tools.faw09_d2_timeline import main as run_d2_demo
 from tools.faw10_d3_decision_view import main as run_d3_demo
+from tools.faw11_d4_comparison import main as run_d4_demo
 from tools.json_shapes import JsonObject, is_array, is_object
 from tools.validate_repository import validate
 
@@ -262,6 +263,7 @@ def _main(argv: list[str] | None = None) -> int:
     subparsers.add_parser("d1-demo")
     subparsers.add_parser("d2-demo")
     subparsers.add_parser("d3-demo")
+    subparsers.add_parser("d4-demo")
     state_parser = subparsers.add_parser("state")
     state_parser.add_argument(
         "operation", choices=("initialise", "next", "advance", "resume", "recover")
@@ -322,6 +324,8 @@ def _main(argv: list[str] | None = None) -> int:
         return run_d2_demo([])
     elif args.command == "d3-demo":
         return run_d3_demo([])
+    elif args.command == "d4-demo":
+        return run_d4_demo([])
     elif args.command == "evaluate":
         result = {
             "status": "unavailable",
