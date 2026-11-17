@@ -420,7 +420,6 @@ def compare_arms(study: object, references: object, arms: object) -> D4Receipt:
         raise ValueError("invalid or inadmissible D4 comparison") from None
 
 
-
 def generate_receipt() -> JsonObject:
     """A fixed, input-inspectable synthetic test; not a qualified model experiment."""
     parent = d3_generate_receipt()
@@ -476,8 +475,7 @@ def generate_receipt() -> JsonObject:
         "model_executed": False,
         "dependency_lock_sha256": "sha256:" + sha256((ROOT / "uv.lock").read_bytes()).hexdigest(),
         "implementation_files": {
-            path: "sha256:" + sha256((ROOT / path).read_bytes()).hexdigest()
-            for path in DEMO_FILES
+            path: "sha256:" + sha256((ROOT / path).read_bytes()).hexdigest() for path in DEMO_FILES
         },
         "limitations": [
             "The research receipt includes generated synthetic fixture inputs, unlike actor-facing D3/D4 model views.",
