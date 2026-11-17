@@ -212,3 +212,48 @@ def test_regex_refuses_forged_unbound_future_evidence() -> None:
     forged["events"][0]["text"] = "Later test result changed the outcome."
     with pytest.raises(ValueError, match="invalid or unbound D4 comparator view"):
         regex_predictions(raw, forged)
+
+
+def test_rejects_non_str_enum_objects_that_compare_equal_to_valid_values() -> None:
+    from collections import UserString
+
+    with pytest.raises(ValueError, match="invalid or inadmissible D4 view"):
+        make_view(_case(), "root", UserString("test"))
+
+    study = _study()
+    view = make_view(study[0]["case"], "independent-synthetic-root-01", "test")
+    references = _reference(view)
+    references[0]["expected_kind"] = UserString("patient_family_concern")
+    with pytest.raises(ValueError, match="invalid or inadmissible D4 comparison"):
+        compare_arms(study, references, _arms(view, study[0]["case"]))
+
+    arms = _arms(view, study[0]["case"])
+    arms[0]["method"] = UserString("regex")
+    with pytest.raises(ValueError, match="invalid or inadmissible D4 comparison"):
+        compare_arms(study, _reference(view), arms)
+
+
+def test_same_source_bytes_cannot_cross_train_test_under_renamed_case_and_root() -> None:
+    source_case = _case()
+    renamed_case = deepcopy(source_case)
+    timeline = require_object(renamed_case["timeline"], context="timeline")
+    timeline["case_id"] = "distinct-case-id-with-shared-source"
+    sources = timeline["sources"]
+    assert is_array(sources)
+    for source in sources:
+        require_object(source, context="source")["case_id"] = timeline["case_id"]
+    for key in ("events", "clocks", "relations", "amendments"):
+        rows = timeline[key]
+        assert is_array(rows)
+        for item in rows:
+            row = require_object(item, context="D2 item")
+            evidence = require_object(row["evidence"], context="source span")
+            evidence["case_id"] = timeline["case_id"]
+
+    study: list[JsonObject] = [
+        {"root_family_id": "root-train", "partition": "train", "case": source_case},
+        {"root_family_id": "root-test", "partition": "test", "case": renamed_case},
+    ]
+    test_view = make_view(renamed_case, "root-test", "test")
+    with pytest.raises(ValueError, match="invalid or inadmissible D4 comparison"):
+        compare_arms(study, _reference(test_view), _arms(test_view, renamed_case))
