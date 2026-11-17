@@ -7,13 +7,14 @@ from hashlib import sha256
 
 import pytest
 
-from tools.evidence_core import canonical_bytes
 from tools.faw10_d3_decision_view import (
     assemble_decision_packet,
     render_decision_packet,
     retrieve_decision_evidence,
     verify_decision_claim,
 )
+
+from tools.evidence_core import canonical_bytes
 from tools.json_shapes import JsonObject, is_array, require_object
 
 
@@ -45,6 +46,12 @@ def _span(case_id: str, sid: str, text: str, quote: str, version: int = 1) -> Js
 def _rows(value: object) -> list[JsonObject]:
     assert is_array(value)
     return [require_object(item, context="test row") for item in value]
+
+
+def _append(row: JsonObject, key: str, value: JsonObject) -> None:
+    contents = row[key]
+    assert is_array(contents)
+    contents.append(value)
 
 
 def case_input() -> JsonObject:
@@ -238,10 +245,8 @@ def test_future_source_amendment_does_not_rewrite_prior_knowledge() -> None:
     baseline = canonical_bytes(assemble_decision_packet(raw))
     timeline = require_object(raw["timeline"], context="timeline")
     correction = "Corrected availability: 2026-11-17T13:00:00Z"
-    _rows(timeline["sources"]).append(
-        _source("synthetic-decision-case", "a", correction, 2)
-    )
-    _rows(timeline["clocks"]).append({
+    _append(timeline, "sources", _source("synthetic-decision-case", "a", correction, 2))
+    _append(timeline, "clocks", {
         "id": "early-a-corrected",
         "event_id": "early",
         "kind": "availability",
@@ -250,13 +255,13 @@ def test_future_source_amendment_does_not_rewrite_prior_knowledge() -> None:
             "synthetic-decision-case", "a", correction, "2026-11-17T13:00:00Z", 2
         ),
     })
-    _rows(timeline["amendments"]).append({
+    _append(timeline, "amendments", {
         "id": "new-version-amendment",
         "earlier_clock_id": "early-a",
         "later_clock_id": "early-a-corrected",
         "evidence": _span("synthetic-decision-case", "a", correction, "Corrected availability", 2),
     })
-    _rows(raw["entitlements"]).append({
+    _append(raw, "entitlements", {
         "source_id": "a", "source_version": 2, "recipient_id": "rn-a",
         "first_available_utc": "2026-11-17T13:00:00Z",
     })
@@ -296,7 +301,7 @@ def test_reject_forged_provenance_and_invalid_entitlement_reference() -> None:
 
 def test_reject_duplicate_entitlements_and_invalid_label_semantics() -> None:
     raw = case_input()
-    _rows(raw["entitlements"]).append(deepcopy(_rows(raw["entitlements"])[0]))
+    _append(raw, "entitlements", deepcopy(_rows(raw["entitlements"])[0]))
     with pytest.raises(ValueError):
         assemble_decision_packet(raw)
     raw = case_input()
