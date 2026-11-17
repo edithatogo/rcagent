@@ -1,8 +1,8 @@
 # Decision models implementation and verification plan
 
-Status: **DM01 documentation and agent verification complete; exact-head hosted checks and the authorised merge are recorded separately in PR #147**. The earlier specification-only delivery is preserved in [planning-evidence.md](./planning-evidence.md). The 17 November 2026 bounded increment delivers the context, source-admission and frozen study-definition package; DM02–DM11 remain pending.
+Status: **DM01 merged in PR #147; DM02 isolated contract implementation and model-free test verification in progress in PR #153**. The historical specification-only delivery remains in [planning-evidence.md](./planning-evidence.md). DM02's production-path receiving acknowledgement belongs to the Track 13 coordinator and has not been inferred; DM03–DM11 remain pending.
 
-Continue automatically through DM01, review, bounded rework, exact-head checks and the authorised merge. Record the recommendation, supporting evidence and safe default. Retain owner decision gates for genuinely new data/rights, spend, egress, deployment and irreversible actions. Stop after DM01; the named increment does not start DM02 or execute a model.
+The user's subsequent 17 November 2026 instruction authorises **DM02 implementation, PR checks and merge**, not additional model execution. Continue through its model-free schemas, independent fixtures, review, bounded corrections and final exact-head checks, then stop after DM02. Retain owner decision gates for new rights, access, spend, egress, deployment and residual-risk acceptance. A green standalone schema suite does not replace Track 13 shared-interface receiving agreement.
 
 ## Execution and ownership contract
 
@@ -37,12 +37,12 @@ The first useful sequence is **DM01 → DM02 → (DM03 and DM04) → DM05 → DM
 - [x] **DM01.3 — Freeze the first research task.** Select a bounded public/synthetic text task, intended user, target hardware, primary material-error contrast, useful-coverage floor, severe-event endpoint and annotation protocol. Fix numerical margins, precision/sample-size plan, threshold selection, split lineage and stopping rules before holdout access; label pilot estimates as exploratory. Preserve existing HDC authority only within its established scope.
 - [x] **Checkpoint A1.** Agent reviewers examine acceptance, evidence integrity and safety/privacy. Publish a source/fit-gap receipt, decision log and ready/blocked map. Do not mark model/runtime or clinical capability supported.
 
-DM01 acceptance: [context and receiving map](./dm01/context-pack.md), [source admission](./dm01/source-admission.md), [frozen study](./dm01/study-protocol.md) and [verification/review receipt](./dm01/verification.md). The original and integrated local full gates retain their environment failures; final-head hosted checks are required before merge. DM02 has not started.
+DM01 acceptance: [context and receiving map](./dm01/context-pack.md), [source admission](./dm01/source-admission.md), [frozen study](./dm01/study-protocol.md) and [verification/review receipt](./dm01/verification.md). The original and integrated local full gates retain their environment failures; final-head hosted checks are required before merge. DM02 is now bounded in [its isolated contract and rollback map](./dm02/contract-mapping.md). The receiving agreement is requested in [Track 13 issue #125](https://github.com/edithatogo/rcagent/issues/125#issuecomment-6943868352), not silently presumed.
 
-- [ ] **DM02.1 — Complete request/output schemas.** Convert the documented primitive/envelope design into versioned JSON Schema and checked Python types in coordinator-allocated files. Freeze provider-native versus canonical semantics, status/error precedence, source/view/hash domains, limits, calibration and thresholds. Keep Pydantic optional and avoid changing canonical safety-work records without receiving agreement.
-- [ ] **DM02.2 — Write independent contract fixtures first.** Cover C01–C42 in the contract appendix, including missing versus null, `found` just below/equal/above 0.5, exclusive/multi-label probabilities, score direction, unit/date/box validation, unsupported runtime features, timeouts and privacy/authority vetoes. Add Hypothesis combinations that exercise real boundary risks.
-- [ ] **DM02.3 — Agree shared mappings and rollback.** Obtain coordinator acceptance of ports, statuses, registry mapping, paths and exact existing validators to consume; supply proposed changes through that owner. Define backwards compatibility, invalidation and adapter-disable behaviour. Do not treat document existence as interface acceptance.
-- [ ] **Checkpoint A2.** Validate schemas against independent valid/invalid examples, JSON/links and the dependency graph; review complete error and missing-value behaviour. Run affected existing evidence/port/privacy tests and the applicable full gate. Record exact source bytes, commands, failures and acceptance before parallel implementation.
+- [~] **DM02.1 — Complete request/output schemas.** Convert the documented primitive/envelope design into versioned JSON Schema and checked Python types in coordinator-allocated files. Freeze provider-native versus canonical semantics, status/error precedence, source/view/hash domains, limits, calibration and thresholds. Keep Pydantic optional and avoid changing canonical safety-work records without receiving agreement.
+- [~] **DM02.2 — Write independent contract fixtures first.** Cover C01–C42 in the contract appendix, including missing versus null, `found` just below/equal/above 0.5, exclusive/multi-label probabilities, score direction, unit/date/box validation, unsupported runtime features, timeouts and privacy/authority vetoes. Add Hypothesis combinations that exercise real boundary risks.
+- [!] **DM02.3 — Agree shared mappings and rollback.** Obtain coordinator acceptance of ports, statuses, registry mapping, paths and exact existing validators to consume; supply proposed changes through that owner. Define backwards compatibility, invalidation and adapter-disable behaviour. Do not treat document existence as interface acceptance.
+- [~] **Checkpoint A2.** Validate schemas against independent valid/invalid examples, JSON/links and the dependency graph; review complete error and missing-value behaviour. Run affected existing evidence/port/privacy tests and the applicable full gate. Record exact source bytes, commands, failures and acceptance before parallel implementation.
 
 ## Phase B: Build the smallest measurable text comparison
 
@@ -98,7 +98,7 @@ DM01 acceptance: [context and receiving map](./dm01/context-pack.md), [source ad
 
 The original planning change used the repository validator, JSON/schema-fragment and link/path checks, source/ownership review and `git diff --check`. DM01 additionally verifies immutable source identifiers, protocol arithmetic and cross-file consistency, uses the locked repository checks, and requires exact-head hosted checks before the authorised merge. No model call or empirical performance result is part of DM01 verification.
 
-For DM01 and future implementation, use the repository's locked commands:
+For DM01, DM02 and future implementation, use the repository's locked commands:
 
 ```bash
 uv sync --locked --extra validate --extra test --extra lint --extra assurance
