@@ -11,11 +11,13 @@ from tools.evidence_core import canonical_bytes, fingerprint
 from tools.faw10_d3_decision_view import (
     assemble_decision_packet,
     generate_receipt,
+    main as d3_main,
     render_decision_packet,
     retrieve_decision_evidence,
     verify_decision_claim,
 )
 from tools.json_shapes import JsonObject, is_array, require_object
+from tools.workbench import main as workbench_main
 
 
 def _source(case_id: str, sid: str, text: str, version: int = 1) -> JsonObject:
@@ -491,3 +493,15 @@ def test_synthetic_receipt_is_deterministic_and_replay_bound() -> None:
         assert render_decision_packet(raw, packet) == canonical_bytes(packet).decode("utf-8")
     assert "Later test result" not in render_decision_packet(inputs[0], cases[0])
     assert require_object(cases[2], context="synthetic empty D3 packet")["events"] == []
+
+
+@pytest.mark.parametrize("entrypoint", ["module", "workbench"])
+def test_binary_d3_entrypoints_emit_identical_provenance(
+    entrypoint: str, capfdbinary: pytest.CaptureFixture[bytes]
+) -> None:
+    """Exercise both published CLI entrypoints and canonical-byte boundary."""
+    status = d3_main([]) if entrypoint == "module" else workbench_main(["d3-demo"])
+    assert status == 0
+    captured = capfdbinary.readouterr()
+    assert captured.out == canonical_bytes(generate_receipt()) + b"\\n"
+    assert captured.err == b""
