@@ -47,24 +47,38 @@ def _capability() -> JsonObject:
     return {
         "message_type": "capability",
         "schema_version": dm.SCHEMA_VERSION,
-        "provider_id": "fixture-provider", "model_id": "fixture-no-model",
-        "model_revision": "source-revision", "weight_hash": None,
-        "tokenizer_hash": None, "runtime_id": "fixture-not-installed",
-        "runtime_revision": "source-build", "precision": "fp32",
-        "device_profile_hash": None, "candidate_state": "contract_tested",
+        "provider_id": "fixture-provider",
+        "model_id": "fixture-no-model",
+        "model_revision": "source-revision",
+        "weight_hash": None,
+        "tokenizer_hash": None,
+        "runtime_id": "fixture-not-installed",
+        "runtime_revision": "source-build",
+        "precision": "fp32",
+        "device_profile_hash": None,
+        "candidate_state": "contract_tested",
         "supported": [
-            {"kind": kind, "modality": "image" if kind in {"box", "boxes"} else "text",
-             "multiple": multiple}
+            {
+                "kind": kind,
+                "modality": "image" if kind in {"box", "boxes"} else "text",
+                "multiple": multiple,
+            }
             for kind in ("noul", "choice", "score", "text", "number", "date", "box", "boxes")
             for multiple in ((False, True) if kind == "choice" else (False,))
         ],
         "limits": {
-            "max_questions": 8, "max_candidates": 8, "max_regions": 4,
-            "max_payload_bytes": 262144, "timeout_seconds": 120,
+            "max_questions": 8,
+            "max_candidates": 8,
+            "max_regions": 4,
+            "max_payload_bytes": 262144,
+            "timeout_seconds": 120,
         },
         "privacy": {
-            "allowed_modes": ["fully_local"], "allowed_data_classes": ["synthetic"],
-            "remote_code": False, "external_inference": False, "telemetry": "disabled",
+            "allowed_modes": ["fully_local"],
+            "allowed_data_classes": ["synthetic"],
+            "remote_code": False,
+            "external_inference": False,
+            "telemetry": "disabled",
         },
         "measurement_receipt_hash": None,
     }
@@ -74,63 +88,106 @@ def _sample() -> tuple[JsonObject, JsonObject, JsonObject, dm.ContractContext]:
     raw = "Report é date 2026-11-17 volume 5 mg".encode()
     start = raw.index("é".encode())
     anchor = dm.SourceAnchor(
-        anchor_id="anchor-1", source_id="source-1", case_id="case-1",
-        view_id="view-1", source_hash=_hash_bytes(raw), raw_bytes=raw,
-        start_byte=start, end_byte=start + len("é".encode()),
+        anchor_id="anchor-1",
+        source_id="source-1",
+        case_id="case-1",
+        view_id="view-1",
+        source_hash=_hash_bytes(raw),
+        raw_bytes=raw,
+        start_byte=start,
+        end_byte=start + len("é".encode()),
     )
     context = dm.ContractContext(
-        task_id="synthetic-task", task_spec_hash=_hash_bytes(b"task"),
-        case_id="case-1", view_id="view-1", view_hash=_hash_bytes(raw),
-        view_bytes=raw, source_manifest_hash=_hash_bytes(b"manifest"),
-        privacy_mode="fully_local", data_class="synthetic",
+        task_id="synthetic-task",
+        task_spec_hash=_hash_bytes(b"task"),
+        case_id="case-1",
+        view_id="view-1",
+        view_hash=_hash_bytes(raw),
+        view_bytes=raw,
+        source_manifest_hash=_hash_bytes(b"manifest"),
+        privacy_mode="fully_local",
+        data_class="synthetic",
         compartment_id="fixture-only",
         instructions={"noul-rubric": _hash_bytes(b"instruction")},
-        questions={"q-severe": "noul"}, anchors={"anchor-1": anchor},
+        questions={"q-severe": "noul"},
+        anchors={"anchor-1": anchor},
         policy_hash=_hash_bytes(b"policy"),
     )
     capability = _capability()
     request: JsonObject = {
-        "message_type": "request", "schema_version": dm.SCHEMA_VERSION,
-        "request_id": "request-1", "task_id": context.task_id,
-        "task_spec_hash": context.task_spec_hash, "case_id": context.case_id,
-        "view_id": context.view_id, "view_hash": context.view_hash,
+        "message_type": "request",
+        "schema_version": dm.SCHEMA_VERSION,
+        "request_id": "request-1",
+        "task_id": context.task_id,
+        "task_spec_hash": context.task_spec_hash,
+        "case_id": context.case_id,
+        "view_id": context.view_id,
+        "view_hash": context.view_hash,
         "source_manifest_hash": context.source_manifest_hash,
         "capability_receipt_hash": fingerprint(capability),
-        "privacy_mode": context.privacy_mode, "data_class": context.data_class,
-        "compartment_id": context.compartment_id, "source_anchor_ids": ["anchor-1"],
-        "questions": [{
-            "kind": "noul", "question_id": "q-severe",
-            "instruction_id": "noul-rubric",
-            "instruction_hash": context.instructions["noul-rubric"],
-        }],
+        "privacy_mode": context.privacy_mode,
+        "data_class": context.data_class,
+        "compartment_id": context.compartment_id,
+        "source_anchor_ids": ["anchor-1"],
+        "questions": [
+            {
+                "kind": "noul",
+                "question_id": "q-severe",
+                "instruction_id": "noul-rubric",
+                "instruction_hash": context.instructions["noul-rubric"],
+            }
+        ],
         "operation": {
-            "operation_id": "synthetic-evaluate", "idempotency_key": "key-1",
-            "timeout_seconds": 30, "deadline_monotonic_ns": 9_999_999_999,
+            "operation_id": "synthetic-evaluate",
+            "idempotency_key": "key-1",
+            "timeout_seconds": 30,
+            "deadline_monotonic_ns": 9_999_999_999,
         },
     }
     result: JsonObject = {
-        "message_type": "result", "schema_version": dm.SCHEMA_VERSION,
-        **{name: request[name] for name in (
-            "request_id", "task_id", "task_spec_hash", "case_id", "view_id",
-            "view_hash", "source_manifest_hash", "capability_receipt_hash",
-        )},
-        "status": "ok", "authority_label": "advisory_candidate",
-        "answers": [{
-            "question_id": "q-severe", "kind": "noul", "status": "ok",
-            "output": {"kind": "noul", "p_yes": 0.25},
-            "native": {"raw_response_hash": None, "semantics": "mock-binary"},
-            "calibration": {"calibrator_hash": None, "calibrated_probabilities": None},
-        }],
+        "message_type": "result",
+        "schema_version": dm.SCHEMA_VERSION,
+        **{
+            name: request[name]
+            for name in (
+                "request_id",
+                "task_id",
+                "task_spec_hash",
+                "case_id",
+                "view_id",
+                "view_hash",
+                "source_manifest_hash",
+                "capability_receipt_hash",
+            )
+        },
+        "status": "ok",
+        "authority_label": "advisory_candidate",
+        "answers": [
+            {
+                "question_id": "q-severe",
+                "kind": "noul",
+                "status": "ok",
+                "output": {"kind": "noul", "p_yes": 0.25},
+                "native": {"raw_response_hash": None, "semantics": "mock-binary"},
+                "calibration": {"calibrator_hash": None, "calibrated_probabilities": None},
+            }
+        ],
         "usage": {"elapsed_ms": None, "retries": 0, "input_tokens": None, "output_tokens": None},
-        "policy": {"policy_hash": context.policy_hash,
-                   "disposition": "candidate_for_review", "reasons": []},
+        "policy": {
+            "policy_hash": context.policy_hash,
+            "disposition": "candidate_for_review",
+            "reasons": [],
+        },
     }
     return request, result, capability, context
 
 
 def _set_question(
-    request: JsonObject, result: JsonObject, context: dm.ContractContext,
-    question: JsonObject, output: JsonObject
+    request: JsonObject,
+    result: JsonObject,
+    context: dm.ContractContext,
+    question: JsonObject,
+    output: JsonObject,
 ) -> dm.ContractContext:
     request["questions"] = [question]
     answer = _answer(result)
@@ -142,26 +199,33 @@ def _set_question(
 
 def _common_question(context: dm.ContractContext, kind: str) -> JsonObject:
     return {
-        "kind": kind, "question_id": "q-other", "instruction_id": "noul-rubric",
+        "kind": kind,
+        "question_id": "q-other",
+        "instruction_id": "noul-rubric",
         "instruction_hash": context.instructions["noul-rubric"],
     }
 
 
-def _choice(request: JsonObject, result: JsonObject, context: dm.ContractContext,
-            *, multiple: bool = False) -> dm.ContractContext:
+def _choice(
+    request: JsonObject, result: JsonObject, context: dm.ContractContext, *, multiple: bool = False
+) -> dm.ContractContext:
     candidates: list[JsonObject] = [
         {"candidate_id": "alpha", "description": "Synthetic A"},
         {"candidate_id": "beta", "description": "Synthetic B"},
     ]
     question = {
-        **_common_question(context, "choice"), "multiple": multiple,
-        "candidates": candidates, "candidate_set_hash": fingerprint(candidates),
+        **_common_question(context, "choice"),
+        "multiple": multiple,
+        "candidates": candidates,
+        "candidate_set_hash": fingerprint(candidates),
         "ontology_release_hash": None,
     }
     output: JsonObject = {
-        "kind": "choice", "multiple": multiple,
+        "kind": "choice",
+        "multiple": multiple,
         "probabilities": {"alpha": 0.6, "beta": 0.4},
-        "selected_ids": ["alpha"], "nil_reason": None,
+        "selected_ids": ["alpha"],
+        "nil_reason": None,
     }
     return replace(
         _set_question(request, result, context, question, output),
@@ -169,30 +233,45 @@ def _choice(request: JsonObject, result: JsonObject, context: dm.ContractContext
     )
 
 
-def _score(request: JsonObject, result: JsonObject,
-           context: dm.ContractContext) -> dm.ContractContext:
-    updated = _set_question(request, result, context, {
-        **_common_question(context, "score"), "rubric_id": "synthetic-rubric",
-        "rubric_hash": _hash_bytes(b"ordinal-rubric"),
-        "ordered_levels": [
-            {"level_id": "high", "description": "Synthetic severe", "severity_order": 0},
-            {"level_id": "low", "description": "Synthetic non-severe", "severity_order": 1},
-        ],
-        "severe_level_ids": ["high"],
-    }, {
-        "kind": "score", "ordered_level_ids": ["high", "low"],
-        "probabilities": {"high": 0.3, "low": 0.7},
-        "native_summary": "low", "native_semantics": "category",
-    })
+def _score(
+    request: JsonObject, result: JsonObject, context: dm.ContractContext
+) -> dm.ContractContext:
+    updated = _set_question(
+        request,
+        result,
+        context,
+        {
+            **_common_question(context, "score"),
+            "rubric_id": "synthetic-rubric",
+            "rubric_hash": _hash_bytes(b"ordinal-rubric"),
+            "ordered_levels": [
+                {"level_id": "high", "description": "Synthetic severe", "severity_order": 0},
+                {"level_id": "low", "description": "Synthetic non-severe", "severity_order": 1},
+            ],
+            "severe_level_ids": ["high"],
+        },
+        {
+            "kind": "score",
+            "ordered_level_ids": ["high", "low"],
+            "probabilities": {"high": 0.3, "low": 0.7},
+            "native_summary": "low",
+            "native_semantics": "category",
+        },
+    )
     return replace(updated, trusted_rubrics={"synthetic-rubric": _hash_bytes(b"ordinal-rubric")})
 
 
-def _typed(request: JsonObject, result: JsonObject,
-           context: dm.ContractContext, kind: str = "text") -> dm.ContractContext:
+def _typed(
+    request: JsonObject, result: JsonObject, context: dm.ContractContext, kind: str = "text"
+) -> dm.ContractContext:
     question = {**_common_question(context, kind), "field_spec_id": "synthetic-field"}
     output: JsonObject = {
-        "kind": kind, "found": 0.5, "value": "é",
-        "unit": None, "source_anchor_id": "anchor-1", "missing_reason": None,
+        "kind": kind,
+        "found": 0.5,
+        "value": "é",
+        "unit": None,
+        "source_anchor_id": "anchor-1",
+        "missing_reason": None,
     }
     if kind == "number":
         question["allowed_units"] = ["mg"]
@@ -202,16 +281,22 @@ def _typed(request: JsonObject, result: JsonObject,
         question["precision"] = "day"
         output["value"] = "2026-11-17"
     if kind in {"box", "boxes"}:
-        question.update({
-            "media_anchor_id": "image-1",
-            "transform_hash": _hash_bytes(b"transform"), "page_index": 0,
-        })
+        question.update(
+            {
+                "media_anchor_id": "image-1",
+                "transform_hash": _hash_bytes(b"transform"),
+                "page_index": 0,
+            }
+        )
         region = {"left": 0.1, "top": 0.2, "right": 0.8, "bottom": 0.9}
-        output.update({
-            "media_anchor_id": "image-1",
-            "transform_hash": _hash_bytes(b"transform"), "page_index": 0,
-            "value": [region] if kind == "boxes" else region,
-        })
+        output.update(
+            {
+                "media_anchor_id": "image-1",
+                "transform_hash": _hash_bytes(b"transform"),
+                "page_index": 0,
+                "value": [region] if kind == "boxes" else region,
+            }
+        )
         if kind == "boxes":
             question["max_regions"] = 2
     return replace(
@@ -220,26 +305,49 @@ def _typed(request: JsonObject, result: JsonObject,
     )
 
 
-def _replace_anchor(ctx: dm.ContractContext, *, target: str | None = None,
-                    permitted: bool = True, case_id: str = "case-1",
-                    unit: str | None = None,
-                    media: bool = False) -> dm.ContractContext:
+def _replace_anchor(
+    ctx: dm.ContractContext,
+    *,
+    target: str | None = None,
+    permitted: bool = True,
+    case_id: str = "case-1",
+    unit: str | None = None,
+    media: bool = False,
+) -> dm.ContractContext:
     original = ctx.anchors["anchor-1"]
     start = original.raw_bytes.index(target.encode()) if target is not None else original.start_byte
     end = start + len(target.encode()) if target is not None else original.end_byte
-    return replace(ctx, anchors={"anchor-1": replace(
-        original, start_byte=start, end_byte=end, permitted=permitted,
-        case_id=case_id, unit=unit,
-        media_anchor_id="image-1" if media else None,
-        transform_hash=_hash_bytes(b"transform") if media else None,
-        page_index=0 if media else None,
-    )})
+    return replace(
+        ctx,
+        anchors={
+            "anchor-1": replace(
+                original,
+                start_byte=start,
+                end_byte=end,
+                permitted=permitted,
+                case_id=case_id,
+                unit=unit,
+                media_anchor_id="image-1" if media else None,
+                transform_hash=_hash_bytes(b"transform") if media else None,
+                page_index=0 if media else None,
+            )
+        },
+    )
 
 
-def _validate(req: JsonObject, res: JsonObject, cap: JsonObject,
-              ctx: dm.ContractContext, *, request_only: bool = False) -> list[str]:
-    return (dm.validate_request(req, ctx, cap) if request_only
-            else dm.validate_result(res, req, ctx, cap))
+def _validate(
+    req: JsonObject,
+    res: JsonObject,
+    cap: JsonObject,
+    ctx: dm.ContractContext,
+    *,
+    request_only: bool = False,
+) -> list[str]:
+    return (
+        dm.validate_request(req, ctx, cap)
+        if request_only
+        else dm.validate_result(res, req, ctx, cap)
+    )
 
 
 def test_canonical_json_schema_has_complete_dialect_and_parses_all_three_envelopes() -> None:
@@ -252,10 +360,16 @@ def test_canonical_json_schema_has_complete_dialect_and_parses_all_three_envelop
     assert dm.validate_result(res, req, ctx, cap) == []
 
 
-@pytest.mark.parametrize("wire", [
-    '{"a":1,"a":2}', '{"p":NaN}', '{"p":Infinity}',
-    '{"p":-Infinity}', '{"p":1e999}',
-])
+@pytest.mark.parametrize(
+    "wire",
+    [
+        '{"a":1,"a":2}',
+        '{"p":NaN}',
+        '{"p":Infinity}',
+        '{"p":-Infinity}',
+        '{"p":1e999}',
+    ],
+)
 def test_c01_to_c03_strict_json_rejects_duplicates_and_non_finite(wire: str) -> None:
     with pytest.raises(ValueError, match="duplicate|non-finite"):
         dm.strict_decode(wire)
@@ -268,17 +382,18 @@ def test_c01_to_c03_noul_probabilities_are_finite_numeric(invalid: object) -> No
     assert _validate(req, res, cap, ctx)
 
 
-@pytest.mark.parametrize(("variant", "expected"), [
-    ("mass", "choice.exclusive_mass"),
-    ("missing", "choice.candidate_set"),
-    ("invented", "choice.candidate_set"),
-    ("multi_selected", "choice.exclusive_selection"),
-    ("candidate_hash", "choice.candidate_hash"),
-    ("ontology", "choice.ontology_release"),
-])
-def test_c04_to_c08_exclusive_choice_and_candidate_provenance(
-    variant: str, expected: str
-) -> None:
+@pytest.mark.parametrize(
+    ("variant", "expected"),
+    [
+        ("mass", "choice.exclusive_mass"),
+        ("missing", "choice.candidate_set"),
+        ("invented", "choice.candidate_set"),
+        ("multi_selected", "choice.exclusive_selection"),
+        ("candidate_hash", "choice.candidate_hash"),
+        ("ontology", "choice.ontology_release"),
+    ],
+)
+def test_c04_to_c08_exclusive_choice_and_candidate_provenance(variant: str, expected: str) -> None:
     req, res, cap, ctx = _sample()
     ctx = _choice(req, res, ctx)
     output = _payload(res)
@@ -329,8 +444,9 @@ def test_c11_to_c13_found_boundary_is_inclusive_at_half(found: float) -> None:
     payload = _payload(res)
     payload["found"] = found
     if found < 0.5:
-        payload.update({"value": None, "unit": None,
-                        "source_anchor_id": None, "missing_reason": "not_found"})
+        payload.update(
+            {"value": None, "unit": None, "source_anchor_id": None, "missing_reason": "not_found"}
+        )
     assert _validate(req, res, cap, ctx) == []
 
 
@@ -341,15 +457,16 @@ def test_c13_conflicting_non_null_below_found_boundary_rejects() -> None:
     assert _validate(req, res, cap, ctx)
 
 
-@pytest.mark.parametrize(("variant", "error"), [
-    ("span", "source.mismatched_text"),
-    ("cross-case", "source.cross_case_or_view"),
-    ("stale", "source.stale_bytes_hash"),
-    ("cutoff", "source.unpermitted_anchor"),
-])
-def test_c14_to_c16_exact_utf8_source_anchors(
-    variant: str, error: str
-) -> None:
+@pytest.mark.parametrize(
+    ("variant", "error"),
+    [
+        ("span", "source.mismatched_text"),
+        ("cross-case", "source.cross_case_or_view"),
+        ("stale", "source.stale_bytes_hash"),
+        ("cutoff", "source.unpermitted_anchor"),
+    ],
+)
+def test_c14_to_c16_exact_utf8_source_anchors(variant: str, error: str) -> None:
     req, res, cap, ctx = _sample()
     ctx = _typed(req, res, ctx)
     if variant == "span":
@@ -371,12 +488,14 @@ def test_c17_to_c19_dates_require_calendar_precision_and_original_source() -> No
     assert _validate(req, res, cap, ctx) == []
     _payload(res)["value"] = "2026-02-30"
     assert _validate(req, res, cap, ctx)
-    _payload(res).update({"value": None, "source_anchor_id": None,
-                          "missing_reason": "ambiguous_missing_year"})
+    _payload(res).update(
+        {"value": None, "source_anchor_id": None, "missing_reason": "ambiguous_missing_year"}
+    )
     assert _validate(req, res, cap, ctx) == []
     _question(req)["precision"] = "unknown"
-    _payload(res).update({"value": "2026-11-17", "source_anchor_id": "anchor-1",
-                          "missing_reason": None})
+    _payload(res).update(
+        {"value": "2026-11-17", "source_anchor_id": "anchor-1", "missing_reason": None}
+    )
     assert any("date.unadmitted_precision" in e for e in _validate(req, res, cap, ctx))
 
 
@@ -389,15 +508,16 @@ def test_c19_numbers_never_guess_or_convert_units() -> None:
     assert any("number.unit_not_allowed" in e for e in _validate(req, res, cap, ctx))
 
 
-@pytest.mark.parametrize(("variant", "error"), [
-    ("inverted", "region.inverted"),
-    ("page", "region.media_transform"),
-    ("transform", "region.media_transform"),
-    ("count", "region.count_limit"),
-])
-def test_c20_to_c21_boxes_reject_bad_geometry_and_provenance(
-    variant: str, error: str
-) -> None:
+@pytest.mark.parametrize(
+    ("variant", "error"),
+    [
+        ("inverted", "region.inverted"),
+        ("page", "region.media_transform"),
+        ("transform", "region.media_transform"),
+        ("count", "region.count_limit"),
+    ],
+)
+def test_c20_to_c21_boxes_reject_bad_geometry_and_provenance(variant: str, error: str) -> None:
     req, res, cap, ctx = _sample()
     ctx = _typed(req, res, ctx, "boxes")
     ctx = _replace_anchor(ctx, media=True)
@@ -410,8 +530,8 @@ def test_c20_to_c21_boxes_reject_bad_geometry_and_provenance(
         payload["transform_hash"] = _hash_bytes(b"wrong")
     else:
         payload["value"] = [
-            {"left": float(i) / 10, "top": 0.0,
-             "right": float(i + 1) / 10, "bottom": 0.5} for i in range(3)
+            {"left": float(i) / 10, "top": 0.0, "right": float(i + 1) / 10, "bottom": 0.5}
+            for i in range(3)
         ]
     assert any(error in e for e in _validate(req, res, cap, ctx))
 
@@ -424,8 +544,7 @@ def test_c22_to_c24_timeout_cancel_unavailable_and_missing_calibration_abstain()
         _obj(res["policy"])["disposition"] = "abstain"
         assert _validate(req, res, cap, ctx) == []
     req, res, cap, ctx = _sample()
-    ctx = replace(ctx, calibration_required=True,
-                  calibrator_hash=_hash_bytes(b"fitted-calibrator"))
+    ctx = replace(ctx, calibration_required=True, calibrator_hash=_hash_bytes(b"fitted-calibrator"))
     _obj(res["policy"])["disposition"] = "abstain"
     assert _validate(req, res, cap, ctx) == []
 
@@ -436,18 +555,24 @@ def test_c25_to_c27_undeclared_capability_and_remote_code_never_become_supported
     cap["supported"] = [{"kind": "noul", "modality": "text", "multiple": False}]
     req["capability_receipt_hash"] = fingerprint(cap)
     res["capability_receipt_hash"] = req["capability_receipt_hash"]
-    assert any("capability.unsupported_primitive" in e for e in _validate(
-        req, res, cap, ctx, request_only=True
-    ))
+    assert any(
+        "capability.unsupported_primitive" in e
+        for e in _validate(req, res, cap, ctx, request_only=True)
+    )
     _obj(cap["privacy"])["remote_code"] = True
     assert dm.validate_capability(cap)
     assert dm.runtime_route_eligible(cap, {"models": []}) is False
 
 
-@pytest.mark.parametrize(("variant", "disposition"), [
-    ("hard-review", "escalate"), ("source-conflict", "escalate"),
-    ("privacy", "abstain"), ("authority", "abstain"),
-])
+@pytest.mark.parametrize(
+    ("variant", "disposition"),
+    [
+        ("hard-review", "escalate"),
+        ("source-conflict", "escalate"),
+        ("privacy", "abstain"),
+        ("authority", "abstain"),
+    ],
+)
 def test_c28_to_c33_deterministic_hard_vetoes_ignore_high_model_confidence(
     variant: str, disposition: str
 ) -> None:
@@ -477,9 +602,10 @@ def test_c28_to_c33_deterministic_hard_vetoes_ignore_high_model_confidence(
 def test_c31_untrusted_text_cannot_override_instruction_or_add_tools() -> None:
     req, res, cap, ctx = _sample()
     _question(req)["instruction_hash"] = _hash_bytes(b"injected instruction")
-    assert any("question.untrusted_instruction" in e for e in _validate(
-        req, res, cap, ctx, request_only=True
-    ))
+    assert any(
+        "question.untrusted_instruction" in e
+        for e in _validate(req, res, cap, ctx, request_only=True)
+    )
     req, res, cap, ctx = _sample()
     req["tool_recipient"] = "external-webhook"
     assert _validate(req, res, cap, ctx, request_only=True)
@@ -499,9 +625,7 @@ def test_c34_to_c36_lineage_deduplication_hash_and_view_changes_fail_closed() ->
 def test_c37_to_c39_runtime_and_rubric_drift_invalidates_identity() -> None:
     req, res, cap, ctx = _sample()
     cap["precision"] = "int8"
-    assert any("identity.capability_receipt_hash" in e for e in dm.validate_request(
-        req, ctx, cap
-    ))
+    assert any("identity.capability_receipt_hash" in e for e in dm.validate_request(req, ctx, cap))
     req, res, cap, ctx = _sample()
     ctx = _score(req, res, ctx)
     old = dm.idempotency_identity(req)
@@ -522,10 +646,17 @@ def test_c40_to_c42_score_cannot_sign_approval_render_or_complete_action() -> No
     assert _validate(req, res, cap, ctx)
 
 
-@pytest.mark.parametrize("state", [
-    "candidate", "contract_tested", "measured_research",
-    "task_qualified", "unavailable", "withdrawn",
-])
+@pytest.mark.parametrize(
+    "state",
+    [
+        "candidate",
+        "contract_tested",
+        "measured_research",
+        "task_qualified",
+        "unavailable",
+        "withdrawn",
+    ],
+)
 def test_registry_mapping_is_descriptive_and_never_promotes(state: str) -> None:
     expected = dm.registry_compatibility(state)
     assert expected in {"interface_contract", "experimental", "unavailable"}
@@ -562,20 +693,23 @@ def test_wire_parser_bounds_and_no_untrusted_scalar() -> None:
         dm.strict_decode("[]")
     assert dm.strict_decode('{"safe":"synthetic"}') == {"safe": "synthetic"}
 
+
 def test_trusted_task_controls_prevent_unsigned_candidate_rubric_or_field_substitution() -> None:
     req, res, cap, ctx = _sample()
     ctx = _choice(req, res, ctx)
     assert dm.validate_request(req, replace(ctx, trusted_candidate_sets={}), cap)
     req, res, cap, ctx = _sample()
     ctx = _score(req, res, ctx)
-    assert any("score.untrusted_rubric" in error for error in dm.validate_request(
-        req, replace(ctx, trusted_rubrics={}), cap
-    ))
+    assert any(
+        "score.untrusted_rubric" in error
+        for error in dm.validate_request(req, replace(ctx, trusted_rubrics={}), cap)
+    )
     req, res, cap, ctx = _sample()
     ctx = _typed(req, res, ctx)
-    assert any("field.untrusted_definition" in error for error in dm.validate_request(
-        req, replace(ctx, trusted_fields=frozenset()), cap
-    ))
+    assert any(
+        "field.untrusted_definition" in error
+        for error in dm.validate_request(req, replace(ctx, trusted_fields=frozenset()), cap)
+    )
 
 
 def test_number_candidate_must_match_source_bytes_not_only_unit() -> None:
@@ -584,5 +718,6 @@ def test_number_candidate_must_match_source_bytes_not_only_unit() -> None:
     ctx = _replace_anchor(ctx, target="5", unit="mg")
     assert _validate(req, res, cap, ctx) == []
     _payload(res)["value"] = 6
-    assert any("source.mismatched_text" in error
-               for error in _validate(req, res, cap, ctx))
+    assert any(
+        "source.mismatched_text" in error for error in _validate(req, res, cap, ctx)
+    )
