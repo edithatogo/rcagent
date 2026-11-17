@@ -1,0 +1,29 @@
+name: DM02 temporary source formatter
+on:
+  push:
+    branches:
+      - feat/dm02-contract-schemas-20261117
+permissions:
+  contents: read
+jobs:
+  formatter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.15.2"
+      - name: Format in CI without writing to branch
+        shell: bash
+        run: |
+          python -m pip install uv==0.13.8
+          uv sync --locked --extra lint
+          uv run --no-sync python -m ruff format tools/decision_model_contracts.py tests/test_decision_model_contracts.py tests/test_decision_model_contract_matrix.py
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          for path in ("tools/decision_model_contracts.py", "tests/test_decision_model_contracts.py", "tests/test_decision_model_contract_matrix.py"):
+              print(f"DM02_FORMAT_BEGIN:{path}")
+              print(base64.b64encode(Path(path).read_bytes()).decode("ascii"))
+              print(f"DM02_FORMAT_END:{path}")
+          PY
