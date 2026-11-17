@@ -16,7 +16,8 @@ from pathlib import Path
 from typing import cast
 
 import pytest
-from hypothesis import given, settings, strategies as st
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 from tests.prospective_fixture_types import ObjectMap, mapping, sequence, text_value
 from tools.heaps import PacketResult, assemble_packet
@@ -64,13 +65,15 @@ def _change(documents: dict[str, ObjectMap], mutation: ObjectMap) -> None:
         if isinstance(part, str):
             parent = mapping(parent)[part]
         else:
-            assert isinstance(part, int) and not isinstance(part, bool)
+            assert isinstance(part, int)
+            assert not isinstance(part, bool)
             parent = sequence(parent)[part]
     last = path[-1]
     if isinstance(last, str):
         mapping(parent)[last] = deepcopy(mutation["value"])
     else:
-        assert isinstance(last, int) and not isinstance(last, bool)
+        assert isinstance(last, int)
+        assert not isinstance(last, bool)
         sequence(parent)[last] = deepcopy(mutation["value"])
 
 
@@ -184,7 +187,8 @@ def test_independent_sha256_of_every_manifest_entry() -> None:
     for entry in entries:
         path = text_value(entry["path"])
         identity = text_value(entry["artifact_id"])
-        assert path not in paths_seen and identity not in ids_seen
+        assert path not in paths_seen
+        assert identity not in ids_seen
         paths_seen.add(path)
         ids_seen.add(identity)
         raw = result.files[path]
