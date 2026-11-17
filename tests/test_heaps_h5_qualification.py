@@ -570,13 +570,13 @@ def test_frozen_case_specific_semantics_and_retained_ids(variant_id: str) -> Non
         ]
         assert len(participation) == 1
         assert participation[0]["state"] == expected_state
-        assert f'"state": "{expected_state}"' in report
+        assert f"| state | {expected_state} |" in report
         assert required["consultation_completed"] is False
         assert required["agreement_established"] is False
         assert "do not establish consultation completion or agreement" in report
     elif variant_id == "HP10-no-statutory-authority":
         assert mapping(profile["applicability"])["protection_status"] == required["protection"]
-        assert "No" in report and "clinical" in report
+        assert "legal protection and actual organisational authority are not established" in report
     elif variant_id == "HP11-unavailable-local-template":
         assert required["local_template_conformity"] == "not_established"
         assert required["draft_preparation"] == "available"
@@ -589,10 +589,10 @@ def test_frozen_case_specific_semantics_and_retained_ids(variant_id: str) -> Non
         assert mapping(deadline["due"])["value"] is None
         assert "Unverified deadlines and unresolved bases" in report
     elif variant_id == "HP14-method-change":
-        assert required["awareness"] in report
-        assert required["due_timestamp"] in report
-        assert required["prior_process"] in report
-        assert required["selected_process"] in report
+        assert text_value(required["awareness"]) in report
+        assert text_value(required["due_timestamp"]) in report
+        assert text_value(required["prior_process"]) in report
+        assert text_value(required["selected_process"]) in report
         assert required["clock_reset"] is False
         clocks = mapping(profile["clocks"])
         assert mapping(clocks["sac1_reporting"])["value"] is None
