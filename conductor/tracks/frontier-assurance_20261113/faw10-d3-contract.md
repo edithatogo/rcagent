@@ -5,7 +5,7 @@
 D3 follows the accepted D0, D1 and D2 sequence on Track 13, contributing a bounded
 synthetic example to CAW10/20. The direct instruction is to implement D3, submit a
 pull request, check hosted Actions and merge only when the normal gates pass.
-The implementation branch started at master \`96c6fe25ecdaf07875ae205ba74d6404314085f2\`.
+The implementation branch started at master `96c6fe25ecdaf07875ae205ba74d6404314085f2`.
 No open PR held D3 ownership. DM02, AcciMap, repository planning, security and
 dependency branches retain their existing owners and are not implementation inputs.
 
@@ -20,20 +20,20 @@ is introduced.
 
 ## Input and admission
 
-\`assemble_decision_packet(case: object)\` takes an object with exactly:
+`assemble_decision_packet(case: object)` takes an object with exactly:
 
-- \`permitted_view=synthetic-d3-decision-only\`;
-- \`recipient_id\`: a D2-enumerated actor (up to 128 UTF-8 characters);
-- \`cutoff_utc\`: a valid full \`YYYY-MM-DDTHH:MM:SSZ\` second, with no implicit
+- `permitted_view=synthetic-d3-decision-only`;
+- `recipient_id`: a D2-enumerated actor (up to 128 UTF-8 characters);
+- `cutoff_utc`: a valid full `YYYY-MM-DDTHH:MM:SSZ` second, with no implicit
   timezone or clock source;
-- \`timeline\`: one complete D2 input object with all eight required keys;
-- \`entitlements\`: up to 512 explicit declarations, one per source ID,
-  source version and recipient, each with \`first_available_utc\` equal to a
-  valid explicit UTC second or \`null\` for unknown; and
-- \`labels\`: one per D2 event, with \`event_id\`, \`kind\` and
-  \`speaker_role\`. Kinds are \`observation\`, \`outcome\`, \`appraisal\` and
-  \`patient_family_concern\`. Concerns require a declared \`patient\` or
-  \`family\` speaker; other kinds require a null speaker.
+- `timeline`: one complete D2 input object with all eight required keys;
+- `entitlements`: up to 512 explicit declarations, one per source ID,
+  source version and recipient, each with `first_available_utc` equal to a
+  valid explicit UTC second or `null` for unknown; and
+- `labels`: one per D2 event, with `event_id`, `kind` and
+  `speaker_role`. Kinds are `observation`, `outcome`, `appraisal` and
+  `patient_family_concern`. Concerns require a declared `patient` or
+  `family` speaker; other kinds require a null speaker.
 
 Entitlement and label associations are **caller-declared synthetic metadata**.
 They must reference admitted IDs and are not independent observation or semantic
@@ -72,18 +72,18 @@ their D2 summaries and support IDs, visible pairs/edges, a deterministic
 display order when consistent and a source/view-derived fingerprint. It omits
 all raw source contents, all other-recipient clocks, all excluded event IDs,
 their counts and any future outcome/appraisal text. The packet may report
-\`not_documented_at_cutoff\` for family concerns; **this does not mean**
+`not_documented_at_cutoff` for family concerns; **this does not mean**
 the family had no concerns.
 
 ## Downstream and replay
 
-- \`retrieve_decision_evidence(case, packet, query)\` does literal substring
+- `retrieve_decision_evidence(case, packet, query)` does literal substring
   matching over **only the revalidated, scoped packet**. There is no full
   source-index, search fallback or external retrieval interface.
-- \`verify_decision_claim(case, packet, event_id, statement)\` confirms only
+- `verify_decision_claim(case, packet, event_id, statement)` confirms only
   exact source-span text equality to a visible event; it never verifies
   semantic entailment, factual correctness or a causal conclusion.
-- \`render_decision_packet(case, packet)\` renders only the freshly replayed
+- `render_decision_packet(case, packet)` renders only the freshly replayed
   canonical packet bytes, not a raw D2 case.
 - Each downstream call recomputes the actor/cutoff projection and compares
   canonical bytes. Forged, stale or other-recipient packets are refused.

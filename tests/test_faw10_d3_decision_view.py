@@ -53,6 +53,12 @@ def _append(row: JsonObject, key: str, value: JsonObject) -> None:
     contents.append(value)
 
 
+def _reverse(row: JsonObject, key: str) -> None:
+    contents = row[key]
+    assert is_array(contents)
+    contents.reverse()
+
+
 def case_input() -> JsonObject:
     early = (
         "Mother raised concerns about pain.\n"
@@ -377,10 +383,23 @@ def test_unqualified_claim_is_never_semantically_promoted() -> None:
 def test_order_and_irrelevant_future_labels_do_not_affect_prior_packet() -> None:
     raw = case_input()
     baseline = canonical_bytes(assemble_decision_packet(raw))
-    _rows(raw["entitlements"]).reverse()
-    _rows(raw["labels"]).reverse()
+    _reverse(raw, "entitlements")
+    _reverse(raw, "labels")
     timeline = require_object(raw["timeline"], context="timeline")
-    _rows(timeline["sources"]).reverse()
-    _rows(timeline["events"]).reverse()
-    _rows(timeline["clocks"]).reverse()
+    _reverse(timeline, "sources")
+    _reverse(timeline, "events")
+    _reverse(timeline, "clocks")
     assert canonical_bytes(assemble_decision_packet(raw)) == baseline
+
+
+def test_downstream_failure_does_not_echo_future_source_identifiers() -> None:
+    raw = case_input()
+    packet = assemble_decision_packet(raw)
+    timeline = require_object(raw["timeline"], context="timeline")
+    _rows(timeline["sources"])[1]["fingerprint"] = "sha256:" + "0" * 64
+    with pytest.raises(ValueError, match="^invalid or unbound decision packet$"):
+        retrieve_decision_evidence(raw, packet, "Mother")
+    with pytest.raises(ValueError, match="^invalid or unbound decision packet$"):
+        verify_decision_claim(raw, packet, "early", "Mother raised concerns about pain.")
+    with pytest.raises(ValueError, match="^invalid or unbound decision packet$"):
+        render_decision_packet(raw, packet)
