@@ -242,10 +242,7 @@ def _subset(
         for clock in _rows(original["clocks"], "D2 clocks", 32)
         if _text(clock["event_id"], "clock event") in event_ids
         and _evidence_key(clock) in allowed_sources
-        and (
-            clock["kind"] != "availability"
-            or clock["recipient_id"] == recipient
-        )
+        and (clock["kind"] != "availability" or clock["recipient_id"] == recipient)
     ]
     clock_ids = {_text(clock["id"], "clock id") for clock in clocks}
     relations = [
@@ -291,9 +288,7 @@ def _eligible(
     kind: EvidenceKind,
 ) -> bool:
     availability = [
-        item["clock"]
-        for item in event["availability"]
-        if item["recipient_id"] == recipient
+        item["clock"] for item in event["availability"] if item["recipient_id"] == recipient
     ]
     if len(availability) != 1 or not _known_before(availability[0], cutoff):
         return False
@@ -350,9 +345,7 @@ def assemble_decision_packet(case: object) -> D3Packet:
     for event in visible["events"]:
         speaker = labels[event["id"]]
         availability = [
-            item["clock"]
-            for item in event["availability"]
-            if item["recipient_id"] == recipient
+            item["clock"] for item in event["availability"] if item["recipient_id"] == recipient
         ]
         if len(availability) != 1:
             raise ValueError("D3 recipient-specific availability missing")
@@ -413,9 +406,7 @@ def _replayed(case: object, packet: object) -> D3Packet:
     return expected
 
 
-def retrieve_decision_evidence(
-    case: object, packet: object, query: object
-) -> list[DecisionEvent]:
+def retrieve_decision_evidence(case: object, packet: object, query: object) -> list[DecisionEvent]:
     """Substring retrieval over the replayed, already-scoped event set only."""
     expected = _replayed(case, packet)
     phrase = _text(query, "query")
@@ -503,12 +494,24 @@ def _synthetic_input() -> JsonObject:
             "sources": [_demo_source(case_id, "early", early), _demo_source(case_id, "late", late)],
             "recipients": ["rn-a", "rn-b"],
             "events": [
-                {"id": "concern", "evidence": _demo_span(case_id, "early", early, "Family reported persistent concern.")},
-                {"id": "result", "evidence": _demo_span(case_id, "late", late, "Later test result changed the outcome.")},
+                {
+                    "id": "concern",
+                    "evidence": _demo_span(
+                        case_id, "early", early, "Family reported persistent concern."
+                    ),
+                },
+                {
+                    "id": "result",
+                    "evidence": _demo_span(
+                        case_id, "late", late, "Later test result changed the outcome."
+                    ),
+                },
             ],
             "clocks": [
                 clock("concern-time", "concern", "event", "early", early, "2026-11-17T08:00:00Z"),
-                clock("concern-av", "concern", "availability", "early", early, "2026-11-17T09:00:00Z"),
+                clock(
+                    "concern-av", "concern", "availability", "early", early, "2026-11-17T09:00:00Z"
+                ),
                 clock("result-time", "result", "event", "late", late, "2026-11-17T08:30:00Z"),
                 clock("result-record", "result", "recording", "late", late, "2026-11-17T12:00:00Z"),
                 clock("result-av", "result", "availability", "late", late, "2026-11-17T12:30:00Z"),
@@ -517,14 +520,30 @@ def _synthetic_input() -> JsonObject:
             "amendments": [],
         },
         "entitlements": [
-            {"source_id": "early", "source_version": 1, "recipient_id": "rn-a",
-             "first_available_utc": "2026-11-17T09:00:00Z"},
-            {"source_id": "late", "source_version": 1, "recipient_id": "rn-a",
-             "first_available_utc": "2026-11-17T12:30:00Z"},
-            {"source_id": "early", "source_version": 1, "recipient_id": "rn-b",
-             "first_available_utc": None},
-            {"source_id": "late", "source_version": 1, "recipient_id": "rn-b",
-             "first_available_utc": None},
+            {
+                "source_id": "early",
+                "source_version": 1,
+                "recipient_id": "rn-a",
+                "first_available_utc": "2026-11-17T09:00:00Z",
+            },
+            {
+                "source_id": "late",
+                "source_version": 1,
+                "recipient_id": "rn-a",
+                "first_available_utc": "2026-11-17T12:30:00Z",
+            },
+            {
+                "source_id": "early",
+                "source_version": 1,
+                "recipient_id": "rn-b",
+                "first_available_utc": None,
+            },
+            {
+                "source_id": "late",
+                "source_version": 1,
+                "recipient_id": "rn-b",
+                "first_available_utc": None,
+            },
         ],
         "labels": [
             {"event_id": "concern", "kind": "patient_family_concern", "speaker_role": "family"},

@@ -75,8 +75,13 @@ def case_input() -> JsonObject:
         return {"id": eid, "evidence": _span(case_id, sid, text, quote)}
 
     def clock(
-        cid: str, eid: str, kind: str, recipient: str | None,
-        sid: str, text: str, quote: str,
+        cid: str,
+        eid: str,
+        kind: str,
+        recipient: str | None,
+        sid: str,
+        text: str,
+        quote: str,
     ) -> JsonObject:
         return {
             "id": cid,
@@ -101,9 +106,15 @@ def case_input() -> JsonObject:
             ],
             "clocks": [
                 clock("early-time", "early", "event", None, "a", early, "2026-11-17T08:00:00Z"),
-                clock("early-record", "early", "recording", None, "a", early, "2026-11-17T08:20:00Z"),
-                clock("early-a", "early", "availability", "rn-a", "a", early, "2026-11-17T09:00:00Z"),
-                clock("early-b", "early", "availability", "rn-b", "a", early, "2026-11-17T11:00:00Z"),
+                clock(
+                    "early-record", "early", "recording", None, "a", early, "2026-11-17T08:20:00Z"
+                ),
+                clock(
+                    "early-a", "early", "availability", "rn-a", "a", early, "2026-11-17T09:00:00Z"
+                ),
+                clock(
+                    "early-b", "early", "availability", "rn-b", "a", early, "2026-11-17T11:00:00Z"
+                ),
                 clock("late-time", "late", "event", None, "b", late, "2026-11-17T08:30:00Z"),
                 clock("late-record", "late", "recording", None, "b", late, "2026-11-17T12:00:00Z"),
                 clock("late-a", "late", "availability", "rn-a", "b", late, "2026-11-17T12:30:00Z"),
@@ -119,14 +130,30 @@ def case_input() -> JsonObject:
             "amendments": [],
         },
         "entitlements": [
-            {"source_id": "a", "source_version": 1, "recipient_id": "rn-a",
-             "first_available_utc": "2026-11-17T09:00:00Z"},
-            {"source_id": "a", "source_version": 1, "recipient_id": "rn-b",
-             "first_available_utc": "2026-11-17T09:00:00Z"},
-            {"source_id": "b", "source_version": 1, "recipient_id": "rn-a",
-             "first_available_utc": "2026-11-17T12:30:00Z"},
-            {"source_id": "b", "source_version": 1, "recipient_id": "rn-b",
-             "first_available_utc": None},
+            {
+                "source_id": "a",
+                "source_version": 1,
+                "recipient_id": "rn-a",
+                "first_available_utc": "2026-11-17T09:00:00Z",
+            },
+            {
+                "source_id": "a",
+                "source_version": 1,
+                "recipient_id": "rn-b",
+                "first_available_utc": "2026-11-17T09:00:00Z",
+            },
+            {
+                "source_id": "b",
+                "source_version": 1,
+                "recipient_id": "rn-a",
+                "first_available_utc": "2026-11-17T12:30:00Z",
+            },
+            {
+                "source_id": "b",
+                "source_version": 1,
+                "recipient_id": "rn-b",
+                "first_available_utc": None,
+            },
         ],
         "labels": [
             {"event_id": "early", "kind": "patient_family_concern", "speaker_role": "family"},
@@ -179,10 +206,7 @@ def test_actor_specific_availability_does_not_inherit_others_knowledge() -> None
 def test_missing_availability_is_not_inferred_from_record_or_source() -> None:
     raw = case_input()
     timeline = require_object(raw["timeline"], context="timeline")
-    timeline["clocks"] = [
-        item for item in _rows(timeline["clocks"])
-        if item["id"] != "early-a"
-    ]
+    timeline["clocks"] = [item for item in _rows(timeline["clocks"]) if item["id"] != "early-a"]
     packet = assemble_decision_packet(raw)
     assert packet["events"] == []
     assert packet["family_concern_status"] == "not_documented_at_cutoff"
@@ -203,13 +227,15 @@ def test_future_recording_blocks_entitlement_even_if_event_time_is_early() -> No
     early_source = require_object(_rows(timeline["sources"])[0], context="source")
     text = early_source["content"]
     assert isinstance(text, str)
-    clocks.append({
-        "id": "conflicting-later-record",
-        "event_id": "early",
-        "kind": "recording",
-        "recipient_id": None,
-        "evidence": _span("synthetic-decision-case", "a", text, "2026-11-17T11:00:00Z"),
-    })
+    clocks.append(
+        {
+            "id": "conflicting-later-record",
+            "event_id": "early",
+            "kind": "recording",
+            "recipient_id": None,
+            "evidence": _span("synthetic-decision-case", "a", text, "2026-11-17T11:00:00Z"),
+        }
+    )
     timeline["clocks"] = clocks
     assert assemble_decision_packet(raw)["events"] == []
 
@@ -227,7 +253,9 @@ def test_future_outcome_mutation_does_not_change_earlier_packet() -> None:
     for event in _rows(timeline["events"]):
         if event["id"] == "late":
             event["evidence"] = _span(
-                "synthetic-decision-case", "b", revised,
+                "synthetic-decision-case",
+                "b",
+                revised,
                 "Later test result confirms an unexpected outcome.",
             )
     for clock in _rows(timeline["clocks"]):
@@ -245,25 +273,41 @@ def test_future_source_amendment_does_not_rewrite_prior_knowledge() -> None:
     timeline = require_object(raw["timeline"], context="timeline")
     correction = "Corrected availability: 2026-11-17T13:00:00Z"
     _append(timeline, "sources", _source("synthetic-decision-case", "a", correction, 2))
-    _append(timeline, "clocks", {
-        "id": "early-a-corrected",
-        "event_id": "early",
-        "kind": "availability",
-        "recipient_id": "rn-a",
-        "evidence": _span(
-            "synthetic-decision-case", "a", correction, "2026-11-17T13:00:00Z", 2
-        ),
-    })
-    _append(timeline, "amendments", {
-        "id": "new-version-amendment",
-        "earlier_clock_id": "early-a",
-        "later_clock_id": "early-a-corrected",
-        "evidence": _span("synthetic-decision-case", "a", correction, "Corrected availability", 2),
-    })
-    _append(raw, "entitlements", {
-        "source_id": "a", "source_version": 2, "recipient_id": "rn-a",
-        "first_available_utc": "2026-11-17T13:00:00Z",
-    })
+    _append(
+        timeline,
+        "clocks",
+        {
+            "id": "early-a-corrected",
+            "event_id": "early",
+            "kind": "availability",
+            "recipient_id": "rn-a",
+            "evidence": _span(
+                "synthetic-decision-case", "a", correction, "2026-11-17T13:00:00Z", 2
+            ),
+        },
+    )
+    _append(
+        timeline,
+        "amendments",
+        {
+            "id": "new-version-amendment",
+            "earlier_clock_id": "early-a",
+            "later_clock_id": "early-a-corrected",
+            "evidence": _span(
+                "synthetic-decision-case", "a", correction, "Corrected availability", 2
+            ),
+        },
+    )
+    _append(
+        raw,
+        "entitlements",
+        {
+            "source_id": "a",
+            "source_version": 2,
+            "recipient_id": "rn-a",
+            "first_available_utc": "2026-11-17T13:00:00Z",
+        },
+    )
     assert canonical_bytes(assemble_decision_packet(raw)) == baseline
 
 
