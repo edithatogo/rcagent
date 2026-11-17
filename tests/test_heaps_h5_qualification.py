@@ -415,4 +415,9 @@ def test_independent_subprocess_reject_and_abstain(
         assert not output.exists()
     else:
         assert (output / "status.json").is_file()
-        assert _decode((output / "status.json").read_bytes())["review"] == "withheld"
+        receipt = _decode((output / "status.json").read_bytes())
+        assert receipt["review"] == "not_requested"
+        assert receipt["preparation"] == (
+            "empty" if variant_id == "HP20-empty" else "all_abstain"
+        )
+        assert console["review_disposition"] == "withheld"
