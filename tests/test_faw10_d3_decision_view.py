@@ -438,9 +438,7 @@ def test_future_only_cycle_does_not_affect_past_packet() -> None:
             "id": "late-before-early",
             "before_event_id": "late",
             "after_event_id": "early",
-            "evidence": _span(
-                "synthetic-decision-case", "b", revised, "Late before early."
-            ),
+            "evidence": _span("synthetic-decision-case", "b", revised, "Late before early."),
         },
     )
     assert canonical_bytes(assemble_decision_packet(raw)) == baseline
@@ -463,9 +461,7 @@ def test_unentitled_invalid_relation_does_not_leak_future_identity_in_errors() -
             "id": "postcutoff-relation",
             "before_event_id": "late",
             "after_event_id": "CONFIDENTIAL_FUTURE_OUTCOME",
-            "evidence": _span(
-                "synthetic-decision-case", "b", content, "Later test result"
-            ),
+            "evidence": _span("synthetic-decision-case", "b", content, "Later test result"),
         },
     )
     with pytest.raises(
