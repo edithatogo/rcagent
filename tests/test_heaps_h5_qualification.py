@@ -32,9 +32,7 @@ VARIANTS = {
 
 
 def _encode(value: object, *, indent: int = 2) -> bytes:
-    return (
-        json.dumps(value, ensure_ascii=False, allow_nan=False, indent=indent) + "\n"
-    ).encode()
+    return (json.dumps(value, ensure_ascii=False, allow_nan=False, indent=indent) + "\n").encode()
 
 
 def _read(path: str) -> ObjectMap:
@@ -187,9 +185,7 @@ def test_independent_sha256_of_every_manifest_entry() -> None:
     assert result.preparation_disposition == "prepare_draft"
     manifest = _decode(result.files["manifest.json"])
     groups = mapping(manifest["components"])
-    entries = [
-        mapping(groups[name]) for name in ("case", "profile", "mapping", "template")
-    ]
+    entries = [mapping(groups[name]) for name in ("case", "profile", "mapping", "template")]
     for name in ("sources", "supporting_artifacts", "reports"):
         extra = [mapping(item) for item in sequence(groups[name])]
         paths = [text_value(item["path"]) for item in extra]
@@ -226,11 +222,7 @@ def test_object_key_order_preserves_normalised_but_changes_ingress(
     raw = base.case if document == "case" else base.profile
     changed = _encode(_reverse(_decode(raw)))
     assert changed != raw
-    scenario = (
-        replace(base, case=changed)
-        if document == "case"
-        else replace(base, profile=changed)
-    )
+    scenario = replace(base, case=changed) if document == "case" else replace(base, profile=changed)
     after = scenario.run()
     assert after.preparation_disposition == "prepare_draft", after.errors
     assert after.files[f"{document}.json"] == initial.files[f"{document}.json"]
@@ -288,9 +280,7 @@ def test_material_revision_stales_decision_without_approval() -> None:
     assert mapping(approved.status)["clinical_review"] == "not_established"
     case = _decode(base.case)
     case["version"] = 2
-    mapping(sequence(case["statements"])[0])[
-        "uncertainty"
-    ] = "Independent synthetic revision."
+    mapping(sequence(case["statements"])[0])["uncertainty"] = "Independent synthetic revision."
     changed = replace(
         base,
         case=_encode(case),
@@ -389,9 +379,7 @@ def test_independent_subprocess_replay_matches_public_api(tmp_path: Path) -> Non
         output = tmp_path / f"packet-{number}"
         process = _cli(args, output)
         assert process.returncode == 0, process.stdout + process.stderr
-        assert mapping(json.loads(process.stdout))[
-            "preparation_disposition"
-        ] == "prepare_draft"
+        assert mapping(json.loads(process.stdout))["preparation_disposition"] == "prepare_draft"
         snapshot = {
             path.relative_to(output).as_posix(): path.read_bytes()
             for path in output.rglob("*")
@@ -419,9 +407,10 @@ def test_independent_subprocess_reject_and_abstain(
     process = _cli(args, output)
     assert process.returncode == exit_code, process.stdout + process.stderr
     console = mapping(json.loads(process.stdout))
-    assert console["preparation_disposition"] == mapping(
-        VARIANTS[variant_id]["expected"]
-    )["preparation_disposition"]
+    assert (
+        console["preparation_disposition"]
+        == mapping(VARIANTS[variant_id]["expected"])["preparation_disposition"]
+    )
     if exit_code == 2:
         assert not output.exists()
     else:
