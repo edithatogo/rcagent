@@ -28,12 +28,19 @@ SCHEMA_PATH = Path(__file__).parents[1] / "conductor/schemas/decision-models-0.1
 SCHEMA_VERSION = "decision-models/0.1"
 MAX_WIRE_BYTES = 262_144
 PROBABILITY_TOLERANCE = 1e-6
-DISPOSITIONS = frozenset(
-    {"candidate_for_review", "continue_bounded_step", "escalate", "abstain"}
-)
+DISPOSITIONS = frozenset({"candidate_for_review", "continue_bounded_step", "escalate", "abstain"})
 RESULT_STATUSES = frozenset(
-    {"ok", "abstained", "unsupported", "invalid_input", "invalid_output",
-     "timeout", "cancelled", "unavailable", "error"}
+    {
+        "ok",
+        "abstained",
+        "unsupported",
+        "invalid_input",
+        "invalid_output",
+        "timeout",
+        "cancelled",
+        "unavailable",
+        "error",
+    }
 )
 
 MessageKind: TypeAlias = Literal["request", "result", "capability"]
@@ -162,16 +169,18 @@ def schema_for(kind: MessageKind) -> JsonObject:
     """Return a self-contained canonical schema for the selected wire envelope."""
 
     schema = _schema()
-    return {"$schema": schema["$schema"], "$defs": schema["$defs"],
-            "$ref": f"#/$defs/{kind}"}
+    return {"$schema": schema["$schema"], "$defs": schema["$defs"], "$ref": f"#/$defs/{kind}"}
 
 
 def _schema_errors(value: object, kind: MessageKind) -> list[str]:
     validator = Draft202012Validator(schema_for(kind), format_checker=FormatChecker())
     errors: list[ValidationError] = sorted(
-        validator.iter_errors(value), key=lambda error: (tuple(str(p) for p in error.path), error.message)
+        validator.iter_errors(value),
+        key=lambda error: (tuple(str(p) for p in error.path), error.message),
     )
-    return [f"{kind}.schema:{'/'.join(str(p) for p in error.path)}:{error.message}" for error in errors]
+    return [
+        f"{kind}.schema:{'/'.join(str(p) for p in error.path)}:{error.message}" for error in errors
+    ]
 
 
 def validate_capability(capability: object) -> list[str]:
@@ -236,9 +245,7 @@ def _wire_binding_matches(value: JsonObject, ctx: ContractContext) -> list[str]:
     return problems
 
 
-def validate_request(
-    request: object, context: ContractContext, capability: object
-) -> list[str]:
+def validate_request(request: object, context: ContractContext, capability: object) -> list[str]:
     """Check shape, exact evidence identity, privacy and declared features."""
 
     errors = _schema_errors(request, "request")
@@ -260,8 +267,12 @@ def validate_request(
     privacy = require_object(cap["privacy"], context="capability privacy")
     modes = privacy["allowed_modes"]
     classes = privacy["allowed_data_classes"]
-    if (not is_array(modes) or context.privacy_mode not in modes
-            or not is_array(classes) or context.data_class not in classes):
+    if (
+        not is_array(modes)
+        or context.privacy_mode not in modes
+        or not is_array(classes)
+        or context.data_class not in classes
+    ):
         errors.append("authority.capability_scope")
     if context.privacy_veto or context.authority_veto:
         errors.append("authority.hard_veto")
@@ -287,12 +298,14 @@ def validate_request(
     if timeout is None or maximum_timeout is None or timeout > maximum_timeout:
         errors.append("capability.timeout_limit")
     deadline = operation["deadline_monotonic_ns"]
-    if (context.now_monotonic_ns is not None and isinstance(deadline, int)
-            and deadline <= context.now_monotonic_ns):
+    if (
+        context.now_monotonic_ns is not None
+        and isinstance(deadline, int)
+        and deadline <= context.now_monotonic_ns
+    ):
         errors.append("operation.deadline_expired")
     combinations = {
-        (item["kind"], item["modality"], item["multiple"])
-        for item in _rows(cap["supported"])
+        (item["kind"], item["modality"], item["multiple"]) for item in _rows(cap["supported"])
     }
     for question in questions:
         kind = question["kind"]
@@ -330,7 +343,10 @@ def validate_request(
             severe = question["severe_level_ids"]
             if is_array(severe) and not set(str(x) for x in severe).issubset(levels_ids):
                 errors.append("score.severe_membership")
-        if kind in {"text", "number", "date", "box", "boxes"} and question["field_spec_id"] not in context.trusted_fields:
+        if (
+            kind in {"text", "number", "date", "box", "boxes"}
+            and question["field_spec_id"] not in context.trusted_fields
+        ):
             errors.append("field.untrusted_definition")
         if kind in {"box", "boxes"} and (
             question["media_anchor_id"] not in context.anchors
@@ -355,11 +371,15 @@ def _validate_anchor(
         return ["source.cross_case_or_view"]
     if anchor.source_hash != "sha256:" + sha256(anchor.raw_bytes).hexdigest():
         return ["source.stale_bytes_hash"]
-    if anchor.start_byte < 0 or anchor.start_byte >= anchor.end_byte or anchor.end_byte > len(anchor.raw_bytes):
+    if (
+        anchor.start_byte < 0
+        or anchor.start_byte >= anchor.end_byte
+        or anchor.end_byte > len(anchor.raw_bytes)
+    ):
         return ["source.byte_span_bounds"]
     if expected_text is not None:
         try:
-            actual = anchor.raw_bytes[anchor.start_byte:anchor.end_byte].decode("utf-8")
+            actual = anchor.raw_bytes[anchor.start_byte : anchor.end_byte].decode("utf-8")
         except UnicodeDecodeError:
             return ["source.partial_utf8"]
         if actual != expected_text:
@@ -368,8 +388,7 @@ def _validate_anchor(
 
 
 def _primitive_errors(
-    output: JsonObject, question: JsonObject, req: JsonObject,
-    ctx: ContractContext, cap: JsonObject
+    output: JsonObject, question: JsonObject, req: JsonObject, ctx: ContractContext, cap: JsonObject
 ) -> list[str]:
     kind = question["kind"]
     errors: list[str] = []
@@ -385,8 +404,11 @@ def _primitive_errors(
         if output["multiple"] != question["multiple"]:
             errors.append("choice.multiple")
         if question["multiple"] and is_array(selected):
-            expected_selected = {key for key, value in values.items() if
-                                 _number(value) is not None and float(str(value)) >= 0.5}
+            expected_selected = {
+                key
+                for key, value in values.items()
+                if _number(value) is not None and float(str(value)) >= 0.5
+            }
             if set(selected) != expected_selected:
                 errors.append("choice.multilabel_selection")
         if not question["multiple"]:
@@ -404,21 +426,29 @@ def _primitive_errors(
         if output["ordered_level_ids"] != ids or set(values) != set(ids):
             errors.append("score.level_identity")
         probs = [_number(v) for v in values.values()]
-        if any(v is None for v in probs) or abs(sum(v for v in probs if v is not None) - 1) > PROBABILITY_TOLERANCE:
+        if (
+            any(v is None for v in probs)
+            or abs(sum(v for v in probs if v is not None) - 1) > PROBABILITY_TOLERANCE
+        ):
             errors.append("score.probability_mass")
     if kind in {"text", "number", "date", "box", "boxes"}:
         found = _number(output["found"])
         value = output["value"]
         if found is None:
             errors.append("typed.found")
-        elif found < 0.5 and (value is not None or output["unit"] is not None
-                              or output["source_anchor_id"] is not None):
+        elif found < 0.5 and (
+            value is not None
+            or output["unit"] is not None
+            or output["source_anchor_id"] is not None
+        ):
             errors.append("typed.below_found_boundary")
         if value is not None:
             text = value if kind in {"text", "date"} and isinstance(value, str) else None
             if kind == "number":
                 text = str(value)
-            errors.extend(_validate_anchor(output["source_anchor_id"], req, ctx, expected_text=text))
+            errors.extend(
+                _validate_anchor(output["source_anchor_id"], req, ctx, expected_text=text)
+            )
         if kind == "number" and value is not None:
             unit = output["unit"]
             allowed_units = question["allowed_units"]
@@ -430,8 +460,10 @@ def _primitive_errors(
             v = _number(value)
             for bound in ("minimum", "maximum"):
                 b = _number(question.get(bound))
-                if v is not None and b is not None and (
-                    (bound == "minimum" and v < b) or (bound == "maximum" and v > b)
+                if (
+                    v is not None
+                    and b is not None
+                    and ((bound == "minimum" and v < b) or (bound == "maximum" and v > b))
                 ):
                     errors.append("number.bounds")
         if kind == "date" and value is not None and isinstance(value, str):
@@ -444,15 +476,20 @@ def _primitive_errors(
                     errors.append("date.invalid_calendar")
         if kind in {"box", "boxes"} and value is not None:
             anchor = ctx.anchors.get(str(output["source_anchor_id"]))
-            if (anchor is None or anchor.media_anchor_id != question["media_anchor_id"]
-                    or anchor.transform_hash != question["transform_hash"]
-                    or anchor.page_index != question["page_index"]):
+            if (
+                anchor is None
+                or anchor.media_anchor_id != question["media_anchor_id"]
+                or anchor.transform_hash != question["transform_hash"]
+                or anchor.page_index != question["page_index"]
+            ):
                 errors.append("region.media_transform")
             regions = [value] if kind == "box" else value
             if is_array(regions):
                 maximum = question["max_regions"] if kind == "boxes" else 1
                 limits = require_object(cap["limits"], context="capability limits")
-                if len(regions) > int(str(maximum)) or len(regions) > int(str(limits["max_regions"])):
+                if len(regions) > int(str(maximum)) or len(regions) > int(
+                    str(limits["max_regions"])
+                ):
                     errors.append("region.count_limit")
                 seen: set[tuple[float, float, float, float]] = set()
                 for region in regions:
@@ -476,10 +513,15 @@ def _primitive_errors(
 
 
 def gate_disposition(
-    *, hard_review: bool = False, source_conflict: bool = False,
-    privacy_veto: bool = False, authority_veto: bool = False,
-    all_required_valid: bool = True, calibrated: bool = True,
-    uncertain: bool = False, eligible_continue: bool = False
+    *,
+    hard_review: bool = False,
+    source_conflict: bool = False,
+    privacy_veto: bool = False,
+    authority_veto: bool = False,
+    all_required_valid: bool = True,
+    calibrated: bool = True,
+    uncertain: bool = False,
+    eligible_continue: bool = False,
 ) -> Literal["abstain", "escalate", "candidate_for_review", "continue_bounded_step"]:
     """Deterministic, model-independent recommendation; never an approval."""
 
@@ -505,8 +547,14 @@ def validate_result(
     req = require_object(request, context="request")
     cap = require_object(capability, context="capability")
     for key in (
-        "request_id", "task_id", "task_spec_hash", "case_id", "view_id",
-        "view_hash", "source_manifest_hash", "capability_receipt_hash",
+        "request_id",
+        "task_id",
+        "task_spec_hash",
+        "case_id",
+        "view_id",
+        "view_hash",
+        "source_manifest_hash",
+        "capability_receipt_hash",
     ):
         if res.get(key) != req.get(key):
             errors.append(f"result.identity.{key}")
@@ -539,8 +587,8 @@ def validate_result(
             if question["kind"] in {"choice", "score"}:
                 ids_for_prob = (
                     _ids(_rows(question["candidates"]), "candidate_id")
-                    if question["kind"] == "choice" else
-                    _ids(_rows(question["ordered_levels"]), "level_id")
+                    if question["kind"] == "choice"
+                    else _ids(_rows(question["ordered_levels"]), "level_id")
                 )
                 if set(values) != set(ids_for_prob):
                     errors.append("calibration.class_keys")
@@ -578,19 +626,21 @@ def idempotency_identity(request: object) -> str:
         raise ValueError("invalid request for idempotency binding")
     value = require_object(request, context="request")
     operation = require_object(value["operation"], context="operation")
-    return fingerprint({
-        "key": operation["idempotency_key"],
-        "request_id": value["request_id"],
-        "task": value["task_spec_hash"],
-        "case": value["case_id"],
-        "view": value["view_hash"],
-        "sources": value["source_manifest_hash"],
-        "privacy_mode": value["privacy_mode"],
-        "data_class": value["data_class"],
-        "compartment_id": value["compartment_id"],
-        "capability": value["capability_receipt_hash"],
-        "questions": value["questions"],
-    })
+    return fingerprint(
+        {
+            "key": operation["idempotency_key"],
+            "request_id": value["request_id"],
+            "task": value["task_spec_hash"],
+            "case": value["case_id"],
+            "view": value["view_hash"],
+            "sources": value["source_manifest_hash"],
+            "privacy_mode": value["privacy_mode"],
+            "data_class": value["data_class"],
+            "compartment_id": value["compartment_id"],
+            "capability": value["capability_receipt_hash"],
+            "questions": value["questions"],
+        }
+    )
 
 
 def severe_tail_probability(output: object, question: object) -> float:
