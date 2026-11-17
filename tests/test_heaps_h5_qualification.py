@@ -27,13 +27,14 @@ FIXTURES = ROOT / "tests" / "fixtures" / "heaps"
 EVALUATED_AT = "2030-01-07T02:00:00Z"
 ORACLE = mapping(json.loads((FIXTURES / "oracle.json").read_bytes()))
 VARIANTS = {
-    text_value(row["id"]): row
-    for row in (mapping(item) for item in sequence(ORACLE["variants"]))
+    text_value(row["id"]): row for row in (mapping(item) for item in sequence(ORACLE["variants"]))
 }
 
 
 def _encode(value: object, *, indent: int = 2) -> bytes:
-    return (json.dumps(value, ensure_ascii=False, allow_nan=False, indent=indent) + "\n").encode()
+    return (
+        json.dumps(value, ensure_ascii=False, allow_nan=False, indent=indent) + "\n"
+    ).encode()
 
 
 def _read(path: str) -> ObjectMap:
@@ -88,9 +89,13 @@ class Scenario:
 
     def run(self) -> PacketResult:
         return assemble_packet(
-            self.case, self.profile, self.assets,
-            evaluated_at=EVALUATED_AT, template_path="packet/template-v1.md",
-            manifest_bytes=self.manifest, decision_bytes=self.decision,
+            self.case,
+            self.profile,
+            self.assets,
+            evaluated_at=EVALUATED_AT,
+            template_path="packet/template-v1.md",
+            manifest_bytes=self.manifest,
+            decision_bytes=self.decision,
             status_bytes=self.status,
         )
 
@@ -98,8 +103,7 @@ class Scenario:
 def _scenario(variant_id: str = "HP01-valid") -> Scenario:
     variant = VARIANTS[variant_id]
     documents = {
-        name: _read(text_value(path))
-        for name, path in mapping(variant["documents"]).items()
+        name: _read(text_value(path)) for name, path in mapping(variant["documents"]).items()
     }
     for mutation in sequence(variant["mutations"]):
         _change(documents, mapping(mutation))
@@ -129,15 +133,22 @@ def _scenario(variant_id: str = "HP01-valid") -> Scenario:
         return None
 
     return Scenario(
-        case_bytes, profile_bytes, assets,
-        detached("manifest"), detached("decision"), detached("status"),
+        case_bytes,
+        profile_bytes,
+        assets,
+        detached("manifest"),
+        detached("decision"),
+        detached("status"),
     )
 
 
 def _rebind(case: ObjectMap, profile: ObjectMap) -> bytes:
     canonical = json.dumps(
-        case, ensure_ascii=False, allow_nan=False,
-        sort_keys=True, separators=(",", ":"),
+        case,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
     ).encode()
     binding = mapping(profile["case_binding"])
     binding["case_id"] = case["case_id"]
@@ -176,7 +187,9 @@ def test_independent_sha256_of_every_manifest_entry() -> None:
     assert result.preparation_disposition == "prepare_draft"
     manifest = _decode(result.files["manifest.json"])
     groups = mapping(manifest["components"])
-    entries = [mapping(groups[name]) for name in ("case", "profile", "mapping", "template")]
+    entries = [
+        mapping(groups[name]) for name in ("case", "profile", "mapping", "template")
+    ]
     for name in ("sources", "supporting_artifacts", "reports"):
         extra = [mapping(item) for item in sequence(groups[name])]
         paths = [text_value(item["path"]) for item in extra]
@@ -196,22 +209,27 @@ def test_independent_sha256_of_every_manifest_entry() -> None:
         assert entry["sha256"] == _digest(raw)
     assert result.files["ingress/case.json"] == original.case
     assert result.files["ingress/profile.json"] == original.profile
-    assert not paths_seen.intersection({"manifest.json", "decision.json", "status.json",
-                                       "verification.json"})
+    assert not paths_seen.intersection(
+        {"manifest.json", "decision.json", "status.json", "verification.json"}
+    )
     receipt = _decode(result.files["verification.json"])
     assert receipt["generated_manifest_sha256"] == _digest(result.files["manifest.json"])
     assert receipt["status_sha256"] == _digest(result.files["status.json"])
 
 
 @pytest.mark.parametrize("document", ["case", "profile"])
-def test_object_key_order_preserves_normalised_but_changes_ingress(document: str) -> None:
+def test_object_key_order_preserves_normalised_but_changes_ingress(
+    document: str,
+) -> None:
     base = _scenario()
     initial = base.run()
     raw = base.case if document == "case" else base.profile
     changed = _encode(_reverse(_decode(raw)))
     assert changed != raw
-    scenario = replace(base, case=changed) if document == "case" else replace(
-        base, profile=changed
+    scenario = (
+        replace(base, case=changed)
+        if document == "case"
+        else replace(base, profile=changed)
     )
     after = scenario.run()
     assert after.preparation_disposition == "prepare_draft", after.errors
@@ -270,9 +288,13 @@ def test_material_revision_stales_decision_without_approval() -> None:
     assert mapping(approved.status)["clinical_review"] == "not_established"
     case = _decode(base.case)
     case["version"] = 2
-    mapping(sequence(case["statements"])[0])["uncertainty"] = "Independent synthetic revision."
+    mapping(sequence(case["statements"])[0])[
+        "uncertainty"
+    ] = "Independent synthetic revision."
     changed = replace(
-        base, case=_encode(case), profile=_rebind(case, _decode(base.profile)),
+        base,
+        case=_encode(case),
+        profile=_rebind(case, _decode(base.profile)),
         decision=_encode(decision),
     ).run()
     assert changed.preparation_disposition == "prepare_draft", changed.errors
@@ -282,12 +304,19 @@ def test_material_revision_stales_decision_without_approval() -> None:
     assert mapping(changed.status)["clinical_review"] == "not_established"
 
 
-@pytest.mark.parametrize("variant_id", [
-    "HP05-unsupported-recommendation", "HP09-participation-missing",
-    "HP09-participation-declined", "HP11-unavailable-local-template",
-    "HP13-missing-trigger", "HP13-missing-calendar",
-    "HP15-implemented-without-outcomes", "HP18-duplicate-source-family",
-])
+@pytest.mark.parametrize(
+    "variant_id",
+    [
+        "HP05-unsupported-recommendation",
+        "HP09-participation-missing",
+        "HP09-participation-declined",
+        "HP11-unavailable-local-template",
+        "HP13-missing-trigger",
+        "HP13-missing-calendar",
+        "HP15-implemented-without-outcomes",
+        "HP18-duplicate-source-family",
+    ],
+)
 def test_gaps_never_become_substantive_approval(variant_id: str) -> None:
     result = _scenario(variant_id).run()
     assert result.preparation_disposition == "prepare_draft", result.errors
@@ -319,8 +348,16 @@ def _write_inputs(scenario: Scenario, root: Path) -> list[str]:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(raw)
     args = [
-        "--case", str(case), "--profile", str(profile), "--artifacts", str(assets),
-        "--template", "packet/template-v1.md", "--evaluated-at", EVALUATED_AT,
+        "--case",
+        str(case),
+        "--profile",
+        str(profile),
+        "--artifacts",
+        str(assets),
+        "--template",
+        "packet/template-v1.md",
+        "--evaluated-at",
+        EVALUATED_AT,
     ]
     for name in ("manifest", "decision", "status"):
         raw = getattr(scenario, name)
@@ -335,7 +372,11 @@ def _cli(args: list[str], output: Path) -> subprocess.CompletedProcess[str]:
     # B603/B607: fixed Python executable/module and explicit argv; no shell.
     return subprocess.run(
         [sys.executable, "-m", "tools.heaps", *args, "--output", str(output)],
-        cwd=ROOT, capture_output=True, text=True, check=False, timeout=35,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=35,
     )
 
 
@@ -348,21 +389,29 @@ def test_independent_subprocess_replay_matches_public_api(tmp_path: Path) -> Non
         output = tmp_path / f"packet-{number}"
         process = _cli(args, output)
         assert process.returncode == 0, process.stdout + process.stderr
-        assert mapping(json.loads(process.stdout))["preparation_disposition"] == "prepare_draft"
+        assert mapping(json.loads(process.stdout))[
+            "preparation_disposition"
+        ] == "prepare_draft"
         snapshot = {
             path.relative_to(output).as_posix(): path.read_bytes()
-            for path in output.rglob("*") if path.is_file()
+            for path in output.rglob("*")
+            if path.is_file()
         }
         assert snapshot == expected.files
         snapshots.append(snapshot)
     assert snapshots[0] == snapshots[1]
 
 
-@pytest.mark.parametrize(("variant_id", "exit_code"), [
-    ("HP04-wrong-kind", 2), ("HP20-empty", 3), ("HP20-all-abstain", 3),
-])
+@pytest.mark.parametrize(
+    ("variant_id", "exit_code"),
+    [
+        ("HP04-wrong-kind", 2),
+        ("HP20-empty", 3),
+        ("HP20-all-abstain", 3),
+    ],
+)
 def test_independent_subprocess_reject_and_abstain(
-    variant_id: str, exit_code: int, tmp_path: Path,
+    variant_id: str, exit_code: int, tmp_path: Path
 ) -> None:
     scenario = _scenario(variant_id)
     args = _write_inputs(scenario, tmp_path / "inputs")
