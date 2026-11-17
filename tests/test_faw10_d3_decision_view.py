@@ -482,10 +482,12 @@ def test_synthetic_receipt_is_deterministic_and_replay_bound() -> None:
     assert receipt["output_fingerprint"] == fingerprint(
         {key: value for key, value in receipt.items() if key != "output_fingerprint"}
     )
-    for raw, packet in zip(receipt["inputs"], receipt["cases"], strict=True):
+    inputs = receipt["inputs"]
+    cases = receipt["cases"]
+    assert is_array(inputs)
+    assert is_array(cases)
+    for raw, packet in zip(inputs, cases, strict=True):
         assert canonical_bytes(assemble_decision_packet(raw)) == canonical_bytes(packet)
         assert render_decision_packet(raw, packet) == canonical_bytes(packet).decode("utf-8")
-    assert "Later test result" not in render_decision_packet(
-        receipt["inputs"][0], receipt["cases"][0]
-    )
-    assert receipt["cases"][2]["events"] == []
+    assert "Later test result" not in render_decision_packet(inputs[0], cases[0])
+    assert require_object(cases[2], context="synthetic empty D3 packet")["events"] == []
