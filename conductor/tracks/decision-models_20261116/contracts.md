@@ -1,6 +1,6 @@
 # Proposed decision-model interface contracts
 
-This is a pre-implementation design appendix to [the specification](./spec.md), proposal version `decision-models/0.1`. Schema fragments below are documentation, not installed schemas or executable adapters. They specify the acceptance surface for DM02. JSON Schema remains canonical; Pydantic is an optional boundary adapter. Nothing here changes an existing public interface.
+This is the original design appendix to [the specification](./spec.md), proposal version `decision-models/0.1`. The fragments below are **historical explanatory examples**, not complete installed schemas. DM02's opt-in canonical [JSON Schema](../../schemas/decision-models-0.1.schema.json), [checked Python companion](../../../tools/decision_model_contracts.py) and [receiving/rollback map](./dm02/contract-mapping.md) implement a bounded model-free subset. JSON Schema remains canonical; Pydantic is optional. No existing public interface or runtime registry has been changed, and shared acceptance remains with the coordinator.
 
 ## 1. Port and capability contract
 
