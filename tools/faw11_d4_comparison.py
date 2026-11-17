@@ -7,12 +7,25 @@ compartment; arm-facing inputs exclude future evidence and reference labels.
 
 from __future__ import annotations
 
+import argparse
 import re
+import sys
+from hashlib import sha256
+from pathlib import Path
 from typing import Literal, TypedDict
 
 from tools.evidence_core import canonical_bytes, fingerprint
 from tools.faw10_d3_decision_view import assemble_decision_packet
+from tools.faw10_d3_decision_view import generate_receipt as d3_generate_receipt
 from tools.json_shapes import JsonObject, is_array, require_object
+
+ROOT = Path(__file__).parents[1]
+DEMO_FILES = (
+    "tools/faw11_d4_comparison.py",
+    "tools/faw10_d3_decision_view.py",
+    "tools/workbench.py",
+    "tools/evidence_core.py",
+)
 
 Partition = Literal["train", "development", "test"]
 Kind = Literal["observation", "outcome", "appraisal", "patient_family_concern"]
@@ -405,3 +418,94 @@ def compare_arms(study: object, references: object, arms: object) -> D4Receipt:
         return _compare_arms(study, references, arms)
     except (KeyError, ValueError, TypeError, UnicodeError, RecursionError, OverflowError):
         raise ValueError("invalid or inadmissible D4 comparison") from None
+
+
+
+def generate_receipt() -> JsonObject:
+    """A fixed, input-inspectable synthetic test; not a qualified model experiment."""
+    parent = d3_generate_receipt()
+    inputs = parent["inputs"]
+    if not is_array(inputs) or not inputs:
+        raise ValueError("D4 requires the synthetic D3 input")
+    case = require_object(inputs[0], context="D3 synthetic input")
+    root = "synthetic-demo-family-1"
+    view = make_view(case, root, "test")
+    if [event["event_id"] for event in view["events"]] != ["concern"]:
+        raise ValueError("synthetic fixture no longer matches frozen D4 demo label")
+    references: list[JsonObject] = [
+        {
+            "view_fingerprint": view["view_fingerprint"],
+            "event_id": "concern",
+            "expected_kind": "patient_family_concern",
+            "reference_origin": "independently_authored_synthetic",
+        }
+    ]
+    arms: list[JsonObject] = [
+        {
+            "method": "regex",
+            "status": "executed",
+            "revision": "faw11-d4-regex-1.0",
+            "predictions": regex_predictions(case, view),
+            "measured_resources": None,
+        }
+    ]
+    for method in ("token_section_context", "linear_classifier", "structured_generation"):
+        arms.append(
+            {
+                "method": method,
+                "status": "unavailable",
+                "reason": "no pinned model, training corpus or local runtime evidence",
+            }
+        )
+    comparison = compare_arms(
+        [{"case": case, "root_family_id": root, "partition": "test"}],
+        references,
+        arms,
+    )
+    receipt: JsonObject = {
+        "schema_version": "faw11-d4-receipt-1.0",
+        "task": "FAW11/D4",
+        "dataset": "generated-synthetic-only",
+        "command": "uv run --no-sync python -m tools.workbench d4-demo",
+        "scope": "synthetic comparator-admission and fixed regex example only",
+        "input": case,
+        "input_fingerprint": fingerprint(case),
+        "arm_view": view,
+        "references": references,
+        "comparison": comparison,
+        "model_executed": False,
+        "dependency_lock_sha256": "sha256:" + sha256((ROOT / "uv.lock").read_bytes()).hexdigest(),
+        "implementation_files": {
+            path: "sha256:" + sha256((ROOT / path).read_bytes()).hexdigest()
+            for path in DEMO_FILES
+        },
+        "limitations": [
+            "The research receipt includes generated synthetic fixture inputs, unlike actor-facing D3/D4 model views.",
+            "Only the regex reference arm ran; three comparator arms have no execution or resource receipts.",
+            "One visible synthetic event and a fixed author-labelled reference are not an independent holdout.",
+            "No paired model comparison, clinical validation, model qualification or production access authority.",
+        ],
+        "receipt_fingerprint": "",
+    }
+    receipt["receipt_fingerprint"] = fingerprint(
+        {key: value for key, value in receipt.items() if key != "receipt_fingerprint"}
+    )
+    return receipt
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.parse_args(argv)
+    try:
+        payload = canonical_bytes(generate_receipt()) + b"\n"
+        if sys.stdout.buffer.write(payload) != len(payload):
+            raise OSError("incomplete D4 demonstration write")
+        sys.stdout.buffer.flush()
+    except (OSError, ValueError) as exc:
+        print(f"D4 demonstration failed: {exc}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

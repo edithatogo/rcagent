@@ -43,6 +43,5 @@ def test_d4_demo_cli_has_exact_repeatable_utf8_receipt_bytes() -> None:
     first = subprocess.run(argv, capture_output=True, check=True).stdout
     second = subprocess.run(argv, capture_output=True, check=True).stdout
     assert first == second == canonical_bytes(generate_receipt()) + b"\n"
-    parsed = json.loads(first)
-    assert isinstance(parsed, dict)
-    assert parsed["task"] == "FAW11/D4"
+    parsed: object = json.loads(first)
+    assert require_object(parsed, context="D4 CLI result")["task"] == "FAW11/D4"
