@@ -15,8 +15,8 @@ from tools.autonomy_state import StateStore, next_action
 from tools.faw07_d0_demo import main as run_d0_demo
 from tools.faw08_d1_extraction import main as run_d1_demo
 from tools.faw09_d2_timeline import main as run_d2_demo
-from tools.faw11_d4_comparison import main as run_d4_demo
 from tools.faw10_d3_decision_view import main as run_d3_demo
+from tools.faw11_d4_comparison import main as run_d4_demo
 from tools.json_shapes import JsonObject, is_array, is_object
 from tools.validate_repository import validate
 

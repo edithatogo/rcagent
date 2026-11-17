@@ -29,7 +29,8 @@ def test_d4_demo_emits_an_explicitly_unqualified_four_arm_receipt() -> None:
         assert require_object(scores[arm], context=arm)["status"] == "unavailable"
     view = require_object(receipt["arm_view"], context="arm input")
     events = view["events"]
-    assert is_array(events) and len(events) == 1
+    assert is_array(events)
+    assert len(events) == 1
     assert "Later test result" not in str(view)
     assert "patient_family_concern" not in str(view)
     assert "future" not in str(view)
