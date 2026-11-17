@@ -1,4 +1,4 @@
-"""FAW11/D4 synthetic comparison contract: test-first, no model qualification."""
+"""FAW11/D4 synthetic comparison contract: negative and metamorphic cases."""
 
 from __future__ import annotations
 
@@ -7,19 +7,15 @@ from copy import deepcopy
 import pytest
 
 from tools.faw10_d3_decision_view import generate_receipt
-from tools.faw11_d4_comparison import (
-    compare_arms,
-    make_view,
-    regex_predictions,
-)
+from tools.faw11_d4_comparison import D4View, compare_arms, make_view, regex_predictions
+from tools.json_shapes import JsonObject, is_array, require_object
 
 
-def _case() -> dict[str, object]:
-    sample = generate_receipt()["inputs"][0]
-    return deepcopy(sample)
+def _case() -> JsonObject:
+    return deepcopy(generate_receipt()["inputs"][0])
 
 
-def _study(raw: dict[str, object] | None = None) -> list[dict[str, object]]:
+def _study(raw: JsonObject | None = None) -> list[JsonObject]:
     return [
         {
             "root_family_id": "independent-synthetic-root-01",
@@ -29,9 +25,7 @@ def _study(raw: dict[str, object] | None = None) -> list[dict[str, object]]:
     ]
 
 
-def _reference(view: dict[str, object]) -> list[dict[str, object]]:
-    events = view["events"]
-    assert isinstance(events, list)
+def _reference(view: D4View) -> list[JsonObject]:
     return [
         {
             "view_fingerprint": view["view_fingerprint"],
@@ -39,11 +33,11 @@ def _reference(view: dict[str, object]) -> list[dict[str, object]]:
             "expected_kind": "patient_family_concern",
             "reference_origin": "independently_authored_synthetic",
         }
-        for event in events
+        for event in view["events"]
     ]
 
 
-def _arms(view: dict[str, object]) -> list[dict[str, object]]:
+def _arms(view: D4View) -> list[JsonObject]:
     return [
         {
             "method": "regex",
@@ -85,7 +79,7 @@ def test_future_label_change_cannot_change_d4_view() -> None:
     original = _case()
     future_modified = deepcopy(original)
     labels = future_modified["labels"]
-    assert isinstance(labels, list)
+    assert is_array(labels)
     labels[1] = {"event_id": "result", "kind": "appraisal", "speaker_role": None}
     before = make_view(original, "root-01", "test")
     after = make_view(future_modified, "root-01", "test")
@@ -142,7 +136,7 @@ def test_rejects_incomplete_duplicate_or_cross_view_predictions(mutation: str) -
     view = make_view(study[0]["case"], "independent-synthetic-root-01", "test")
     arms = _arms(view)
     predictions = arms[0]["predictions"]
-    assert isinstance(predictions, list)
+    assert is_array(predictions)
     if mutation == "missing":
         predictions.clear()
     elif mutation == "duplicate":
@@ -156,7 +150,8 @@ def test_rejects_incomplete_duplicate_or_cross_view_predictions(mutation: str) -
             }
         )
     else:
-        predictions[0]["view_fingerprint"] = "sha256:stale"
+        first = require_object(predictions[0], context="test prediction")
+        first["view_fingerprint"] = "sha256:stale"
     with pytest.raises(ValueError, match="invalid or inadmissible D4 comparison"):
         compare_arms(study, _reference(view), arms)
 
@@ -165,7 +160,7 @@ def test_no_root_family_leakage_across_partitions() -> None:
     raw = _case()
     other = deepcopy(raw)
     other["cutoff_utc"] = "2026-11-17T13:00:00Z"
-    study = [
+    study: list[JsonObject] = [
         {"root_family_id": "root", "partition": "train", "case": raw},
         {"root_family_id": "root", "partition": "test", "case": other},
     ]
@@ -191,11 +186,11 @@ def test_reference_outside_actor_cutoff_is_rejected() -> None:
 
 def test_malformed_future_input_error_does_not_echo_excluded_identifier() -> None:
     raw = _case()
-    timeline = raw["timeline"]
-    assert isinstance(timeline, dict)
+    timeline = require_object(raw["timeline"], context="timeline")
     events = timeline["events"]
-    assert isinstance(events, list)
-    events[1]["id"] = "SECRET-FUTURE-EVENT"
+    assert is_array(events)
+    late = require_object(events[1], context="future event")
+    late["id"] = "SECRET-FUTURE-EVENT"
     with pytest.raises(ValueError, match="invalid or inadmissible D4 view") as caught:
         make_view(raw, "root", "test")
     assert "SECRET-FUTURE-EVENT" not in str(caught.value)
