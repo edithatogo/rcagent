@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 from typing import Literal, TypedDict
 
-from tools.evidence_core import fingerprint
+from tools.evidence_core import canonical_bytes, fingerprint
 from tools.faw10_d3_decision_view import assemble_decision_packet
 from tools.json_shapes import JsonObject, is_array, require_object
 
@@ -175,7 +175,19 @@ def make_view(case: object, root_family_id: object, partition: object) -> D4View
         raise ValueError("invalid or inadmissible D4 view") from None
 
 
-def regex_predictions(view: D4View) -> list[Prediction]:
+def regex_predictions(case: object, view: object) -> list[Prediction]:
+    """Replay case, recipient, cutoff and immutable span binding before matching."""
+    try:
+        received = require_object(view, context="D4 arm view")
+        expected = make_view(case, received["root_family_id"], received["partition"])
+        if canonical_bytes(received) != canonical_bytes(expected):
+            raise ValueError("stale or unbound comparator input")
+        return _regex_predictions(expected)
+    except (KeyError, ValueError, TypeError, UnicodeError, RecursionError, OverflowError):
+        raise ValueError("invalid or unbound D4 comparator view") from None
+
+
+def _regex_predictions(view: D4View) -> list[Prediction]:
     """Fixed, weak lexical reference arm; neither model nor semantic truth."""
     predictions: list[Prediction] = []
     for event in view["events"]:
