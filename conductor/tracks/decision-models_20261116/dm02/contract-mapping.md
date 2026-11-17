@@ -8,9 +8,9 @@ The user authorised DM02 implementation, PR checks and merge. DM01's
 [receiving map](../dm01/context-pack.md), [synthetic study](../dm01/study-protocol.md),
 [contract proposal](../contracts.md) and current Track 13 interfaces were
 reconciled before implementation. DM02 adds an **opt-in research companion**:
-one [JSON Schema 2020-12](../../../../schemas/decision-models-0.1.schema.json),
-a checked [Python boundary](../../../../../tools/decision_model_contracts.py)
-and synthetic [tests](../../../../../tests/test_decision_model_contract_matrix.py).
+one [JSON Schema 2020-12](../../../schemas/decision-models-0.1.schema.json),
+a checked [Python boundary](../../../../tools/decision_model_contracts.py)
+and synthetic [tests](../../../../tests/test_decision_model_contract_matrix.py).
 
 There is no import into the workbench, clinical application, registry or
 routing engine. This is not model admission, a generation API or an approval
