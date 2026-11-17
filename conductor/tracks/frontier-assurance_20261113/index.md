@@ -1,6 +1,6 @@
 # Track 13: Frontier assurance and incremental capability evidence
 
-Status: FAW06, FAW07 / D0 and FAW08 / D1 remain delivered with their original acceptance records. FAW09 / D2 is accepted through [PR #150](https://github.com/edithatogo/rcagent/pull/150), merged as `8bf94873af22730e445fcbb1b7fb748cfd16ed25` after all nine final-head Quality jobs and dependency/privacy checks passed, followed by successful automatic master conformance. The [D2 acceptance receipt](./faw09-d2-acceptance-20261117.md) records actual identities, independent verification and the retained timestamp correction. FAW10 / D3 is next and remains planned; the wider track is open, with no model or clinical qualification.
+Status: FAW06, FAW07/D0, FAW08/D1, FAW09/D2 and FAW10/D3 are accepted for bounded software evidence only. [D3 merge #155](https://github.com/edithatogo/rcagent/pull/155) at `54c67551db71` passed nine exact-head Quality jobs, dependency/privacy and subsequent master conformance. [D3 acceptance](./faw10-d3-acceptance-20261117.md). FAW11/D4 comparison infrastructure is in a separate draft PR; its three non-regex methods and clinical/model qualification remain open. The wider Track 13 is in progress.
 
 - [Specification and MoSCoW requirements](./spec.md)
 - [Executable work packages and acceptance](./plan.md)
@@ -15,6 +15,8 @@ Status: FAW06, FAW07 / D0 and FAW08 / D1 remain delivered with their original ac
 - [FAW09 / D2 bounded partial-chronology contract](./faw09-d2-contract.md)
 - [D2 source completion and verification](./faw09-d2-completion-20261117.md)
 - [D2 observed merge and acceptance](./faw09-d2-acceptance-20261117.md)
+- [FAW10 / D3 bounded synthetic admission contract](./faw10-d3-contract.md)
+- [FAW10 / D3 observed source merge and acceptance](./faw10-d3-acceptance-20261117.md)
 - [Evidence ledger](./evidence.jsonl)
 - [Capability demonstration ladder](../../research/frontier-assurance/capability-ladder.md)
 - [Programmatic, multi-model and multimodal triangulation](../../research/frontier-assurance/triangulation.md)
