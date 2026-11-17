@@ -163,12 +163,15 @@ def _choice(request: JsonObject, result: JsonObject, context: dm.ContractContext
         "probabilities": {"alpha": 0.6, "beta": 0.4},
         "selected_ids": ["alpha"], "nil_reason": None,
     }
-    return _set_question(request, result, context, question, output)
+    return replace(
+        _set_question(request, result, context, question, output),
+        trusted_candidate_sets={"q-other": fingerprint(candidates)},
+    )
 
 
 def _score(request: JsonObject, result: JsonObject,
            context: dm.ContractContext) -> dm.ContractContext:
-    return _set_question(request, result, context, {
+    updated = _set_question(request, result, context, {
         **_common_question(context, "score"), "rubric_id": "synthetic-rubric",
         "rubric_hash": _hash_bytes(b"ordinal-rubric"),
         "ordered_levels": [
@@ -181,6 +184,7 @@ def _score(request: JsonObject, result: JsonObject,
         "probabilities": {"high": 0.3, "low": 0.7},
         "native_summary": "low", "native_semantics": "category",
     })
+    return replace(updated, trusted_rubrics={"synthetic-rubric": _hash_bytes(b"ordinal-rubric")})
 
 
 def _typed(request: JsonObject, result: JsonObject,
@@ -210,7 +214,10 @@ def _typed(request: JsonObject, result: JsonObject,
         })
         if kind == "boxes":
             question["max_regions"] = 2
-    return _set_question(request, result, context, question, output)
+    return replace(
+        _set_question(request, result, context, question, output),
+        trusted_fields=frozenset({"synthetic-field"}),
+    )
 
 
 def _replace_anchor(ctx: dm.ContractContext, *, target: str | None = None,
@@ -554,3 +561,28 @@ def test_wire_parser_bounds_and_no_untrusted_scalar() -> None:
     with pytest.raises(ValueError, match="object"):
         dm.strict_decode("[]")
     assert dm.strict_decode('{"safe":"synthetic"}') == {"safe": "synthetic"}
+
+def test_trusted_task_controls_prevent_unsigned_candidate_rubric_or_field_substitution() -> None:
+    req, res, cap, ctx = _sample()
+    ctx = _choice(req, res, ctx)
+    assert dm.validate_request(req, replace(ctx, trusted_candidate_sets={}), cap)
+    req, res, cap, ctx = _sample()
+    ctx = _score(req, res, ctx)
+    assert any("score.untrusted_rubric" in error for error in dm.validate_request(
+        req, replace(ctx, trusted_rubrics={}), cap
+    ))
+    req, res, cap, ctx = _sample()
+    ctx = _typed(req, res, ctx)
+    assert any("field.untrusted_definition" in error for error in dm.validate_request(
+        req, replace(ctx, trusted_fields=frozenset()), cap
+    ))
+
+
+def test_number_candidate_must_match_source_bytes_not_only_unit() -> None:
+    req, res, cap, ctx = _sample()
+    ctx = _typed(req, res, ctx, "number")
+    ctx = _replace_anchor(ctx, target="5", unit="mg")
+    assert _validate(req, res, cap, ctx) == []
+    _payload(res)["value"] = 6
+    assert any("source.mismatched_text" in error
+               for error in _validate(req, res, cap, ctx))
