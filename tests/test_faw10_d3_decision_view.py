@@ -503,5 +503,5 @@ def test_binary_d3_entrypoints_emit_identical_provenance(
     status = d3_main([]) if entrypoint == "module" else workbench_main(["d3-demo"])
     assert status == 0
     captured = capfdbinary.readouterr()
-    assert captured.out == canonical_bytes(generate_receipt()) + b"\\n"
+    assert captured.out == canonical_bytes(generate_receipt()) + b"\n"
     assert captured.err == b""
