@@ -303,8 +303,8 @@ def _eligible(
     return kind not in ("outcome", "appraisal") or _known_before(occurrence, cutoff)
 
 
-def assemble_decision_packet(case: object) -> D3Packet:
-    """Build an actor/cutoff view; never return the unscoped D2 input or output."""
+def _assemble_decision_packet(case: object) -> D3Packet:
+    """Build a scoped view inside the integrity-validation compartment."""
     record = _object(case, _PACKET_KEYS, "D3 case")
     if _text(record["permitted_view"], "view") != VIEW:
         raise ValueError("D3 requires the synthetic decision-time view")
@@ -393,6 +393,19 @@ def assemble_decision_packet(case: object) -> D3Packet:
         {key: value for key, value in packet.items() if key != "view_fingerprint"}
     )
     return packet
+
+
+def assemble_decision_packet(case: object) -> D3Packet:
+    """Return only an actor-scoped packet; never expose input-specific failure details.
+
+    D2 validates all supplied sources, including later and unentitled ones. Its
+    detailed admission exceptions can contain confidential future identifiers;
+    the public D3 entrypoint must not expose them to a decision-time caller.
+    """
+    try:
+        return _assemble_decision_packet(case)
+    except (KeyError, TypeError, ValueError, UnicodeError, RecursionError, OverflowError):
+        raise ValueError("invalid or inadmissible decision packet input") from None
 
 
 def _replayed(case: object, packet: object) -> D3Packet:
