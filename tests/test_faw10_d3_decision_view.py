@@ -505,6 +505,8 @@ def test_binary_d3_entrypoints_emit_identical_provenance(
     captured = capfdbinary.readouterr()
     assert captured.out == canonical_bytes(generate_receipt()) + b"\n"
     assert captured.err == b""
+
+
 @pytest.mark.parametrize(
     ("kind", "speaker", "has_concern"),
     [
@@ -626,16 +628,12 @@ def test_metadata_array_caps_are_enforced_before_mapping(field: str) -> None:
 def test_missing_occurrence_time_blocks_outcome_but_not_observation() -> None:
     raw = case_input()
     timeline = require_object(raw["timeline"], context="timeline")
-    timeline["clocks"] = [
-        row for row in _rows(timeline["clocks"]) if row["id"] != "early-time"
-    ]
+    timeline["clocks"] = [row for row in _rows(timeline["clocks"]) if row["id"] != "early-time"]
     _rows(raw["labels"])[0]["kind"] = "outcome"
     _rows(raw["labels"])[0]["speaker_role"] = None
     assert assemble_decision_packet(raw)["events"] == []
     _rows(raw["labels"])[0]["kind"] = "observation"
-    assert [item["event_id"] for item in assemble_decision_packet(raw)["events"]] == [
-        "early"
-    ]
+    assert [item["event_id"] for item in assemble_decision_packet(raw)["events"]] == ["early"]
 
 
 @pytest.mark.parametrize("query", ["", "q" * 129, 100])
