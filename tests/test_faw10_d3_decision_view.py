@@ -397,11 +397,11 @@ def test_downstream_failure_does_not_echo_future_source_identifiers() -> None:
     packet = assemble_decision_packet(raw)
     timeline = require_object(raw["timeline"], context="timeline")
     _rows(timeline["sources"])[1]["fingerprint"] = "sha256:" + "0" * 64
-    with pytest.raises(ValueError, match="^invalid or unbound decision packet$"):
+    with pytest.raises(ValueError, match=r"^invalid or unbound decision packet$"):
         retrieve_decision_evidence(raw, packet, "Mother")
-    with pytest.raises(ValueError, match="^invalid or unbound decision packet$"):
+    with pytest.raises(ValueError, match=r"^invalid or unbound decision packet$"):
         verify_decision_claim(raw, packet, "early", "Mother raised concerns about pain.")
-    with pytest.raises(ValueError, match="^invalid or unbound decision packet$"):
+    with pytest.raises(ValueError, match=r"^invalid or unbound decision packet$"):
         render_decision_packet(raw, packet)
 
 
@@ -469,7 +469,7 @@ def test_unentitled_invalid_relation_does_not_leak_future_identity_in_errors() -
         },
     )
     with pytest.raises(
-        ValueError, match="^invalid or inadmissible decision packet input$"
+        ValueError, match=r"^invalid or inadmissible decision packet input$"
     ) as error:
         assemble_decision_packet(raw)
     assert "CONFIDENTIAL_FUTURE_OUTCOME" not in str(error.value)
