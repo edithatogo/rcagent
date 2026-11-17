@@ -37,13 +37,13 @@ def _reference(view: D4View) -> list[JsonObject]:
     ]
 
 
-def _arms(view: D4View) -> list[JsonObject]:
+def _arms(view: D4View, case: object) -> list[JsonObject]:
     return [
         {
             "method": "regex",
             "status": "executed",
             "revision": "faw11-d4-regex-1.0",
-            "predictions": regex_predictions(view),
+            "predictions": regex_predictions(case, view),
             "measured_resources": None,
         },
         *[
@@ -89,7 +89,7 @@ def test_future_label_change_cannot_change_d4_view() -> None:
 def test_comparison_reports_actual_denominators_and_all_missing_arms() -> None:
     study = _study()
     view = make_view(study[0]["case"], "independent-synthetic-root-01", "test")
-    outcome = compare_arms(study, _reference(view), _arms(view))
+    outcome = compare_arms(study, _reference(view), _arms(view, study[0]["case"]))
     assert outcome["schema_version"] == "faw11-d4-comparison-1.0"
     assert outcome["status"] == "incomplete_unqualified"
     assert outcome["independent_test_families"] == 1
@@ -113,7 +113,7 @@ def test_comparison_reports_actual_denominators_and_all_missing_arms() -> None:
 def test_abstentions_are_not_successes_or_excluded_from_denominator() -> None:
     study = _study()
     view = make_view(study[0]["case"], "independent-synthetic-root-01", "test")
-    arms = _arms(view)
+    arms = _arms(view, study[0]["case"])
     arms[0]["predictions"] = [
         {
             "view_fingerprint": view["view_fingerprint"],
@@ -134,7 +134,7 @@ def test_abstentions_are_not_successes_or_excluded_from_denominator() -> None:
 def test_rejects_incomplete_duplicate_or_cross_view_predictions(mutation: str) -> None:
     study = _study()
     view = make_view(study[0]["case"], "independent-synthetic-root-01", "test")
-    arms = _arms(view)
+    arms = _arms(view, study[0]["case"])
     predictions = arms[0]["predictions"]
     assert is_array(predictions)
     if mutation == "missing":
@@ -181,7 +181,7 @@ def test_reference_outside_actor_cutoff_is_rejected() -> None:
         }
     )
     with pytest.raises(ValueError, match="invalid or inadmissible D4 comparison"):
-        compare_arms(study, references, _arms(view))
+        compare_arms(study, references, _arms(view, study[0]["case"]))
 
 
 def test_malformed_future_input_error_does_not_echo_excluded_identifier() -> None:
@@ -199,7 +199,16 @@ def test_malformed_future_input_error_does_not_echo_excluded_identifier() -> Non
 def test_no_fake_full_comparison_when_any_method_unavailable() -> None:
     study = _study()
     view = make_view(study[0]["case"], "independent-synthetic-root-01", "test")
-    outcome = compare_arms(study, _reference(view), _arms(view))
+    outcome = compare_arms(study, _reference(view), _arms(view, study[0]["case"]))
     assert outcome["paired_comparison_admissible"] is False
     assert outcome["clinical_qualification"] == "none"
     assert outcome["model_qualification"] == "none"
+
+
+def test_regex_refuses_forged_unbound_future_evidence() -> None:
+    raw = _case()
+    view = make_view(raw, "root-01", "test")
+    forged = deepcopy(view)
+    forged["events"][0]["text"] = "Later test result changed the outcome."
+    with pytest.raises(ValueError, match="invalid or unbound D4 comparator view"):
+        regex_predictions(raw, forged)
