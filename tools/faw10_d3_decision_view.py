@@ -397,12 +397,13 @@ def assemble_decision_packet(case: object) -> D3Packet:
 
 def _replayed(case: object, packet: object) -> D3Packet:
     """Refuse an unbound packet on every public downstream read path."""
-    expected = assemble_decision_packet(case)
     try:
-        if not isinstance(packet, dict) or canonical_bytes(packet) != canonical_bytes(expected):
+        expected = assemble_decision_packet(case)
+        received = require_object(packet, context="D3 packet")
+        if canonical_bytes(received) != canonical_bytes(expected):
             raise ValueError("decision packet not bound to case/actor/cutoff")
-    except (TypeError, RecursionError, UnicodeError) as exc:
-        raise ValueError("invalid decision packet") from exc
+    except (TypeError, ValueError, RecursionError, UnicodeError):
+        raise ValueError("invalid or unbound decision packet") from None
     return expected
 
 
