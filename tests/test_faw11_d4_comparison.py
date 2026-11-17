@@ -12,7 +12,10 @@ from tools.json_shapes import JsonObject, is_array, require_object
 
 
 def _case() -> JsonObject:
-    return deepcopy(generate_receipt()["inputs"][0])
+    receipt = generate_receipt()
+    inputs = receipt["inputs"]
+    assert is_array(inputs)
+    return deepcopy(require_object(inputs[0], context="D3 synthetic input"))
 
 
 def _study(raw: JsonObject | None = None) -> list[JsonObject]:
@@ -38,27 +41,24 @@ def _reference(view: D4View) -> list[JsonObject]:
 
 
 def _arms(view: D4View, case: object) -> list[JsonObject]:
-    return [
+    arms: list[JsonObject] = [
         {
             "method": "regex",
             "status": "executed",
             "revision": "faw11-d4-regex-1.0",
             "predictions": regex_predictions(case, view),
             "measured_resources": None,
-        },
-        *[
+        }
+    ]
+    for name in ("token_section_context", "linear_classifier", "structured_generation"):
+        arms.append(
             {
                 "method": name,
                 "status": "unavailable",
                 "reason": "no pinned runtime, model or labelled-resource admission",
             }
-            for name in (
-                "token_section_context",
-                "linear_classifier",
-                "structured_generation",
-            )
-        ],
-    ]
+        )
+    return arms
 
 
 def test_model_view_contains_only_d3_visible_evidence_not_labels() -> None:
