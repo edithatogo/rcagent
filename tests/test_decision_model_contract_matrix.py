@@ -6,10 +6,8 @@ software-contract checks only; no model, patient case or clinical authority.
 
 from __future__ import annotations
 
-from copy import deepcopy
 from dataclasses import replace
 from hashlib import sha256
-from typing import Callable
 
 import pytest
 from hypothesis import given, strategies as st
@@ -462,7 +460,11 @@ def test_c28_to_c33_deterministic_hard_vetoes_ignore_high_model_confidence(
     else:
         assert _validate(req, res, cap, ctx) == []
     _obj(res["policy"])["disposition"] = "continue_bounded_step"
-    assert any("policy.disposition_override" in e for e in _validate(req, res, cap, ctx))
+    issues = _validate(req, res, cap, ctx)
+    if variant in {"privacy", "authority"}:
+        assert any("authority.hard_veto" in e for e in issues)
+    else:
+        assert any("policy.disposition_override" in e for e in issues)
 
 
 def test_c31_untrusted_text_cannot_override_instruction_or_add_tools() -> None:
