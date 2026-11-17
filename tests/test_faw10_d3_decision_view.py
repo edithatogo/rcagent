@@ -11,11 +11,11 @@ from tools.evidence_core import canonical_bytes, fingerprint
 from tools.faw10_d3_decision_view import (
     assemble_decision_packet,
     generate_receipt,
-    main as d3_main,
     render_decision_packet,
     retrieve_decision_evidence,
     verify_decision_claim,
 )
+from tools.faw10_d3_decision_view import main as d3_main
 from tools.json_shapes import JsonObject, is_array, require_object
 from tools.workbench import main as workbench_main
 
