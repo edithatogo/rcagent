@@ -7,9 +7,10 @@ from hashlib import sha256
 
 import pytest
 
-from tools.evidence_core import canonical_bytes
+from tools.evidence_core import canonical_bytes, fingerprint
 from tools.faw10_d3_decision_view import (
     assemble_decision_packet,
+    generate_receipt,
     render_decision_packet,
     retrieve_decision_evidence,
     verify_decision_claim,
@@ -469,3 +470,22 @@ def test_unentitled_invalid_relation_does_not_leak_future_identity_in_errors() -
     ) as error:
         assemble_decision_packet(raw)
     assert "CONFIDENTIAL_FUTURE_OUTCOME" not in str(error.value)
+
+
+def test_synthetic_receipt_is_deterministic_and_replay_bound() -> None:
+    """Exercise the actual D3 generator, not a placeholder source fixture."""
+    receipt = generate_receipt()
+    assert canonical_bytes(receipt) == canonical_bytes(generate_receipt())
+    assert receipt["dataset"] == "generated-synthetic-only"
+    assert receipt["case_count"] == 3
+    assert receipt["visible_counts"] == [1, 2, 0]
+    assert receipt["output_fingerprint"] == fingerprint(
+        {key: value for key, value in receipt.items() if key != "output_fingerprint"}
+    )
+    for raw, packet in zip(receipt["inputs"], receipt["cases"], strict=True):
+        assert canonical_bytes(assemble_decision_packet(raw)) == canonical_bytes(packet)
+        assert render_decision_packet(raw, packet) == canonical_bytes(packet).decode("utf-8")
+    assert "Later test result" not in render_decision_packet(
+        receipt["inputs"][0], receipt["cases"][0]
+    )
+    assert receipt["cases"][2]["events"] == []
