@@ -16,9 +16,7 @@ from tools.json_shapes import JsonObject, is_array, require_object
 
 Partition = Literal["train", "development", "test"]
 Kind = Literal["observation", "outcome", "appraisal", "patient_family_concern"]
-Method = Literal[
-    "regex", "token_section_context", "linear_classifier", "structured_generation"
-]
+Method = Literal["regex", "token_section_context", "linear_classifier", "structured_generation"]
 _METHODS: tuple[Method, ...] = (
     "regex",
     "token_section_context",
