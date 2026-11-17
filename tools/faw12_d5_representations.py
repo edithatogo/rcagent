@@ -114,7 +114,10 @@ def _comparison(rows: list[Representation], key: str) -> Comparison:
         if value is None:
             raise ValueError("simulated comparison requires text")
         observed[row["origin_family_id"]].add(value)
-    values = sorted(set().union(*observed.values())) if observed else []
+    distinct_values: set[str] = set()
+    for group in observed.values():
+        distinct_values.update(group)
+    values = sorted(distinct_values)
     within = any(len(group) > 1 for group in observed.values())
     across = (
         len(observed) > 1
