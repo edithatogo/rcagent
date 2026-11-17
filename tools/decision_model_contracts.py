@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from datetime import date
 from hashlib import sha256
 from pathlib import Path
-from typing import Literal, Protocol, TypedDict
+from typing import Literal, Protocol, TypeAlias, TypedDict
 
 from jsonschema import Draft202012Validator, FormatChecker
 from jsonschema.exceptions import ValidationError
@@ -36,7 +36,7 @@ RESULT_STATUSES = frozenset(
      "timeout", "cancelled", "unavailable", "error"}
 )
 
-type MessageKind = Literal["request", "result", "capability"]
+MessageKind: TypeAlias = Literal["request", "result", "capability"]
 
 
 class DecisionBinding(TypedDict):
@@ -203,7 +203,7 @@ def _rows(value: object) -> list[JsonObject]:
 
 
 def _ids(rows: Sequence[Mapping[str, object]], key: str) -> list[str]:
-    return [str(item[key]) for item in rows if isinstance(item.get(key), str)]
+    return [value for item in rows if isinstance(value := item.get(key), str)]
 
 
 def _number(value: object) -> float | None:
@@ -270,7 +270,7 @@ def validate_request(
     if len(ids) != len(set(ids)) or set(ids) != set(context.questions):
         errors.append("question.identity_set")
     limits = require_object(cap["limits"], context="limits")
-    if len(questions) > limits["max_questions"]:
+    if len(questions) > int(str(limits["max_questions"])):
         errors.append("capability.question_limit")
     combinations = {
         (item["kind"], item["modality"], item["multiple"])
@@ -293,7 +293,7 @@ def validate_request(
             ids = _ids(candidates, "candidate_id")
             if len(ids) != len(set(ids)):
                 errors.append("choice.duplicate_candidate")
-            if len(candidates) > limits["max_candidates"]:
+            if len(candidates) > int(str(limits["max_candidates"])):
                 errors.append("capability.candidate_limit")
             if question["candidate_set_hash"] != fingerprint(question["candidates"]):
                 errors.append("choice.candidate_hash")
@@ -302,7 +302,7 @@ def validate_request(
         if kind == "score":
             levels = _rows(question["ordered_levels"])
             levels_ids = _ids(levels, "level_id")
-            order = [part["severity_order"] for part in levels]
+            order = [int(str(part["severity_order"])) for part in levels]
             if len(set(levels_ids)) != len(levels_ids) or order != sorted(set(order)):
                 errors.append("score.level_order")
             severe = question["severe_level_ids"]
@@ -321,7 +321,8 @@ def _validate_anchor(
 ) -> list[str]:
     if not isinstance(anchor_id, str):
         return ["source.missing_anchor"]
-    if anchor_id not in req["source_anchor_ids"]:
+    requested_anchor_ids = req["source_anchor_ids"]
+    if not is_array(requested_anchor_ids) or anchor_id not in requested_anchor_ids:
         return ["source.outside_view"]
     anchor = ctx.anchors.get(anchor_id)
     if anchor is None or not anchor.permitted:
@@ -389,7 +390,7 @@ def _primitive_errors(
             errors.extend(_validate_anchor(output["source_anchor_id"], req, ctx, expected_text=text))
         if kind == "number" and value is not None:
             unit = output["unit"]
-            if unit not in question["allowed_units"]:
+            if not is_array(question["allowed_units"]) or unit not in question["allowed_units"]:
                 errors.append("number.unit_not_allowed")
             anchor = ctx.anchors.get(str(output["source_anchor_id"]))
             if anchor is None or anchor.unit != unit:
@@ -419,7 +420,7 @@ def _primitive_errors(
             if is_array(regions):
                 maximum = question["max_regions"] if kind == "boxes" else 1
                 limits = require_object(cap["limits"], context="capability limits")
-                if len(regions) > maximum or len(regions) > limits["max_regions"]:
+                if len(regions) > int(str(maximum)) or len(regions) > int(str(limits["max_regions"])):
                     errors.append("region.count_limit")
                 seen: set[tuple[float, float, float, float]] = set()
                 for region in regions:
@@ -519,7 +520,8 @@ def validate_result(
     if policy["policy_hash"] != context.policy_hash:
         errors.append("policy.identity")
     calibrated_ok = not context.calibration_required or all(
-        is_object(a["calibration"]) and a["calibration"]["calibrator_hash"] == context.calibrator_hash
+        is_object(calibration_value := a.get("calibration"))
+        and calibration_value.get("calibrator_hash") == context.calibrator_hash
         for a in answers
     )
     expected_disposition = gate_disposition(
