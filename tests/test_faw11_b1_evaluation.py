@@ -99,6 +99,7 @@ def test_context_rules_conservatively_refuse_negation_and_detect_family_concern(
     appraisal = next(
         row for row in rows if row["text"] == "Review concluded a systems redesign was needed."
     )
+
     def predict(row: JsonObject) -> object:
         view = make_view(build_case(row), row["root_family_id"], row["partition"])
         return context_predictions(build_case(row), view)[0]["predicted_kind"]
