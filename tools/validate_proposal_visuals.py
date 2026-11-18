@@ -79,7 +79,10 @@ def _geometry(element: ET.Element, width: float, height: float) -> bool:
         attributes = ("x", "y")
     if not attributes:
         return True
-    values = [_float(element.get(attribute)) for attribute in attributes]
+    values = [
+        _float(element.get(attribute, "0" if tag == "rect" and attribute in {"x", "y"} else None))
+        for attribute in attributes
+    ]
     if any(value is None for value in values):
         return False
     coordinates = [float(value) for value in values if value is not None]
