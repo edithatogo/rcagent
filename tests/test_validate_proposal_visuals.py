@@ -96,6 +96,8 @@ def test_malformed_registered_figure_fails_directory(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     "element",
     [
+        '<rect width="200" height="100"/>',
+        '<rect x="0" width="200" height="100"/>',
         '<ellipse cx="60" cy="50" rx="30" ry="20"/>',
         '<circle cx="60" cy="50" r="10"/>',
         '<line x1="0" y1="0" x2="200" y2="100"/>',
