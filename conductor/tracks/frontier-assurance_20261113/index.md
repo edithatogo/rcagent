@@ -1,6 +1,6 @@
 # Track 13: Frontier assurance and incremental capability evidence
 
-Status: FAW06, FAW07/D0, FAW08/D1, FAW09/D2 and FAW10/D3 are accepted for bounded software evidence only. [D3 merge #155](https://github.com/edithatogo/rcagent/pull/155) at `54c67551db71` passed nine exact-head Quality jobs, dependency/privacy and subsequent master conformance. [D3 acceptance](./faw10-d3-acceptance-20261117.md). FAW11/D4 bounded comparison infrastructure is merged through [PR #156](https://github.com/edithatogo/rcagent/pull/156) and [accepted as software only](./faw11-d4-infrastructure-acceptance-20261117.md); its three non-regex methods, full empirical comparison and model/clinical qualification remain open. FAW12/D5 implementation has started in draft PR #158, not accepted. The wider Track 13 is in progress.
+Status: FAW06, FAW07/D0, FAW08/D1, FAW09/D2 and FAW10/D3 are accepted for bounded software evidence only. [D3 merge #155](https://github.com/edithatogo/rcagent/pull/155) at `54c67551db71` passed nine exact-head Quality jobs, dependency/privacy and subsequent master conformance. [D3 acceptance](./faw10-d3-acceptance-20261117.md). FAW11/D4 bounded comparison infrastructure is merged through [PR #156](https://github.com/edithatogo/rcagent/pull/156) and [accepted as software only](./faw11-d4-infrastructure-acceptance-20261117.md); its three non-regex methods, full empirical comparison and model/clinical qualification remain open. FAW12/D5 [bounded synthetic provenance software accepted](./faw12-d5-bounded-acceptance-20261118.md) through merged PR #158, while actual OCR, structured-log execution and scientific validation remain open. The wider Track 13 is in progress.
 
 - [Specification and MoSCoW requirements](./spec.md)
 - [Executable work packages and acceptance](./plan.md)
@@ -18,7 +18,7 @@ Status: FAW06, FAW07/D0, FAW08/D1, FAW09/D2 and FAW10/D3 are accepted for bounde
 - [FAW10 / D3 bounded synthetic admission contract](./faw10-d3-contract.md)
 - [FAW10 / D3 observed source merge and acceptance](./faw10-d3-acceptance-20261117.md)
 - [FAW11 / D4 bounded comparator software receipt](./faw11-d4-infrastructure-acceptance-20261117.md)
-- [FAW12 / D5 synthetic representation design in draft PR #158](https://github.com/edithatogo/rcagent/pull/158) (not yet accepted)
+- [FAW12 / D5 bounded synthetic source provenance acceptance](./faw12-d5-bounded-acceptance-20261118.md)
 - [Evidence ledger](./evidence.jsonl)
 - [Capability demonstration ladder](../../research/frontier-assurance/capability-ladder.md)
 - [Programmatic, multi-model and multimodal triangulation](../../research/frontier-assurance/triangulation.md)
