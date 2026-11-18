@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from tools.validate_proposal_visuals import EXPECTED_FILES, VISUALS_DIR, validate_directory, validate_svg
+from tools.validate_proposal_visuals import EXPECTED_FILES, ROOT, VISUALS_DIR, validate_directory, validate_svg
 
 VALID = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"
 width="200" height="100" role="img" aria-label="Synthetic safety diagram">
@@ -134,3 +134,8 @@ def test_main_cli_reports_missing_directory(tmp_path: Path, capsys: pytest.Captu
 
     assert main([str(tmp_path)]) == 1
     assert "missing proposal visual directory" in capsys.readouterr().out
+
+
+def test_checked_in_proposal_assets_pass_all_structural_gates() -> None:
+    # This checks actual PR source assets, not just the isolated synthetic test fixtures.
+    assert validate_directory(ROOT) == []
