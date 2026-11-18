@@ -168,6 +168,7 @@ def test_report_is_deterministic_and_no_oracle_labels_in_scoped_views() -> None:
     assert view["events"][0]["text"] == row["text"]
     assert label in ("observation", "outcome", "appraisal", "patient_family_concern")
 
+
 @pytest.mark.parametrize(
     ("source_text", "expected"),
     [
