@@ -33,7 +33,7 @@ def test_frozen_manifest_is_separate_from_predictor_outputs() -> None:
     }
 
 
-def test_generated_d3_case_has_source_identity_and_label_free_D4_input() -> None:
+def test_generated_d3_case_has_source_identity_and_label_free_d4_input() -> None:
     row = load_frozen()[0]
     raw = build_case(row)
     view = make_view(raw, row["root_family_id"], row["partition"])

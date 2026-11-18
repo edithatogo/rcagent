@@ -10,10 +10,11 @@ from __future__ import annotations
 
 import json
 import re
+from itertools import pairwise
 from collections import Counter
 from hashlib import sha256
 from pathlib import Path
-from typing import Literal, TypedDict, cast
+from typing import Literal, TypedDict
 
 from tools.evidence_core import canonical_bytes, fingerprint
 from tools.faw11_d4_comparison import (
@@ -133,7 +134,7 @@ def validate_frozen(value: object) -> list[JsonObject]:
             len(splits) != 24
             or any(count != 2 for count in family_counts.values())
             or partitions != {"train": 24, "development": 8, "test": 16}
-            or test_kinds != {kind: 4 for kind in _KINDS}
+            or test_kinds != dict.fromkeys(_KINDS, 4)
         ):
             raise ValueError("invalid family-split or target balance")
         return rows
@@ -271,7 +272,7 @@ def context_predictions(case: object, view: D4View) -> list[Prediction]:
 def _features(text: str) -> Counter[str]:
     tokens = _tokens(text)
     terms: Counter[str] = Counter(f"u:{token}" for token in tokens)
-    terms.update(f"b:{left}_{right}" for left, right in zip(tokens, tokens[1:]))
+    terms.update(f"b:{left}_{right}" for left, right in pairwise(tokens))
     return terms
 
 
@@ -301,7 +302,7 @@ def fit_linear(training: list[tuple[D4View, object]]) -> LinearModel:
     model: LinearModel = {
         "revision": "faw11-b1-perceptron-1.0",
         "weights": {kind: {} for kind in _KINDS},
-        "bias": {kind: 0 for kind in _KINDS},
+        "bias": dict.fromkeys(_KINDS, 0),
         "trained_cases": len(examples),
         "training_fingerprint": fingerprint([
             {"case_id": case_id, "features": dict(features), "label": kind}
