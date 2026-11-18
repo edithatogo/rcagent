@@ -32,6 +32,8 @@ def test_valid_synthetic_svg() -> None:
         (VALID.replace('aria-label="Synthetic safety diagram"', ""), "missing accessible"),
         (VALID.replace('viewBox="0 0 200 100"', 'viewBox="0 0 0 100"'), "unsupported viewBox"),
         (VALID.replace('viewBox="0 0 200 100"', 'viewBox="not-a-box"'), "invalid viewBox"),
+        (VALID.replace('width="200"', 'width="400"'), "root dimensions must match viewBox"),
+        (VALID.replace('height="100"', 'height="abc"'), "root dimensions must match viewBox"),
         (VALID.replace('width="180"', 'width="260"'), "out-of-bounds"),
         (VALID.replace("<rect ", '<rect onload="alert(1)" '), "unsafe SVG attribute"),
         (VALID.replace("<rect ", "<foreignObject/><rect "), "unsupported SVG element"),
