@@ -28,6 +28,7 @@ from tools.faw11_d4_comparison import (
 from tools.json_shapes import JsonObject, is_array, require_object
 
 ROOT = Path(__file__).parents[1]
+_CONTEXT_RULESET_REVISION = "faw11-b1-context-style-rules-1.0"
 ORACLE_PATH = ROOT / "tests/fixtures/faw11_b1_independent/frozen_cases.json"
 LOCK_PATH = ROOT / "uv.lock"
 _VOCABULARY = re.compile(r"[a-z]+")
@@ -485,7 +486,7 @@ def evaluate_frozen() -> JsonObject:
                 "status": "executed",
                 "revision": {
                     "regex": "faw11-d4-regex-1.0",
-                    "token_section_context": "faw11-b1-context-style-rules-1.0",
+                    "token_section_context": _CONTEXT_RULESET_REVISION,
                     "linear_classifier": "faw11-b1-perceptron-1.0",
                 }[name],
                 "predictions": predictions[name],
