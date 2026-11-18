@@ -180,7 +180,7 @@ def test_report_is_deterministic_and_no_oracle_labels_in_scoped_views() -> None:
         ),
         ("No injury was reported. A new rash developed later.", "outcome"),
         (
-            "The patient did not raise concern, but later expressed worry about the delay.",
+            "The patient did not raise concern, but later the patient expressed worry about the delay.",
             "patient_family_concern",
         ),
     ],
