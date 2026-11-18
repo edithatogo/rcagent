@@ -26,10 +26,18 @@ def test_frozen_manifest_is_separate_from_predictor_outputs() -> None:
     assert len(rows) == 48
     assert len({row["id"] for row in rows}) == 48
     assert len({row["root_family_id"] for row in rows}) == 24
-    assert [sum(row["partition"] == p for row in rows) for p in ("train", "development", "test")] == [24, 8, 16]
-    assert all(row["expected_kind"] in ("observation", "outcome", "appraisal", "patient_family_concern") for row in rows)
+    assert [
+        sum(row["partition"] == p for row in rows) for p in ("train", "development", "test")
+    ] == [24, 8, 16]
+    assert all(
+        row["expected_kind"] in ("observation", "outcome", "appraisal", "patient_family_concern")
+        for row in rows
+    )
     assert {row["expected_kind"] for row in rows if row["partition"] == "test"} == {
-        "observation", "outcome", "appraisal", "patient_family_concern"
+        "observation",
+        "outcome",
+        "appraisal",
+        "patient_family_concern",
     }
 
 
@@ -45,35 +53,52 @@ def test_generated_d3_case_has_source_identity_and_label_free_d4_input() -> None
     sources = source["sources"]
     assert is_array(sources)
     witness = require_object(sources[0], context="source")
-    assert witness["fingerprint"] == "sha256:" + sha256(
-        str(witness["content"]).encode("utf-8")
-    ).hexdigest()
+    assert (
+        witness["fingerprint"]
+        == "sha256:" + sha256(str(witness["content"]).encode("utf-8")).hexdigest()
+    )
 
 
 def test_identical_test_input_never_receives_test_label_during_fitting() -> None:
     rows = load_frozen()
     train = [row for row in rows if row["partition"] == "train"]
     model = fit_linear(
-        [(make_view(build_case(row), row["root_family_id"], "train"), row["expected_kind"]) for row in train]
+        [
+            (make_view(build_case(row), row["root_family_id"], "train"), row["expected_kind"])
+            for row in train
+        ]
     )
     chosen = next(row for row in rows if row["partition"] == "test")
     view = make_view(build_case(chosen), chosen["root_family_id"], "test")
     a = linear_predictions(model, view)
     modified = deepcopy(chosen)
     modified["expected_kind"] = "observation"
-    b = linear_predictions(model, make_view(build_case(modified), modified["root_family_id"], "test"))
+    b = linear_predictions(
+        model, make_view(build_case(modified), modified["root_family_id"], "test")
+    )
     assert a == b
     assert a[0]["predicted_kind"] is None or a[0]["predicted_kind"] in (
-        "observation", "outcome", "appraisal", "patient_family_concern"
+        "observation",
+        "outcome",
+        "appraisal",
+        "patient_family_concern",
     )
 
 
 def test_context_rules_conservatively_refuse_negation_and_detect_family_concern() -> None:
     rows = load_frozen()
-    negation = next(row for row in rows if row["text"] == "No family concerns were expressed in this note.")
-    concern = next(row for row in rows if row["text"] == "Mother raised concern about treatment delay.")
-    outcome = next(row for row in rows if row["text"] == "Laboratory result confirmed the diagnosis.")
-    appraisal = next(row for row in rows if row["text"] == "Review concluded a systems redesign was needed.")
+    negation = next(
+        row for row in rows if row["text"] == "No family concerns were expressed in this note."
+    )
+    concern = next(
+        row for row in rows if row["text"] == "Mother raised concern about treatment delay."
+    )
+    outcome = next(
+        row for row in rows if row["text"] == "Laboratory result confirmed the diagnosis."
+    )
+    appraisal = next(
+        row for row in rows if row["text"] == "Review concluded a systems redesign was needed."
+    )
     def predict(row: JsonObject) -> object:
         view = make_view(build_case(row), row["root_family_id"], row["partition"])
         return context_predictions(build_case(row), view)[0]["predicted_kind"]
@@ -111,7 +136,10 @@ def test_b1_report_honestly_denominates_unavailable_generator() -> None:
     assert require_object(scores["regex"], context="regex")["eligible"] == 16
     assert require_object(scores["token_section_context"], context="NLP")["eligible"] == 16
     assert require_object(scores["linear_classifier"], context="linear")["eligible"] == 16
-    assert require_object(scores["structured_generation"], context="generator")["status"] == "unavailable"
+    assert (
+        require_object(scores["structured_generation"], context="generator")["status"]
+        == "unavailable"
+    )
     metrics = require_object(report["class_metrics"], context="per-class metrics")
     for method in ("regex", "token_section_context", "linear_classifier"):
         table = require_object(metrics[method], context=method)

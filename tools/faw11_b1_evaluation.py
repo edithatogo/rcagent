@@ -38,20 +38,56 @@ _KINDS: tuple[Kind, ...] = (
     "patient_family_concern",
 )
 _FAMILY = frozenset({"family", "parent", "mother", "father", "patient", "relative"})
-_CONCERN = frozenset({
-    "concern", "concerns", "worried", "worry", "reported",
-    "complained", "complain", "raised", "expressed",
-})
-_OUTCOME = frozenset({
-    "result", "results", "outcome", "injury", "injuries", "harm", "death",
-    "rash", "infection", "hypotension", "bleeding", "complication", "complications",
-    "developed", "discharge", "discharged",
-})
-_APPRAISAL = frozenset({
-    "review", "appraisal", "judgement", "judged", "concluded",
-    "conclusion", "investigator", "investigation", "audit",
-    "assessment", "assessed", "retrospective", "panel",
-})
+_CONCERN = frozenset(
+    {
+        "concern",
+        "concerns",
+        "worried",
+        "worry",
+        "reported",
+        "complained",
+        "complain",
+        "raised",
+        "expressed",
+    }
+)
+_OUTCOME = frozenset(
+    {
+        "result",
+        "results",
+        "outcome",
+        "injury",
+        "injuries",
+        "harm",
+        "death",
+        "rash",
+        "infection",
+        "hypotension",
+        "bleeding",
+        "complication",
+        "complications",
+        "developed",
+        "discharge",
+        "discharged",
+    }
+)
+_APPRAISAL = frozenset(
+    {
+        "review",
+        "appraisal",
+        "judgement",
+        "judged",
+        "concluded",
+        "conclusion",
+        "investigator",
+        "investigation",
+        "audit",
+        "assessment",
+        "assessed",
+        "retrospective",
+        "panel",
+    }
+)
 _NEGATION = frozenset({"no", "not", "denies", "denied", "without", "absent", "never"})
 
 
@@ -148,8 +184,15 @@ def load_frozen() -> list[JsonObject]:
         content: object = json.loads(ORACLE_PATH.read_text(encoding="utf-8"))
         record = require_object(content, context="frozen B1 manifest")
         if set(record) != {
-            "schema_version", "reference_origin", "safety_scope", "task",
-            "partition_protocol", "freeze_date", "root_family_count", "case_count", "cases",
+            "schema_version",
+            "reference_origin",
+            "safety_scope",
+            "task",
+            "partition_protocol",
+            "freeze_date",
+            "root_family_count",
+            "case_count",
+            "cases",
         }:
             raise ValueError("malformed manifest")
         if (
@@ -193,8 +236,11 @@ def build_case(row: JsonObject) -> JsonObject:
 
     def clock(identity: str, kind: str, recipient: str | None, quote: str) -> JsonObject:
         return {
-            "id": identity, "event_id": "event0", "kind": kind,
-            "recipient_id": recipient, "evidence": span(quote),
+            "id": identity,
+            "event_id": "event0",
+            "kind": kind,
+            "recipient_id": recipient,
+            "evidence": span(quote),
         }
 
     return {
@@ -204,10 +250,16 @@ def build_case(row: JsonObject) -> JsonObject:
         "timeline": {
             "case_id": case_id,
             "permitted_view": "synthetic-d2-timeline-only",
-            "sources": [{
-                "case_id": case_id, "id": "note", "version": 1,
-                "state": "present", "content": content, "fingerprint": digest,
-            }],
+            "sources": [
+                {
+                    "case_id": case_id,
+                    "id": "note",
+                    "version": 1,
+                    "state": "present",
+                    "content": content,
+                    "fingerprint": digest,
+                }
+            ],
             "recipients": ["clinician-a"],
             "events": [{"id": "event0", "evidence": span(content_line)}],
             "clocks": [
@@ -218,10 +270,14 @@ def build_case(row: JsonObject) -> JsonObject:
             "relations": [],
             "amendments": [],
         },
-        "entitlements": [{
-            "source_id": "note", "source_version": 1,
-            "recipient_id": "clinician-a", "first_available_utc": availability_time,
-        }],
+        "entitlements": [
+            {
+                "source_id": "note",
+                "source_version": 1,
+                "recipient_id": "clinician-a",
+                "first_available_utc": availability_time,
+            }
+        ],
         # Deliberately invariant D3 label: not the independent D4 gold label.
         "labels": [{"event_id": "event0", "kind": "observation", "speaker_role": None}],
     }
@@ -295,19 +351,19 @@ def fit_linear(training: list[tuple[D4View, object]]) -> LinearModel:
         if view["partition"] != "train" or len(view["events"]) != 1:
             raise ValueError("linear training requires one event per train case")
         kind = _kind(label)
-        examples.append(
-            (view["case_id"], _features(view["events"][0]["text"]), kind)
-        )
+        examples.append((view["case_id"], _features(view["events"][0]["text"]), kind))
     examples.sort(key=lambda item: item[0])
     model: LinearModel = {
         "revision": "faw11-b1-perceptron-1.0",
         "weights": {kind: {} for kind in _KINDS},
         "bias": dict.fromkeys(_KINDS, 0),
         "trained_cases": len(examples),
-        "training_fingerprint": fingerprint([
-            {"case_id": case_id, "features": dict(features), "label": kind}
-            for case_id, features, kind in examples
-        ]),
+        "training_fingerprint": fingerprint(
+            [
+                {"case_id": case_id, "features": dict(features), "label": kind}
+                for case_id, features, kind in examples
+            ]
+        ),
     }
     for _ in range(20):
         for _, features, truth in examples:
@@ -349,12 +405,18 @@ def _class_metrics(
     references: dict[tuple[str, str], Kind],
     predictions: list[Prediction],
 ) -> dict[str, JsonObject]:
-    lookup = {(item["view_fingerprint"], item["event_id"]): item["predicted_kind"] for item in predictions}
+    lookup = {
+        (item["view_fingerprint"], item["event_id"]): item["predicted_kind"] for item in predictions
+    }
     metrics: dict[str, JsonObject] = {}
     for kind in _KINDS:
         support = sum(reference == kind for reference in references.values())
-        tp = sum(reference == kind and lookup.get(key) == kind for key, reference in references.items())
-        fp = sum(reference != kind and lookup.get(key) == kind for key, reference in references.items())
+        tp = sum(
+            reference == kind and lookup.get(key) == kind for key, reference in references.items()
+        )
+        fp = sum(
+            reference != kind and lookup.get(key) == kind for key, reference in references.items()
+        )
         fn = support - tp
         metrics[kind] = {
             "support": support,
@@ -381,9 +443,13 @@ def evaluate_frozen() -> JsonObject:
         part = _partition(row["partition"])
         case = build_case(row)
         view = make_view(case, row["root_family_id"], part)
-        study.append({
-            "case": case, "root_family_id": row["root_family_id"], "partition": part,
-        })
+        study.append(
+            {
+                "case": case,
+                "root_family_id": row["root_family_id"],
+                "partition": part,
+            }
+        )
         if part == "train":
             training.append((view, row["expected_kind"]))
         elif part == "test":
@@ -400,33 +466,39 @@ def evaluate_frozen() -> JsonObject:
         for event in view["events"]:
             key = (view["view_fingerprint"], event["event_id"])
             gold[key] = kind
-            reference_rows.append({
-                "view_fingerprint": key[0],
-                "event_id": key[1],
-                "expected_kind": kind,
-                "reference_origin": "independently_authored_synthetic",
-            })
+            reference_rows.append(
+                {
+                    "view_fingerprint": key[0],
+                    "event_id": key[1],
+                    "expected_kind": kind,
+                    "reference_origin": "independently_authored_synthetic",
+                }
+            )
         predictions["regex"].extend(regex_predictions(case, view))
         predictions["token_section_context"].extend(context_predictions(case, view))
         predictions["linear_classifier"].extend(linear_predictions(model, view))
     arms: list[JsonObject] = []
     for name in ("regex", "token_section_context", "linear_classifier"):
-        arms.append({
-            "method": name,
-            "status": "executed",
-            "revision": {
-                "regex": "faw11-d4-regex-1.0",
-                "token_section_context": "faw11-b1-context-style-rules-1.0",
-                "linear_classifier": "faw11-b1-perceptron-1.0",
-            }[name],
-            "predictions": predictions[name],
-            "measured_resources": None,
-        })
-    arms.append({
-        "method": "structured_generation",
-        "status": "unavailable",
-        "reason": "no pinned offline local generative model, tokenizer, runtime, or execution receipt",
-    })
+        arms.append(
+            {
+                "method": name,
+                "status": "executed",
+                "revision": {
+                    "regex": "faw11-d4-regex-1.0",
+                    "token_section_context": "faw11-b1-context-style-rules-1.0",
+                    "linear_classifier": "faw11-b1-perceptron-1.0",
+                }[name],
+                "predictions": predictions[name],
+                "measured_resources": None,
+            }
+        )
+    arms.append(
+        {
+            "method": "structured_generation",
+            "status": "unavailable",
+            "reason": "no pinned offline local generative model, tokenizer, runtime, or execution receipt",
+        }
+    )
     comparison = compare_arms(study, reference_rows, arms)
     return {
         "schema_version": "faw11-b1-evaluation-1.0",
@@ -437,7 +509,9 @@ def evaluate_frozen() -> JsonObject:
         "train_cases": len(training),
         "development_cases": sum(row["partition"] == "development" for row in rows),
         "test_cases": len(test_cases),
-        "test_root_families": len({row["root_family_id"] for row in rows if row["partition"] == "test"}),
+        "test_root_families": len(
+            {row["root_family_id"] for row in rows if row["partition"] == "test"}
+        ),
         "model_executed": True,
         "llm_executed": False,
         "linear_model_revision": model["revision"],
