@@ -156,8 +156,12 @@ def validate_svg(source: str) -> list[str]:
                 else:
                     references.add(local.group(1))
     missing_references = sorted(references - ids)
-    errors.extend(f"missing internal SVG reference: {identifier}" for identifier in missing_references)
-    visible_text = " ".join("".join(element.itertext()) for element in root if _name(element.tag) == "text")
+    errors.extend(
+        f"missing internal SVG reference: {identifier}" for identifier in missing_references
+    )
+    visible_text = " ".join(
+        "".join(element.itertext()) for element in root if _name(element.tag) == "text"
+    )
     if "synthetic" not in (visible_text + " " + (root.get("aria-label") or "")).lower():
         errors.append("missing synthetic-data notice")
     if "boundary" not in visible_text.lower():
