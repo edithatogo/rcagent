@@ -1,0 +1,47 @@
+{
+  "schema_version": "faw11-d4-infrastructure-acceptance-1.0",
+  "status": "bounded_software_infrastructure_accepted_full_faw11_open",
+  "source_pr": 156,
+  "source_head": "30cfd8a6cdfb3a793addb230d802564e535416d8",
+  "merge_commit": "e420392480c2f26084aab2b456912df9c24f17a8",
+  "tested_and_merged_tree": "f8d235a6e3ee3355cf3098dec02286f7d9f04243",
+  "source_checks": {
+    "quality_run": 44093541216,
+    "quality_jobs_passed": 9,
+    "dependency_review_run": 44093540978,
+    "dependency_review": "success",
+    "privacy_secrets_run": 44093541141,
+    "privacy_secrets": "success",
+    "codecov_patch": "success"
+  },
+  "hosted_tests": {
+    "linux_python_3_15_2_passed": 3304,
+    "overall_branch_coverage_percent": 94.72,
+    "changed_comparator_module_coverage_percent": 99
+  },
+  "merged_master_checks": {
+    "conformance_run": 44094558046,
+    "conformance": "success",
+    "quality_run": 44094557952,
+    "quality": "success",
+    "privacy_run": 44094557938,
+    "privacy": "success"
+  },
+  "actual_executed_arms": [
+    "regex"
+  ],
+  "unavailable_arms": [
+    "token_section_context",
+    "linear_classifier",
+    "structured_generation"
+  ],
+  "comparison_receipt_status": "incomplete_unqualified",
+  "paired_comparison_admissible": false,
+  "model_executed": false,
+  "clinical_qualification": false,
+  "model_qualification": false,
+  "d5_started_branch": "feat/faw12-d5-modality-provenance-20261117",
+  "d5_draft_pull_request": 158,
+  "offline_security": "queued_not_a_completed_scan",
+  "wider_track_open": true
+}
