@@ -38,9 +38,14 @@ def test_valid_synthetic_svg() -> None:
         (VALID.replace("url(#arr)", "url(https://example.org/evil.svg)"), "external SVG URL"),
         (VALID.replace("url(#arr)", "url(#missing)"), "missing internal SVG reference"),
         (VALID.replace("<rect ", '<rect id="arr" '), "duplicate element id"),
-        (VALID.replace("boundary is not evidence", "uncertain"), "missing visible interpretation boundary"),
         (
-            VALID.replace("Synthetic safety diagram", "Safety diagram").replace("Synthetic example:", "Example:"),
+            VALID.replace("boundary is not evidence", "uncertain"),
+            "missing visible interpretation boundary",
+        ),
+        (
+            VALID.replace("Synthetic safety diagram", "Safety diagram").replace(
+                "Synthetic example:", "Example:"
+            ),
             "missing synthetic-data notice",
         ),
         (VALID.replace("<svg", "<html").replace("</svg>", "</html>"), "root must be"),
@@ -81,7 +86,9 @@ def test_malformed_registered_figure_fails_directory(tmp_path: Path) -> None:
         (directory / filename).write_text(VALID, encoding="utf-8")
     first = min(EXPECTED_FILES)
     (directory / first).write_text(VALID.replace("url(#arr)", "url(#bad)"), encoding="utf-8")
-    assert any(first in p and "missing internal SVG reference" in p for p in validate_directory(tmp_path))
+    assert any(
+        first in p and "missing internal SVG reference" in p for p in validate_directory(tmp_path)
+    )
 
 
 @pytest.mark.parametrize(
@@ -135,7 +142,9 @@ def test_main_cli_on_valid_directory(tmp_path: Path, capsys: pytest.CaptureFixtu
     assert "Verified 10 synthetic" in capsys.readouterr().out
 
 
-def test_main_cli_reports_missing_directory(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+def test_main_cli_reports_missing_directory(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     from tools.validate_proposal_visuals import main
 
     assert main([str(tmp_path)]) == 1
