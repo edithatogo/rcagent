@@ -28,7 +28,7 @@ from tools.faw11_d4_comparison import (
 from tools.json_shapes import JsonObject, is_array, require_object
 
 ROOT = Path(__file__).parents[1]
-_CONTEXT_RULESET_REVISION = "faw11-b1-context-style-rules-1.0"
+_CONTEXT_RULESET_REVISION = "faw11-b1-context-style-rules-1.1"
 ORACLE_PATH = ROOT / "tests/fixtures/faw11_b1_independent/frozen_cases.json"
 LOCK_PATH = ROOT / "uv.lock"
 _VOCABULARY = re.compile(r"[a-z]+")
@@ -289,24 +289,30 @@ def _tokens(text: str) -> list[str]:
 
 
 def _has_nonnegated(tokens: list[str], cues: frozenset[str]) -> bool:
-    for i, token in enumerate(tokens):
-        if token not in cues:
-            continue
-        if not any(other in _NEGATION for other in tokens[max(0, i - 3) : i]):
-            return True
-    return False
+    """Conservatively reject any cue in a negated clause, including later synonyms."""
+    present = set(tokens)
+    return bool(present & cues) and not bool(present & _NEGATION)
 
 
 def _context_kind(text: str) -> Kind | None:
-    tokens = _tokens(text)
-    present = set(tokens)
-    if (present & _FAMILY) and _has_nonnegated(tokens, _CONCERN):
+    # Sentence and contrast boundaries reset the conservative negation scope.
+    # Do not combine a negated family reference with a cue from another clause.
+    clauses = [
+        _tokens(fragment)
+        for fragment in re.split(
+            r"[.!?;]|\\b(?:but|however|yet|nevertheless)\\b", text.casefold()
+        )
+    ]
+    if any((set(tokens) & _FAMILY) and _has_nonnegated(tokens, _CONCERN) for tokens in clauses):
         return "patient_family_concern"
-    if _has_nonnegated(tokens, _OUTCOME):
+    if any(_has_nonnegated(tokens, _OUTCOME) for tokens in clauses):
         return "outcome"
-    if _has_nonnegated(tokens, _APPRAISAL):
+    if any(_has_nonnegated(tokens, _APPRAISAL) for tokens in clauses):
         return "appraisal"
-    if present & {"recorded", "measured", "checked", "administered", "observed", "resting"}:
+    if any(
+        set(tokens) & {"recorded", "measured", "checked", "administered", "observed", "resting"}
+        for tokens in clauses
+    ):
         return "observation"
     return None
 
