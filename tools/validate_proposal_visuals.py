@@ -127,6 +127,8 @@ def validate_svg(source: str) -> list[str]:
     if x0 != 0 or y0 != 0 or width <= 0 or height <= 0 or width > 4096 or height > 4096:
         errors.append("unsupported viewBox geometry")
         return errors
+    if _float(root.get("width")) != width or _float(root.get("height")) != height:
+        errors.append("root dimensions must match viewBox")
     ids: set[str] = set()
     references: set[str] = set()
     for element in root.iter():
@@ -160,7 +162,7 @@ def validate_svg(source: str) -> list[str]:
         f"missing internal SVG reference: {identifier}" for identifier in missing_references
     )
     visible_text = " ".join(
-        "".join(element.itertext()) for element in root if _name(element.tag) == "text"
+        "".join(element.itertext()) for element in root.iter() if _name(element.tag) == "text"
     )
     if "synthetic" not in (visible_text + " " + (root.get("aria-label") or "")).lower():
         errors.append("missing synthetic-data notice")
