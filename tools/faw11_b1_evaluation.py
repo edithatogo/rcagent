@@ -300,10 +300,13 @@ def _context_kind(text: str) -> Kind | None:
     clauses = [
         _tokens(fragment)
         for fragment in re.split(
-            r"[.!?;]|\\b(?:but|however|yet|nevertheless)\\b", text.casefold()
+            r"[.!?;]|\b(?:but|however|yet|nevertheless)\b", text.casefold()
         )
     ]
-    if any((set(tokens) & _FAMILY) and _has_nonnegated(tokens, _CONCERN) for tokens in clauses):
+    if any(
+        (set(tokens) & _FAMILY) and _has_nonnegated(tokens, _CONCERN)
+        for tokens in clauses
+    ):
         return "patient_family_concern"
     if any(_has_nonnegated(tokens, _OUTCOME) for tokens in clauses):
         return "outcome"
