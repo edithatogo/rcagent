@@ -89,7 +89,14 @@ def _geometry(element: ET.Element, width: float, height: float) -> bool:
     if tag in {"ellipse", "circle"}:
         x, y, rx = coordinates[:3]
         ry = coordinates[3] if tag == "ellipse" else rx
-        return rx > 0 and ry > 0 and 0 <= x - rx and x + rx <= width and 0 <= y - ry and y + ry <= height
+        return (
+            rx > 0
+            and ry > 0
+            and x - rx >= 0
+            and x + rx <= width
+            and y - ry >= 0
+            and y + ry <= height
+        )
     if tag == "line":
         x1, y1, x2, y2 = coordinates
         return all(0 <= x <= width for x in (x1, x2)) and all(0 <= y <= height for y in (y1, y2))
