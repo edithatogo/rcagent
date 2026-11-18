@@ -30,7 +30,21 @@ EXPECTED_FILES = frozenset(
 )
 SVG_NS = "http://www.w3.org/2000/svg"
 ALLOWED_TAGS = frozenset(
-    {"svg", "defs", "marker", "rect", "text", "tspan", "path", "circle", "ellipse", "g", "line", "polygon", "polyline"}
+    {
+        "svg",
+        "defs",
+        "marker",
+        "rect",
+        "text",
+        "tspan",
+        "path",
+        "circle",
+        "ellipse",
+        "g",
+        "line",
+        "polygon",
+        "polyline",
+    }
 )
 LOCAL_URL = re.compile(r"^url\(#([A-Za-z_][A-Za-z0-9_.-]*)\)$")
 URL_VALUE = re.compile(r"url\([^)]*\)", re.IGNORECASE)
@@ -90,8 +104,7 @@ def validate_svg(source: str) -> list[str]:
         errors.append("prohibited XML declaration")
         return errors
     try:
-        # nosec B314 - Only checked-in proposal assets; DTD/entities are explicitly rejected above.
-        root = ET.fromstring(source)
+        root = ET.fromstring(source)  # nosec B314 - Checked-in SVG only; DTD/entities rejected.
     except ET.ParseError:
         return ["invalid SVG XML"]
     if root.tag != f"{{{SVG_NS}}}svg":
