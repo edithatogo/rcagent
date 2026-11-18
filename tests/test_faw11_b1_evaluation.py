@@ -167,3 +167,34 @@ def test_report_is_deterministic_and_no_oracle_labels_in_scoped_views() -> None:
     assert "expected_kind" not in str(view)
     assert view["events"][0]["text"] == row["text"]
     assert label in ("observation", "outcome", "appraisal", "patient_family_concern")
+
+@pytest.mark.parametrize(
+    ("source_text", "expected"),
+    [
+        ("No family concerns were expressed in this note.", None),
+        ("The mother expressed no concerns about the care.", None),
+        (
+            "No family concerns were expressed; however, the mother later raised a concern.",
+            "patient_family_concern",
+        ),
+        ("No injury was reported. A new rash developed later.", "outcome"),
+        (
+            "The patient did not raise concern, but later expressed worry about the delay.",
+            "patient_family_concern",
+        ),
+    ],
+)
+def test_context_rules_scope_negation_within_clauses(
+    source_text: str, expected: object
+) -> None:
+    """Negation cannot be defeated by a later synonym in the same clause."""
+    row: JsonObject = {
+        "id": "b1-negation-clause",
+        "root_family_id": "b1-negation-clause",
+        "partition": "test",
+        "expected_kind": "observation",
+        "text": source_text,
+    }
+    case = build_case(row)
+    view = make_view(case, row["root_family_id"], "test")
+    assert context_predictions(case, view)[0]["predicted_kind"] == expected
