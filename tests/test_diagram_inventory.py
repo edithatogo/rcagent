@@ -30,7 +30,7 @@ def _repository(root: Path) -> Path:
         content = f"%% Synthetic diagram\n{keyword} LR\n    A --> B\n"
         if keyword in {"mindmap", "timeline", "quadrantChart"}:
             content = f"%% Synthetic diagram\n{keyword}\n"
-        path.write_text(content, encoding="utf-8")
+        path.write_bytes(content.encode("utf-8"))
         manifest_files.append(
             {
                 "path": f"assets/templates/mermaid/{name}",
@@ -114,7 +114,7 @@ def test_rejects_wrong_mermaid_keyword_even_with_valid_digest(tmp_path: Path) ->
     root = _repository(tmp_path)
     path = root / SKILL / "assets/templates/mermaid/accimap-levels.mmd"
     content = "timeline\n    title Not an AcciMap fallback\n"
-    path.write_text(content, encoding="utf-8")
+    path.write_bytes(content.encode("utf-8"))
     manifest = root / SKILL / "assets/template-admission.json"
     data = cast(dict[str, object], json.loads(manifest.read_text(encoding="utf-8")))
     files = cast(list[dict[str, object]], data["files"])
@@ -162,3 +162,17 @@ def test_actual_admitted_method_and_template_inventory() -> None:
     assert len(report["methods"]) == 14
     assert len(report["templates"]) == 12
     assert report["admission_revision"] != "synthetic-test"
+
+
+def test_synthetic_manifest_hashes_are_byte_stable(tmp_path: Path) -> None:
+    root = _repository(tmp_path)
+    manifest_path = root / SKILL / "assets/template-admission.json"
+    decoded = cast(dict[str, object], json.loads(manifest_path.read_text(encoding="utf-8")))
+    entries = cast(list[dict[str, object]], decoded["files"])
+    for entry in entries:
+        path_value = entry.get("path")
+        digest = entry.get("sha256")
+        assert isinstance(path_value, str)
+        assert isinstance(digest, str)
+        data = (root / SKILL / path_value).read_bytes()
+        assert hashlib.sha256(data).hexdigest() == digest
