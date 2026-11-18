@@ -10,9 +10,9 @@ from __future__ import annotations
 
 import json
 import re
-from itertools import pairwise
 from collections import Counter
 from hashlib import sha256
+from itertools import pairwise
 from pathlib import Path
 from typing import Literal, TypedDict
 
