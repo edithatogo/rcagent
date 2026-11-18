@@ -4,7 +4,13 @@ from pathlib import Path
 
 import pytest
 
-from tools.validate_proposal_visuals import EXPECTED_FILES, ROOT, VISUALS_DIR, validate_directory, validate_svg
+from tools.validate_proposal_visuals import (
+    EXPECTED_FILES,
+    ROOT,
+    VISUALS_DIR,
+    validate_directory,
+    validate_svg,
+)
 
 VALID = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"
 width="200" height="100" role="img" aria-label="Synthetic safety diagram">
@@ -73,7 +79,7 @@ def test_malformed_registered_figure_fails_directory(tmp_path: Path) -> None:
     directory.mkdir(parents=True)
     for filename in EXPECTED_FILES:
         (directory / filename).write_text(VALID, encoding="utf-8")
-    first = sorted(EXPECTED_FILES)[0]
+    first = min(EXPECTED_FILES)
     (directory / first).write_text(VALID.replace("url(#arr)", "url(#bad)"), encoding="utf-8")
     assert any(first in p and "missing internal SVG reference" in p for p in validate_directory(tmp_path))
 
@@ -113,7 +119,7 @@ def test_directory_reports_actual_malformed_svg(tmp_path: Path) -> None:
     directory.mkdir(parents=True)
     for name in EXPECTED_FILES:
         (directory / name).write_text(VALID, encoding="utf-8")
-    invalid = sorted(EXPECTED_FILES)[0]
+    invalid = min(EXPECTED_FILES)
     (directory / invalid).write_text("<svg xmlns='http://www.w3.org/2000/svg'", encoding="utf-8")
     assert f"{invalid}: invalid SVG XML" in validate_directory(tmp_path)
 
