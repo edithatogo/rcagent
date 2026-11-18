@@ -185,9 +185,7 @@ def test_report_is_deterministic_and_no_oracle_labels_in_scoped_views() -> None:
         ),
     ],
 )
-def test_context_rules_scope_negation_within_clauses(
-    source_text: str, expected: object
-) -> None:
+def test_context_rules_scope_negation_within_clauses(source_text: str, expected: object) -> None:
     """Negation cannot be defeated by a later synonym in the same clause."""
     row: JsonObject = {
         "id": "b1-negation-clause",
