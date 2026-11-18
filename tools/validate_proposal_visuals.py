@@ -132,9 +132,6 @@ def validate_svg(source: str) -> list[str]:
     ids: set[str] = set()
     references: set[str] = set()
     for element in root.iter():
-        if not isinstance(element.tag, str):
-            errors.append("non-element SVG node")
-            continue
         if not element.tag.startswith(f"{{{SVG_NS}}}") or _name(element.tag) not in ALLOWED_TAGS:
             errors.append(f"unsupported SVG element: {_name(element.tag)}")
         identifier = element.get("id")
