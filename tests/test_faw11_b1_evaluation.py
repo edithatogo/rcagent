@@ -146,9 +146,13 @@ def test_b1_report_honestly_denominates_unavailable_generator() -> None:
         table = require_object(metrics[method], context=method)
         for kind in ("observation", "outcome", "appraisal", "patient_family_concern"):
             row = require_object(table[kind], context=kind)
-            assert row["support"] == 4
-            assert 0 <= row["tp"] <= row["support"]
-            assert 0 <= row["fn"] <= row["support"]
+            support, tp, fn = row["support"], row["tp"], row["fn"]
+            assert type(support) is int
+            assert type(tp) is int
+            assert type(fn) is int
+            assert support == 4
+            assert 0 <= tp <= support
+            assert 0 <= fn <= support
     assert "sha256:" in str(report["frozen_manifest_sha256"])
 
 
