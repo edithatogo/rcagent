@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/edithatogo/rcagent/evaluation/accimap/accimap.schema.json",
+  "title": "Synthetic AcciMap companion record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "dataset", "record_binding", "profile_id", "question",
+    "nodes", "outcome_node_ids", "edges", "recommendations", "gaps", "review"
+  ],
+  "properties": {
+    "schema_version": {"const": "accimap-1.0"},
+    "dataset": {"const": "generated-synthetic-only"},
+    "record_binding": {"$ref": "#/$defs/record_binding"},
+    "profile_id": {"enum": ["rcagent-healthcare-six-v1", "rasmussen-svedung-six-v1"]},
+    "question": {"$ref": "#/$defs/text"},
+    "nodes": {"type": "array", "minItems": 1, "maxItems": 128, "items": {"$ref": "#/$defs/node"}},
+    "outcome_node_ids": {"$ref": "#/$defs/ids", "minItems": 1, "maxItems": 128},
+    "edges": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/edge"}},
+    "recommendations": {"type": "array", "maxItems": 128, "items": {"$ref": "#/$defs/recommendation"}},
+    "gaps": {"type": "array", "maxItems": 128, "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "review": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/review"}]}
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$",
+      "not": {"pattern": "[^a-z0-9._-]"}
+    },
+    "ids": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "\\S"},
+    "fingerprint": {"type": "string", "minLength": 71, "maxLength": 71, "pattern": "^sha256:[0-9a-f]{64}$"},
+    "record_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "version", "fingerprint"],
+      "properties": {
+        "case_id": {"$ref": "#/$defs/id"},
+        "version": {"type": "integer", "minimum": 1},
+        "fingerprint": {"$ref": "#/$defs/fingerprint"}
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "kind", "statement_id", "level_id", "placement_rationale"],
+      "properties": {
+        "node_id": {"$ref": "#/$defs/id"},
+        "kind": {"enum": ["factor", "outcome"]},
+        "statement_id": {"$ref": "#/$defs/id"},
+        "level_id": {
+          "enum": [null, "government", "regulators", "management", "environment", "staff", "patient", "company_management", "operational_management", "processes", "equipment"]
+        },
+        "placement_rationale": {"$ref": "#/$defs/text"},
+        "factor_id": {"$ref": "#/$defs/id"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"const": "factor"}}},
+          "then": {"required": ["factor_id"]},
+          "else": {"not": {"required": ["factor_id"]}}
+        }
+      ]
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["edge_id", "from_node_id", "to_node_id", "relation", "status", "rationale", "evidence_ids", "conflicting_evidence_ids", "uncertainty"],
+      "properties": {
+        "edge_id": {"$ref": "#/$defs/id"},
+        "from_node_id": {"$ref": "#/$defs/id"},
+        "to_node_id": {"$ref": "#/$defs/id"},
+        "relation": {"const": "contributes_to"},
+        "status": {"enum": ["supported", "hypothesis", "contested"]},
+        "rationale": {"$ref": "#/$defs/text"},
+        "evidence_ids": {"$ref": "#/$defs/ids"},
+        "conflicting_evidence_ids": {"$ref": "#/$defs/ids"},
+        "uncertainty": {"type": "string", "maxLength": 4096}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "supported"}}},
+          "then": {"properties": {"evidence_ids": {"minItems": 1}, "conflicting_evidence_ids": {"maxItems": 0}}},
+          "else": {"properties": {"uncertainty": {"$ref": "#/$defs/text"}}}
+        }
+      ]
+    },
+    "recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["statement_id", "target_node_ids", "target_edge_ids", "mechanism", "action_ids"],
+      "properties": {
+        "statement_id": {"$ref": "#/$defs/id"},
+        "target_node_ids": {"$ref": "#/$defs/ids", "maxItems": 128},
+        "target_edge_ids": {"$ref": "#/$defs/ids"},
+        "mechanism": {"$ref": "#/$defs/text"},
+        "action_ids": {"$ref": "#/$defs/ids"}
+      },
+      "anyOf": [
+        {"properties": {"target_node_ids": {"minItems": 1}}},
+        {"properties": {"target_edge_ids": {"minItems": 1}}}
+      ]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewer_role_id", "reviewed_at", "disposition", "graph_fingerprint", "rationale"],
+      "properties": {
+        "reviewer_role_id": {"$ref": "#/$defs/id"},
+        "reviewed_at": {"type": "string", "minLength": 1, "maxLength": 128, "format": "date-time"},
+        "disposition": {"enum": ["reviewed", "reviewed_with_gaps"]},
+        "graph_fingerprint": {"$ref": "#/$defs/fingerprint"},
+        "rationale": {"$ref": "#/$defs/text"}
+      }
+    }
+  }
+}

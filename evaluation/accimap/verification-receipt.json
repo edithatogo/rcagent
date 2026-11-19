@@ -1,0 +1,184 @@
+{
+  "schema_version": "1.0",
+  "track_id": "accimap-workflow_20261116",
+  "recorded_at": "2026-11-16T07:34:41.949121+00:00",
+  "implementation_commit": "3f1d143c8ecaba0aad13365dd35afc3701992dd8",
+  "base_commit": "c6892497aa0b03555d5145242c04965471eccc1d",
+  "scope": "generated-synthetic structural graph, CLI and portable method guide",
+  "runtime": {
+    "python": "3.12.14",
+    "platform": "Linux",
+    "dependencies": "uv.lock; validate,test,lint,assurance extras; conformance group for official skill check"
+  },
+  "source_sha256": {
+    "tools/accimap.py": "a5be10ced6b4148d1d1221f7c834113ff9621ddf0a2f18285bb306018068d127",
+    "evaluation/accimap/accimap.schema.json": "300e3137d2f92a34b0502f40af16817c76ee6eecc6c1e51983136d6b7dedf511",
+    "tests/test_accimap.py": "1a1f0221b10d1e1a946ca56bd73b10a942a500505dd245a78b6780e0e89619cd",
+    "tests/fixtures/accimap/record.json": "d6a5073b4d8550402d192a683736a8d3d2e2994e8c1e48d7c5c48ff0835f8141",
+    "tests/fixtures/accimap/graph.json": "bc15745d7b3d0dfb2553cb35fae1945539037edede1945a722afcbbacf470966",
+    "tests/fixtures/accimap/expected.json": "2b700d814eafccdd80776be6af9a92136eca995ea482ef486ee7c075c2cd38d1",
+    "evaluation/accimap/synthetic-example.mmd": "60ef54cbdadb8ba1d8864cb9753e7cec00afc1b8648f5ff6ea679f56c6da7e87",
+    "evaluation/accimap/synthetic-inspection.json": "13e3e6d758c1be7a9b0d5633cc068fd1f2ba0943924ebc49f954a07df7bd2b45",
+    "skills/rca-investigation/references/methods/accimap.md": "695d3581dfd1e1a043836154e81bea10fe36a6aa380c2b05844a7818d557fb08"
+  },
+  "full_validation": {
+    "command": ".venv/bin/python -m tools.full_validation",
+    "exit_code": 1,
+    "pre_pytest_checks": "all 11 passed: lint, format, ty, basedpyright, typing baseline, security, vulture, gremlins, repository, benchmark validation, regression benchmark",
+    "failed": 52,
+    "passed": 2263,
+    "skipped": 11,
+    "seconds": 117.72,
+    "accimap_tests": {
+      "passed": 80,
+      "failed": 0,
+      "property_tests": 3,
+      "hypothesis_deadline": "unchanged default 200ms",
+      "hypothesis_examples": "unchanged default100 per property"
+    },
+    "coverage_percent": 93.03,
+    "coverage_floor_percent": 90,
+    "failed_tests": [
+      "tests/test_prospective_primary_session.py::test_primary_uses_exact_selected_request_and_persists_candidate",
+      "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[identity-drift]",
+      "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[missing-package]",
+      "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[interrupt]",
+      "tests/test_prospective_primary_session.py::test_postflight_failure_retains_raw_capture[exit]",
+      "tests/test_prospective_primary_session.py::test_primary_failure_never_masks_http_or_cleanup_failure",
+      "tests/test_prospective_primary_session.py::test_http_failure_with_successful_gate_stays_failed",
+      "tests/test_prospective_primary_session.py::test_cleanup_failure_and_postflight_failure_both_retained",
+      "tests/test_prospective_primary_session.py::test_real_guarded_git_child_http_and_decoder_composition",
+      "tests/test_prospective_server_session.py::test_fixed_session_reserved_and_locked",
+      "tests/test_prospective_server_session.py::test_health_attempt_budget_stops_without_completion",
+      "tests/test_prospective_server_session.py::test_interrupted_health_keeps_failure_after_worker_cleanup",
+      "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[duplicate]",
+      "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[malformed]",
+      "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[status]",
+      "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[oversize]",
+      "tests/test_prospective_server_session.py::test_bad_health_cannot_be_replaced_by_later_success[http]",
+      "tests/test_prospective_server_session.py::test_loading_health_retries_on_same_socket",
+      "tests/test_prospective_server_session.py::test_completion_failure_is_not_erased_by_successful_stop",
+      "tests/test_prospective_server_session.py::test_socket_replacement_between_health_and_completion_is_rejected",
+      "tests/test_prospective_server_session.py::test_real_synthetic_child_http_and_graceful_stop",
+      "tests/test_prospective_server_session.py::test_delayed_socket_creation_does_not_consume_health_attempts",
+      "tests/test_prospective_server_session.py::test_completion_request_hash_mismatch_rejected",
+      "tests/test_prospective_server_session.py::test_worker_join_failure_preserves_paths_and_blocks_next_run",
+      "tests/test_prospective_server_session.py::test_unexpected_directory_content_is_not_recursively_removed",
+      "tests/test_prospective_server_session.py::test_shared_deadline_expiry_stops_readiness_without_completion",
+      "tests/test_prospective_study_controller.py::test_two_real_synthetic_children_transport_and_admission",
+      "tests/test_unix_http_capture.py::test_exact_body_and_locked_receipt - ...",
+      "tests/test_unix_http_capture.py::test_post_request_bound_by_digest - P...",
+      "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[301]",
+      "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[400]",
+      "tests/test_unix_http_capture.py::test_http_error_preserves_body_without_following_redirect[500]",
+      "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\n]",
+      "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Length: 2\\r\\n]",
+      "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: text/plain\\r\\nContent-Length: 2\\r\\n]",
+      "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: -1\\r\\n]",
+      "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 9999999\\r\\n]",
+      "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Length: 2\\r\\n]",
+      "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Type: application/json\\r\\nContent-Length: 2\\r\\n]",
+      "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nTransfer-Encoding: chunked\\r\\n]",
+      "tests/test_unix_http_capture.py::test_ambiguous_framing_rejected[Content-Type: application/json\\r\\nContent-Length: 2\\r\\nContent-Encoding: gzip\\r\\n]",
+      "tests/test_unix_http_capture.py::test_short_body_retained - Permission...",
+      "tests/test_unix_http_capture.py::test_bad_http - PermissionError: [Err...",
+      "tests/test_unix_http_capture.py::test_absolute_deadline_stops_trickling_headers",
+      "tests/test_unix_http_capture.py::test_body_deadline_retains_partial_bytes",
+      "tests/test_unix_http_capture.py::test_shared_directory_rejected - Perm...",
+      "tests/test_unix_http_capture.py::test_connection_setup_expiry_returns_receipt",
+      "tests/test_unix_http_capture.py::test_connect_failure_returns_receipt",
+      "tests/test_unix_http_capture.py::test_socket_replacement_rejected - Pe...",
+      "tests/test_unix_http_capture.py::test_socket_symlink_and_foreign_owner_rejected",
+      "tests/test_unix_http_capture.py::test_http_header_line_bound - Permiss...",
+      "tests/test_unix_http_capture.py::test_malformed_header_not_silently_ignored"
+    ],
+    "failure_disposition": "All remaining failures are in unchanged Unix-socket-dependent suites. The executor denies AF_UNIX socket creation (EPERM); supported hosted runners must rerun the unchanged tests. No skips or gate allowances were added.",
+    "log_sha256": "f897757531a7cb3dbbf10a6a35337ff715f26fdcc5ae84de674c6dcbe6f4d50e"
+  },
+  "prior_run": {
+    "failed": 54,
+    "passed": 2253,
+    "skipped": 11,
+    "coverage_percent": 92.97,
+    "accimap_failures": 2,
+    "repair": "Split repeated public validations into focused Unicode topology, rendering and invalid-reference properties; retained the input space and default deadlines; added resource-boundary regressions."
+  },
+  "parser": {
+    "receipt": "parser-receipt.json",
+    "passed": 10,
+    "failed": 0,
+    "mermaid": "12.3.0",
+    "jsdom": "31.0.1",
+    "scope": "parse and parsed structure only; browser SVG/layout unavailable"
+  },
+  "skill_conformance": {
+    "checked_at": "2026-11-16T07:33:42.120733+00:00",
+    "current_conformance": true,
+    "local_validation_passed": true,
+    "official_validator": {
+      "command": [
+        "python",
+        "-I",
+        "-m",
+        "skills_ref.cli",
+        "validate",
+        "skills/rca-investigation"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "provenance": {
+        "revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+        "source": "https://github.com/agentskills/agentskills.git",
+        "verified": true
+      }
+    },
+    "project_profile": {
+      "complete": true,
+      "completion_diagnostics": [],
+      "diagnostics": [],
+      "passed": true
+    },
+    "runtime": {
+      "platform": "Linux",
+      "python": "3.12.14"
+    },
+    "schema_version": "1.0",
+    "upstream_drift": {
+      "baseline_revision": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+      "changed_paths": [
+        "GOVERNANCE.md",
+        "MAINTAINERS.md",
+        "docs/footer.js",
+        "docs/style.css"
+      ],
+      "checked_at": "2026-11-16T07:33:28.839717+00:00",
+      "current_conformance": true,
+      "guidance_paths": [],
+      "message": "Upstream changed only outside monitored specification, validator, and guidance paths.",
+      "mode": "live",
+      "normative_paths": [],
+      "resolved_revision": "83021e2be457a9b6679148719c1f6074f0ad975e",
+      "sources": [
+        "https://agentskills.io/specification",
+        "https://agentskills.io/skill-creation/best-practices",
+        "https://agentskills.io/skill-creation/optimizing-descriptions",
+        "https://agentskills.io/skill-creation/evaluating-skills",
+        "https://github.com/agentskills/agentskills"
+      ],
+      "status": "upstream_change_irrelevant"
+    }
+  },
+  "limitations": [
+    "No local full-suite pass: 52 environment-blocked existing tests",
+    "Hosted exact-head matrix, mutation and profile checks remain required",
+    "Chromium launch blocked; escalation rejected by automatic granular approval policy",
+    "No SVG/readability/client DOM qualification",
+    "No human, clinical or operational validation",
+    "No model inference run or D0 acceptance",
+    "No release created",
+    "Shared registry and merge remain with coordinator"
+  ],
+  "local_implementation_commit": "ae51a546d294080932b17adfe64398b253a33a2c",
+  "implementation_tree": "20cf409a8c424f61da4edba2c0c9b682524fb99d",
+  "publication": "GitHub connector; exact tree equality verified after shell git push lacked credentials"
+}

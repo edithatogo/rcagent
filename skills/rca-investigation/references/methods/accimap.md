@@ -1,92 +1,165 @@
 # AcciMap — Accident Mapping
 
-AcciMap (Rasmussen & Svedung, 2000) is a systems-thinking accident analysis method that maps causal factors across multiple levels of a sociotechnical system. Unlike linear methods that trace a single causal chain, AcciMap reveals the network of decisions and conditions at every level that contributed to the accident.
+Use AcciMap to examine how decisions, activities and conditions across a
+sociotechnical system contributed to an incident or shaped its consequences.
+Keep the purpose focused on system improvement and the conditions of normal
+work. A plausible diagram, a citation or a completed review does not prove a
+causal explanation.
 
-## Levels of Analysis
+## Contents
 
-AcciMap organises factors into six levels:
+- [Select a profile](#select-a-profile)
+- [Facilitate the analysis](#facilitate-the-analysis)
+- [Check the map](#check-the-map)
+- [Produce the diagram and handoff](#produce-the-diagram-and-handoff)
+- [Select complementary methods](#select-complementary-methods)
+- [Sources and adaptation](#sources-and-adaptation)
 
-| Level | Description | Examples in Healthcare |
+## Select a profile
+
+Record the profile and why it fits the question. AcciMap variants use different
+level structures; the existing template is a healthcare adaptation authored for
+rcagent, not a universal six-level standard. Preserve its legacy level numbers
+when reusing an existing map; changing a profile requires reviewing placement.
+
+| Position from top | `rcagent-healthcare-six-v1` | `rasmussen-svedung-six-v1` |
 |---|---|---|
-| 6 | **Government and regulators** | Health legislation, funding policy, accreditation standards |
-| 5 | **Regulatory bodies and associations** | ACSQHC, AMC, AHPRA, health department policy |
-| 4 | **Local area / hospital management** | Executive decisions, resource allocation, culture |
-| 3 | **Physical environment and technical** | Ward design, equipment, IT systems |
-| 2 | **Staff / operators** | Clinical staff actions, decisions, communications |
-| 1 | **Patient and activity** | Patient factors, the adverse event itself |
+| 1 | Government and policy; legacy level 6 | Government policy and budgeting |
+| 2 | Regulatory bodies; legacy level 5 | Regulatory bodies and associations |
+| 3 | Hospital management; legacy level 4 | Local government / company management |
+| 4 | Physical and technical environment; legacy level 3 | Technical and operational management |
+| 5 | Staff and operators; legacy level 2 | Physical processes and actor activities |
+| 6 | Patient and activity; legacy level 1 | Equipment and surroundings |
 
-## Process
+The original hierarchy distinguishes organisational leadership from operational
+management. In a healthcare adaptation, explain where service-level management,
+rostering and coordination sit rather than hiding them inside staff actions.
+Outcome is a node role: the original profile does not require a patient outcome
+to be placed in equipment/surroundings. Keep patient context distinguishable from
+the adverse outcome and from claims about responsibility.
 
-1. Build the timeline and contributing factor analysis first
-2. Assign each identified contributing factor to one of the six levels
-3. Map causal connections between factors across levels (arrows show influence)
-4. Identify what decisions or conditions at each level contributed to, enabled, or failed to prevent the adverse event
-5. Look for patterns: which levels have the most contributing factors? Where are the systemic gaps?
+Do not invent factors to populate every level. Record whether a level was
+examined, outside the agreed scope, or remains unexplored. Leave uncertain
+placement explicitly unassigned, with a rationale and a question for review.
 
-## AcciMap Diagram Format
+## Facilitate the analysis
 
-```
-LEVEL 6 (Government/Policy): [Factor A] --> [Factor B]
-                                   ↓              ↓
-LEVEL 5 (Regulators):        [Factor C] <-- [Factor D]
-                                   ↓
-LEVEL 4 (Management):        [Factor E] --> [Factor F]
-                                                  ↓
-LEVEL 3 (Technical/Environment): [Factor G]
-                                          ↓
-LEVEL 2 (Staff):              [Action H] --> [Action I]
-                                                  ↓
-LEVEL 1 (Patient/Event):           [ADVERSE EVENT]
-```
+Apply the shared investigation workflow and evidence boundary first. These steps
+are an original facilitation synthesis of the sources below and rcagent's
+existing evidence/review requirements; they are not a jurisdictional mandate.
 
-## When to Use AcciMap
+1. **Define scope and outcomes.** State the question, system boundary, time
+   period and event/outcomes. Agree who needs to participate, including knowledge
+   of frontline work, management decisions and relevant policies. Preserve
+   patient/family perspectives and unresolved differences.
+2. **Assemble evidence and chronology.** Gather authorised records, accounts and
+   applicable policy versions. Separate observations, accounts and inferences;
+   record missing information. A timeline is an organising aid, not proof of a
+   causal connection.
+3. **Identify and consolidate factors.** Describe specific conditions and
+   decisions, including normal adaptations and successful controls. Combine
+   genuine duplicates while preserving distinct mechanisms and conflicting
+   accounts. Avoid labels such as "human error" as the explanation.
+4. **Place factors deliberately.** Use the selected profile, explain ambiguous
+   placement and consider organisational/external influences. Split a compound
+   factor when it contains distinct decisions at different levels.
+5. **Propose relationships.** For each connection record its direction,
+   mechanism/rationale, supporting evidence, conflicting evidence, alternatives
+   and uncertainty. Distinguish supported, hypothetical and contested links.
+   Multiple causes/effects, same-level links and skipped levels are possible.
+6. **Expose gaps.** Look for missing intermediate conditions, unexamined upstream
+   influences and disconnected factors. Request evidence or retain the gap;
+   never add a convenient link simply to complete a pathway.
+7. **Challenge the explanation.** Check chronology and causal logic, alternative
+   explanations, hindsight and whether a proposed link exceeds the evidence.
+   A graph path establishes connectivity only. Factor counts are not estimates
+   of causal importance, effect size or an organisation's share of responsibility.
+8. **Develop improvements.** Link each recommendation to the factor or
+   relationship it addresses and explain the intended safety mechanism. Assign
+   actions through actual governance authority; define implementation evidence,
+   outcome/process/balancing measures and an effectiveness review.
+9. **Validate and revise.** Ask knowledgeable participants to check the account
+   and other readers to check intelligibility. Preserve dissent and unresolved
+   evidence. Record the reviewed revision, reviewer role, disposition and limits;
+   changes to the map or evidence require renewed review of the affected claims.
 
-AcciMap is most powerful for:
-- Complex, multi-factorial events with organisational and regulatory contributing factors
-- Events that reveal systemic issues requiring change at multiple levels
-- Situations where traditional RCA would focus only on the "sharp end" (staff) and miss the blunt end (organisation, policy)
-- Healthcare system redesign and policy development
+## Check the map
 
-## Key Output for Governance
+Before presenting a map as reviewed, check:
 
-AcciMap explicitly shows governance bodies which level they are responsible for:
-- Clinical Governance Committee: Level 3–4 factors
-- Executive/CEO: Level 4–5 factors
-- Regulatory reporting: Level 5–6 factors
+- Outcomes are explicit and incident outcomes are separate from later learning
+  or action-effectiveness measures.
+- Nodes and links have stable identifiers; each claim resolves to its source.
+- A supporting citation has not been silently converted into a causal arrow.
+- Hypotheses and contested relationships remain visibly labelled in every view.
+- Gaps and unassigned/disconnected factors remain visible without forced links.
+- Recommendations address specific mechanisms, with any missing ownership or
+  measurement plan acknowledged.
+- The review applies to the current evidence/map revision. A typed reviewer name
+  records a declaration; it does not authenticate approval.
 
-## Mermaid Diagram
+Return a bounded evidence-gap plan when the explanation cannot be supported.
+An incomplete draft can still help the team decide what to investigate next.
 
-Use template `assets/templates/mermaid/accimap-levels.mmd`
+## Produce the diagram and handoff
 
-## Method Relationships
+For the legacy healthcare profile, use
+`assets/templates/mermaid/accimap-levels.mmd` and apply
+`assets/template-use-contract.md`. Its pre-drawn example arrows are synthetic
+prompts; remove or replace them with the relationships actually examined.
+Keep the profile name and draft/review status in the accompanying caption.
 
-| Related method | Overlap | When AcciMap wins |
-|---|---|---|
-| **HFACS** | Both trace acts upward to organisational influences | Factors reach government/regulatory/funding levels or span multiple external organisations |
-| **STAMP/CAST** | Both handle system-level causation | Failure is a *causal flow* across tiers rather than a flawed control loop or controller violation |
-| **Yorkshire Framework** | Layer-1–2 factor collection feeds AcciMap's lower levels | Always pair: run Yorkshire first, then elevate confirmed factors into the AcciMap structure |
+For another profile, explicitly define and review the level structure. Do not
+relabel existing factors automatically. Keep a readable legend and an evidence
+table for nodes and connections; use line styles and words, not colour alone,
+to distinguish supported links from hypotheses or contested explanations.
 
-Unlike linear-chain methods (5 Whys, fishbone), AcciMap preserves converging
-influence paths — how a funding decision *and* a rostering gap *and* a device
-fault jointly closed windows for the event.
+Pass the reviewed map, evidence references, alternatives, gaps, recommendations
+and review record to the shared reporting and action/effectiveness workflows.
+Route recommendations to the actual accountable owner. A level number alone
+does not establish committee responsibility, delegation or a reporting duty.
 
-## Strengths and Limitations
+The separate repository companion tool checks synthetic graph structure and
+produces Mermaid from linked records. It is not included automatically in a
+previously released skills-only package and does not validate causal truth or
+authorise clinical use. The portable workflow remains usable without that tool.
 
-Strengths:
-- Counteracts sharp-end blame by forcing blunt-end visibility before sign-off
-- Surfaces which governance tier owns each recommendation (see Key Output above)
-- Domain-neutral; validated across aviation, health, rail, offshore energy contexts
+## Select complementary methods
 
-Limitations:
-- Resource-intensive: reserve for SAC 1 multi-level events, not routine SAC 2–3
-- Levels require judgement calls; mixed-evidence factors need explicit annotation rather than forced placement
-- Diagram quality depends on access to organisational and regulatory records, which are often outside investigation team control
-- Causal-arrow placement can imply precision beyond the evidence; preserve confidence labels from the evidence ledger
+Select AcciMap when an unanswered question concerns interactions across system
+levels. Severity alone does not establish that need. Apply the applicable
+investigation policy and record the rationale for method selection; the
+repository's SAC budgets and default combinations are project heuristics, not
+properties of AcciMap itself. Resolve a conflict in scope explicitly.
 
-## Authoritative References
+Timeline and a contributing-factor framework can provide inputs. Yorkshire is
+one option, not a prerequisite intrinsic to AcciMap. Use SEIPS for work-system
+design questions; HFACS for a useful human-performance classification; and
+STAMP/CAST or STPA for their respective retrospective or prospective
+control/feedback questions. Justify overlap rather than applying every method.
 
-- Rasmussen, J., & Svedung, I. (2000). *Proactive Risk Management in a Dynamic Society*. Swedish Rescue Services Agency.
-- Branford, K., Naikar, N., & Hopkins, A. (2011). Guidelines for AcciMap analysis. In Hopkins (Ed.), *Learning from High Reliability Organisations*.
-- Branford, K. (2007). *An investigation into the validity and reliability of the AcciMap approach*. ANU doctoral dissertation.
-- Healthcare applications: Toronto SARS outbreak sociotechnical analysis (Piché & Vicente, 2005); Walkerton vs North Battleford waterborne outbreak comparison (Woo & Vicente, 2003).
-- Tooling note: third-party editors such as AcciMap Generator (accimap.com) produce publication diagrams; outputs remain unverified analyst artefacts until imported into the evidence workflow with provenance.
+Rasmussen and Svedung's broader proactive programme also discusses generic
+AcciMaps, ActorMaps and InfoMaps. A single retrospective map does not demonstrate
+that entire programme or predict the effect of a proposed intervention.
+
+## Sources and adaptation
+
+- Rasmussen, J., & Svedung, I. (2000). *Proactive Risk Management in a Dynamic
+  Society*. Swedish Rescue Services Agency. [Publisher PDF](https://rib.msb.se/filer/pdf/16252.pdf),
+  printed pp. 18–23: original hierarchy, actors, scenarios and work analysis.
+- Branford, K., Naikar, N., & Hopkins, A. (2009). Guidelines for AcciMap analysis.
+  In A. Hopkins (Ed.), *Learning from High Reliability Organisations*, pp. 193–212.
+  [ANU publication record](https://researchportalplus.anu.edu.au/en/publications/guidelines-for-accimap-analysis/)
+  verifies 2009; the previous guide's 2011 year was inaccurate for this chapter.
+  ANU metadata orders the authors differently from the indexed chapter header.
+  Full chapter download was unavailable during this revision.
+- *Developing an AcciMap*, version 1.0, June 2025.
+  [Healthcare facilitation guide](https://designpsychology.company/wp-content/uploads/2025/09/20250710-qrg-developing-an-accimap.pdf).
+  This first-party adaptation uses five levels, including a separate patient
+  context level, and describes group facilitation and subsequent validation.
+  It is not a Queensland Health mandate or the source of rcagent's legacy six
+  levels.
+
+Sources checked 16 November 2026. These are links and original synthesis;
+third-party texts and templates are not redistributed. Source attribution,
+software tests and diagram review do not establish clinical effectiveness.

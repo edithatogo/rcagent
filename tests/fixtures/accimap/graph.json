@@ -1,0 +1,131 @@
+{
+  "schema_version": "accimap-1.0",
+  "dataset": "generated-synthetic-only",
+  "record_binding": {
+    "case_id": "case-accimap-synthetic-01",
+    "version": 1,
+    "fingerprint": "sha256:af24e4f38a44cb068c6b33ffb2664ddaea0ca6df496cce3498d50c5a9060e0b0"
+  },
+  "profile_id": "rcagent-healthcare-six-v1",
+  "question": "How did simulated organisational and technical conditions relate to a delayed alert?",
+  "nodes": [
+    {
+      "node_id": "node-policy",
+      "kind": "factor",
+      "statement_id": "statement-policy",
+      "factor_id": "factor-policy",
+      "level_id": "management",
+      "placement_rationale": "Illustrative healthcare placement."
+    },
+    {
+      "node_id": "node-queue",
+      "kind": "factor",
+      "statement_id": "statement-queue",
+      "factor_id": "factor-queue",
+      "level_id": "environment",
+      "placement_rationale": "Illustrative healthcare placement."
+    },
+    {
+      "node_id": "node-availability",
+      "kind": "factor",
+      "statement_id": "statement-availability",
+      "factor_id": "factor-availability",
+      "level_id": "staff",
+      "placement_rationale": "Illustrative healthcare placement."
+    },
+    {
+      "node_id": "node-context",
+      "kind": "factor",
+      "statement_id": "statement-context",
+      "factor_id": "factor-context",
+      "level_id": null,
+      "placement_rationale": "Placement is unresolved pending simulation timing evidence."
+    },
+    {
+      "node_id": "node-outcome",
+      "kind": "outcome",
+      "statement_id": "statement-outcome",
+      "level_id": "patient",
+      "placement_rationale": "Incident outcome in the named healthcare adaptation."
+    }
+  ],
+  "outcome_node_ids": [
+    "node-outcome"
+  ],
+  "edges": [
+    {
+      "edge_id": "edge-policy-queue",
+      "from_node_id": "node-policy",
+      "to_node_id": "node-queue",
+      "relation": "contributes_to",
+      "status": "supported",
+      "rationale": "The synthetic policy had no backup route for the common queue.",
+      "evidence_ids": [
+        "evidence-policy",
+        "evidence-queue"
+      ],
+      "conflicting_evidence_ids": [],
+      "uncertainty": "Illustrative analyst-declared support; not causal proof."
+    },
+    {
+      "edge_id": "edge-queue-outcome",
+      "from_node_id": "node-queue",
+      "to_node_id": "node-outcome",
+      "relation": "contributes_to",
+      "status": "supported",
+      "rationale": "The synthetic drill links the shared queue to the delayed alert.",
+      "evidence_ids": [
+        "evidence-queue",
+        "evidence-outcome"
+      ],
+      "conflicting_evidence_ids": [],
+      "uncertainty": "This example tests references, not clinical validity."
+    },
+    {
+      "edge_id": "edge-policy-outcome",
+      "from_node_id": "node-policy",
+      "to_node_id": "node-outcome",
+      "relation": "contributes_to",
+      "status": "hypothesis",
+      "rationale": "A direct pathway is a hypothesis for the simulated team to examine.",
+      "evidence_ids": [],
+      "conflicting_evidence_ids": [],
+      "uncertainty": "No experiment or account establishes the proposed direct pathway."
+    },
+    {
+      "edge_id": "edge-availability-outcome",
+      "from_node_id": "node-availability",
+      "to_node_id": "node-outcome",
+      "relation": "contributes_to",
+      "status": "contested",
+      "rationale": "One account proposes unavailable capacity, while another disputes it.",
+      "evidence_ids": [
+        "evidence-availability"
+      ],
+      "conflicting_evidence_ids": [
+        "evidence-conflict"
+      ],
+      "uncertainty": "Simulation accounts conflict; timing is unresolved."
+    }
+  ],
+  "recommendations": [
+    {
+      "statement_id": "statement-recommendation",
+      "target_node_ids": [
+        "node-queue"
+      ],
+      "target_edge_ids": [
+        "edge-policy-queue"
+      ],
+      "mechanism": "Explore whether a fallback route changes the simulated delay.",
+      "action_ids": [
+        "action-fallback"
+      ]
+    }
+  ],
+  "gaps": [
+    "No simulation timestamp establishes the hypothesised direct pathway.",
+    "The context factor has no assigned level or established outcome link."
+  ],
+  "review": null
+}
