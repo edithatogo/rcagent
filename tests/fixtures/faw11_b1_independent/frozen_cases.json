@@ -1,0 +1,348 @@
+{
+  "schema_version": "faw11-b1-frozen-synthetic-labels-1.0",
+  "reference_origin": "separately_curated_synthetic_labels_before_predictor_implementation",
+  "safety_scope": "NOT clinical gold labels, not independent human adjudication, not external holdout",
+  "task": "four-way event-kind classification at source-bound recipient/cutoff D3 view",
+  "partition_protocol": "root_family_id cannot cross train/development/test, no test-derived rule modification",
+  "freeze_date": "2026-11-18",
+  "root_family_count": 24,
+  "case_count": 48,
+  "cases": [
+    {
+      "id": "b1-f01-1",
+      "root_family_id": "b1-f01",
+      "partition": "train",
+      "expected_kind": "patient_family_concern",
+      "text": "Mother raised concern about treatment delay."
+    },
+    {
+      "id": "b1-f01-2",
+      "root_family_id": "b1-f01",
+      "partition": "train",
+      "expected_kind": "patient_family_concern",
+      "text": "Parent expressed worry about prolonged pain."
+    },
+    {
+      "id": "b1-f02-1",
+      "root_family_id": "b1-f02",
+      "partition": "train",
+      "expected_kind": "patient_family_concern",
+      "text": "Father reported that analgesia arrived late."
+    },
+    {
+      "id": "b1-f02-2",
+      "root_family_id": "b1-f02",
+      "partition": "train",
+      "expected_kind": "patient_family_concern",
+      "text": "Family complained about an unanswered call."
+    },
+    {
+      "id": "b1-f03-1",
+      "root_family_id": "b1-f03",
+      "partition": "train",
+      "expected_kind": "patient_family_concern",
+      "text": "Patient stated that medication timing worried them."
+    },
+    {
+      "id": "b1-f03-2",
+      "root_family_id": "b1-f03",
+      "partition": "train",
+      "expected_kind": "patient_family_concern",
+      "text": "Mother described continuing concern about symptoms."
+    },
+    {
+      "id": "b1-f04-1",
+      "root_family_id": "b1-f04",
+      "partition": "train",
+      "expected_kind": "outcome",
+      "text": "Laboratory result confirmed the diagnosis."
+    },
+    {
+      "id": "b1-f04-2",
+      "root_family_id": "b1-f04",
+      "partition": "train",
+      "expected_kind": "outcome",
+      "text": "An injury was documented following the procedure."
+    },
+    {
+      "id": "b1-f05-1",
+      "root_family_id": "b1-f05",
+      "partition": "train",
+      "expected_kind": "outcome",
+      "text": "The patient developed a new rash."
+    },
+    {
+      "id": "b1-f05-2",
+      "root_family_id": "b1-f05",
+      "partition": "train",
+      "expected_kind": "outcome",
+      "text": "A discharge outcome was recorded."
+    },
+    {
+      "id": "b1-f06-1",
+      "root_family_id": "b1-f06",
+      "partition": "train",
+      "expected_kind": "outcome",
+      "text": "A second blood test result was positive."
+    },
+    {
+      "id": "b1-f06-2",
+      "root_family_id": "b1-f06",
+      "partition": "train",
+      "expected_kind": "outcome",
+      "text": "Subsequent harm was documented."
+    },
+    {
+      "id": "b1-f07-1",
+      "root_family_id": "b1-f07",
+      "partition": "train",
+      "expected_kind": "appraisal",
+      "text": "Review concluded a systems redesign was needed."
+    },
+    {
+      "id": "b1-f07-2",
+      "root_family_id": "b1-f07",
+      "partition": "train",
+      "expected_kind": "appraisal",
+      "text": "Retrospective appraisal identified a workflow problem."
+    },
+    {
+      "id": "b1-f08-1",
+      "root_family_id": "b1-f08",
+      "partition": "train",
+      "expected_kind": "appraisal",
+      "text": "The team judged the process inadequate."
+    },
+    {
+      "id": "b1-f08-2",
+      "root_family_id": "b1-f08",
+      "partition": "train",
+      "expected_kind": "appraisal",
+      "text": "Investigation assessed the referral pathway."
+    },
+    {
+      "id": "b1-f09-1",
+      "root_family_id": "b1-f09",
+      "partition": "train",
+      "expected_kind": "appraisal",
+      "text": "Audit conclusion recommended a new control."
+    },
+    {
+      "id": "b1-f09-2",
+      "root_family_id": "b1-f09",
+      "partition": "train",
+      "expected_kind": "appraisal",
+      "text": "Review found documentation weaknesses."
+    },
+    {
+      "id": "b1-f10-1",
+      "root_family_id": "b1-f10",
+      "partition": "train",
+      "expected_kind": "observation",
+      "text": "The nurse measured a resting pulse."
+    },
+    {
+      "id": "b1-f10-2",
+      "root_family_id": "b1-f10",
+      "partition": "train",
+      "expected_kind": "observation",
+      "text": "Blood pressure was recorded after admission."
+    },
+    {
+      "id": "b1-f11-1",
+      "root_family_id": "b1-f11",
+      "partition": "train",
+      "expected_kind": "observation",
+      "text": "Medication was administered at breakfast."
+    },
+    {
+      "id": "b1-f11-2",
+      "root_family_id": "b1-f11",
+      "partition": "train",
+      "expected_kind": "observation",
+      "text": "The patient was resting comfortably."
+    },
+    {
+      "id": "b1-f12-1",
+      "root_family_id": "b1-f12",
+      "partition": "train",
+      "expected_kind": "observation",
+      "text": "No family concerns were expressed in this note."
+    },
+    {
+      "id": "b1-f12-2",
+      "root_family_id": "b1-f12",
+      "partition": "train",
+      "expected_kind": "observation",
+      "text": "No injury was observed during examination."
+    },
+    {
+      "id": "b1-f13-1",
+      "root_family_id": "b1-f13",
+      "partition": "development",
+      "expected_kind": "patient_family_concern",
+      "text": "The relative was worried about delays."
+    },
+    {
+      "id": "b1-f13-2",
+      "root_family_id": "b1-f13",
+      "partition": "development",
+      "expected_kind": "patient_family_concern",
+      "text": "Patient complained that the plan was unclear."
+    },
+    {
+      "id": "b1-f14-1",
+      "root_family_id": "b1-f14",
+      "partition": "development",
+      "expected_kind": "outcome",
+      "text": "An unexpected bleeding event occurred."
+    },
+    {
+      "id": "b1-f14-2",
+      "root_family_id": "b1-f14",
+      "partition": "development",
+      "expected_kind": "outcome",
+      "text": "An outcome report documented a complication."
+    },
+    {
+      "id": "b1-f15-1",
+      "root_family_id": "b1-f15",
+      "partition": "development",
+      "expected_kind": "appraisal",
+      "text": "The retrospective assessment questioned escalation."
+    },
+    {
+      "id": "b1-f15-2",
+      "root_family_id": "b1-f15",
+      "partition": "development",
+      "expected_kind": "appraisal",
+      "text": "Review concluded the available evidence was incomplete."
+    },
+    {
+      "id": "b1-f16-1",
+      "root_family_id": "b1-f16",
+      "partition": "development",
+      "expected_kind": "observation",
+      "text": "An observation chart entry was transcribed."
+    },
+    {
+      "id": "b1-f16-2",
+      "root_family_id": "b1-f16",
+      "partition": "development",
+      "expected_kind": "observation",
+      "text": "The bedside team checked the oxygen saturation."
+    },
+    {
+      "id": "b1-f17-1",
+      "root_family_id": "b1-f17",
+      "partition": "test",
+      "expected_kind": "patient_family_concern",
+      "text": "Parent reported concern over a missed appointment."
+    },
+    {
+      "id": "b1-f17-2",
+      "root_family_id": "b1-f17",
+      "partition": "test",
+      "expected_kind": "patient_family_concern",
+      "text": "The family raised a new safety concern."
+    },
+    {
+      "id": "b1-f18-1",
+      "root_family_id": "b1-f18",
+      "partition": "test",
+      "expected_kind": "patient_family_concern",
+      "text": "The patient expressed worry about persistent pain."
+    },
+    {
+      "id": "b1-f18-2",
+      "root_family_id": "b1-f18",
+      "partition": "test",
+      "expected_kind": "patient_family_concern",
+      "text": "The mother complained of inadequate communication."
+    },
+    {
+      "id": "b1-f19-1",
+      "root_family_id": "b1-f19",
+      "partition": "test",
+      "expected_kind": "outcome",
+      "text": "The test result demonstrated a bacterial infection."
+    },
+    {
+      "id": "b1-f19-2",
+      "root_family_id": "b1-f19",
+      "partition": "test",
+      "expected_kind": "outcome",
+      "text": "The patient developed hypotension later that day."
+    },
+    {
+      "id": "b1-f20-1",
+      "root_family_id": "b1-f20",
+      "partition": "test",
+      "expected_kind": "outcome",
+      "text": "Subsequent injury required treatment."
+    },
+    {
+      "id": "b1-f20-2",
+      "root_family_id": "b1-f20",
+      "partition": "test",
+      "expected_kind": "outcome",
+      "text": "A new adverse outcome was recorded."
+    },
+    {
+      "id": "b1-f21-1",
+      "root_family_id": "b1-f21",
+      "partition": "test",
+      "expected_kind": "appraisal",
+      "text": "The investigator concluded that escalation was delayed."
+    },
+    {
+      "id": "b1-f21-2",
+      "root_family_id": "b1-f21",
+      "partition": "test",
+      "expected_kind": "appraisal",
+      "text": "An independent audit reviewed the communication pathway."
+    },
+    {
+      "id": "b1-f22-1",
+      "root_family_id": "b1-f22",
+      "partition": "test",
+      "expected_kind": "appraisal",
+      "text": "Retrospective judgement questioned the decision."
+    },
+    {
+      "id": "b1-f22-2",
+      "root_family_id": "b1-f22",
+      "partition": "test",
+      "expected_kind": "appraisal",
+      "text": "The panel assessed the referral process."
+    },
+    {
+      "id": "b1-f23-1",
+      "root_family_id": "b1-f23",
+      "partition": "test",
+      "expected_kind": "observation",
+      "text": "Nursing observations were documented at dawn."
+    },
+    {
+      "id": "b1-f23-2",
+      "root_family_id": "b1-f23",
+      "partition": "test",
+      "expected_kind": "observation",
+      "text": "Routine temperature was measured."
+    },
+    {
+      "id": "b1-f24-1",
+      "root_family_id": "b1-f24",
+      "partition": "test",
+      "expected_kind": "observation",
+      "text": "No adverse outcome was identified at this time."
+    },
+    {
+      "id": "b1-f24-2",
+      "root_family_id": "b1-f24",
+      "partition": "test",
+      "expected_kind": "observation",
+      "text": "Family members arrived at the ward."
+    }
+  ]
+}
