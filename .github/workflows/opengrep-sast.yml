@@ -1,0 +1,18 @@
+name: OpenGrep SAST pilot
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  opengrep-sast:
+    uses: edithatogo/repository-standards/.github/workflows/reusable-opengrep-sast.yml@59a82e66216601bd07409aaeb0871a46753d6996
+    permissions:
+      contents: read
+    with:
+      source_path: tools
