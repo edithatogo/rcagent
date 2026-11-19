@@ -1,0 +1,55 @@
+name: Synthetic input properties
+
+on:
+  pull_request:
+    paths:
+      - 'tools/medical_signal_contract.py'
+      - 'tools/json_shapes.py'
+      - 'tests/test_medical_signal_properties.py'
+      - 'evaluation/multimodal/fixtures/medical-signal-cases.json'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/synthetic-properties.yml'
+  schedule:
+    - cron: '43 18 * * 3'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: signal-properties-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  synthetic-inputs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      SIGNAL_FUZZ_EXAMPLES: ${{ github.event_name == 'pull_request' && '100' || '1000' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+        with:
+          version: '0.13.8'
+          python-version: '3.15.2'
+      - name: Install existing locked synthetic test dependencies
+        run: uv sync --locked --python 3.15.2 --extra validate --extra test
+      - name: Exercise generated synthetic inputs
+        env:
+          FUZZ_SEED: ${{ github.run_id }}
+        run: |
+          ulimit -v 4194304
+          timeout 480 .venv/bin/python -m pytest tests/test_medical_signal_properties.py -q --hypothesis-seed="$FUZZ_SEED" --hypothesis-show-statistics --junitxml=quality-artifacts/synthetic-properties.xml
+      - name: Retain generated counterexamples
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: signal-properties-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            quality-artifacts/synthetic-properties.xml
+            .hypothesis/examples/
+          include-hidden-files: true
+          retention-days: 14
