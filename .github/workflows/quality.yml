@@ -36,7 +36,7 @@ jobs:
       id-token: write
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@aebdcf6156ab6691adf63218240e476564a1ed4c # v2.23.0
         with:
           egress-policy: audit
 
@@ -91,7 +91,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@aebdcf6156ab6691adf63218240e476564a1ed4c # v2.23.0
         with:
           egress-policy: audit
 
@@ -128,7 +128,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@aebdcf6156ab6691adf63218240e476564a1ed4c # v2.23.0
         with:
           egress-policy: audit
 
@@ -166,7 +166,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@aebdcf6156ab6691adf63218240e476564a1ed4c # v2.23.0
         with:
           egress-policy: audit
 
@@ -200,7 +200,7 @@ jobs:
     timeout-minutes: 2
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@aebdcf6156ab6691adf63218240e476564a1ed4c # v2.23.0
         with:
           egress-policy: audit
 
@@ -226,7 +226,7 @@ jobs:
     continue-on-error: true # advisory until the documentation corpus is fully cleaned up
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@aebdcf6156ab6691adf63218240e476564a1ed4c # v2.23.0
         with:
           egress-policy: audit
 
