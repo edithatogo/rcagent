@@ -29,6 +29,7 @@ Status: FAW06, FAW07/D0, FAW08/D1, FAW09/D2 and FAW10/D3 are accepted for bounde
 - [Bounded maintainer context](../../context-packs/frontier-assurance.md)
 - [Standing scope decision](../../decisions/20261113-001-frontier-assurance.md)
 - [Implementation and verification receipt](./delivery-evidence.md)
+- [Generated synthetic signal properties](./signal-properties-20261120.md)
 - [Typing repair and coverage correction receipt](./typing-evidence.md)
 - [Process/session typing and resource cleanup receipt](./typing-contracts-evidence.md)
 - [Native-contract typing and enum-boundary repair receipt](./typing-native-evidence.md)
