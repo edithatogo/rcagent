@@ -6,7 +6,7 @@
   "created_at": "2026-11-16",
   "updated_at": "2026-11-17",
   "date_basis": "requested_client_date_Australia_Brisbane",
-  "description": "Decision-model and encoder/linking research track; DM01 implements bounded context, source admission and a frozen synthetic study definition. Later model and adapter packages remain pending.",
+  "description": "DM01 merged as source/study freeze; DM02 implements opt-in model-free contract schemas and fixtures with shared receiving acknowledgement still outstanding. DM03–DM11 pending.",
   "workstream": "data-models-evaluation",
   "repositories": [
     "edithatogo/rcagent"
@@ -31,8 +31,10 @@
     "parent_issue": "https://github.com/edithatogo/rcagent/issues/3",
     "coordination_issue": "https://github.com/edithatogo/rcagent/issues/125",
     "branch": "docs/decision-models-spec-plan-20261116",
-    "registration_state": "dm01_completed_pending_exact_head_checks_and_merge",
-    "pull_request": "https://github.com/edithatogo/rcagent/pull/147"
+    "registration_state": "DM01_PR147_merged; DM02_PR153_draft_under_validation",
+    "pull_request": "https://github.com/edithatogo/rcagent/pull/147",
+    "dm02_branch": "feat/dm02-contract-schemas-20261117",
+    "dm02_pr": "https://github.com/edithatogo/rcagent/pull/153"
   },
   "portfolio_number": {
     "status": "unallocated_pending_coordinator_reconciliation",
@@ -41,13 +43,13 @@
   "authorisation": {
     "date": "2026-11-17",
     "date_basis": "Australia/Brisbane",
-    "instruction": "Implement DM01, open a PR, check actions pass, then merge.",
-    "current_scope": "DM01_context_sources_study_definition_review_checks_and_merge",
-    "implementation": "DM01_only",
+    "instruction": "Implement DM02, open a PR, check actions pass, then merge.",
+    "current_scope": "DM02_versioned_companion_schemas_synthetic_contract_tests_receiving_map_review_checks_merge",
+    "implementation": "DM02_only_no_inference_or_registry_activation",
     "model_execution": false,
     "dependency_installation": "existing_locked_quality_environment_only",
     "deployment": false,
-    "merge": "user_authorised_bounded_PR147_after_checks",
+    "merge": "user_authorised_bounded_PR153_only_after_required_checks",
     "shared_contract_acceptance": "existing_coordinator_retained"
   },
   "owners": {
@@ -56,7 +58,7 @@
     "assurance": "frontier-assurance_20261113",
     "death_review_applicability": "death-review_20261113"
   },
-  "autonomy": "complete_DM01_review_checks_and_merge_then_stop_at_named_scope",
+  "autonomy": "complete_DM02_model_free_contracts_and_required_checks_then_stop",
   "autonomy_contract": "../../autonomy.json",
   "hard_dependencies": [],
   "phase_dependencies": [
@@ -82,7 +84,7 @@
       "depends_on": [
         "DM01"
       ],
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "id": "DM03",
@@ -167,12 +169,12 @@
     }
   ],
   "decision_gates": [
-    "DM02 and later packages remain outside the current named DM01 increment",
-    "Shared-contract and file-allocation receiving agreement with the existing coordinator",
+    "DM03 and later packages remain outside the current named DM02 increment",
+    "Shared production-contract and registry mapping acceptance remains with the existing coordinator; an isolated companion merge cannot supply this acceptance",
     "Only genuinely new data, rights, licence, egress, spend, deployment or residual-risk scope beyond established authority"
   ],
   "verification": {
-    "status": "dm01_documentation_and_agent_checks_passed_hosted_pending",
+    "status": "DM01_merged; DM02_model_free_contracts_pending_exacting_hosted_verification",
     "scope": "context_source_admission_and_synthetic_protocol_only",
     "receipt": "./dm01/verification.md",
     "model_runs": 0,
@@ -184,7 +186,7 @@
     "pending_task_and_checkpoint_markers": 39,
     "agent_review": "./dm01/verification.json",
     "full_validation": "local_failed_existing_socket_restriction; exact-head hosted evidence required",
-    "hosted_ci": "actual_observations_recorded_in_PR147_after_publication"
+    "hosted_ci": "DM01 observed exact-head hosted checks and merge recorded in PR #147; DM02 PR #153 pending source-head validation"
   },
   "sources": "./sources.md",
   "contract_proposal": "./contracts.md",
@@ -240,5 +242,20 @@
       "tree": "e6706fc1b2406810c726cbe3cdbd24320d837758",
       "delta_from_integrated_quality_input": "H4 acceptance documentation only; no implementation/test/dependency/workflow changes"
     }
+  },
+  "dm02": {
+    "branch": "feat/dm02-contract-schemas-20261117",
+    "source_base_commit": "96c6fe25ecdaf07875ae205ba74d6404314085f2",
+    "source_base_tree": "797ca3895f7252beeeab491d93924c40dcc7cefa",
+    "contract": "./dm02/contract-mapping.md",
+    "schema": "../../schemas/decision-models-0.1.schema.json",
+    "python_module": "../../../tools/decision_model_contracts.py",
+    "synthetic_matrix": "../../../tests/test_decision_model_contract_matrix.py",
+    "coordinator_handoff": "https://github.com/edithatogo/rcagent/issues/125#issuecomment-6943868352",
+    "shared_receiving_state": "requested_not_yet_accepted",
+    "source_state": "implementation_and_review_in_progress",
+    "runtime_models_executed": 0,
+    "clinical_cases_processed": 0,
+    "production_registry_mutations": 0
   }
 }
